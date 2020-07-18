@@ -16,7 +16,9 @@ library(viridis)
 knitr::opts_chunk$set(error = FALSE, warning = FALSE, message = FALSE)
 ```
 
-# What is power analysis? {-}
+# What is power analysis? {#power}
+
+## Statistical power and Type 2 error rates
 
 Statistical power is the probability of a test to yield a statistically significant result [@aberson_applied_2019; @cohen_statistical_1988]. Power depends on the Type 1 error rate (α), the true effect size in the population, and the number of observations. Because the true effect size is typically unknown, it makes most sense to speak about the power function. In the figure below, you see a power curve for an independent *t*-test, with an alpha level of 0.05. We see that as the effect size (in Cohen's d) increases, power increases. If the effect you study has an effect size of 0.5, you would have almost 70% power with 50 observations in each independent group (indicated by the red dot). If the true effect size is smaller, power is lower, and as the effect size is larger, power is larger. 
 
@@ -68,7 +70,7 @@ points(x = N, y = (1 + pt(qt(p_upper / 2, 2 * N - 2, 0), 2 * N - 2, ncp) - pt(qt
 
 ```
 
-**Types of power analysis**
+### Types of power analysis
 
 In an a-priori power analysis one uses the effect size, desired power, and alpha level to compute the required sample size. If we plan to perform a two-sided *t*-test, want to have 90% power for an effect size of d = 0.5, given an alpha level of 0.01, we will need a sample size of 121 in each independent group. 
 
@@ -117,7 +119,7 @@ knitr::include_graphics("images/2.1.1.png")
 
 The goal of an a-priori power analysis is to increase the sample size up to the level that the desired power is achieved for an effect size one is interested in detecting, but one should always consider the possibility that the effect size is 0. In practice, one can design a study assuming both the presence and the absence of an effect by performing an a-priori power analysis for a null-hypothesis significance test, assuming there is an effect, and an a-priori power analysis for an equivalence test, assuming the true effect size is 0. We will demonstrate some practical examples in the next sections. 
 
-# How to justify your sample size based on a power analysis. {-}
+## How to justify your sample size based on a power analysis.
 
 One challenge in power analysis is that you never know the true effect size. This leads to the ‘sample size samba’ [@schulz_sample_2005]. Researchers go back and forth between the effect size they expect, and the sample size they are willing to collect, until they 'expect' the effect size that, in an a-priori power analysis, leads to the sample size they are willing to collect. This practice obviously makes a power analysis a useless procedure. 
 
@@ -125,8 +127,53 @@ One might be tempted to perform a small power analysis to estimate the effect si
 
 What can be done? The recommended best practice is to not enter the effect size you expect, but the smallest effect size you would still be interested in. By doing this, you will be able to design a study that has sufficient power for the smallest effect you find worthwhile to observe, even when you do not know what the true effect size is. By determining the required sample size for the smallest effect size of interest, you can guarantee you have designed an informative study. However, in case the true effect size is larger than your smallest effect size of interest, you might collect many more participants than required. This can be solved by performing sequential analyses, where you analyze the data intermittently, while controlling the Type 1 error rate for multiple looks at the data. We will explain sequential analyses later.
 
+## Observed power, and what to do if your editor asks for post-hoc power analyses
 
-# Why Within-Subject Designs Typically Require Fewer Participants than Between-Subject Designs {-}
+ Observed power (or post-hoc power) is the statistical power of the test you have performed, based on the effect size estimate from your data. Statistical power is the probability of finding a statistical difference from 0 in your test (aka a ‘significant effect’), if there is a true difference to be found. Observed power differs from the true power of your test, because the true power depends on the true effect size you are examining. However, the true effect size is typically unknown, and therefore it is tempting to treat post-hoc power as if it is similar to the true power of your study. In this blog, I will explain why you should never calculate the observed power (except for blogs about why you should not use observed power). Observed power is a useless statistical concept, and at the end of the post, I’ll give a suggestion how to respond to editors who ask for post-hoc power analyses.
+
+Observed (or post-hoc) power and p-values are directly related. Below, you can see a plot of observed p-values and observed power for 10000 simulated studies with approximately 50% power (the R code is included below). It looks like a curve, but the graph is basically a scatter plot of a large number of single observations that fall on a curve expressing the relation between observed power and p-values.
+
+```{r obspow1, fig.margin=TRUE, echo=FALSE, fig.cap="Distribution of *p*-values plotted against observed power with low power."}
+knitr::include_graphics("images/obspow1.png")
+```
+
+Below, you see a plot of p-values and observed power for 10000 simulated studies with approximately 90% power. Yes, that is exactly the same curve these observations fall on. The only difference is how often we actually observe high p-values (or have low observed power). You can see there are only a few observations with high p-values if we have high power (compared to medium power), but the curve stays exactly the same. I hope these two figures drive home the point of what it means that p-values and observed power are directly related: it means that you can directly convert your p-value to the observed power, regardless of your sample size or effect size.  
+
+```{r obspow2, fig.margin=TRUE, echo=FALSE, fig.cap="Distribution of *p*-values plotted against observed power with high power."}
+knitr::include_graphics("images/obspow2.png")
+```
+
+Let’s draw a vertical line at p = 0.05, and a horizontal line at 50% observed power. We can see below that the two lines meet exactly at the line visualizing the relationship between p-values and observed power. This means that anytime you observed a p-value of p = 0.05 in your data, your observed power will be 50% (in infinite sample sizes, in t-tests - Jake Westfall pointed me to this paper showing the values at smaller samples, and for F-tests with different degrees of freedom).
+
+```{r obspow3, fig.margin=TRUE, echo=FALSE, fig.cap="Distribution of *p*-values plotted against observed power showing the correspondence of p = 0.05 and 50% power."}
+knitr::include_graphics("images/obspow3.png")
+```
+
+
+I noticed these facts about the relationship between observed power and p-values while playing around with simulated studies in R, but they are also explained in Hoenig& Heisey, 2001.
+
+Some estimates (e.g., Cohen, 1962) put the average power of studies in psychology at 50%. What observed power can you expect, when you perform a lot of studies which have a true power of 50%? We know that the p-values we can expect should be split down the middle, with 50% being smaller than p = 0.05, and 50% being larger than p = 0.05. The graph below gives the p-value distribution for 100000 simulated independent t-tests:
+
+
+
+The bar on the left are all (50.000 out of 100.000) test results with a p < 0.05. The observed power distribution is displayed below:
+
+
+
+It is clear you can expect just about any observed power when the true power of your experiment is 50%. The distribution of observed power changes from positively skewed to negatively skewed as the true power increases (from 0 to 1), and when power is around 50% we observe a tipping point where there is a switch from a negatively skewed distribution to a positively skewed distribution. With slightly more power (e.g., 56%) the distribution becomes somewhat U-shaped, as can be seen in the figure below. I’m sure a mathematical statistician can explain the why and how of this distribution in more detail, but here I just wanted to show what it looks like, because I don’t know of any other sources of information where this distribution is reported (thanks to a reader, who in the comments points out Yuan & Maxwell, 2005 also discuss observed power distributions).
+
+
+
+Editors asking for post-hoc power analyses
+
+Editors sometimes ask researchers to report post-hoc power analyses when authors report a test that does not reveal a statistical difference from 0, and when authors want to conclude there is no effect. In such situations, editors would like to distinguish between true negatives (concluding there is no effect, when there is no effect) and false negatives (concluding there is no effect, when there actually is an effect, or a Type 2 error). As the preceding explanation of post-hoc power hopefully illustrates, reporting post-hoc power is nothing more than reporting the p-value in a different way, and will therefore not answer the question editors want to know.
+
+Because you will always have low observed power when you report non-significant effects, you should never perform an observed or post-hoc power analysis, even if an editor requests it (feel free to link to this blog post). Instead, you should explain how likely it was to observe a significant effect, given your sample, and given an expected or small effect size. Perhaps this expected effect size can be derived from theoretical predictions, or you can define a smallest effect size of interest (e.g., you are interested in knowing whether an effect is larger than a ‘small’ effect of d < 0.3).
+
+For example, if you collected 500 participants in an independent t-test, and did not observe an effect, you had more than 90% power to observe a small effect of d = 0.3. It is always possible that the true effect size is even smaller, or that your conclusion that there is no effect is a Type 2 error, and you should acknowledge this. At the same time, given your sample size, and assuming a certain true effect size, it might be most probable that there is no effect.
+
+
+## Why Within-Subject Designs Typically Require Fewer Participants than Between-Subject Designs
 
  One widely recommended approach to increase power is using a within subject design. Indeed, you need fewer participants to detect a mean difference between two conditions in a within-subjects design (in a dependent t-test) than in a between-subjects design (in an independent t-test). The reason is straightforward, but not always explained, and even less often expressed in the easy equation below. The sample size needed in within-designs (NW) relative to the sample needed in between-designs (NB), assuming normal distributions, is (from Maxwell & Delaney, 2004, p. 561, formula 45): 
 
@@ -309,7 +356,7 @@ You can use this Shiny app to play around with different means, sd's, and correl
 knitr::include_app('http://shiny.ieis.tue.nl/within_between/', height = '4000px')
 ```
 
-# Power analysis for interactions {-}
+## Power analysis for interactions
 
 Based on our recent [preprint](https://psyarxiv.com/baxsf/) explaining power analysis for ANOVA designs, in this post I want provide a step-by-step mathematical overview of power analysis for interactions. These details often do not make it into tutorial papers because of word limitations, and few good free resources are available (for a paid resource worth your money, see [Maxwell, Delaney, & Kelley, 2018](https://designingexperiments.com/)). This post is a bit technical, but nothing in this post requires more knowedge than multiplying and dividing numbers, and I believe that for anyone willing to really understand effect sizes and power in ANOVA designs digging in to these details will be quite beneficial. There are three take-home messages in this section. 
 
@@ -319,7 +366,7 @@ Based on our recent [preprint](https://psyarxiv.com/baxsf/) explaining power ana
 4) Crossover interaction effects have large effects and can thus be studies with high power in smaller samples, and if your theory can predict crossover interactions, such experiments might be worthwhile to design.
 5) There are some additional benefits of examining interactions (risky predictions, generalizability, efficiently examining multiple main effects) and it would be a shame if the field is turned away from examining interactions because they sometimes require large samples.
 
-**Getting started: Comparing two groups**
+### Getting started: Comparing two groups
 
 We are planning a two independent group experiment. We are using a validated measure, and we know the standard deviation of our measure is approximately 2. Psychologists are generaly horribly bad at knowing the standard deviation of their measures, even though a very defensible position is that you are not ready to perform a power analysis without solid knowledge of the standard deviation of your measure. We are interested in observing a mean difference of 1 or more, because smaller effects would not be practically meaningful. We expect the mean in the control condition to be 0, and therefore want the mean in the intervention group to be 1 or higher.
 
@@ -373,7 +420,7 @@ We therefore might want to increase our sample size for our planned study. Using
 plot_power(design, alpha_level = 0.03, min_n = 45, max_n = 150)$plot_ANOVA
 ```
 
-**Interaction Effects**
+### Interaction Effects
 
 So far we have explained the basics for effect size calculations (and we have looked at statistical power) for 2 group ANOVA designs. Now we have the basis to look at interaction effects.
 
@@ -381,7 +428,7 @@ One of the main points in this blog post is that it is better to talk about inte
 
 There are two types of interactions, as visualized below. In an ordinal interaction, the mean of one group ("B1") is always higher than the mean for the other group ("B2"). Disordinal interactions are also known as 'cross-over' interactions, and occur when the group with the larger mean switches over. The difference is important, since another main takeaway of this blog post is that, in two studies where the largest simple comparison has the same effect size, a study with a disordinal interaction has much higher power than a study with an ordinal interaction. Thus, if possible, you will want to design experiments where an effect in one condition flips around in the other condition, instead of an experiment where the effect in the other condition just disappears. I personally never realized this before I learned how to compute power for interactions, and never took this simple but important fact into account. Let's see why it is important.
 
-**Calculating effect sizes for interactions**
+### Calculating effect sizes for interactions
 
 ```{r, echo=F}
 
@@ -472,7 +519,7 @@ We see the effect size of the cross-over interaction (*f* = 0.25) is twice as la
 
 If the math so far was a bit too much to follow, there is an easier way to think of why the effect sizes are halved. In the disordinal interaction we are comparing cells a1b1 and a2b2 against a1b2 and a2b1, or (1+1)/2 vs. (0+0)/2. Thus, if we see this as a *t*-test for a contrast, it is clear the mean difference is 1, as it was in the simple effect we started with. For the ordinal interaction, we have (1+0)/2 vs. (0+0)/2, so the mean difference is halved, namely 0.5. 
 
-**Power for interactions**
+### Power for interactions
 
 All of the above obviously matters for the statistical power we will have when we examine interaction effects in our experiments. Let's use Superpower to perform power analyses for the disordinal interaction first, if we would collect 50 participants in each condition. 
 
@@ -508,4 +555,172 @@ If you have heard people say you should be careful when designing studies predic
 
 Some years ago other blog posts by [Uri Simonsohn](http://datacolada.org/17) and [Roger Giner-Sorolla](https://approachingblog.wordpress.com/2018/01/24/powering-your-interaction-2/) did a great job in warning researchers they need large sample sizes for ordinal interactions, and my post repeats this warning. But it would be a shame if researchers would stop examining interaction effects. There are some nice benefits studying interactions, such as 1) making riskier theoretical predictions, 2) greater generalizability (if there is no interaction effect, you might show a main effect operates across different conditions of a second factor) and 3) if you want to study two main effects it is more efficient to do this in a 2x2 design than in two seperate designs (Maxwell, Delaney, & Kelley, 2018). So maybe this blog post has been able to highlight some scenarios where examining interaction effects is still beneficial.
 
+## The smallest effect size that can be statistically significant
 
+When designing a study, you need to justify the sample size you aim to collect. If one of your goals is to observe a p-values lower than the alpha level you decided upon (e.g., 0.05), one justification for the sample size can be a power analysis. A power analysis tells you the probability of observing a statistically significant effect, based on a specific sample size, alpha level, and true effect size. At our department, people who use power as a sample size justification need to aim for 90% power if they want to get money from the department to collect data.
+
+A power analysis is performed based on the effect size you expect to observe. When you expect an effect with a Cohen’s d of 0.5 in an independent two-tailed t-test, and you use an alpha level of 0.05, you will have 90% power with 86 participants in each group. What this means, is that only 10% of the distribution of effects sizes you can expect when d = 0.5 and n = 86 falls below the critical value required to get a p < 0.05 in an independent t-test.
+
+In the figure below, the power analysis is visualized by plotting the distribution of Cohen’s d given 86 participants per group when the true effect size is 0 (or the null-hypothesis is true), and when d = 0.5. The blue area is the Type 2 error rate (the probability of not finding p < α, when there is a true effect, and α = 0.05).
+
+```{r, power-effect1, fig.margin=TRUE, echo=FALSE, fig.cap="Null and alternative distribution, assuming d = 0.5, alpha = 0.05, and N = 86 per group."}
+N <- 86
+d <- 0.5
+p_upper <- 0.05
+ncp <- (d * sqrt(N / 2)) # Calculate non-centrality parameter d
+crit_d <- abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
+low_x <- min(-1 - crit_d)
+high_x <- max(d + 1 + crit_d)
+# calc d-distribution
+x <- seq(low_x, high_x, length = 10000) # create x values
+d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2) # calculate distribution of d based on t-distribution
+# Set max Y for graph
+y_max <- max(d_dist) + 1
+# create plot
+par(bg = "aliceblue")
+d <- round(d, 2)
+plot(-10, xlim = c(low_x, high_x), ylim = c(0, y_max), xlab = substitute(paste("Cohen's ", delta == 0.5)), ylab = "Density", main = substitute(paste("Distribution of Cohen's ", delta == 0.5, ", N = ", 86)))
+# abline(v = seq(low_x,high_x,0.1), h = seq(0,0.5,0.1), col = "lightgray", lty = 1)
+#    axis(side = 1, at = seq(low_x,high_x,0.1), labels = FALSE)
+lines(x, d_dist, col = "black", type = "l", lwd = 2)
+# add d = 0 line
+d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = 0) * sqrt(N / 2)
+lines(x, d_dist, col = "grey", type = "l", lwd = 1)
+# Add Type 1 error rate right
+crit_d <- abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
+y <- seq(crit_d, 10, length = 10000)
+z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2) * sqrt(N / 2)) # determine upperbounds polygon
+polygon(c(crit_d, y, 10), c(0, z, 0), col = rgb(1, 0, 0, 0.5))
+# Add Type 1 error rate left
+crit_d <- -abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
+y <- seq(-10, crit_d, length = 10000)
+z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2) * sqrt(N / 2)) # determine upperbounds polygon
+polygon(c(y, crit_d, crit_d), c(z, 0, 0), col = rgb(1, 0, 0, 0.5))
+# Add Type 2 error rate
+crit_d <- abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
+y <- seq(-10, crit_d, length = 10000)
+z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2)) # determine upperbounds polygon
+polygon(c(y, crit_d, crit_d), c(0, z, 0), col = rgb(0, 0, 1, 0.5))
+segments(crit_d, 0, crit_d, y_max - 0.8, col = "black", lwd = 2)
+text(crit_d, y_max - 0.5, paste("Effects larger than d = ", round(crit_d, 2), "will be statistically significant"), cex = 1)
+```
+
+ You’ve probably seen such graphs before (indeed, G*power, widely used power analysis software, provides these graphs as output). The only thing I have done is to transform the t-value distribution that is commonly used in these graphs, and calculated the distribution for Cohen’s d. This is a straightforward transformation, but instead of presenting the critical t-value the figure provides the critical d-value. I think people find it easier to interpret d than t. Only t-tests which yield a t ≥ 1.974, or a d ≥ 0.30, will be statistically significant. All effects smaller than d = 0.30 will never be statistically significant with 86 participants in each condition.
+ 
+If you design a study where results will be analyzed with an independent two-tailed t-test with α = 0.05, the smallest true effect you can statistically detect is determined exclusively by the sample size. The (unknown) true effect size only determines how far to the right the distribution of d-values lies, and thus, which percentage of effect sizes will be larger than the smallest effect size of interest (and will be statistically significant – or the statistical power).
+
+I think it is reasonable to assume that if you decide to collect data for a study where you plan to perform a null-hypothesis significance test, you are not interested in effect sizes that will never be statistically significant. If you design a study that has 90% power for a medium effect of d = 0.5, the sample size you decide to use means effects smaller than d = 0.3 will never be statistically significant. We can use this fact to infer what your smallest effect size of interest, or SESOI (Lakens, 2014), will be. Unless you state otherwise, we can assume your SESOI is d = 0.3, and any effects smaller than this effect size are considered too small to be interesting. Obviously, you are free to explicitly state any effect smaller than d = 0.5 or d = 0.4 is already too small to matter for theoretical or practical purposes. But without such an explicit statement about what your SESOI is, we can infer it from your power analysis.
+
+This is useful. Researchers who use null-hypothesis significance testing often only specify the effect they expect when the null is true (d = 0), but not the smallest effect size that should still be considered support for their theory when there is a true effect. This leads to a psychological science that is unfalsifiable (Morey & Lakens, under review). Alternative approaches to determining what the smallest effect size of interest is have recently been suggested. For example, Simonsohn (2015) suggested to set the smallest effect size of interest to 33% of the effect size in the original study could detect. For example, if an original study used 20 participants per group, the smallest effect size of interest would be d = 0.49 (which is the effect size they had 33% power to detect with n = 20).
+
+Let’s assume the original study used a sample size of n = 20 per group. The figure below shows that an observed effect size of d = 0.8 would be statistically significant (d = 0.8 lies to the right of the critical d-value), but that the critical d-value is d = 0.64. That means that effects smaller than d = 0.64 would never be statistically significant in a study with 20 participants per group in a between-subjects design. I think it makes more sense to assume the smallest effect size of interest for researchers who design a study with n = 20 is d = 0.64, rather than d = 0.49 as the small telescopes approach would suggest.. 
+
+```{r, power-effect2, fig.margin=TRUE, echo=FALSE, fig.cap="Null and alternative distribution, assuming d = 0.8, alpha = 0.05, and N = 20 per group."}
+N <- 20
+d <- 0.8
+p_upper <- 0.05
+ncp <- (d * sqrt(N / 2)) # Calculate non-centrality parameter d
+crit_d <- abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
+low_x <- min(-1 - crit_d)
+high_x <- max(d + 1 + crit_d)
+# calc d-distribution
+x <- seq(low_x, high_x, length = 10000) # create x values
+d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2) # calculate distribution of d based on t-distribution
+# Set max Y for graph
+y_max <- max(d_dist) + 1
+# create plot
+par(bg = "aliceblue")
+d <- round(d, 2)
+plot(-10, xlim = c(low_x, high_x), ylim = c(0, y_max), xlab = substitute(paste("Cohen's ", delta == 0.5)), ylab = "Density", main = substitute(paste("Distribution of Cohen's ", delta == 0.5, ", N = ", 86)))
+# abline(v = seq(low_x,high_x,0.1), h = seq(0,0.5,0.1), col = "lightgray", lty = 1)
+#    axis(side = 1, at = seq(low_x,high_x,0.1), labels = FALSE)
+lines(x, d_dist, col = "black", type = "l", lwd = 2)
+# add d = 0 line
+d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = 0) * sqrt(N / 2)
+lines(x, d_dist, col = "grey", type = "l", lwd = 1)
+# Add Type 1 error rate right
+crit_d <- abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
+y <- seq(crit_d, 10, length = 10000)
+z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2) * sqrt(N / 2)) # determine upperbounds polygon
+polygon(c(crit_d, y, 10), c(0, z, 0), col = rgb(1, 0, 0, 0.5))
+# Add Type 1 error rate left
+crit_d <- -abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
+y <- seq(-10, crit_d, length = 10000)
+z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2) * sqrt(N / 2)) # determine upperbounds polygon
+polygon(c(y, crit_d, crit_d), c(z, 0, 0), col = rgb(1, 0, 0, 0.5))
+# Add Type 2 error rate
+crit_d <- abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
+y <- seq(-10, crit_d, length = 10000)
+z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2)) # determine upperbounds polygon
+polygon(c(y, crit_d, crit_d), c(0, z, 0), col = rgb(0, 0, 1, 0.5))
+segments(crit_d, 0, crit_d, y_max - 0.8, col = "black", lwd = 2)
+text(crit_d, y_max - 0.5, paste("Effects larger than d = ", round(crit_d, 2), "will be statistically significant"), cex = 1)
+```
+If you have designed your next study, check the critical d-value to make sure that the smallest effect size you care about, isn’t smaller than the critical effect size you can actually detect. If you think smaller effects are interesting, but you don’t have the resources, specify your SESOI explicitly in your article. You can also use this specified smallest effect size of interest in an equivalence test to statistically reject any effect large enough that you deem it worthwhile (Lakens, 2017), which will help interpreting t-tests where p > α. 
+
+In short, we really need to start specifying the effects we expect under the alternative model, and if you don’t know where to start, your power analysis, or any other approach that determines the sample size you have chosen to collect, might have been implicitly telling you what your smallest effect size of interest is.
+
+## Requiring high-powered studies from scientists with resource constraints
+
+Underpowered studies make it very difficult to learn something useful from the studies you perform. Low power means you have a high probability of finding non-significant results, even when there is a true effect. Hypothesis tests which high rates of false negatives (concluding there is nothing, when there is something) become a malfunctioning tool. Low power is even more problematic combined with publication bias (shiny app). After repeated warnings over at least half a century, high quality journals are starting to ask authors who rely on hypothesis tests to provide a sample size justification based on statistical power.
+
+The first time researchers use power analysis software, they typically think they are making a mistake, because the sample sizes required to achieve high power for hypothesized effects are much larger than the sample sizes they collected in the past. After double checking their calculations, and realizing the numbers are correct, a common response is that there is no way they are able to collect this number of observations.
+
+Published articles on power analysis rarely tell researchers what they should do if they are hired on a 4 year PhD project where the norm is to perform between 4 to 10 studies that can cost at most 1000 euro each, learn about power analysis, and realize there is absolutely no way they will have the time and resources to perform high-powered studies, given that an effect size estimate from an unbiased registered report suggests the effect they are examining is half as large as they were led to believe based on a published meta-analysis from 2010. Facing a job market that under the best circumstances is a nontransparent marathon for uncertainty-fetishists, the prospect of high quality journals rejecting your work due to a lack of a solid sample size justification is not pleasant.
+
+The reason that published articles do not guide you towards practical solutions for a lack of resources, is that there are no solutions for a lack of resources. Regrettably, the mathematics do not care about how small the participant payment budget is that you have available. This is not to say that you can not improve your current practices by reading up on best practices to increase the efficiency of data collection. Let me give you an overview of some things that you should immediately implement if you use hypothesis tests, and data collection is costly.
+
+**1) Use directional tests where relevant.** 
+
+Just following statements such as ‘we predict X is larger than Y’ up with a logically consistent test of that claim (e.g., a one-sided t-test) will easily give you an increase of 10% power in any well-designed study. If you feel you need to give effects in both directions a non-zero probability, then at least use lopsided tests.
+
+**2) Use sequential analysis whenever possible.**
+
+It’s like optional stopping, but then without the questionable inflation of the false positive rate. The efficiency gains are so great that, if you complain about the recent push towards larger sample sizes without already having incorporated sequential analyses, I will have a hard time taking you seriously.
+
+**3) Increase your alpha level.** 
+
+Oh yes, I am serious. Contrary to what you might believe, the recommendation to use an alpha level of 0.05 was not the sixth of the ten commandments – it is nothing more than, as Fisher calls it, a ‘convenient convention’. As we wrote in our Justify Your Alpha paper as an argument to not require an alpha level of 0.005: “without (1) increased funding, (2) a reward system that values large-scale collaboration and (3) clear recommendations for how to evaluate research with sample size constraints, lowering the significance threshold could adversely affect the breadth of research questions examined.” If you *have* to make a decision, and the data you can feasibly collect is limited, take a moment to think about how problematic Type 1 and Type 2 error rates are, and maybe minimize combined error rates instead of rigidly using a 5% alpha level.
+
+**4) Use within designs where possible.**
+
+Especially when measurements are strongly correlated, this can lead to a substantial increase in power.
+
+**5) Remove statistical variation where possible**
+
+The smaller the variation, the larger the standardized effect size (because we are dividing the raw effect by a smaller denominator) and thus the higher the power given the same number of observations. For an overview of different approaches to reduce the variance, let’s take a look at a very sensible paper by Allison, Allison, Faith, Paultre, & Pi-Sunyer from 1997: Power and money: Designing statistically powerful studies while minimizing financial costs. They discuss:
+
+1. Better ways to screen participants for studies where participants need to be screened before participation.
+2. Assigning participants unequally to conditions (if the control condition is much cheaper than the experimental condition, for example). 
+3. Using multiple measurements to increase measurement reliability (or use well-validated measures, if I may add).
+4. Smart use of (preregistered, I’d recommend) covariates.
+
+Another approach they do not mention is to, where possible, collect multiple observations from the same participant. This can also increase power, especially if there is variation at the individual level, and you analyze data with hierarchical models.
+
+**6) Use Bayesian statistics with informed priors.**
+
+Regrettably, almost all approaches to statistical inferences become very limited when the number of observations is small. If you are very confident in your predictions (and your peers agree), incorporating prior information will give you a benefit. For a discussion of the benefits and risks of such an approach, see this paper by van de Schoot and colleagues.
+
+Now if you care about efficiency, you might already have incorporated all these things. There is no way to further improve the statistical power of your tests, and by all plausible estimates of effects sizes you can expect or the smallest effect size you would be interested in, statistical power is low. Now what should you do?
+
+### What to do if best practices in study design won’t save you?
+
+The first thing to realize is that you should not look at statistics to save you. There are no secret tricks or magical solutions. Highly informative experiments require a large number of observations. So what should we do then? The solutions below are, regrettably, a lot more work than making a small change to the design of your study. But it is about time we start to take them seriously. This is a list of solutions I see – but there is no doubt more we can/should do, so by all means, let me know your suggestions on twitter or in the comments.
+
+**1) Ask for a lot more money in your grant proposals.**
+
+Some grant organizations distribute funds to be awarded as a function of how much money is requested. If you need more money to collect informative data, ask for it. Obviously grants are incredibly difficult to get, but if you ask for money, include a budget that acknowledges that data collection is not as cheap as you hoped some years ago. In my experience, psychologists are often asking for much less money to collect data than other scientists. Increasing the requested funds for participant payment by a factor of 10 is often reasonable, given the requirements of journals to provide a solid sample size justification, and the more realistic effect size estimates that are emerging from preregistered studies.
+
+**2) Improve management.**
+
+If the implicit or explicit goals that you should meet are still the same now as they were 5 years ago, and you did not receive a miraculous increase in money and time to do research, then an update of the evaluation criteria is long overdue. I sincerely hope your manager is capable of this, but some ‘upward management’ might be needed. In the coda of Lakens & Evers (2014) we wrote “All else being equal, a researcher running properly powered studies will clearly contribute more to cumulative science than a researcher running underpowered studies, and if researchers take their science seriously, it should be the former who is rewarded in tenure systems and reward procedures, not the latter.” and “We believe reliable research should be facilitated above all else, and doing so clearly requires an immediate and irrevocable change from current evaluation practices in academia that mainly focus on quantity.” After publishing this paper, and despite the fact I was an ECR on a tenure track, I thought it would be at least principled if I sent this coda to the head of my own department. He replied that the things we wrote made perfect sense, instituted a recommendation to aim for 90% power in studies our department intends to publish, and has since then tried to make sure quality, and not quantity, is used in evaluations within the faculty (as you might have guessed, I am not on the job market, nor do I ever hope to be).
+
+**3) Change what is expected from PhD students.**
+
+When I did my PhD, there was the assumption that you performed enough research in the 4 years you are employed as a full-time researcher to write a thesis with 3 to 5 empirical chapters (with some chapters having multiple studies). These studies were ideally published, but at least publishable. If we consider it important for PhD students to produce multiple publishable scientific articles during their PhD’s, this will greatly limit the types of research they can do. Instead of evaluating PhD students based on their publications, we can see the PhD as a time where researchers learn skills to become an independent researcher, and evaluate them not based on publishable units, but in terms of clearly identifiable skills. I personally doubt data collection is particularly educational after the 20th participant, and I would probably prefer to  hire a post-doc who had well-developed skills in programming, statistics, and who broadly read the literature, then someone who used that time to collect participant 21 to 200. If we make it easier for PhD students to demonstrate their skills level (which would include at least 1 well written article, I personally think) we can evaluate what they have learned in a more sensible manner than now. Currently, difference in the resources PhD students have at their disposal are a huge confound as we try to judge their skill based on their resume. Researchers at rich universities obviously have more resources – it should not be difficult to develop tools that allow us to judge the skills of people where resources are much less of a confound.
+
+**4) Think about the questions we collectively want answered, instead of the questions we can individually answer.**
+
+Our society has some serious issues that psychologists can help address. These questions are incredibly complex. I have long lost faith in the idea that a bottom-up organized scientific discipline that rewards individual scientists will manage to generate reliable and useful knowledge that can help to solve these societal issues. For some of these questions we need well-coordinated research lines where hundreds of scholars work together, pool their resources and skills, and collectively pursuit answers to these important questions. And if we are going to limit ourselves in our research to the questions we can answer in our own small labs, these big societal challenges are not going to be solved. Call me a pessimist. There is a reason we resort to forming unions and organizations that have to goal to collectively coordinate what we do. If you greatly dislike team science, don’t worry – there will always be options to make scientific contributions by yourself. But now, there are almost no ways for scientists who want to pursue huge challenges in large well-organized collectives of hundreds or thousands of scholars (for a recent exception that proves my rule by remaining unfunded: see the Psychological Science Accelerator). If you honestly believe your research question is important enough to be answered, then get together with everyone who also thinks so, and pursue answeres collectively. Doing so should, eventually (I know science funders are slow) also be more convincing as you ask for more resources to do the resource (as in point 1).
+
+If you are upset that as a science we lost the blissful ignorance surrounding statistical power, and are requiring researchers to design informative studies, which hits substantially harder in some research fields than in others: I feel your pain. I have argued against universally lower alpha levels for you, and have tried to write accessible statistics papers that make you more efficient without increasing sample sizes. But if you are in a research field where even best practices in designing studies will not allow you to perform informative studies, then you need to accept the statistical reality you are in. I have already written too long a blog post, even though I could keep going on about this. My main suggestions are to ask for more money, get better management, change what we expect from PhD students, and self-organize – but there is much more we can do, so do let me know your top suggestions. This will be one of the many challenges our generation faces, but if we manage to address it, it will lead to a much better science.
