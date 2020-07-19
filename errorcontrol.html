@@ -5,7 +5,7 @@
 <meta charset="utf-8" />
 <meta name="generator" content="pandoc" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta property="og:title" content="3 Error Control | Improving Your Statistical Inferences" />
+<meta property="og:title" content="4 Error Control | Improving Your Statistical Inferences" />
 <meta property="og:type" content="book" />
 <meta property="og:url" content="http://themethodsection.com/ebook/" />
 <meta property="og:image" content="http://themethodsection.com/ebook/images/cover.jpg" />
@@ -25,7 +25,7 @@ MathJax.Hub.Config({
 
 <meta name="description" content="Online textbook to Improve Your Statistical Inferences">
 
-<title>3 Error Control | Improving Your Statistical Inferences</title>
+<title>4 Error Control | Improving Your Statistical Inferences</title>
 
 <link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
 <link href="libs/tufte-css-2015.12.29/envisioned.css" rel="stylesheet" />
@@ -142,17 +142,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a href="preface.html">Preface</a>
 <a href="introduction.html">Introduction</a>
 <a href="pvalue.html"><span class="toc-section-number">1</span> What is a <em>p</em>-value</a>
-<a href="power.html"><span class="toc-section-number">2</span> What is power analysis?</a>
-<a id="active-page" href="errorcontrol.html"><span class="toc-section-number">3</span> Error Control</a><ul class="toc-sections">
+<a href="power.html"><span class="toc-section-number">2</span> Power analysis.</a>
+<a href="questions.html"><span class="toc-section-number">3</span> Asking Statistical Questions</a>
+<a id="active-page" href="errorcontrol.html"><span class="toc-section-number">4</span> Error Control</a><ul class="toc-sections">
 <li class="toc"><a href="#NA"> Why you don’t need to adjust your alpha level for all tests you’ll do in your lifetime.</a></li>
 <li class="toc"><a href="#NA"> Why banning p-values might not solve our problems.</a></li>
 <li class="toc"><a href="#error-control-in-exploratory-anovas-the-how-and-the-why"> Error Control in Exploratory ANOVA’s: The How and the Why</a></li>
 </ul>
-<a href="equivalencetest.html"><span class="toc-section-number">4</span> Equivalence Testing</a>
-<a href="severity.html"><span class="toc-section-number">5</span> Severe Tests and Risky Predictions</a>
-<a href="sesoi.html"><span class="toc-section-number">6</span> Smallest Effect Size of Interest</a>
-<a href="meta.html"><span class="toc-section-number">7</span> Meta-analysis and bias detection</a>
-<a href="computationalreproducibility.html"><span class="toc-section-number">8</span> Computational Reproducibility</a>
+<a href="effectsizesCI.html"><span class="toc-section-number">5</span> Effect Sizes and Confidence Intervals</a>
+<a href="equivalencetest.html"><span class="toc-section-number">6</span> Equivalence Testing</a>
+<a href="severity.html"><span class="toc-section-number">7</span> Severe Tests and Risky Predictions</a>
+<a href="sesoi.html"><span class="toc-section-number">8</span> Smallest Effect Size of Interest</a>
+<a href="meta.html"><span class="toc-section-number">9</span> Meta-analysis</a>
+<a href="bias.html"><span class="toc-section-number">10</span> Bias detection</a>
+<a href="computationalreproducibility.html"><span class="toc-section-number">11</span> Computational Reproducibility</a>
 </div>
 </li>
 </ul>
@@ -164,10 +167,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body><div id="errorcontrol" class="section level1">
 <h1>
-<span class="header-section-number">3</span> Error Control</h1>
+<span class="header-section-number">4</span> Error Control</h1>
 <div id="why-you-dont-need-to-adjust-your-alpha-level-for-all-tests-youll-do-in-your-lifetime." class="section level2">
 <h2>
-<span class="header-section-number">3.1</span> Why you don’t need to adjust your alpha level for all tests you’ll do in your lifetime.</h2>
+<span class="header-section-number">4.1</span> Why you don’t need to adjust your alpha level for all tests you’ll do in your lifetime.</h2>
 <p>The main goal in a Neyman-Pearson approach is to develop a procedure that that will guide behavior, without being wrong too often. The long-run error rate of the decisions you make (based on the p-values you calculate) is easily controlled at a specific alpha level when only a single statistical test is performed. When multiple tests are performed, one can’t simply use the overall alpha level for all performed tests. Although there is some misguided discussion in the literature about whether error rates should be controlled when making multiple comparisons, the need for adjustments is a logical consequence of using Frequentist statistics such as the Neyman-Pearson approach (Thompson, 1998).</p>
 <p>Consider an experiment where people are randomly assigned to either a control or experimental condition. Two unrelated dependent variables are measured to test a hypothesis. A researcher will conclude a specific manipulation has an effect, if there is a difference between the control group and the experimental group on either of these two dependent variables. Because two independent tests are performed, the probability of not making a Type 1 error when α = 0.05 is 0.95*0.95, or 0.9025. This means that the probability of concluding there is an effect, when there is no effect, is 1 - 0.9025 = 0.0975 instead of 0.05.</p>
 <p>There are different ways to control for error rates, the easiest being the Bonferroni correction (divide the α by the number of tests), and an ever-so-slightly less conservative correction being the Holm-Bonferroni sequential procedure. For some multiple testing situations, dedicated statistical approaches have been developed. For example, sequential analyses (Lakens, 2014) control the error rate when researchers want to look at their data as it comes in, and stop the data collection whenever a statistically significant result is observed (this is also needed when updating meta-analyses). When the number of statistical tests becomes substantial, it is sometimes preferable to control false discovery rates, instead of error rates (Benjamini, Krieger, &amp; Yekutieli, 2006). Many procedures that control for false discovery rates take dependencies among hypotheses into account. All these approaches have the same goal of limiting the probability of saying there is an effect, when there is no effect.</p>
@@ -189,7 +192,7 @@ Thompson, J. R. (1998). Invited Commentary: Re: ‘Multiple Comparisons and Rela
 </div>
 <div id="why-banning-p-values-might-not-solve-our-problems." class="section level2">
 <h2>
-<span class="header-section-number">3.2</span> Why banning p-values might not solve our problems.</h2>
+<span class="header-section-number">4.2</span> Why banning p-values might not solve our problems.</h2>
 <p>The journal Basic and Applied Social Psychology banned p-values a year ago. I read some of their articles published in the last year. I didn’t like many of them. Here’s why.</p>
 <p>First of all, it seems BASP didn’t just ban p-values. They also banned confidence intervals, because God forbid you use that lower bound to check whether or not it includes 0. They also banned reporting sample sizes for between subject conditions, because God forbid you divide that SD by the square root of N and multiply it by 1.96 and subtract it from the mean and guesstimate whether that value is smaller than 0.</p>
 <p>It reminds me of alcoholics who go into detox and have to hand in their perfume, before they are tempted to drink it. Thou shall not know whether a result is significant – it’s for your own good! Apparently, thou shall also not know whether effect sizes were estimated with any decent level of accuracy. Nor shall thou include the effect in future meta-analyses to commit the sin of cumulative science.</p>
@@ -211,7 +214,7 @@ Thompson, J. R. (1998). Invited Commentary: Re: ‘Multiple Comparisons and Rela
 </div>
 <div id="error-control-in-exploratory-anovas-the-how-and-the-why" class="section level2">
 <h2>
-<span class="header-section-number">3.3</span> Error Control in Exploratory ANOVA’s: The How and the Why</h2>
+<span class="header-section-number">4.3</span> Error Control in Exploratory ANOVA’s: The How and the Why</h2>
 <p>In a 2X2X2 design, there are three main effects, three two-way interactions, and one three-way interaction to test. That’s 7 statistical tests.The probability of making at least one Type 1 error in a single ANOVA is 1-(0.95)^7=30%.</p>
 <p>There are earlier blog posts on this, but my eyes were not opened until I read this paper by Angelique Cramer and colleagues (put it on your reading list, if you haven’t read it yet). Because I prefer to provide solutions to problems, I want to show how to control Type 1 error rates in ANOVA’s in R, and repeat why it’s necessary if you don’t want to fool yourself. Please be aware that if you continue reading, you will lose the bliss of ignorance if you hadn’t thought about this issue before now, and it will reduce the amount of p &lt;0.05 you’ll find in exploratory ANOVA’s.</p>
 <p>Simulating Type 1 errors in 3-way ANOVA’s</p>
@@ -256,7 +259,7 @@ Thompson, J. R. (1998). Invited Commentary: Re: ‘Multiple Comparisons and Rela
 <span id="cb39-2"><a href="errorcontrol.html#cb39-2"></a>                                 <span class="dt">alpha_level =</span> alpha_level,</span>
 <span id="cb39-3"><a href="errorcontrol.html#cb39-3"></a>                                 <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <p><!--
-<caption>--><span class="marginnote shownote"><span id="tab:unnamed-chunk-26">Table 3.1: </span>Simulated ANOVA Result</span><!--</caption>--></p>
+<caption>--><span class="marginnote shownote"><span id="tab:unnamed-chunk-26">Table 4.1: </span>Simulated ANOVA Result</span><!--</caption>--></p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;">
@@ -403,7 +406,7 @@ anova_condition1:condition2:condition3
 <span id="cb46-3"><a href="errorcontrol.html#cb46-3"></a>                                 <span class="dt">p_adjust =</span> p_adjust,</span>
 <span id="cb46-4"><a href="errorcontrol.html#cb46-4"></a>                                 <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <p><!--
-<caption>--><span class="marginnote shownote"><span id="tab:unnamed-chunk-31">Table 3.2: </span>ANOVA Results</span><!--</caption>--></p>
+<caption>--><span class="marginnote shownote"><span id="tab:unnamed-chunk-31">Table 4.2: </span>ANOVA Results</span><!--</caption>--></p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;">
@@ -496,7 +499,7 @@ anova_condition1:condition2:condition3
 </tbody>
 </table>
 <p><!--
-<caption>--><span class="marginnote shownote"><span id="tab:unnamed-chunk-32">Table 3.3: </span>Pairwise Results</span><!--</caption>--></p>
+<caption>--><span class="marginnote shownote"><span id="tab:unnamed-chunk-32">Table 4.3: </span>Pairwise Results</span><!--</caption>--></p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;">
@@ -834,8 +837,8 @@ Alternative procedures to control error rates can be found in the <a href="https
 </div></body></html>
 
 <p style="text-align: center;">
-<a href="power.html"><button class="btn btn-default">Previous</button></a>
-<a href="equivalencetest.html"><button class="btn btn-default">Next</button></a>
+<a href="questions.html"><button class="btn btn-default">Previous</button></a>
+<a href="effectsizesCI.html"><button class="btn btn-default">Next</button></a>
 </p>
 <p class="build-date">Page built: 
 2020-07-19

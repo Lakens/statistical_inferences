@@ -16,11 +16,9 @@ library(viridis)
 knitr::opts_chunk$set(error = FALSE, warning = FALSE, message = FALSE)
 ```
 
-# What is power analysis? {#power}
+# Power analysis. {#power}
 
 ## Statistical power and Type 2 error rates
-
-Statistical power is the probability of a test to yield a statistically significant result [@aberson_applied_2019; @cohen_statistical_1988]. Power depends on the Type 1 error rate (α), the true effect size in the population, and the number of observations. Because the true effect size is typically unknown, it makes most sense to speak about the power function. In the figure below, you see a power curve for an independent *t*-test, with an alpha level of 0.05. We see that as the effect size (in Cohen's d) increases, power increases. If the effect you study has an effect size of 0.5, you would have almost 70% power with 50 observations in each independent group (indicated by the red dot). If the true effect size is smaller, power is lower, and as the effect size is larger, power is larger. 
 
 ```{r, power-1, fig.margin=TRUE, echo=FALSE, fig.cap="Power curve for an independent *t*-test as a function of the true effect size."}
 N <- 50
@@ -45,7 +43,7 @@ points(x = d, y = (1 + pt(qt(p_upper / 2, 2 * N - 2, 0), 2 * N - 2, ncp) - pt(qt
 
 ```
 
-When designing a study where the goal is to observe a statistically significant effect, researchers often want to make sure they have enough power to detect effects they expect or are interested in observing. This is done by performing an *a-priori* power analysis. The true effect size is what it is, so if researchers want to increase the statistical power of their test, they either have to increase the alpha level, or increase the number of observations. In the figure below you see how the statistical power increases as the number of observations (per group) in an independent *t*-test with an alpha level of 0.05 increases.  
+Statistical power is the probability of a test to yield a statistically significant result [@aberson_applied_2019; @cohen_statistical_1988]. Power depends on the Type 1 error rate (α), the true effect size in the population, and the number of observations. Because the true effect size is typically unknown, it makes most sense to speak about the power function. In the figure below, you see a power curve for an independent *t*-test, with an alpha level of 0.05. We see that as the effect size (in Cohen's d) increases, power increases. If the effect you study has an effect size of 0.5, you would have almost 70% power with 50 observations in each independent group (indicated by the red dot). If the true effect size is smaller, power is lower, and as the effect size is larger, power is larger. 
 
 ```{r, power-2, fig.margin=TRUE, echo=FALSE, fig.cap="Power curve for an independent *t*-test as a function of the sample size."}
 N <- 50
@@ -69,6 +67,8 @@ curve(plot_power_custom(d=d, N=x, p_upper=p_upper), 3, 2*N, type="l", lty=1, lwd
 points(x = N, y = (1 + pt(qt(p_upper / 2, 2 * N - 2, 0), 2 * N - 2, ncp) - pt(qt(1 - p_upper / 2, 2 * N - 2, 0), 2 * N - 2, ncp)), cex = 2, pch = 19, col = rgb(1, 0, 0, 0.5))
 
 ```
+
+When designing a study where the goal is to observe a statistically significant effect, researchers often want to make sure they have enough power to detect effects they expect or are interested in observing. This is done by performing an *a-priori* power analysis. The true effect size is what it is, so if researchers want to increase the statistical power of their test, they either have to increase the alpha level, or increase the number of observations. In the figure below you see how the statistical power increases as the number of observations (per group) in an independent *t*-test with an alpha level of 0.05 increases.  
 
 ### Types of power analysis
 
@@ -108,14 +108,14 @@ Note that power calculations are performed under the assumption that there is an
 
 Therefore, probability of observing a significant or non-significant result in a study depends on the Type 1 error rate (α), the statistical power of the test (1-β), and the probability that the null-hypothesis is true. A study might examine a true effect, which means the alternative hypothesis (H1) is true (e.g., a correlation that differs from zero) or it might examine a null effect, which means the null-hypothesis (H0) is true (e.g., a correlation that is zero). When performing a statistical test on data, the test result might be statistically significant at a specified alpha level (p < α) or not. Thus, there are four possible outcomes of a study:
 
+```{r NHST-outcomes, fig.margin=TRUE, echo=FALSE, fig.cap="Four possible outcomes in a null hypothesis significance test."}
+knitr::include_graphics("images/2.1.1.png")
+```
+
 1. False positives or Type 1 errors (you observe a significant test result when H0 is true)
 2. False negatives or Type 2 errors (you observe a non-significant result when H1 is true)
 3. True negatives (a non-significant result when H0 is true) 
 4. True positives (a significant test result when H1 is true)
-
-```{r NHST-outcomes, fig.margin=TRUE, echo=FALSE, fig.cap="Four possible outcomes in a null hypothesis significance test."}
-knitr::include_graphics("images/2.1.1.png")
-```
 
 The goal of an a-priori power analysis is to increase the sample size up to the level that the desired power is achieved for an effect size one is interested in detecting, but one should always consider the possibility that the effect size is 0. In practice, one can design a study assuming both the presence and the absence of an effect by performing an a-priori power analysis for a null-hypothesis significance test, assuming there is an effect, and an a-priori power analysis for an equivalence test, assuming the true effect size is 0. We will demonstrate some practical examples in the next sections. 
 
@@ -185,7 +185,7 @@ So what does the correlation do so that it increases the power of within designs
 
 We will start with a simulation where the correlation between measurements is 0. First, we see the two normally distributed IQ measurements, with means of 100 and 106, and standard deviations of 15 (due to the large sample size, the numbers equal the input in the simulation, although small variation might still occur). 
 
-```{r, plot-1, fig.margin=TRUE, echo=FALSE, fig.cap="Distributions of two dependent groups with means 100 and 106 and a standard deviation of 15."}
+```{r, plot-1, fig.margin=FALSE, echo=FALSE, fig.cap="Distributions of two dependent groups with means 100 and 106 and a standard deviation of 15."}
 set.seed(419)
 #Set color palette
 cbbPalette<-c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
@@ -250,12 +250,12 @@ p3 <- ggplot(dataset, aes(x=x, y=y)) +
 p1
 ```
 In the scatter plot, we can see that the correlation between the measurements is indeed 0.
-```{r, plot-2, fig.margin=TRUE, echo=FALSE, fig.cap="Correlation between two dependent groups."}
+```{r, plot-2, fig.margin=FALSE, echo=FALSE, fig.cap="Correlation between two dependent groups."}
 p3
 ```
 Now, let’s look at the distribution of the mean differences. The mean difference is -6 (in line with the simulation settings), and the standard deviation is 21. This is also as expected. The standard deviation of the difference scores is √2 times as large as the standard deviation in each measurement, and indeed, 15*√2 = 21.21, which is rounded to 21. This situation where the correlation between measurements is zero equals the situation in an independent t-test, where the correlation between measurements is not taken into account. 
 
-```{r, plot-3, fig.margin=TRUE, echo=FALSE, fig.cap="Distributions of difference scores between two dependent groups."}
+```{r, plot-3, fig.margin=FALSE, echo=FALSE, fig.cap="Distributions of difference scores between two dependent groups."}
 p2
 ```
 
@@ -264,7 +264,7 @@ Now let’s increase the correlation between dependent variables to 0.7.
 Nothing has changed when we plot the means:
 
 
-```{r, plot-4, fig.margin=TRUE, echo=FALSE, fig.cap="Distributions of two independent groups with means 100 and 106 and a standard deviation of 15."}
+```{r, plot-4, fig.margin=FALSE, echo=FALSE, fig.cap="Distributions of two independent groups with means 100 and 106 and a standard deviation of 15."}
 set.seed(419)
 #Set color palette
 cbbPalette<-c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
@@ -332,13 +332,13 @@ p1
 
 The correlation between measurements is now strongly positive:
 
-```{r, plot-5, fig.margin=TRUE, echo=FALSE, fig.cap="Correlation between two dependent groups."}
+```{r, plot-5, fig.margin=FALSE, echo=FALSE, fig.cap="Correlation between two dependent groups."}
 p3
 ```
 
 The important difference lies in the standard deviation of the difference scores. The SD = 11 instead of 21 in the simulation above. Because the standardized effect size is the difference divided by the standard deviation, the effect size (Cohen’s dz in within designs) is larger in this test than in the test above.
 
-```{r, plot-6, fig.margin=TRUE, echo=FALSE, fig.cap="Difference scores between two dependent groups."}
+```{r, plot-6, fig.margin=FALSE, echo=FALSE, fig.cap="Difference scores between two dependent groups."}
 p2
 ```
 

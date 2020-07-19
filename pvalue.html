@@ -147,13 +147,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="toc"><a href="#what-is-a-p-value-not-misunderstandings"> What is a <em>p</em>-value, not (misunderstandings)</a></li>
 <li class="toc"><a href="#which-p-values-can-you-expect"> Which <em>p</em>-values can you expect?</a></li>
 </ul>
-<a href="power.html"><span class="toc-section-number">2</span> What is power analysis?</a>
-<a href="errorcontrol.html"><span class="toc-section-number">3</span> Error Control</a>
-<a href="equivalencetest.html"><span class="toc-section-number">4</span> Equivalence Testing</a>
-<a href="severity.html"><span class="toc-section-number">5</span> Severe Tests and Risky Predictions</a>
-<a href="sesoi.html"><span class="toc-section-number">6</span> Smallest Effect Size of Interest</a>
-<a href="meta.html"><span class="toc-section-number">7</span> Meta-analysis and bias detection</a>
-<a href="computationalreproducibility.html"><span class="toc-section-number">8</span> Computational Reproducibility</a>
+<a href="power.html"><span class="toc-section-number">2</span> Power analysis.</a>
+<a href="questions.html"><span class="toc-section-number">3</span> Asking Statistical Questions</a>
+<a href="errorcontrol.html"><span class="toc-section-number">4</span> Error Control</a>
+<a href="effectsizesCI.html"><span class="toc-section-number">5</span> Effect Sizes and Confidence Intervals</a>
+<a href="equivalencetest.html"><span class="toc-section-number">6</span> Equivalence Testing</a>
+<a href="severity.html"><span class="toc-section-number">7</span> Severe Tests and Risky Predictions</a>
+<a href="sesoi.html"><span class="toc-section-number">8</span> Smallest Effect Size of Interest</a>
+<a href="meta.html"><span class="toc-section-number">9</span> Meta-analysis</a>
+<a href="bias.html"><span class="toc-section-number">10</span> Bias detection</a>
+<a href="computationalreproducibility.html"><span class="toc-section-number">11</span> Computational Reproducibility</a>
 </div>
 </li>
 </ul>
@@ -446,15 +449,15 @@ The second incorrect statement was ‘there was no difference’’. This statem
 <p>This is the opposite misconception from the one we discussed previously. Examples of incorrect statements based on this misconception are ‘p &lt; .05, therefore there is an effect’, or ‘there is a difference between the two groups, p &lt; .05’. As before, both these statements imply it is 100% probable that the null model is false, and an alternative model is true.</p>
 <p>As a simple example of why such extreme statements are incorrect, imagine we generate a series of numbers in R using the following command:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="pvalue.html#cb13-1"></a><span class="kw">rnorm</span>(<span class="dt">n =</span> <span class="dv">50</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">1</span>)</span></code></pre></div>
-<pre><code>##  [1]  0.63471971  1.44227123  0.64199560 -0.22596228  1.08276174  0.16611335
-##  [7]  0.60334311  1.05553569  1.44916740 -1.25802731 -0.05631786  0.87139088
-## [13]  0.58805181 -2.38991508  0.97821208 -0.49034720  1.10644711  0.08635819
-## [19]  0.59683253  0.95806774  0.18212695  0.55734685 -1.40028813 -1.87140900
-## [25]  0.18330740 -1.58799022  0.85781735 -1.13250628  0.43642465  0.15329153
-## [31] -3.27510553 -0.22802423  0.27052025 -0.38819988 -1.62593068 -1.64350215
-## [37] -0.64645018  0.51814347 -1.36167484 -1.85746369  0.56835390 -0.45241497
-## [43] -1.46715775  0.31398208  2.13018724 -0.29681246 -0.83330401 -0.80890343
-## [49]  1.29530619 -0.48466212</code></pre>
+<pre><code>##  [1] -0.99397267 -0.49795899  0.47570274  0.30527674  1.85537752  0.56774373
+##  [7] -0.08695599 -0.27556166  0.23733366 -1.32209496 -0.01306390 -1.95101641
+## [13]  1.54749984 -1.23177998 -0.18883092 -0.15876086 -0.38232951 -0.94798565
+## [19] -0.14708110  0.03309541  0.21004624 -0.11345292  0.47392428  0.74288504
+## [25] -1.98668474 -0.95189265  1.05976109  0.46745710 -0.48081587 -0.43580224
+## [31]  1.07654668 -0.43178334 -0.50991204  0.41883272  0.13143086  0.01198209
+## [37]  1.05943914  0.13857626  0.43576967  2.20385488 -0.02406246 -0.32659887
+## [43] -0.46952569  2.63995066 -0.10467155  0.37463260  0.37244790 -0.02551360
+## [49] -0.66619453 -0.08760084</code></pre>
 <p>This command generates 50 random observations from a distribution with a mean of 0 and a standard deviation of 1 (in the long run – the mean and standard deviation will vary in each sample that is generated). Imagine we run this command once, and we observe a mean of 0.5. The figure below visualizes this scenario. We can perform a one-sample t-test against 0, and this test tells us, with a p &lt; .05, that the data we have observed is surprisingly different from 0, assuming the random number generator in R functions as it should and generates data with a true mean of 0.</p>
 <p><img src="Statistical_Inferences_files/figure-html/fig.1.3.7-1.png" width="672"></p>
 <p>The significant <em>p</em>-value does not allow us to conclude that the null hypothesis (“the random number generator works”) is false. It is true that the mean of the 50 samples we generated was surprisingly extreme. But a low <em>p</em>-value simply tells us that an observation is surprising. We should observe such surprising observations with a low probability when the null hypothesis is true – but they still happen. Therefore, a significant result does not mean an alternative hypothesis is true – the result can also be a Type 1 error, and in the example above, Omniscient Jones knows that this is the case.</p>

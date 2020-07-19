@@ -5,7 +5,7 @@
 <meta charset="utf-8" />
 <meta name="generator" content="pandoc" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta property="og:title" content="2 What is power analysis? | Improving Your Statistical Inferences" />
+<meta property="og:title" content="2 Power analysis. | Improving Your Statistical Inferences" />
 <meta property="og:type" content="book" />
 <meta property="og:url" content="http://themethodsection.com/ebook/" />
 <meta property="og:image" content="http://themethodsection.com/ebook/images/cover.jpg" />
@@ -25,7 +25,7 @@ MathJax.Hub.Config({
 
 <meta name="description" content="Online textbook to Improve Your Statistical Inferences">
 
-<title>2 What is power analysis? | Improving Your Statistical Inferences</title>
+<title>2 Power analysis. | Improving Your Statistical Inferences</title>
 
 <link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
 <link href="libs/tufte-css-2015.12.29/envisioned.css" rel="stylesheet" />
@@ -142,7 +142,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a href="preface.html">Preface</a>
 <a href="introduction.html">Introduction</a>
 <a href="pvalue.html"><span class="toc-section-number">1</span> What is a <em>p</em>-value</a>
-<a id="active-page" href="power.html"><span class="toc-section-number">2</span> What is power analysis?</a><ul class="toc-sections">
+<a id="active-page" href="power.html"><span class="toc-section-number">2</span> Power analysis.</a><ul class="toc-sections">
 <li class="toc"><a href="#statistical-power-and-type-2-error-rates"> Statistical power and Type 2 error rates</a></li>
 <li class="toc"><a href="#NA"> How to justify your sample size based on a power analysis.</a></li>
 <li class="toc"><a href="#observed-power-and-what-to-do-if-your-editor-asks-for-post-hoc-power-analyses"> Observed power, and what to do if your editor asks for post-hoc power analyses</a></li>
@@ -151,12 +151,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="toc"><a href="#the-smallest-effect-size-that-can-be-statistically-significant"> The smallest effect size that can be statistically significant</a></li>
 <li class="toc"><a href="#requiring-high-powered-studies-from-scientists-with-resource-constraints"> Requiring high-powered studies from scientists with resource constraints</a></li>
 </ul>
-<a href="errorcontrol.html"><span class="toc-section-number">3</span> Error Control</a>
-<a href="equivalencetest.html"><span class="toc-section-number">4</span> Equivalence Testing</a>
-<a href="severity.html"><span class="toc-section-number">5</span> Severe Tests and Risky Predictions</a>
-<a href="sesoi.html"><span class="toc-section-number">6</span> Smallest Effect Size of Interest</a>
-<a href="meta.html"><span class="toc-section-number">7</span> Meta-analysis and bias detection</a>
-<a href="computationalreproducibility.html"><span class="toc-section-number">8</span> Computational Reproducibility</a>
+<a href="questions.html"><span class="toc-section-number">3</span> Asking Statistical Questions</a>
+<a href="errorcontrol.html"><span class="toc-section-number">4</span> Error Control</a>
+<a href="effectsizesCI.html"><span class="toc-section-number">5</span> Effect Sizes and Confidence Intervals</a>
+<a href="equivalencetest.html"><span class="toc-section-number">6</span> Equivalence Testing</a>
+<a href="severity.html"><span class="toc-section-number">7</span> Severe Tests and Risky Predictions</a>
+<a href="sesoi.html"><span class="toc-section-number">8</span> Smallest Effect Size of Interest</a>
+<a href="meta.html"><span class="toc-section-number">9</span> Meta-analysis</a>
+<a href="bias.html"><span class="toc-section-number">10</span> Bias detection</a>
+<a href="computationalreproducibility.html"><span class="toc-section-number">11</span> Computational Reproducibility</a>
 </div>
 </li>
 </ul>
@@ -168,11 +171,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body><div id="power" class="section level1">
 <h1>
-<span class="header-section-number">2</span> What is power analysis?</h1>
+<span class="header-section-number">2</span> Power analysis.</h1>
 <div id="statistical-power-and-type-2-error-rates" class="section level2">
 <h2>
 <span class="header-section-number">2.1</span> Statistical power and Type 2 error rates</h2>
-<p>Statistical power is the probability of a test to yield a statistically significant result <span class="citation">(Aberson <a href="computationalreproducibility.html#ref-aberson_applied_2019" role="doc-biblioref">2019</a>; Cohen <a href="computationalreproducibility.html#ref-cohen_statistical_1988" role="doc-biblioref">1988</a>)</span>. Power depends on the Type 1 error rate (α), the true effect size in the population, and the number of observations. Because the true effect size is typically unknown, it makes most sense to speak about the power function. In the figure below, you see a power curve for an independent <em>t</em>-test, with an alpha level of 0.05. We see that as the effect size (in Cohen’s d) increases, power increases. If the effect you study has an effect size of 0.5, you would have almost 70% power with 50 observations in each independent group (indicated by the red dot). If the true effect size is smaller, power is lower, and as the effect size is larger, power is larger.</p>
 <p>
 <span class="marginnote shownote">
 <!--
@@ -181,7 +183,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p class="caption marginnote">-->Figure 2.1: Power curve for an independent <em>t</em>-test as a function of the true effect size.<!--</p>-->
 <!--</div>--></span>
 </p>
-<p>When designing a study where the goal is to observe a statistically significant effect, researchers often want to make sure they have enough power to detect effects they expect or are interested in observing. This is done by performing an <em>a-priori</em> power analysis. The true effect size is what it is, so if researchers want to increase the statistical power of their test, they either have to increase the alpha level, or increase the number of observations. In the figure below you see how the statistical power increases as the number of observations (per group) in an independent <em>t</em>-test with an alpha level of 0.05 increases.</p>
+<p>Statistical power is the probability of a test to yield a statistically significant result <span class="citation">(Aberson <a href="computationalreproducibility.html#ref-aberson_applied_2019" role="doc-biblioref">2019</a>; Cohen <a href="computationalreproducibility.html#ref-cohen_statistical_1988" role="doc-biblioref">1988</a>)</span>. Power depends on the Type 1 error rate (α), the true effect size in the population, and the number of observations. Because the true effect size is typically unknown, it makes most sense to speak about the power function. In the figure below, you see a power curve for an independent <em>t</em>-test, with an alpha level of 0.05. We see that as the effect size (in Cohen’s d) increases, power increases. If the effect you study has an effect size of 0.5, you would have almost 70% power with 50 observations in each independent group (indicated by the red dot). If the true effect size is smaller, power is lower, and as the effect size is larger, power is larger.</p>
 <p>
 <span class="marginnote shownote">
 <!--
@@ -190,6 +192,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p class="caption marginnote">-->Figure 2.2: Power curve for an independent <em>t</em>-test as a function of the sample size.<!--</p>-->
 <!--</div>--></span>
 </p>
+<p>When designing a study where the goal is to observe a statistically significant effect, researchers often want to make sure they have enough power to detect effects they expect or are interested in observing. This is done by performing an <em>a-priori</em> power analysis. The true effect size is what it is, so if researchers want to increase the statistical power of their test, they either have to increase the alpha level, or increase the number of observations. In the figure below you see how the statistical power increases as the number of observations (per group) in an independent <em>t</em>-test with an alpha level of 0.05 increases.</p>
 <div id="types-of-power-analysis" class="section level3">
 <h3>
 <span class="header-section-number">2.1.1</span> Types of power analysis</h3>
@@ -247,12 +250,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## NOTE: n is number in *each* group</code></pre>
 <p>Note that power calculations are performed under the assumption that there is an effect. In practice, it is of course also possible that there is no effect, or d = 0. In that case, regardless of the sample size, you will observe significance results at your chosen alpha level.</p>
 <p>Therefore, probability of observing a significant or non-significant result in a study depends on the Type 1 error rate (α), the statistical power of the test (1-β), and the probability that the null-hypothesis is true. A study might examine a true effect, which means the alternative hypothesis (H1) is true (e.g., a correlation that differs from zero) or it might examine a null effect, which means the null-hypothesis (H0) is true (e.g., a correlation that is zero). When performing a statistical test on data, the test result might be statistically significant at a specified alpha level (p &lt; α) or not. Thus, there are four possible outcomes of a study:</p>
-<ol style="list-style-type: decimal">
-<li>False positives or Type 1 errors (you observe a significant test result when H0 is true)</li>
-<li>False negatives or Type 2 errors (you observe a non-significant result when H1 is true)</li>
-<li>True negatives (a non-significant result when H0 is true)</li>
-<li>True positives (a significant test result when H1 is true)</li>
-</ol>
 <p>
 <span class="marginnote shownote">
 <!--
@@ -261,6 +258,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p class="caption marginnote">-->Figure 2.3: Four possible outcomes in a null hypothesis significance test.<!--</p>-->
 <!--</div>--></span>
 </p>
+<ol style="list-style-type: decimal">
+<li>False positives or Type 1 errors (you observe a significant test result when H0 is true)</li>
+<li>False negatives or Type 2 errors (you observe a non-significant result when H1 is true)</li>
+<li>True negatives (a non-significant result when H0 is true)</li>
+<li>True positives (a significant test result when H1 is true)</li>
+</ol>
 <p>The goal of an a-priori power analysis is to increase the sample size up to the level that the desired power is achieved for an effect size one is interested in detecting, but one should always consider the possibility that the effect size is 0. In practice, one can design a study assuming both the presence and the absence of an effect by performing an a-priori power analysis for a null-hypothesis significance test, assuming there is an effect, and an a-priori power analysis for an equivalence test, assuming the true effect size is 0. We will demonstrate some practical examples in the next sections.</p>
 </div>
 </div>
@@ -319,32 +322,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The “/2” part of the equation is due to the fact that in a two-condition within design every participant provides two data-points. The extent to which this reduces the sample size compared to a between-subject design depends on the correlation between the two dependent variables, as indicated by the (1-ρ) part of the equation. If the correlation is 0, a within-subject design simply needs half as many participants as a between-subject design (e.g., 64 instead 128 participants). The higher the correlation, the larger the relative benefit of within designs, and whenever the correlation is negative (up to -1) the relative benefit disappears. Note than when the correlation is -1, you need 128 participants in a within-design and 128 participants in a between-design, but in a within-design you will need to collect two measurements from each participant, making a within design more work than a between-design. However, negative correlations between dependent variables in psychology are rare, and perfectly negative correlations will probably never occur.</p>
 <p>So what does the correlation do so that it increases the power of within designs, or reduces the number of participants you need? Let’s see what effect the correlation has on power by simulating and plotting correlated data. In the R script below, I’m simulating two measurements of IQ scores with a specific sample size (i.e., 10000), mean (i.e., 100 vs 106), standard deviation (i.e., 15), and correlation between the two measurements. The script generates three plots.</p>
 <p>We will start with a simulation where the correlation between measurements is 0. First, we see the two normally distributed IQ measurements, with means of 100 and 106, and standard deviations of 15 (due to the large sample size, the numbers equal the input in the simulation, although small variation might still occur).</p>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:plot-1"></span>
-<img src="Statistical_Inferences_files/figure-html/plot-1-1.png" alt="Distributions of two dependent groups with means 100 and 106 and a standard deviation of 15." width="672"><!--
-<p class="caption marginnote">-->Figure 2.7: Distributions of two dependent groups with means 100 and 106 and a standard deviation of 15.<!--</p>-->
-<!--</div>--></span>
+<div class="figure">
+<span id="fig:plot-1"></span>
+<p class="caption marginnote shownote">
+Figure 2.7: Distributions of two dependent groups with means 100 and 106 and a standard deviation of 15.
 </p>
+<img src="Statistical_Inferences_files/figure-html/plot-1-1.png" alt="Distributions of two dependent groups with means 100 and 106 and a standard deviation of 15." width="672">
+</div>
 In the scatter plot, we can see that the correlation between the measurements is indeed 0.
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:plot-2"></span>
-<img src="Statistical_Inferences_files/figure-html/plot-2-1.png" alt="Correlation between two dependent groups." width="672"><!--
-<p class="caption marginnote">-->Figure 2.8: Correlation between two dependent groups.<!--</p>-->
-<!--</div>--></span>
+<div class="figure">
+<span id="fig:plot-2"></span>
+<p class="caption marginnote shownote">
+Figure 2.8: Correlation between two dependent groups.
 </p>
+<img src="Statistical_Inferences_files/figure-html/plot-2-1.png" alt="Correlation between two dependent groups." width="672">
+</div>
 <p>Now, let’s look at the distribution of the mean differences. The mean difference is -6 (in line with the simulation settings), and the standard deviation is 21. This is also as expected. The standard deviation of the difference scores is √2 times as large as the standard deviation in each measurement, and indeed, 15*√2 = 21.21, which is rounded to 21. This situation where the correlation between measurements is zero equals the situation in an independent t-test, where the correlation between measurements is not taken into account.</p>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:plot-3"></span>
-<img src="Statistical_Inferences_files/figure-html/plot-3-1.png" alt="Distributions of difference scores between two dependent groups." width="672"><!--
-<p class="caption marginnote">-->Figure 2.9: Distributions of difference scores between two dependent groups.<!--</p>-->
-<!--</div>--></span>
+<div class="figure">
+<span id="fig:plot-3"></span>
+<p class="caption marginnote shownote">
+Figure 2.9: Distributions of difference scores between two dependent groups.
 </p>
+<img src="Statistical_Inferences_files/figure-html/plot-3-1.png" alt="Distributions of difference scores between two dependent groups." width="672">
+</div>
 <p>Now let’s increase the correlation between dependent variables to 0.7.</p>
 <p>Nothing has changed when we plot the means:</p>
 <pre><code>## 
@@ -358,32 +358,29 @@ In the scatter plot, we can see that the correlation between the measurements is
 ## sample estimates:
 ## mean of x mean of y 
 ##  100.1800  106.1003</code></pre>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:plot-4"></span>
-<img src="Statistical_Inferences_files/figure-html/plot-4-1.png" alt="Distributions of two independent groups with means 100 and 106 and a standard deviation of 15." width="672"><!--
-<p class="caption marginnote">-->Figure 2.10: Distributions of two independent groups with means 100 and 106 and a standard deviation of 15.<!--</p>-->
-<!--</div>--></span>
+<div class="figure">
+<span id="fig:plot-4"></span>
+<p class="caption marginnote shownote">
+Figure 2.10: Distributions of two independent groups with means 100 and 106 and a standard deviation of 15.
 </p>
+<img src="Statistical_Inferences_files/figure-html/plot-4-1.png" alt="Distributions of two independent groups with means 100 and 106 and a standard deviation of 15." width="672">
+</div>
 <p>The correlation between measurements is now strongly positive:</p>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:plot-5"></span>
-<img src="Statistical_Inferences_files/figure-html/plot-5-1.png" alt="Correlation between two dependent groups." width="672"><!--
-<p class="caption marginnote">-->Figure 2.11: Correlation between two dependent groups.<!--</p>-->
-<!--</div>--></span>
+<div class="figure">
+<span id="fig:plot-5"></span>
+<p class="caption marginnote shownote">
+Figure 2.11: Correlation between two dependent groups.
 </p>
+<img src="Statistical_Inferences_files/figure-html/plot-5-1.png" alt="Correlation between two dependent groups." width="672">
+</div>
 <p>The important difference lies in the standard deviation of the difference scores. The SD = 11 instead of 21 in the simulation above. Because the standardized effect size is the difference divided by the standard deviation, the effect size (Cohen’s dz in within designs) is larger in this test than in the test above.</p>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:plot-6"></span>
-<img src="Statistical_Inferences_files/figure-html/plot-6-1.png" alt="Difference scores between two dependent groups." width="672"><!--
-<p class="caption marginnote">-->Figure 2.12: Difference scores between two dependent groups.<!--</p>-->
-<!--</div>--></span>
+<div class="figure">
+<span id="fig:plot-6"></span>
+<p class="caption marginnote shownote">
+Figure 2.12: Difference scores between two dependent groups.
 </p>
+<img src="Statistical_Inferences_files/figure-html/plot-6-1.png" alt="Difference scores between two dependent groups." width="672">
+</div>
 <p>if you set the correlation to a negative value, the standard deviation of the difference scores actually increases.</p>
 <p>I like to think of dependent variables in within-designs as dance partners. If they are well-coordinated (or highly correlated), one person steps to the left, and the other person steps to the left the same distance. If there is no coordination (or no correlation), when one dance partner steps to the left, the other dance partner is just as likely to move to the wrong direction as to the right direction. Such a dance couple will take up a lot more space on the dance floor.</p>
 <p>You see that the correlation between dependent variables is an important aspect of within designs. I recommend explicitly reporting the correlation between dependent variables in within designs (e.g., participants responded significantly slower (M = 390, SD = 44) when they used their feet than when they used their hands (M = 371, SD = 44, r = .953), t(17) = 5.98, p &lt; 0.001, Hedges’ g = 0.43, Mdiff = 19, 95% CI [12; 26]).</p>
@@ -610,34 +607,13 @@ f = \frac{\sigma _{ m }}{\sigma} = \frac{0.5}{2} = 0.25
 <p>Our society has some serious issues that psychologists can help address. These questions are incredibly complex. I have long lost faith in the idea that a bottom-up organized scientific discipline that rewards individual scientists will manage to generate reliable and useful knowledge that can help to solve these societal issues. For some of these questions we need well-coordinated research lines where hundreds of scholars work together, pool their resources and skills, and collectively pursuit answers to these important questions. And if we are going to limit ourselves in our research to the questions we can answer in our own small labs, these big societal challenges are not going to be solved. Call me a pessimist. There is a reason we resort to forming unions and organizations that have to goal to collectively coordinate what we do. If you greatly dislike team science, don’t worry – there will always be options to make scientific contributions by yourself. But now, there are almost no ways for scientists who want to pursue huge challenges in large well-organized collectives of hundreds or thousands of scholars (for a recent exception that proves my rule by remaining unfunded: see the Psychological Science Accelerator). If you honestly believe your research question is important enough to be answered, then get together with everyone who also thinks so, and pursue answeres collectively. Doing so should, eventually (I know science funders are slow) also be more convincing as you ask for more resources to do the resource (as in point 1).</p>
 <p>If you are upset that as a science we lost the blissful ignorance surrounding statistical power, and are requiring researchers to design informative studies, which hits substantially harder in some research fields than in others: I feel your pain. I have argued against universally lower alpha levels for you, and have tried to write accessible statistics papers that make you more efficient without increasing sample sizes. But if you are in a research field where even best practices in designing studies will not allow you to perform informative studies, then you need to accept the statistical reality you are in. I have already written too long a blog post, even though I could keep going on about this. My main suggestions are to ask for more money, get better management, change what we expect from PhD students, and self-organize – but there is much more we can do, so do let me know your top suggestions. This will be one of the many challenges our generation faces, but if we manage to address it, it will lead to a much better science.</p>
 
-<p>What is the goal of data collection? This is a simple question, and as researchers we collect data all the time. But the answer to this question is not straightforward. It depends on the question that you are asking of your data. There are different questions you can ask from your data, and therefore, you can have different goals when collecting data. Here, I want to focus on collecting data to test scientific theories. I will be quoting a lot from De Groot’s book Methodology (1969), especially Chapter 3. If you haven’t read it, you should – I think it is the best book about doing good science that has ever been written.</p>
-<p>When you want to test theories, the theory needs to make a prediction, and you need to have a procedure that can evaluate verification criteria. As De Groot writes: “A theory must afford at least a number of opportunities for testing. That is to say, the relations stated in the model must permit the deduction of hypotheses which can be empirically tested. This means that these hypotheses must in turn allow the deduction of verifiable predictions, the fulfillment or non-fulfillment of which will provide relevant information for judging the validity or acceptability of the hypotheses” (§ 3.1.4).</p>
-<p>This last sentence is interesting – we collect data, to test the ‘validity’ of a theory. We are trying to see how well our theory works when we want to predict what unobserved data looks like (whether these are collected in the future, or in the past, as De Groot remarks). As De Groot writes: “Stated otherwise, the function of the prediction in the scientific enterprise is to provide relevant information with respect to the validity of the hypothesis from which it has been derived.” (§ 3.4.1).</p>
-<p>To make a prediction that can be true or false, we need to forbid certain states of the world and allow others. As De Groot writes: “Thus, in the case of statistical predictions, where it is sought to prove the existence of a causal factor from its effect, the interval of positive outcomes is defined by the limits outside which the null hypothesis is to be rejected. It is common practice that such limits are fixed by selecting in advance a conventional level of significance: e.g., 5 %, 1 %, or .1 % risk of error in rejecting the assumption that the null hypothesis holds in the universe under consideration. Though naturally a judicious choice will be made, it remains nonetheless arbitrary. At all events, once it has been made, there has been created an interval of positive outcome, and thus a verification criterion. Any outcome falling within it stamps the prediction as ’proven true.” (§ 3.4.2). Note that if you prefer, you can predict an effect size with some accuracy, calculate a Bayesian highest density interval that excludes some value, or a Bayes factor that is larger than some cut-off – as long as your prediction can be either confirmed or not confirmed.</p>
-<p>Note that the prediction gets a ‘proven true’ stamp – the theory does not. In this testing procedure, there is no direct approach from the ‘proven true’ stamp to a ‘true theory’ conclusion. Indeed, the latter conclusion is not possible in science. We are mainly indexing the ‘track record’ of a theory, as Meehl (1990) argues: “The main way a theory gets money in the bank is by predicting facts that, absent the theory, would be antecedently improbable.” Often (e.g., in non-experimental settings) rejecting a null hypothesis with large sample sizes is not considered a very improbable event, but that is another issue (see also the definition of a severe test by Mayo (1996, 178): a passing result is a severe test of hypothesis H just to the extent that it is very improbable for such a passing result to occur, were H false).</p>
-<p>Regardless of how risky the prediction we made was, when we then collect data, and test the hypothesis, we either confirm our prediction, or we do not confirm our prediction. In frequentist statistics, we add the outcome of this prediction to the ‘track record’ of our theory, but we can not draw conclusions based on any single study. As Fisher (1926, 504) writes: “if one in twenty does not seem high enough odds, we may, if we prefer it, draw the line at one in fifty (the 2 per cent point), or one in a hundred (the 1 per cent point). Personally, the writer prefers to set a low standard of significance at the 5 per cent point, and ignore entirely all results which fail to reach this level. A scientific fact should be regarded as experimentally established only if a properly designed experiment rarely fails to give this level of significance” (italics added).</p>
-<p>The study needs to be ‘properly designed’ to ‘rarely’ fail to give a level of evidence – which despite Fisher’s dislike for Neyman-Pearson statistics, I can read in no other way than to make sure you run well-powered studies for whatever happens to be your smallest effect size of interest. In other words: When testing the validity of theories through predictions, where you keep track of a ‘track record’ of predictions, you need to control your error rates to efficiently distinguish hits from misses. Design well-powered studies, and do not fool yourself by inflating the probability of observed in false positive.</p>
-<p>I think that when it comes to testing theories, assessing the validity through prediction is extremely (and for me, perhaps the most) important. We don’t want to fool ourselves when we test the validity of our theories. An example of ‘fooling yourself’ are the studies on pre-cognition by Daryl Bem (2011). An example of a result I like to use in workshops is the following result of Study 1 where people pressed a left or right button to predict whether a picture was hidden behind a left or right curtain.</p>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:bem"></span>
-<img src="images/bem.png" alt="Screenshot from the Results and Discussion section of Bem, 2011." width="622"><!--
-<p class="caption marginnote">-->Figure 2.15: Screenshot from the Results and Discussion section of Bem, 2011.<!--</p>-->
-<!--</div>--></span>
-</p>
-<p>If we take this study as it is (without pre-registration) it is clear there are 5 tests (for erotic, neutral, negative, positive, and ‘romantic but non-erotic’ pictures). A Bonferroni correction would lead us to use an alpha level of 0.01 (an alpha of 0.05/5 tests) and the result (0.01, but more precisely 0.013) would not be enough to support our prediction, given the pre-specified alpha level. Note that Bem (Bem, Utts, and Johnson, 2011) explicitly says this test was predicted. However, I see absolutely no reason to believe Bem without a pre-registration document for the study.</p>
-<p>Bayesian statistics do not provide a solution when analyzing this pre-cognition experiment. As Gelman and Loken (2013) write about this study (I just realized this ‘Garden of Forking paths’ paper is unpublished, but has 150 citations!): “we can still take this as an observation that 53.1% of these guesses were correct, and if we combine this with a flat prior distribution (that is, the assumption that the true average probability of a correct guess under these conditions is equally likely to be anywhere between 0 and 1) or, more generally, a locally-flat prior distribution, we get a posterior probability of over 99% that the true probability is higher than 0.5; this is one interpretation of the one-sided p-value of 0.01.” The use of Bayes factors that quantify model evidence provides no solution. Where Wagenmakers and colleagues argue based on ‘default’ Bayesian t-tests that the null-hypothesis is supported, Bem, Utts, and Johnson (2011) correctly point out this criticism is flawed, because the default Bayesian t-tests use completely unrealistic priors for pre-cognition research (and most other studies published in psychology, for that matter).</p>
-<p>It is interesting that the best solution Gelman and Loken come up with is that “perhaps researchers can perform half as many original experiments in each paper and just pair each new experiment with a preregistered replication”. What matters is not just the data, but the procedure used to collect the data. The procedure needs to be able to demonstrate a strong predictive validity, which is why pre-registration is such a great solution to many problems science faces. Pre-registered studies are the best way we have to show you can actually predict something – which gets your theory money in the bank.</p>
-<p>If people ask me if I care about evidence, I typically say: ‘mwah’. For me, evidence is not a primary goal of doing research. Evidence is a consequence of demonstrating that my theories have high validity as I test predictions. It is important to end up with, and it can be useful to try to quantify model evidence through likelihoods or Bayes factors, if you have good models. But if I am able to show that I can confirm predictions in a line of pre-registered studies, either by showing my p-value is smaller than an alpha level, a Bayesian highest density interval excludes some value, a Bayes factor is larger than some cut-off, or by showing the effect size is close enough to some predicted value, I will always end up with strong evidence for the presence of some effect. As De Groot (1969) writes: “If one knows something to be true, one is in a position to predict; where prediction is impossible, there is no knowledge.”</p>
-
 </div>
 </div>
 </div></body></html>
 
 <p style="text-align: center;">
 <a href="pvalue.html"><button class="btn btn-default">Previous</button></a>
-<a href="errorcontrol.html"><button class="btn btn-default">Next</button></a>
+<a href="questions.html"><button class="btn btn-default">Next</button></a>
 </p>
 <p class="build-date">Page built: 
 2020-07-19
