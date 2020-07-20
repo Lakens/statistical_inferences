@@ -12,7 +12,7 @@ write_custom_footer <- function() {
       "<span style=\"display: inline-block; margin-left: 2em; margin-top: 16px; font-size: small\">",
       "<span style=\"font-weight: bold;\">Daniel Lakens</span><br/>",
       "<a href=\"https://statistical-inferences.com\">statistical-inferences.com</a><br/>",
-      paste("page built ", as.character(Sys.Date())),
+      paste("page built ", as.character(Sys.time())),
       "</span>",
       "</p>",
       "</div>"),
