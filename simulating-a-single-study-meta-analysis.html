@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="10 Simulating a single study meta-analysis | Improving Your Statistical Inferences" />
+<meta property="og:type" content="book" />
+<meta property="og:url" content="http://themethodsection.com/ebook/" />
+<meta property="og:image" content="http://themethodsection.com/ebook/images/cover.jpg" />
+<meta property="og:description" content="Online textbook to Improve Your Statistical Inferences" />
+
+
+<meta name="author" content="Daniel Lakens" />
+
+<meta name="date" content="2020-07-21" />
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+
+<meta name="description" content="Online textbook to Improve Your Statistical Inferences">
+
+<title>10 Simulating a single study meta-analysis | Improving Your Statistical Inferences</title>
+
+<link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
+<link href="libs/tufte-css-2015.12.29/envisioned.css" rel="stylesheet" />
+<link href="libs/msmb-css-0/msmb.css" rel="stylesheet" />
+<script>
+function toggle_visibility(id1, id2) {
+var e = document.getElementById(id1);
+var f = document.getElementById(id2);
+
+e.style.display = ((e.style.display!='none') ? 'none' : 'block');
+
+if(f.classList.contains('fa-plus-square')) {
+    f.classList.add('fa-minus-square')
+    f.classList.remove('fa-plus-square')
+} else {
+    f.classList.add('fa-plus-square')
+    f.classList.remove('fa-minus-square')
+}
+
+}
+</script>
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" href="center.css" type="text/css" />
+<link rel="stylesheet" href="custom-msmbstyle.css" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="index.html">Welcome</a>
+<a href="contents.html">Contents</a>
+<a href="preface.html">Preface</a>
+<a href="introduction.html">Introduction</a>
+<a href="pvalue.html"><span class="toc-section-number">1</span> What is a <em>p</em>-value</a>
+<a href="power.html"><span class="toc-section-number">2</span> Power analysis.</a>
+<a href="questions.html"><span class="toc-section-number">3</span> Asking Statistical Questions</a>
+<a href="errorcontrol.html"><span class="toc-section-number">4</span> Error Control</a>
+<a href="effectsizesCI.html"><span class="toc-section-number">5</span> Effect Sizes and Confidence Intervals</a>
+<a href="equivalencetest.html"><span class="toc-section-number">6</span> Equivalence Testing</a>
+<a href="severity.html"><span class="toc-section-number">7</span> Severe Tests and Risky Predictions</a>
+<a href="sesoi.html"><span class="toc-section-number">8</span> Smallest Effect Size of Interest</a>
+<a href="meta.html"><span class="toc-section-number">9</span> Meta-analysis</a>
+<a id="active-page" href="simulating-a-single-study-meta-analysis.html"><span class="toc-section-number">10</span> Simulating a single study meta-analysis</a>
+<a href="simulating-meta-analyses-of-mean-standardized-differences.html"><span class="toc-section-number">11</span> Simulating meta-analyses of mean standardized differences</a>
+<a href="fixed-effect-vs-random-effects.html"><span class="toc-section-number">12</span> Fixed Effect vs Random Effects</a>
+<a href="simulating-meta-analyses-for-dichotomous-outcomes.html"><span class="toc-section-number">13</span> Simulating meta-analyses for dichotomous outcomes</a>
+<a href="heterogeneity.html"><span class="toc-section-number">14</span> Heterogeneity</a>
+<a href="bias.html"><span class="toc-section-number">15</span> Bias detection</a>
+<a href="computationalreproducibility.html"><span class="toc-section-number">16</span> Computational Reproducibility</a>
+<a href="bayes.html"><span class="toc-section-number">17</span> Bayesian statistics</a>
+<a href="references.html"><span class="toc-section-number">18</span> References</a>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body><div id="simulating-a-single-study-meta-analysis" class="section level1">
+<h1>
+<span class="header-section-number">10</span> Simulating a single study meta-analysis</h1>
+<p>Now we are ready to simulate single studies. This code simulates two groups of
+50 participants. Both groups perform an IQ test. By default, an IQ test yields a
+mean IQ score of 100, and a standard deviation of 15, in the general population.
+However, one group has followed an expensive year-long IQ training program. This
+IQ training program has a proven track record of boosting the IQ score of
+participants by 6 IQ points, to a mean of 106. We simulate data from a control
+group and an intervention group using the rnorm function (lines 42 to 47) of 50
+people each with the specified population parameters.</p>
+<p>Note that in line 34 the set.seed(1000) command is used to make the simulation
+reproducible. As long as this command is executed before the lines below it are
+run, the output of the simulation will be the same as the result in this
+assignment. If you comment this line of code out (by placing a # in front of
+it, as in all the comments throughout the code explaining what the code does)
+the simulation results will vary each time you run the code.</p>
+<p>Let’s first analyze the simulated data using a <em>t</em>-test (line 50). We will
+calculate the effect size Hedges’ g (line 53 to 59), and the 95% confidence
+interval around the effect size (line 62 to 65), using the widely used MBESS
+package (Kelley, 2007). The MBESS packages uses the <em>t</em>-distribution when
+calculating confidence intervals (so we can confirm this really makes only a
+tiny difference compared to using the Z-distribution in a meta-analysis with a
+sample size of 50 observations per group). Select and run the code up to line
+65, and scroll up in the console window to see all the output, which should look
+like:</p>
+<p>Two Sample t-test</p>
+<p>data: x and y</p>
+<p>t = 0.2508718, df = 98, p-value = 0.8024385</p>
+<p>alternative hypothesis: true difference in means is not equal to 0</p>
+<p>95 percent confidence interval:</p>
+<p>-5.180770221 6.680207710</p>
+<p>sample estimates:</p>
+<p>mean of x mean of y</p>
+<p>103.6205476 102.8708289</p>
+<p>[1] 0.04978922624</p>
+<p>$Lower.Conf.Limit.smd</p>
+<p>[1] -0.3420089986</p>
+<p>$Upper.Conf.Limit.smd</p>
+<p>[1] 0.4421021361</p>
+<p>The <em>t</em>-test results indicate that in the current sample the means of both
+groups are very similar (<em>Mx</em> = 103.6 and <em>My</em> = 102.9), with a 95% confidence
+around the mean difference from -5.18 to 6.68, and this difference is not
+statistically different from 0 (<em>p</em> = 0.802). The output from the SMD function
+(rounded to 3 digits) indicates the standardized mean difference is close to
+zero (<em>g</em> = 0.0498), and the 95% confidence intervals around the standardized
+mean difference include zero [-0.342; 0.442]. Because we know the population
+parameters in the simulation, we are certain there is a true effect in the
+population, but in the current sample, we were not able to statistically detect
+it.</p>
+<p>We can also analyze this data as a single study meta-analysis. In line 68-74 the
+escalc function is used to calculate Hedges’ g. In line 76 a meta-analysis is
+performed with the rma function, which is stored as the variable ‘result’. The
+results are printed in line 77. Line 78 plots a graphical summary of the
+meta-analysis, known as a <strong>forest plot</strong>. Run these lines (make sure the plot
+window in RStudio is large enough to see the forest plot)..</p>
+<p>The Z-value, <em>p</em>-value, and 95% confidence interval in the output of the
+meta-analysis is very similar to the results we’ve seen above for the <em>t</em>-test:</p>
+<p>Fixed-Effects Model (k = 1)</p>
+<p>Test for Heterogeneity:</p>
+<p>Q(df = 0) = 0.0000, p-val = 1.0000</p>
+<p>Model Results:</p>
+<p>Estimate se zval pval ci.lb ci.ub</p>
+<p>0.0498 0.2000 0.2489 0.8034 -0.3423 0.4418</p>
+<p>Under ‘Model Results’ we find Hedges’ g is 0.0498, and the confidence interval
+around the effect size (ci.lb and ci.ub for the lower bound and upper bound) is
+similar (although not identical), to that calculated for the <em>t</em>-test, [-0.34;
+0.44], and the <em>p</em>-value is quite comparable as well (<em>p</em> = 0.803). We can’t
+reject the null hypothesis based on this single study.</p>
+<p>The forest plot is presented below. We see the effect size for Study 1 marked by
+the black square at 0.05, and the confidence interval is visualized by lines
+extending to – 0.34 on the left and 0.44 on the right. The numbers are printed
+on the right-hand side of the forest plot. On the lower half of the forest plot,
+we see a stretched-out diamond . The diamond summarizes the meta-analytic effect
+size estimate, with the center being at the meta-analytic effect size estimate,
+and the left and right endpoints at the 95% confidence interval of the
+meta-analytic effect size estimate. Because we only have a single study, the
+meta-analytic effect size estimate is the same as the effect size estimate for
+our single study.</p>
+<p><img src="media/34e49915fd85b1451115f5f69a32fbe9.png"></p>
+<p>Meta-analyses get a bit more exciting when we are using them to analyze results
+from multiple studies. When multiple studies are combined in a meta-analysis,
+effect size estimates are not simply averaged, but they are <strong>weighted</strong> by the
+<strong>precision</strong> of the effect size estimate, which is determined by the sample
+size of the study. Thus, the larger the sample size of an individual study, the
+more weight it gets in the meta-analysis, meaning that it has more influence on
+the meta-analytic effect size estimate.</p>
+</div></body></html>
+
+<p style="text-align: center;">
+<a href="meta.html"><button class="btn btn-default">Previous</button></a>
+<a href="simulating-meta-analyses-of-mean-standardized-differences.html"><button class="btn btn-default">Next</button></a>
+</p>
+<p class="build-date">Page built: 
+2020-07-21
+</p>
+</div>
+</div>
+
+<div class="row" style="padding-top: 2em;">
+<p style="text-align: center">
+<img src="images/logo.png" style="width: 100px; padding: 0; display: inline; vertical-align: top">
+<span style="display: inline-block; margin-left: 2em; margin-top: 16px; font-size: small">
+<span style="font-weight: bold;">Daniel Lakens</span><br/>
+<a href="https://statistical-inferences.com">statistical-inferences.com</a><br/>
+page built  2020-07-21 14:05:47
+</span>
+</p>
+</div>
+
+
+</body>
+</html>

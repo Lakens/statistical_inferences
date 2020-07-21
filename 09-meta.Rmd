@@ -16,5 +16,745 @@ Something something
 
 ## Mixed Results
 
+Science is a cumulative process, and we should evaluate lines of research, not single studies. Researchers are advised to design studies that will provide informative data, but sometimes you need to look at sets of studies before patterns become clear. A commonly used lower limit for statistical power is 80%, which means you will find a non-significant result in one out of five studies, when there is a true effect. Whenever you perform studies where power is not 99.99%, you should expect to find mixed results when examining true effects. Indeed, some researchers have pointed out that *not* finding mixed results can be very unlikely (or ‘too good to be true’) in a set of studies (Francis, 2014; Schimmack, 2012). We don’t have a very good feeling for what real patterns of studies look like, because we are continuously exposed to a scientific literature that does not reflect reality. Almost all multiple study papers in the scientific literature present only statistically significant results, even though this is unlikely.
+
+**Likelihoods of sets of studies**
+
+Let’s imagine we have two bags. There are twenty marbles in each bag. In one bag, we know there are 19 blue marbles, and one red marble. The red marble represents a Type 1 error, the blue marbles represent true negatives, and this bag represents a situation where we perform a statistical test where the null-hypothesis is true. In the other bag, there is a number of blue and red marbles. The red marbles represent true positives, blue marbles represent false
+negatives, and this bag represents a situation where the alternative hypothesis is true. We don’t know the true power, or the percentage of red marbles, but we can make a guess. For example, we might believe 16 out of 20 (or 80%) of the marbles are red.
+
+We perform 3 studies, by drawing a marble three times (with replacement, so we can draw multiple red balls in a row from either bag) from one of the two bags. We don’t know which of the bags we are drawing from. We could be drawing from the bag where the null hypothesis is true or the bag where the alternative hypothesis is true. There are 4 possible outcomes. Either 0 out of 3, 1 out of 3, 2 out of 3, or 3 out of 3 red balls are drawn. We can plot these four likelihood curves.
+
+```{r likelihood4curves, fig.margin = TRUE, echo = FALSE, fig.cap="Four likelihood curves for observing 0, 1, 2, or 3 out of 3 significant results in 3 studies."}
+# Perform 4 studies
+n <- 3
+x <- 1
+H0 <- .05 # specify p(sig|H0) which is typically .05 (alpha)
+H1 <- .8 # specify p(sig|H1) which is power (1-beta)
+LR <- (dbinom(x, n, H1)) / (dbinom(x, n, H0))
+
+theta <- seq(0, 1, len = 100)
+like1 <- dbinom(0, 3, theta)
+like2 <- dbinom(1, 3, theta)
+like3 <- dbinom(2, 3, theta)
+like4 <- dbinom(3, 3, theta)
+
+plot(theta, like1,
+  type = "l", xlab = expression(theta),
+  ylab = "Likelihood", col = "dodgerblue", lwd = 2
+)
+lines(theta, like2, lty = 2, col = "darkgreen", lwd = 2)
+lines(theta, like3, lty = 3, col = "red", lwd = 2)
+lines(theta, like4, lty = 4, col = "gold", lwd = 2)
+abline(v = 0.05, col = "darkgrey", lty = 3, lwd = 2)
+abline(v = 0.8, col = "darkgrey", lty = 3, lwd = 2)
+
+legend("top", lty=c(1, 2, 3, 4), col=c("dodgerblue", "darkgreen", "red", "gold"), legend=c("0 out of 3", "1 out of 3", "2 out of 3", "3 out of 3"), bty="n")
+```
+
+
+Each curve has the maximum likelihood estimate at the outcome: θ = 0 for 0 out
+of 3 red balls, θ = 0.33 for 1 out of 3, θ = 0.66 for 2 out of 3, and θ = 1 for
+3 out of 3. We know that for the bag where the null hypothesis is true, θ =
+0.05, or the Type 1 error rate. If we believe our studies would have 80% power
+when the alternative hypothesis is true, we can assume θ = 0.8. In the plot
+below, we see the four likelihood curves, and two vertical lines at θ = 0.05 and
+θ = 0.8.
+
+We can calculate likelihood ratios for θ = 0.05 vs. θ = 0.80 for the different
+outcomes. Below, the likelihood ratios are visualized for 1 out of 3 and 2 out
+of 3 red balls, or significant results. We see that only 1 out of 3 findings
+(below, left) is slightly more likely when the null hypothesis is true, but the
+likelihood ratio of 0.71 is not very far from 1. However, with 2 out of 3
+significant results (below, right), it is clear that this result is much more
+likely when studies are performed with 80% power than if we assume we observed
+two out of three Type 1 errors. Indeed, when two out of three studies are
+significant, the likelihood ratio provides pretty strong relative evidence for a
+situation where the alternative hypothesis is true, even when the assumed power
+is much lower.
+
+```{r likelihoodcurve1, fig.margin = TRUE, echo = FALSE, fig.cap="Likelihood curves for observing 1 out of 3 significant results in 3 studies."}
+# Perform 3 studies
+n <- 3
+x <- 1
+H0 <- .05 # specify p(sig|H0) which is typically .05 (alpha)
+H1 <- .8 # specify p(sig|H1) which is power (1-beta)
+LR <- (dbinom(x, n, H1)) / (dbinom(x, n, H0))
+
+theta <- seq(0, 1, len = 100)
+like <- dbinom(1, 3, theta)
+
+plot(theta, like,
+  type = "l", xlab = expression(theta),
+  ylab = "Likelihood", col = "black", lwd = 2
+)
+
+abline(v = 0.05, col = "darkgrey", lty = 3)
+abline(v = 0.8, col = "darkgrey", lty = 3)
+points(H0, dbinom(x, n, H0))
+points(H1, dbinom(x, n, H1))
+segments(H0, dbinom(x, n, H0), x / n, dbinom(x, n, H0), lty = 2)
+segments(H1, dbinom(x, n, H1), x / n, dbinom(x, n, H1), lty = 2)
+segments(x / n, dbinom(x, n, H0), x / n, dbinom(x, n, H1))
+title(paste("Likelihood Ratio H0/H1:", 
+            round(dbinom(x, n, H0) / dbinom(x, n, H1), digits = 2), 
+            " Likelihood Ratio H1/H0:", 
+            round(dbinom(x, n, H1) / dbinom(x, n, H0), digits = 2)))
+```
+
+```{r likelihoodcurve2, fig.margin = TRUE, echo = FALSE, fig.cap="Likelihood curves for observing 2 out of 3 significant results in 3 studies."}
+# Perform 3 studies
+n <- 3
+x <- 2
+H0 <- .05 # specify p(sig|H0) which is typically .05 (alpha)
+H1 <- .8 # specify p(sig|H1) which is power (1-beta)
+LR <- (dbinom(x, n, H1)) / (dbinom(x, n, H0))
+
+theta <- seq(0, 1, len = 100)
+like <- dbinom(2, 3, theta)
+
+plot(theta, like,
+  type = "l", xlab = expression(theta),
+  ylab = "Likelihood", col = "black", lwd = 2
+)
+
+abline(v = 0.05, col = "darkgrey", lty = 3)
+abline(v = 0.8, col = "darkgrey", lty = 3)
+points(H0, dbinom(x, n, H0))
+points(H1, dbinom(x, n, H1))
+segments(H0, dbinom(x, n, H0), x / n, dbinom(x, n, H0), lty = 2)
+segments(H1, dbinom(x, n, H1), x / n, dbinom(x, n, H1), lty = 2)
+segments(x / n, dbinom(x, n, H0), x / n, dbinom(x, n, H1))
+title(paste("Likelihood Ratio H0/H1:", 
+            round(dbinom(x, n, H0) / dbinom(x, n, H1), digits = 2), 
+            " Likelihood Ratio H1/H0:", 
+            round(dbinom(x, n, H1) / dbinom(x, n, H0), digits = 2)))
+
+```
+
+Although we can’t formally evaluate the probability that the alternative hypothesis is true based on these likelihood ratios (we would need Bayesian statistics instead), we can see that when multiple studies are performed, but not all studies are statistically significant, we are gathering more and more evidence for the hypothesis that a true effect is examined, rather than that all significant studies are Type 1 errors.
+
+The graphs above with the four likelihood curves also shows when a researcher is more likely to observe mixed results than consistent results. This occurs for all values of θ where the likelihood curve for mixed results is higher than the likelihood curves for 0 out of *n*, or *n* out of *n* significant results. More formally, mixed results are more likely than consistent results when power drops below *n*/(*n*+1) percent, or increases above 1-(*n*/(*n*+1)). For example, when performing three studies, it is more likely to observe mixed results than only significant or only non-significant effects when power is lower than
+3/(3+1)=0.75, and higher than 1-(3/(3+1))=0.25.
+
+
+######
+
+
+
+
+
+The probability of observing a significant or non-significant result in a study
+depends on the Type 1 error rate (α), the statistical power of the test (1-β),
+and the probability that the null-hypothesis is true (cf. Ioannidis, 2005;
+Wacholder, Chanock, Garcia-Closas, El ghormli, & Rothman, 2004). A study might
+examine a *true effect*, which means the alternative hypothesis (H1) is true
+(e.g., a correlation that differs from zero) or it might examine a *null
+effect*, which means the null-hypothesis (H0) is true (e.g., a correlation that
+is zero). When performing a statistical test on data, the test result might be
+statistically significant at a specified alpha level (*p* \< α) or not. Thus,
+there are four possible outcomes of a study:
+
+1) False positives or Type 1 errors (you observe a significant test result when
+H0 is true)
+
+2) False negatives or Type 2 errors (you observe a non-significant result when
+H1 is true)
+
+3) True negatives (a non-significant result when H0 is true)
+
+4) True positives (a significant test result when H1 is true)
+
+![](media/4caa29c43b43172aa6fc224fd601ee66.png)
+
+To get a feeling for which results you can expect in the long run, we will use
+binomial probabilities. As an example of a binomial probability, consider the
+probability of observing *k* heads when flipping a coin *n* times. The observed
+data are generated by a statistical distribution determined by the unknown
+parameter θ, which ranges from 0 to 1, and is the true probability of getting
+heads (e.g., 0.5 for a fair coin). A logical question in a coin-flipping example
+would be to determine the probability of observing *k* number of heads in *n*
+coin flips, assuming a fair coin (θ = 0.5). The probability of observing *k*
+significant results in *n* studies is:
+
+|   | \\frac{n!}{k!\\left( n - k \\right)!}\*\\theta\^{k}\*\\left( 1 - \\theta \\right)\^{n - k} | (1) |
+|---|--------------------------------------------------------------------------------------------|-----|
+
+
+The first term indicates the number of possible combinations of results (e.g.,
+when two out of three studies are significant, either the first, the second, or
+the third study is non-significant, which gives three combinations), which is
+multiplied by the probability of observing significant results in each of the
+*k* significant studies, which is then multiplied by the probability of
+observing non-significant results in the remaining studies. This is known as the
+binomial likelihood function. When H0 is true, the probability of significant
+results equals the alpha level, and thus when the alpha level is carefully
+controlled (e.g., in pre-registered studies) θ = 0.05. When H1 is true, the
+probability of observing a significant result depends on the power, e.g., θ =
+0.80 for studies with 80% power.
+
+Open the online shiny app made in R which will perform these binomial likelihood
+calculations for you: <http://shiny.ieis.tue.nl/mixed_results_likelihood/>. The
+app displays binomial likelihoods for sets of studies.
+
+By default, the settings in the app show the results for a situation when 2 out
+of 3 studies are significant, a Type 1 error rate of 5% is used, and the power
+for the studies is assumed to be 80%. The text below the figure shows that 2 out
+of 3 significant results should happen 38% of the time when there is a true
+effect, and power is 80%. Scroll down, and take a look at the table. In the left
+column, you can see the probabilities of 0, 1, 2, or 3 significant results when
+there is no effect (so you only observe Type 1 errors), and in the right columns
+you can see these probabilities for when there is a true effect.
+
+**Q1:** Which statement is correct when you perform 3 studies?
+
+A) When H1 is true, alpha = 0.05, and power = 0.80, it is almost as likely to
+observe one or more non-significant results (48.8%) as it is to observe only
+significant results (51.2%).
+
+B) When alpha = 0.05 and power = 0.80, it is extremely rare that you will find 3
+significant results (0.0125%), regardless of whether H0 is true or H1 is true.
+
+C) When alpha = 0.05 and power = 0.80, 2 out of 3 statistically significant
+results is the most likely outcome overall (38.4%) when H1 is true.
+
+D) When alpha = 0.05 and power = 0.80, the probability of finding at least one
+false positive (a significant result when H0 is true) in three studies is 5%.
+
+**Q2:** Sometimes in lines of three studies, you’ll find a significant effect in
+one study, but there is no effect in the other two related studies. Assume the
+two related studies were not exactly the same in every way (e.g., you have
+changed the manipulation, or the procedure, or some of the questions). It could
+be that the two other studies did not work because of minor differences that had
+some effect you do not fully understand yet. Or it could be that the single
+significant result was a Type 1 error, and H0 was true in all three studies.
+Which statement below is correct, assuming a 5% Type 1 error rate and 80% power?
+
+A) All else being equal, the probability of a Type 1 error in one of three
+studies is 5% when there is no true effect in all three studies, and the
+probability of finding exactly 1 in three significant effects, assuming 80%
+power in all three studies, is 80%, which is substantially more likely.
+
+B) All else being equal, the probability of a Type 1 error in one of three
+studies is 13.5% when there is no true effect in all three studies, and the
+probability of finding exactly 1 in three significant effects, assuming 80%
+power in all three studies (and thus a true effect), is 9.6%, which is slightly,
+but not substantially less likely.
+
+C) All else being equal, the probability of a Type 1 error in one of three
+studies is 85.7% when there is no true effect in all three studies, and the
+probability of finding exactly 1 in three significant effects, assuming 80%
+power in all three studies (and thus a true effect) (and thus a true effect), is
+0.8%, which is substantially less likely.
+
+D) It is not possible to know the probability you will observe a Type 1 error if
+you perform 3 studies.
+
+The idea that most studies have 80% power is slightly optimistic. **Examine the
+correct answer to the previous question across a range of power values** (e.g.,
+50% power, and 30% power).
+
+**Q3:** Several papers suggest it is a reasonable assumption that the power in
+the psychological literature might be around 50%. Set the number of studies to
+4, the number of successes also to 4, and the assumed power slider to 50%, and
+look at the table at the bottom of the app. How likely is it to observe 4
+significant results in 4 studies, assuming there is a true effect?
+
+A) 6.25%
+
+B) 12.5%
+
+C) 25%
+
+D) 37.5%
+
+Imagine you perform 4 studies, and 3 show a significant result. **Change these
+numbers in the online app. Leave the power at 50%**. The output in the text
+tells you:
+
+*When the observed results are equally likely under H0 and H1, the likelihood
+ratio is 1. Benchmarks to interpret Likelihood Ratios suggest that when 1\<LR\<8
+there is weak evidence, when 8\<LR\<32 there is moderate evidence, and when
+LR\>32, there is strong evidence.*
+
+*The data are more likely under the alternative hypothesis than the null
+hypothesis with a likelihood ratio of 526.32*
+
+These calculations show that, assuming you have observed three significant
+results out of four studies, and assuming each study had 50% power, it is 526
+times more likely to have observed these data when the alternative hypothesis is
+true, than when the null hypothesis is true. In other words, it is 526 times
+more likely to find a significant effect in three studies when you have 50%
+power, than to find three Type 1 errors in a set of four studies.
+
+**Q4**: Maybe you don’t think 50% power is a reasonable assumption. How low can
+the power be (rounded to 2 digits), for the likelihood to remain higher than 32
+in favor of H1 when observing 3 out of 4 significant results?
+
+A) 5% power
+
+B) 17% power
+
+C) 34% power
+
+D) 44% power
+
+The main take home message of these calculations is to understand that 1) mixed
+results are supposed to happen, and 2) mixed results can contain strong evidence
+for a true effect, across a wide range of plausible power values. The app also
+tells you how much evidence, in a rough dichotomous way, you can expect. This is
+useful for our educational goal. But when you want to evaluate results from
+multiple studies, the formal way to do so is by performing a meta-analysis.
+
+The above calculations make a very important assumption: The Type 1 error rate
+is controlled at 5%. If you try out many different tests in each study, and only
+report the result that yielded a p \< 0.05, these calculations no longer hold.
+
+**Q5**: Go back to the default settings of 2 out of 3 significant results, but
+now set the Type 1 error rate to 20%, to reflect a modest amount of p-hacking.
+Under these circumstances, what is the **highest** likelihood in favor of H1 you
+can get if you explore all possible values for the true power?
+
+A) Approximately 1
+
+B) Approximately 4.63
+
+C) Approximately 6.70
+
+D) Approximately 62.37
+
+As the scenario above shows, *p*-hacking makes studies extremely uninformative.
+**If you inflate the error rate, you quickly destroy the evidence in the data.**
+You can no longer determine whether the data is more likely when there is no
+effect, than when there is an effect. Sometimes researchers complain that people
+who worry about *p*-hacking and try to promote better Type 1 error control are
+missing the point, and that other things (better measurement, better theory,
+etc.) are more important. I fully agree that these aspects of scientific
+research are at least as important as better error control. But better measures
+and theories will require decades of work. Better error control can be
+accomplished today, if researchers would stop inflating their error rates by
+flexibly analyzing their data. And as this assignment shows, inflated rates of
+false positives very quickly make it difficult to learn what is true from the
+data we collect. Because of the relative ease with which this part of scientific
+research can be improved, and because we can achieve this today (and not in a
+decade) I think it is worth stressing the importance of error control, and
+publish more realistic looking sets of studies.
+
+**Q6**: Some ‘prestigious’ journals (which, when examined in terms of scientific
+quality such as reproducibility, reporting standards, and policies concerning
+data and material sharing, are quite low quality despite their prestige) only
+publish manuscripts with a large number of studies, which should all be
+statistically significant. If we assume an average power in psychology of 50%,
+only 3.125% of 5 study articles should contain exclusively significant results.
+If you pick up a random issue from such a prestigious journal, and see 10
+articles, each reporting 5 studies, and all manuscripts have exclusively
+significant results, would you trust the reported findings more, or less, than
+when all these articles had reported mixed results? Why?
+
+**Q7**: Unless you will power all your studies at 99.99% for the rest of your
+career (which would be slightly inefficient, but great if you don’t like
+insecurity), you will observe mixed results in lines of research. How do you
+plan to deal with mixed results in lines of research?
+
+The take-away message of this assignment is that you should expect mixed results
+under many circumstances, and that dichotomously ignoring non-significant
+results is not wise. A formal meta-analysis is the best way to evaluate sets of
+studies. But understanding what realistic patterns of results in research lines
+should look like is hopefully a first step in making you realize you should
+think meta-analytically.
+
+
 ## Introduction to Meta-Analysis
 
+Every single study is just a data-point in a future meta-analysis. If you draw small samples from a population, the mean and standard deviation in the sample can differ considerably from the mean and standard deviation in the population. There is great variability in small samples. Parameter estimates from small samples are very imprecise, and therefore the 95% confidence intervals around effect sizes are very wide. Indeed, this led Cohen (1994) to write “I suspect that the main reason [confidence intervals] are not reported is that they are so
+embarrassingly large!” If we want a more precise estimate of our parameter of interest, such as the mean difference or correlation in the population, we need either run extremely large single studies, or alternatively, combine data from several studies by performing a **meta-analysis**. The most common approach to combine studies is to perform a meta-analysis of effect size estimates.
+
+You can perform a meta-analysis for a set of studies in a single article you plan to publish (often called an **internal meta-analysis**), or you can search the literature for multiple studies reported in as many different articles as possible, and perform a meta-analysis on all studies others have published. An excellent introduction to meta-analyses is provided in the book by Borenstein, Hedges, Higgins, and Rothstein @borenstein_introduction_2009. There is commercial software you can use to perform meta-analyses, but I highly recommend *against* using such software. Almost all commercial software packages lack transparency, and do not allow you to share your analysis code and data with other researchers. In this assignment, we will be using R to perform a meta-analysis of effect sizes, using the **metafor** package by Viechtbauer @viechtbauer_conducting_2010. An important benefit of using metafor is that your meta-analysis can be made completely reproducible.
+
+### Single study meta-analysis
+
+Let’s first begin with something you will hardly ever do in real life: a meta-analysis of a single study. This is a little silly, because a simple *t*-test or correlation will tell you the same thing – but it is educational to compare a *t*-test with a meta-analysis of a single
+study, before we look at how to combine multiple studies into a meta-analysis.
+
+A difference between an independent *t*-test and a meta-analysis is that a *t*-test is performed on the raw data, while a meta-analysis is performed on the effect size(s) of individual studies. The metafor R package contains a very useful function called `escalc` that can be used to calculate effect sizes, their variances, and confidence intervals around effect size estimates. So let’s start by calculating the effect size to enter into our meta-analysis. The code below (and in the R file under **Part 1**) can be used to calculate the **standardized mean difference** (SMD) from two independent groups from **means** (specified by m1i and m2i), **standard deviations** (sd1i and sd2i), and the number of observations in each group (n1i and n2i). By default, metafor calculates the effect size ‘**Hedges’ g**’ which is the unbiased version of Cohen’s d (see the section on [Cohen's d](#cohend) in the chapter on Effect Sizes).
+
+```{r intrometa1}
+library(metafor)
+# We calculate the standardized mean difference
+# We store it as the variable g (because by default, Hedges' g is computed)
+g <- escalc(measure = "SMD",
+            n1i = 50, # sample size in group 1 is 50 
+            m1i = 5.6, # observed mean in group 1 is 5.6
+            sd1i = 1.2, # observed standard deviation in group 1 is 1.2
+            n2i = 50, # sample size in group 2 is 50 
+            m2i = 4.9, # observed mean in group 1 is 4.9 
+            sd2i = 1.3) # observed standard deviation in group 2 is 1.3
+
+# print results
+g
+```
+
+The output gives you Hedge’s g (under the `yi` column, which always returns the
+effect size, in this case the standardized mean difference) and the variance of
+the effect size estimate (under `vi`).
+
+As explained in Borenstein, Hedges, Higgins, and Rothstein (2009, formula 4.18
+to 4.24) the standardized mean difference Hedges’ g is calculated by dividing
+the difference between means by the pooled standard deviation, multiplied by a
+correction factor, J:
+
+$$
+J = (1 - \ \ 3/(4df - 1))
+$$
+
+$$
+g = J \times \ \left( \frac{{\overline{X}}_{1} - {\overline{X}}_{2}}{S_{\text{within}}} \right)
+$$
+
+and a very good approximation of the variance of the standardized mean
+difference (SMD) Hedges’ g is provided by:
+
+$$
+Vg = J^{2} \times \left( \frac{n_{1} + n_{2}}{n_{1}n_{2}} + \frac{g^{2}}{2(n_{1} + n_{2})} \right)
+$$
+
+The variance of the standardized mean difference depends only on the sample size (n1 and n2) and the value of the standardized mean difference itself. **To perform the required calculations for a meta-analysis, you need the effect sizes and their variance**. This means that if you have coded the effect sizes and the sample sizes (per group) from studies in the literature, you have the information you need to perform a meta-analysis.
+
+You do not need to manually calculate the effect size and its variance using the two formula above – the escalc function does this for you. We can now easily perform a single study meta-analysis using the rma function in the metafor package:
+
+```{r runmeta}
+# Perform the meta-analysis
+meta_res <- rma(yi, vi, data = g)
+meta_res
+```
+
+Here, we see under Model Results the effect size Hedges’ g (0.5553) and the standard error (0.2038), the Z-test statistic testing the mean difference against the null-hypothesis (2.72), and the 95% confidence interval [ci.lb = 0.16; ci.ub = 0.95] around the effect size (the interval width can be specified using the ‘level =’ option). We also get the *p*-value for the test of the meta-analytic effect size against 0. In this case we can reject the null-hypothesis (*p* = 0.0064).
+
+In a meta-analysis, a Z-test is used to examine whether the null-hypothesis can be rejected. This assumes a normally distributed random effect size model. Normally, you would analyze data from a single study with two groups using a *t*-test, which not surprisingly uses a *t*-distribution. If we directly compare a single-study meta-analysis, based on a Z-test, with a normal *t*-test, we will see some tiny differences in the results. We can directly calculate the effect size Hedges’ g, and the 95% confidence interval around the effect size, and the *t*-test using MOTE [@buchanan_mote_2017]. The MOTE package uses the *t*-distribution when calculating confidence intervals around the effect size (and we can see this makes only a tiny difference compared to using the Z-distribution in a meta-analysis with 50 observations in each group). 
+
+```{r metad, messages = FALSE}
+# Calculate Hedges g and perform t-test with MOTE 
+MOTE_res <- MOTE::g.ind.t(m1 = 5.6, 
+                          m2 = 4.9, 
+                          sd1 = 1.2, 
+                          sd2 = 1.3, 
+                          n1 = 50, 
+                          n2 = 53, 
+                          a = 0.05)
+MOTE_res$statistic
+```
+
+The *t*-value is 2.83, and the *p*-value is 0.0055. With large enough sample sizes (which is commonly true in a meta-analysis) the difference between a Z-test and *t*-test is not really meaningful, and for this reason the Z-test is used in meta-analyses.
+
+```{r moteres}
+# Calculate Hedges g with MOTE 
+MOTE_res$estimate
+```
+
+The results are very similar to those from the meta-analysis, with g = 0.55, 95% CI[0.16;0.94], where the effect size and the upper bound for the confidence interval differ 0.01 after rounding, because the *t*-distribution is used instead of the Z-distribution. 
+
+It is common to visualize the results of a meta-analysis using a forest plot, which is presented in below. We see the effect size for Study 1 marked by the black square at 0.05, and the confidence interval is visualized by lines extending to –0.34 on the left and 0.44 on the right. The numbers are printed on the right-hand side of the forest plot. On the lower half of the forest plot, we see a stretched-out diamond. The diamond summarizes the meta-analytic effect size estimate, with the center being at the meta-analytic effect size estimate, and the left and right endpoints at the 95% confidence interval of the meta-analytic effect size estimate. Because we only have a single study, the meta-analytic effect size estimate is the same as the effect size estimate for our single study.
+
+```{r metaforest, fig.margin = TRUE, echo = FALSE, fig.cap="Forest plot for a single study."}
+forest(meta_res)
+```
+
+Meta-analyses get a bit more exciting when we are using them to analyze results
+from multiple studies. When multiple studies are combined in a meta-analysis,
+effect size estimates are not simply averaged, but they are **weighted** by the
+**precision** of the effect size estimate, which is determined by the sample
+size of the study. Thus, the larger the sample size of an individual study, the
+more weight it gets in the meta-analysis, meaning that it has more influence on
+the meta-analytic effect size estimate.
+
+### Simulating meta-analyses of mean standardized differences
+
+**Open the file simulating_meta_analyses_smd.R**. In this file we again simulate
+data for two groups, one with a mean of 100, and one with a mean of 106, both
+groups with a standard deviation of 15 (lines 7 to 10). To perform a
+meta-analysis, we need to calculate the effect size for each study, and the
+variance of the effect size. An empty dataframe with the column names yi and vi
+is created in line 11. We then simulate studies (the number of simulated studies
+is 12, which you can change in line 5).
+
+Both groups of participants have the same size in the simulation. To simulate
+studies with some variation in the sample sizes, the sample size in each group
+(n) is determined by randomly drawing a value between 30 and 80 (line 14). If in
+your field sample sizes are much larger of smaller, feel free to change these
+numbers to something more realistic in your field. Two normally distributed
+samples are simulated (lines 15 and 16), and the escalc function is used to
+calculate and store the effect size (yi) and variance (vi) for each simulated
+study in a dataframe called metadata. We can then perform the meta-analysis,
+print the results, and plot the forest plot (lines 21 to 23).
+
+Run all lines of code. Note that we are simulating studies, without setting a
+seed – so your results will differ from the results described below. but should
+be somewhat similar.
+
+Fixed-Effects Model (k = 12)
+
+Test for Heterogeneity:
+
+Q(df = 11) = 7.2803, p-val = 0.7759
+
+Model Results:
+
+estimate se zval pval ci.lb ci.ub
+
+0.4044 0.0551 7.3383 \<.0001 0.2964 0.5124 \*\*\*
+
+\---
+
+Signif. codes: 0 ‘\*\*\*’ 0.001 ‘\*\*’ 0.01 ‘\*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+We see a test for **heterogeneity**. We will return to heterogeneity tests
+later. We see the model results, which in this specific simulation yielded a
+meta-analytic effect size estimate of 0.40 (your result could be smaller or
+larger, but should be close – feel free to run all lines of code multiple times
+to explore the amount of variation you can expect). The confidence interval
+around the effect size estimate [0.30; 0.51] is much narrower than we saw before
+for a single study. This is because the 12 studies we simulated together have
+quite a large sample size, and the larger the sample size, the smaller the
+standard error, and thus the narrower the confidence interval is. The
+meta-analytic effect size estimate is statistically different from 0 (*p* \<
+0.0001) so we can reject the null hypothesis if we use an alpha level of 0.05.
+The forest plot provides a more detailed overview of the individual studies.
+
+![](media/db00e43009f9bef59a86490e6da2837b.png)
+
+We see 12 rows, one for each study, each with their own effect size and
+confidence interval. If you look closely, you can see the squares that indicate
+the effect size estimate for each study differ in size. The larger the sample
+size, the bigger the square. Study 4 had a relatively small sample size, which
+can be seen both by the small square, and the relatively wide confidence
+interval. Study 1 had a larger sample size, and thus a slightly larger square
+and narrower confidence interval. At the bottom of the graph we find the
+meta-analytic effect size and its confidence interval, both visualized by a
+diamond and numerically. The model is referred to as a FE Model, or **Fixed
+Effect (FE) model**. The alternative approach is a RE Model, or **Random Effects
+(RE) model**.
+
+### Fixed Effect vs Random Effects
+
+There are two possible models when performing a meta-analysis. One model, known
+as a fixed effect model, assumes there is one effect size that generates the
+data in all studies in the meta-analysis. This model assumes there is no
+variation between individual studies – all have exactly the same true effect
+size. The perfect example of this is the simulations we have done so far. We
+specified a single true effect in the population, and generated random samples
+from this population effect.
+
+Alternatively, one can use a model where the true effect differs in some way in
+each individual study. We don’t have a single true effect in the population, but
+a range of **randomly distributed** true effect sizes (hence the ‘random
+effects’ model). Studies differs in some way from each other (or some sets of
+studies differ from other sets), and their true effect sizes differ as well.
+Note the difference between a fixed effect model, and a random effect**s**
+model, in that the plural ‘effects’ is used only in the latter. Borenstein et al
+(2009) state there are two reasons to use a fixed effect model: When all studies
+are functionally equivalent, and when your goal is *not* to generalize to other
+populations. This makes the random effects model generally the better choice,
+although some people have raised the concern that random-effects models give
+more weight to smaller studies, which can be more biased. By default, metafor
+will use a random effects model. We used the method="FE" command to explicitly
+ask for a fixed effect model. In the meta-analyses we will simulate in the rest
+of this assignment we will leave out this command and simulate random effects
+meta-analyses.
+
+**Q1**: Run the code 20 times. Compare the effect size estimate for Study 1 (the
+first simulated study in the meta-analysis) with the meta-analytic effect size
+estimate. Which statement is true?
+
+A) The effect size estimate for Study 1 is **less** variable, and **less** often
+statistically significant, than the meta-analytic effect size estimate.
+
+B) The effect size estimate for Study 1 is **less** variable, and **more** often
+statistically significant, than the meta-analytic effect size estimate.
+
+C) The effect size estimate for Study 1 is **more** variable, and **less** often
+statistically significant, than the meta-analytic effect size estimate.
+
+D) The effect size estimate for Study 1 is **more** variable, and **more** often
+statistically significant, than the meta-analytic effect size estimate.
+
+### Simulating meta-analyses for dichotomous outcomes
+
+Although meta-analyses on mean differences are very common, a meta-analysis can
+be performed on many different effect sizes. To show a slightly less common
+example, let’s simulate a meta-analysis based on odds ratios. Sometimes the main
+outcome in an experiment is a dichotomous variable, such as the success or
+failure on a task. In such study designs we can calculate risk ratios, odds
+ratios, or risk differences as the effect size measure. Risk differences are
+sometimes judged easiest to interpret, but odds ratios are most often used for a
+meta-analysis because they have attractive statistical properties. An **odds
+ratio** is a ratio of two odds. To illustrate how an odds ratio is calculated,
+it is useful to consider the four possible outcomes in a 2 x 2 table of
+outcomes:
+
+|              | Success | Failure | N    |
+|--------------|---------|---------|------|
+| Experimental | *A*     | *B*     | *n1* |
+| Control      | *C*     | *D*     | *n2* |
+
+The odds ratio is calculated as: $$OR = \ \frac{\text{AD}}{\text{BC}}$$.
+
+The meta-analysis is performed on log transformed odds ratios (because log
+transformed odds ratios are symmetric around 1, see Borenstein et al., 2009),
+and thus the log of the odds ratio is used, which has a variance which is
+approximated by: $$\text{Var}\left( \log\text{OR} \right) = \ \frac{1}{A} +
+\frac{1}{B} + \frac{1}{C} + \frac{1}{D}$$.
+
+Let’s assume that we train students in using a spaced learning strategy (they
+work through a textbook every week instead of cramming the week before the
+exam). Without such training, 70 out of 100 students succeed in passing the
+course after the first exam, but with this training, 80 out of 100 students
+pass.
+
+|              | Success | Failure | N   |
+|--------------|---------|---------|-----|
+| Experimental | 80      | 20      | 100 |
+| Control      | 70      | 30      | 100 |
+
+The odds of passing in the experimental group is 80/20, or 4, while odds in the
+control condition are 70/30, or 2.333. The ratio of these two odds is then:
+4/2.333 = 1.714, or:
+
+$$
+OR = \ \frac{80 \times 30}{20\  \times 70} = 1.714
+$$
+
+**Open the file simulating_meta_analyses_or.R**. This script simulates studies
+with dichotomous outcomes, where you can set the percentage of successes and
+failures in the experimental and control condition (lines 7 and 8). In the
+script, by default the percentage of success in the experimental condition is
+70%, and in the control condition it is 50%. Run the script.
+
+![](media/369d29b2433a0f1c9925100d79fc851e.png)
+
+The forest plot presents the studies and four columns of data after the study
+label, which contain the number of successes and failures in the experimental
+groups (E+ and E-), and the number of successes and failures in the control
+group (C+ and C-). Imagine we study the percentage of people who get a job
+within 6 months after a job training program, compared to a control condition.
+In Study 1, which had 34 participants in each condition, 23 people in the job
+training condition got a job within 6 months, and 11 did not get a job. In the
+control condition, 14 people got a job, but 20 did not. The effect size estimate
+for the random effects model is 0.88. Feel free to adjust the number of studies,
+or the sample sizes in each study, to examine the effect it has on the
+meta-analytic effect size estimate (in general, the more data, the more accurate
+the estimate).
+
+### Heterogeneity
+
+Although researchers often primarily use meta-analysis to compute a
+meta-analytic effect size estimate, and test whether this effect is
+statistically different from zero, **an arguably much more important use of
+meta-analyses is to explain variation between (sets of) studies**. This
+variation among (sets of) studies is referred to as **heterogeneity**. Tests
+have been developed to examine whether the studies included in a meta-analysis
+vary more than would be expected if the underlying true effect size in all
+studies was the same, and measures have been developed to quantify this
+variation.
+
+If all studies have the same true population effect size, the only source of
+variation is random error. If there are real differences between (sets of)
+studies, there are two sources of variation, namely random variation from study
+to study, *and* real differences in effect sizes in (sets of) studies.
+
+A classical measure of heterogeneity is Cochran’s Q statistic, which is the
+weighted sum of the squared differences between effect size estimates in each
+study, and the meta-analytic effect size estimate. The Q statistic can be used
+to test whether the absence of heterogeneity can be statistically rejected (by
+comparing it to the expected amount of variation, which is the degrees of
+freedom, *df*, or the number of studies -1, see Borenstein et al., 2009), but it
+can have low power if the number of studies in the meta-analysis is small
+(Huedo-Medina, Sánchez-Meca, Marín-Martínez, & Botella, 2006).
+
+On theoretical grounds one might argue that some heterogeneity will always
+happen in a meta-analysis, and therefore it is more interesting to quantify the
+extent to which there is heterogeneity. The I² index measures the extent of true
+heterogeneity. It is calculated as follows: $$I^{2} = \ \frac{(Q - k - 1)}{Q}
+\times 100\%$$, where the k is the number of studies (and k-1 is the degrees of
+freedom). I² ranges from 0 to 100 and can be interpreted as the percentage of
+the total variability in a set of effect sizes that is due to heterogeneity.
+When I² = 0 all variability in the effect size estimates can be explained by
+within-study error, and when I² = 50 half of the total variability can be
+explained by true heterogeneity. I² values of 25%, 50%, and 75% can be
+interpreted as low, medium, and high heterogeneity.
+
+**Open the file heterogeneity.R**. This script simulates a similar meta-analysis
+to the example for dichotomous outcomes above, but with a small variation. The
+first half of the simulated experiments are based on the population success
+rates specified in lines 7 and 8, but the second half of the simulated
+experiments are based on the population success rates specified in lines 25 and
+26. Thus, in this set of studies the odds ratio differs for the first half of
+the studies, compared to the second half (successes in Group 1 and 2 are set to
+0.2 and 0.7 for the first half, but to 0.7 and 0.9 in the second half). There is
+true heterogeneity. In line 46 we use the ‘confint’ function in the metafor
+package to report both the I² statistic, and its confidence interval.
+
+Run the script 20 times, each time noting the I² statistic and the 95%
+confidence interval around it. You will see widely varying estimates for I².
+Because we are simulating only 12 studies, estimates of heterogeneity have large
+variability. Increase the number of simulated experiments in line 5 from 12 to
+200.
+
+**Q2**: Re-run the simulation 20 times. Compare the I² value and its 95% CI when
+simulating meta-analyses of 12 and 200 studies. Which statement is true?
+
+A) The I² values are **more** variable when simulating 200 studies, and the 95%
+CI is **wider**.
+
+B) The I² values are **more** variable when simulating 200 studies, and the 95%
+CI is **narrower**.
+
+C) The I² values are **less** variable when simulating 200 studies, and the 95%
+CI is **wider**.
+
+D) The I² values are **less** variable when simulating 200 studies, and the 95%
+CI is **narrower**.
+
+In this assignment, you’ve learned the basics of combining studies in a
+meta-analysis.
+
+### Improving the reproducibility of meta-analyses
+
+Although meta-analyses do not provide definitive conclusions, they are typically interpreted as state-of-the-art empirical knowledge about a specific effect or research area. Large-scale meta-analyses often accumulate a massive number of citations and influence future research and theory development. It is therefore essential that published meta-analyses are of the highest possible quality.
+
+At the same time, the conclusions from meta-analyses are often open for debate and are subject to change as new data becomes available. We recently proposed practical recommendations to increase the reproducibility of meta-analyses to facilitate quality control, improve reporting guidelines, allow researchers to re-analyze meta-analyses based on alternative inclusion criteria, and future-proof meta-analyses by making sure the collected meta-analytic data is shared so that continuously cumulating meta-analyses can be performed, and so that novel statistical techniques can be applied on the collected data as they become available [@lakens_reproducibility_2016]. These recommendations are summarized in Table \@ref(tab:table_rec).
+
+```{r table_rec}
+table_rec <- data.frame(c("Facilitate cumulative science", "Facilitate quality control", "Use reporting guidelines", "Preregister", "Facilitate reproducibility", "Recruit expertise"), c("Disclose all meta-analytic data (effect sizes, sample sizes for each condition, test statistics and degrees of freedom, means, standard deviations, and correlations between dependent observations) for each data point. Quote relevant text from studies that describe the meta-analytic data to prevent confusion, such as when one effect size is selected from a large number of tests reported in a study. When analyzing subgroups, include quotes from the original study that underlie this classification, and specify any subjective decisions.", "Specify which effect size calculations are used and which assumptions are made for missing data (e.g., assuming equal sample sizes in each condition, imputed values for unreported effect sizes), if necessary for each effect size extracted from the literature. Specify who extracted and coded the data, knowing it is preferable that two researchers independently extract effect sizes from the literature.", "A minimal requirement when reporting meta-analyses is to adhere to one of the reporting standards (e.g., PRISMA). The reporting guidelines ask authors of meta-analyses to report essential information that should be made available either in the main text of the article, or by providing a completed checklist as supplementary material during review and after publication.", "Whenever possible, pre-register the meta-analysis research protocol to distinguish between confirmatory and exploratory analyses. Perform a prospective meta-analysis where possible.", "Allow others to re-analyze the data to examine how sensitive the results are to subjective choices such as inclusion criteria. Always include a link to data files that can be directly analyzed with statistical software, either by providing completely reproducible scripts containing both the data and the reported analyses in free software (e.g., R), or at the very minimum a spreadsheet that contains all meta-analytic data that can easily analyzed in any statistical program.", "Consider consulting a librarian before you start the literature search, and a statistician before coding the effect sizes, for advice on how make the literature search and effect size calculations reproducible."))
+colnames(table_rec) <- c("What?", "How?")
+
+knitr::kable(table_rec, caption = "Six practical recommendations to improve the quality and reproducibility of meta-analyses.")
+```
+
+You can use meta-analyses to combine results in a single paper, or to evaluate
+effects in the literature. When combining effects in the literature, one of the
+main goals of a meta-analysis is to test or develop theories that can explain
+the variability in effect size estimates. Performing meta-analyses is relatively
+easy whenever you have access to the effect sizes (or the necessary information
+to compute effect sizes) and the sample sizes for each study. By combining
+information, you can achieve a much higher precision in effect size estimates.
+Excellent introductions to performing and interpreting meta-analyses can be
+found in Borenstein et al (2009) and Cummings (2013).
+
+
+
+Borenstein, M., Hedges, L. V., Higgins, J., & Rothstein, H. R. (2009).
+Introduction to meta-analysis. Chichester, United Kingdom: John Wiley & Sons,
+Ltd.
+
+Cumming, G. (2013). Understanding the new statistics: Effect sizes, confidence
+intervals, and meta-analysis. New York, NY: Routledge.
+
+Huedo-Medina, T. B., Sánchez-Meca, J., Marín-Martínez, F., & Botella, J. (2006).
+Assessing heterogeneity in meta-analysis: Q statistic or I2 index? Psychological
+Methods, 11(2), 193.
+
+Kelley, K. (2007). Methods for the behavioral, educational, and social sciences:
+An R package. Behavior Research Methods, 39(4), 979–984.
+
+Viechtbauer, W. (2010). Conducting meta-analyses in R with the metafor package.
+Journal of Statistical Software, 36(3), 1–48.
