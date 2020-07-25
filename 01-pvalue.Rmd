@@ -75,15 +75,17 @@ With the means (*M*), standard deviations (*SD*) and sample size (*N*) for each 
 
 ```{r normal-vs-t, echo=FALSE}
 
-x = seq(-4.5,4.5,length=1000)
-y<-dnorm(x,0,1)
-plot(x, y, type="l", col="black", lwd=3)
-lines(x,dt(x,df=10),col='red',type='l')
-lines(x,dt(x,df=5),col='blue',type='l')
-legend(-4,0.4, # places a legend at the appropriate place
-c("Normal","t(10)", "t(5)"), # puts text in the legend
-lty=c(1,1), # gives the legend appropriate symbols (lines)
-lwd=c(2.5,2.5,2.5),col=c("black", "red","blue")) # format lines and colors
+x <- seq(-4.5, 4.5, length = 1000)
+y <- dnorm(x, 0, 1)
+plot(x, y, type = "l", col = "black", lwd = 3)
+lines(x, dt(x, df = 10), col = "red", type = "l")
+lines(x, dt(x, df = 5), col = "blue", type = "l")
+legend(-4, 0.4, # places a legend at the appropriate place
+  c("Normal", "t(10)", "t(5)"), # puts text in the legend
+  lty = c(1, 1), # gives the legend appropriate symbols (lines)
+  lwd = c(2.5, 2.5, 2.5), col = c("black", "red", "blue")
+) # format lines and colors
+
 ```
 Now we have a probability density function to compare our *t*-statistic against, all we need to do is to perform the *t*-test. R by default performs Welch's *t*-test, which does not assume equal variances, instead of Student's *t*-test, which does. This is a sensible default [@delacre_why_2017].
 
@@ -94,30 +96,31 @@ t.test(rating ~ daniel_kyra, data = df_long)
 The *t*-value is 2.5175. The *t*-test returns the probability of finding a difference as extreme, or more extreme, as the observed difference. We can graph the *t*-distribution (for df = 18) and a vertical line at t = 2.5175 in R using:
 
 ```{r}
-x=seq(-5,5,length=1000)
-plot(x,dt(x,df=18),col='black',type='l')
-abline(v=2.5175, lwd=2)
-x=seq(2.5175,5,length=100)
-z<-(dt(x,df=18))
-polygon(c(2.5175,x,8),c(0,z,0),col="blue")
+x <- seq(-5, 5, length = 1000)
+plot(x, dt(x, df = 18), col = "black", type = "l",
+     xlab = "t-value", ylab = "", main = "Normal and t-distribution")
+abline(v = 2.5175, lwd = 2)
+x <- seq(2.5175, 5, length = 100)
+z <- (dt(x, df = 18))
+polygon(c(2.5175, x, 8), c(0, z, 0), col = rgb(1, 0, 0, 0.5))
 ```
 Let’s recall the definition of a *p*-value: A *p*-value is the probability of the observed or more extreme data, assuming the null hypothesis is true. The assumption that the null-hypothesis is true is represented by the t-distribution being centered around 0, which is the t-value if the difference between the two groups is exactly 0. The probability of an outcome as high, or higher, as the one observed, is indicated by the blue area. This is known as a one-tailed probability. It is equivalent to the probability that my friends like the extended directors cut of LOTR more than my wife’s friends.
 
 However, that wasn’t my question. My question was whether my friends and my wife’s friends would differ in how much they liked the LOTR movies. It would have been just as interesting to find my friends liked the movies less than my wife’s friends. Since many of my friends have read the book more than 20 times, and it’s often the case that people like the book better than the movie, an opposite outcome would have been just as likely. Furthermore, there has only been one person in my family who has been to a marathon movie night in the cinema when the third LOTR movie came out, and it wasn’t me. So let’s plot the probability that we found a positive or negative difference, as or more extreme as the one observed (the two-tailed probability). Let's plot this:
 
 ```{r}
-x=seq(-5,5,length=100)
-plot(x,dt(x,df=18),col='black',type='l')
-abline(v=2.5175, lwd=2)
-abline(v=-2.5175, lwd=2)
-abline(v=-2.100922,col="grey",lty=3)
-abline(v=2.100922, col="grey",lty=3)
-x=seq(2.5175,5,length=100)
-z<-(dt(x,df=18))
-polygon(c(2.5175,x,8),c(0,z,0),col="blue")
-x=seq(-5,-2.5175,length=100)
-z<-(dt(x,df=18))
-polygon(c(-8,x,-2.5175),c(0,z,0),col="blue")
+x <- seq(-5, 5, length = 100)
+plot(x, dt(x, df = 18), col = "black", type = "l", xlab = "t-value", ylab = "", main = "t-distribution")
+abline(v = 2.5175, lwd = 2)
+abline(v = -2.5175, lwd = 2)
+abline(v = -2.100922, col = "grey", lty = 3)
+abline(v = 2.100922, col = "grey", lty = 3)
+x <- seq(2.5175, 5, length = 100)
+z <- (dt(x, df = 18))
+polygon(c(2.5175, x, 8), c(0, z, 0), col = rgb(1, 0, 0, 0.5))
+x <- seq(-5, -2.5175, length = 100)
+z <- (dt(x, df = 18))
+polygon(c(-8, x, -2.5175), c(0, z, 0), col = rgb(1, 0, 0, 0.5))
 ```
 
 I have plotted two critical values by horizontal grey dotted lines, which indicate the critical *t*-values for a difference to be significant (*p* < .05) for a t-distribution with 18 degrees of freedom. We can see that the observed difference is more extreme than the minimal critical values. However, we want to know what the exact probability of the two blue areas under the curve is. The *t*-test already provided us with the information,  but let’s calculate it. For the left tail, the probability of a value smaller than *t* = -2.5175 can be found by:
@@ -269,9 +272,9 @@ $\sqrt{\frac{1^{2}}{50}+\frac{1^{2}}{50}}$
 
 The standard error of the differences between means is thus 0.2 for n = 50 in each group, and for n = 5000 it is 0.02. Assuming a normal distribution 95% of the observations fall between 1.96 SE. So for 50 samples per group, the mean differences should fall between -1.96 * 0.2 = -0.392, and +1.96 * 0.2 = 0.392, and we can see the red areas start from approximately -0.392 to 0.392 for n = 50. For 5000 samples per group, the mean differences should fall between -1.96 * 0.02, and +1.96 * 0.02; in other words between -0.0392 to 0.0392 for n = 5000. Due to the larger sample size with n = 5000 observations per group, we should expect to observe mean differences in our sample closer to 0 compared to our null model when we had only 50 observations. 
 
-If we collected n = 5000, and we would again observe a mean difference of 0.5, it should be clear that this same difference is even more surprising than it was when we collected 50 observations. We are now almost ready to address common misconceptions about *p*-values, but before we can do this, we need to introduce a model of the data when the null is not true. If we are not sampling data from a model where the true mean difference is 0, what does our alternative model look like? Some software (such as g*power, see the picture below) will visualize both the null model (red curve) and the alternative model (blue curve) in their output:
+If we collected n = 5000, and we would again observe a mean difference of 0.5, it should be clear that this same difference is even more surprising than it was when we collected 50 observations. We are now almost ready to address common misconceptions about *p*-values, but before we can do this, we need to introduce a model of the data when the null is not true. If we are not sampling data from a model where the true mean difference is 0, what does our alternative model look like? Some software (such as G*power, see Figure \@ref(fig:gpower-screenshot)) will visualize both the null model (red curve) and the alternative model (blue curve) in their output:
 
-```{r gpower_1.3.3, fig.margin=TRUE, echo=FALSE, fig.cap="Screenshot from G*power software"}
+```{r gpower-screenshot, fig.margin=TRUE, echo=FALSE, fig.cap="Screenshot from Gpower software"}
 knitr::include_graphics("images/1.3.3.png")
 ```
 
