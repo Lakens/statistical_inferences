@@ -14,7 +14,7 @@
 
 <meta name="author" content="Daniel Lakens" />
 
-<meta name="date" content="2020-07-25" />
+<meta name="date" content="2020-07-28" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -433,9 +433,9 @@ Let’s recall the definition of a <em>p</em>-value: A <em>p</em>-value is the p
 <p>The app also plots 3 graphs that illustrate the power curves as a function of different alpha levels, sample sizes, or true mean differences. Play around in the app by changing the values. Get a feel for how each variable impacts the null- and alternative models, the mean difference that will be statistically significant, and the Type 1 and Type 2 error rates.</p>
 <p>So far, several aspects of null models should have become clear. First of all, the population value in a traditional null hypothesis is a value of 0, but in any sample you draw, the observed difference falls in a distribution centered on 0, and will thus most often be slightly larger or smaller than 0. Second, the width of this distribution depends on the sample size and the standard deviation. The larger the sample size in the study, the narrower the distribution will be around 0. Finally, when a mean difference is observed that falls in the tails of the null model, this can be considered surprising. The further away from the null-value, the more surprising this result is. But when the null model is true, these surprising values will happen with a probability specified by the alpha level (and are called Type 1 errors). Remember that a Type 1 error occurs when a researcher concludes there is a difference in the population, while the true mean difference in the population is zero.</p>
 <p>We are now finally ready to address some common misconceptions about <em>p</em>-values. Let’s go through a list of common misconceptions that have been reported in the scientific literature. Some of these examples might sounds like semantics. It is easy to at first glance think that the statement communicates the right idea, even if the written version is not formally correct. However, when a statement is not formally correct, it is wrong. And exactly because people so often misunderstand <em>p</em>-values, it is worth it to be formally correct about how they should be interpreted.</p>
-<div id="misunderstanding-1-a-non-significant-p-value-means-that-the-null-hypothesis-is-true." class="section level3">
+<div id="misconception1" class="section level3">
 <h3>
-<span class="header-section-number">1.3.1</span> Misunderstanding 1: A non-significant <em>p</em>-value means that the null hypothesis is true.</h3>
+<span class="header-section-number">1.3.1</span> Misunderstanding 1: A non-significant <em>p</em>-value means that the null hypothesis is true</h3>
 <p>A common version of this misconception is reading a sentence such as ‘because p &gt; 0.05 we can conclude that there is no effect’. Another version of such a sentence is ‘there was no difference, (p &gt; 0.05)’.</p>
 <p>Before we look at this misconception in some detail, I want to remind you of one fact that is easy to remember, and will enable you to recognize many misconceptions about <em>p</em>-values: <em>p</em>-values are a statement about the probability of data, not a statement about the probability of a hypothesis or the probability of a theory. Whenever you see <em>p</em>-values interpreted as a probability of a theory or a hypothesis, you know something is not right. Examples of statements about a hypothesis are ‘The null hypothesis is true’, or ‘The alternative hypothesis is true’, because both these statements say that the probability that the null or alternative model is true is 100%. A subtler version is a statement such as ‘the observed difference is not due to chance’. The observed difference is only ‘due to chance’ (instead of due to the presence of a real difference) when the null hypothesis is true, and as before, this statement implies it is 100% probable that the null hypothesis is true.</p>
 <p>When you conclude that ‘there is no effect’ or that ‘there is no difference’ you are similarly claiming that it is 100% probable that the null hypothesis is true. But since <em>p</em>-values are statements about the probability of data, you should refrain from making statements about the probability of a theory solely based on a <em>p</em>-value. That’s ok. <em>p</em>-values were designed to help you identify surprising results from a noisy data generation process (aka the real world). They were not designed to quantify the probability that a hypothesis is true.</p>
@@ -453,15 +453,16 @@ The second incorrect statement was ‘there was no difference’’. This statem
 <p>This is the opposite misconception from the one we discussed previously. Examples of incorrect statements based on this misconception are ‘p &lt; .05, therefore there is an effect’, or ‘there is a difference between the two groups, p &lt; .05’. As before, both these statements imply it is 100% probable that the null model is false, and an alternative model is true.</p>
 <p>As a simple example of why such extreme statements are incorrect, imagine we generate a series of numbers in R using the following command:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="pvalue.html#cb13-1"></a><span class="kw">rnorm</span>(<span class="dt">n =</span> <span class="dv">50</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">1</span>)</span></code></pre></div>
-<pre><code>##  [1]  1.14301139  0.49900897 -2.13159817  2.18340572  1.93436594 -2.09401368
-##  [7] -2.70641078  1.79003454  0.81592021  0.24345879 -0.31551403 -1.68445514
-## [13] -0.63037156  0.14214457  0.28551759  0.56665975  1.23667041 -0.57271609
-## [19] -1.50213537  0.46496450 -1.04110110  0.54903038 -1.25112122 -0.59028443
-## [25] -1.19761180 -0.09144992 -0.73524380  0.84222464 -2.66814493 -1.49464998
-## [31]  1.69763904  0.99730006 -0.08497568  2.75133850  2.38881196 -0.25662945
-## [37] -0.62135545  0.81989758  0.98000958  0.16483181  1.99374002  0.06220673
-## [43] -1.43577657 -0.19965114 -0.17012301 -0.28718196  1.20233843 -2.08816365
-## [49] -0.39341586 -0.03721632</code></pre>
+<pre><code>##  [1]  0.176137245 -0.424127641 -0.379555587  0.016113619  0.593340096
+##  [6]  2.254393921  1.625929658  0.551029298  1.369025057  1.716169970
+## [11]  0.932329999  0.575926528 -0.563943008 -0.748433107  1.075723523
+## [16] -0.939334624 -0.528003882  1.327684536 -0.915596017 -1.462033449
+## [21] -0.018989189  0.092908620 -0.111208197  0.007937973  0.920324273
+## [26] -0.316203260  1.009772278 -0.726862383  1.261232036  2.077857543
+## [31] -0.212986465  0.063946457 -1.189581838 -1.562340630 -0.289229580
+## [36] -0.035466027 -0.010793129  1.382437506  0.284823006 -0.442507880
+## [41]  1.046170547  1.301059372 -1.589496484 -0.888256032 -1.636985045
+## [46] -0.337621425  1.419032686  1.197272768 -0.360776221  0.643094206</code></pre>
 <p>This command generates 50 random observations from a distribution with a mean of 0 and a standard deviation of 1 (in the long run – the mean and standard deviation will vary in each sample that is generated). Imagine we run this command once, and we observe a mean of 0.5. The figure below visualizes this scenario. We can perform a one-sample t-test against 0, and this test tells us, with a p &lt; .05, that the data we have observed is surprisingly different from 0, assuming the random number generator in R functions as it should and generates data with a true mean of 0.</p>
 <p><img src="Statistical_Inferences_files/figure-html/fig.1.3.7-1.png" width="672"></p>
 <p>The significant <em>p</em>-value does not allow us to conclude that the null hypothesis (“the random number generator works”) is false. It is true that the mean of the 50 samples we generated was surprisingly extreme. But a low <em>p</em>-value simply tells us that an observation is surprising. We should observe such surprising observations with a low probability when the null hypothesis is true – but they still happen. Therefore, a significant result does not mean an alternative hypothesis is true – the result can also be a Type 1 error, and in the example above, Omniscient Jones knows that this is the case.</p>
@@ -469,9 +470,9 @@ The second incorrect statement was ‘there was no difference’’. This statem
 <p>Both these formally correct statements are a bit long. In scientific articles, we often read a shorter statement such as: ‘we can reject the null hypothesis’, or ‘we can accept the alternative hypothesis’. These statements might be made with the assumption that readers will themselves add ‘with a 5% probability of being wrong, in the long run’. But it might be useful to add ‘with a 5% long run error rate’ at least the first time you make such a statement in your article to remind readers.</p>
 <p>In the example above we have a very strong subjective prior probability that the random number generator in R works. Alternative statistical procedures to incorporate such prior beliefs are Bayesian statistics (week 2) or false positive report probabilities (week 3). In frequentist statistics, the idea is that you need to replicate your study several times. You will observe a Type 1 error every now and then, but you are unlikely to observe a Type 1 error three times in a row. Alternatively, you can lower the alpha level in a single study to reduce the probability of a Type 1 error rate.</p>
 </div>
-<div id="misunderstanding-3-a-significant-p-value-means-that-a-practically-important-effect-has-been-discovered." class="section level3">
+<div id="misunderstanding-3-a-significant-p-value-means-that-a-practically-important-effect-has-been-discovered" class="section level3">
 <h3>
-<span class="header-section-number">1.3.3</span> Misunderstanding 3: A significant <em>p</em>-value means that a practically important effect has been discovered.</h3>
+<span class="header-section-number">1.3.3</span> Misunderstanding 3: A significant <em>p</em>-value means that a practically important effect has been discovered</h3>
 <p>A common concern when interpreting <em>p</em>-values is that ‘significant’ in normal language implies ‘important’, and thus a ‘significant’ effect is interpreted as an ‘important’ effect. However, the question whether an effect is important is completely orthogonal to the question whether it is different from zero, or even how large the effect is. Not all effects have practical impact. The smaller the effect, the less likely such effects will be noticed by individuals, but such effects might still have a large impact on a societal level. Therefore, the general take home message is that statistical significance does not answer the question whether an effect matters in practice, or is ‘practically important’. To answer the question whether an effect matters, you need to present a cost-benefit analysis.</p>
 <p>This issue of practical significance most often comes up in studies with a very large sample size. As we have seen before, with an increasing sample size, the width of the density distribution around the null-value becomes more and more narrow, and the values that are considered surprising fall closer and closer to zero.</p>
 <p>If we plot the null model for a very large sample size (e.g., n = 10000 per group) we see that even very small mean differences (differences more extreme than a mean difference of 0.04) will be considered ‘surprising’. This still means that if there really is no difference in the population, you will observe differences larger than 0.04 less than 5% of the time, in the long run, and 95% of the observed differences will be smaller than a mean difference of 0.04. But it becomes more difficult to argue for the practical significance of such effects. Imagine that a specific intervention is successful in changing people’s spending behavior, and when implementing some intervention people save 12 cents per year. It is difficult to argue how this effect will make any individual happier. However, if this money is combined, it will yield over 2 million, which could be used to treat diseases in developing countries, where it would have a real impact. The cost of the intervention might be considered too high if the goal is to make individuals happier, but it might be consider worthwhile if the goal is to raise 2 million for charity.</p>
@@ -565,7 +566,7 @@ What we can generally take away from this last misunderstanding is the fact that
 <a href="power.html"><button class="btn btn-default">Next</button></a>
 </p>
 <p class="build-date">Page built: 
-2020-07-25
+2020-07-28
 </p>
 </div>
 </div>
@@ -576,7 +577,7 @@ What we can generally take away from this last misunderstanding is the fact that
 <span style="display: inline-block; margin-left: 2em; margin-top: 16px; font-size: small">
 <span style="font-weight: bold;">Daniel Lakens</span><br/>
 <a href="https://statistical-inferences.com">statistical-inferences.com</a><br/>
-page built  2020-07-25 22:44:16
+page built  2020-07-28 22:38:14
 </span>
 </p>
 </div>
