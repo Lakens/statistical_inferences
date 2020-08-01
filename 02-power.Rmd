@@ -3,12 +3,41 @@ knit: "bookdown::preview_chapter"
 ---
 
 ```{r, include = FALSE}
+library(tidyverse)
+library(gridExtra)
+library(kableExtra)
+library(ggrepel)
+library(grid)
+library(magrittr)
+library(kableExtra)
+library(tidyverse)
+library(pwr)
+library(Superpower)
+library(ggplot2)
+library(patchwork)
+library(MASS)
+library(viridis)
+library(TOSTER)
+library(BEST)
+library(metafor)
+library(MOTE)
+library(binom)
+library(MASS)
 knitr::opts_chunk$set(error = FALSE, warning = FALSE, message = FALSE)
 ```
 
-# Power analysis. {#power}
+# Justifying the Number of Observations {#power}
 
-## Statistical power and Type 2 error rates
+When you perform an experiment, you want it to provide an answer to your research question that is as informative as possible. However, since all scientists are faced with resource limitations, you need to balance the cost of collecting each additional datapoint against the increase in information that datapoint provides. In economics, this is known as the Value of Information [@eckermann_value_2010]. Calculating the value of information is notoriously difficult. You need to specify the costs and benefits of possible outcomes of the study, and quantifying a utility function for scientific research is not easy. 
+
+Because of the difficulty of quantifying the value of information, scientists use less formal approaches to justify the amount of data they set out to collect. That is, if they provide a justification for the number of observations to begin with. Even though in some fields a justification for the number of observations is required when submitting a grant proposal to a science funder, a research proposal to an ethical review board, or a manuscript for submission to a journal. In some research fields, the number of observations is *stated*, but not *justified*. This makes it difficult to evaluate how informative the study was. Referees can't just assume the number of observations is sufficient to provide an informative answer to your research question, so leaving out a justification for the number of observations is not best practice, and a reason reviewers can criticize your submitted article.
+
+Below, several possible justifications for the number of observations are discussed. First, you might be able to **collect data from the entire population**. Second, you might justify the sample size based on **feasibility**. Since we always have resource constraints, it is good to know about feasibility justifications, even though they are rarely discussed in statistics textbooks. Third, you might want to perform an a-priori power analysis. We will discuss all these situations in turn. Before we do so, we need to get some terminology out of the way. 
+
+When single observations are collected from participants in a study, the number of observations equals the sample size. In these cases, we can use a justification for the number of observations and a sample size justification interchangeably. When multiple observations from single individuals can be collected, if is preferable to refer to a **justification for the number of observations**, instead of a **sample size justification**. Although you'll mostly see the current topic discussed as 'sample size justification' there will always be a perception researcher who reminds you they collect 400 observations from three subjects and get highly informative results. 
+
+**Statistical power** is the probability of a test to yield a statistically significant result if the alternative hypothesis is true [@aberson_applied_2019; @cohen_statistical_1988]. Power depends on the Type 1 error rate (α), the true effect size in the population, and the number of observations. Because the true effect size is typically unknown, it makes most sense to speak about the power function. In Figure \@ref(fig:power-1) you see a power curve for an independent *t*-test, with an alpha level of 0.05. We see that as the effect size (in Cohen's d) increases, power increases. If the effect you study has an effect size of 0.5, you would have almost 70% power with 50 observations in each independent group (indicated by the red dot). If the true effect size is smaller, power is lower, and as the effect size is larger, power is larger. 
+
 
 ```{r, power-1, fig.margin=TRUE, echo=FALSE, fig.cap="Power curve for an independent *t*-test as a function of the true effect size."}
 N <- 50
@@ -33,9 +62,190 @@ points(x = d, y = (1 + pt(qt(p_upper / 2, 2 * N - 2, 0), 2 * N - 2, ncp) - pt(qt
 
 ```
 
-Statistical power is the probability of a test to yield a statistically significant result [@aberson_applied_2019; @cohen_statistical_1988]. Power depends on the Type 1 error rate (α), the true effect size in the population, and the number of observations. Because the true effect size is typically unknown, it makes most sense to speak about the power function. In the figure below, you see a power curve for an independent *t*-test, with an alpha level of 0.05. We see that as the effect size (in Cohen's d) increases, power increases. If the effect you study has an effect size of 0.5, you would have almost 70% power with 50 observations in each independent group (indicated by the red dot). If the true effect size is smaller, power is lower, and as the effect size is larger, power is larger. 
+**Power analysis** is the practice of computing the effect size, desired power, sample size, or alpha level from the other three values. Computing the required sample size is commonly referred to as **a-priori** power analysis, computing the smallest effect size you have the desired power for is called **sensitivty** power analysis, computing the alpha level is called **criterion** power analysis, and computing the achieved power is called **post-hoc** power analysis. We will discuss all these different types of power analysis below. With this terminology out of the way, let's examine different ways to justify the number of observations.
 
-```{r, power-2, fig.margin=TRUE, echo=FALSE, fig.cap="Power curve for an independent *t*-test as a function of the sample size."}
+## Measuring the Entire Population
+
+In some instances it might be possible to collect data from the entire population under examination. For example, you might be interested in the average amount of time people spend on the moon, whenever they visit it. Since there are only 12 people who have ever been on the moon, we can calculate the average time people have spent on the moon by collecting data from the entire population. Whenever it is possible to measure the entire population, the justification for the number of observations is that you collected all the data that is available. This is the simplest, and most straightforward, justification for the number of observations. However, it is also quite rare that we are able to measure the entire population. 
+
+## Feasibility
+
+A common reason why a specific number of observations is collected is because collecting more data was not feasible. Note that all decisions for the number of observations we collect in a study are based on the resources we have available in some way. A **feasibility justification** makes these resource limitations the primary reason for the number of observations that are collected. Because we always have resource limitations in science, even when feasibility is not our primary justification for the number of observations we plan to collect, it is always a secondary reason. Despite the omnipresence of resource limitations, the topic often receives very little attention in texts on experimental design. This might make it feel like a feasibility justification is not appropriate, and you should perform an a-priori power analysis or plan for a desired precision instead. But feasibility always plays a secondary role, and therefore regardless of which justification for the number of observations you provide, you will almost always need to include a feasibility justification as well.
+
+Time and money are the two main resource limitations a scientist faces. Our master students write their thesis in 6 months, and therefore their data collection is necessarily limited in whatever can be collected in 6 months, minus the time needed to formulate a research question, design an experiment, analyze the data, and write up the thesis. A PhD student at our department would have 4 years to complete their thesis, but is also expected to complete multiple research lines in this time. In addition to limitations on time, we have limited financial resources. Although nowadays it is possible to collect data online quickly, if you offer participants a decent pay (as you should) most researchers have the financial means to collect thousands of datapoints.
+
+A feasibility justification puts the limited resources at the center of the justification for the number of observations that will be collected. For example, one might argue that 120 observations is the most that can be collected in the three weeks a master student has available to collect data, when each observation takes an hour to collect. A PhD student might collect data until the end of the academic year, and then needs to write up the results over the summer to stay on track to complete the thesis in time.
+
+A feasibility justification thus *starts* with the expected number of observations (N) that a researcher expects to be able to collect. The challenge is to evaluate whether collecting N observations is worthwhile. The answer should sometimes be that data collection is *not* worthwhile. For example, assume I plan to manipulate the mood of participants using funny cartoons and then measure the effect of mood on some dependent variable - say the amount of money people donate to charity. I should expect an effect size around d = 0.31 for the mood manipulation [@joseph_manipulation_2020], and seems unlikely that the effect on donations will be larger than the effect size of the manipulation. If I can only collect mood data from 30 participants in total, how do we decide if this study will be informative?
+
+First of all, more data is always better than no data, so in an absolute sense, all additional data that is collected is better than not collecting data. However, in line with the idea that we need to take into account costs and benefits, it is possible that the cost of data collection outweigh the benefits. To determine this, one needs to think about what the benefits of having the data are. The benefits are clearest when we know for certain that someone is going to make a decision, with or without data. If this is the case, then any data you collect will reduce the error rates of a well-calibrated decision process, even if only ever so slightly. In these cases, the value of information might be positive, as long as the reduction in error rates is more beneficial than the costs of data collection.
+
+Another way in which a small dataset can be valuable is if its existence makes it possible to combine several small datasets into a meta-analysis. This argument in favor of collecting a small dataset requires 1) that you share the results in a way that a future meta-analyst can find them, and 2) that there is a decent probability that someone will perform a meta-analysis in the future which inclusion criteria would contain your study, because a sufficient number of small studies exist. The uncertainty about whether there will ever be such a meta-analysis should be weighed against the costs of data collection. One way to increase the probability of a future meta-analysis is if you commit to performing this yourself in the future. For example, you might plan to repeat a study for the next 12 years in a class you teach, with the expectation that a meta-analysis of 360 participants would be sufficient to achieve around 90% power for d = 0.31. If it is not plausible you will collect all the required data by yourself, you can attempt to set up a collaboration, where fellow researchers in your field commit to collecting similar data, with identical measures, over the next years. If it is not likely sufficient data will emerge over time, we will not be able to draw informative conclusions from the data, and it might be more beneficial to not collect the data to begin with, and examine an alternative research question with a larger effect size instead.
+
+Even if you believe over time sufficient data will emerge, you will most likely compute statistics after collecting a small number of observations. Before embarking on a study where your main justification for the number of observations is based on feasibility, you can expect. I propose that a feasibility justification for the number of observations is always accompanied by three statistics, detailed in the following three sections.
+
+### The smallest effect size that can be statistically significant
+
+In Figure \@ref(fig:power-effect1) the distribution of Cohen’s d given 15 participants per group is plotted when the true effect size is 0 (or the null-hypothesis is true), and when the true effect size is d = 0.5. The blue area is the Type 2 error rate (the probability of not finding p < α, when there is a true effect, and α = 0.05).
+
+```{r, power-effect1, fig.margin=TRUE, echo=FALSE, fig.cap="Null and alternative distribution, assuming d = 0.5, alpha = 0.05, and N = 15 per group."}
+N <- 15
+d <- 0.5
+p_upper <- 0.05
+ncp <- (d * sqrt(N / 2)) # Calculate non-centrality parameter d
+crit_d <- abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
+low_x <- min(-1 - crit_d)
+high_x <- max(d + 1 + crit_d)
+# calc d-distribution
+x <- seq(low_x, high_x, length = 10000) # create x values
+d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2) # calculate distribution of d based on t-distribution
+# Set max Y for graph
+y_max <- max(d_dist) + 1
+# create plot
+par(bg = "aliceblue")
+d <- round(d, 2)
+plot(-10, xlim = c(low_x, high_x), ylim = c(0, y_max), xlab = substitute(paste("Cohen's ", delta == 0.5)), ylab = "Density", main = substitute(paste("Distribution of Cohen's ", delta == 0.5, ", N = 15 per group")))
+# abline(v = seq(low_x,high_x,0.1), h = seq(0,0.5,0.1), col = "lightgray", lty = 1)
+#    axis(side = 1, at = seq(low_x,high_x,0.1), labels = FALSE)
+lines(x, d_dist, col = "black", type = "l", lwd = 2)
+# add d = 0 line
+d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = 0) * sqrt(N / 2)
+lines(x, d_dist, col = "grey", type = "l", lwd = 1)
+# Add Type 1 error rate right
+crit_d <- abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
+y <- seq(crit_d, 10, length = 10000)
+z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2) * sqrt(N / 2)) # determine upperbounds polygon
+polygon(c(crit_d, y, 10), c(0, z, 0), col = rgb(1, 0, 0, 0.5))
+# Add Type 1 error rate left
+crit_d <- -abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
+y <- seq(-10, crit_d, length = 10000)
+z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2) * sqrt(N / 2)) # determine upperbounds polygon
+polygon(c(y, crit_d, crit_d), c(z, 0, 0), col = rgb(1, 0, 0, 0.5))
+# Add Type 2 error rate
+crit_d <- abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
+y <- seq(-10, crit_d, length = 10000)
+z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2)) # determine upperbounds polygon
+polygon(c(y, crit_d, crit_d), c(0, z, 0), col = rgb(0, 0, 1, 0.5))
+segments(crit_d, 0, crit_d, y_max - 0.8, col = "black", lwd = 2)
+text(crit_d, y_max - 0.5, paste("Effects larger than d = ", round(crit_d, 2), "will be statistically significant"), cex = 1)
+```
+
+You might seen such graphs before. The only thing I have done is to transform the *t*-value distribution that is commonly used in these graphs, and calculated the distribution for Cohen’s d. This is a straightforward transformation, but instead of presenting the critical *t*-value the figure provides the critical *d*-value. For a two-sided independent *t*-test, this is calculated as: 
+
+```{r, eval = FALSE}
+qt(1-(a / 2), (n1 + n2) - 2) * sqrt(1/n1 + 1/n2)
+```
+
+where 'a' is the alpha level (e.g., 0.05) and N is the sample size in each independent group. For the example above, where alpha is 0.05 and n = 15: 
+
+```{r, eval = TRUE}
+qt(1-(0.05 / 2), (15 * 2) - 2) * sqrt(1/15 + 1/15)
+```
+
+The critical *t*-value (2.0484071) is also provided in commonly used power analysis software such as G\*Power. We can compute the critical Cohen's d from the *t*-value and sample size using: $d = t{\sqrt{1/n_1 + 1/n_2}}$.
+
+```{r gcrit1, fig.margin=TRUE, echo=FALSE, fig.cap="The critical *t*-value is provided by G\\*Power software."}
+knitr::include_graphics("images/gpowcrit.png")
+```
+
+When you will test an association between variables with a correlation, G\*Power will directly provide you with the critical effect size. When you compute a correlation based on a two-sided test, your alpha level is 0.05, and you have 30 observations, only effects larger than r = 0.361 will be statistically significant. In other words, the effect needs to be quite large to even have the mathematical possibility of becoming statistically significant.
+
+```{r gcrit2, fig.margin=TRUE, echo=FALSE, fig.cap="The critical r is provided by G\\*Power software."}
+knitr::include_graphics("images/gpowcrit2.png")
+```
+
+The critical effect size gives you information about the smallest effect size that, if observed, would by statistically significant. If you observe a smaller effect size, the *p*-value will be larger than your significance threshold. You always have some probability of observing effects larger than the critical effect size. After all, even if the null hypothesis is true, 5% of your tests will yield a significant effect. But what you should ask yourself is whether the effect sizes that could be statistically significant are realistically what you would expect to find. If this is not the case, it should be clear that there is no use in performing a significance test. Mathematically, when the critical effect size is larger than effects you expect, your statistical power will be less than 50% (see the section on [observed power](#observedpower)). If you perform a statistical test with less than 50% power, your single study is not very informative.
+
+### Compute the width of the confidence interval around the effect size
+
+The second statistic to report alongside a feasibility justification is the width of the 95% confidence interval around the effect size. As we saw in the section on [confidence intervals](#confint) they represent a range that is wide enough so that in the long run in 95% of repetitions of the same experiment the true population parameter falls within each confidence interval calculated around the observed effect size. Cumming -@cumming_understanding_2013 calls the difference between the observed effect size and the upper 95% confidence interval (or the lower 95% confidence interval) the margin of error (MOE).
+
+```{r MOTE-CI-1, echo = TRUE}
+# Compute the effect size d and 95% CI
+res <- d.ind.t(m1 = 0, m2 = 0, sd1 = 1, sd2 = 1, n1 = 15, n2 = 15, a = .05)
+# Print the result
+res$estimate
+# Compute the average Margin of Error (MOE)
+(res$dhigh - res$dlow)/2
+# For non-zero effects the CI is based on the non-central t
+# The MOE is then asymmetric (but differences are very small)
+(res$d - res$dlow)
+(res$dhigh - res$d)
+
+```
+
+If we compute the 95% CI for an effect size of 0, we see that with 15 observations in each condition of an independent *t*-test the 95% CI ranges from -0.72 to 0.72. The MOE is half the width of the 95% CI, 0.72. This clearly shows we have a very imprecise estimate. A Bayesian estimator who uses an uninformative prior would compute a credible interval with the same upper and lower bound [@albers_credible_2018], and might conclude they personally believe there is a 95% chance the true effect size lies in this interval. A frequentist would reason more hypothetically: If the observed effect size in the data I plan to collect is 0, I could only reject effects more extreme than d = 0.72 in an equivalence test with a 5% alpha level (even though if such a test would be performed, power might be low, depending on the true effect size). Regardless of the statistical philosophy you plan to rely on when analyzing the data, both of these conclusions are pretty much trivial. Effect sizes in this range are findings such as "People become aggressive when they are provoked", "People prefer their own group to other groups", and "Romantic partners resemble one another in physical attractiveness" [@richard_one_2003]. If you can only reject the presence of effects that are so large people would clearly notice them, there is typically little need to collect data, as we do not learn something we didn't already know.  
+
+We see this the MOE is almost, but not exactly, the same as the critical effect size d we observed above (d = 0.7479725). The reason for this is that the 95% confidence interval is calculated based on the *t*distribution. If the true effect size is not zero, the confidence interval is calculated based on the non-central *t*distribution, and the 95% CI is asymmetric. Figure \@ref(fig:noncentralt) vizualizes three *t*-distributions, one symmetric at 0, and two asymmetric distributions with a noncentrality parameter of 2 and 3. The asymmetry is most clearly visible in very small samples (the distribution in the plot have 5 degrees of freedom) but remain noticeablewhen calculating confidence intervals and statistical power. For example, for a true effect size of d = 0.5 the 95% CI is $d_s$ = 0.50, 95\\% CI [-0.23, 1.22]. The MOE based on the lower bound is 0.7317584 and based on the upper bound is 0.7231479. If we compute the 95% CI around the critical effect size (d = 0.7479725) we see the 95% CI ranges from exactly 0.00 to 1.48. As explained in the section on the relation between a [confidence interval and a *p*-value](#relatCIp), if the 95% CI excludes zero, the test is statistically significant. In this case the lowerbound of the confidence interval exactly touches 0, which means we would observe a *p* = 0.05 if we exactly observed the critical effect size.
+
+```{r noncentralt, fig.margin = FALSE, echo = FALSE, fig.cap="Central (black) and 2 non-central (red and blue) *t*-distributions."}
+x <- seq(-12, 12, length = 10000)
+y <- dt(x, df = 5, 0)
+plot(x, y, type = "l", col = "black", lwd = 3, xlab = "t", ylab = "", main = "Central and non-central t-distributions")
+lines(x, dt(x, df = 5, 2), col = "#E69F00", type = "l", lwd = 3)
+lines(x, dt(x, df = 5, 3), col = "#56B4E9", type = "l", lwd = 3)
+legend(-12, 0.38, # places a legend at the appropriate place
+       c("t(5, ncp = 0)", "t(5, ncp = 2)", "t(5, ncp = 3)"), # puts text in the legend
+       lty = c(1, 1), # gives the legend appropriate symbols (lines)
+       lwd = c(2.5, 2.5, 2.5), col = c("black", "#E69F00", "#56B4E9")
+) # format lines and colors
+```
+
+Where computing the critical effect size can make it clear that a *p*-value is of little interest, computing the 95% CI around the effect size can make it clear that the effect size estimate is of little value. It will often be so uncertain, and the range of effect sizes you will not be able to reject if there is no effect is so large, the effect size estimate is not very useful. This is also the reason why performing a pilot study to estimate an effect size for an a-priori power analysis is not a sensible strategy [@albers_when_2018; @leon_role_2011]. However, it is possible that the sample size is large enough to exclude some effect sizes that are still a-priori plausible. For example, with 50 observations in each independent group, you have 82% [power for an equivalence test](#powerequiv) with bounds of -0.6 and 0.6, and if effect larger than 0.6 can be rejected, this might be sufficient to tentatively start to question claims of even larger effects in the literature.
+
+### Plot a sensitivity power analysis 
+
+```{r gsens0, fig.margin=TRUE, echo=FALSE, fig.cap="Sensitivity power analysis in G\\*Power software."}
+knitr::include_graphics("images/sensitivity0.png")
+```
+
+In a [sensitivity power analysis](#typespower) the sample size and the alpha level are fixed, and you compute the effect size you have the desired statistical power to detect. For example, in Figure \@ref(fig:gsens0) the number of observations in each group is set to 15, the alpha level is 0.05, and the desired power is set to 90%. The sensitivity power analysis shows we have 90% power to detect an effect of d = 1.23. Perhaps you feel a power of 90% is a bit high, and you would be happy with 80% power. In Figure \@ref(fig:gsens1) we see that if we desire 80% power, the effect size should be d = 1.06. The smaller the true effect size, the lower the power we have. This plot should again remind us not to put too much faith in a significance test when are sample size is small, since for 15 observations in each condition, statistical power is very low for anything but extremely large effect sizes.
+
+```{r gsens1, fig.margin=FALSE, echo=FALSE, fig.cap="Plot of the effect size against the desired power when n = 15 per group and alpha = 0.05."}
+knitr::include_graphics("images/sensitivity1.png")
+```
+
+If we look at the effect size that we would have 50% power for, we see it is d = 0.7411272. This is very close to our critical effect size of d = 0.7479725 (the smallest effect size that, if observed, would be significant). The difference is due to the non-central *t*-distribution (see Figure \@ref(fig:noncentralt). If the distribution was symmetric, observing an effect size exactly on the critical value would mean half of the distirbution is smaller than the critical effect size, and half of the distribution is larger, and we would have exactly 50% power for the critical effect size. Because the distribution is not symmetrical, we need to find the critical effect size for which it *is* true that half the distribution falls below it, and half the distribution falls above it. This value can't be calculated directly, and requires an iterative procedure that optimizes the values of the non-centrality parameter such that power is exactly 50% [@smithson_confidence_2003]. The `pwr` package in R can calculate this effect size in a sensitivity analysis where we enter the sample size (per group), the alpha level, and the desired power for a two-sided independent *t*-test, which will return d = 0.7411272. We can check this true effect size would indeed give with 50% power (but feel free to skip these technicalities).
+
+```{r, echo = TRUE}
+# Sensitivity power analysis
+pwr::pwr.t.test(n = 15, 
+                sig.level = 0.05, 
+                power = 0.5, 
+                type = "two.sample",
+                alternative = "two.sided")
+
+# d = 0.7411272 - let's check this indeed gives 50% power
+# We compute the non-centrality parameter delta
+delta <- 0.7411272 * sqrt(15/2)
+
+# For a 2-sided test power is the probability of finding a result that is
+# 1) larger than the critical value of 2.0484071, which is: 0.4999563
+# 2) We need to add the tiny probability that we find a significant result in
+# the opposite direction. This will rarely happen: 0.00004372648
+# Together these two probabilities make exactly 50%:
+1-pt(2.0484071, 28, 2.0296604) + pt(-2.0484071, 28, 2.0296604)
+```
+
+### Reporting a feasibility justification.
+
+To summarize, I recommend addressing the following components in a feasibility sample size justification. Addressing these points explicitly will allow you to evaluate for yourself if collecting the data will have scientific value. If not, there might be other reasons to collect the data. For example, at our department, students often collect data as part of their education. However, if the primary goal of data collection is educational, the number of observations that is collected can be very small. It is often educational to collect data from a small number of participants to experience what data collection looks like in practice, but there is often no educational value in collecting data from more than 10 participants. Despite the small sample size, we often require students to report statistical analyses as part of their education, which is fine as long as it is clear the numbers that are calculated can not meaningfully be interpreted. Table \@ref(tab:table-pow-rec) should help to evaluate if the interpretation of statistical tests has any value, or not.
+
+```{r table-pow-rec, echo = FALSE}
+
+table_pow_rec <- data.frame(c("Will a future meta-analysis be performed?", "Will a decision be made, regardless of the amount of data that is available?", "What is the critical effect size?", "What is the width of the confidence interval?", "Which effect sizes would you have decent power to detect?"), c("Consider the plausibility that sufficient highly similar studies will be performed in the future to, eventually, make a met-analysis possible", "If it is known that a decision will be made, with or without data, then any data you collect will reduce error rates.", "Report and interpret the critical effect size, with a focus on whether a hypothesis test would even be significant for expected effect sizes. If not, indicate you will not interpret the data based on *p*-values.", "Report and interpret the width of the confidence interval. What will an estimate with this much uncertainty be useful for? If the null hypothesis is true, would rejecting effects outside of the confidence interval be worthwhile (ignoring you might have low power to actually test against these values)?", "Report a sensitivity power analysis, and report the effect sizes you could detect across a range of desired power levels (e.g., 80%, 90%, and 95%), or plot a sensitivity curve of effect sizes against desired power."))
+colnames(table_pow_rec) <- c("What to address", "Example?")
+
+knitr::kable(table_pow_rec, caption = "Overview of recommendations when reporting a sample size justification based on feasibility.")
+```
+
+If the study is not performed for educational purposes, but the goal is answer a research question, the feasibility justification might indicate that there is no value in collecting the data. If it wasn't possible to conclude that one should not proceed with the data collection, there is no use of justifying the sample size. There should be cases where it is unlikely there will ever be enough data to perform a meta-analysis (for example because of a lack of general interest in the topic), the information will not be used to make any decisions, and the statistical tests do not allow you to test a hypothesis or estimate an effect size estimate with any useful accuracy. It should be a feasibility justification - not a feasibility excuse. If there is no good justification to collect the maximum number of observations that is feasible, performing the study nevertheless is a waste of participants time, and/or a waste of money if data collection has associated costs. Collecting data without a good justification why the planned number of observations will yield worthwhile information has an ethical component. As Button and colleagues @button_power_2013 write: "Low power therefore has an ethical dimension — unreliable research is inefficient and wasteful. This applies to both human and animal research". Think carefully if you can defend data collection based on a feasibility justification. Sometimes data collection is just not feasible, and we should accept this.
+
+## A-priori power analysis
+
+When designing a study where the goal is to observe a statistically significant effect, researchers often want to make sure their sample size is large enough to have sufficient power to detect effects they expect, or effects they are interested in observing. This is done by performing an *a-priori* power analysis. Given a specified effect size, alpha level, and desired power, an a-priori power analysis will inform you about the sample size you need to collect. In Figure \@ref(fig:power-2) you see how the statistical power increases as the number of observations (per group) in an independent *t*-test with an alpha level of 0.05 increases.
+
+```{r, power-2, fig.margin=FALSE, echo=FALSE, fig.cap="Power curve for an independent *t*-test as a function of the sample size."}
 N <- 50
 d <- 0.5
 p_upper <- 0.05
@@ -58,19 +268,105 @@ points(x = N, y = (1 + pt(qt(p_upper / 2, 2 * N - 2, 0), 2 * N - 2, ncp) - pt(qt
 
 ```
 
-When designing a study where the goal is to observe a statistically significant effect, researchers often want to make sure they have enough power to detect effects they expect or are interested in observing. This is done by performing an *a-priori* power analysis. The true effect size is what it is, so if researchers want to increase the statistical power of their test, they either have to increase the alpha level, or increase the number of observations. In the figure below you see how the statistical power increases as the number of observations (per group) in an independent *t*-test with an alpha level of 0.05 increases.  
+A-priori power calculations are performed under the assumption that there is an effect. In practice, it is of course also possible that there is no effect (e.g., d = 0). If there is no true effect, and you want to use formally correct language, power is *undefined*. Statistical power is a concept that can only be computed assuming there is a true effect. If there is no true effect, you will still observe significant effects, but these ar *Type 1 errors*, or false positives. These occur at your chosen alpha level (e.g., 5% of the time). If you perform a hypothesis test, there are four possible outcomes:
 
-### Types of power analysis
+1. False positives or Type 1 errors, indicated by α (you observe a significant test result when H0 is true)
+2. False negatives or Type 2 errors, indicated by β (you observe a non-significant result when H1 is true)
+3. True negatives, indicated by 1-α (a non-significant result when H0 is true) 
+4. True positives, indicated by 1-β (a significant test result when H1 is true)
 
-In an a-priori power analysis one uses the effect size, desired power, and alpha level to compute the required sample size. If we plan to perform a two-sided *t*-test, want to have 90% power for an effect size of d = 0.5, given an alpha level of 0.01, we will need a sample size of 121 in each independent group. 
+```{r NHST-outcomes, fig.margin=TRUE, echo=FALSE, fig.cap="Four possible outcomes in a null hypothesis significance test."}
+knitr::include_graphics("images/2.1.1.png")
+```
+
+The goal of an a-priori power analysis is to increase the sample size up to the level that the desired power, the probability of finding a significant result if there is a true effect, or 1-β, is at a desired level for an effect size one is interested in detecting, given a specific alpha level.
+
+In Figure \@ref(fig:power-3) you see two distributions. The left (grey) distribution is centered at 0. This is our model for the null hypothesis. If the null hypothesis is true we can find statistically significant results if the effect size is extreme enough (in a two-sided test either in the positive or negative direction), but these would be Type 1 errors (the red areas under the curve). 
+
+The right (black) distribution is centered at an effect of d = 0.5. This is our model for the alternative hypothesis, where we expect a true effect in the population of d = 0.5. Even though there is a true effect, we will not always find a statistically significant result. This happens when, due to random variation, the observed effect size is too close to 0 to be statistically significant. These results would be false negative results (the blue area under the curve).
+
+```{r, power-3, fig.margin=TRUE, echo=FALSE, fig.cap="Null and alternative distribution, assuming d = 0.5, alpha = 0.05, and N = 86 per group."}
+N <- 86
+d <- 0.5
+p_upper <- 0.05
+ncp <- (d * sqrt(N / 2)) # Calculate non-centrality parameter d
+crit_d <- abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
+low_x <- min(-1 - crit_d)
+high_x <- max(d + 1 + crit_d)
+# calc d-distribution
+x <- seq(low_x, high_x, length = 10000) # create x values
+d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2) # calculate distribution of d based on t-distribution
+# Set max Y for graph
+y_max <- max(d_dist) + 1
+# create plot
+par(bg = "aliceblue")
+d <- round(d, 2)
+plot(-10, xlim = c(low_x, high_x), ylim = c(0, y_max), xlab = substitute(paste("Cohen's ", delta == 0.5)), ylab = "Density", main = substitute(paste("Distribution of Cohen's ", delta == 0.5, ", N = 86 per group")))
+# abline(v = seq(low_x,high_x,0.1), h = seq(0,0.5,0.1), col = "lightgray", lty = 1)
+#    axis(side = 1, at = seq(low_x,high_x,0.1), labels = FALSE)
+lines(x, d_dist, col = "black", type = "l", lwd = 2)
+# add d = 0 line
+d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = 0) * sqrt(N / 2)
+lines(x, d_dist, col = "grey", type = "l", lwd = 1)
+# Add Type 1 error rate right
+crit_d <- abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
+y <- seq(crit_d, 10, length = 10000)
+z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2) * sqrt(N / 2)) # determine upperbounds polygon
+polygon(c(crit_d, y, 10), c(0, z, 0), col = rgb(1, 0, 0, 0.5))
+# Add Type 1 error rate left
+crit_d <- -abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
+y <- seq(-10, crit_d, length = 10000)
+z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2) * sqrt(N / 2)) # determine upperbounds polygon
+polygon(c(y, crit_d, crit_d), c(z, 0, 0), col = rgb(1, 0, 0, 0.5))
+# Add Type 2 error rate
+crit_d <- abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
+y <- seq(-10, crit_d, length = 10000)
+z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2)) # determine upperbounds polygon
+polygon(c(y, crit_d, crit_d), c(0, z, 0), col = rgb(0, 0, 1, 0.5))
+
+```
+
+If we want to increase the statistical power, we are trying to reduce the size of the blue area. One way to do this would be to increase the effect size. This would shift the entire distribution to the right, and reduce the size of the blue area. Although there are ways in controlled experiments to increase the standardized effect size (e.g., by reducing statistical variation in the data), often the effect size is what it is. All we can do is increase the sample size. This will make the distribution around 0.5 more narrow, and this reduces the blue area. You can check this in an online shiny app that [reproduces the plot](http://shiny.ieis.tue.nl/d_p_power/).
+
+### Performing a power analysis. 
+
+There is a wide range of software tools that can help you to perform an a-priori power analysis. Sometimes statistical power can be analytically computed based on closed formulas, and in other situations power can be computed by performing simulations. If we simulate thousands of studies, and count the percentage of studies that are statistically significant, we have an estimate of the statistical power of the test. The code below computes the statistical power (using the `power.t.test` in base R) assuming an effect size of d = 0.5, and alpha level of 0.05, and a desired power of 90%. 
 
 ```{r, echo = TRUE}
 power.t.test(delta = 0.5, 
-             sig.level = 0.01,
+             sig.level = 0.05,
              power = 0.9,
              type = "two.sample",
              alternative = "two.sided")
 ```
+
+The output tells us we need to collect 85.03 observations. Because observations do not come in decimals (we can hardly cut 0.03 off a participant) we need to collect 86 observations. We could also get this answer through simulations. 
+
+```{r, echo = TRUE, cache = TRUE}
+set.seed(600746) #set a seed for reproducible simulations
+p <- numeric(100000) #set up empty variable to store all simulated p-values
+
+#Run simulation
+for(i in 1:100000){ #for each simulated experiment
+  x <- rnorm(n = 85, mean = 0, sd = 1) #Simulate data group 1
+  y <- rnorm(n = 85, mean = 0.5, sd = 1) #Simulate data group 2
+  z <- t.test(x, y) #perform the t-test
+  p[i] <- z$p.value #get the p-value and store it
+}
+
+#Calculate power: sum significant p-values, divide by 100000 simulations
+(sum(p < 0.05)/100000) #power
+```
+
+We see that after 100000 simulations with 85 participants, the estimated power is 0.90015 with 85 participants in each group. The analytic solution tells us power is 0.899894. The more simulations you perform, the more accurate the power estimate will be (as we see, 100000 simulations gives very accurate results).
+
+The way you perform the power analysis depends on the software you use. There are excellent software packages for power analysis, such as [PASS](https://www.ncss.com/software/pass/) or [SAS](https://stats.idre.ucla.edu/sas/seminars/proc-power/), but these solutions are rather expensive. There are also freeware solutions, such as the widely used [G\*Power](https://gpower.hhu.de), [MorePower](https://wiki.usask.ca/pages/viewpageattachments.action?pageId=420413544) by Campbell and Thompson, [PANGEA](https://jakewestfall.shinyapps.io/pangea/) by Jake Westfall and Russ Lenth's [Java applets for power and sample size](https://homepage.divms.uiowa.edu/~rlenth/Power/). 
+There is also a range of options in R. The default stats package has power functions for *t*-tests, proportions, and ANOVA, the `pwr` package has a wider range of options, `pwr2ppl` by Chris Aberson accompanies his excellent book on power analyses [@aberson_applied_2019], `powerlmm`by Kristoffer Magnusson performs power analyses for [two- and three-level linear mixed models](https://github.com/rpsychologist/powerlmm), and [Superpower](https://aaroncaldwell.us/SuperpowerBook/) created by Aaron Caldwell and myself does power analyses for complex ANOVA designs.
+
+It takes time to learn to use this software correctly. You will need to sit down for a few hours and go through vignettes or read the accompanying publications, before you know what to do. In our online manual for Superpower, we compare Superpower against G\*Power, `pwr`, `pwr2ppl` and MorePower. 
+
+### Types of power analysis {#typespower}
+
 
 Sometimes the sample size you can collect is fixed. In that case you can perform a sensitivity power analysis to examine the effect sizes you can detect with a desired power. If we plan to perform a two-sided *t*-test, and can collect at most 70 observations in each independent group, and we want to have 90% power, given an alpha level of 0.01, we only have 90% power for effects of d = 0.66. We could still get lucky find a significant effect if the population effect size is smaller than 0.66, but we would no longer control our Type 2 error rate (1-power) at 10%. 
 
@@ -94,20 +390,9 @@ power.t.test(n = 70,
 
 ```
 
-Note that power calculations are performed under the assumption that there is an effect. In practice, it is of course also possible that there is no effect, or d = 0. In that case, regardless of the sample size, you will observe significance results at your chosen alpha level. 
 
-Therefore, probability of observing a significant or non-significant result in a study depends on the Type 1 error rate (α), the statistical power of the test (1-β), and the probability that the null-hypothesis is true. A study might examine a true effect, which means the alternative hypothesis (H1) is true (e.g., a correlation that differs from zero) or it might examine a null effect, which means the null-hypothesis (H0) is true (e.g., a correlation that is zero). When performing a statistical test on data, the test result might be statistically significant at a specified alpha level (p < α) or not. Thus, there are four possible outcomes of a study:
 
-```{r NHST-outcomes, fig.margin=TRUE, echo=FALSE, fig.cap="Four possible outcomes in a null hypothesis significance test."}
-knitr::include_graphics("images/2.1.1.png")
-```
-
-1. False positives or Type 1 errors (you observe a significant test result when H0 is true)
-2. False negatives or Type 2 errors (you observe a non-significant result when H1 is true)
-3. True negatives (a non-significant result when H0 is true) 
-4. True positives (a significant test result when H1 is true)
-
-The goal of an a-priori power analysis is to increase the sample size up to the level that the desired power is achieved for an effect size one is interested in detecting, but one should always consider the possibility that the effect size is 0. In practice, one can design a study assuming both the presence and the absence of an effect by performing an a-priori power analysis for a null-hypothesis significance test, assuming there is an effect, and an a-priori power analysis for an equivalence test, assuming the true effect size is 0. We will demonstrate some practical examples in the next sections. 
+, but one should always consider the possibility that the effect size is 0. In practice, one can design a study assuming both the presence and the absence of an effect by performing an a-priori power analysis for a null-hypothesis significance test, assuming there is an effect, and an a-priori power analysis for an equivalence test, assuming the true effect size is 0. We will demonstrate some practical examples in the next sections. 
 
 ## How to justify your sample size based on a power analysis.
 
@@ -117,7 +402,7 @@ One might be tempted to perform a small power analysis to estimate the effect si
 
 What can be done? The recommended best practice is to not enter the effect size you expect, but the smallest effect size you would still be interested in. By doing this, you will be able to design a study that has sufficient power for the smallest effect you find worthwhile to observe, even when you do not know what the true effect size is. By determining the required sample size for the smallest effect size of interest, you can guarantee you have designed an informative study. However, in case the true effect size is larger than your smallest effect size of interest, you might collect many more participants than required. This can be solved by performing sequential analyses, where you analyze the data intermittently, while controlling the Type 1 error rate for multiple looks at the data. We will explain sequential analyses later.
 
-## Observed power, and what to do if your editor asks for post-hoc power analyses
+## Observed power, and what to do if your editor asks for post-hoc power analyses {#observedpower}
 
  Observed power (or post-hoc power) is the statistical power of the test you have performed, based on the effect size estimate from your data. Statistical power is the probability of finding a statistical difference from 0 in your test (aka a ‘significant effect’), if there is a true difference to be found. Observed power differs from the true power of your test, because the true power depends on the true effect size you are examining. However, the true effect size is typically unknown, and therefore it is tempting to treat post-hoc power as if it is similar to the true power of your study. In this blog, I will explain why you should never calculate the observed power (except for blogs about why you should not use observed power). Observed power is a useless statistical concept, and at the end of the post, I’ll give a suggestion how to respond to editors who ask for post-hoc power analyses.
 
@@ -545,110 +830,6 @@ If you have heard people say you should be careful when designing studies predic
 
 Some years ago other blog posts by [Uri Simonsohn](http://datacolada.org/17) and [Roger Giner-Sorolla](https://approachingblog.wordpress.com/2018/01/24/powering-your-interaction-2/) did a great job in warning researchers they need large sample sizes for ordinal interactions, and my post repeats this warning. But it would be a shame if researchers would stop examining interaction effects. There are some nice benefits studying interactions, such as 1) making riskier theoretical predictions, 2) greater generalizability (if there is no interaction effect, you might show a main effect operates across different conditions of a second factor) and 3) if you want to study two main effects it is more efficient to do this in a 2x2 design than in two seperate designs (Maxwell, Delaney, & Kelley, 2018). So maybe this blog post has been able to highlight some scenarios where examining interaction effects is still beneficial.
 
-## The smallest effect size that can be statistically significant
-
-When designing a study, you need to justify the sample size you aim to collect. If one of your goals is to observe a p-values lower than the alpha level you decided upon (e.g., 0.05), one justification for the sample size can be a power analysis. A power analysis tells you the probability of observing a statistically significant effect, based on a specific sample size, alpha level, and true effect size. At our department, people who use power as a sample size justification need to aim for 90% power if they want to get money from the department to collect data.
-
-A power analysis is performed based on the effect size you expect to observe. When you expect an effect with a Cohen’s d of 0.5 in an independent two-tailed t-test, and you use an alpha level of 0.05, you will have 90% power with 86 participants in each group. What this means, is that only 10% of the distribution of effects sizes you can expect when d = 0.5 and n = 86 falls below the critical value required to get a p < 0.05 in an independent t-test.
-
-In the figure below, the power analysis is visualized by plotting the distribution of Cohen’s d given 86 participants per group when the true effect size is 0 (or the null-hypothesis is true), and when d = 0.5. The blue area is the Type 2 error rate (the probability of not finding p < α, when there is a true effect, and α = 0.05).
-
-```{r, power-effect1, fig.margin=TRUE, echo=FALSE, fig.cap="Null and alternative distribution, assuming d = 0.5, alpha = 0.05, and N = 86 per group."}
-N <- 86
-d <- 0.5
-p_upper <- 0.05
-ncp <- (d * sqrt(N / 2)) # Calculate non-centrality parameter d
-crit_d <- abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
-low_x <- min(-1 - crit_d)
-high_x <- max(d + 1 + crit_d)
-# calc d-distribution
-x <- seq(low_x, high_x, length = 10000) # create x values
-d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2) # calculate distribution of d based on t-distribution
-# Set max Y for graph
-y_max <- max(d_dist) + 1
-# create plot
-par(bg = "aliceblue")
-d <- round(d, 2)
-plot(-10, xlim = c(low_x, high_x), ylim = c(0, y_max), xlab = substitute(paste("Cohen's ", delta == 0.5)), ylab = "Density", main = substitute(paste("Distribution of Cohen's ", delta == 0.5, ", N = ", 86)))
-# abline(v = seq(low_x,high_x,0.1), h = seq(0,0.5,0.1), col = "lightgray", lty = 1)
-#    axis(side = 1, at = seq(low_x,high_x,0.1), labels = FALSE)
-lines(x, d_dist, col = "black", type = "l", lwd = 2)
-# add d = 0 line
-d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = 0) * sqrt(N / 2)
-lines(x, d_dist, col = "grey", type = "l", lwd = 1)
-# Add Type 1 error rate right
-crit_d <- abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
-y <- seq(crit_d, 10, length = 10000)
-z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2) * sqrt(N / 2)) # determine upperbounds polygon
-polygon(c(crit_d, y, 10), c(0, z, 0), col = rgb(1, 0, 0, 0.5))
-# Add Type 1 error rate left
-crit_d <- -abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
-y <- seq(-10, crit_d, length = 10000)
-z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2) * sqrt(N / 2)) # determine upperbounds polygon
-polygon(c(y, crit_d, crit_d), c(z, 0, 0), col = rgb(1, 0, 0, 0.5))
-# Add Type 2 error rate
-crit_d <- abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
-y <- seq(-10, crit_d, length = 10000)
-z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2)) # determine upperbounds polygon
-polygon(c(y, crit_d, crit_d), c(0, z, 0), col = rgb(0, 0, 1, 0.5))
-segments(crit_d, 0, crit_d, y_max - 0.8, col = "black", lwd = 2)
-text(crit_d, y_max - 0.5, paste("Effects larger than d = ", round(crit_d, 2), "will be statistically significant"), cex = 1)
-```
-
- You’ve probably seen such graphs before (indeed, G*power, widely used power analysis software, provides these graphs as output). The only thing I have done is to transform the t-value distribution that is commonly used in these graphs, and calculated the distribution for Cohen’s d. This is a straightforward transformation, but instead of presenting the critical t-value the figure provides the critical d-value. I think people find it easier to interpret d than t. Only t-tests which yield a t ≥ 1.974, or a d ≥ 0.30, will be statistically significant. All effects smaller than d = 0.30 will never be statistically significant with 86 participants in each condition.
- 
-If you design a study where results will be analyzed with an independent two-tailed t-test with α = 0.05, the smallest true effect you can statistically detect is determined exclusively by the sample size. The (unknown) true effect size only determines how far to the right the distribution of d-values lies, and thus, which percentage of effect sizes will be larger than the smallest effect size of interest (and will be statistically significant – or the statistical power).
-
-I think it is reasonable to assume that if you decide to collect data for a study where you plan to perform a null-hypothesis significance test, you are not interested in effect sizes that will never be statistically significant. If you design a study that has 90% power for a medium effect of d = 0.5, the sample size you decide to use means effects smaller than d = 0.3 will never be statistically significant. We can use this fact to infer what your smallest effect size of interest, or SESOI (Lakens, 2014), will be. Unless you state otherwise, we can assume your SESOI is d = 0.3, and any effects smaller than this effect size are considered too small to be interesting. Obviously, you are free to explicitly state any effect smaller than d = 0.5 or d = 0.4 is already too small to matter for theoretical or practical purposes. But without such an explicit statement about what your SESOI is, we can infer it from your power analysis.
-
-This is useful. Researchers who use null-hypothesis significance testing often only specify the effect they expect when the null is true (d = 0), but not the smallest effect size that should still be considered support for their theory when there is a true effect. This leads to a psychological science that is unfalsifiable (Morey & Lakens, under review). Alternative approaches to determining what the smallest effect size of interest is have recently been suggested. For example, Simonsohn (2015) suggested to set the smallest effect size of interest to 33% of the effect size in the original study could detect. For example, if an original study used 20 participants per group, the smallest effect size of interest would be d = 0.49 (which is the effect size they had 33% power to detect with n = 20).
-
-Let’s assume the original study used a sample size of n = 20 per group. The figure below shows that an observed effect size of d = 0.8 would be statistically significant (d = 0.8 lies to the right of the critical d-value), but that the critical d-value is d = 0.64. That means that effects smaller than d = 0.64 would never be statistically significant in a study with 20 participants per group in a between-subjects design. I think it makes more sense to assume the smallest effect size of interest for researchers who design a study with n = 20 is d = 0.64, rather than d = 0.49 as the small telescopes approach would suggest.. 
-
-```{r, power-effect2, fig.margin=TRUE, echo=FALSE, fig.cap="Null and alternative distribution, assuming d = 0.8, alpha = 0.05, and N = 20 per group."}
-N <- 20
-d <- 0.8
-p_upper <- 0.05
-ncp <- (d * sqrt(N / 2)) # Calculate non-centrality parameter d
-crit_d <- abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
-low_x <- min(-1 - crit_d)
-high_x <- max(d + 1 + crit_d)
-# calc d-distribution
-x <- seq(low_x, high_x, length = 10000) # create x values
-d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2) # calculate distribution of d based on t-distribution
-# Set max Y for graph
-y_max <- max(d_dist) + 1
-# create plot
-par(bg = "aliceblue")
-d <- round(d, 2)
-plot(-10, xlim = c(low_x, high_x), ylim = c(0, y_max), xlab = substitute(paste("Cohen's ", delta == 0.5)), ylab = "Density", main = substitute(paste("Distribution of Cohen's ", delta == 0.5, ", N = ", 86)))
-# abline(v = seq(low_x,high_x,0.1), h = seq(0,0.5,0.1), col = "lightgray", lty = 1)
-#    axis(side = 1, at = seq(low_x,high_x,0.1), labels = FALSE)
-lines(x, d_dist, col = "black", type = "l", lwd = 2)
-# add d = 0 line
-d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = 0) * sqrt(N / 2)
-lines(x, d_dist, col = "grey", type = "l", lwd = 1)
-# Add Type 1 error rate right
-crit_d <- abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
-y <- seq(crit_d, 10, length = 10000)
-z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2) * sqrt(N / 2)) # determine upperbounds polygon
-polygon(c(crit_d, y, 10), c(0, z, 0), col = rgb(1, 0, 0, 0.5))
-# Add Type 1 error rate left
-crit_d <- -abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
-y <- seq(-10, crit_d, length = 10000)
-z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2) * sqrt(N / 2)) # determine upperbounds polygon
-polygon(c(y, crit_d, crit_d), c(z, 0, 0), col = rgb(1, 0, 0, 0.5))
-# Add Type 2 error rate
-crit_d <- abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
-y <- seq(-10, crit_d, length = 10000)
-z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2)) # determine upperbounds polygon
-polygon(c(y, crit_d, crit_d), c(0, z, 0), col = rgb(0, 0, 1, 0.5))
-segments(crit_d, 0, crit_d, y_max - 0.8, col = "black", lwd = 2)
-text(crit_d, y_max - 0.5, paste("Effects larger than d = ", round(crit_d, 2), "will be statistically significant"), cex = 1)
-```
-If you have designed your next study, check the critical d-value to make sure that the smallest effect size you care about, isn’t smaller than the critical effect size you can actually detect. If you think smaller effects are interesting, but you don’t have the resources, specify your SESOI explicitly in your article. You can also use this specified smallest effect size of interest in an equivalence test to statistically reject any effect large enough that you deem it worthwhile (Lakens, 2017), which will help interpreting t-tests where p > α. 
-
-In short, we really need to start specifying the effects we expect under the alternative model, and if you don’t know where to start, your power analysis, or any other approach that determines the sample size you have chosen to collect, might have been implicitly telling you what your smallest effect size of interest is.
 
 ## Requiring high-powered studies from scientists with resource constraints
 
