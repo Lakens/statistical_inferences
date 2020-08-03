@@ -1,5 +1,7 @@
 --- 
 knit: "bookdown::preview_chapter"
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r, include = FALSE}
@@ -26,7 +28,7 @@ library(MASS)
 knitr::opts_chunk$set(error = FALSE, warning = FALSE, message = FALSE)
 ```
 
-# Justifying the Number of Observations {#power}
+# Sample size justification {#power}
 
 When you perform an experiment, you want it to provide an answer to your research question that is as informative as possible. However, since all scientists are faced with resource limitations, you need to balance the cost of collecting each additional datapoint against the increase in information that datapoint provides. In economics, this is known as the Value of Information [@eckermann_value_2010]. Calculating the value of information is notoriously difficult. You need to specify the costs and benefits of possible outcomes of the study, and quantifying a utility function for scientific research is not easy. 
 
@@ -34,7 +36,7 @@ Because of the difficulty of quantifying the value of information, scientists us
 
 Below, several possible justifications for the number of observations are discussed. First, you might be able to **collect data from the entire population**. Second, you might justify the sample size based on **feasibility**. Since we always have resource constraints, it is good to know about feasibility justifications, even though they are rarely discussed in statistics textbooks. Third, you might want to perform an a-priori power analysis. We will discuss all these situations in turn. Before we do so, we need to get some terminology out of the way. 
 
-When single observations are collected from participants in a study, the number of observations equals the sample size. In these cases, we can use a justification for the number of observations and a sample size justification interchangeably. When multiple observations from single individuals can be collected, if is preferable to refer to a **justification for the number of observations**, instead of a **sample size justification**. Although you'll mostly see the current topic discussed as 'sample size justification' there will always be a perception researcher who reminds you they collect 400 observations from three subjects and get highly informative results. 
+The **sample size** should not be confused with the number of participants. When single observations are collected from participants in a study, the number of observations equals the number of participants. In these cases, we can use a sample size justification and a justification for the number of participants interchangeably. When multiple observations from single individuals can be collected, the sample size is the number of observation, but not the number of participants.  
 
 **Statistical power** is the probability of a test to yield a statistically significant result if the alternative hypothesis is true [@aberson_applied_2019; @cohen_statistical_1988]. Power depends on the Type 1 error rate (α), the true effect size in the population, and the number of observations. Because the true effect size is typically unknown, it makes most sense to speak about the power function. In Figure \@ref(fig:power-1) you see a power curve for an independent *t*-test, with an alpha level of 0.05. We see that as the effect size (in Cohen's d) increases, power increases. If the effect you study has an effect size of 0.5, you would have almost 70% power with 50 observations in each independent group (indicated by the red dot). If the true effect size is smaller, power is lower, and as the effect size is larger, power is larger. 
 
@@ -62,19 +64,19 @@ points(x = d, y = (1 + pt(qt(p_upper / 2, 2 * N - 2, 0), 2 * N - 2, ncp) - pt(qt
 
 ```
 
-**Power analysis** is the practice of computing the effect size, desired power, sample size, or alpha level from the other three values. Computing the required sample size is commonly referred to as **a-priori** power analysis, computing the smallest effect size you have the desired power for is called **sensitivty** power analysis, computing the alpha level is called **criterion** power analysis, and computing the achieved power is called **post-hoc** power analysis. We will discuss all these different types of power analysis below. With this terminology out of the way, let's examine different ways to justify the number of observations.
+**Power analysis** is the practice of computing the effect size, desired power, sample size, or alpha level from the other three values. Computing the required sample size is commonly referred to as **a-priori** power analysis, computing the smallest effect size you have the desired power for is called **sensitivty** power analysis, computing the alpha level is called **criterion** power analysis, and computing the achieved power is called **post-hoc** power analysis. We will discuss all these different types of power analysis below. With this terminology out of the way, let's examine different ways to justify the sample size.
 
 ## Measuring the Entire Population
 
-In some instances it might be possible to collect data from the entire population under examination. For example, you might be interested in the average amount of time people spend on the moon, whenever they visit it. Since there are only 12 people who have ever been on the moon, we can calculate the average time people have spent on the moon by collecting data from the entire population. Whenever it is possible to measure the entire population, the justification for the number of observations is that you collected all the data that is available. This is the simplest, and most straightforward, justification for the number of observations. However, it is also quite rare that we are able to measure the entire population. 
+In some instances it might be possible to collect data from the entire population under examination. For example, you might be interested in the average amount of time people spend on the moon, whenever they visit it. Since there are only 12 people who have ever been on the moon, we can calculate the average time people have spent on the moon by collecting data from the entire population. Whenever it is possible to measure the entire population, the justification for the sample size is that you collected all the data that is available. This is the simplest, and most straightforward, justification for the sample size. However, it is also quite rare that we are able to measure the entire population. 
 
 ## Feasibility
 
-A common reason why a specific number of observations is collected is because collecting more data was not feasible. Note that all decisions for the number of observations we collect in a study are based on the resources we have available in some way. A **feasibility justification** makes these resource limitations the primary reason for the number of observations that are collected. Because we always have resource limitations in science, even when feasibility is not our primary justification for the number of observations we plan to collect, it is always a secondary reason. Despite the omnipresence of resource limitations, the topic often receives very little attention in texts on experimental design. This might make it feel like a feasibility justification is not appropriate, and you should perform an a-priori power analysis or plan for a desired precision instead. But feasibility always plays a secondary role, and therefore regardless of which justification for the number of observations you provide, you will almost always need to include a feasibility justification as well.
+A common reason why a specific number of observations is collected is because collecting more data was not feasible. Note that all decisions for the sample size we collect in a study are based on the resources we have available in some way. A **feasibility justification** makes these resource limitations the primary reason for the sample size that is collected. Because we always have resource limitations in science, even when feasibility is not our primary justification for the number of observations we plan to collect, it is always a secondary reason. Despite the omnipresence of resource limitations, the topic often receives very little attention in texts on experimental design. This might make it feel like a feasibility justification is not appropriate, and you should perform an a-priori power analysis or plan for a desired precision instead. But feasibility always plays a secondary role, and therefore regardless of which justification for the sample size you provide, you will almost always need to include a feasibility justification as well.
 
 Time and money are the two main resource limitations a scientist faces. Our master students write their thesis in 6 months, and therefore their data collection is necessarily limited in whatever can be collected in 6 months, minus the time needed to formulate a research question, design an experiment, analyze the data, and write up the thesis. A PhD student at our department would have 4 years to complete their thesis, but is also expected to complete multiple research lines in this time. In addition to limitations on time, we have limited financial resources. Although nowadays it is possible to collect data online quickly, if you offer participants a decent pay (as you should) most researchers have the financial means to collect thousands of datapoints.
 
-A feasibility justification puts the limited resources at the center of the justification for the number of observations that will be collected. For example, one might argue that 120 observations is the most that can be collected in the three weeks a master student has available to collect data, when each observation takes an hour to collect. A PhD student might collect data until the end of the academic year, and then needs to write up the results over the summer to stay on track to complete the thesis in time.
+A feasibility justification puts the limited resources at the center of the justification for the sample size that will be collected. For example, one might argue that 120 observations is the most that can be collected in the three weeks a master student has available to collect data, when each observation takes an hour to collect. A PhD student might collect data until the end of the academic year, and then needs to write up the results over the summer to stay on track to complete the thesis in time.
 
 A feasibility justification thus *starts* with the expected number of observations (N) that a researcher expects to be able to collect. The challenge is to evaluate whether collecting N observations is worthwhile. The answer should sometimes be that data collection is *not* worthwhile. For example, assume I plan to manipulate the mood of participants using funny cartoons and then measure the effect of mood on some dependent variable - say the amount of money people donate to charity. I should expect an effect size around d = 0.31 for the mood manipulation [@joseph_manipulation_2020], and seems unlikely that the effect on donations will be larger than the effect size of the manipulation. If I can only collect mood data from 30 participants in total, how do we decide if this study will be informative?
 
@@ -82,7 +84,7 @@ First of all, more data is always better than no data, so in an absolute sense, 
 
 Another way in which a small dataset can be valuable is if its existence makes it possible to combine several small datasets into a meta-analysis. This argument in favor of collecting a small dataset requires 1) that you share the results in a way that a future meta-analyst can find them, and 2) that there is a decent probability that someone will perform a meta-analysis in the future which inclusion criteria would contain your study, because a sufficient number of small studies exist. The uncertainty about whether there will ever be such a meta-analysis should be weighed against the costs of data collection. One way to increase the probability of a future meta-analysis is if you commit to performing this yourself in the future. For example, you might plan to repeat a study for the next 12 years in a class you teach, with the expectation that a meta-analysis of 360 participants would be sufficient to achieve around 90% power for d = 0.31. If it is not plausible you will collect all the required data by yourself, you can attempt to set up a collaboration, where fellow researchers in your field commit to collecting similar data, with identical measures, over the next years. If it is not likely sufficient data will emerge over time, we will not be able to draw informative conclusions from the data, and it might be more beneficial to not collect the data to begin with, and examine an alternative research question with a larger effect size instead.
 
-Even if you believe over time sufficient data will emerge, you will most likely compute statistics after collecting a small number of observations. Before embarking on a study where your main justification for the number of observations is based on feasibility, you can expect. I propose that a feasibility justification for the number of observations is always accompanied by three statistics, detailed in the following three sections.
+Even if you believe over time sufficient data will emerge, you will most likely compute statistics after collecting a small sample size. Before embarking on a study where your main justification for the sample size is based on feasibility, you can expect. I propose that a feasibility justification for the sample size is always accompanied by three statistics, detailed in the following three sections.
 
 ### The smallest effect size that can be statistically significant
 
@@ -193,13 +195,13 @@ legend(-12, 0.38, # places a legend at the appropriate place
 
 Where computing the critical effect size can make it clear that a *p*-value is of little interest, computing the 95% CI around the effect size can make it clear that the effect size estimate is of little value. It will often be so uncertain, and the range of effect sizes you will not be able to reject if there is no effect is so large, the effect size estimate is not very useful. This is also the reason why performing a pilot study to estimate an effect size for an a-priori power analysis is not a sensible strategy [@albers_when_2018; @leon_role_2011]. However, it is possible that the sample size is large enough to exclude some effect sizes that are still a-priori plausible. For example, with 50 observations in each independent group, you have 82% [power for an equivalence test](#powerequiv) with bounds of -0.6 and 0.6, and if effect larger than 0.6 can be rejected, this might be sufficient to tentatively start to question claims of even larger effects in the literature.
 
-### Plot a sensitivity power analysis 
+### Plot a sensitivity power analysis {#sensitivitypower}
 
 ```{r gsens0, fig.margin=TRUE, echo=FALSE, fig.cap="Sensitivity power analysis in G\\*Power software."}
 knitr::include_graphics("images/sensitivity0.png")
 ```
 
-In a [sensitivity power analysis](#typespower) the sample size and the alpha level are fixed, and you compute the effect size you have the desired statistical power to detect. For example, in Figure \@ref(fig:gsens0) the number of observations in each group is set to 15, the alpha level is 0.05, and the desired power is set to 90%. The sensitivity power analysis shows we have 90% power to detect an effect of d = 1.23. Perhaps you feel a power of 90% is a bit high, and you would be happy with 80% power. In Figure \@ref(fig:gsens1) we see that if we desire 80% power, the effect size should be d = 1.06. The smaller the true effect size, the lower the power we have. This plot should again remind us not to put too much faith in a significance test when are sample size is small, since for 15 observations in each condition, statistical power is very low for anything but extremely large effect sizes.
+In a **sensitivity power analysis** the sample size and the alpha level are fixed, and you compute the effect size you have the desired statistical power to detect. For example, in Figure \@ref(fig:gsens0) the sample size in each group is set to 15, the alpha level is 0.05, and the desired power is set to 90%. The sensitivity power analysis shows we have 90% power to detect an effect of d = 1.23. Perhaps you feel a power of 90% is a bit high, and you would be happy with 80% power. In Figure \@ref(fig:gsens1) we see that if we desire 80% power, the effect size should be d = 1.06. The smaller the true effect size, the lower the power we have. This plot should again remind us not to put too much faith in a significance test when are sample size is small, since for 15 observations in each condition, statistical power is very low for anything but extremely large effect sizes.
 
 ```{r gsens1, fig.margin=FALSE, echo=FALSE, fig.cap="Plot of the effect size against the desired power when n = 15 per group and alpha = 0.05."}
 knitr::include_graphics("images/sensitivity1.png")
@@ -216,7 +218,7 @@ pwr::pwr.t.test(n = 15,
                 alternative = "two.sided")
 
 # d = 0.7411272 - let's check this indeed gives 50% power
-# We compute the non-centrality parameter delta
+# We compute the non-centrality parameter delta as 2.0296604
 delta <- 0.7411272 * sqrt(15/2)
 
 # For a 2-sided test power is the probability of finding a result that is
@@ -229,7 +231,7 @@ delta <- 0.7411272 * sqrt(15/2)
 
 ### Reporting a feasibility justification.
 
-To summarize, I recommend addressing the following components in a feasibility sample size justification. Addressing these points explicitly will allow you to evaluate for yourself if collecting the data will have scientific value. If not, there might be other reasons to collect the data. For example, at our department, students often collect data as part of their education. However, if the primary goal of data collection is educational, the number of observations that is collected can be very small. It is often educational to collect data from a small number of participants to experience what data collection looks like in practice, but there is often no educational value in collecting data from more than 10 participants. Despite the small sample size, we often require students to report statistical analyses as part of their education, which is fine as long as it is clear the numbers that are calculated can not meaningfully be interpreted. Table \@ref(tab:table-pow-rec) should help to evaluate if the interpretation of statistical tests has any value, or not.
+To summarize, I recommend addressing the following components in a feasibility sample size justification. Addressing these points explicitly will allow you to evaluate for yourself if collecting the data will have scientific value. If not, there might be other reasons to collect the data. For example, at our department, students often collect data as part of their education. However, if the primary goal of data collection is educational, the sample size that is collected can be very small. It is often educational to collect data from a small number of participants to experience what data collection looks like in practice, but there is often no educational value in collecting data from more than 10 participants. Despite the small sample size, we often require students to report statistical analyses as part of their education, which is fine as long as it is clear the numbers that are calculated can not meaningfully be interpreted. Table \@ref(tab:table-pow-rec) should help to evaluate if the interpretation of statistical tests has any value, or not.
 
 ```{r table-pow-rec, echo = FALSE}
 
@@ -239,7 +241,7 @@ colnames(table_pow_rec) <- c("What to address", "Example?")
 knitr::kable(table_pow_rec, caption = "Overview of recommendations when reporting a sample size justification based on feasibility.")
 ```
 
-If the study is not performed for educational purposes, but the goal is answer a research question, the feasibility justification might indicate that there is no value in collecting the data. If it wasn't possible to conclude that one should not proceed with the data collection, there is no use of justifying the sample size. There should be cases where it is unlikely there will ever be enough data to perform a meta-analysis (for example because of a lack of general interest in the topic), the information will not be used to make any decisions, and the statistical tests do not allow you to test a hypothesis or estimate an effect size estimate with any useful accuracy. It should be a feasibility justification - not a feasibility excuse. If there is no good justification to collect the maximum number of observations that is feasible, performing the study nevertheless is a waste of participants time, and/or a waste of money if data collection has associated costs. Collecting data without a good justification why the planned number of observations will yield worthwhile information has an ethical component. As Button and colleagues @button_power_2013 write: "Low power therefore has an ethical dimension — unreliable research is inefficient and wasteful. This applies to both human and animal research". Think carefully if you can defend data collection based on a feasibility justification. Sometimes data collection is just not feasible, and we should accept this.
+If the study is not performed for educational purposes, but the goal is answer a research question, the feasibility justification might indicate that there is no value in collecting the data. If it wasn't possible to conclude that one should not proceed with the data collection, there is no use of justifying the sample size. There should be cases where it is unlikely there will ever be enough data to perform a meta-analysis (for example because of a lack of general interest in the topic), the information will not be used to make any decisions, and the statistical tests do not allow you to test a hypothesis or estimate an effect size estimate with any useful accuracy. It should be a feasibility justification - not a feasibility excuse. If there is no good justification to collect the maximum number of observations that is feasible, performing the study nevertheless is a waste of participants time, and/or a waste of money if data collection has associated costs. Collecting data without a good justification why the planned sample size will yield worthwhile information has an ethical component. As Button and colleagues @button_power_2013 write: "Low power therefore has an ethical dimension — unreliable research is inefficient and wasteful. This applies to both human and animal research". Think carefully if you can defend data collection based on a feasibility justification. Sometimes data collection is just not feasible, and we should accept this.
 
 ## A-priori power analysis
 
@@ -340,7 +342,7 @@ power.t.test(delta = 0.5,
              alternative = "two.sided")
 ```
 
-The output tells us we need to collect 85.03 observations. Because observations do not come in decimals (we can hardly cut 0.03 off a participant) we need to collect 86 observations. We could also get this answer through simulations. 
+The output tells us we need to collect 85.03 observations. Because observations do not come in decimals (we can hardly cut 0.03 from a participant) we need to collect 86 observations. We could also get this answer through simulations. 
 
 ```{r, echo = TRUE, cache = TRUE}
 set.seed(600746) #set a seed for reproducible simulations
@@ -360,13 +362,64 @@ for(i in 1:100000){ #for each simulated experiment
 
 We see that after 100000 simulations with 85 participants, the estimated power is 0.90015 with 85 participants in each group. The analytic solution tells us power is 0.899894. The more simulations you perform, the more accurate the power estimate will be (as we see, 100000 simulations gives very accurate results).
 
-The way you perform the power analysis depends on the software you use. There are excellent software packages for power analysis, such as [PASS](https://www.ncss.com/software/pass/) or [SAS](https://stats.idre.ucla.edu/sas/seminars/proc-power/), but these solutions are rather expensive. There are also freeware solutions, such as the widely used [G\*Power](https://gpower.hhu.de), [MorePower](https://wiki.usask.ca/pages/viewpageattachments.action?pageId=420413544) by Campbell and Thompson, [PANGEA](https://jakewestfall.shinyapps.io/pangea/) by Jake Westfall and Russ Lenth's [Java applets for power and sample size](https://homepage.divms.uiowa.edu/~rlenth/Power/). 
-There is also a range of options in R. The default stats package has power functions for *t*-tests, proportions, and ANOVA, the `pwr` package has a wider range of options, `pwr2ppl` by Chris Aberson accompanies his excellent book on power analyses [@aberson_applied_2019], `powerlmm`by Kristoffer Magnusson performs power analyses for [two- and three-level linear mixed models](https://github.com/rpsychologist/powerlmm), and [Superpower](https://aaroncaldwell.us/SuperpowerBook/) created by Aaron Caldwell and myself does power analyses for complex ANOVA designs.
+The way you perform the power analysis depends on the software you use. There are excellent software packages for power analysis, such as [PASS](https://www.ncss.com/software/pass/) or [SAS](https://stats.idre.ucla.edu/sas/seminars/proc-power/), but these solutions are rather expensive. There are also freeware solutions, such as the widely used [G\*Power](https://gpower.hhu.de), [MorePower](https://wiki.usask.ca/pages/viewpageattachments.action?pageId=420413544) by Campbell and Thompson, and [PANGEA](https://jakewestfall.shinyapps.io/pangea/) by Jake Westfall. 
+There is also a range of options in R. The default `stats` package has power functions for *t*-tests, proportions, and ANOVA, the `pwr` package has a wider range of options, `pwr2ppl` by Chris Aberson accompanies his excellent book on power analyses [@aberson_applied_2019], `powerlmm`by Kristoffer Magnusson performs power analyses for [two- and three-level linear mixed models](https://github.com/rpsychologist/powerlmm), and [Superpower](https://aaroncaldwell.us/SuperpowerBook/) created by Aaron Caldwell and myself does power analyses for complex ANOVA designs.
 
-It takes time to learn to use this software correctly. You will need to sit down for a few hours and go through vignettes or read the accompanying publications, before you know what to do. In our online manual for Superpower, we compare Superpower against G\*Power, `pwr`, `pwr2ppl` and MorePower. 
+It takes time to learn to use this software correctly. You will need to sit down for a few hours and go through vignettes or read the accompanying publications, before you know what to do. In our online manual for Superpower, we compare Superpower against G\*Power, `pwr`, `pwr2ppl` and MorePower. Each software package will have slightly different design philosophies. In G\*Power you are expected to enter the standardized effect size d, while in MorePower we enter the mean difference and the standard deviation, and in Superpower we need to enter the means and standard deviations for each condition. In general I recommend to always think about the raw pattern of means you expect, before you perform a power analysis. This typically leads to more realistic effect sizes estimates than the use of standardized effect sizes (where researcher all too often 'expect' a d = 0.5 just because that is the default value in G\*Power).
 
-### Types of power analysis {#typespower}
+```{r powerex1, fig.margin=FALSE, echo=FALSE, fig.cap="Example of a power analysis in G\\*Power."}
+knitr::include_graphics("images/powerex1.png")
+```
 
+```{r powerex2, fig.margin=FALSE, echo=FALSE, fig.cap="Example of a power analysis in MorePower."}
+knitr::include_graphics("images/powerex2.png")
+```
+
+```{r, echo = TRUE}
+pwr::pwr.t.test(d = 0.5, 
+                sig.level = 0.05,
+                power = 0.8,
+                type = "two.sample",
+                alternative = "two.sided")
+```
+
+```{r, powerex3, fig.margin = FALSE, fig.cap="Example of a power analysis plot in Superpower.", echo = TRUE, cache = TRUE}
+
+design_result <- Superpower::ANOVA_design(design = "2b",
+                                          n = 86,
+                                          mu = c(0.5, 0),
+                                          sd = c(1, 1),
+                                          plot = FALSE)
+
+# Plot power curve (from 5 to 200)
+Superpower::plot_power(design_result, max_n = 200, verbose = FALSE)
+
+```
+
+### Some advice when using G\*Power.
+
+The option for power analysis for a Pearson's correlation coefficient is under the Exact test family (Correlation: Bivariate normal model). The "Correlation: Point biserial model" option under the *t*-tests family is for correlations where one variable is dichotomous. The difference is small, but the required sample size is typically a few observations larger for Pearson's correlation coefficient. 
+
+```{r gpowcor, fig.margin=FALSE, echo=FALSE, fig.cap="The options for a power analysis for Pearson's correlation(above) and the point biserial correlation (when one variable is dichotomous)."}
+knitr::include_graphics("images/gpowcor.png")
+```
+
+Although the effect size for an independent *t*-test and dependent *t*-test are often both referred to as Cohen's d, they differ, and are calculated in different ways. Cohen himself distinguished between $d_s$ and $d_z$ [@lakens_calculating_2013]. You should not enter Cohen's d for a power analysis for a dependent *t*-test (nor should you directly compared Cohen's d from a between design with Cohen's d for a within design, nor should you use the benchmarks Cohen provided for a small (0.2), medium (0.5), and large (0.8) effect be used for Cohen's $d_z$). Make sure you are entering the correct effect size. Cohen's $d_z$ can be calculated from the *t*-value for a dependent *t*-test and the sample size as follows: 
+
+$$d_z = {\frac{t}{\sqrt{n}}} $$
+
+```{r gpowdzd, fig.margin=FALSE, echo=FALSE, fig.cap="Power for a dependent and independent *t*-test require entering Cohen's dz and d, respectively."}
+knitr::include_graphics("images/gpowdzd.png")
+```
+
+The third issue that researchers often miss is that G\*Power has a very unfortunate default setting for power analyses for within subject ANOVA tests. In Figure \@ref(fig:gpowdwithin2) we see on the left how we can directly calculate Cohen's $f$ (the effect size one needs to enter for ANOVA power analyses) from partial eta squared. A medium effect size for $\eta^2_p$ of 0.588 equals a Cohen's $f$ of 0.25. If we specify an expected correlation between dependent variables of 0.8, have 3 repeated measurements, one condition, and want to achieve 95% power with an alpha level of 0.05, we need a sample size of 19. However, if out value for $\eta^2_p$ comes from the scientific literature or statistical software such as SPSS, this effect size measure already has the correlation between observation incorporated. If we would simply enter it in G\*Power, we take into account the correlation twice, which leads to a massively smaller sample size. Instead, we need to click on the "Options" button and check the radiobutton before "As in SPSS". We see that "Effect size f" changes into "Effect size f(U)", and the box "Corr among rep measures" has disappeared on the right. This is because the correlation no longer needs to be entered seperately - it is already taken into account in the $\eta^2_p$ as SPSS computes it. Most importantly, we now see that the sample size we need to achieve 95% power has changed to 127. This is a big difference, and I have seen people make this mistake very often. If you use G\*power for power analyses for ANOVA designs, I recommend always double checking the Options setting (and maybe repeat your analysis in software such as Superpower just to double check). 
+
+```{r gpowdwithin2, fig.margin=FALSE, echo=FALSE, fig.cap="Power analysis for repeated ANOVA in G\\*Power by default expects a partial eta squared effect size that does not take the correlation between measurements into account."}
+knitr::include_graphics("images/gpowwithin2.png")
+```
+
+
+## Criterion power analysis
 
 Sometimes the sample size you can collect is fixed. In that case you can perform a sensitivity power analysis to examine the effect sizes you can detect with a desired power. If we plan to perform a two-sided *t*-test, and can collect at most 70 observations in each independent group, and we want to have 90% power, given an alpha level of 0.01, we only have 90% power for effects of d = 0.66. We could still get lucky find a significant effect if the population effect size is smaller than 0.66, but we would no longer control our Type 2 error rate (1-power) at 10%. 
 
@@ -378,7 +431,7 @@ power.t.test(n = 70,
              alternative = "two.sided")
 ```
 
-In a criterion power analysis one computes the alpha level one should choose to achieve a desired power, given a sample size and an expectation of the population effect size. If we plan to perform a two-sided *t*-test, and can collect at most 70 observations in each independent group, and we want to have 90% power, and expect a population effect size of 0.5, we would need to set the alpha level to 0.0966. We can use a lower alpha level, but then our power would be smaller. If we assume we can not increase our number of observations beyond 70 per group, we need to make a trade-off between increasing our Type 1 error rate, or our Type 2 error rate. As Neyman and Pearson @neyman_problem_1933 write: "The use of these statistical tools in any given case, in determining just how the balance should be struck, must be left to the investigator."
+In a criterion power analysis one computes the alpha level one should choose to achieve a desired power, given a sample size and an expectation of the population effect size. If we plan to perform a two-sided *t*-test, and can collect at most 70 observations in each independent group, and we want to have 90% power, and expect a population effect size of 0.5, we would need to set the alpha level to 0.0966. We can use a lower alpha level, but then our power would be smaller. If we assume we can not increase our sample size beyond 70 per group, we need to make a trade-off between increasing our Type 1 error rate, or our Type 2 error rate. As Neyman and Pearson @neyman_problem_1933 write: "The use of these statistical tools in any given case, in determining just how the balance should be struck, must be left to the investigator."
 
 ```{r, echo = TRUE}
 power.t.test(n = 70, 
@@ -402,123 +455,192 @@ One might be tempted to perform a small power analysis to estimate the effect si
 
 What can be done? The recommended best practice is to not enter the effect size you expect, but the smallest effect size you would still be interested in. By doing this, you will be able to design a study that has sufficient power for the smallest effect you find worthwhile to observe, even when you do not know what the true effect size is. By determining the required sample size for the smallest effect size of interest, you can guarantee you have designed an informative study. However, in case the true effect size is larger than your smallest effect size of interest, you might collect many more participants than required. This can be solved by performing sequential analyses, where you analyze the data intermittently, while controlling the Type 1 error rate for multiple looks at the data. We will explain sequential analyses later.
 
-## Observed power, and what to do if your editor asks for post-hoc power analyses {#observedpower}
+## Observed (post-hoc) power analysis (and what to do if your editor asks for them) {#observedpower}
 
- Observed power (or post-hoc power) is the statistical power of the test you have performed, based on the effect size estimate from your data. Statistical power is the probability of finding a statistical difference from 0 in your test (aka a ‘significant effect’), if there is a true difference to be found. Observed power differs from the true power of your test, because the true power depends on the true effect size you are examining. However, the true effect size is typically unknown, and therefore it is tempting to treat post-hoc power as if it is similar to the true power of your study. In this blog, I will explain why you should never calculate the observed power (except for blogs about why you should not use observed power). Observed power is a useless statistical concept, and at the end of the post, I’ll give a suggestion how to respond to editors who ask for post-hoc power analyses.
+Observed power (or post-hoc power) is the statistical power of the test you have performed, based on the effect size estimate from your data. **Observed power** differs from the **true power** of your test, because the true power depends on the (true)unknown) population effect size, while observed power is computed based on the (unlikely) assumption that the effect size you observed in your sample is the true effect size. SPSS (which still hasn't included useful statistics such as effect sizes for *t*-tests) provides users with the option to report observed power by clicking a checkbox. You should never calculate the observed power. Observed power, computed based on the observed effect size, is a useless statistical concept. Despite this fact, editors and reviewers often ask authors to perform post-hoc power analysis to make a statement about the statistical power a study had. You should never comply with this request. The correct approach to evaluate the statistical power of a study after the data is collected is a [sensitivity power analysis](#sensitivitypower). 
 
-Observed (or post-hoc) power and p-values are directly related. Below, you can see a plot of observed p-values and observed power for 10000 simulated studies with approximately 50% power (the R code is included below). It looks like a curve, but the graph is basically a scatter plot of a large number of single observations that fall on a curve expressing the relation between observed power and p-values.
+Observed (or post-hoc) power and *p*-values are directly related [@hoenig_abuse_2001]. For a *Z*-test where the *p*-value is exactly 0.05, the perfectly symmetric alternative distribution falls exactly on top of the critical value. This means that half the distribution falls to the right of the critical value, and half falls on the left, and we have exactly 50% power.
 
-```{r obspow1, fig.margin=TRUE, echo=FALSE, fig.cap="Distribution of *p*-values plotted against observed power with low power."}
-knitr::include_graphics("images/obspow1.png")
+<!-- ```{r obs-power-plot-1, echo = FALSE, fig.width = 8, fig.height = 8, fig.cap="Relationship between p-values and power for a Z-test."} -->
+<!-- # For simplicity, take a one-sided test -->
+<!-- # compute z value from p: -->
+<!-- # p_val = 0.05 -->
+<!-- # z <- qnorm(1-p_val) -->
+<!-- # z -->
+<!-- #  -->
+<!-- # # compute p-value from z -->
+<!-- # 1-pnorm(z) -->
+
+<!-- # computing the Type 1 error rate: -->
+<!-- # old, two-sided: 1-pnorm(q = 1.959964) + pnorm(q = -1.959964) -->
+
+<!-- # Moving the mean from 0.  -->
+<!-- # Because the normal distribution is symmetric, if we observe a p-value on top of the critical value (p = 0.05) we have 50% power. -->
+
+<!-- # pnorm(q = 1.644854, mean = 1.644854) -->
+
+<!-- # We can plot this across a range of observe p-values -->
+
+<!-- plot_obs_pow <- (function(alpha_level, p_val) { -->
+<!--   1 - pnorm(q = qnorm(1-alpha_level), mean = qnorm(1-p_val)) -->
+<!-- }) -->
+
+
+<!-- par(bg = "aliceblue", pty = "s") -->
+<!-- plot(-10, -->
+<!--   xlab = "p-value", ylab = "Observed power", axes = FALSE, -->
+<!--   main = substitute(paste("Relationship between p-value and observed power")), xlim = c(0, 1), ylim = c(0, 1) -->
+<!-- ) -->
+<!-- abline(v = seq(0, 1, 0.1), h = seq(0, 1, 0.1), col = "lightgray", lty = 1) -->
+<!-- axis(side = 1, at = seq(0, 1, 0.1), labels = seq(0, 1, 0.1)) -->
+<!-- axis(side = 2, at = seq(0, 1, 0.1), labels = seq(0, 1, 0.1)) -->
+<!-- curve(plot_obs_pow(alpha_level = 0.05, p_val = x), 0, 1, add = TRUE, lwd = 2) -->
+<!-- points(x = 0.05, y = 0.5, cex = 2, pch = 19, col = rgb(1, 0, 0, 0.5)) -->
+<!-- abline(v = 0.05, h = 0.5, col = rgb(1, 0, 0, 0.5), lty = 1) -->
+
+
+<!-- ``` -->
+
+For an independent *t*-test the noncentral *t*-distribution is not perfectly symmetric. We can compute observe power in R based on the formula below, where `alpha_level` is the alpha level, `n`is the sample size in each group, and `p_val` is the observed *p*-value. In Figure \@ref(fig:obs-power-plot-2) we see that for a *p* = 0.05 observed power is ever so slightly larger than 50%, but the observed power value is very close. 
+
+```{r obs_power-plot-2, echo = TRUE, eval = FALSE}
+1 - pt(q = qt(1 - alpha_level/2, 2 * n - 2), 
+       df = 2 * n - 2, 
+       ncp = qt(1 - p_val/2, 2 * n - 2))
 ```
 
-Below, you see a plot of p-values and observed power for 10000 simulated studies with approximately 90% power. Yes, that is exactly the same curve these observations fall on. The only difference is how often we actually observe high p-values (or have low observed power). You can see there are only a few observations with high p-values if we have high power (compared to medium power), but the curve stays exactly the same. I hope these two figures drive home the point of what it means that p-values and observed power are directly related: it means that you can directly convert your p-value to the observed power, regardless of your sample size or effect size.  
+Plotting observe power for the *p*-value across the range from 0 to 1, we see that observed power is completely determined, and provides no additional value beyond, reporting the *p*-value. If your *p*-value is non-significant, observed power will be less than approximately 50% in a *Z*-test and *t*-test. As Lenth -@lenth_post_2007 shows, observed power is also completely determined by the observed *p*-value for *F*-tests, although the relationship between *p* = 0.05 and 50% power no longer holds. 
+
+```{r, echo = FALSE, fig.width = 8, fig.height = 8, fig.cap="Relationship between p-values and power for an independent t-test."}
+
+# # compute t value from p and N:
+# p_val = 0.05
+# n = 100
+# z <- qt(1 - p_val/2, 2 * n - 2)
+# z
+# 
+# # compute p-value from z
+# 1-pt(z, 2 * n - 2) + pt(-z, 2 * n - 2)
+# 
+# # Moving the mean from 0. 
+# # Because the normal distribution is symmetric, if we observe a p-value on top of the ncp (which we get from G*power) we have 50% power.
+# 
+# 1 - pt(q = 1.972017, df = 2 * n - 2, ncp = 1.9694098)
+
+# We can plot this across a range of observe p-values
+
+plot_obs_pow_t <- (function(alpha_level, n, p_val) {
+  1 - pt(q = qt(1 - alpha_level/2, 2 * n - 2), df = 2 * n - 2, ncp = qt(1 - p_val/2, 2 * n - 2))
+})
+
+
+par(bg = "aliceblue", pty = "s")
+plot(-10,
+  xlab = "p-value", ylab = "Observed power", axes = FALSE,
+  main = substitute(paste("Relationship between p-value and observed power for an independe t-test with n = 100")), xlim = c(0, 1), ylim = c(0, 1)
+)
+abline(v = seq(0, 1, 0.1), h = seq(0, 1, 0.1), col = "lightgray", lty = 1)
+axis(side = 1, at = seq(0, 1, 0.1), labels = seq(0, 1, 0.1))
+axis(side = 2, at = seq(0, 1, 0.1), labels = seq(0, 1, 0.1))
+curve(plot_obs_pow_t(alpha_level = 0.05, n = 10, p_val = x), 0, 1, add = TRUE, lwd = 2)
+points(x = 0.05, y = 0.5, cex = 2, pch = 19, col = rgb(1, 0, 0, 0.5))
+abline(v = 0.05, h = 0.5, col = rgb(1, 0, 0, 0.5), lty = 1)
+
+
+```
+
 
 ```{r obspow2, fig.margin=TRUE, echo=FALSE, fig.cap="Distribution of *p*-values plotted against observed power with high power."}
 knitr::include_graphics("images/obspow2.png")
 ```
 
-Let’s draw a vertical line at p = 0.05, and a horizontal line at 50% observed power. We can see below that the two lines meet exactly at the line visualizing the relationship between p-values and observed power. This means that anytime you observed a p-value of p = 0.05 in your data, your observed power will be 50% (in infinite sample sizes, in t-tests - Jake Westfall pointed me to this paper showing the values at smaller samples, and for F-tests with different degrees of freedom).
+Editors sometimes ask researchers to report post-hoc power analyses when authors report a test result of *p* > 0.05, and when authors want to conclude there is no effect. In such situations, editors would like to distinguish between true negatives (concluding there is no effect, when there is no effect) and false negatives (concluding there is no effect, when there actually is an effect, or a Type 2 error). As the preceding explanation of post-hoc power illustrates, reporting post-hoc power is nothing more than a different way of reporting the *p*-value, and will therefore not answer the question editors want to know [@hoenig_abuse_2001; @lenth_post_2007; @yuan_post_2005].
 
-```{r obspow3, fig.margin=TRUE, echo=FALSE, fig.cap="Distribution of *p*-values plotted against observed power showing the correspondence of p = 0.05 and 50% power."}
-knitr::include_graphics("images/obspow3.png")
-```
+What you should do instead is report a [sensitivity power analysis](#sensitivitypower), preferably by plotting power across a wide range of possible true effect sizes. Many of the recommendations in Table \@ref(tab:table-pow-rec) apply if one wants to evaluate power after the data has been collected. The best solution is, not surprisingly, to design a study that will yield informative results regardless of whether the alternative hypothesis is true or the null hypothesis is true, by performing an a-priori power analysis both for the NHST and for an equivalence test. 
 
+## Why Within-Subject Designs Typically Require Fewer Observations than Between-Subject Designs
 
-I noticed these facts about the relationship between observed power and p-values while playing around with simulated studies in R, but they are also explained in Hoenig& Heisey, 2001.
-
-Some estimates (e.g., Cohen, 1962) put the average power of studies in psychology at 50%. What observed power can you expect, when you perform a lot of studies which have a true power of 50%? We know that the p-values we can expect should be split down the middle, with 50% being smaller than p = 0.05, and 50% being larger than p = 0.05. The graph below gives the p-value distribution for 100000 simulated independent t-tests:
-
-
-
-The bar on the left are all (50.000 out of 100.000) test results with a p < 0.05. The observed power distribution is displayed below:
-
-
-
-It is clear you can expect just about any observed power when the true power of your experiment is 50%. The distribution of observed power changes from positively skewed to negatively skewed as the true power increases (from 0 to 1), and when power is around 50% we observe a tipping point where there is a switch from a negatively skewed distribution to a positively skewed distribution. With slightly more power (e.g., 56%) the distribution becomes somewhat U-shaped, as can be seen in the figure below. I’m sure a mathematical statistician can explain the why and how of this distribution in more detail, but here I just wanted to show what it looks like, because I don’t know of any other sources of information where this distribution is reported (thanks to a reader, who in the comments points out Yuan & Maxwell, 2005 also discuss observed power distributions).
-
-
-
-Editors asking for post-hoc power analyses
-
-Editors sometimes ask researchers to report post-hoc power analyses when authors report a test that does not reveal a statistical difference from 0, and when authors want to conclude there is no effect. In such situations, editors would like to distinguish between true negatives (concluding there is no effect, when there is no effect) and false negatives (concluding there is no effect, when there actually is an effect, or a Type 2 error). As the preceding explanation of post-hoc power hopefully illustrates, reporting post-hoc power is nothing more than reporting the p-value in a different way, and will therefore not answer the question editors want to know.
-
-Because you will always have low observed power when you report non-significant effects, you should never perform an observed or post-hoc power analysis, even if an editor requests it (feel free to link to this blog post). Instead, you should explain how likely it was to observe a significant effect, given your sample, and given an expected or small effect size. Perhaps this expected effect size can be derived from theoretical predictions, or you can define a smallest effect size of interest (e.g., you are interested in knowing whether an effect is larger than a ‘small’ effect of d < 0.3).
-
-For example, if you collected 500 participants in an independent t-test, and did not observe an effect, you had more than 90% power to observe a small effect of d = 0.3. It is always possible that the true effect size is even smaller, or that your conclusion that there is no effect is a Type 2 error, and you should acknowledge this. At the same time, given your sample size, and assuming a certain true effect size, it might be most probable that there is no effect.
-
-
-## Why Within-Subject Designs Typically Require Fewer Participants than Between-Subject Designs
-
- One widely recommended approach to increase power is using a within subject design. Indeed, you need fewer participants to detect a mean difference between two conditions in a within-subjects design (in a dependent t-test) than in a between-subjects design (in an independent t-test). The reason is straightforward, but not always explained, and even less often expressed in the easy equation below. The sample size needed in within-designs (NW) relative to the sample needed in between-designs (NB), assuming normal distributions, is (from Maxwell & Delaney, 2004, p. 561, formula 45): 
+One widely recommended approach to increase power is using a within subject design. Indeed, you need fewer observations to detect a mean difference between two conditions in a within-subjects design (in a dependent *t*-test) than in a between-subjects design (in an independent t-test). The reason is straightforward, but not always explained, and even less often expressed in the easy equation below. The sample size needed in within-designs (NW) relative to the sample needed in between-designs (NB), assuming normal distributions, is (from Maxwell & Delaney, 2004, p. 561, formula 45): 
 
 NW = NB (1-ρ)/2
 
-The “/2” part of the equation is due to the fact that in a two-condition within design every participant provides two data-points. The extent to which this reduces the sample size compared to a between-subject design depends on the correlation between the two dependent variables, as indicated by the (1-ρ) part of the equation. If the correlation is 0, a within-subject design simply needs half as many participants as a between-subject design (e.g., 64 instead 128 participants). The higher the correlation, the larger the relative benefit of within designs, and whenever the correlation is negative (up to -1) the relative benefit disappears. Note than when the correlation is -1, you need 128 participants in a within-design and 128 participants in a between-design, but in a within-design you will need to collect two measurements from each participant, making a within design more work than a between-design. However, negative correlations between dependent variables in psychology are rare, and perfectly negative correlations will probably never occur.
+The “/2” part of the equation is due to the fact that in a two-condition within design every participant provides two data-points. The extent to which this reduces the sample size compared to a between-subject design depends on the correlation between the two dependent variables, as indicated by the (1-ρ) part of the equation. If the correlation is 0, a within-subject design simply needs half as many observations as a between-subject design (e.g., 64 instead 128 observations). The higher the correlation, the larger the relative benefit of within designs, and whenever the correlation is negative (up to -1) the relative benefit disappears. Note than when the correlation is -1, you need 128 observations in a within-design and 128 observations in a between-design, but in a within-design you will need to collect two measurements from each participant, making a within design more work than a between-design. However, negative correlations between dependent variables in psychology are rare, and perfectly negative correlations will probably never occur.
 
-So what does the correlation do so that it increases the power of within designs, or reduces the number of participants you need? Let’s see what effect the correlation has on power by simulating and plotting correlated data. In the R script below, I’m simulating two measurements of IQ scores with a specific sample size (i.e., 10000), mean (i.e., 100 vs 106), standard deviation (i.e., 15), and correlation between the two measurements. The script generates three plots.
+So what does the correlation do so that it increases the power of within designs, or reduces the number of observations you need? Let’s see what effect the correlation has on power by simulating and plotting correlated data. In the R script below, I’m simulating two measurements of IQ scores with a specific sample size (i.e., 10000), mean (i.e., 100 vs 106), standard deviation (i.e., 15), and correlation between the two measurements. The script generates three plots.
 
 We will start with a simulation where the correlation between measurements is 0. First, we see the two normally distributed IQ measurements, with means of 100 and 106, and standard deviations of 15 (due to the large sample size, the numbers equal the input in the simulation, although small variation might still occur). 
 
 ```{r, plot-1, fig.margin=FALSE, echo=FALSE, fig.cap="Distributions of two dependent groups with means 100 and 106 and a standard deviation of 15."}
 set.seed(419)
 #Set color palette
-cbbPalette<-c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+cbbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
-n<-10000  #set the sample size for each group
-mx<-100  #set the mean in group 1
-sdx<-15  #set the standard deviation in group 1
-my<-106  #set the mean in group 2
-sdy<-15  #set the standard deviation in group 2
-cor.true <- 0.0 #set true correlation
-#randomly draw data
+n <- 10000 # set the sample size for each group
+mx <- 100 # set the mean in group 1
+sdx <- 15 # set the standard deviation in group 1
+my <- 106 # set the mean in group 2
+sdy <- 15 # set the standard deviation in group 2
+cor.true <- 0.0 # set true correlation
+# randomly draw data
 cov.mat <- matrix(c(1.0, cor.true, cor.true, 1.0), nrow = 2, byrow = T)
-mu <- c(0,0)
+mu <- c(0, 0)
 mat <- mvrnorm(n, Sigma = cov.mat, mu = mu, empirical = FALSE)
-x<-mat[,1]*sdx+mx
-y<-mat[,2]*sdy+my
-dif<-x-y
-dataset<-data.frame(x,y)
-DV<-c(x,y) #combine the two samples into a single variable
-IV<-as.factor(c(rep("1", n), rep("2", n))) #create the independent variable (1 and 2) 
-datasetplot<-data.frame(IV,DV) #create a dataframe (to make the plot)
+x <- mat[, 1] * sdx + mx
+y <- mat[, 2] * sdy + my
+dif <- x - y
+dataset <- data.frame(x, y)
+DV <- c(x, y) # combine the two samples into a single variable
+IV <- as.factor(c(rep("1", n), rep("2", n))) # create the independent variable (1 and 2)
+datasetplot <- data.frame(IV, DV) # create a dataframe (to make the plot)
 
-#plot graph two groups
-p1 <- ggplot(datasetplot, aes(DV, fill = as.factor(IV)))  + 
-  geom_histogram(alpha=0.4, binwidth=2, position="identity", colour="black", aes(y = ..density..)) +
-  scale_fill_manual(values=cbbPalette, name = "Condition") +
-  stat_function(fun=dnorm, args=c(mean=mx,sd=sdx), size=1, color="#E69F00", lty=2) +
-  stat_function(fun=dnorm, args=c(mean=my,sd=sdy), size=1, color="#56B4E9", lty=2) +
-  xlab("IQ") + ylab("number of people")  + ggtitle("Data") + theme_bw(base_size=20) + 
-  theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) + 
-  geom_vline(xintercept=mean(x), colour="black", linetype="dashed", size=1) + 
-  geom_vline(xintercept=mean(y), colour="black", linetype="dashed", size=1) + 
-  coord_cartesian(xlim=c(50,150)) + scale_x_continuous(breaks=c(50,60,70,80,90,100,110,120,130,140,150)) +
-  annotate("text", x = 70, y = 0.02, label = paste("Mean X = ",round(mean(x)),"\n","SD = ",round(sd(x)),sep="")) +
-  annotate("text", x = 130, y = 0.02, label = paste("Mean Y = ",round(mean(y)),"\n","SD = ",round(sd(y)),sep="")) +
+# plot graph two groups
+p1 <- ggplot(datasetplot, aes(DV, fill = as.factor(IV))) +
+  geom_histogram(alpha = 0.4, binwidth = 2, position = "identity", colour = "black", aes(y = ..density..)) +
+  scale_fill_manual(values = cbbPalette, name = "Condition") +
+  stat_function(fun = dnorm, args = c(mean = mx, sd = sdx), size = 1, color = "#E69F00", lty = 2) +
+  stat_function(fun = dnorm, args = c(mean = my, sd = sdy), size = 1, color = "#56B4E9", lty = 2) +
+  xlab("IQ") +
+  ylab("number of people") +
+  ggtitle("Data") +
+  theme_bw(base_size = 20) +
+  theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) +
+  geom_vline(xintercept = mean(x), colour = "black", linetype = "dashed", size = 1) +
+  geom_vline(xintercept = mean(y), colour = "black", linetype = "dashed", size = 1) +
+  coord_cartesian(xlim = c(50, 150)) +
+  scale_x_continuous(breaks = c(50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150)) +
+  annotate("text", x = 70, y = 0.02, label = paste("Mean X = ", round(mean(x)), "\n", "SD = ", round(sd(x)), sep = "")) +
+  annotate("text", x = 130, y = 0.02, label = paste("Mean Y = ", round(mean(y)), "\n", "SD = ", round(sd(y)), sep = "")) +
   theme(plot.title = element_text(hjust = 0.5))
 
 
-#plot data differences
-p2 <- ggplot(as.data.frame(dif), aes(dif))  + 
-  geom_histogram(colour="black", fill="grey", aes(y=..density..), binwidth=2) +
+# plot data differences
+p2 <- ggplot(as.data.frame(dif), aes(dif)) +
+  geom_histogram(colour = "black", fill = "grey", aes(y = ..density..), binwidth = 2) +
   #  geom_density(fill=NA, colour="black", size = 1) +
-  xlab("IQ dif") + ylab("number of people")  + ggtitle("Data") + theme_bw(base_size=20) + 
-  theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) + 
-  geom_vline(xintercept=mean(dif), colour="gray20", linetype="dashed") + 
-  coord_cartesian(xlim=c(-80,80)) + scale_x_continuous(breaks=c(seq(-80, 80, 10))) +
-  annotate("text", x = mean(dif), y = 0.01, label = paste("Mean = ",round(mean(dif)),"\n","SD = ",round(sd(dif)),sep="")) +
+  xlab("IQ dif") +
+  ylab("number of people") +
+  ggtitle("Data") +
+  theme_bw(base_size = 20) +
+  theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) +
+  geom_vline(xintercept = mean(dif), colour = "gray20", linetype = "dashed") +
+  coord_cartesian(xlim = c(-80, 80)) +
+  scale_x_continuous(breaks = c(seq(-80, 80, 10))) +
+  annotate("text", x = mean(dif), y = 0.01, label = paste("Mean = ", round(mean(dif)), "\n", "SD = ", round(sd(dif)), sep = "")) +
   theme(plot.title = element_text(hjust = 0.5))
 
-#Plot correlation
-p3 <- ggplot(dataset, aes(x=x, y=y)) +
-  geom_point(size=2) +    # Use hollow circles
-  geom_smooth(method=lm, colour="#E69F00", size = 1, fill = "#56B4E9") + # Add linear regression line
-  coord_cartesian(xlim=c(40,160), ylim=c(40,160)) +
-  scale_x_continuous(breaks=c(seq(40, 160, 20))) + scale_y_continuous(breaks=c(seq(40, 160, 20))) +
-  xlab("IQ twin 1") + ylab("IQ twin 2")  + ggtitle(paste("Correlation = ",round(cor(x,y),digits=2),sep="")) + theme_bw(base_size=20) + 
+# Plot correlation
+p3 <- ggplot(dataset, aes(x = x, y = y)) +
+  geom_point(size = 2) + # Use hollow circles
+  geom_smooth(method = lm, colour = "#E69F00", size = 1, fill = "#56B4E9") + # Add linear regression line
+  coord_cartesian(xlim = c(40, 160), ylim = c(40, 160)) +
+  scale_x_continuous(breaks = c(seq(40, 160, 20))) +
+  scale_y_continuous(breaks = c(seq(40, 160, 20))) +
+  xlab("IQ twin 1") +
+  ylab("IQ twin 2") +
+  ggtitle(paste("Correlation = ", round(cor(x, y), digits = 2), sep = "")) +
+  theme_bw(base_size = 20) +
   theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank()) +
-  coord_fixed(ratio = 1)  +
+  coord_fixed(ratio = 1) +
   theme(plot.title = element_text(hjust = 0.5))
 
 
@@ -630,205 +752,6 @@ You can use this Shiny app to play around with different means, sd's, and correl
 ```{r shiny2, echo=F}
 knitr::include_app('http://shiny.ieis.tue.nl/within_between/', height = '4000px')
 ```
-
-## Power analysis for interactions
-
-Based on our recent [preprint](https://psyarxiv.com/baxsf/) explaining power analysis for ANOVA designs, in this post I want provide a step-by-step mathematical overview of power analysis for interactions. These details often do not make it into tutorial papers because of word limitations, and few good free resources are available (for a paid resource worth your money, see [Maxwell, Delaney, & Kelley, 2018](https://designingexperiments.com/)). This post is a bit technical, but nothing in this post requires more knowedge than multiplying and dividing numbers, and I believe that for anyone willing to really understand effect sizes and power in ANOVA designs digging in to these details will be quite beneficial. There are three take-home messages in this section. 
-
-1) In power analyses for ANOVA designs, you should always think of the predicted pattern of means. Different patterns of means will have the same effect size, and your intuition can not be relied on when predicting an effect size for ANOVA designs.
-2) Understanding how patterns of means relate to the effect you predict is essential to design an informative study.
-3) Always perform a power analysis if you want to test a predicted interaction effect, and always calculate the effect size based on means, sd's, and correlations, instead of plugging in a 'medium' partial eta squared. 
-4) Crossover interaction effects have large effects and can thus be studies with high power in smaller samples, and if your theory can predict crossover interactions, such experiments might be worthwhile to design.
-5) There are some additional benefits of examining interactions (risky predictions, generalizability, efficiently examining multiple main effects) and it would be a shame if the field is turned away from examining interactions because they sometimes require large samples.
-
-### Getting started: Comparing two groups
-
-We are planning a two independent group experiment. We are using a validated measure, and we know the standard deviation of our measure is approximately 2. Psychologists are generaly horribly bad at knowing the standard deviation of their measures, even though a very defensible position is that you are not ready to perform a power analysis without solid knowledge of the standard deviation of your measure. We are interested in observing a mean difference of 1 or more, because smaller effects would not be practically meaningful. We expect the mean in the control condition to be 0, and therefore want the mean in the intervention group to be 1 or higher.
-
-This means the standardized effect size is the mean difference, divided by the standard deviation, or 1/2 = 0.5. This is the Cohen's d we want to be able to detect in our study:
-
-\begin{equation}
-d = \frac{m_1-m_2}{\sigma} =  \frac{1-0}{2} = 0.5.
-\end{equation}
-
-An independent *t*-test is mathematically identical to an *F*-test with two groups. For an *F*-test, the effect size used for power analyses is Cohen's *f*, which is a generalization
-of Cohen’s d to more than two groups (Cohen, 1988). It is calculated based on the standard deviation of the population means divided by the population standard deviation which we know for our measure is 2), or: 
-
-\begin{equation}
-f = \frac{\sigma _{ m }}{\sigma}
-\end{equation}
-where for equal sample sizes,
-\begin{equation}
-\sigma _{ m } = \sqrt { \frac { \sum_ { i = 1 } ^ { k } ( m _ { i } - m ) ^ { 2 } } { k } }.
-\end{equation}
-
-In this formula *m* is the grand mean, k is the number of means, and m_i is the mean in each group. The formula above might look a bit daunting, but calculating Cohen's f is not that difficult for two groups. 
-
-If we take the expected means of 0 and 1, and a standard deviation of 2, the grand mean (the *m* in the formula above) is (0 + 1)/2 = 0.5. The formula says we should subtract this grand mean from the mean of each group, square this value, and sum them. So we have (0-0.5)^2 and (1-0.5)^2, which are both 0.25. We sum these values (0.25 + 0.25 = 0.5), divide them by the number of groups (0.5/2 = 0.25) and take the square root, we find that $\sigma_{ m }$ = 0.5. We can now calculate Cohen's f (remember than we know $\sigma$ = 2 for our measure): 
-
-\begin{equation}
-f = \frac{\sigma _{ m }}{\sigma} = \frac{0.5}{2} = 0.25
-\end{equation}
-
-We see that for two groups Cohen's f is half as large as Cohen's d, or $f = \frac{1}{2}d$, which always holds for an *F*-test with two independent groups. 
-
-Although calculating effect sizes by hand is obviously an incredibly enjoyable thing to do, you might prefer using software that performs these calculations for you. Here, I will use our Superpower power analysis package (developed by Aaron Caldwell and me). The code below uses a function from the package that computes power analytically for a one-way ANOVA where all conditions are manipulated between participants. In addition to the effect size, the function will compute power for any sample size per condition you enter. Let's assume you have a friend who told you that they heard from someone else that you now need to use 50 observations in each condition (n = 50), so you plan to follow this trustworthy advice. We see the code below returns a Cohen's *f* of 0.25, and also tells us we would have 61.78% power if we use a preregistered alpha level of 0.03.
-
-```{r eval=T, echo=T}
-library(Superpower)
-
-design <- ANOVA_design(
-  design = "2b", 
-  n = 50, 
-  mu = c(1, 0), 
-  sd = 2)
-
-
-power_oneway_between(design, alpha_level = 0.03)$Cohen_f
-power_oneway_between(design, alpha_level = 0.03)$power
-```
-
-We therefore might want to increase our sample size for our planned study. Using the `plot_power` function, we can see we would pass 90% power with 100 observations per condition.
-
-```{r, echo=T}
-
-plot_power(design, alpha_level = 0.03, min_n = 45, max_n = 150)$plot_ANOVA
-```
-
-### Interaction Effects
-
-So far we have explained the basics for effect size calculations (and we have looked at statistical power) for 2 group ANOVA designs. Now we have the basis to look at interaction effects.
-
-One of the main points in this blog post is that it is better to talk about interactions in ANOVAs in terms of the pattern of means, standard deviations, and correlations, than in terms of a standarized effect size. The reason for this is that, while for two groups a difference between means directly relates to a Cohen's d, wildly different patterns of means in an ANOVA will have the same Cohen's *f*. In my experience helping colleagues out their with power analyses for ANOVA designs, talking about effects in terms of a Cohen's *f* is rarely a good place to start when thinking about what your hypothesis predicts. Instead, you need to specify the predicted pattern of means, have some knowledge about the standard deviation of your measure, and then calculate your predicted effect size. 
-
-There are two types of interactions, as visualized below. In an ordinal interaction, the mean of one group ("B1") is always higher than the mean for the other group ("B2"). Disordinal interactions are also known as 'cross-over' interactions, and occur when the group with the larger mean switches over. The difference is important, since another main takeaway of this blog post is that, in two studies where the largest simple comparison has the same effect size, a study with a disordinal interaction has much higher power than a study with an ordinal interaction. Thus, if possible, you will want to design experiments where an effect in one condition flips around in the other condition, instead of an experiment where the effect in the other condition just disappears. I personally never realized this before I learned how to compute power for interactions, and never took this simple but important fact into account. Let's see why it is important.
-
-### Calculating effect sizes for interactions
-
-```{r, echo=F}
-
-df <- data.frame(
-    A = factor(c("A1","A1","A2","A2")),
-    B = factor(c("B1","B2","B1","B2")),
-    Y = c(1, 0.0, 0.1, 1)
-)
-
-p1 <- ggplot(data=df, aes(x=A, y=Y, group=B, shape=B)) +
-    geom_line(size = 2) +
-    geom_point(size = 4, fill = "white") +
-  scale_shape_manual(values=c(22,21)) +
-  ggtitle("disordinal interaction") +
-  theme_bw()
-
-df <- data.frame(
-    A = factor(c("A1","A1","A2","A2")),
-    B = factor(c("B1","B2","B1","B2")),
-    Y = c(1, 0, 0.1, 0)
-)
-
-p2 <- ggplot(data=df, aes(x=A, y=Y, group=B, shape=B)) +
-    geom_line(size = 2) +
-    geom_point(size = 4, fill = "white") +
-  scale_shape_manual(values=c(22,21)) +
-  ggtitle("ordinal interaction") +
-  theme_bw()
-
-# Use patchwork to combine and plot only 1 legend without title.
-combined <- p1 + p2 & theme(legend.position = "bottom", 
-                            legend.title = element_blank())
-combined + plot_layout(guides = "collect")
-```
-
-Mathematically the interaction effect is computed as the cell mean minus the sum of the grand mean, the marginal mean in each condition of one factor minus the grand mean, and the marginal mean in each condition for the other factor minus grand mean (see Maxwell et al., 2017).
-
-Let's consider two cases comparable to the figure above, one where we have a perfect disordinal interaction (the means of 0 and 1 flip around in the other condition, and are 1 and 0) or an ordinal interaction (the effect is present in one condition, with means of 0 and 1, but there is no effect in the other condition, and both means are 0). We can calcuate the interaction effect as follows. First, let's look at the interaction in a 2x2 matrix:
-
-```{r eval=T, echo=F}
-design <- ANOVA_design(
-  design = "2b*2b", 
-  n = 50, 
-  mu = c(1, 0, 0, 1), 
-  sd = 2)
-
-power_twoway_between(design, alpha_level = 0.03)$mean_mat
-```
-
-The grand mean is (1 + 0 + 0 + 1) / 4 = 0.5.
-
-We can compute the marginal means for A1, A2, B1, and B2, which is simply averaging per row and column, which gets us for the A1 column (1+0)/2=0.5. For this perfect disordinal interaction, all marginal means are 0.5. This means there are no main effects. There is no main effect of factor A (because the marginal means for A1 and A2 are both exactly 0.5), nor is there a main effect of B.
-
-We can also calculate the interaction effect. For each cell we take the value in the cell (e.g., for a1b1 this is 1) and compute the difference between the cell mean and the additive effect of the two factors as:
-
-1 - (the grand mean of 0.5 + (the marginal mean of a1 minus the grand mean, or 0.5 - 0.5 = 0) + (the marginal mean of b1 minus the grand mean, or 0.5 - 0.5 = 0)). Thus, for each cell we get:
-
-a1b1: 1 - (0.5 + (0.5 -0.5) + (0.5 -0.5)) = 0.5
-
-a1b2: 0 - (0.5 + (0.5 -0.5) + (0.5 -0.5)) = -0.5
-
-a2b1: 0 - (0.5 + (0.5 -0.5) + (0.5 -0.5)) = -0.5
-
-a2b2: 1 - (0.5 + (0.5 -0.5) + (0.5 -0.5)) = 0.5
-
-Cohen's $f$ is then $f = \frac { \sqrt { \frac { 0.5^2 +-0.5^2 + -0.5^2 + 0.5^2 } { 4 } }}{ 2 } = 0.25$
-
-or in R code: `sqrt(((0.5)^2 +(-0.5)^2 + (-0.5)^2 + (0.5)^2)/4)/2 = 0.25`.
-
-For the ordinal interaction the grand mean is (1 + 0 + 0 + 0) / 4, or 0.25. The marginal means are a1: 0.5, a2: 0, b1: 0.5, and b2: 0.
-
-Completing the calculation for all four cells for the ordinal interaction gives:
-
-a1b1: 1 - (0.25 + (0.5 -0.25) + (0.5 -0.25)) = 0.25
-
-a1b2: 0 - (0.25 + (0.5 -0.25) + (0.0 -0.25)) = -0.25
-
-a2b1: 0 - (0.25 + (0.0 -0.25) + (0.5 -0.25)) = -0.25
-
-a2b2: 0 - (0.25 + (0.0 -0.25) + (0.0 -0.25)) = 0.25
-
-Cohen's $f$ is then $f = \frac { \sqrt { \frac { 0.25^2 +-0.25^2 + -0.25^2 + 0.25^2 } { 4 } }}{ 2 } = 0.125$.
-
-or in R code: `sqrt(((0.25)^2 +(-0.25)^2 + (-0.25)^2 + (0.25)^2)/4)/2 = 0.125`.
-
-
-We see the effect size of the cross-over interaction (*f* = 0.25) is twice as large as the effect size of the ordinal interaction (*f* = 0.125). 
-
-If the math so far was a bit too much to follow, there is an easier way to think of why the effect sizes are halved. In the disordinal interaction we are comparing cells a1b1 and a2b2 against a1b2 and a2b1, or (1+1)/2 vs. (0+0)/2. Thus, if we see this as a *t*-test for a contrast, it is clear the mean difference is 1, as it was in the simple effect we started with. For the ordinal interaction, we have (1+0)/2 vs. (0+0)/2, so the mean difference is halved, namely 0.5. 
-
-### Power for interactions
-
-All of the above obviously matters for the statistical power we will have when we examine interaction effects in our experiments. Let's use Superpower to perform power analyses for the disordinal interaction first, if we would collect 50 participants in each condition. 
-
-```{r eval=T, echo=T}
-design <- ANOVA_design(
-  design = "2b*2b", 
-  n = 50, 
-  mu = c(1, 0, 0, 1), 
-  sd = 2)
-
-ANOVA_exact(design, alpha_level = 0.03)
-```
-
-First let's look at the Power and Effect size for the pairwise comparisons. Not surprisingly, these are just the same as our original t-test, given that we have 50 observations per condition, and our mean difference is either 1, or a Cohen's d of 0.5 (in which case we have 61.78% power) or the mean difference is 0, and we have no power (because there is no true effect) but we wil observe significant results 3% of the time because we set our alpha level to 0.03.
-
-Then, let's look at the results for the ANOVA. Since there are no main effects in a perfect crossover interaction, we have a 3% Type 1 error rate. We see the power for the crossover interaction between factor a and b is 91.06%. This is much larger than the power for the simple effects. The reason is that the contrast that is equal to the test of the interaction is based on all 200 observations. Unlike the pairwise comparisons with 50 vs 50 observations, the contrast for the interaction has 100 vs 100 observations. Given that the effect size is the same (*f* = 0.25) we end up with much higher power. 
-
-If you current think it is impossible to find a statistically significant interaction without a huge sample size, you clearly see this is wrong. Power *can* be higher for an interaction than for the simpe effect - but this depends on the pattern of means underlying the interaction. If possible, design studies where your theory predicts a perfect crossover interaction.
-
-For the ordinal interaction, our statistical power does not look that good based on an a-priori power analysis. Superpower tells us we have 33.99% power for the main effects and interaction (yes, we have exactly the same power for all three - if you think about the three contrasts that are tested, these have the same effect size). 
-
-```{r eval=T, echo=T}
-design <- ANOVA_design(
-  design = "2b*2b", 
-  n = 50, 
-  mu = c(1, 0, 0, 0), 
-  sd = 2)
-
-ANOVA_exact(design, alpha_level = 0.03)
-```
-
-If you have heard people say you should be careful when designing studies predicting interaction patterns because you might have very low power, this is the type of pattern of means they are warning about. Maxwell, Delaney, and Kelley (2018) discuss why power for interactions is often smaller, and note interactions effects are often smaller in the real world, and we often examine ordinal interactions. This might be true. But in experimental psychology it might be possile to think about hypotheses that predict disordinal interactions. In addition to the fact that such predictions are often theoretically riskier and more impressive (after all, many things can make an effect go away, but without your theory it might be difficult to explain why an effect flips around) they also have larger effects and are easier to test with high power.
-
-Some years ago other blog posts by [Uri Simonsohn](http://datacolada.org/17) and [Roger Giner-Sorolla](https://approachingblog.wordpress.com/2018/01/24/powering-your-interaction-2/) did a great job in warning researchers they need large sample sizes for ordinal interactions, and my post repeats this warning. But it would be a shame if researchers would stop examining interaction effects. There are some nice benefits studying interactions, such as 1) making riskier theoretical predictions, 2) greater generalizability (if there is no interaction effect, you might show a main effect operates across different conditions of a second factor) and 3) if you want to study two main effects it is more efficient to do this in a 2x2 design than in two seperate designs (Maxwell, Delaney, & Kelley, 2018). So maybe this blog post has been able to highlight some scenarios where examining interaction effects is still beneficial.
 
 
 ## Requiring high-powered studies from scientists with resource constraints
