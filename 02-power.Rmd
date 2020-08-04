@@ -363,9 +363,9 @@ for(i in 1:100000){ #for each simulated experiment
 We see that after 100000 simulations with 85 participants, the estimated power is 0.90015 with 85 participants in each group. The analytic solution tells us power is 0.899894. The more simulations you perform, the more accurate the power estimate will be (as we see, 100000 simulations gives very accurate results).
 
 The way you perform the power analysis depends on the software you use. There are excellent software packages for power analysis, such as [PASS](https://www.ncss.com/software/pass/) or [SAS](https://stats.idre.ucla.edu/sas/seminars/proc-power/), but these solutions are rather expensive. There are also freeware solutions, such as the widely used [G\*Power](https://gpower.hhu.de), [MorePower](https://wiki.usask.ca/pages/viewpageattachments.action?pageId=420413544) by Campbell and Thompson, and [PANGEA](https://jakewestfall.shinyapps.io/pangea/) by Jake Westfall. 
-There is also a range of options in R. The default `stats` package has power functions for *t*-tests, proportions, and ANOVA, the `pwr` package has a wider range of options, `pwr2ppl` by Chris Aberson accompanies his excellent book on power analyses [@aberson_applied_2019], `powerlmm`by Kristoffer Magnusson performs power analyses for [two- and three-level linear mixed models](https://github.com/rpsychologist/powerlmm), and [Superpower](https://aaroncaldwell.us/SuperpowerBook/) created by Aaron Caldwell and myself does power analyses for complex ANOVA designs.
+There is also a range of options in R. The default `stats` package has power functions for *t*-tests, proportions, and ANOVA, the `pwr` package has a wider range of options, `pwr2ppl` by Chris Aberson accompanies his excellent book on power analyses [@aberson_applied_2019], `powerlmm` by Kristoffer Magnusson performs power analyses for [two- and three-level linear mixed models](https://github.com/rpsychologist/powerlmm), and [Superpower](https://aaroncaldwell.us/SuperpowerBook/) created by Aaron Caldwell and myself does power analyses for complex ANOVA designs.
 
-It takes time to learn to use this software correctly. You will need to sit down for a few hours and go through vignettes or read the accompanying publications, before you know what to do. In our online manual for Superpower, we compare Superpower against G\*Power, `pwr`, `pwr2ppl` and MorePower. Each software package will have slightly different design philosophies. In G\*Power you are expected to enter the standardized effect size d, while in MorePower we enter the mean difference and the standard deviation, and in Superpower we need to enter the means and standard deviations for each condition. In general I recommend to always think about the raw pattern of means you expect, before you perform a power analysis. This typically leads to more realistic effect sizes estimates than the use of standardized effect sizes (where researcher all too often 'expect' a d = 0.5 just because that is the default value in G\*Power).
+It takes time to learn to use this software correctly. You will need to sit down for a few hours and go through vignettes or read the accompanying publications, before you know what to do. In our online manual for Superpower, we compare Superpower against G\*Power, `pwr`, `pwr2ppl` and MorePower. Each software package will have slightly different design philosophies. In G\*Power you are expected to enter the standardized effect size d, while in MorePower we enter the mean difference and the standard deviation, and in Superpower we need to enter the means and standard deviations for each condition. In general I recommend to always think about the raw pattern of means you expect, before you perform a power analysis. This typically leads to more realistic effect sizes estimates than the use of standardized effect sizes (where researchers all too often 'expect' a d = 0.5 just because that is the default value in G\*Power).
 
 ```{r powerex1, fig.margin=FALSE, echo=FALSE, fig.cap="Example of a power analysis in G\\*Power."}
 knitr::include_graphics("images/powerex1.png")
@@ -398,7 +398,7 @@ Superpower::plot_power(design_result, max_n = 200, verbose = FALSE)
 
 ### Some advice when using G\*Power.
 
-The option for power analysis for a Pearson's correlation coefficient is under the Exact test family (Correlation: Bivariate normal model). The "Correlation: Point biserial model" option under the *t*-tests family is for correlations where one variable is dichotomous. The difference is small, but the required sample size is typically a few observations larger for Pearson's correlation coefficient. 
+G\*Power is one of the most widely used software tools for power analysis [@bakker_recommendations_2020]. The option for power analysis for a Pearson's correlation coefficient is under the Exact test family (Correlation: Bivariate normal model). The "Correlation: Point biserial model" option under the *t*-tests family is for correlations where one variable is dichotomous. The difference is small, but the required sample size is typically a few observations larger for Pearson's correlation coefficient. 
 
 ```{r gpowcor, fig.margin=FALSE, echo=FALSE, fig.cap="The options for a power analysis for Pearson's correlation(above) and the point biserial correlation (when one variable is dichotomous)."}
 knitr::include_graphics("images/gpowcor.png")
@@ -412,50 +412,73 @@ $$d_z = {\frac{t}{\sqrt{n}}} $$
 knitr::include_graphics("images/gpowdzd.png")
 ```
 
-The third issue that researchers often miss is that G\*Power has a very unfortunate default setting for power analyses for within subject ANOVA tests. In Figure \@ref(fig:gpowdwithin2) we see on the left how we can directly calculate Cohen's $f$ (the effect size one needs to enter for ANOVA power analyses) from partial eta squared. A medium effect size for $\eta^2_p$ of 0.588 equals a Cohen's $f$ of 0.25. If we specify an expected correlation between dependent variables of 0.8, have 3 repeated measurements, one condition, and want to achieve 95% power with an alpha level of 0.05, we need a sample size of 19. However, if out value for $\eta^2_p$ comes from the scientific literature or statistical software such as SPSS, this effect size measure already has the correlation between observation incorporated. If we would simply enter it in G\*Power, we take into account the correlation twice, which leads to a massively smaller sample size. Instead, we need to click on the "Options" button and check the radiobutton before "As in SPSS". We see that "Effect size f" changes into "Effect size f(U)", and the box "Corr among rep measures" has disappeared on the right. This is because the correlation no longer needs to be entered seperately - it is already taken into account in the $\eta^2_p$ as SPSS computes it. Most importantly, we now see that the sample size we need to achieve 95% power has changed to 127. This is a big difference, and I have seen people make this mistake very often. If you use G\*power for power analyses for ANOVA designs, I recommend always double checking the Options setting (and maybe repeat your analysis in software such as Superpower just to double check). 
+The third issue that researchers often miss is that G\*Power has a very unfortunate default setting for power analyses for within subject ANOVA tests. In Figure \@ref(fig:gpowdwithin2) we see on the left how we can directly calculate Cohen's $f$ (the effect size one needs to enter for ANOVA power analyses) from partial eta squared. A medium effect size for $\eta^2_p$ of 0.588 equals a Cohen's $f$ of 0.25. If we specify an expected correlation between dependent variables of 0.8, have 3 repeated measurements, one condition, and want to achieve 95% power with an alpha level of 0.05, we need a sample size of 19. However, if out value for $\eta^2_p$ comes from the scientific literature or statistical software such as SPSS, this effect size measure already has the correlation between observation incorporated. If we would simply enter it in G\*Power, we take into account the correlation twice, which leads to a massively smaller sample size. Instead, we need to click on the "Options" button and check the radiobutton before "As in SPSS". We see that "Effect size f" changes into "Effect size f(U)", and the box "Corr among rep measures" has disappeared on the right. This is because the correlation no longer needs to be entered separately - it is already taken into account in the $\eta^2_p$ as SPSS computes it. Most importantly, we now see that the sample size we need to achieve 95% power has changed to 127. This is a big difference, and I have seen people make this mistake very often. If you use G\*power for power analyses for ANOVA designs, I recommend always double checking the Options setting (and maybe repeat your analysis in software such as Superpower just to double check). 
 
 ```{r gpowdwithin2, fig.margin=FALSE, echo=FALSE, fig.cap="Power analysis for repeated ANOVA in G\\*Power by default expects a partial eta squared effect size that does not take the correlation between measurements into account."}
 knitr::include_graphics("images/gpowwithin2.png")
 ```
 
+### Reporting an a-priori power analysis.
 
-## Criterion power analysis
+As with all the analyses you rely on in your work, make sure the power analysis is computationally reproducible. If you performed power analyses in R, you can store the script. In G\*Power, you can save the several power analyses you performed consecutively in the app under the 'protocol of power analysis' tab by saving them as a .rtf file or printing them as a pdf file. 
 
-Sometimes the sample size you can collect is fixed. In that case you can perform a sensitivity power analysis to examine the effect sizes you can detect with a desired power. If we plan to perform a two-sided *t*-test, and can collect at most 70 observations in each independent group, and we want to have 90% power, given an alpha level of 0.01, we only have 90% power for effects of d = 0.66. We could still get lucky find a significant effect if the population effect size is smaller than 0.66, but we would no longer control our Type 2 error rate (1-power) at 10%. 
-
-```{r, echo = TRUE}
-power.t.test(n = 70, 
-             sig.level = 0.01,
-             power = 0.9,
-             type = "two.sample",
-             alternative = "two.sided")
+```{r gpowprotocol, fig.margin = FALSE, echo = FALSE, fig.cap="G\\*Power allows you to easily save all details about the power analysis you performed."}
+knitr::include_graphics("images/gpowprotocol.png")
 ```
 
-In a criterion power analysis one computes the alpha level one should choose to achieve a desired power, given a sample size and an expectation of the population effect size. If we plan to perform a two-sided *t*-test, and can collect at most 70 observations in each independent group, and we want to have 90% power, and expect a population effect size of 0.5, we would need to set the alpha level to 0.0966. We can use a lower alpha level, but then our power would be smaller. If we assume we can not increase our sample size beyond 70 per group, we need to make a trade-off between increasing our Type 1 error rate, or our Type 2 error rate. As Neyman and Pearson @neyman_problem_1933 write: "The use of these statistical tools in any given case, in determining just how the balance should be struck, must be left to the investigator."
+If you use the [Superpower Shiny app](https://arcstats.io/shiny/anova-exact/) for more complex ANOVA designs, you can print a pdf file with all detailed about the power analysis you performed. Sharing the code or a printout of the power analysis will capture all required information about the power analysis you performed, which is often preferable over attempting to communicate all this information verbally.
 
-```{r, echo = TRUE}
-power.t.test(n = 70, 
-             delta = 0.5,
-             sig.level = NULL,
-             power = 0.9,
-             type = "two.sample",
-             alternative = "two.sided")
+```{r superpowerreport, fig.margin = FALSE, echo = FALSE, fig.cap="Superpower allows you to print a report with all information about the power analysis you performed."}
+knitr::include_graphics("images/superpowerreport.png")
+```
 
+Providing a reproducible report is sufficient to clarify the power calculation, but not the reasons behind the power calculations. Your decision for the desired Type 1 and Type 2 error rate needs a justification, and most importantly, the effect size you have powered for needs to be justified. If your effect size estimate is based on the existing literature, provide a full citation, and preferably a direct quote from the article. If your effect size is based on an empirical estimate from the scientific literature, you will need to address 1) uncertainty, and 2) bias [@anderson_sample-size_2017; @taylor_bias_1996]. If your effect size is based on a smallest effect size of interest, this value should not just be stated, but [justified](#justifysesoi) (e.g., based on theoretical predictions, practical implications, or effect sizes observed or detectable in the literature). 
+
+**should this be addressed here, or in the chapter on bias? Maybe in the chapter on bias**.
+
+```{r table-pow-rec-2, echo = FALSE}
+
+table_pow_rec_2 <- data.frame(c("List all primary analyses you plan to do.", "Specify the alpha level for each analysis", "What is the desired power?", "For each power analysis, specify the effect size metric, the effect size, and the justification for powering for the effect size.", "Make sure the power analysis is reproducible."), c("Following JARS guidelines, specify all primary analyses for which you want to control Type 1 and Type 2 error rates", "List and justify the chosen alpha level for each analysis. Make sure to correct for multiple comparisons where needed.", "List and justify the desired power for each analysis", "Report the effect size metric (e.g., Cohen's $d_z$,  Cohen's f), the effect size (e.g., 0.3). and the justification for the effect size.", "Include the code used to run the power analysis, or print a report containing the details about the power analyses you performed."))
+colnames(table_pow_rec_2) <- c("What to address?", "How to address it?")
+
+knitr::kable(table_pow_rec_2, caption = "Overview of recommendations when reporting an a-prior power analysis.")
 ```
 
 
+## Compromise power analysis
 
-, but one should always consider the possibility that the effect size is 0. In practice, one can design a study assuming both the presence and the absence of an effect by performing an a-priori power analysis for a null-hypothesis significance test, assuming there is an effect, and an a-priori power analysis for an equivalence test, assuming the true effect size is 0. We will demonstrate some practical examples in the next sections. 
+Sometimes researchers are brave enough *not* to fix their alpha level to 0.05. There are two situations where it is sensible to use a different alpha level, even if you want to follow current conventions. The first situation is when you are fortunate enough to be able to collect so many observations that the statistical power for your test is very high. For example, imagine you have access to 2000 employees who are all required to answer questions during a yearly evaluation in a company where you are testing an intervention that should reduce subjectively reported stress levels. You are quite confident that an effect smaller than d = 0.2 is not large enough to be subjectively noticeable for individuals [@jaeschke_measurement_1989]. With an alpha level of 0.05 you would have a statistical power of 0.994, or a Type 2 error rate of 0.006. This means that for a smallest effect size of interest of d = 0.2 we are 8.3 times more likely to make a Type 1 error than a Type 2 error. 
+
+This is a reversal of the normal balance of Type 1 and Type 2 error rates, where the minimum desired power is 0.8, and a Type 1 error (0.05) is 4 times as unlikely as a Type 2 error (20%). The default use of 80% power (or a 20% Type 2, or beta ($\beta$) error) is based on nothing more than a personal preference by @cohen_statistical_1988, who writes: 
+
+>>It is proposed here as a convention that, when the investigator has no other basis for setting the desired power value, the value .80 be used. This means that $\beta$ is set at .20. This arbitrary but reasonable value is offered for several reasons (Cohen, 1965, pp. 98-99). The chief among them takes into consideration the implicit convention for $\alpha$ of .05. The $\beta$ of .20 is chosen with the idea that the general relative seriousness of these two kinds of errors is of the order of .20/.05, i.e., that Type I errors are of the order of four times as serious as Type II errors. This .80 desired power convention is offered with the hope that it will be ignored whenever an investigator can find a basis in his substantive concerns in his specific research investigation to choose a value ad hoc.
+
+We see that conventions are built on conventions: the norm to aim for 80% power is built on the norm to set the alpha level at 5%. What we should take away from Cohen is not that we should aim for 90% power, but that we should justify our error rates based on the relative seriousness of each error. If our Type 1 error is 4 times as serious as a Type 2 error, and our Type 2 error is very low for all effects we care about, we should adjust our Type 1 error rate [@erdfelder_gpower_1996]. G\*Power allows us to perform such a **compromise power analysis**, as illustrated in In Figure \@ref(fig:gpowcompromise) 
+
+```{r gpowcompromise, fig.margin = FALSE, echo = FALSE, fig.cap="Compromise power analysis in G\\*Power."}
+knitr::include_graphics("images/compromise1.png")
+```
+
+Of course you do not need to follow conventions. If you believe Type 1 errors and Type 2 errors are equally problematic (which is often at least as defensible as arguing a Type 1 error is exactly 4 times as bad as a Type 2 error) you would weigh both types of errors equally, and use α = 0.01785. 
+
+As Faul, Erdfelder, Lang, and Buchner -@faul_gpower_2007 write:
+
+>>Of course, compromise power analyses can easily result in unconventional significance levels greater than $\alpha$ = .05 (in the case of small samples or effect sizes) or less than $\alpha$ = .001 (in the case of large samples or effect sizes). However, we believe that the benefit of balanced Type I and Type II error risks often offsets the costs of violating significance level conventions
+
+This brings us to the second situation where we want to deviate from α = 0.05, while still following the underlying convention proposed by Cohen to weigh a Type 1 error 4 times as serious as a Type 2 error: The situation where power is lower than 80%. Although it is highly undesireable to make decisions when error rates are so very high, if one finds oneself in a situation where a decision must be made based on little data, @winer_statistical_1962 writes: 
+
+>>The frequent use of the .05 and .01 levels of significance is a matter of convention having little scientific or logical basis. When the power of tests is likely to be low under these levels of significance, and when Type 1 and Type 2 errors are of approximately equal importance, the .30 and .20 levels of significance may be more appropriate than the .05 and .01 levels. 
+
+If we plan to perform a two-sided *t*-test, and can collect at most 50 observations in each independent group, and we want to have 90% power, and expect a population effect size of 0.5, we would have 70% power if we set our alpha level to 0.05. If we can not increase our sample size beyond 50 per group, and we need to make a decision based on the data we will collect, we could set our alpha level to 0.065 to have a Type 1 error rate 4 times as high as our Type 2 error rate (0.262). OR, we can choose to weigh both types of error equally, and set the alpha level to 0.149. The choice of α and β can be further improved by taking priors probabilities of H0 and H1 into account [@miller_quest_2019] In the end, as Neyman and Pearson @neyman_problem_1933 write: "The use of these statistical tools in any given case, in determining just how the balance should be struck, must be left to the investigator."
 
 ## How to justify your sample size based on a power analysis.
 
 One challenge in power analysis is that you never know the true effect size. This leads to the ‘sample size samba’ [@schulz_sample_2005]. Researchers go back and forth between the effect size they expect, and the sample size they are willing to collect, until they 'expect' the effect size that, in an a-priori power analysis, leads to the sample size they are willing to collect. This practice obviously makes a power analysis a useless procedure. 
+One might be tempted to perform a small power analysis to estimate the effect size, and use this effect size estimate in an a-priori power analysis. Regrettably, this is not a recommended solution. First, effect size estimates from small pilot studies are highly uncertain , which means the estimate can easily be much smaller or larger than the population effect size (which can be seen by the width of the confidence interval around the effect size estimate). Second, such a procedure inevitably leads to bias, because you will only perform studies when the pilot provided an effect size estimates that, when entered in an a-priori power analysis, yielded a sample size that was feasible to collect. Since you only follow up on pilot studies when the effect size estimate is sufficiently large, this inevitably leads to 'follow-up bias' [@albers_when_2018]. 
 
-One might be tempted to perform a small power analysis to estimate the effect size, and use this effect size estimate in an a-priori power analysis. Regrettably, this is not a recommended solution. First, effect size estimates from small pilot studies are highly uncertain , which means the estimate can easily be much smaller or larger than the population effect size (which can be seen by the width of the confidence interval around the effect size estimate). Second, such a procedure inevitably leads to bias, because you will only perform studies when the pilot provided an effect size estimates that, when entered in an a-priori power analysis, yielded a sample size that was feasible to collect. Since you only follow up on pilot studies when the effect size estimate is sufficiently large, this inevitably leads to 'follow-up bias' 
+What can be done? The recommended best practice is to not enter the effect size you expect, but the smallest effect size you would still be interested in. By doing this, you will be able to design a study that has sufficient power for the smallest effect you find worthwhile to observe, even when you do not know what the true effect size is. By determining the required sample size for the smallest effect size of interest, you can guarantee you have designed an informative study. However, in case the true effect size is larger than your smallest effect size of interest, you might collect many more participants than required. This can be solved by performing sequential analyses, where you analyze the data intermittently, while controlling the Type 1 error rate for multiple looks at the data. Ways to justify your smallest effect size of interest and how to perform sequential analyses are addressed elsewhere in this book.
 
-What can be done? The recommended best practice is to not enter the effect size you expect, but the smallest effect size you would still be interested in. By doing this, you will be able to design a study that has sufficient power for the smallest effect you find worthwhile to observe, even when you do not know what the true effect size is. By determining the required sample size for the smallest effect size of interest, you can guarantee you have designed an informative study. However, in case the true effect size is larger than your smallest effect size of interest, you might collect many more participants than required. This can be solved by performing sequential analyses, where you analyze the data intermittently, while controlling the Type 1 error rate for multiple looks at the data. We will explain sequential analyses later.
-
-## Observed (post-hoc) power analysis (and what to do if your editor asks for them) {#observedpower}
+## Observed (post-hoc) power analysis {#observedpower}
 
 Observed power (or post-hoc power) is the statistical power of the test you have performed, based on the effect size estimate from your data. **Observed power** differs from the **true power** of your test, because the true power depends on the (true)unknown) population effect size, while observed power is computed based on the (unlikely) assumption that the effect size you observed in your sample is the true effect size. SPSS (which still hasn't included useful statistics such as effect sizes for *t*-tests) provides users with the option to report observed power by clicking a checkbox. You should never calculate the observed power. Observed power, computed based on the observed effect size, is a useless statistical concept. Despite this fact, editors and reviewers often ask authors to perform post-hoc power analysis to make a statement about the statistical power a study had. You should never comply with this request. The correct approach to evaluate the statistical power of a study after the data is collected is a [sensitivity power analysis](#sensitivitypower). 
 
@@ -549,10 +572,7 @@ abline(v = 0.05, h = 0.5, col = rgb(1, 0, 0, 0.5), lty = 1)
 
 ```
 
-
-```{r obspow2, fig.margin=TRUE, echo=FALSE, fig.cap="Distribution of *p*-values plotted against observed power with high power."}
-knitr::include_graphics("images/obspow2.png")
-```
+### What to do if your editor asks for post-hoc power?
 
 Editors sometimes ask researchers to report post-hoc power analyses when authors report a test result of *p* > 0.05, and when authors want to conclude there is no effect. In such situations, editors would like to distinguish between true negatives (concluding there is no effect, when there is no effect) and false negatives (concluding there is no effect, when there actually is an effect, or a Type 2 error). As the preceding explanation of post-hoc power illustrates, reporting post-hoc power is nothing more than a different way of reporting the *p*-value, and will therefore not answer the question editors want to know [@hoenig_abuse_2001; @lenth_post_2007; @yuan_post_2005].
 
@@ -747,22 +767,16 @@ You see that the correlation between dependent variables is an important aspect 
 
 Since most dependent variables in within designs in psychology are positively correlated, within designs will greatly increase the power you can achieve given the sample size you have available. Use within-designs when possible, but weigh the benefits of higher power against the downsides of order effects or carryover effects that might be problematic in a within-subject design. Maxwell and Delaney's book (Chapter 11) has a good discussion of this topic.
 
-You can use this Shiny app to play around with different means, sd's, and correlations, and see the effect of the distribution of the difference scores.
+<!-- You can use this Shiny app to play around with different means, sd's, and correlations, and see the effect of the distribution of the difference scores. -->
 
-```{r shiny2, echo=F}
-knitr::include_app('http://shiny.ieis.tue.nl/within_between/', height = '4000px')
-```
+<!-- ```{r shiny2, echo=F} -->
+<!-- knitr::include_app('http://shiny.ieis.tue.nl/within_between/', height = '4000px') -->
+<!-- ``` -->
 
 
-## Requiring high-powered studies from scientists with resource constraints
+## Improving the power of your tests
 
-Underpowered studies make it very difficult to learn something useful from the studies you perform. Low power means you have a high probability of finding non-significant results, even when there is a true effect. Hypothesis tests which high rates of false negatives (concluding there is nothing, when there is something) become a malfunctioning tool. Low power is even more problematic combined with publication bias (shiny app). After repeated warnings over at least half a century, high quality journals are starting to ask authors who rely on hypothesis tests to provide a sample size justification based on statistical power.
-
-The first time researchers use power analysis software, they typically think they are making a mistake, because the sample sizes required to achieve high power for hypothesized effects are much larger than the sample sizes they collected in the past. After double checking their calculations, and realizing the numbers are correct, a common response is that there is no way they are able to collect this number of observations.
-
-Published articles on power analysis rarely tell researchers what they should do if they are hired on a 4 year PhD project where the norm is to perform between 4 to 10 studies that can cost at most 1000 euro each, learn about power analysis, and realize there is absolutely no way they will have the time and resources to perform high-powered studies, given that an effect size estimate from an unbiased registered report suggests the effect they are examining is half as large as they were led to believe based on a published meta-analysis from 2010. Facing a job market that under the best circumstances is a nontransparent marathon for uncertainty-fetishists, the prospect of high quality journals rejecting your work due to a lack of a solid sample size justification is not pleasant.
-
-The reason that published articles do not guide you towards practical solutions for a lack of resources, is that there are no solutions for a lack of resources. Regrettably, the mathematics do not care about how small the participant payment budget is that you have available. This is not to say that you can not improve your current practices by reading up on best practices to increase the efficiency of data collection. Let me give you an overview of some things that you should immediately implement if you use hypothesis tests, and data collection is costly.
+HEre are some things you should immediately implement if you use hypothesis tests, and data collection is costly.
 
 **1) Use directional tests where relevant.** 
 
@@ -770,19 +784,19 @@ Just following statements such as ‘we predict X is larger than Y’ up with a 
 
 **2) Use sequential analysis whenever possible.**
 
-It’s like optional stopping, but then without the questionable inflation of the false positive rate. The efficiency gains are so great that, if you complain about the recent push towards larger sample sizes without already having incorporated sequential analyses, I will have a hard time taking you seriously.
+It’s like optional stopping, but then without the questionable inflation of the false positive rate. Sequential analyses greatly increase the efficiency of tests [@lakens_performing_2014].
 
 **3) Increase your alpha level.** 
 
-Oh yes, I am serious. Contrary to what you might believe, the recommendation to use an alpha level of 0.05 was not the sixth of the ten commandments – it is nothing more than, as Fisher calls it, a ‘convenient convention’. As we wrote in our Justify Your Alpha paper as an argument to not require an alpha level of 0.005: “without (1) increased funding, (2) a reward system that values large-scale collaboration and (3) clear recommendations for how to evaluate research with sample size constraints, lowering the significance threshold could adversely affect the breadth of research questions examined.” If you *have* to make a decision, and the data you can feasibly collect is limited, take a moment to think about how problematic Type 1 and Type 2 error rates are, and maybe minimize combined error rates instead of rigidly using a 5% alpha level.
+As we wrote in our Justify Your Alpha paper as an argument to not require an alpha level of 0.005: “without (1) increased funding, (2) a reward system that values large-scale collaboration and (3) clear recommendations for how to evaluate research with sample size constraints, lowering the significance threshold could adversely affect the breadth of research questions examined.” If you *have* to make a decision, and the data you can feasibly collect is limited, consider performing a compromise power analysis.
 
 **4) Use within designs where possible.**
 
-Especially when measurements are strongly correlated, this can lead to a substantial increase in power.
+Especially when measurements are strongly correlated, this can lead to a substantial increase in power, as explained above.
 
 **5) Remove statistical variation where possible**
 
-The smaller the variation, the larger the standardized effect size (because we are dividing the raw effect by a smaller denominator) and thus the higher the power given the same number of observations. For an overview of different approaches to reduce the variance, let’s take a look at a very sensible paper by Allison, Allison, Faith, Paultre, & Pi-Sunyer from 1997: Power and money: Designing statistically powerful studies while minimizing financial costs. They discuss:
+The smaller the variation, the larger the standardized effect size (because we are dividing the raw effect by a smaller denominator) and thus the higher the power given the same number of observations. For an overview of different approaches to reduce the variance, see @allison_power_1997. They discuss:
 
 1. Better ways to screen participants for studies where participants need to be screened before participation.
 2. Assigning participants unequally to conditions (if the control condition is much cheaper than the experimental condition, for example). 
@@ -793,7 +807,7 @@ Another approach they do not mention is to, where possible, collect multiple obs
 
 **6) Use Bayesian statistics with informed priors.**
 
-Regrettably, almost all approaches to statistical inferences become very limited when the number of observations is small. If you are very confident in your predictions (and your peers agree), incorporating prior information will give you a benefit. For a discussion of the benefits and risks of such an approach, see this paper by van de Schoot and colleagues.
+Regrettably, almost all approaches to statistical inferences become very limited when the number of observations is small. If you are very confident in your predictions (and your peers agree), incorporating prior information will give you a benefit. For a discussion of the benefits and risks of such an approach, see @van_de_schoot_analyzing_2015.
 
 Now if you care about efficiency, you might already have incorporated all these things. There is no way to further improve the statistical power of your tests, and by all plausible estimates of effects sizes you can expect or the smallest effect size you would be interested in, statistical power is low. Now what should you do?
 
@@ -816,5 +830,3 @@ When I did my PhD, there was the assumption that you performed enough research i
 **4) Think about the questions we collectively want answered, instead of the questions we can individually answer.**
 
 Our society has some serious issues that psychologists can help address. These questions are incredibly complex. I have long lost faith in the idea that a bottom-up organized scientific discipline that rewards individual scientists will manage to generate reliable and useful knowledge that can help to solve these societal issues. For some of these questions we need well-coordinated research lines where hundreds of scholars work together, pool their resources and skills, and collectively pursuit answers to these important questions. And if we are going to limit ourselves in our research to the questions we can answer in our own small labs, these big societal challenges are not going to be solved. Call me a pessimist. There is a reason we resort to forming unions and organizations that have to goal to collectively coordinate what we do. If you greatly dislike team science, don’t worry – there will always be options to make scientific contributions by yourself. But now, there are almost no ways for scientists who want to pursue huge challenges in large well-organized collectives of hundreds or thousands of scholars (for a recent exception that proves my rule by remaining unfunded: see the Psychological Science Accelerator). If you honestly believe your research question is important enough to be answered, then get together with everyone who also thinks so, and pursue answers collectively. Doing so should, eventually (I know science funders are slow) also be more convincing as you ask for more resources to do the resource (as in point 1).
-
-If you are upset that as a science we lost the blissful ignorance surrounding statistical power, and are requiring researchers to design informative studies, which hits substantially harder in some research fields than in others: I feel your pain. I have argued against universally lower alpha levels for you, and have tried to write accessible statistics papers that make you more efficient without increasing sample sizes. But if you are in a research field where even best practices in designing studies will not allow you to perform informative studies, then you need to accept the statistical reality you are in. I have already written too long a blog post, even though I could keep going on about this. My main suggestions are to ask for more money, get better management, change what we expect from PhD students, and self-organize – but there is much more we can do, so do let me know your top suggestions. This will be one of the many challenges our generation faces, but if we manage to address it, it will lead to a much better science.
