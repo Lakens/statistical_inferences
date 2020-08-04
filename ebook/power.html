@@ -181,14 +181,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Below, several possible justifications for the number of observations are discussed. First, you might be able to <strong>collect data from the entire population</strong>. Second, you might justify the sample size based on <strong>feasibility</strong>. Since we always have resource constraints, it is good to know about feasibility justifications, even though they are rarely discussed in statistics textbooks. Third, you might want to perform an a-priori power analysis. We will discuss all these situations in turn. Before we do so, we need to get some terminology out of the way.</p>
 <p>The <strong>sample size</strong> should not be confused with the number of participants. When single observations are collected from participants in a study, the number of observations equals the number of participants. In these cases, we can use a sample size justification and a justification for the number of participants interchangeably. When multiple observations from single individuals can be collected, the sample size is the number of observation, but not the number of participants.</p>
 <p><strong>Statistical power</strong> is the probability of a test to yield a statistically significant result if the alternative hypothesis is true <span class="citation">(Aberson, <label for="tufte-mn-6" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-6" class="margin-toggle">2019<span class="marginnote">Aberson, C. L. (2019). <em>Applied Power Analysis for the Behavioral Sciences: 2nd Edition</em> (2 edition). Routledge.</span>; Cohen, <label for="tufte-mn-7" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-7" class="margin-toggle">1988<span class="marginnote">Cohen, J. (1988). <em>Statistical power analysis for the behavioral sciences</em> (2nd ed). L. Erlbaum Associates.</span>)</span>. Power depends on the Type 1 error rate (α), the true effect size in the population, and the number of observations. Because the true effect size is typically unknown, it makes most sense to speak about the power function. In Figure <a href="power.html#fig:power-1">2.1</a> you see a power curve for an independent <em>t</em>-test, with an alpha level of 0.05. We see that as the effect size (in Cohen’s d) increases, power increases. If the effect you study has an effect size of 0.5, you would have almost 70% power with 50 observations in each independent group (indicated by the red dot). If the true effect size is smaller, power is lower, and as the effect size is larger, power is larger.</p>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:power-1"></span>
-<img src="Statistical_Inferences_files/figure-html/power-1-1.png" alt="Power curve for an independent *t*-test as a function of the true effect size." width="672"><!--
-<p class="caption marginnote">-->Figure 2.1: Power curve for an independent <em>t</em>-test as a function of the true effect size.<!--</p>-->
-<!--</div>--></span>
+<div class="figure">
+<span id="fig:power-1"></span>
+<p class="caption marginnote shownote">
+Figure 2.1: Power curve for an independent <em>t</em>-test as a function of the true effect size.
 </p>
+<img src="Statistical_Inferences_files/figure-html/power-1-1.png" alt="Power curve for an independent *t*-test as a function of the true effect size." width="672">
+</div>
 <p><strong>Power analysis</strong> is the practice of computing the effect size, desired power, sample size, or alpha level from the other three values. Computing the required sample size is commonly referred to as <strong>a-priori</strong> power analysis, computing the smallest effect size you have the desired power for is called <strong>sensitivty</strong> power analysis, computing the alpha level is called <strong>criterion</strong> power analysis, and computing the achieved power is called <strong>post-hoc</strong> power analysis. We will discuss all these different types of power analysis below. With this terminology out of the way, let’s examine different ways to justify the sample size.</p>
 <div id="measuring-the-entire-population" class="section level2">
 <h2>
@@ -209,37 +208,34 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3>
 <span class="header-section-number">2.2.1</span> The smallest effect size that can be statistically significant</h3>
 <p>In Figure <a href="power.html#fig:power-effect1">2.2</a> the distribution of Cohen’s d given 15 participants per group is plotted when the true effect size is 0 (or the null-hypothesis is true), and when the true effect size is d = 0.5. The blue area is the Type 2 error rate (the probability of not finding p &lt; α, when there is a true effect, and α = 0.05).</p>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:power-effect1"></span>
-<img src="Statistical_Inferences_files/figure-html/power-effect1-1.png" alt="Null and alternative distribution, assuming d = 0.5, alpha = 0.05, and N = 15 per group." width="672"><!--
-<p class="caption marginnote">-->Figure 2.2: Null and alternative distribution, assuming d = 0.5, alpha = 0.05, and N = 15 per group.<!--</p>-->
-<!--</div>--></span>
+<div class="figure">
+<span id="fig:power-effect1"></span>
+<p class="caption marginnote shownote">
+Figure 2.2: Null and alternative distribution, assuming d = 0.5, alpha = 0.05, and N = 15 per group.
 </p>
+<img src="Statistical_Inferences_files/figure-html/power-effect1-1.png" alt="Null and alternative distribution, assuming d = 0.5, alpha = 0.05, and N = 15 per group." width="672">
+</div>
 <p>You might seen such graphs before. The only thing I have done is to transform the <em>t</em>-value distribution that is commonly used in these graphs, and calculated the distribution for Cohen’s d. This is a straightforward transformation, but instead of presenting the critical <em>t</em>-value the figure provides the critical <em>d</em>-value. For a two-sided independent <em>t</em>-test, this is calculated as:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="power.html#cb16-1"></a><span class="kw">qt</span>(<span class="dv">1</span><span class="op">-</span>(a <span class="op">/</span><span class="st"> </span><span class="dv">2</span>), (n1 <span class="op">+</span><span class="st"> </span>n2) <span class="op">-</span><span class="st"> </span><span class="dv">2</span>) <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="dv">1</span><span class="op">/</span>n1 <span class="op">+</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span>n2)</span></code></pre></div>
 <p>where ‘a’ is the alpha level (e.g., 0.05) and N is the sample size in each independent group. For the example above, where alpha is 0.05 and n = 15:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="power.html#cb17-1"></a><span class="kw">qt</span>(<span class="dv">1</span><span class="op">-</span>(<span class="fl">0.05</span> <span class="op">/</span><span class="st"> </span><span class="dv">2</span>), (<span class="dv">15</span> <span class="op">*</span><span class="st"> </span><span class="dv">2</span>) <span class="op">-</span><span class="st"> </span><span class="dv">2</span>) <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="dv">1</span><span class="op">/</span><span class="dv">15</span> <span class="op">+</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span><span class="dv">15</span>)</span></code></pre></div>
 <pre><code>## [1] 0.7479725</code></pre>
 <p>The critical <em>t</em>-value (2.0484071) is also provided in commonly used power analysis software such as G*Power. We can compute the critical Cohen’s d from the <em>t</em>-value and sample size using: <span class="math inline">\(d = t{\sqrt{1/n_1 + 1/n_2}}\)</span>.</p>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:gcrit1"></span>
-<img src="images/gpowcrit.png" alt="The critical *t*-value is provided by G\*Power software." width="378"><!--
-<p class="caption marginnote">-->Figure 2.3: The critical <em>t</em>-value is provided by G*Power software.<!--</p>-->
-<!--</div>--></span>
+<div class="figure">
+<span id="fig:gcrit1"></span>
+<p class="caption marginnote shownote">
+Figure 2.3: The critical <em>t</em>-value is provided by G*Power software.
 </p>
+<img src="images/gpowcrit.png" alt="The critical *t*-value is provided by G\*Power software." width="378">
+</div>
 <p>When you will test an association between variables with a correlation, G*Power will directly provide you with the critical effect size. When you compute a correlation based on a two-sided test, your alpha level is 0.05, and you have 30 observations, only effects larger than r = 0.361 will be statistically significant. In other words, the effect needs to be quite large to even have the mathematical possibility of becoming statistically significant.</p>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:gcrit2"></span>
-<img src="images/gpowcrit2.png" alt="The critical r is provided by G\*Power software." width="378"><!--
-<p class="caption marginnote">-->Figure 2.4: The critical r is provided by G*Power software.<!--</p>-->
-<!--</div>--></span>
+<div class="figure">
+<span id="fig:gcrit2"></span>
+<p class="caption marginnote shownote">
+Figure 2.4: The critical r is provided by G*Power software.
 </p>
+<img src="images/gpowcrit2.png" alt="The critical r is provided by G\*Power software." width="378">
+</div>
 <p>The critical effect size gives you information about the smallest effect size that, if observed, would by statistically significant. If you observe a smaller effect size, the <em>p</em>-value will be larger than your significance threshold. You always have some probability of observing effects larger than the critical effect size. After all, even if the null hypothesis is true, 5% of your tests will yield a significant effect. But what you should ask yourself is whether the effect sizes that could be statistically significant are realistically what you would expect to find. If this is not the case, it should be clear that there is no use in performing a significance test. Mathematically, when the critical effect size is larger than effects you expect, your statistical power will be less than 50% (see the section on <a href="power.html#observedpower">observed power</a>). If you perform a statistical test with less than 50% power, your single study is not very informative.</p>
 </div>
 <div id="compute-the-width-of-the-confidence-interval-around-the-effect-size" class="section level3">
@@ -274,14 +270,13 @@ Figure 2.5: Central (black) and 2 non-central (red and blue) <em>t</em>-distribu
 <div id="sensitivitypower" class="section level3">
 <h3>
 <span class="header-section-number">2.2.3</span> Plot a sensitivity power analysis</h3>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:gsens0"></span>
-<img src="images/sensitivity0.png" alt="Sensitivity power analysis in G\*Power software." width="378"><!--
-<p class="caption marginnote">-->Figure 2.6: Sensitivity power analysis in G*Power software.<!--</p>-->
-<!--</div>--></span>
+<div class="figure">
+<span id="fig:gsens0"></span>
+<p class="caption marginnote shownote">
+Figure 2.6: Sensitivity power analysis in G*Power software.
 </p>
+<img src="images/sensitivity0.png" alt="Sensitivity power analysis in G\*Power software." width="378">
+</div>
 <p>In a <strong>sensitivity power analysis</strong> the sample size and the alpha level are fixed, and you compute the effect size you have the desired statistical power to detect. For example, in Figure <a href="power.html#fig:gsens0">2.6</a> the sample size in each group is set to 15, the alpha level is 0.05, and the desired power is set to 90%. The sensitivity power analysis shows we have 90% power to detect an effect of d = 1.23. Perhaps you feel a power of 90% is a bit high, and you would be happy with 80% power. In Figure <a href="power.html#fig:gsens1">2.7</a> we see that if we desire 80% power, the effect size should be d = 1.06. The smaller the true effect size, the lower the power we have. This plot should again remind us not to put too much faith in a significance test when are sample size is small, since for 15 observations in each condition, statistical power is very low for anything but extremely large effect sizes.</p>
 <div class="figure">
 <span id="fig:gsens1"></span>
@@ -290,7 +285,7 @@ Figure 2.7: Plot of the effect size against the desired power when n = 15 per gr
 </p>
 <img src="images/sensitivity1.png" alt="Plot of the effect size against the desired power when n = 15 per group and alpha = 0.05." width="485">
 </div>
-<p>If we look at the effect size that we would have 50% power for, we see it is d = 0.7411272. This is very close to our critical effect size of d = 0.7479725 (the smallest effect size that, if observed, would be significant). The difference is due to the non-central <em>t</em>-distribution (see Figure <a href="power.html#fig:noncentralt">2.5</a>. If the distribution was symmetric, observing an effect size exactly on the critical value would mean half of the distirbution is smaller than the critical effect size, and half of the distribution is larger, and we would have exactly 50% power for the critical effect size. Because the distribution is not symmetrical, we need to find the critical effect size for which it <em>is</em> true that half the distribution falls below it, and half the distribution falls above it. This value can’t be calculated directly, and requires an iterative procedure that optimizes the values of the non-centrality parameter such that power is exactly 50% <span class="citation">(Smithson, <label for="tufte-mn-14" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-14" class="margin-toggle">2003<span class="marginnote">Smithson, M. (2003). <em>Confidence intervals</em>. Sage Publications.</span>)</span>. The <code>pwr</code> package in R can calculate this effect size in a sensitivity analysis where we enter the sample size (per group), the alpha level, and the desired power for a two-sided independent <em>t</em>-test, which will return d = 0.7411272. We can check this true effect size would indeed give with 50% power (but feel free to skip these technicalities).</p>
+<p>If we look at the effect size that we would have 50% power for, we see it is d = 0.7411272. This is very close to our critical effect size of d = 0.7479725 (the smallest effect size that, if observed, would be significant). The difference is due to the non-central <em>t</em>-distribution (see Figure <a href="power.html#fig:noncentralt">2.5</a>. If the distribution was symmetric, observing an effect size exactly on the critical value would mean half of the distirbution is smaller than the critical effect size, and half of the distribution is larger, and we would have exactly 50% power for the critical effect size. Because the distribution is not symmetrical, we need to find the critical effect size for which it <em>is</em> true that half the distribution falls below it, and half the distribution falls above it. This value can’t be calculated directly, and requires an iterative procedure that optimizes the values of the non-centrality parameter such that power is exactly 50% <span class="citation">(Smithson, <label for="tufte-mn-14" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-14" class="margin-toggle">2003<span class="marginnote">Smithson, M. (2003). <em>Confidence intervals</em>. Sage Publications.</span>)</span>. The <code>pwr</code> package in R can calculate this effect size in a sensitivity analysis where we enter the sample size (per group), the alpha level, and the desired power for a two-sided independent <em>t</em>-test, which will return d = 0.7411272. We can check this true effect size would indeed give with 50% power.</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="power.html#cb27-1"></a><span class="co"># Sensitivity power analysis</span></span>
 <span id="cb27-2"><a href="power.html#cb27-2"></a>pwr<span class="op">::</span><span class="kw">pwr.t.test</span>(<span class="dt">n =</span> <span class="dv">15</span>, </span>
 <span id="cb27-3"><a href="power.html#cb27-3"></a>                <span class="dt">sig.level =</span> <span class="fl">0.05</span>, </span>
@@ -309,15 +304,14 @@ Figure 2.7: Plot of the effect size against the desired power when n = 15 per gr
 ## NOTE: n is number in *each* group</code></pre>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="power.html#cb29-1"></a><span class="co"># d = 0.7411272 - let's check this indeed gives 50% power</span></span>
 <span id="cb29-2"><a href="power.html#cb29-2"></a><span class="co"># We compute the non-centrality parameter delta as 2.0296604</span></span>
-<span id="cb29-3"><a href="power.html#cb29-3"></a>delta &lt;-<span class="st"> </span><span class="fl">0.7411272</span> <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="dv">15</span><span class="op">/</span><span class="dv">2</span>)</span>
+<span id="cb29-3"><a href="power.html#cb29-3"></a><span class="co"># delta &lt;- 0.7411272 * sqrt(15/2)</span></span>
 <span id="cb29-4"><a href="power.html#cb29-4"></a></span>
 <span id="cb29-5"><a href="power.html#cb29-5"></a><span class="co"># For a 2-sided test power is the probability of finding a result that is</span></span>
 <span id="cb29-6"><a href="power.html#cb29-6"></a><span class="co"># 1) larger than the critical value of 2.0484071, which is: 0.4999563</span></span>
 <span id="cb29-7"><a href="power.html#cb29-7"></a><span class="co"># 2) We need to add the tiny probability that we find a significant result in</span></span>
 <span id="cb29-8"><a href="power.html#cb29-8"></a><span class="co"># the opposite direction. This will rarely happen: 0.00004372648</span></span>
 <span id="cb29-9"><a href="power.html#cb29-9"></a><span class="co"># Together these two probabilities make exactly 50%:</span></span>
-<span id="cb29-10"><a href="power.html#cb29-10"></a><span class="dv">1</span><span class="op">-</span><span class="kw">pt</span>(<span class="fl">2.0484071</span>, <span class="dv">28</span>, <span class="fl">2.0296604</span>) <span class="op">+</span><span class="st"> </span><span class="kw">pt</span>(<span class="op">-</span><span class="fl">2.0484071</span>, <span class="dv">28</span>, <span class="fl">2.0296604</span>)</span></code></pre></div>
-<pre><code>## [1] 0.5</code></pre>
+<span id="cb29-10"><a href="power.html#cb29-10"></a><span class="co"># 1-pt(2.0484071, 28, 2.0296604) + pt(-2.0484071, 28, 2.0296604)</span></span></code></pre></div>
 </div>
 <div id="reporting-a-feasibility-justification." class="section level3">
 <h3>
@@ -409,24 +403,23 @@ Figure 2.8: Power curve for an independent <em>t</em>-test as a function of the 
 <p>The goal of an a-priori power analysis is to increase the sample size up to the level that the desired power, the probability of finding a significant result if there is a true effect, or 1-β, is at a desired level for an effect size one is interested in detecting, given a specific alpha level.</p>
 <p>In Figure <a href="power.html#fig:power-3">2.10</a> you see two distributions. The left (grey) distribution is centered at 0. This is our model for the null hypothesis. If the null hypothesis is true we can find statistically significant results if the effect size is extreme enough (in a two-sided test either in the positive or negative direction), but these would be Type 1 errors (the red areas under the curve).</p>
 <p>The right (black) distribution is centered at an effect of d = 0.5. This is our model for the alternative hypothesis, where we expect a true effect in the population of d = 0.5. Even though there is a true effect, we will not always find a statistically significant result. This happens when, due to random variation, the observed effect size is too close to 0 to be statistically significant. These results would be false negative results (the blue area under the curve).</p>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:power-3"></span>
-<img src="Statistical_Inferences_files/figure-html/power-3-1.png" alt="Null and alternative distribution, assuming d = 0.5, alpha = 0.05, and N = 86 per group." width="672"><!--
-<p class="caption marginnote">-->Figure 2.10: Null and alternative distribution, assuming d = 0.5, alpha = 0.05, and N = 86 per group.<!--</p>-->
-<!--</div>--></span>
+<div class="figure">
+<span id="fig:power-3"></span>
+<p class="caption marginnote shownote">
+Figure 2.10: Null and alternative distribution, assuming d = 0.5, alpha = 0.05, and N = 86 per group.
 </p>
+<img src="Statistical_Inferences_files/figure-html/power-3-1.png" alt="Null and alternative distribution, assuming d = 0.5, alpha = 0.05, and N = 86 per group." width="672">
+</div>
 <p>If we want to increase the statistical power, we are trying to reduce the size of the blue area. One way to do this would be to increase the effect size. This would shift the entire distribution to the right, and reduce the size of the blue area. Although there are ways in controlled experiments to increase the standardized effect size (e.g., by reducing statistical variation in the data), often the effect size is what it is. All we can do is increase the sample size. This will make the distribution around 0.5 more narrow, and this reduces the blue area. You can check this in an online shiny app that <a href="http://shiny.ieis.tue.nl/d_p_power/">reproduces the plot</a>.</p>
 <div id="performing-a-power-analysis." class="section level3">
 <h3>
 <span class="header-section-number">2.3.1</span> Performing a power analysis.</h3>
 <p>There is a wide range of software tools that can help you to perform an a-priori power analysis. Sometimes statistical power can be analytically computed based on closed formulas, and in other situations power can be computed by performing simulations. If we simulate thousands of studies, and count the percentage of studies that are statistically significant, we have an estimate of the statistical power of the test. The code below computes the statistical power (using the <code>power.t.test</code> in base R) assuming an effect size of d = 0.5, and alpha level of 0.05, and a desired power of 90%.</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="power.html#cb31-1"></a><span class="kw">power.t.test</span>(<span class="dt">delta =</span> <span class="fl">0.5</span>, </span>
-<span id="cb31-2"><a href="power.html#cb31-2"></a>             <span class="dt">sig.level =</span> <span class="fl">0.05</span>,</span>
-<span id="cb31-3"><a href="power.html#cb31-3"></a>             <span class="dt">power =</span> <span class="fl">0.9</span>,</span>
-<span id="cb31-4"><a href="power.html#cb31-4"></a>             <span class="dt">type =</span> <span class="st">"two.sample"</span>,</span>
-<span id="cb31-5"><a href="power.html#cb31-5"></a>             <span class="dt">alternative =</span> <span class="st">"two.sided"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="power.html#cb30-1"></a><span class="kw">power.t.test</span>(<span class="dt">delta =</span> <span class="fl">0.5</span>, </span>
+<span id="cb30-2"><a href="power.html#cb30-2"></a>             <span class="dt">sig.level =</span> <span class="fl">0.05</span>,</span>
+<span id="cb30-3"><a href="power.html#cb30-3"></a>             <span class="dt">power =</span> <span class="fl">0.9</span>,</span>
+<span id="cb30-4"><a href="power.html#cb30-4"></a>             <span class="dt">type =</span> <span class="st">"two.sample"</span>,</span>
+<span id="cb30-5"><a href="power.html#cb30-5"></a>             <span class="dt">alternative =</span> <span class="st">"two.sided"</span>)</span></code></pre></div>
 <pre><code>## 
 ##      Two-sample t test power calculation 
 ## 
@@ -439,19 +432,19 @@ Figure 2.8: Power curve for an independent <em>t</em>-test as a function of the 
 ## 
 ## NOTE: n is number in *each* group</code></pre>
 <p>The output tells us we need to collect 85.03 observations. Because observations do not come in decimals (we can hardly cut 0.03 from a participant) we need to collect 86 observations. We could also get this answer through simulations.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="power.html#cb33-1"></a><span class="kw">set.seed</span>(<span class="dv">600746</span>) <span class="co">#set a seed for reproducible simulations</span></span>
-<span id="cb33-2"><a href="power.html#cb33-2"></a>p &lt;-<span class="st"> </span><span class="kw">numeric</span>(<span class="dv">100000</span>) <span class="co">#set up empty variable to store all simulated p-values</span></span>
-<span id="cb33-3"><a href="power.html#cb33-3"></a></span>
-<span id="cb33-4"><a href="power.html#cb33-4"></a><span class="co">#Run simulation</span></span>
-<span id="cb33-5"><a href="power.html#cb33-5"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">100000</span>){ <span class="co">#for each simulated experiment</span></span>
-<span id="cb33-6"><a href="power.html#cb33-6"></a>  x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dt">n =</span> <span class="dv">85</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">1</span>) <span class="co">#Simulate data group 1</span></span>
-<span id="cb33-7"><a href="power.html#cb33-7"></a>  y &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dt">n =</span> <span class="dv">85</span>, <span class="dt">mean =</span> <span class="fl">0.5</span>, <span class="dt">sd =</span> <span class="dv">1</span>) <span class="co">#Simulate data group 2</span></span>
-<span id="cb33-8"><a href="power.html#cb33-8"></a>  z &lt;-<span class="st"> </span><span class="kw">t.test</span>(x, y) <span class="co">#perform the t-test</span></span>
-<span id="cb33-9"><a href="power.html#cb33-9"></a>  p[i] &lt;-<span class="st"> </span>z<span class="op">$</span>p.value <span class="co">#get the p-value and store it</span></span>
-<span id="cb33-10"><a href="power.html#cb33-10"></a>}</span>
-<span id="cb33-11"><a href="power.html#cb33-11"></a></span>
-<span id="cb33-12"><a href="power.html#cb33-12"></a><span class="co">#Calculate power: sum significant p-values, divide by 100000 simulations</span></span>
-<span id="cb33-13"><a href="power.html#cb33-13"></a>(<span class="kw">sum</span>(p <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>)<span class="op">/</span><span class="dv">100000</span>) <span class="co">#power</span></span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="power.html#cb32-1"></a><span class="kw">set.seed</span>(<span class="dv">600746</span>) <span class="co">#set a seed for reproducible simulations</span></span>
+<span id="cb32-2"><a href="power.html#cb32-2"></a>p &lt;-<span class="st"> </span><span class="kw">numeric</span>(<span class="dv">100000</span>) <span class="co">#set up empty variable to store all simulated p-values</span></span>
+<span id="cb32-3"><a href="power.html#cb32-3"></a></span>
+<span id="cb32-4"><a href="power.html#cb32-4"></a><span class="co">#Run simulation</span></span>
+<span id="cb32-5"><a href="power.html#cb32-5"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">100000</span>){ <span class="co">#for each simulated experiment</span></span>
+<span id="cb32-6"><a href="power.html#cb32-6"></a>  x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dt">n =</span> <span class="dv">85</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">1</span>) <span class="co">#Simulate data group 1</span></span>
+<span id="cb32-7"><a href="power.html#cb32-7"></a>  y &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dt">n =</span> <span class="dv">85</span>, <span class="dt">mean =</span> <span class="fl">0.5</span>, <span class="dt">sd =</span> <span class="dv">1</span>) <span class="co">#Simulate data group 2</span></span>
+<span id="cb32-8"><a href="power.html#cb32-8"></a>  z &lt;-<span class="st"> </span><span class="kw">t.test</span>(x, y) <span class="co">#perform the t-test</span></span>
+<span id="cb32-9"><a href="power.html#cb32-9"></a>  p[i] &lt;-<span class="st"> </span>z<span class="op">$</span>p.value <span class="co">#get the p-value and store it</span></span>
+<span id="cb32-10"><a href="power.html#cb32-10"></a>}</span>
+<span id="cb32-11"><a href="power.html#cb32-11"></a></span>
+<span id="cb32-12"><a href="power.html#cb32-12"></a><span class="co">#Calculate power: sum significant p-values, divide by 100000 simulations</span></span>
+<span id="cb32-13"><a href="power.html#cb32-13"></a>(<span class="kw">sum</span>(p <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>)<span class="op">/</span><span class="dv">100000</span>) <span class="co">#power</span></span></code></pre></div>
 <pre><code>## [1] 0.90015</code></pre>
 <p>We see that after 100000 simulations with 85 participants, the estimated power is 0.90015 with 85 participants in each group. The analytic solution tells us power is 0.899894. The more simulations you perform, the more accurate the power estimate will be (as we see, 100000 simulations gives very accurate results).</p>
 <p>The way you perform the power analysis depends on the software you use. There are excellent software packages for power analysis, such as <a href="https://www.ncss.com/software/pass/">PASS</a> or <a href="https://stats.idre.ucla.edu/sas/seminars/proc-power/">SAS</a>, but these solutions are rather expensive. There are also freeware solutions, such as the widely used <a href="https://gpower.hhu.de">G*Power</a>, <a href="https://wiki.usask.ca/pages/viewpageattachments.action?pageId=420413544">MorePower</a> by Campbell and Thompson, and <a href="https://jakewestfall.shinyapps.io/pangea/">PANGEA</a> by Jake Westfall.
@@ -471,11 +464,11 @@ Figure 2.12: Example of a power analysis in MorePower.
 </p>
 <img src="images/powerex2.png" alt="Example of a power analysis in MorePower." width="222">
 </div>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="power.html#cb35-1"></a>pwr<span class="op">::</span><span class="kw">pwr.t.test</span>(<span class="dt">d =</span> <span class="fl">0.5</span>, </span>
-<span id="cb35-2"><a href="power.html#cb35-2"></a>                <span class="dt">sig.level =</span> <span class="fl">0.05</span>,</span>
-<span id="cb35-3"><a href="power.html#cb35-3"></a>                <span class="dt">power =</span> <span class="fl">0.8</span>,</span>
-<span id="cb35-4"><a href="power.html#cb35-4"></a>                <span class="dt">type =</span> <span class="st">"two.sample"</span>,</span>
-<span id="cb35-5"><a href="power.html#cb35-5"></a>                <span class="dt">alternative =</span> <span class="st">"two.sided"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="power.html#cb34-1"></a>pwr<span class="op">::</span><span class="kw">pwr.t.test</span>(<span class="dt">d =</span> <span class="fl">0.5</span>, </span>
+<span id="cb34-2"><a href="power.html#cb34-2"></a>                <span class="dt">sig.level =</span> <span class="fl">0.05</span>,</span>
+<span id="cb34-3"><a href="power.html#cb34-3"></a>                <span class="dt">power =</span> <span class="fl">0.8</span>,</span>
+<span id="cb34-4"><a href="power.html#cb34-4"></a>                <span class="dt">type =</span> <span class="st">"two.sample"</span>,</span>
+<span id="cb34-5"><a href="power.html#cb34-5"></a>                <span class="dt">alternative =</span> <span class="st">"two.sided"</span>)</span></code></pre></div>
 <pre><code>## 
 ##      Two-sample t test power calculation 
 ## 
@@ -486,14 +479,14 @@ Figure 2.12: Example of a power analysis in MorePower.
 ##     alternative = two.sided
 ## 
 ## NOTE: n is number in *each* group</code></pre>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="power.html#cb37-1"></a>design_result &lt;-<span class="st"> </span>Superpower<span class="op">::</span><span class="kw">ANOVA_design</span>(<span class="dt">design =</span> <span class="st">"2b"</span>,</span>
-<span id="cb37-2"><a href="power.html#cb37-2"></a>                                          <span class="dt">n =</span> <span class="dv">86</span>,</span>
-<span id="cb37-3"><a href="power.html#cb37-3"></a>                                          <span class="dt">mu =</span> <span class="kw">c</span>(<span class="fl">0.5</span>, <span class="dv">0</span>),</span>
-<span id="cb37-4"><a href="power.html#cb37-4"></a>                                          <span class="dt">sd =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>),</span>
-<span id="cb37-5"><a href="power.html#cb37-5"></a>                                          <span class="dt">plot =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb37-6"><a href="power.html#cb37-6"></a></span>
-<span id="cb37-7"><a href="power.html#cb37-7"></a><span class="co"># Plot power curve (from 5 to 200)</span></span>
-<span id="cb37-8"><a href="power.html#cb37-8"></a>Superpower<span class="op">::</span><span class="kw">plot_power</span>(design_result, <span class="dt">max_n =</span> <span class="dv">200</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="power.html#cb36-1"></a>design_result &lt;-<span class="st"> </span>Superpower<span class="op">::</span><span class="kw">ANOVA_design</span>(<span class="dt">design =</span> <span class="st">"2b"</span>,</span>
+<span id="cb36-2"><a href="power.html#cb36-2"></a>                                          <span class="dt">n =</span> <span class="dv">86</span>,</span>
+<span id="cb36-3"><a href="power.html#cb36-3"></a>                                          <span class="dt">mu =</span> <span class="kw">c</span>(<span class="fl">0.5</span>, <span class="dv">0</span>),</span>
+<span id="cb36-4"><a href="power.html#cb36-4"></a>                                          <span class="dt">sd =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>),</span>
+<span id="cb36-5"><a href="power.html#cb36-5"></a>                                          <span class="dt">plot =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb36-6"><a href="power.html#cb36-6"></a></span>
+<span id="cb36-7"><a href="power.html#cb36-7"></a><span class="co"># Plot power curve (from 5 to 200)</span></span>
+<span id="cb36-8"><a href="power.html#cb36-8"></a>Superpower<span class="op">::</span><span class="kw">plot_power</span>(design_result, <span class="dt">max_n =</span> <span class="dv">200</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <div class="figure">
 <span id="fig:powerex3"></span>
 <img src="Statistical_Inferences_files/figure-html/powerex3-1.png" alt="Example of a power analysis plot in Superpower." width="672"><p class="caption marginnote shownote">
@@ -683,9 +676,9 @@ One might be tempted to perform a small power analysis to estimate the effect si
 <!-- abline(v = 0.05, h = 0.5, col = rgb(1, 0, 0, 0.5), lty = 1) -->
 <!-- ``` -->
 <p>For an independent <em>t</em>-test the noncentral <em>t</em>-distribution is not perfectly symmetric. We can compute observe power in R based on the formula below, where <code>alpha_level</code> is the alpha level, <code>n</code>is the sample size in each group, and <code>p_val</code> is the observed <em>p</em>-value. In Figure <a href="#fig:obs-power-plot-2"><strong>??</strong></a> we see that for a <em>p</em> = 0.05 observed power is ever so slightly larger than 50%, but the observed power value is very close.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="power.html#cb38-1"></a><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pt</span>(<span class="dt">q =</span> <span class="kw">qt</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>alpha_level<span class="op">/</span><span class="dv">2</span>, <span class="dv">2</span> <span class="op">*</span><span class="st"> </span>n <span class="op">-</span><span class="st"> </span><span class="dv">2</span>), </span>
-<span id="cb38-2"><a href="power.html#cb38-2"></a>       <span class="dt">df =</span> <span class="dv">2</span> <span class="op">*</span><span class="st"> </span>n <span class="op">-</span><span class="st"> </span><span class="dv">2</span>, </span>
-<span id="cb38-3"><a href="power.html#cb38-3"></a>       <span class="dt">ncp =</span> <span class="kw">qt</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>p_val<span class="op">/</span><span class="dv">2</span>, <span class="dv">2</span> <span class="op">*</span><span class="st"> </span>n <span class="op">-</span><span class="st"> </span><span class="dv">2</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="power.html#cb37-1"></a><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pt</span>(<span class="dt">q =</span> <span class="kw">qt</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>alpha_level<span class="op">/</span><span class="dv">2</span>, <span class="dv">2</span> <span class="op">*</span><span class="st"> </span>n <span class="op">-</span><span class="st"> </span><span class="dv">2</span>), </span>
+<span id="cb37-2"><a href="power.html#cb37-2"></a>       <span class="dt">df =</span> <span class="dv">2</span> <span class="op">*</span><span class="st"> </span>n <span class="op">-</span><span class="st"> </span><span class="dv">2</span>, </span>
+<span id="cb37-3"><a href="power.html#cb37-3"></a>       <span class="dt">ncp =</span> <span class="kw">qt</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>p_val<span class="op">/</span><span class="dv">2</span>, <span class="dv">2</span> <span class="op">*</span><span class="st"> </span>n <span class="op">-</span><span class="st"> </span><span class="dv">2</span>))</span></code></pre></div>
 <p>Plotting observe power for the <em>p</em>-value across the range from 0 to 1, we see that observed power is completely determined, and provides no additional value beyond, reporting the <em>p</em>-value. If your <em>p</em>-value is non-significant, observed power will be less than approximately 50% in a <em>Z</em>-test and <em>t</em>-test. As Lenth <span class="citation">(<label for="tufte-mn-30" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-30" class="margin-toggle">2007<span class="marginnote">Lenth, R. V. (2007). Post hoc power: Tables and commentary. <em>Iowa City: Department of Statistics and Actuarial Science, University of Iowa</em>.</span>)</span> shows, observed power is also completely determined by the observed <em>p</em>-value for <em>F</em>-tests, although the relationship between <em>p</em> = 0.05 and 50% power no longer holds.</p>
 <div class="figure">
 <span id="fig:unnamed-chunk-19"></span>
@@ -834,7 +827,7 @@ Figure 2.26: Difference scores between two dependent groups.
 <span style="display: inline-block; margin-left: 2em; margin-top: 16px; font-size: small">
 <span style="font-weight: bold;">Daniel Lakens</span><br/>
 <a href="https://statistical-inferences.com">statistical-inferences.com</a><br/>
-page built  2020-08-04 21:55:36
+page built  2020-08-04 22:07:54
 </span>
 </p>
 </div>

@@ -41,7 +41,7 @@ The **sample size** should not be confused with the number of participants. When
 **Statistical power** is the probability of a test to yield a statistically significant result if the alternative hypothesis is true [@aberson_applied_2019; @cohen_statistical_1988]. Power depends on the Type 1 error rate (α), the true effect size in the population, and the number of observations. Because the true effect size is typically unknown, it makes most sense to speak about the power function. In Figure \@ref(fig:power-1) you see a power curve for an independent *t*-test, with an alpha level of 0.05. We see that as the effect size (in Cohen's d) increases, power increases. If the effect you study has an effect size of 0.5, you would have almost 70% power with 50 observations in each independent group (indicated by the red dot). If the true effect size is smaller, power is lower, and as the effect size is larger, power is larger. 
 
 
-```{r, power-1, fig.margin=TRUE, echo=FALSE, fig.cap="Power curve for an independent *t*-test as a function of the true effect size."}
+```{r, power-1, fig.margin=FALSE, echo=FALSE, fig.cap="Power curve for an independent *t*-test as a function of the true effect size."}
 N <- 50
 d <- 0.5
 p_upper <- 0.05
@@ -90,7 +90,7 @@ Even if you believe over time sufficient data will emerge, you will most likely 
 
 In Figure \@ref(fig:power-effect1) the distribution of Cohen’s d given 15 participants per group is plotted when the true effect size is 0 (or the null-hypothesis is true), and when the true effect size is d = 0.5. The blue area is the Type 2 error rate (the probability of not finding p < α, when there is a true effect, and α = 0.05).
 
-```{r, power-effect1, fig.margin=TRUE, echo=FALSE, fig.cap="Null and alternative distribution, assuming d = 0.5, alpha = 0.05, and N = 15 per group."}
+```{r, power-effect1, fig.margin=FALSE, echo=FALSE, fig.cap="Null and alternative distribution, assuming d = 0.5, alpha = 0.05, and N = 15 per group."}
 N <- 15
 d <- 0.5
 p_upper <- 0.05
@@ -146,13 +146,13 @@ qt(1-(0.05 / 2), (15 * 2) - 2) * sqrt(1/15 + 1/15)
 
 The critical *t*-value (2.0484071) is also provided in commonly used power analysis software such as G\*Power. We can compute the critical Cohen's d from the *t*-value and sample size using: $d = t{\sqrt{1/n_1 + 1/n_2}}$.
 
-```{r gcrit1, fig.margin=TRUE, echo=FALSE, fig.cap="The critical *t*-value is provided by G\\*Power software."}
+```{r gcrit1, fig.margin=FALSE, echo=FALSE, fig.cap="The critical *t*-value is provided by G\\*Power software."}
 knitr::include_graphics("images/gpowcrit.png")
 ```
 
 When you will test an association between variables with a correlation, G\*Power will directly provide you with the critical effect size. When you compute a correlation based on a two-sided test, your alpha level is 0.05, and you have 30 observations, only effects larger than r = 0.361 will be statistically significant. In other words, the effect needs to be quite large to even have the mathematical possibility of becoming statistically significant.
 
-```{r gcrit2, fig.margin=TRUE, echo=FALSE, fig.cap="The critical r is provided by G\\*Power software."}
+```{r gcrit2, fig.margin=FALSE, echo=FALSE, fig.cap="The critical r is provided by G\\*Power software."}
 knitr::include_graphics("images/gpowcrit2.png")
 ```
 
@@ -197,7 +197,7 @@ Where computing the critical effect size can make it clear that a *p*-value is o
 
 ### Plot a sensitivity power analysis {#sensitivitypower}
 
-```{r gsens0, fig.margin=TRUE, echo=FALSE, fig.cap="Sensitivity power analysis in G\\*Power software."}
+```{r gsens0, fig.margin=FALSE, echo=FALSE, fig.cap="Sensitivity power analysis in G\\*Power software."}
 knitr::include_graphics("images/sensitivity0.png")
 ```
 
@@ -207,7 +207,7 @@ In a **sensitivity power analysis** the sample size and the alpha level are fixe
 knitr::include_graphics("images/sensitivity1.png")
 ```
 
-If we look at the effect size that we would have 50% power for, we see it is d = 0.7411272. This is very close to our critical effect size of d = 0.7479725 (the smallest effect size that, if observed, would be significant). The difference is due to the non-central *t*-distribution (see Figure \@ref(fig:noncentralt). If the distribution was symmetric, observing an effect size exactly on the critical value would mean half of the distirbution is smaller than the critical effect size, and half of the distribution is larger, and we would have exactly 50% power for the critical effect size. Because the distribution is not symmetrical, we need to find the critical effect size for which it *is* true that half the distribution falls below it, and half the distribution falls above it. This value can't be calculated directly, and requires an iterative procedure that optimizes the values of the non-centrality parameter such that power is exactly 50% [@smithson_confidence_2003]. The `pwr` package in R can calculate this effect size in a sensitivity analysis where we enter the sample size (per group), the alpha level, and the desired power for a two-sided independent *t*-test, which will return d = 0.7411272. We can check this true effect size would indeed give with 50% power (but feel free to skip these technicalities).
+If we look at the effect size that we would have 50% power for, we see it is d = 0.7411272. This is very close to our critical effect size of d = 0.7479725 (the smallest effect size that, if observed, would be significant). The difference is due to the non-central *t*-distribution (see Figure \@ref(fig:noncentralt). If the distribution was symmetric, observing an effect size exactly on the critical value would mean half of the distirbution is smaller than the critical effect size, and half of the distribution is larger, and we would have exactly 50% power for the critical effect size. Because the distribution is not symmetrical, we need to find the critical effect size for which it *is* true that half the distribution falls below it, and half the distribution falls above it. This value can't be calculated directly, and requires an iterative procedure that optimizes the values of the non-centrality parameter such that power is exactly 50% [@smithson_confidence_2003]. The `pwr` package in R can calculate this effect size in a sensitivity analysis where we enter the sample size (per group), the alpha level, and the desired power for a two-sided independent *t*-test, which will return d = 0.7411272. We can check this true effect size would indeed give with 50% power.
 
 ```{r, echo = TRUE}
 # Sensitivity power analysis
@@ -219,14 +219,14 @@ pwr::pwr.t.test(n = 15,
 
 # d = 0.7411272 - let's check this indeed gives 50% power
 # We compute the non-centrality parameter delta as 2.0296604
-delta <- 0.7411272 * sqrt(15/2)
+# delta <- 0.7411272 * sqrt(15/2)
 
 # For a 2-sided test power is the probability of finding a result that is
 # 1) larger than the critical value of 2.0484071, which is: 0.4999563
 # 2) We need to add the tiny probability that we find a significant result in
 # the opposite direction. This will rarely happen: 0.00004372648
 # Together these two probabilities make exactly 50%:
-1-pt(2.0484071, 28, 2.0296604) + pt(-2.0484071, 28, 2.0296604)
+# 1-pt(2.0484071, 28, 2.0296604) + pt(-2.0484071, 28, 2.0296604)
 ```
 
 ### Reporting a feasibility justification.
@@ -287,7 +287,7 @@ In Figure \@ref(fig:power-3) you see two distributions. The left (grey) distribu
 
 The right (black) distribution is centered at an effect of d = 0.5. This is our model for the alternative hypothesis, where we expect a true effect in the population of d = 0.5. Even though there is a true effect, we will not always find a statistically significant result. This happens when, due to random variation, the observed effect size is too close to 0 to be statistically significant. These results would be false negative results (the blue area under the curve).
 
-```{r, power-3, fig.margin=TRUE, echo=FALSE, fig.cap="Null and alternative distribution, assuming d = 0.5, alpha = 0.05, and N = 86 per group."}
+```{r, power-3, fig.margin=FALSE, echo=FALSE, fig.cap="Null and alternative distribution, assuming d = 0.5, alpha = 0.05, and N = 86 per group."}
 N <- 86
 d <- 0.5
 p_upper <- 0.05
