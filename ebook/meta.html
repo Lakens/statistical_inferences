@@ -14,7 +14,7 @@
 
 <meta name="author" content="Daniel Lakens" />
 
-<meta name="date" content="2020-08-04" />
+<meta name="date" content="2020-08-07" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -158,7 +158,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a href="computationalreproducibility.html"><span class="toc-section-number">11</span> Computational Reproducibility</a>
 <a href="prereg.html"><span class="toc-section-number">12</span> Preregistration and Transparency</a>
 <a href="bayes.html"><span class="toc-section-number">13</span> Bayesian statistics</a>
-<a href="references.html"><span class="toc-section-number">14</span> References</a>
+<a href="sequential.html"><span class="toc-section-number">14</span> Sequential Analysis</a>
+<a href="references.html"><span class="toc-section-number">15</span> References</a>
 </div>
 </li>
 </ul>
@@ -172,7 +173,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1>
 <span class="header-section-number">9</span> Meta-analysis</h1>
 <p>You can use meta-analyses to combine results in a single paper, or to evaluate effects in the literature. When combining effects in the literature, one of the main goals of a meta-analysis is to test or develop theories that can explain the variability in effect size estimates. Performing meta-analyses is relatively easy whenever you have access to the effect sizes (or the necessary information to compute effect sizes) and the sample sizes for each study. By combining information, you can achieve a much higher precision in effect size estimates.
-Excellent introductions to performing and interpreting meta-analyses can be found in Borenstein et al <span class="citation">(Borenstein, <label for="tufte-mn-55" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-55" class="margin-toggle">2009<span class="marginnote">Borenstein, M. (Ed.). (2009). <em>Introduction to meta-analysis</em>. John Wiley &amp; Sons.</span>)</span> and Cummings <span class="citation">Cumming (<label for="tufte-mn-56" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-56" class="margin-toggle">2013<span class="marginnote">Cumming, G. (2013). <em>Understanding the new statistics: Effect sizes, confidence intervals, and meta-analysis</em>. Routledge.</span>)</span>.</p>
+Excellent introductions to performing and interpreting meta-analyses can be found in Borenstein et al <span class="citation">(Borenstein, <label for="tufte-mn-57" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-57" class="margin-toggle">2009<span class="marginnote">Borenstein, M. (Ed.). (2009). <em>Introduction to meta-analysis</em>. John Wiley &amp; Sons.</span>)</span> and Cummings <span class="citation">Cumming (<label for="tufte-mn-58" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-58" class="margin-toggle">2013<span class="marginnote">Cumming, G. (2013). <em>Understanding the new statistics: Effect sizes, confidence intervals, and meta-analysis</em>. Routledge.</span>)</span>.</p>
 <div id="random-variation" class="section level2">
 <h2>
 <span class="header-section-number">9.1</span> Random Variation</h2>
@@ -187,49 +188,45 @@ variation by running well-powered studies.</p>
 <p>We will start by manually calculating the mean and standard deviation of a random sample of 10 individuals. Their IQ scores are: 91.15, 86.52, 75.64, 115.72, 95.83, 105.44, 87.10, 100.81, 82.63, and 106.22. If we sum these 10 scores and divide them by 10, we get the mean of our sample: 94.71. We can also calculate the standard deviation from our sample. First, we subtract the overall mean (94.71) from each individual IQ score. Then, we square these differences and then sum these squared differences (giving 1374.79). We divide this sum of
 the squared difference by the sample size minus 1 (10-1=9), and finally take the
 square root of this value, which gives the standard deviation: 12.36. Open Simulate One Group.R, select all the code, and run it, to randomly simulate 10 IQ scores, and plot them.</p>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:plot-hist-iq-1"></span>
-<img src="Statistical_Inferences_files/figure-html/plot-hist-iq-1-1.png" alt="10 random datapoints with mean = 100 and sd = 15 in the population." width="672"><!--
-<p class="caption marginnote">-->Figure 9.1: 10 random datapoints with mean = 100 and sd = 15 in the population.<!--</p>-->
-<!--</div>--></span>
+<div class="figure">
+<span id="fig:plot-hist-iq-1"></span>
+<p class="caption marginnote shownote">
+Figure 9.1: 10 random datapoints with mean = 100 and sd = 15 in the population.
 </p>
+<img src="Statistical_Inferences_files/figure-html/plot-hist-iq-1-1.png" alt="10 random datapoints with mean = 100 and sd = 15 in the population." width="672">
+</div>
 <p>Above is one example of a randomly simulated dataset of 10 points. The grey bars indicate the frequency with which each IQ score was observed. The red dotted line illustrates the normal distribution based on the mean and sd of the population. Both the observed mean (97), as well as the observed standard deviation (14), differ from the true population values. If we simulate 4 additional datasets, we see both the mean and the standard deviation vary.</p>
 <p><img src="Statistical_Inferences_files/figure-html/sim-4-iq-1.png" width="672"></p>
 <p>Imagine we did not yet know what the mean IQ was in our population (where M = 100), or the standard deviation (where SD = 15), and that we would only have access to one dataset. Our estimate might be rather far off. This type of variation is perfectly normal in small samples of 10 participants, given the current standard deviation. The variability in the means is determined by the standard deviation of the measurement. In real life, the standard deviation can be reduced by for example using multiple and reliable measurements (which is why an IQ test has not just one question, but many different questions). But we can make sure our sample mean is closer to the population mean by increasing the sample size.</p>
 <p>A new simulated sample with 100 participants is plotted below. We are slowly seeing what is known as the <strong>normal distribution</strong> (and the frequency scores start to resemble the red dotted line illustrating the normal distribution of the population). This is the well-known
 bell shaped curve that represents the distribution of many variables in scientific research (although some other types of distributions are quite common as well). The mean and standard deviation are much closer to the true mean and standard deviation, and this is true for most of the simulated samples.</p>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:plot-hist-iq-2"></span>
-<img src="Statistical_Inferences_files/figure-html/plot-hist-iq-2-1.png" alt="100 random datapoints with mean = 100 and sd = 15 in the population." width="672"><!--
-<p class="caption marginnote">-->Figure 9.2: 100 random datapoints with mean = 100 and sd = 15 in the population.<!--</p>-->
-<!--</div>--></span>
+<div class="figure">
+<span id="fig:plot-hist-iq-2"></span>
+<p class="caption marginnote shownote">
+Figure 9.2: 100 random datapoints with mean = 100 and sd = 15 in the population.
 </p>
+<img src="Statistical_Inferences_files/figure-html/plot-hist-iq-2-1.png" alt="100 random datapoints with mean = 100 and sd = 15 in the population." width="672">
+</div>
 <p>For a final example, let’s simulate a really large sample of 1000 observation. Not every simulated study of 1000 people will yield the true mean and standard deviation, but it will happen quite often. And although the distribution is very close to a normal distribution, even with 1000 people it is not perfect.</p>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:plot-hist-iq-3"></span>
-<img src="Statistical_Inferences_files/figure-html/plot-hist-iq-3-1.png" alt="1000 random datapoints with mean = 100 and sd = 15 in the population." width="672"><!--
-<p class="caption marginnote">-->Figure 9.3: 1000 random datapoints with mean = 100 and sd = 15 in the population.<!--</p>-->
-<!--</div>--></span>
+<div class="figure">
+<span id="fig:plot-hist-iq-3"></span>
+<p class="caption marginnote shownote">
+Figure 9.3: 1000 random datapoints with mean = 100 and sd = 15 in the population.
 </p>
+<img src="Statistical_Inferences_files/figure-html/plot-hist-iq-3-1.png" alt="1000 random datapoints with mean = 100 and sd = 15 in the population." width="672">
+</div>
 </div>
 <div id="variance-in-two-groups-and-their-difference." class="section level3">
 <h3>
 <span class="header-section-number">9.1.2</span> Variance in two groups, and their difference.</h3>
 <p>Now, assume we have a new IQ training program that will increase peoples IQ score with 6 points. People in condition 1 are in the control condition – they do not get IQ training. People in condition 2 get IQ training. Let’s simulate 10 people in each group, assuming the IQ in the control condition is 100, and in the experimental group is 106 (the SD is still 15 in each group).</p>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:plot-group1"></span>
-<img src="Statistical_Inferences_files/figure-html/plot-group1-1.png" alt="Simulated sample of independent groups." width="672"><!--
-<p class="caption marginnote">-->Figure 9.4: Simulated sample of independent groups.<!--</p>-->
-<!--</div>--></span>
+<div class="figure">
+<span id="fig:plot-group1"></span>
+<p class="caption marginnote shownote">
+Figure 9.4: Simulated sample of independent groups.
 </p>
+<img src="Statistical_Inferences_files/figure-html/plot-group1-1.png" alt="Simulated sample of independent groups." width="672">
+</div>
 <p>The two groups differ in how close they are to their true means, and as a consequence, the difference between groups varies as well. Note that this difference is the main variable in statistical analyses when comparing two groups in for example a <em>t</em>-test. In this specific simulation, we got quite extreme results, with a score of 96 (when the population mean is 100) and a score of 111 (when the population mean is 106). So in this sample, due to random variation, we would get an overestimate of the true effect. Let’s simulate 4 additional datasets to see the variation.</p>
 <div class="figure">
 <span id="fig:plot-group2"></span>
@@ -254,23 +251,21 @@ Figure 9.6: Simulated sample of 250 independent observations
 <p>The correlation is calculated based on the IQ scores of one fraternal twin (x) and the IQ scores of the other fraternal twin (y) for each pair of twins, and the total number of pairs (N). In the numerator of the formula, the number of pairs is multiplied by the sum of the product of x and y, and from this value the sum of x multiplied by the sum of y is subtracted. In the denominator, the square root is taken from the number of pairs multiplied by the sum of x squared, from which the sum of x, which is then squared, is subtracted, and multiplied by the same calculation but now for y.</p>
 <p><span class="math display">\[r=\frac{n \Sigma x y-(\Sigma x )(\Sigma y)}{\sqrt{[n \Sigma x^{2}-(\Sigma x)^{2}][n \Sigma y^{2}-(\Sigma y)^{2}]}}\]</span>
 When we randomly simulate observations for 30 twins, we get the following result.</p>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:plot-cor1"></span>
-<img src="Statistical_Inferences_files/figure-html/plot-cor1-1.png" alt="Correlation based on 30 pairs." width="672"><!--
-<p class="caption marginnote">-->Figure 9.7: Correlation based on 30 pairs.<!--</p>-->
-<!--</div>--></span>
+<div class="figure">
+<span id="fig:plot-cor1"></span>
+<p class="caption marginnote shownote">
+Figure 9.7: Correlation based on 30 pairs.
 </p>
+<img src="Statistical_Inferences_files/figure-html/plot-cor1-1.png" alt="Correlation based on 30 pairs." width="672">
+</div>
 <p>On the x-axis, we see the IQ score of one twin, and one the y-axis we see the IQ score of the second twin. The black dotted diagonal line illustrates the true correlation (0.55), while the yellow line shows the observed correlation (in this case, r = 0.43). The slope of the yellow line is determined by the observed correlation, but the position of the line is influenced by the mean IQ scores in both groups (in this simulation, the mean on the y-axis is 105, somewhat below 100, and the mean on the x-axis is 102, also slightly above 100. The blue area is the 95% confidence interval around the observed correlation. As we saw in the section on <a href="effectsizesCI.html#confint">confidence intervals</a>, 95% of the time (in the long run) the blue area will contain the true correlation (the dotted black line). Increasing the sample size to 300 narrows the confidence interval considerably, and will guarantee that the sample correlation is much closer to the true correlation.</p>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:plot-cor2"></span>
-<img src="Statistical_Inferences_files/figure-html/plot-cor2-1.png" alt="Correlation based on 30 pairs." width="672"><!--
-<p class="caption marginnote">-->Figure 9.8: Correlation based on 30 pairs.<!--</p>-->
-<!--</div>--></span>
+<div class="figure">
+<span id="fig:plot-cor2"></span>
+<p class="caption marginnote shownote">
+Figure 9.8: Correlation based on 30 pairs.
 </p>
+<img src="Statistical_Inferences_files/figure-html/plot-cor2-1.png" alt="Correlation based on 30 pairs." width="672">
+</div>
 </div>
 <div id="confidence-intervals-around-standard-deviations." class="section level3">
 <h3>
@@ -294,37 +289,34 @@ When we randomly simulate observations for 30 twins, we get the following result
 <div id="mixed" class="section level2">
 <h2>
 <span class="header-section-number">9.2</span> Mixed Results</h2>
-<p>Science is a cumulative process, and we should evaluate lines of research, not single studies. Researchers are advised to design studies that will provide informative data, but sometimes you need to look at sets of studies before patterns become clear. A commonly used lower limit for statistical power is 80%, which means you will find a non-significant result in one out of five studies, when there is a true effect. Whenever you perform studies where power is not 99.99%, you should expect to find mixed results when examining true effects. Indeed, some researchers have pointed out that <em>not</em> finding mixed results can be very unlikely (or ‘too good to be true’) in a set of studies <span class="citation">(Francis, <label for="tufte-mn-57" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-57" class="margin-toggle">2014<span class="marginnote">Francis, G. (2014). The frequency of excess success for articles in Psychological Science. <em>Psychonomic Bulletin &amp; Review</em>, <em>21</em>(5), 1180–1187. <a href="https://doi.org/10.3758/s13423-014-0601-x">https://doi.org/10.3758/s13423-014-0601-x</a></span>; Schimmack, <label for="tufte-mn-58" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-58" class="margin-toggle">2012<span class="marginnote">Schimmack, U. (2012). The ironic effect of significant results on the credibility of multiple-study articles. <em>Psychological Methods</em>, <em>17</em>(4), 551–566. <a href="https://doi.org/10.1037/a0029487">https://doi.org/10.1037/a0029487</a></span>)</span>. We don’t have a very good feeling for what real patterns of studies look like, because we are continuously exposed to a scientific literature that does not reflect reality. Almost all multiple study papers in the scientific literature present only statistically significant results, even though this is unlikely.</p>
+<p>Science is a cumulative process, and we should evaluate lines of research, not single studies. Researchers are advised to design studies that will provide informative data, but sometimes you need to look at sets of studies before patterns become clear. A commonly used lower limit for statistical power is 80%, which means you will find a non-significant result in one out of five studies, when there is a true effect. Whenever you perform studies where power is not 99.99%, you should expect to find mixed results when examining true effects. Indeed, some researchers have pointed out that <em>not</em> finding mixed results can be very unlikely (or ‘too good to be true’) in a set of studies <span class="citation">(Francis, <label for="tufte-mn-59" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-59" class="margin-toggle">2014<span class="marginnote">Francis, G. (2014). The frequency of excess success for articles in Psychological Science. <em>Psychonomic Bulletin &amp; Review</em>, <em>21</em>(5), 1180–1187. <a href="https://doi.org/10.3758/s13423-014-0601-x">https://doi.org/10.3758/s13423-014-0601-x</a></span>; Schimmack, <label for="tufte-mn-60" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-60" class="margin-toggle">2012<span class="marginnote">Schimmack, U. (2012). The ironic effect of significant results on the credibility of multiple-study articles. <em>Psychological Methods</em>, <em>17</em>(4), 551–566. <a href="https://doi.org/10.1037/a0029487">https://doi.org/10.1037/a0029487</a></span>)</span>. We don’t have a very good feeling for what real patterns of studies look like, because we are continuously exposed to a scientific literature that does not reflect reality. Almost all multiple study papers in the scientific literature present only statistically significant results, even though this is unlikely.</p>
 <div id="likelihoods-of-sets-of-studies" class="section level3">
 <h3>
 <span class="header-section-number">9.2.1</span> Likelihoods of sets of studies</h3>
 <p>Let’s imagine we have two bags. There are twenty marbles in each bag. In one bag, we know there are 19 blue marbles, and one red marble. The red marble represents a Type 1 error, the blue marbles represent true negatives, and this bag represents a situation where we perform a statistical test where the null-hypothesis is true. In the other bag, there is a number of blue and red marbles. The red marbles represent true positives, blue marbles represent false negatives, and this bag represents a situation where the alternative hypothesis is true. We don’t know the true power, or the percentage of red marbles, but we can make a guess. For example, we might believe 16 out of 20 (or 80%) of the marbles are red.</p>
 <p>We perform 3 studies, by drawing a marble three times (with replacement, so we can draw multiple red balls in a row from either bag) from one of the two bags. We don’t know which of the bags we are drawing from. We could be drawing from the bag where the null hypothesis is true or the bag where the alternative hypothesis is true. There are 4 possible outcomes. Either 0 out of 3, 1 out of 3, 2 out of 3, or 3 out of 3 red balls are drawn. We can plot these four likelihood curves (see the section on <a href="bayes.html#likelihoods">likelihoods</a>.</p>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:likelihood4curves"></span>
-<img src="Statistical_Inferences_files/figure-html/likelihood4curves-1.png" alt="Four likelihood curves for observing 0, 1, 2, or 3 out of 3 significant results in 3 studies." width="672"><!--
-<p class="caption marginnote">-->Figure 9.9: Four likelihood curves for observing 0, 1, 2, or 3 out of 3 significant results in 3 studies.<!--</p>-->
-<!--</div>--></span>
+<div class="figure">
+<span id="fig:likelihood4curves"></span>
+<p class="caption marginnote shownote">
+Figure 9.9: Four likelihood curves for observing 0, 1, 2, or 3 out of 3 significant results in 3 studies.
 </p>
+<img src="Statistical_Inferences_files/figure-html/likelihood4curves-1.png" alt="Four likelihood curves for observing 0, 1, 2, or 3 out of 3 significant results in 3 studies." width="672">
+</div>
 <p>Each curve has the maximum likelihood estimate at the outcome: θ = 0 for 0 out of 3 red balls, θ = 0.33 for 1 out of 3, θ = 0.66 for 2 out of 3, and θ = 1 for 3 out of 3. We know that for the bag where the null hypothesis is true, θ =0.05, or the Type 1 error rate. If we believe our studies would have 80% power when the alternative hypothesis is true, we can assume θ = 0.8. In Figure <a href="meta.html#fig:likelihood4curves">9.9</a> we see the four likelihood curves, and two vertical lines at θ = 0.05 and θ = 0.8. We can calculate likelihood ratios for θ = 0.05 vs. θ = 0.80 for the different outcomes. Below, the likelihood ratios are visualized for 1 out of 3 and 2 out of 3 red balls, or significant results. We see that only 1 out of 3 findings (below, left) is slightly more likely when the null hypothesis is true, but the likelihood ratio of 0.71 is not very far from 1. However, with 2 out of 3 significant results (below, right), it is clear that this result is much more likely when studies are performed with 80% power than if we assume we observed two out of three Type 1 errors. Indeed, when two out of three studies are significant, the likelihood ratio provides pretty strong relative evidence for a situation where the alternative hypothesis is true, even when the assumed power is much lower.</p>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:likelihoodcurve1"></span>
-<img src="Statistical_Inferences_files/figure-html/likelihoodcurve1-1.png" alt="Likelihood curves for observing 1 out of 3 significant results in 3 studies." width="672"><!--
-<p class="caption marginnote">-->Figure 9.10: Likelihood curves for observing 1 out of 3 significant results in 3 studies.<!--</p>-->
-<!--</div>--></span>
+<div class="figure">
+<span id="fig:likelihoodcurve1"></span>
+<p class="caption marginnote shownote">
+Figure 9.10: Likelihood curves for observing 1 out of 3 significant results in 3 studies.
 </p>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:likelihoodcurve2"></span>
-<img src="Statistical_Inferences_files/figure-html/likelihoodcurve2-1.png" alt="Likelihood curves for observing 2 out of 3 significant results in 3 studies." width="672"><!--
-<p class="caption marginnote">-->Figure 9.11: Likelihood curves for observing 2 out of 3 significant results in 3 studies.<!--</p>-->
-<!--</div>--></span>
+<img src="Statistical_Inferences_files/figure-html/likelihoodcurve1-1.png" alt="Likelihood curves for observing 1 out of 3 significant results in 3 studies." width="672">
+</div>
+<div class="figure">
+<span id="fig:likelihoodcurve2"></span>
+<p class="caption marginnote shownote">
+Figure 9.11: Likelihood curves for observing 2 out of 3 significant results in 3 studies.
 </p>
+<img src="Statistical_Inferences_files/figure-html/likelihoodcurve2-1.png" alt="Likelihood curves for observing 2 out of 3 significant results in 3 studies." width="672">
+</div>
 <p>Although we can’t formally evaluate the probability that the alternative hypothesis is true based on these likelihood ratios (we would need Bayesian statistics instead), we can see that when multiple studies are performed, but not all studies are statistically significant, we might still be gathering evidence for the hypothesis that we are examining a true effect. This might be surprising, because we never see what real research looks like due to publication bias, mixed results are both common and can be evidence for a true effect.</p>
 <p>Figure <a href="meta.html#fig:likelihood4curves">9.9</a> also shows when a researcher is more likely to observe mixed results than consistent results. This occurs for all values of θ where the likelihood curve for mixed results is higher than the likelihood curves for 0 out of <em>n</em>, or <em>n</em> out of <em>n</em> significant results. More formally, mixed results are more likely than consistent results when power drops below <em>n</em>/(<em>n</em>+1) percent, or increases above 1-(<em>n</em>/(<em>n</em>+1)). For example, when performing three studies, it is more likely to observe mixed results than only significant or only non-significant effects when power is lower than 3/(3+1)=0.75, and higher than 1-(3/(3+1))=0.25.</p>
 <p>To examine how often you should observe mixed results, open the online shiny app that will perform these binomial likelihood
@@ -358,7 +350,7 @@ should look like is hopefully a first step in making you realize you should thin
 <h2>
 <span class="header-section-number">9.3</span> Introduction to Meta-Analysis</h2>
 <p>Every single study is just a data-point in a future meta-analysis. If you draw small samples from a population, the mean and standard deviation in the sample can differ considerably from the mean and standard deviation in the population. There is great variability in small samples. Parameter estimates from small samples are very imprecise, and therefore the 95% confidence intervals around effect sizes are very wide. Indeed, this led Cohen (1994) to write “I suspect that the main reason [confidence intervals] are not reported is that they are so embarrassingly large!” If we want a more precise estimate of our parameter of interest, such as the mean difference or correlation in the population, we need either run extremely large single studies, or alternatively, combine data from several studies by performing a <strong>meta-analysis</strong>. The most common approach to combine studies is to perform a meta-analysis of effect size estimates.</p>
-<p>You can perform a meta-analysis for a set of studies in a single article you plan to publish (often called an <strong>internal meta-analysis</strong>), or you can search the literature for multiple studies reported in as many different articles as possible, and perform a meta-analysis on all studies others have published. An excellent introduction to meta-analyses is provided in the book by Borenstein, Hedges, Higgins, and Rothstein <span class="citation">(Borenstein, <label for="tufte-mn-59" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-59" class="margin-toggle">2009<span class="marginnote">Borenstein, M. (Ed.). (2009). <em>Introduction to meta-analysis</em>. John Wiley &amp; Sons.</span>)</span>. There is commercial software you can use to perform meta-analyses, but I highly recommend <em>against</em> using such software. Almost all commercial software packages lack transparency, and do not allow you to share your analysis code and data with other researchers. In this assignment, we will be using R to perform a meta-analysis of effect sizes, using the <strong>metafor</strong> package by Viechtbauer <span class="citation">Viechtbauer (<label for="tufte-mn-60" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-60" class="margin-toggle">2010<span class="marginnote">Viechtbauer, W. (2010). Conducting meta-analyses in R with the metafor package. <em>J Stat Softw</em>, <em>36</em>(3), 1–48.</span>)</span>. An important benefit of using metafor is that your meta-analysis can be made completely reproducible.</p>
+<p>You can perform a meta-analysis for a set of studies in a single article you plan to publish (often called an <strong>internal meta-analysis</strong>), or you can search the literature for multiple studies reported in as many different articles as possible, and perform a meta-analysis on all studies others have published. An excellent introduction to meta-analyses is provided in the book by Borenstein, Hedges, Higgins, and Rothstein <span class="citation">(Borenstein, <label for="tufte-mn-61" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-61" class="margin-toggle">2009<span class="marginnote">Borenstein, M. (Ed.). (2009). <em>Introduction to meta-analysis</em>. John Wiley &amp; Sons.</span>)</span>. There is commercial software you can use to perform meta-analyses, but I highly recommend <em>against</em> using such software. Almost all commercial software packages lack transparency, and do not allow you to share your analysis code and data with other researchers. In this assignment, we will be using R to perform a meta-analysis of effect sizes, using the <strong>metafor</strong> package by Viechtbauer <span class="citation">Viechtbauer (<label for="tufte-mn-62" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-62" class="margin-toggle">2010<span class="marginnote">Viechtbauer, W. (2010). Conducting meta-analyses in R with the metafor package. <em>J Stat Softw</em>, <em>36</em>(3), 1–48.</span>)</span>. An important benefit of using metafor is that your meta-analysis can be made completely reproducible.</p>
 <div id="single-study-meta-analysis" class="section level3">
 <h3>
 <span class="header-section-number">9.3.1</span> Single study meta-analysis</h3>
@@ -415,7 +407,7 @@ Vg = J^{2} \times \left( \frac{n_{1} + n_{2}}{n_{1}n_{2}} + \frac{g^{2}}{2(n_{1}
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>Here, we see under Model Results the effect size Hedges’ g (0.5553) and the standard error (0.2038), the Z-test statistic testing the mean difference against the null-hypothesis (2.72), and the 95% confidence interval [ci.lb = 0.16; ci.ub = 0.95] around the effect size (the interval width can be specified using the ‘level =’ option). We also get the <em>p</em>-value for the test of the meta-analytic effect size against 0. In this case we can reject the null-hypothesis (<em>p</em> = 0.0064).</p>
-<p>In a meta-analysis, a Z-test is used to examine whether the null-hypothesis can be rejected. This assumes a normally distributed random effect size model. Normally, you would analyze data from a single study with two groups using a <em>t</em>-test, which not surprisingly uses a <em>t</em>-distribution. If we directly compare a single-study meta-analysis, based on a Z-test, with a normal <em>t</em>-test, we will see some tiny differences in the results. We can directly calculate the effect size Hedges’ g, and the 95% confidence interval around the effect size, and the <em>t</em>-test using MOTE <span class="citation">(Buchanan et al., <label for="tufte-mn-61" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-61" class="margin-toggle">2017<span class="marginnote">Buchanan, E. M., Scofield, J., &amp; Valentine, K. D. (2017). <em>MOTE: Effect Size and Confidence Interval Calculator.</em></span>)</span>. The MOTE package uses the <em>t</em>-distribution when calculating confidence intervals around the effect size (and we can see this makes only a tiny difference compared to using the Z-distribution in a meta-analysis with 50 observations in each group).</p>
+<p>In a meta-analysis, a Z-test is used to examine whether the null-hypothesis can be rejected. This assumes a normally distributed random effect size model. Normally, you would analyze data from a single study with two groups using a <em>t</em>-test, which not surprisingly uses a <em>t</em>-distribution. If we directly compare a single-study meta-analysis, based on a Z-test, with a normal <em>t</em>-test, we will see some tiny differences in the results. We can directly calculate the effect size Hedges’ g, and the 95% confidence interval around the effect size, and the <em>t</em>-test using MOTE <span class="citation">(Buchanan et al., <label for="tufte-mn-63" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-63" class="margin-toggle">2017<span class="marginnote">Buchanan, E. M., Scofield, J., &amp; Valentine, K. D. (2017). <em>MOTE: Effect Size and Confidence Interval Calculator.</em></span>)</span>. The MOTE package uses the <em>t</em>-distribution when calculating confidence intervals around the effect size (and we can see this makes only a tiny difference compared to using the Z-distribution in a meta-analysis with 50 observations in each group).</p>
 <div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="meta.html#cb91-1"></a><span class="co"># Calculate Hedges g and perform t-test with MOTE </span></span>
 <span id="cb91-2"><a href="meta.html#cb91-2"></a>MOTE_res &lt;-<span class="st"> </span>MOTE<span class="op">::</span><span class="kw">g.ind.t</span>(<span class="dt">m1 =</span> <span class="fl">5.6</span>, </span>
 <span id="cb91-3"><a href="meta.html#cb91-3"></a>                          <span class="dt">m2 =</span> <span class="fl">4.9</span>, </span>
@@ -431,14 +423,13 @@ Vg = J^{2} \times \left( \frac{n_{1} + n_{2}}{n_{1}n_{2}} + \frac{g^{2}}{2(n_{1}
 <span id="cb93-2"><a href="meta.html#cb93-2"></a>MOTE_res<span class="op">$</span>estimate</span></code></pre></div>
 <pre><code>## [1] "$d_{g}$ = 0.55, 95\\% CI [0.16, 0.94]"</code></pre>
 <p>The results are very similar to those from the meta-analysis, with g = 0.55, 95% CI[0.16;0.94], where the effect size and the upper bound for the confidence interval differ 0.01 after rounding, because the <em>t</em>-distribution is used instead of the Z-distribution.</p>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:metaforest"></span>
-<img src="Statistical_Inferences_files/figure-html/metaforest-1.png" alt="Forest plot for a single study." width="672"><!--
-<p class="caption marginnote">-->Figure 9.12: Forest plot for a single study.<!--</p>-->
-<!--</div>--></span>
+<div class="figure">
+<span id="fig:metaforest"></span>
+<p class="caption marginnote shownote">
+Figure 9.12: Forest plot for a single study.
 </p>
+<img src="Statistical_Inferences_files/figure-html/metaforest-1.png" alt="Forest plot for a single study." width="672">
+</div>
 <p>It is common to visualize the results of a meta-analysis using a forest plot. We see the effect size for Study 1 marked by the black square at 0.05, and the confidence interval is visualized by lines extending to –0.34 on the left and 0.44 on the right. The numbers are printed on the right-hand side of the forest plot. On the lower half of the forest plot, we see a stretched-out diamond. The diamond summarizes the meta-analytic effect size estimate, with the center being at the meta-analytic effect size estimate, and the left and right endpoints at the 95% confidence interval of the meta-analytic effect size estimate. Because we only have a single study, the meta-analytic effect size estimate is the same as the effect size estimate for our single study.</p>
 <p>Meta-analyses get a bit more exciting when we are using them to analyze results
 from multiple studies. When multiple studies are combined in a meta-analysis,
@@ -452,14 +443,13 @@ the meta-analytic effect size estimate.</p>
 <h3>
 <span class="header-section-number">9.3.2</span> Simulating meta-analyses of mean standardized differences</h3>
 <p>One intuitive way to learn about meta-analyses is to simulate single studies, and combine these in a meta-analysis.</p>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:meta-sim"></span>
-<img src="Statistical_Inferences_files/figure-html/meta-sim-1.png" alt="Forest plot for 12 simulated studies." width="672"><!--
-<p class="caption marginnote">-->Figure 9.13: Forest plot for 12 simulated studies.<!--</p>-->
-<!--</div>--></span>
+<div class="figure">
+<span id="fig:meta-sim"></span>
+<p class="caption marginnote shownote">
+Figure 9.13: Forest plot for 12 simulated studies.
 </p>
+<img src="Statistical_Inferences_files/figure-html/meta-sim-1.png" alt="Forest plot for 12 simulated studies." width="672">
+</div>
 <p>We see 12 rows, one for each study, each with their own effect size and confidence interval. If you look closely, you can see the squares that indicate the effect size estimate for each study differ in size. The larger the sample size, the bigger the square. Study 3 had a relatively small sample size, which can be seen both by the small square, and the relatively wide confidence interval. Study 2 had a larger sample size, and thus a slightly larger square
 and narrower confidence interval. At the bottom of the graph we find the meta-analytic effect size and its confidence interval, both visualized by a diamond and numerically. The model is referred to as a FE Model, or <strong>Fixed Effect (FE) model</strong>. The alternative approach is a RE Model, or <strong>Random Effects (RE) model</strong> (the difference is discussed below).</p>
 <p>You might notice that the first two studies in the meta-analysis were not statistically significant. Take a moment to think for yourself if you would have continued this research line, after not finding an effect twice in a row. If you feel like it, run the code above several times (remove the set.seed or you will get the same result each time) and see how often this happens with a population effect size and range of sample sizes in this simulation. As should be clear from the section on <a href="meta.html#mixed">mixed results</a>, it is important to think meta-analytically, because in the long run there will be situations where you will find one or two non-significant results early in a research line, even when there is a true effect.</p>
@@ -618,8 +608,7 @@ within 6 months after a job training program, compared to a control condition. I
 <p>Although researchers often primarily use meta-analysis to compute a meta-analytic effect size estimate, and test whether this effect is statistically different from zero, <strong>an arguably much more important use of meta-analyses is to explain variation between (sets of) studies</strong>. This variation among (sets of) studies is referred to as <strong>heterogeneity</strong>. One goal of meta-analyses is not just to code effect sizes and estimate the meta-analytic effect size, but to code factors in studies that can explain heterogeneity, and examine which of these factors account for heterogeneity. This can help in theory evaluation or theory development. Tests have been developed to examine whether the studies included in a meta-analysis vary more than would be expected if the underlying true effect size in all
 studies was the same, and measures have been developed to quantify this variation.</p>
 <p>If all studies have the same true population effect size, the only source of variation is random error. If there are real differences between (sets of) studies, there are two sources of variation, namely random variation from study to study, <em>and</em> real differences in effect sizes in (sets of) studies.</p>
-<p>A classical measure of heterogeneity is Cochran’s Q statistic, which is the weighted sum of the squared differences between effect size estimates in each study, and the meta-analytic effect size estimate. The Q statistic can be used to test whether the absence of heterogeneity can be statistically rejected (by
-comparing it to the expected amount of variation, which is the degrees of freedom, <em>df</em>, or the number of studies -1, see Borenstein et al., 2009), but it can have low power if the number of studies in the meta-analysis is small <span class="citation">(Huedo-Medina et al., <label for="tufte-mn-62" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-62" class="margin-toggle">2006<span class="marginnote">Huedo-Medina, T. B., Sánchez-Meca, J., Marín-Martínez, F., &amp; Botella, J. (2006). Assessing heterogeneity in meta-analysis: Q statistic or I$2̂$ index? <em>Psychological Methods</em>, <em>11</em>(2), 193.</span>)</span>.</p>
+<p>A classical measure of heterogeneity is Cochran’s Q statistic, which is the weighted sum of the squared differences between effect size estimates in each study, and the meta-analytic effect size estimate. The Q statistic can be used to test whether the absence of heterogeneity can be statistically rejected (by comparing it to the expected amount of variation, which is the degrees of freedom, <em>df</em>, or the number of studies -1, see Borenstein et al., 2009), but it can have low power if the number of studies in the meta-analysis is small <span class="citation">(Huedo-Medina et al., <label for="tufte-mn-64" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-64" class="margin-toggle">2006<span class="marginnote">Huedo-Medina, T. B., Sánchez-Meca, J., Marín-Martínez, F., &amp; Botella, J. (2006). Assessing heterogeneity in meta-analysis: Q statistic or I$2̂$ index? <em>Psychological Methods</em>, <em>11</em>(2), 193.</span>)</span>.</p>
 <p>On theoretical grounds one might argue that some heterogeneity will always happen in a meta-analysis, and therefore it is more interesting to quantify the extent to which there is heterogeneity. The I² index measures the extent of true heterogeneity. It is calculated as follows: <span class="math display">\[I^{2} = \ \frac{(Q - k - 1)}{Q} \times 100\%\]</span>, where the k is the number of studies (and k-1 is the degrees of freedom). I² ranges from 0 to 100 and can be interpreted as the percentage of the total variability in a set of effect sizes that is due to heterogeneity. When I² = 0 all variability in the effect size estimates can be explained by within-study error, and when I² = 50 half of the total variability can be explained by true heterogeneity. I² values of 25%, 50%, and 75% can be interpreted as low, medium, and high heterogeneity.</p>
 <p>The script below simulates a similar meta-analysis to the example for dichotomous outcomes above, but with a small variation. The first half of the simulated experiments are based on the population success
 rates 0.7 and 0.2, but the second half of the simulated experiments are based on the population success rates 0.9 and 0.7. Thus, in this set of studies the odds ratio differs for the first half of the studies, compared to the second half (successes in Group 1 and 2 are set to 0.2 and 0.7 for the first half, but to 0.7 and 0.9 in the second half). There is true heterogeneity. We use the <code>confint</code> function in the metafor package to report both the I² statistic, and its confidence interval.</p>
@@ -699,7 +688,7 @@ rates 0.7 and 0.2, but the second half of the simulated experiments are based on
 <h3>
 <span class="header-section-number">9.3.6</span> Improving the reproducibility of meta-analyses</h3>
 <p>Although meta-analyses do not provide definitive conclusions, they are typically interpreted as state-of-the-art empirical knowledge about a specific effect or research area. Large-scale meta-analyses often accumulate a massive number of citations and influence future research and theory development. It is therefore essential that published meta-analyses are of the highest possible quality.</p>
-<p>At the same time, the conclusions from meta-analyses are often open for debate and are subject to change as new data becomes available. We recently proposed practical recommendations to increase the reproducibility of meta-analyses to facilitate quality control, improve reporting guidelines, allow researchers to re-analyze meta-analyses based on alternative inclusion criteria, and future-proof meta-analyses by making sure the collected meta-analytic data is shared so that continuously accumulating meta-analyses can be performed, and so that novel statistical techniques can be applied on the collected data as they become available <span class="citation">(Lakens et al., <label for="tufte-mn-63" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-63" class="margin-toggle">2016<span class="marginnote">Lakens, D., Hilgard, J., &amp; Staaks, J. (2016). On the reproducibility of meta-analyses: Six practical recommendations. <em>BMC Psychology</em>, <em>4</em>, 24. <a href="https://doi.org/10.1186/s40359-016-0126-3">https://doi.org/10.1186/s40359-016-0126-3</a></span>)</span>. The need for the improvement in reproducibility of meta-analysis is clear - a recent review of 150 meta-analyses in Psychological BUlletin revealed that only 1 meta-analysis shared the statistical code <span class="citation">(Polanin et al., <label for="tufte-mn-64" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-64" class="margin-toggle">2020<span class="marginnote">Polanin, J. R., Hennessy, E. A., &amp; Tsuji, S. (2020). Transparency and Reproducibility of Meta-Analyses in Psychology: A Meta-Review. <em>Perspectives on Psychological Science</em>, <em>15</em>(4), 1026–1041. <a href="https://doi.org/10.1177/1745691620906416">https://doi.org/10.1177/1745691620906416</a></span>)</span>. This is unacceptable in the current day and age. Following the recommendations summarized in Table <a href="meta.html#tab:table-rec1">9.1</a> should substantially improve the state-of-the-art in meta-analyses.</p>
+<p>At the same time, the conclusions from meta-analyses are often open for debate and are subject to change as new data becomes available. We recently proposed practical recommendations to increase the reproducibility of meta-analyses to facilitate quality control, improve reporting guidelines, allow researchers to re-analyze meta-analyses based on alternative inclusion criteria, and future-proof meta-analyses by making sure the collected meta-analytic data is shared so that continuously accumulating meta-analyses can be performed, and so that novel statistical techniques can be applied on the collected data as they become available <span class="citation">(Lakens et al., <label for="tufte-mn-65" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-65" class="margin-toggle">2016<span class="marginnote">Lakens, D., Hilgard, J., &amp; Staaks, J. (2016). On the reproducibility of meta-analyses: Six practical recommendations. <em>BMC Psychology</em>, <em>4</em>, 24. <a href="https://doi.org/10.1186/s40359-016-0126-3">https://doi.org/10.1186/s40359-016-0126-3</a></span>)</span>. The need for the improvement in reproducibility of meta-analysis is clear - a recent review of 150 meta-analyses in Psychological BUlletin revealed that only 1 meta-analysis shared the statistical code <span class="citation">(Polanin et al., <label for="tufte-mn-66" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-66" class="margin-toggle">2020<span class="marginnote">Polanin, J. R., Hennessy, E. A., &amp; Tsuji, S. (2020). Transparency and Reproducibility of Meta-Analyses in Psychology: A Meta-Review. <em>Perspectives on Psychological Science</em>, <em>15</em>(4), 1026–1041. <a href="https://doi.org/10.1177/1745691620906416">https://doi.org/10.1177/1745691620906416</a></span>)</span>. This is unacceptable in the current day and age. Following the recommendations summarized in Table <a href="meta.html#tab:table-rec1">9.1</a> should substantially improve the state-of-the-art in meta-analyses.</p>
 <p><!--
 <caption>--><span class="marginnote shownote"><span id="tab:table-rec1">Table 9.1: </span>Six practical recommendations to improve the quality and reproducibility of meta-analyses.</span><!--</caption>--></p>
 <table>
@@ -771,7 +760,7 @@ Consider consulting a librarian before you start the literature search, and a st
 <a href="bias.html"><button class="btn btn-default">Next</button></a>
 </p>
 <p class="build-date">Page built: 
-2020-08-04
+2020-08-07
 </p>
 </div>
 </div>
@@ -782,7 +771,7 @@ Consider consulting a librarian before you start the literature search, and a st
 <span style="display: inline-block; margin-left: 2em; margin-top: 16px; font-size: small">
 <span style="font-weight: bold;">Daniel Lakens</span><br/>
 <a href="https://statistical-inferences.com">statistical-inferences.com</a><br/>
-page built  2020-08-04 22:07:54
+page built  2020-08-07 17:06:31
 </span>
 </p>
 </div>

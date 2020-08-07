@@ -28,7 +28,7 @@ We will start by manually calculating the mean and standard deviation of a rando
 the squared difference by the sample size minus 1 (10-1=9), and finally take the
 square root of this value, which gives the standard deviation: 12.36. Open Simulate One Group.R, select all the code, and run it, to randomly simulate 10 IQ scores, and plot them.
 
-```{r plot-hist-iq-1, fig.margin = TRUE, echo = FALSE, fig.cap="10 random datapoints with mean = 100 and sd = 15 in the population."}
+```{r plot-hist-iq-1, fig.margin = FALSE, echo = FALSE, fig.cap="10 random datapoints with mean = 100 and sd = 15 in the population."}
 library(ggplot2)
 set.seed(3190)
 n = 10 #set sample size
@@ -109,8 +109,7 @@ Imagine we did not yet know what the mean IQ was in our population (where M = 10
 A new simulated sample with 100 participants is plotted below. We are slowly seeing what is known as the **normal distribution** (and the frequency scores start to resemble the red dotted line illustrating the normal distribution of the population). This is the well-known
 bell shaped curve that represents the distribution of many variables in scientific research (although some other types of distributions are quite common as well). The mean and standard deviation are much closer to the true mean and standard deviation, and this is true for most of the simulated samples.
 
-
-```{r plot-hist-iq-2, fig.margin = TRUE, echo = FALSE, fig.cap="100 random datapoints with mean = 100 and sd = 15 in the population."}
+```{r plot-hist-iq-2, fig.margin = FALSE, echo = FALSE, fig.cap="100 random datapoints with mean = 100 and sd = 15 in the population."}
 set.seed(519)
 n = 100 #set sample size
 x<-rnorm(n = n, mean = 100, sd = 15) #create sample from normal distribution
@@ -128,7 +127,7 @@ ggplot(as.data.frame(x), aes(x))  +
 
 For a final example, let’s simulate a really large sample of 1000 observation. Not every simulated study of 1000 people will yield the true mean and standard deviation, but it will happen quite often. And although the distribution is very close to a normal distribution, even with 1000 people it is not perfect.
 
-```{r plot-hist-iq-3, fig.margin = TRUE, echo = FALSE, fig.cap="1000 random datapoints with mean = 100 and sd = 15 in the population."}
+```{r plot-hist-iq-3, fig.margin = FALSE, echo = FALSE, fig.cap="1000 random datapoints with mean = 100 and sd = 15 in the population."}
 
 set.seed(618)
 n = 1000 #set sample size
@@ -149,7 +148,7 @@ ggplot(as.data.frame(x), aes(x))  +
 
 Now, assume we have a new IQ training program that will increase peoples IQ score with 6 points. People in condition 1 are in the control condition – they do not get IQ training. People in condition 2 get IQ training. Let’s simulate 10 people in each group, assuming the IQ in the control condition is 100, and in the experimental group is 106 (the SD is still 15 in each group).
 
-```{r plot-group1, warning=FALSE, fig.margin = TRUE, echo = FALSE, fig.cap="Simulated sample of independent groups."}
+```{r plot-group1, warning=FALSE, fig.margin = FALSE, echo = FALSE, fig.cap="Simulated sample of independent groups."}
 # Set color palette
 cbbPalette<-c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
@@ -368,7 +367,7 @@ The correlation is calculated based on the IQ scores of one fraternal twin (x) a
 $$r=\frac{n \Sigma x y-(\Sigma x )(\Sigma y)}{\sqrt{[n \Sigma x^{2}-(\Sigma x)^{2}][n \Sigma y^{2}-(\Sigma y)^{2}]}}$$
 When we randomly simulate observations for 30 twins, we get the following result.
 
-```{r, plot-cor1, warning=FALSE, fig.margin = TRUE, echo = FALSE, fig.cap="Correlation based on 30 pairs."}
+```{r, plot-cor1, warning=FALSE, fig.margin = FALSE, echo = FALSE, fig.cap="Correlation based on 30 pairs."}
 set.seed(4130)
 n <- 30 #set sample size
 cor.true <- 0.55 #set true correlation
@@ -387,7 +386,7 @@ dataset<-as.data.frame(cbind(x,y))
 #Plot graph
 ggplot(dataset, aes(x=x, y=y)) +
   geom_point(size=2) +    # Use hollow circles
-  geom_smooth(method=lm, colour="#E69F00", size = 1, fill = "#56B4E9") + # Add linear regression line
+  geom_smooth(method=lm, colour="#E69F00", size = 1, fill = "#56B4E9", formula = "y ~ x") + # Add linear regression line
   geom_abline(intercept = (my-(cor.true*mx)), slope=cor.true, colour="black", linetype="dotted", size=1) +
   coord_cartesian(xlim=c(40,160), ylim=c(40,160)) +
   scale_x_continuous(breaks=c(40, 50,60,70,80,90,100,110,120,130,140,150,160)) + scale_y_continuous(breaks=c(40, 50,60,70,80,90,100,110,120,130,140,150,160)) +
@@ -399,7 +398,7 @@ ggplot(dataset, aes(x=x, y=y)) +
 
 On the x-axis, we see the IQ score of one twin, and one the y-axis we see the IQ score of the second twin. The black dotted diagonal line illustrates the true correlation (0.55), while the yellow line shows the observed correlation (in this case, r = 0.43). The slope of the yellow line is determined by the observed correlation, but the position of the line is influenced by the mean IQ scores in both groups (in this simulation, the mean on the y-axis is `r round(mean(x),0)`, somewhat below 100, and the mean on the x-axis is `r round(mean(y),0)`, also slightly above 100. The blue area is the 95% confidence interval around the observed correlation. As we saw in the section on [confidence intervals](#confint), 95% of the time (in the long run) the blue area will contain the true correlation (the dotted black line). Increasing the sample size to 300 narrows the confidence interval considerably, and will guarantee that the sample correlation is much closer to the true correlation.
 
-```{r, plot-cor2, warning=FALSE, fig.margin = TRUE, echo = FALSE, fig.cap="Correlation based on 30 pairs."}
+```{r, plot-cor2, warning=FALSE, fig.margin = FALSE, echo = FALSE, fig.cap="Correlation based on 30 pairs."}
 set.seed(4130)
 n <- 300 #set sample size
 cor.true <- 0.55 #set true correlation
@@ -418,7 +417,7 @@ dataset<-as.data.frame(cbind(x,y))
 #Plot graph
 ggplot(dataset, aes(x=x, y=y)) +
   geom_point(size=2) +    # Use hollow circles
-  geom_smooth(method=lm, colour="#E69F00", size = 1, fill = "#56B4E9") + # Add linear regression line
+  geom_smooth(method=lm, colour="#E69F00", size = 1, fill = "#56B4E9", formula = "y ~ x") + # Add linear regression line
   geom_abline(intercept = (my-(cor.true*mx)), slope=cor.true, colour="black", linetype="dotted", size=1) +
   coord_cartesian(xlim=c(40,160), ylim=c(40,160)) +
   scale_x_continuous(breaks=c(40, 50,60,70,80,90,100,110,120,130,140,150,160)) + scale_y_continuous(breaks=c(40, 50,60,70,80,90,100,110,120,130,140,150,160)) +
@@ -458,7 +457,7 @@ Let’s imagine we have two bags. There are twenty marbles in each bag. In one b
 
 We perform 3 studies, by drawing a marble three times (with replacement, so we can draw multiple red balls in a row from either bag) from one of the two bags. We don’t know which of the bags we are drawing from. We could be drawing from the bag where the null hypothesis is true or the bag where the alternative hypothesis is true. There are 4 possible outcomes. Either 0 out of 3, 1 out of 3, 2 out of 3, or 3 out of 3 red balls are drawn. We can plot these four likelihood curves (see the section on [likelihoods](#likelihoods).
 
-```{r likelihood4curves, fig.margin = TRUE, echo = FALSE, fig.cap="Four likelihood curves for observing 0, 1, 2, or 3 out of 3 significant results in 3 studies."}
+```{r likelihood4curves, fig.margin = FALSE, echo = FALSE, fig.cap="Four likelihood curves for observing 0, 1, 2, or 3 out of 3 significant results in 3 studies."}
 # Perform 4 studies
 n <- 3
 x <- 1
@@ -488,7 +487,7 @@ legend("top", lty=c(1, 2, 3, 4), col=c("dodgerblue", "darkgreen", "red", "gold")
 
 Each curve has the maximum likelihood estimate at the outcome: θ = 0 for 0 out of 3 red balls, θ = 0.33 for 1 out of 3, θ = 0.66 for 2 out of 3, and θ = 1 for 3 out of 3. We know that for the bag where the null hypothesis is true, θ =0.05, or the Type 1 error rate. If we believe our studies would have 80% power when the alternative hypothesis is true, we can assume θ = 0.8. In Figure \@ref(fig:likelihood4curves) we see the four likelihood curves, and two vertical lines at θ = 0.05 and θ = 0.8. We can calculate likelihood ratios for θ = 0.05 vs. θ = 0.80 for the different outcomes. Below, the likelihood ratios are visualized for 1 out of 3 and 2 out of 3 red balls, or significant results. We see that only 1 out of 3 findings (below, left) is slightly more likely when the null hypothesis is true, but the likelihood ratio of 0.71 is not very far from 1. However, with 2 out of 3 significant results (below, right), it is clear that this result is much more likely when studies are performed with 80% power than if we assume we observed two out of three Type 1 errors. Indeed, when two out of three studies are significant, the likelihood ratio provides pretty strong relative evidence for a situation where the alternative hypothesis is true, even when the assumed power is much lower.
 
-```{r likelihoodcurve1, fig.margin = TRUE, echo = FALSE, fig.cap="Likelihood curves for observing 1 out of 3 significant results in 3 studies."}
+```{r likelihoodcurve1, fig.margin = FALSE, echo = FALSE, fig.cap="Likelihood curves for observing 1 out of 3 significant results in 3 studies."}
 # Perform 3 studies
 n <- 3
 x <- 1
@@ -517,7 +516,7 @@ title(paste("Likelihood Ratio H0/H1:",
             round(dbinom(x, n, H1) / dbinom(x, n, H0), digits = 2)))
 ```
 
-```{r likelihoodcurve2, fig.margin = TRUE, echo = FALSE, fig.cap="Likelihood curves for observing 2 out of 3 significant results in 3 studies."}
+```{r likelihoodcurve2, fig.margin = FALSE, echo = FALSE, fig.cap="Likelihood curves for observing 2 out of 3 significant results in 3 studies."}
 # Perform 3 studies
 n <- 3
 x <- 2
@@ -659,7 +658,7 @@ MOTE_res$estimate
 
 The results are very similar to those from the meta-analysis, with g = 0.55, 95% CI[0.16;0.94], where the effect size and the upper bound for the confidence interval differ 0.01 after rounding, because the *t*-distribution is used instead of the Z-distribution. 
 
-```{r metaforest, fig.margin = TRUE, echo = FALSE, fig.cap="Forest plot for a single study."}
+```{r metaforest, fig.margin = FALSE, echo = FALSE, fig.cap="Forest plot for a single study."}
 forest(meta_res)
 ```
 
@@ -677,7 +676,7 @@ the meta-analytic effect size estimate.
 
 One intuitive way to learn about meta-analyses is to simulate single studies, and combine these in a meta-analysis. 
 
-```{r meta-sim, fig.margin = TRUE, echo = FALSE, fig.cap="Forest plot for 12 simulated studies."}
+```{r meta-sim, fig.margin = FALSE, echo = FALSE, fig.cap="Forest plot for 12 simulated studies."}
 library(metafor)
 set.seed(94)
 nSims <- 12 # number of simulated studies
@@ -814,8 +813,7 @@ studies was the same, and measures have been developed to quantify this variatio
 
 If all studies have the same true population effect size, the only source of variation is random error. If there are real differences between (sets of) studies, there are two sources of variation, namely random variation from study to study, *and* real differences in effect sizes in (sets of) studies.
 
-A classical measure of heterogeneity is Cochran’s Q statistic, which is the weighted sum of the squared differences between effect size estimates in each study, and the meta-analytic effect size estimate. The Q statistic can be used to test whether the absence of heterogeneity can be statistically rejected (by
-comparing it to the expected amount of variation, which is the degrees of freedom, *df*, or the number of studies -1, see Borenstein et al., 2009), but it can have low power if the number of studies in the meta-analysis is small [@huedo-medina_assessing_2006].
+A classical measure of heterogeneity is Cochran’s Q statistic, which is the weighted sum of the squared differences between effect size estimates in each study, and the meta-analytic effect size estimate. The Q statistic can be used to test whether the absence of heterogeneity can be statistically rejected (by comparing it to the expected amount of variation, which is the degrees of freedom, *df*, or the number of studies -1, see Borenstein et al., 2009), but it can have low power if the number of studies in the meta-analysis is small [@huedo-medina_assessing_2006].
 
 On theoretical grounds one might argue that some heterogeneity will always happen in a meta-analysis, and therefore it is more interesting to quantify the extent to which there is heterogeneity. The I² index measures the extent of true heterogeneity. It is calculated as follows: $$I^{2} = \ \frac{(Q - k - 1)}{Q} \times 100\%$$, where the k is the number of studies (and k-1 is the degrees of freedom). I² ranges from 0 to 100 and can be interpreted as the percentage of the total variability in a set of effect sizes that is due to heterogeneity. When I² = 0 all variability in the effect size estimates can be explained by within-study error, and when I² = 50 half of the total variability can be explained by true heterogeneity. I² values of 25%, 50%, and 75% can be interpreted as low, medium, and high heterogeneity.
 

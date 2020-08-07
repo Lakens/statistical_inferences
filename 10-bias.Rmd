@@ -26,7 +26,7 @@ There are some older methods that you will read in some meta-analyses, but which
 
 A second approach is known as the ‘trim-and-fill’ technique. Before we can explain what trim-and-fill aims to do, it’s useful to explain a common way to visualize meta-analyses which is known as a **funnel plot**. In a funnel plot, the x-axis is used to plot the effect size of each study, and the y-axis is used to plot the ‘precision’ of each effect size. Typically, the y-axis is used to plot the standard error of each effect size estimate. The larger the study, the more precise the effect size estimate, the smaller the standard error, and thus the higher up in the funnel plot the study will be. Note that the y-axis has 0 at the top. That means that an infinitely precise study would be at the top of the graph. In the funnel plot below, there are no studies with a standard error less than 0.066, which means that there are no studies in the meta-analysis with such large sample sizes that they have this high level of precision.  
 
-```{r funnelplot1, fig.margin=TRUE, echo=FALSE, fig.cap="Default funnel plot."}
+```{r funnelplot1, fig.margin = FALSE, echo = FALSE, fig.cap="Default funnel plot."}
 knitr::include_graphics("images/funnelplot1.png")
 ```
 
@@ -34,13 +34,13 @@ You see a white triangle against the gray background, which is what gives the fu
 
 Sometimes, it can be useful to center the funnel at 0, instead of at the meta-analytic effect size estimate. Below, you can see the same data as above, but now presented against a background of a funnel centered at 0. The funnel now indicates the effect sizes we should expect if there is no true effect. Studies that fall outside the funnel have a 95% confidence interval that does not include 0. These studies will thus be statistically significant. Therefore, a funnel centered at zero allows you to easily see which studies are statistically significant, and which are not. When there is no publication bias, as in the figure below, effect sizes should be distributed randomly around the true effect size. This means there will be a reasonable number of non-significant effects.  
 
-```{r funnelplot2, fig.margin=TRUE, echo=FALSE, fig.cap="Funnel plot with funnel centered at 0."}
+```{r funnelplot2, fig.margin = FALSE, echo = FALSE, fig.cap="Funnel plot with funnel centered at 0."}
 knitr::include_graphics("images/funnelplot2.png")
 ```
 
 If there is extreme publication bias, as in the figure below, all the points within the funnel would be missing. Instead of normal variation around the true effect size, there is asymmetry in the effect size distribution. Several techniques that aim to detect publication bias focus on this asymmetry.  
 
-```{r funnelplot3, fig.margin=TRUE, echo=FALSE, fig.cap="Funnel plot with publication bias."}
+```{r funnelplot3, fig.margin = FALSE, echo = FALSE, fig.cap="Funnel plot with publication bias."}
 knitr::include_graphics("images/funnelplot3.png")
 ```
 
@@ -51,7 +51,7 @@ When there is publication bias because researchers only publish statistically si
 Trim and fill is a technique that aims to augment a dataset by adding hypothetical ‘missing’ studies (that may be in the ‘file-drawer’). The procedure starts by removing (‘trimming’) small studies that bias the meta-analytic effect size, then estimates the true effect size, and ends with ‘filling’ in a funnel plot with studies that are assumed to be missing due to publication bias. In the picture below, you can see the same data as above, but now with added unfilled circles which represent ‘imputed’ studies. If you look closely, you’ll see these points each have a mirror image on the opposite side of the meta-analytic effect size estimate (this is clearest in the lower half of the funnel plot).  
 
 
-```{r trimfill1, fig.margin=TRUE, echo=FALSE, fig.cap="Funnel plot with assumed missing effects added through trim-and-fill."}
+```{r trimfill1, fig.margin = FALSE, echo = FALSE, fig.cap="Funnel plot with assumed missing effects added through trim-and-fill."}
 knitr::include_graphics("images/trimfill1.png")
 ```
 
@@ -78,7 +78,7 @@ Another novel approach to examining publication bias is *p*-curve analysis. This
 When you look at the *p*-curve, you can see five points in the blue line. *P*-curve analysis is performed *only* on statistically significant results, based on the assumption that these are always published. Thus, it looks at the distribution of *p*-values below 0.05, and the 5 points illustrate all *p*-values between 0 and 0.01, 0.01 and 0.02, 0.02 and 0.03, 0.03 and 0.04, and 0.04 and 0.05. In the figure on the right, you see a relatively normal right-skewed *p*-value distribution with more low than high *p*-values. The *p*-curve analysis shows the blue line in the right figure is more right-skewed than the uniform red line (where the red line is the distribution you’d expect if there was no true effect).  
 
 
-```{r pcurve, fig.margin=TRUE, echo=FALSE, fig.cap="Figure 3 from Simonsohn et al (2014) showing a p-curve with and without bias."}
+```{r pcurve, fig.margin = FALSE, echo = FALSE, fig.cap="Figure 3 from Simonsohn et al (2014) showing a p-curve with and without bias."}
 knitr::include_graphics("images/pcurve.png")
 ```
 
@@ -185,7 +185,7 @@ The forest plot is a bit big, with 100 studies, but we see they randomly vary ar
 
 We can also easily plot a beautifully unbiased funnel plot.
 
-```{r funnelexample, fig.margin=TRUE, echo=FALSE, fig.cap="Funnel plot without bias."}
+```{r funnelexample, fig.margin = FALSE, echo = FALSE, fig.cap="Funnel plot without bias."}
 
 # Funnel Plot 
 funnel(result, level = 0.95, refline = 0)
@@ -199,7 +199,7 @@ The meta-analytic effect size estimate of 0.0049 is indicated by the triangle at
 
 Now that we know what a real null effect looks like, let’s introduce bias. We can set extreme publication bias by including only significant results in the meta-analysis, setting bias to 1. The forest plot now looks much more peculiar.
 
-```{r metasimbias, cache = TRUE, fig.width=5, fig.height=15, echo=FALSE, fig.cap="Forest plot with bias."}
+```{r metasimbias, cache = TRUE, fig.width=5, fig.height=15, echo = FALSE, fig.cap="Forest plot with bias."}
 set.seed(5522)
 
 nSims <- 100 # number of simulated experiments

@@ -14,7 +14,7 @@
 
 <meta name="author" content="Daniel Lakens" />
 
-<meta name="date" content="2020-08-04" />
+<meta name="date" content="2020-08-07" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -156,7 +156,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a href="computationalreproducibility.html"><span class="toc-section-number">11</span> Computational Reproducibility</a>
 <a href="prereg.html"><span class="toc-section-number">12</span> Preregistration and Transparency</a>
 <a href="bayes.html"><span class="toc-section-number">13</span> Bayesian statistics</a>
-<a href="references.html"><span class="toc-section-number">14</span> References</a>
+<a href="sequential.html"><span class="toc-section-number">14</span> Sequential Analysis</a>
+<a href="references.html"><span class="toc-section-number">15</span> References</a>
 </div>
 </li>
 </ul>
@@ -176,53 +177,49 @@ integrate each bias technique with the example, not mention each twice.</p>
 <h2>
 <span class="header-section-number">10.1</span> Bias Detection</h2>
 <p>Publication bias is one of the biggest challenges that science faces. <strong>Publication bias</strong> is the practice of selectively submitting and publishing scientific research, often based on whether or not the results are ‘statistically significant’ or not. The scientific literature is dominated by these statistically significant results. At the same time, we know that many studies researchers perform do not yield significant results. When scientists only have access to significant results, but not to all results, they are lacking a complete overview of the evidence for a hypothesis. In extreme cases, selective reporting can lead to a situation where there are hundreds of statistically significant results in the published literature, but no true effect because there are even more non-significant studies that are not shared. This is known as the <strong>file-drawer problem</strong>, when non-significant results are hidden away in file-drawers (or nowadays, folders on your computer) and not available to the scientific community. Every scientist should work towards solving the publication bias, because it is extremely difficult to learn what is likely to be true as long as scientists do not share all their results.</p>
-<p>Publication bias can only be fixed by making all your research results available to fellow scientists, irrespective of the <em>p</em>-value of the main hypothesis test. In the past, this has not been done, and as a consequence, we have to try to detect the extent to which publication bias impacts our ability to accurately evaluate the literature. Meta-analyses should always carefully examine the impact of publication bias on the meta-analytic effect size estimate - even though only an estimated 57% of meta-analyses in Psychological Bulletin report that they assessed publication bias <span class="citation">(Polanin et al., <label for="tufte-mn-65" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-65" class="margin-toggle">2020<span class="marginnote">Polanin, J. R., Hennessy, E. A., &amp; Tsuji, S. (2020). Transparency and Reproducibility of Meta-Analyses in Psychology: A Meta-Review. <em>Perspectives on Psychological Science</em>, <em>15</em>(4), 1026–1041. <a href="https://doi.org/10.1177/1745691620906416">https://doi.org/10.1177/1745691620906416</a></span>)</span>. Several techniques to detect publication bias have been developed, and this continues to be a very active field of research. All techniques are based on specific assumptions, which you should consider before applying a test. There is no silver bullet: None of these techniques can fix publication bias. None of them can tell you with certainty what the true meta-analytic effect size is corrected for publication bias. The best these methods can do is detect publication bias caused by specific mechanisms, under specific conditions.</p>
+<p>Publication bias can only be fixed by making all your research results available to fellow scientists, irrespective of the <em>p</em>-value of the main hypothesis test. In the past, this has not been done, and as a consequence, we have to try to detect the extent to which publication bias impacts our ability to accurately evaluate the literature. Meta-analyses should always carefully examine the impact of publication bias on the meta-analytic effect size estimate - even though only an estimated 57% of meta-analyses in Psychological Bulletin report that they assessed publication bias <span class="citation">(Polanin et al., <label for="tufte-mn-67" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-67" class="margin-toggle">2020<span class="marginnote">Polanin, J. R., Hennessy, E. A., &amp; Tsuji, S. (2020). Transparency and Reproducibility of Meta-Analyses in Psychology: A Meta-Review. <em>Perspectives on Psychological Science</em>, <em>15</em>(4), 1026–1041. <a href="https://doi.org/10.1177/1745691620906416">https://doi.org/10.1177/1745691620906416</a></span>)</span>. Several techniques to detect publication bias have been developed, and this continues to be a very active field of research. All techniques are based on specific assumptions, which you should consider before applying a test. There is no silver bullet: None of these techniques can fix publication bias. None of them can tell you with certainty what the true meta-analytic effect size is corrected for publication bias. The best these methods can do is detect publication bias caused by specific mechanisms, under specific conditions.</p>
 <p>There are some older methods that you will read in some meta-analyses, but which are no longer recommended. The first is known as <strong>fail-safe N</strong>. The idea was to calculate the number of non-significant results one would need to have in file-drawers before an observed meta-analytic effect size estimate would no longer be statistically different from 0. I won’t explain how it is calculated, because it does not work (even the person who developed it acknowledges this), it is misleading, and a kitten dies each time someone uses it. Currently, the only use fail-safe N has is as a tool to identify meta-analyses that are not state-of-the-art.</p>
 <div id="funnel-plots" class="section level3">
 <h3>
 <span class="header-section-number">10.1.1</span> Funnel Plots</h3>
 <p>A second approach is known as the ‘trim-and-fill’ technique. Before we can explain what trim-and-fill aims to do, it’s useful to explain a common way to visualize meta-analyses which is known as a <strong>funnel plot</strong>. In a funnel plot, the x-axis is used to plot the effect size of each study, and the y-axis is used to plot the ‘precision’ of each effect size. Typically, the y-axis is used to plot the standard error of each effect size estimate. The larger the study, the more precise the effect size estimate, the smaller the standard error, and thus the higher up in the funnel plot the study will be. Note that the y-axis has 0 at the top. That means that an infinitely precise study would be at the top of the graph. In the funnel plot below, there are no studies with a standard error less than 0.066, which means that there are no studies in the meta-analysis with such large sample sizes that they have this high level of precision.</p>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:funnelplot1"></span>
-<img src="images/funnelplot1.png" alt="Default funnel plot." width="494"><!--
-<p class="caption marginnote">-->Figure 10.1: Default funnel plot.<!--</p>-->
-<!--</div>--></span>
+<div class="figure">
+<span id="fig:funnelplot1"></span>
+<p class="caption marginnote shownote">
+Figure 10.1: Default funnel plot.
 </p>
+<img src="images/funnelplot1.png" alt="Default funnel plot." width="494">
+</div>
 <p>You see a white triangle against the gray background, which is what gives the funnel plot its name. The funnel indicates the 95% CI around the meta-analytic effect size estimate (indicated by the horizontal vertical line at 0.4 in the plot above. That is, if the true effect size is d = 0.4 in the plot above, we should expect 95% of the effect size estimates to fall within the funnel. If sample sizes are small, effect size estimates will vary more around the true effect size (as you can see at the bottom of the funnel), and if sample sizes are larger, the effect size estimates vary more narrowly around the true effect size (as you can see at the top of the funnel). Some points fall outside the funnel plot (when the funnel plot is based on the 95% CI, 5% of the effects should fall outside of the funnel, in the long run). In real life meta-analyses, it isn’t very likely that all studies are sampled from a population with a true effect size of d = 0.4. Thus, the figure above is an idealistic representation. When the number of studies in a meta-analysis is small, it is very difficult to interpret a funnel-plot.</p>
 <p>Sometimes, it can be useful to center the funnel at 0, instead of at the meta-analytic effect size estimate. Below, you can see the same data as above, but now presented against a background of a funnel centered at 0. The funnel now indicates the effect sizes we should expect if there is no true effect. Studies that fall outside the funnel have a 95% confidence interval that does not include 0. These studies will thus be statistically significant. Therefore, a funnel centered at zero allows you to easily see which studies are statistically significant, and which are not. When there is no publication bias, as in the figure below, effect sizes should be distributed randomly around the true effect size. This means there will be a reasonable number of non-significant effects.</p>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:funnelplot2"></span>
-<img src="images/funnelplot2.png" alt="Funnel plot with funnel centered at 0." width="516"><!--
-<p class="caption marginnote">-->Figure 10.2: Funnel plot with funnel centered at 0.<!--</p>-->
-<!--</div>--></span>
+<div class="figure">
+<span id="fig:funnelplot2"></span>
+<p class="caption marginnote shownote">
+Figure 10.2: Funnel plot with funnel centered at 0.
 </p>
+<img src="images/funnelplot2.png" alt="Funnel plot with funnel centered at 0." width="516">
+</div>
 <p>If there is extreme publication bias, as in the figure below, all the points within the funnel would be missing. Instead of normal variation around the true effect size, there is asymmetry in the effect size distribution. Several techniques that aim to detect publication bias focus on this asymmetry.</p>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:funnelplot3"></span>
-<img src="images/funnelplot3.png" alt="Funnel plot with publication bias." width="526"><!--
-<p class="caption marginnote">-->Figure 10.3: Funnel plot with publication bias.<!--</p>-->
-<!--</div>--></span>
+<div class="figure">
+<span id="fig:funnelplot3"></span>
+<p class="caption marginnote shownote">
+Figure 10.3: Funnel plot with publication bias.
 </p>
+<img src="images/funnelplot3.png" alt="Funnel plot with publication bias." width="526">
+</div>
 <p>When there is publication bias because researchers only publish statistically significant results (p &lt; alpha), and you calculate the effect size in a meta-analysis, the meta-analytic effect size estimate is <strong>higher</strong> when there is publication bias (where researchers publish only effects with p &lt; alpha) compared to when there is no publication bias. This is because publication bias filters out the smaller, non-significant, effect sizes. which are then not included in the meta-analysis. This leads to a meta-analytic effect size estimate that is larger than the true population effect size. With strong publication bias, we know the meta-analytic effect size is inflated, but we don’t know by how much. The true effect size could just be a bit smaller, but the true effect size could also be 0, in the most extreme case.</p>
 </div>
 <div id="trim-and-fill" class="section level3">
 <h3>
 <span class="header-section-number">10.1.2</span> Trim and Fill</h3>
 <p>Trim and fill is a technique that aims to augment a dataset by adding hypothetical ‘missing’ studies (that may be in the ‘file-drawer’). The procedure starts by removing (‘trimming’) small studies that bias the meta-analytic effect size, then estimates the true effect size, and ends with ‘filling’ in a funnel plot with studies that are assumed to be missing due to publication bias. In the picture below, you can see the same data as above, but now with added unfilled circles which represent ‘imputed’ studies. If you look closely, you’ll see these points each have a mirror image on the opposite side of the meta-analytic effect size estimate (this is clearest in the lower half of the funnel plot).</p>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:trimfill1"></span>
-<img src="images/trimfill1.png" alt="Funnel plot with assumed missing effects added through trim-and-fill." width="451"><!--
-<p class="caption marginnote">-->Figure 10.4: Funnel plot with assumed missing effects added through trim-and-fill.<!--</p>-->
-<!--</div>--></span>
+<div class="figure">
+<span id="fig:trimfill1"></span>
+<p class="caption marginnote shownote">
+Figure 10.4: Funnel plot with assumed missing effects added through trim-and-fill.
 </p>
+<img src="images/trimfill1.png" alt="Funnel plot with assumed missing effects added through trim-and-fill." width="451">
+</div>
 <p>Trim-and-fill is not created to examine publication bias based on whether studies yield significant p-values, or not. Instead, it’s created for publication bias caused by effects that are strongly (perhaps even significantly!) in the opposite direction of the remaining studies or the effect a researcher wants to find. Think of a meta-analysis on the benefits of some treatment, where the 8 studies that revealed the treatment actually makes people feel much worse are hidden in the file drawer.</p>
 <p>Trim-and-fill is not very good under many realistic publication bias scenarios. The method is criticized for its reliance on the strong assumption of symmetry in the funnel plot. When publication bias is based on the <em>p</em>-value of the study (arguably the most important source of publication bias in many fields) the trim-and-fill method does not perform well enough to yield a corrected meta-analytic effect size estimate that is close to the true effect size (Peters, Sutton, Jones, Abrams, &amp; Rushton, 2007; Terrin, Schmid, Lau, &amp; Olkin, 2003). When the assumptions are met, it can be used as a <strong>sensitivity analysis.</strong> When the difference between the trim-and-fill corrected effect size estimate and the uncorrected meta-analytic effect size estimate is small, publication bias due to the <em>p</em>-value of the individual studies is unlikely to change the conclusions of the meta-analysis. Researchers should not report the trim-and-fill corrected effect size estimate as a realistic estimate of the true effect size if there would not be publication bias (Peters et al., 2007). Many meta-analysts make this error, but regrettably, that’s not how trim-and-fill can be used.</p>
 </div>
@@ -240,14 +237,13 @@ integrate each bias technique with the example, not mention each twice.</p>
 <p>Another novel approach to examining publication bias is <em>p</em>-curve analysis. This is a meta-analytic technique that does not focus on effect sizes, but analyzes the <em>p</em>-values of the statistical tests for the main hypothesis in a paper (Simonsohn, Nelson, &amp; Simmons, 2014a). A similar meta-analytic technique is <em>p</em>-uniform (van Assen, van Aert, &amp; Wicherts, 2015). When the null-hypothesis is true, <em>p</em>-values are uniformly distributed (see week 1 of my first MOOC). When there is a true effect p-values are skewed to the right, which means there should be more small <em>p</em>-values (e.g., <em>p</em> = 0.01) than high <em>p</em>-values (<em>p</em> = 0.04) in a set of studies.</p>
 <p><em>P</em>-curve analysis tests whether the curve of the <em>p</em>-values is flatter than what would be expected if the studies you analyze had 33% power (which suggests the distribution looks more like one expected when the null-hypothesis is true), or more right-skewed than a uniform <em>p</em>-value distribution (which suggests the studies might have examined a true effect and had at least some power). As an example, let’s consider Figure 3 from Simonsohn and colleagues (2014). The authors compared 20 papers in the Journal of Personality and Social Psychology that used a covariate in the analysis, and 20 studies that did not use a covariate. The authors suspected that researchers might add a covariate in their analyses to try to find a <em>p</em>-value smaller than 0.05, when the first analysis they tried did not yield a significant effect. This is exactly what they found.</p>
 <p>When you look at the <em>p</em>-curve, you can see five points in the blue line. <em>P</em>-curve analysis is performed <em>only</em> on statistically significant results, based on the assumption that these are always published. Thus, it looks at the distribution of <em>p</em>-values below 0.05, and the 5 points illustrate all <em>p</em>-values between 0 and 0.01, 0.01 and 0.02, 0.02 and 0.03, 0.03 and 0.04, and 0.04 and 0.05. In the figure on the right, you see a relatively normal right-skewed <em>p</em>-value distribution with more low than high <em>p</em>-values. The <em>p</em>-curve analysis shows the blue line in the right figure is more right-skewed than the uniform red line (where the red line is the distribution you’d expect if there was no true effect).</p>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:pcurve"></span>
-<img src="images/pcurve.png" alt="Figure 3 from Simonsohn et al (2014) showing a p-curve with and without bias." width="1010"><!--
-<p class="caption marginnote">-->Figure 10.5: Figure 3 from Simonsohn et al (2014) showing a p-curve with and without bias.<!--</p>-->
-<!--</div>--></span>
+<div class="figure">
+<span id="fig:pcurve"></span>
+<p class="caption marginnote shownote">
+Figure 10.5: Figure 3 from Simonsohn et al (2014) showing a p-curve with and without bias.
 </p>
+<img src="images/pcurve.png" alt="Figure 3 from Simonsohn et al (2014) showing a p-curve with and without bias." width="1010">
+</div>
 <p>In the left figure we see the opposite pattern, with mainly high <em>p</em>-values around 0.05, and almost no <em>p</em>-values around 0.01. Because the blue line is significantly less right-skewed than the green line, the <em>p</em>-curve analysis suggests this set of studies lacks ‘evidential value’. Using the term ‘evidential value’ is not formally correct when talking about <em>p</em>-values (evidence is always relative, and better reserved for when talking about likelihoods for example), so it’s best to interpret this as ‘the data do not look as if they come from a <em>p</em>-value distribution that reflects the presence of a true effect’.</p>
 <p>P-curve analysis is a useful tool. But it is important to correctly interpret what a <em>p</em>-curve analysis can tell you. A right-skewed <em>p</em>-curve does not prove that there is no bias, or that the hypothesis is true. A flat <em>p</em>-curve does not prove that the theory is incorrect, but it does show that the studies you analyzed do not provide evidence for the presence of a true effect. When many people have studied a particular topic, and the result is a flat <em>p</em>-value distribution, this is probably not an effect you want to build on. The two tests for right-skewed and a flat distribution perform relatively well even when there is some heterogeneity in the effect size distribution.</p>
 </div>
@@ -357,14 +353,13 @@ Figure 10.6: Forest plot.
 </div>
 <p>The forest plot is a bit big, with 100 studies, but we see they randomly vary around 0 as they should. The small diamond at the bottom represents the meta-analytic effect size estimate (the center of the diamond) and the 95% CI around it (the left and right edge of the diamond).</p>
 <p>We can also easily plot a beautifully unbiased funnel plot.</p>
-<p>
-<span class="marginnote shownote">
-<!--
-<div class="figure">--><span id="fig:funnelexample"></span>
-<img src="Statistical_Inferences_files/figure-html/funnelexample-1.png" alt="Funnel plot without bias." width="672"><!--
-<p class="caption marginnote">-->Figure 10.7: Funnel plot without bias.<!--</p>-->
-<!--</div>--></span>
+<div class="figure">
+<span id="fig:funnelexample"></span>
+<p class="caption marginnote shownote">
+Figure 10.7: Funnel plot without bias.
 </p>
+<img src="Statistical_Inferences_files/figure-html/funnelexample-1.png" alt="Funnel plot without bias." width="672">
+</div>
 <p>The meta-analytic effect size estimate of 0.0049 is indicated by the triangle at the top of the figure. All studies (the black dots) fall within the white triangle, which indicates the 95% CI around 0 for different standard errors (and thus, for studies of different sizes). Studies with a small standard error (and thus a large number of observations) are at the top, while studies with less observations have a larger standard error, and are on the bottom of the plot.</p>
 </div>
 <div id="introducing-bias" class="section level3">
@@ -623,7 +618,7 @@ Figure 10.9: Funnel plot with PET_PEESE regression lines.
 <a href="computationalreproducibility.html"><button class="btn btn-default">Next</button></a>
 </p>
 <p class="build-date">Page built: 
-2020-08-04
+2020-08-07
 </p>
 </div>
 </div>
@@ -634,7 +629,7 @@ Figure 10.9: Funnel plot with PET_PEESE regression lines.
 <span style="display: inline-block; margin-left: 2em; margin-top: 16px; font-size: small">
 <span style="font-weight: bold;">Daniel Lakens</span><br/>
 <a href="https://statistical-inferences.com">statistical-inferences.com</a><br/>
-page built  2020-08-04 22:07:54
+page built  2020-08-07 17:06:31
 </span>
 </p>
 </div>
