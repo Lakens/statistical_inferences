@@ -8,9 +8,7 @@ editor_options:
 knitr::opts_chunk$set(error = FALSE, warning = FALSE)
 library(gsDesign)
 library(rpact)
-library(ldbounds)
 library(pwr)
-library(gset)
 options(scipen = 999)
 ```
 
@@ -42,23 +40,49 @@ We will use multiple packages in R to compute corrected alpha levels for each lo
 
 ```{r, echo = TRUE}
 # Use Rpact to specify a design with 2 looks and Pocock correction
-
+library(rpact)
 design <- getDesignGroupSequential(
   kMax = 2,
   typeOfDesign = "P",
   sided = 2,
-  alpha = 0.05
+  alpha = 0.05,
+  beta = 0.1
 )
 summary(design)
 ```
 
-Rpact makes it easy to plot the boundaries (based on the critical values) for each look. We see the critical values are higher than the 1.96 we would use for a fixed design with a 5% alpha level, namely: `r design$criticalValues`. 
+```{r, echo = FALSE}
+msmbstyle::question(text = "What happens to the alpha level if you have 3 looks in total?")
+```
+
+```{r, echo = FALSE}
+msmbstyle::solution_begin(header = "Solution", toggle = TRUE)
+```
+
+```{r}
+# Make sure you have rpact installed
+library(rpact)
+design <- getDesignGroupSequential(
+  kMax = 3,
+  typeOfDesign = "P",
+  sided = 2,
+  alpha = 0.05,
+  beta = 0.1
+)
+summary(design)
+```
+
+```{r, echo = FALSE}
+msmbstyle::solution_end()
+```
+
+`rpact` makes it easy to plot the boundaries (based on the critical values) for each look. We see the critical values are higher than the 1.96 we would use for a fixed design with a 5% alpha level, namely: `r design$criticalValues`. 
 
 ```{r boundplot1, fig.margin=FALSE, echo=FALSE, fig.cap="Plot of critical boundaries at each look for a 2 look design with a Pocock correction."}
 plot(design)
 ```
 
-We can also use the `gsDesign` package (not that the gsDesign package reports one-sided alpha levels, and thus returns a one-sided alpha level of 0.0147, instead of the two-sided alpha level 0.294. You will need to double the alpha level for a two-sided test (or just use Rpact, which reports two-sided alpha levels when asked).
+We can also use the `gsDesign` package (not that the gsDesign package reports one-sided alpha levels, and thus returns a one-sided alpha level of 0.0147, instead of the two-sided alpha level 0.294. You will need to double the alpha level for a two-sided test (or just use rpact, which reports two-sided alpha levels when asked).
 
 ```{r}
 seq_design <- gsDesign(
@@ -85,7 +109,7 @@ knitr::include_graphics("images/GroupSeq2.png")
 knitr::include_graphics("images/GroupSeq3.png")
 ```
 
-The analysis can also be performed in the RPACT [shiny app](https://rpact.shinyapps.io/public/) which also allows users to create all plots through simple menu options, and download a complete report of the analyses (e.g., for a preregistration document). The RPACT shiny app is the easiest resource to use from all options discussed here.
+The analysis can also be performed in the rpact [shiny app](https://rpact.shinyapps.io/public/) which also allows users to create all plots through simple menu options, and download a complete report of the analyses (e.g., for a preregistration document). The rpact shiny app is the easiest resource to use from all options discussed here.
 
 ```{r rpactshiny, fig.margin=FALSE, echo=FALSE, fig.cap="Screenshot of rpact Shiny app."}
 knitr::include_graphics("images/RPact1.png")
@@ -95,9 +119,31 @@ knitr::include_graphics("images/RPact1.png")
 
 It can be useful to explicitly compare different types of designs. As explained before, the Pocock correction maintains a fixed alpha level at each look. The O'Brien-Fleming correction uses a higher threshold for early looks, but has the advantage that the final look occurs closer to the uncorrected alpha level. Because the alpha level is very similar at the last look, so is the total required sample size. Lowering the alpha level means the sample size needs to be increased to maintain the same desired level of statistical power, so different spending functions also require a different increase in the final sample size (to compensate for the lower alpha level, while maintaining the same statistical power). Sequential designs always need to be planned for a slightly larger total sample size at the final look, although as we will see below, because we can expect to stop at earlier looks, on average sample size will be smaller when using sequential designs compared to fixed designs. 
 
-```{r spending-comparison, fig.margin=FALSE, echo=FALSE, fig.cap="Comparison of the Pocock and O'Brien-Fleming boundaries."}
-#O'Brien&Fleming, 3 equally spaced stages
-d1 <- getDesignGroupSequential(typeOfDesign = "OF",
+```{r spending-comparison, fig.margin=FALSE, echo=TRUE, fig.cap="Comparison of the Pocock and O'Brien-Fleming boundaries."}
+#O'Brien & Fleming design, 3 equally spaced stages
+d1 <- getDesignGroupSequential(typeOfDesign = "OF", kMax = 5) 
+# Pocock design
+d2 <- getDesignGroupSequential(typeOfDesign = "P", kMax = 5)
+
+designSet <-getDesignSet(designs = c(d1, d2), 
+                         variedParameters = "typeOfDesign")
+plot(designSet, type = 1)
+```
+
+We see that at each of the 5 looks the critical value for our test is higher than 1.96 (the critical value without correcting for multiple looks, assuming a normal distribution, indicated by the black dashed line). The Pocock correction (P, blue line) has the same critical value at each look: `r d2$criticalValues`, while the critical values decrease for each look with the O'Brien-Fleming correction (OF, red line): `r d1$criticalValues`. The first three looks use an alpha level that is stricter than the Pocock spending function, but the last two use a much less strict threshold, and the last look occurs at a level quite close to an alpha level without any correction. As we will see below, this is quite efficient, without requiring a noticeable increase in the sample size due to a lower alpha level at the last look.
+
+```{r, echo = FALSE}
+msmbstyle::question(text = "Another design, not discussed in the rest of this test, is the design proposed by Haybittle and Peto. Adjust the plot code (changing OF to HP) to see what it looks like.")
+```
+
+```{r, echo = FALSE}
+msmbstyle::solution_begin(header = "Solution", toggle = TRUE)
+```
+
+```{r}
+# Make sure you have rpact installed
+library(rpact)
+d1 <- getDesignGroupSequential(typeOfDesign = "HP",
                                kMax = 5) 
 # Pocock
 d2 <- getDesignGroupSequential(typeOfDesign = "P",
@@ -105,12 +151,13 @@ d2 <- getDesignGroupSequential(typeOfDesign = "P",
 
 designSet <-getDesignSet(designs = c(d1, d2), 
                          variedParameters = "typeOfDesign")
-plot(designSet,
-     type = 1)
-
+plot(designSet, type = 1)
 ```
 
-We see that at each of the 5 looks the critical value for our test is higher than 1.96 (the critical value without correcting for multiple looks, assuming a normal distribution, indicated by the black dashed line). The Pocock correction (P, blue line) has the same critical value at each look: `r d2$criticalValues`, while the critical values decrease for each look with the O'Brien-Fleming correction (OF, red line): `r d1$criticalValues`. The first three looks use an alpha level that is stricter than the Pocock spending function, but the last two use a much less strict threshold, and the last look occurs at a level quite close to an alpha level without any correction. As we will see below, this is quite efficient, without requiring a noticeable increase in the sample size due to a lower alpha level at the last look.
+```{r, echo = FALSE}
+msmbstyle::solution_end()
+```
+
 
 ## Sample Size for Sequential Designs
 
@@ -181,13 +228,50 @@ summary(power_res)
 
 ```
 
-It is important to know that `rpact` returns the *total* number of subjects at look 1 (94, so 94/2 = 47 in each group), and the total sample size at look 2 (188, so 188/2 = 94 in each group). This means that at the second look, we are now collecting 188 instead of 172 participants. This is a consequence of lowering our alpha level at each look (from 0.05 to 0.0294). To compensate for the loss of power, we need to increase our sample size. HOwever, this is compensated by the fact that sometimes we will stop after look 1, and thus on average we will collect less participants (even though we might sometimes collect more participants than we would have, had we not used a sequential design). Rpact also computes the expected number of participants, in the long run, if the true effect size is d = 0.5.
+It is important to know that `rpact` returns the *total* number of subjects at look 1 (94, so 94/2 = 47 in each group), and the total sample size at look 2 (188, so 188/2 = 94 in each group). This means that at the second look, we are now collecting 188 instead of 172 participants. This is a consequence of lowering our alpha level at each look (from 0.05 to 0.0294). To compensate for the loss of power, we need to increase our sample size. HOwever, this is compensated by the fact that sometimes we will stop after look 1, and thus on average we will collect less participants (even though we might sometimes collect more participants than we would have, had we not used a sequential design). `rpact` also computes the expected number of participants, in the long run, if the true effect size is d = 0.5.
 
 ```{r}
 power_res$expectedNumberOfSubjectsH1
 ```
 
-So, in the long run, if the true effect size is d = 0.5, we will collect 132 observations (66 per condition), instead of 172 in total (or 86 per condition). Because power is a curve, and the true effect size is always unknown, it is useful to plot power across a range of possible effect sizes, so that we can explore the expected sample size, in the long run, if we use a sequential design, for different true effect sizes.
+So, in the long run, if the true effect size is d = 0.5, we will collect 132 observations (66 per condition), instead of 172 in total (or 86 per condition). 
+
+```{r, echo = FALSE}
+msmbstyle::question(text = "If we had expected an effect size of d = 0.4, what would the total sample size we needed to collect for 90% power be?")
+```
+
+```{r, echo = FALSE}
+msmbstyle::solution_begin(header = "Solution", toggle = TRUE)
+```
+
+```{r}
+# Make sure you have rpact installed
+library(rpact)
+seq_design <- getDesignGroupSequential(
+  kMax = 2,
+  typeOfDesign = "P",
+  sided = 2,
+  alpha = 0.05,
+  beta = 0.1
+  )
+
+# Compute the sample size we need
+power_res <- getSampleSizeMeans(
+  design = seq_design,
+  groups = 2,
+  alternative = 0.4, 
+  stDev = 1, 
+  allocationRatioPlanned = 1,
+  normalApproximation = FALSE)
+
+power_res$expectedNumberOfSubjectsH1
+```
+
+```{r, echo = FALSE}
+msmbstyle::solution_end()
+```
+
+Because power is a curve, and the true effect size is always unknown, it is useful to plot power across a range of possible effect sizes, so that we can explore the expected sample size, in the long run, if we use a sequential design, for different true effect sizes.
 
 ```{r}
 # Use getPowerMeans and set max N to 188 based on analysis above
@@ -205,7 +289,7 @@ plot(sample_res, type = 6)
 
 The blue line indicates the expected number of observations we need to collect. Not surprisingly, when the true effect size is 0, we will almost always continue data collection to the end. We will only stop if we observe a Type 1 error, which is rare, and thus the expected number of observations is very close to 120. On the other side of the graph we see the scenario for when the true effect size is d = 1. With such a large effect size, we will have high power at our first look, and we will almost always be able to stop at the first look. If the true effect size is 0.5, we see we can expect to collect 132 participants on average.
 
-The Pocock correction leads to a substantially lower alpha level at the last look, which requires an increase in sample size to compensate. As we saw before, the O'Brien-Flemming spending function does not require such a severe reduction in the alpha level at the last look. Let's see how well this performs. With 2 looks, this design would not need an increase in sample size at all, yet lower the expected number of observations we would collect to 145. However, let's add 2 additional looks at the data, for 4 looks in total.    
+The Pocock correction leads to a substantially lower alpha level at the last look, which requires an increase in sample size to compensate. As we saw before, the O'Brien-Fleming spending function does not require such a severe reduction in the alpha level at the last look. Let's see how well this performs. With 2 looks, this design would not need an increase in sample size at all, yet lower the expected number of observations we would collect to 145. However, let's add 2 additional looks at the data, for 4 looks in total.    
 
 ```{r}
 # Now a 4 look OF design
@@ -301,7 +385,7 @@ plot(designSet,
 
 ```
 
-There is a wide range of alpha spending functions possible. In addition to a Pocock-type and O'Brien-Fleming-type alpha spending function RPACT has the Kim & DeMets alpha spending function and the Hwang, Shi & DeCani alpha spending function, but users can also specify a custom spending function. Again, the main benefit of these spending functions is that neither the number nor the timing of the looks needs to be specified in advance, which makes alpha spending approaches much more flexible. However, it is important that the decision to perform an interim analysis is not based on collected data, as this can still increase the Type 1 error rate.
+There is a wide range of alpha spending functions possible. In addition to a Pocock-type and O'Brien-Fleming-type alpha spending function `rpact` has the Kim & DeMets alpha spending function and the Hwang, Shi & DeCani alpha spending function, but users can also specify a custom spending function. Again, the main benefit of these spending functions is that neither the number nor the timing of the looks needs to be specified in advance, which makes alpha spending approaches much more flexible. However, it is important that the decision to perform an interim analysis is not based on collected data, as this can still increase the Type 1 error rate.
 
 <!-- ```{r spending-comparison-3, fig.margin=FALSE, echo=FALSE, fig.cap="Comparison of different alpha spending functions."} -->
 <!-- #Pocock type -->
@@ -326,7 +410,7 @@ There is a wide range of alpha spending functions possible. In addition to a Poc
 
 ### Updating Boundaries During an Experiment
 
-Although alpha spending functions control the Type 1 error rate even when there are deviations from the pre-planned looks, this does require recalculating the boundaries based on the amount of information that has been observed. In this example, we follow an [RPACT vignette](https://vignettes.rpact.org/html/rpact_boundary_update_example.html). Imagine a two-sided design with an O'Brien-Fleming-type alpha-spending function, and alpha of 0.025, a desired power of 90%, with 3 looks, planned when 50%, 75%, and 100% of our maximum sample has been collected.     
+Although alpha spending functions control the Type 1 error rate even when there are deviations from the pre-planned looks, this does require recalculating the boundaries based on the amount of information that has been observed. In this example, we follow an [rpact vignette](https://vignettes.rpact.org/html/rpact_boundary_update_example.html). Imagine a two-sided design with an O'Brien-Fleming-type alpha-spending function, and alpha of 0.025, a desired power of 90%, with 3 looks, planned when 50%, 75%, and 100% of our maximum sample has been collected.     
 
 ```{r}
 # Original design:
@@ -381,142 +465,220 @@ summary(power_update_1)
 
 ```
 
-## Test for non-inferiority
 
-In an equivalence 
-
-```{r}
-# Trying gset package from https://journal.r-project.org/archive/2014-2/liu.pdf
-
-#### specify the parameters
-# The bound divided by the sigma equals the bound in Cohen's d. 
-L <- -0.2
-U <- 0.2
-theta <- 0
-sigma <- 0.4
-alpha <- 0.05
-beta <- 0.05
-K <- 4
-r <- 1
-
-#### Therefore, the sample size in the non-sequential setting
-
-n.fix <- nfix(r, L, U, theta, sigma, alpha, beta)
-n.fix
-
-# Equals the power analysis using TOSTER!
-TOSTER::powerTOSTtwo(alpha=alpha, 
-                     statistical_power=(1-beta), 
-                     low_eqbound_d=-0.5, 
-                     high_eqbound_d=0.5)
-
-
-
-bound1<- equivonly(L, U,  sigma, n.fix$n1, n.fix$n2, 1:K/K, alpha, beta)
-
-bound1
-
-####  the boundary plot can be regenerated by using 
-
-figureE(bound1, K)
-
-bound1$typeI
-
-
-oc_res1 <- oc(L,U,theta = L,sigma,K,69,69,bound1,futility = FALSE) #True effect lower bound
-oc_res1
-
-oc_res2 <- oc(L,U,theta = 0,sigma,K,69,69,bound1,futility = FALSE) # no effect
-oc_res2
-
-sum(oc_res1$prob.stopE)
-
+```{r, echo = FALSE}
+msmbstyle::question(text = "What if we had look even later, after 105 participants? Which alpha level should we have used for the first interim test?")
 ```
 
-
+```{r, echo = FALSE}
+msmbstyle::solution_begin(header = "Solution", toggle = TRUE)
+```
 
 ```{r}
-sampleSizeResult <- getSampleSizeMeans(alternative = 0.5, stDev = 1, sided = 2, alpha = 0.05, beta = 0.2)
-summary(sampleSizeResult)
-
-
-powerResult <- getPowerMeans(
-  alternative = 0:1,
-  stDev = 1,
-  allocationRatioPlanned = 1,
-  maxNumberOfSubjects = 200,
+# Make sure you have rpact installed
+library(rpact)
+seq_design_2 <- getDesignGroupSequential(
   sided = 2,
-  alpha = 0.05
+  kMax = 3,
+  alpha = 0.05,
+  beta = 0.1,
+  informationRates = c(105/174, 0.75, 1),
+  typeOfDesign = "asOF"
 )
-plot(powerResult, type = 7) # powercurve
 
+# Update power analysis
 
+power_update_1 <- getPowerMeans(
+  design = seq_design_2,
+  groups = 2,
+  alternative = 0.5, 
+  stDev = 1, 
+  allocationRatioPlanned = 1,
+  maxNumberOfSubjects = 174, 
+  normalApproximation = TRUE)
 
-# Now for a non-inferiority trial!
+summary(power_update_1)
+# So the answer is 0.0078
+```
 
+```{r, echo = FALSE}
+msmbstyle::solution_end()
+```
+
+## Test for (non-)inferiority
+
+In an equivalence test, it is common to compare the observed effect against an upper and lower bound of the equivalence range. `rpact` supports **non-inferiority and inferiority tests**, where the null hypothesis is one of the equivalence bound (e.g., d = 0.5) and the alternative hypothesis is an effect of 0. In essence, this is a directional equivalence test where we consider an effect too small to be meaningful (inferior) if it is smaller than the upper bound of the equivalence range, for example d = 0.5 - also when the effect is on the opposite direction (e.g., d =  0.7). Alternatively, we can be interested in showing an effect is not smaller than the lower equivalence bound, for example d = -0.5, which allows us to conclude the effect is not more negative (non-inferior) than the smallest effect we care about. We can first examine a normal power analysis for a non-inferiority test for a fixed design for 90% power.
+
+```{r}
+# First for no sequential design
+# Corresponds to PASS software
 sampleSizeNoninf <- getSampleSizeMeans(
   thetaH0 = -0.5,
-  alternative = 0,
+  alternative = 0.0,
   stDev = 1,
-  alpha = 0.025,
-  beta = 0.2,
-  sided = 1
+  alpha = 0.05,
+  beta = 0.1,
+  sided = 1,
+  normalApproximation = FALSE
 )
 sampleSizeNoninf
-summary(sampleSizeNoninf)
 
-design <- getDesignGroupSequential(
-  sided = 2,
-  alpha = 0.05,
-  beta = 0.2,
-  informationRates = c(0.5, 1),
-  typeOfDesign = "P"
-)
-
-summary(design)
-
-power_design <- getSampleSizeMeans(design,
-  alternative = 0.5,
-  stDev = 1,
-  allocationRatioPlanned = 1
-)
-
-summary(power_design)
 ```
 
+Now, we can repeat the analysis, but first specify our original sequential design, with the small deviation that we need to specify a one-sided test. In practice, this will yield identical results as a power analysis for an equivalence test with symmetrical equivalence bounds and an expected true effect size of zero. However, the use of one-sided test often also directly reflects our hypothesis interest, so it might often be the test that reflects your research question.
+
+```{r}
+seq_design <- getDesignGroupSequential(
+  kMax = 2,
+  typeOfDesign = "P",
+  sided = 1,
+  alpha = 0.05,
+  beta = 0.1
+)
+
+sampleSizeNoninf <- getSampleSizeMeans(
+  design = seq_design,
+  thetaH0 = -0.5,
+  alternative = 0.0,
+  stDev = 1,
+  normalApproximation = FALSE
+)
+sampleSizeNoninf
+
+```
+
+We see that compared to a fixed design, our maximum sample size has increased from 139 to 154. However, if there really is no effect (d = 0, the alternative hypothesis of our non-inferiority test is true) then we should expect to collect on average 106 observations, in the long run. Of course, as we have seen above, more efficient designs can be designed.
+
+```{r, echo = FALSE}
+msmbstyle::question(text = "If we had tested against a lower bound of d = -0.3, which sample size would we need?")
+```
+
+```{r, echo = FALSE}
+msmbstyle::solution_begin(header = "Solution", toggle = TRUE)
+```
+
+```{r}
+# Make sure you have rpact installed
+library(rpact)
+seq_design <- getDesignGroupSequential(
+  kMax = 2,
+  typeOfDesign = "P",
+  sided = 1,
+  alpha = 0.05,
+  beta = 0.1
+)
+
+sampleSizeNoninf <- getSampleSizeMeans(
+  design = seq_design,
+  thetaH0 = -0.3,
+  alternative = 0.0,
+  stDev = 1,
+  normalApproximation = FALSE
+)
+sampleSizeNoninf
+# So the answer is 424 in total, 212 in each group
+```
+
+```{r, echo = FALSE}
+msmbstyle::solution_end()
+```
 
 ## Stopping for futility
 
-At an interim look, one might decide to stop a trial for *futility*. 
-At an interim look one can also calculate *conditional power*, or the probability to achieve a significant result, given the observed effect size, if one was to continue to the maximum sample size one is willing to collect. 
+To declare that a meaningful effect is absent, one should specify a smallest effect size of interest, and perform an equivalence test. However, sometimes you might not be able to justify a choice for a smallest effect size of interest. In such study designs, it is still possible to decide to stop a study at an interim look because continuing data collection is impossible of unlikely to yield a significant effect. 
 
-Wassmer and Brannath write (section 7.2): 
+In the most extreme case, it will be impossible for the additional data you collect to lead to a statistically significant result. To illustrate this in a hypothetical scenario, imagine that after collecting 90 out of 100 observations, the observed effect size is very close to zero. The critical effect size in an independent *t*-test with 50 participants in each group and an alpha level of, say, 0.02, is d = 0.47. If your primary dependent variable is measured on a 7 point Likert scale, it might be that even if every of the remaining 5 participants in group 1 answer 1, and every of the remaining participants in group 2 answers 7, the effect size in the total group of 100 participants can never reach the critical effect size. If the goal of your study was to detect  significant effect, at this point you know for a fact that goal will not be reached. Stopping a study at an interim analysis because the final result will not yield a significant effect is called **curtailment**.
 
-If the conditional power is inadequately small, then one could stop the trial for futility. This has been suggested by Halperin et al. (1982) and Lan et al. (1982) in the context of group sequential trials (for a review of related methods, see Lachin 2005). Due to the monotonicity of the conditional power in p1, stopping the trial if the conditional power is below a specific threshold cp0 is equivalent to stopping the trial if p1 is above some level $\alpha_0$.
-
-Jennison & Turnball 2000 discuss equivalence tests in chapter 6. In formula 6.2 and 6.3 it seems they use beta to discuss incorrectly concluding equivalence when there is a true effect. They indeed mention some researchers would flip these 2 around (I would) but they keep the labels consistent with normal tests. This is useful and important in interpreting gsDesign!
-
-They write: "The important point is that β in (6.2) represents the “consumer’s risk” since wrongly declaring equivalence may lead to an unsuitable preparation being allowed onto the market. Values of β and δ must be chosen to satisfy the appropriate regulatory agency. Recommended choices are often β = 0.05 and δ = log(1.25)"
-
-First, we can stop for futility because the observed effect size is zero or in the wrong direction. This is only possible in a directional (one-sided) test. In other words, if we predict and effect larger than zero (e.g., d = 0.5), and we observe an effect ≤ 0, we might stop the data collection for **futility**. Note that it is perfectly possible, due to random variation, that we observe an effect size smaller than 0, especially in small noisy samples where the true effect size is large. But this simple stopping rule will illustrate the basic idea of stopping for futility. 
-
-Jennison & Turnball: In view of the savings that can be achieved in
-experimental costs and time, we would recommend that early stopping to accept
-the null hypothesis be considered in any group sequential two-sided test.
-
-
-Although the ethical motivation for stopping a clinical
-c 2000 by Chapman & Hall/CRC
-trial early is greatest when a treatment difference is found and randomization of
-patients to an inferior treatment can be avoided, there are sound financial reasons
-to curtail a study when it is evident that there is no treatment difference to detect.
-Moreover, such curtailment can benefit future patients by releasing experimental
-resources for the earlier exploration of further promising treatments.
-Gould & Pecore (1982) note the importance of early stopping to accept the
-null hypothesis, and Gould (1983) proposes a method of “abandoning lost causes”
-in which early termination occurs only to accept H0.
+In less extreme cases, it might still be possible for the study to observe a significant effect, but the probability is extremely low. The probability of finding a significant result, given the data that have been observed up to an interim analysis, is called **conditional power**. Let's imagine that in our previous example, after 50 observations, we also observed an effect zero close to zero, and we would have 25% power to find a significant result, for some expected effect size. Wassmer and Brannath -@wassmer_group_2016 write, due to the direct relation between conditional power and p-values, stopping the trial if the conditional power is lower than some desired threshold is equivalent to stopping a study if the *p*-value is larger than some critical level. `rpact` allows us to compute conditional power. Let's assume that in our 2-stage design, after the first interim analysis, we observe an effect of d = 0.1, while we expected d = 0.5. What is the probability that, if the true effect size is d = 0.5, we find a significant result after adding the second batch of 94 participants? 
 
 ```{r}
+# Our 2 look design
+seq_design <- getDesignGroupSequential(
+  kMax = 2,
+  typeOfDesign = "P",
+  sided = 2,
+  alpha = 0.05,
+  beta = 0.1
+)
+
+dataMeans <- getDataset(
+  n1 = c(94), 
+  n2 = c(94), 
+  means1 = c(1.1), #for directional test, means 1 > means 2
+  means2 = c(1),
+  stDevs1 =c(1), 
+  stDevs2 =c(1))
+
+# Get analysis results
+# Effect sizes are raw effect sizes, not standardized.
+stage_res <- getStageResults(seq_design, 
+                   equalVariances = TRUE,
+                   dataInput = dataMeans)
+
+# Compute conditional power after the first look
+getConditionalPower(design = seq_design,
+                    stageResults = stage_res, 
+                    nPlanned = c(94),
+                    thetaH1 = 0.5,
+                    assumedStDev = 1)
+```
+
+We see the answer if that we have 51% power. At this point, one might decide to stop for **futility**. You might decide it is not worth continuing the data collection. One the one hand, 51% power is not nothing, but on the other hand, your expectation that the true effect size is d = 0.5 has become somewhat less likely. One might choose to perform a **conditional power analysis**, and increase the sample size you were willing to collect. Given that we have already collected data, it seems intuitive to calculate condition power not based on the effect size we originally expected, but by updating our prior belief about the true effect size given the observed data. This Bayesian alternative is called **predictive power** [@spiegelhalter_monitoring_1986]. You will probably want to consult a statistician before making these choices.
+
+
+```{r, echo = FALSE}
+msmbstyle::question(text = "Repeat the conditional power analysis above, assuming you now think the true effect size is d = 0.3, instead of d = 0.5.")
+```
+
+```{r, echo = FALSE}
+msmbstyle::solution_begin(header = "Solution", toggle = TRUE)
+```
+
+```{r}
+# Make sure you have rpact installed
+library(rpact)
+# Our 2 look design
+seq_design <- getDesignGroupSequential(
+  kMax = 2,
+  typeOfDesign = "P",
+  sided = 2,
+  alpha = 0.05,
+  beta = 0.1
+)
+
+dataMeans <- getDataset(
+  n1 = c(94), 
+  n2 = c(94), 
+  means1 = c(1.1), #for directional test, means 1 > means 2
+  means2 = c(1),
+  stDevs1 =c(1), 
+  stDevs2 =c(1))
+
+# Get analysis results
+# Effect sizes are raw effect sizes, not standardized.
+stage_res <- getStageResults(seq_design, 
+                   equalVariances = TRUE,
+                   dataInput = dataMeans)
+
+# Compute conditional power after the first look
+getConditionalPower(design = seq_design,
+                    stageResults = stage_res, 
+                    nPlanned = c(94),
+                    thetaH1 = 0.3,
+                    assumedStDev = 1)
+
+# So the answer is conditional power is 17.31%
+```
+
+```{r, echo = FALSE}
+msmbstyle::solution_end()
+```
+
+Stopping for futility has benefits and downsides [@schoenfeld_procon_2005]. The biggest problem with stopping for futility is that it makes it impossible to interpret negative results. We do not learn whether the effect is too small to be meaningful, as we would learn in an equivalence test. Clearly, designing a study is most informative if we specify a smallest effect of interest, and perform a formal equivalence test. However, when specifying a smallest effect size of interest is not possible, stopping for futility might be an alternative to carefully consider. Stopping for futility does not impact the Type 1 error rate of a study because we are not declaring an effect if no effect is present. 
+
+As an illustration of a simple stopping rule for futility. let's imagine a researcher is willing to stop for futility because the observed effect size is zero or in the wrong direction. This is only possible in a directional (one-sided) test. In other words, if we predict an effect larger than zero (e.g., d = 0.5), and we observe an effect ≤ 0, we will stop the data collection . Note that it is perfectly possible, due to random variation, that we observe an effect size smaller than 0, especially in small noisy samples where the true effect size is large. But this simple stopping rule will illustrate the basic idea of stopping for futility. In Figure \@ref(fig:futility1) the red line indicates critical values to declare a significant effect. For example if we observe a *Z*-value larger than 2.134 at the second interim analysis, we can stop the study and reject the null hypothesis. However, if at the second interim analysis we observe a *Z*-score smaller than or equal to 0, the observed effect size is either 0 or smaller, and we can stop the trial for futility.
+
+```{r futility1, fig.margin=FALSE, echo=FALSE, fig.cap="O'Brien-Fleming-type boundaries for 3 looks to declare a significant effect (red line) or to stop for futility (blue line)."}
 # Manually specified futility bounds
 design <- getDesignGroupSequential(
   sided = 1,
@@ -528,62 +690,61 @@ design <- getDesignGroupSequential(
   bindingFutility = FALSE
 )
 
-summary(design)
+# summary(design)
+plot(design)
+```
 
+Instead of setting the *z*-scores for futility manually, we can also compute bounds based on a beta-spending function. At the last look in our sequential design, which we designed to have 90% power, we are willing to accept the null-hypothesis with a 10% error rate. Just as we are willing to distribute our Type 1 error rate across interim analyses, we might be willing to stop for futility at earlier looks, even if we are then making a Type 2 error. If there actually is no effect, such designs are more efficient. One can choose binding and non-binding beta-spending functions (meaning one has to stop, or one can continue on) - the latter is typically recommended. Adding futility bounds based on beta-spending functions reduce power, and increase the required sample size to reach a desired power, but this is on average compensated by the fact you studies stop earlier due to futility, and can thus make designs more efficient. In the plot below, we use an O'Brien-Fleming type design for both the alpha-spending function and the beta-spending function.
+
+```{r}
 # Formal beta spending function
 design <- getDesignGroupSequential(
   sided = 1,
   alpha = 0.05,
-  beta = 0.05,
+  beta = 0.1,
   informationRates = c(0.33, 0.67, 1),
   typeOfDesign = "asOF",
   typeBetaSpending="bsOF",
   bindingFutility = FALSE
 )
 
-summary(design)
 plot(design)
-
-power_design <- getSampleSizeMeans(design,
-  alternative = 0.5,
-  stDev = 1,
-  allocationRatioPlanned = 1
-)
-
-summary(power_design)
-
 ```
 
+### Reporting results after a sequential analysis.
 
-We briefly discuss this in our Second Generation P-Value paper as well, but for a test of superiority versus a one-sided test for equivalence. 
+When reporting results for a sequential analyses, there are two things to keep in mind. First, whenever we stop a study early because of a significant effect, there is a risk that we stopped on a random high estimate. This means the effect sizes is larger than the true effect size. Approaches have been developed to correct effect size estimates for single studies. These correction aim to retrieve an accurate effect size estimate from  a study that was designed with the goal to examine whether the null hypothesis could be rejected. As @schonbrodt_sequential_2017 show, a meta-analysis of studies that used sequential designs will yield an accurate effect size, because studies that stop early, and have smaller sample sizes, are weighed less and are compensated by the larger studies that did not stop early. Although researchers are free to report adjusted effect size estimates after a sequential design, it might be more important not to confuse the question a study is designed to answer. If you want to accurately estimate an effect size, design a study based on parameter accuracy. If you want to efficiently examined whether you can reject the null hypothesis, design a study where you perform a sequential analysis.
 
-## Conditional power
+The same issue occurs when reporting *p*-values. A *p*-value is the probability of observing a result at least as extreme as the result that was observed, given that the null hypothesis is true. When using sequential analyses, more than
+one analysis is performed, and the definition of a result “at least as extreme” needs to be redefined. The recommended procedure to determine what “at least as extreme” means is to order the outcomes of a series of sequential analyses in terms of the stage at which the study was stopped, where earlier stopping is more extreme than later stopping, and where studies with higher Z-values are more extreme, when different studies are stopped at the same time [@proschan_statistical_2006]. This is referred to as **stagewise ordering**. Similalry, procedures exist to compute adjusted confidence intervals for sequential designs. `rpact` allows one to compute stagewise ordered *p*-values for some designs (e.g., *t*-tests). For practical purposes, reporting these adjusted estimates might be less important in studies design to test a hypothesis efficiently, while controlling error rates, and reporting a normal *p*-value, effect size estimate, and confidence interval will most likely suffice, as long as one keeps in mind that the sequential design has a small impact on these values, and that accurate effect size estimates require a meta-analytic estimate from multiple studies, some of which stopped earlier, and some at the final look.
 
-7.4.1: Sometimes one can identify the smallest effect size that is considered clinically relevant or worthwhile to be identified in the clinical trial. Such minimal effect size is then used in the initial sample size calculation where we then aim to guarantee that the unconditional power is above some target value (for example, 90%). The concept of a minimal clinically relevant alternative can also be applied at the interim analysis in the conditional power and corresponding sample size calculation. 
+```{r}
+# Our 2 look design
+seq_design <- getDesignGroupSequential(
+  kMax = 2,
+  typeOfDesign = "P",
+  sided = 2,
+  alpha = 0.05,
+  beta = 0.1
+)
 
-We believe that conditional power is a useful tool for decision making at the interim
-analysis. The effect size used for the conditional power calculation, however, should
-not always be considered a realistic estimate of the true effect size. It should rather
-be triggered by the question of which effect sizes are considered worth the future
-efforts of rejecting the null hypothesis at the end of the trial. Such worthy effect
-sizes may be the same as at the beginning of the trial but may also change due to
-new evidence on clinical relevance, safety, and cost from in and outside the trial
+# Specify our observed data after N = 188
+# Note, you enter the means and sd for each batch.
+# So for the second look, you ignore the 94 observations from look 1
+# Alternatively use overallN1 etc, see help file
 
-https://bmcmedresmethodol.biomedcentral.com/track/pdf/10.1186/s12874-017-0387-4
+dataMeans <- getDataset(
+  n1 = c(94,94), 
+  n2 = c(94,94), 
+  means1 = c(1.1,1.5), #for directional test, means 1 > means 2
+  means2 = c(1,1),
+  stDevs1 =c(1,1), 
+  stDevs2 =c(1,1))
 
-With respectto futility stopping, there are mainly two fundamentalapproaches in the statistical literature [3, 4]. The firstapproach is a conditional one, where the study is stoppedfor futility, if the conditional power falls under a prespec-ified threshold. This conditional approach can further bedivided into stochastic curtailment [5, 6], a frequentistapproach, and methods based on the predictive poweror the predictive probability [4], which are partially orfully Bayesian methods [7, 8].
+# Get analysis results
+# Effect sizes are raw effect sizes, not standardized.
+getAnalysisResults(seq_design, 
+                   equalVariances = TRUE,
+                   dataInput = dataMeans)
+```
 
-In general, stopping for futility without compromisingthe type I error is possible at any time and indepen-dent of any predefined rules as an early acceptance ofH0decreases the actual type I error rate. 
-
-
-In the context ofgroup sequential designs, it can generally be differentiatedbetween binding and non-binding stopping for futilityrules, compare also Bretz et al [26]. ‘Binding’ means thatstopping for futility at the interim analysis is obligatorywhenever the futility criteria are met. When the data sug-gest stopping for futility, it is thusnotallowed to continuethe trial for other external reasons. If a binding futility ruleis applied, the local significance levels can be increased inorder to fully exhaust the global significance level whichis otherwise no longer guaranteed as futility stoppingimplies a lower probability of rejecting the null hypothe-sis. In contrast, the non-binding version does not commitearly futility stopping. 
-
-
-
-
-
-
-The 'cumulative Type 1 error rate' or 'cumulative alpha spent' at any look is the probability of rejecting H0 when it is true at or before that look. Therefore, at the last look the cumulative alpha spent will be equal to the alpha level. 
-
-
-Wassmer and Brannath, section 8.2.3, discuss the use of two-sided confidence intervals. They highlight an equivalence test as one case in which a two-sided confidence interval is computed. We specify an equivalence range with a lower and upper bound. 
