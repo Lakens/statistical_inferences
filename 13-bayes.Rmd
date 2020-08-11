@@ -62,7 +62,7 @@ dbinom(x = 2, size = 10, prob = 0.5)
 
 Let’s assume we don’t have any other information about this coin. (You might believe most coins are fair; such priors will be discussed when we talk about Bayesian statistics in the next section). The equation P(θ;x) gives the probability of observing x successes from n trials when a coin’s probability of success is θ. Based on the data we have observed, we can ask the question: which value of θ will make the observed data **most likely**? To answer this question, we can plug in the values for x and n into P(θ) and then find which value of θ maximizes this function. [Ronald Fisher](https://en.wikipedia.org/wiki/Ronald_Fisher) calls this maximum likelihood estimation, and published it when he was 22 as a third year undergraduate. Since θ can be any value between 0 and 1, we can plot all values in what is known as the *likelihood curve*, so we can see the maximum more easily.
 
-```{r likelihood1, fig.margin = TRUE, echo = TRUE, fig.cap="Likelihood curve for 8 out of 10 heads in a coin flip."}
+```{r likelihood1, fig.margin = FALSE, echo = TRUE, fig.cap="Likelihood curve for 8 out of 10 heads in a coin flip."}
 # plot likelihood curve----
 n <- 10 # set total trials
 x <- 8 # set successes
@@ -83,7 +83,7 @@ Likelihoods are an example of statistical inference: We have observed some data,
 
 The likelihood curve rises up and falls down, except at the extremes, when 0 heads or only heads are observed. When we plot the likelihood curves for 0 heads in 10 coin flips, the likelihood curve looks like:
 
-```{r likelihood2, fig.margin = TRUE, echo = FALSE, fig.cap="Likelihood curve for 0 out of 10 heads in a coin flip."}
+```{r likelihood2, fig.margin = FALSE, echo = FALSE, fig.cap="Likelihood curve for 0 out of 10 heads in a coin flip."}
 # plot likelihood curve----
 n <- 10 # set total trials
 x <- 0 # set successes
@@ -97,7 +97,7 @@ plot(theta, like, type = "l", xlab = expression(theta),
 Likelihoods can easily be combined. Imagine we have two people flipping the same coin independently. One person observes eight heads out of 10 flips, and the other observes 4 heads out of 10 flips. You might believe that this should give the same likelihood curve as one person flipping a coin 20 times, and observing 12 heads, and indeed, it does. In the plot below, all likelihood curves are standardized by dividing the curve by the maximum of each likelihood curve. This is why all curves now have a maximum of 1, and we can more easily compare different likelihood curves.
 
 
-```{r likelihood3, fig.margin = TRUE, echo = FALSE, fig.cap="Combining likelihood curves."}
+```{r likelihood3, fig.margin = FALSE, echo = FALSE, fig.cap="Combining likelihood curves."}
 # Combining Likelihoods
 theta <- seq(0, 1, len = 100)
 lik1 <- dbinom(8, 10, theta)
@@ -119,7 +119,7 @@ legend(0, 1, legend = c("4/10 heads", "12/20 heads", "8/10 heads"),
 
 The curve on left is for 4 out of 10 heads, the one on the right is for 8 out of 10 heads. The black dotted curve in the middle is for 12 out of 20 heads. The red curve, exactly underneath the 12 out of 20 heads curve, is calculated by multiplying the likelihood curves: L(θ_combined) *=* L(θ = 0.8) \* L(θ = 0.4). In the plot, you can see that multiplying the likelihood curves for 4/10 heads and 8/10 heads (the red line) gives the same likelihood curve as that of 12/20 heads (black dotted line).
 
-```{r likelihood4, fig.margin = TRUE, echo = FALSE, fig.cap="Likelihood curves for increasingly large sample sizes."}
+```{r likelihood4, fig.margin = FALSE, echo = FALSE, fig.cap="Likelihood curves for increasingly large sample sizes."}
 # Increasing sample size
 theta <- seq(0, 1, len = 1000)
 lik1 <- dbinom(5, 10, theta)
@@ -158,7 +158,7 @@ $$
 Which is 0.302/0.044=6.87. In the plot, both circles show the points on
 the likelihood curve for L(θ = 0.5) and L(θ = 0.8).
 
-```{r likelihood5, fig.margin = TRUE, echo = FALSE, fig.cap="Likelihood ratio for 8 out of 10 heads in a coin flip for L($\\theta$ = 0.5) and L($\\theta$ = 0.8)."}
+```{r likelihood5, fig.margin = FALSE, echo = FALSE, fig.cap="Likelihood ratio for 8 out of 10 heads in a coin flip for L($\\theta$ = 0.5) and L($\\theta$ = 0.8)."}
 # Calculate the likelihood ratio----
 n <- 10 # set total trials
 x <- 8 # set successes
@@ -181,7 +181,7 @@ title(paste("Likelihood Ratio H0/H1:",
 
 We can subjectively interpret this likelihood ratio, which tells us an unfair coin that our observed data is 6.87 times more likely under the hypothesis that this coin will give 80% heads than under the hypothesis that this is a fair coin. How convincing is this? Let’s round the likelihood ratio to 7, and imagine two bags of marbles. One bag contains 7 blue marbles. The second contains 7 marbles, each one a different color of the rainbow, so violet, indigo, blue, green, yellow, orange, and red. Someone randomly picks one of the two bags, draws a marble, and shows it to you. The marble is blue: How certain are you this marble came from the bag with all blue marbles, compared to the bag with rainbow coloured marbles? This is how strong the likelihood ratio tells us to believe our data were generated by an unfair coin with 80% heads is over a fair coin with 50% heads, given that we have flipped 8 heads in 10 tosses.
 
-```{r likelihood6, fig.margin = TRUE, echo = FALSE, fig.cap="Likelihood ratio for 8 out of 10 heads in a coin flip for L($\\theta$ = 0.5) and L($\\theta$ = 0.8)."}
+```{r likelihood6, fig.margin = FALSE, echo = FALSE, fig.cap="Likelihood ratio for 8 out of 10 heads in a coin flip for L($\\theta$ = 0.5) and L($\\theta$ = 0.8)."}
 # Calculate the likelihood ratio----
 n <- 10 # set total trials
 x <- 4 # set successes
@@ -210,7 +210,7 @@ Note that likelihood ratios give us the relative evidence for one specified hypo
 A likelihood ratio of 1 means the data are equally likely under both hypotheses. Values further away from 1 indicate that the data are more likely under one hypothesis than the other. The ratio can be expressed in favor of one hypothesis over the other (for example L(θ = 0.5)/L(θ = 0.8) or vice versa (L(θ = 0.8)/[L(θ = 0.5). This means the likelihood ratio of 37.25 is equivalent to a likelihood ratio of 1/37.25 = 0.02685. Likelihood ratios range from 0 to infinity, and the closer to zero or infinity, the stronger the relative evidence for one over the other. We will later see that likelihood ratios are a special case of a more
 general statistic called a Bayes Factor.
 
-```{r likelihood7, fig.margin = TRUE, echo = FALSE, fig.cap="Likelihood ratio for 50 out of 100 heads in a coin flip for L($\\theta$ = 0.3) and L($\\theta$ = 0.8)."}
+```{r likelihood7, fig.margin = FALSE, echo = FALSE, fig.cap="Likelihood ratio for 50 out of 100 heads in a coin flip for L($\\theta$ = 0.3) and L($\\theta$ = 0.8)."}
 # Calculate the likelihood ratio----
 n <- 100 # set total trials
 x <- 50 # set successes
@@ -344,7 +344,7 @@ For the true believer the posterior distribution is not centered on the maximum 
 
 Now that we have a distribution for the prior, and a distribution for the posterior, we can see in the graphs below for which values of θ our belief has increased. Everywhere where the black line (of the posterior) is higher than the grey line (of the prior) our belief in that θ has increased.
 
-```{r bayes4, fig.margin = TRUE, echo = FALSE, fig.cap="Plot for the prior, likelihood, and posterior."}
+```{r bayes4, fig.margin = FALSE, echo = FALSE, fig.cap="Plot for the prior, likelihood, and posterior."}
 
 n <- 20 # set total trials
 x <- 10 # set successes
@@ -387,7 +387,7 @@ You can check this in an online Bayes Factor calculator by Jeff Rouder and Richa
 We can calculate and plot the Bayes Factor, and show the prior (grey), likelihood (dashed blue) and posterior (black). For the example of 20 flips, 10 heads, and the newborn prior,
 the plot looks like this:
 
-```{r bayes6, fig.margin = TRUE, echo = FALSE, fig.cap="Plot for the prior, likelihood, and posterior."}
+```{r bayes6, fig.margin = FALSE, echo = FALSE, fig.cap="Plot for the prior, likelihood, and posterior."}
 
 H0 <- 0.5 # Set the point null hypothesis you want to calculate the Bayes Factor for
 n <- 20 # set total trials
@@ -421,7 +421,7 @@ We see that for the newborn, θ = 0.5 has become more probable, but so has θ =
 0.4.
 
 
-```{r bayes7, fig.margin = TRUE, echo = FALSE, fig.cap="Plot for the prior, likelihood, and posterior."}
+```{r bayes7, fig.margin = FALSE, echo = FALSE, fig.cap="Plot for the prior, likelihood, and posterior."}
 
 H0 <- 0.5 # Set the point null hypothesis you want to calculate the Bayes Factor for
 n <- 100 # set total trials
@@ -515,7 +515,6 @@ binom.bayes(x, n, type = "highest", prior.shape1 = aprior, prior.shape2 = bprior
 ```
 
 
-The posterior mean is identical to the Frequentist mean, but this is only the case when the mean of the prior equals the mean of the likelihood.
+The posterior mean is identical to the Frequentist mean, but this is only the case when the mean of the prior equals the mean of the likelihood [@albers_credible_2018].
 
-This chapter shows the essence of Bayesian inference, where we decide upon a prior distribution, collect data and calculate a marginal likelihood, and use these to calculate a posterior distribution. From this posterior distribution, we can estimate the mean and the 95% credible interval.For any specific hypothesis, we can calculate the relative evidence for a posterior model, compared to a prior model, through the Bayes Factor. In your research, you will most likely need other calculations than the binomial example we have used here. The math and the priors become more complex, but the basic idea remains the same. You can use Bayesian statistics to quantify relative evidence, which can inform you how much we should
-believe, or update our beliefs, in theories.
+This chapter shows the essence of Bayesian inference, where we decide upon a prior distribution, collect data and calculate a marginal likelihood, and use these to calculate a posterior distribution. From this posterior distribution, we can estimate the mean and the 95% credible interval.For any specific hypothesis, we can calculate the relative evidence for a posterior model, compared to a prior model, through the Bayes Factor. In your research, you will most likely need other calculations than the binomial example we have used here. The math and the priors become more complex, but the basic idea remains the same. You can use Bayesian statistics to quantify relative evidence, which can inform you how much we should believe, or update our beliefs, in theories.

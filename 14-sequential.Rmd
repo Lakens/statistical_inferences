@@ -158,7 +158,6 @@ plot(designSet, type = 1)
 msmbstyle::solution_end()
 ```
 
-
 ## Sample Size for Sequential Designs
 
 Sequential designs require somewhat more participants than a fixed design at the final look, depending on how much the alpha level at this look is lowered due to the correction for multiple comparisons. Due to early stopping, sequential designs will on average require less participants. 
@@ -710,6 +709,12 @@ design <- getDesignGroupSequential(
 
 plot(design)
 ```
+
+### Sequential analyses using Bayes factors.
+
+There is a discussion in the literature about when optional stopping is a problem for Bayesians. The answer, as always, depends on what type of Bayesian you are. Subjective Bayesians are not interested in error rates. They continuously update personal beliefs based on the data, and they never make a dichotomous claim or decision purely based on the data. Empirical Bayesians often stress that Bayes factors are continuous measures of evidence, but also introduce dichotomous thresholds. For example, [submission guidelines](https://media.nature.com/original/nature-cms/uploads/ckeditor/attachments/4825/RegisteredReportsGuidelines_NatureHumanBehaviour.pdf) for Nature Human Behavior state "For inference by Bayes factors, authors must be able to guarantee data collection until the Bayes factor is at least 10 times in favour of the experimental hypothesis over the null hypothesis (or vice versa)." If you aim to claim your statistical hypothesis is supported or not based on the on whether the Bayes factors is high or low, you can make erroneous claims, and optional stopping can inflate error rates. 
+
+Controlling long run error rates is always a frequentist procedure (even if the statistic that is computed to make dichotomous claims is a Bayes factor). Unlike in the case of frequentist sequential analyses, there are no analytical solutions to control error rates when Bayes factors are computed at each interim analysis, but simulation approaches have been developed for sequential hypothesis testing with Bayes factors [@schonbrodt_sequential_2017]. In these approaches, one still needs to make an assumption about the true effect size, as the true effect size impacts the error rates, but one also needs to specify the number of looks in advance (or compute error rates for a worst case scenario where you analyse data after every look), and (as always when using Bayes factors) make a decision about the prior. A downside of Bayesian sequential analyses is that if you commit to continuing data collection until you read a Bayes factor threshold of for example 10, you might need to collect hundreds, or even thousands, of observations, depending on the true effect size. This can make studies difficult to plan. One can specify a maximum sample size, but then studies will remain inconclusive. An online app to examine the sample sizes required in sequential hypothesis tests using Bayes factors is available [online](http://shinyapps.org/apps/BFDA/), and accompanies a tutorial paper [@stefan_tutorial_2019].
 
 ### Reporting results after a sequential analysis.
 
