@@ -48,6 +48,8 @@ if(f.classList.contains('fa-plus-square')) {
 }
 </script>
 <script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/tabwid-1.0.0/tabwid.css" rel="stylesheet" />
+<script src="libs/tabwid-1.0.0/tabwid.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 
 
@@ -139,7 +141,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="dropdown-content">
 <a href="index.html">Welcome</a>
 <a href="contents.html">Contents</a>
-<a href="pvalue.html"><span class="toc-section-number">1</span> What is a <em>p</em>-value</a>
+<a href="pvalue.html"><span class="toc-section-number">1</span> <em>p</em>-values</a>
 <a href="power.html"><span class="toc-section-number">2</span> Sample size justification</a>
 <a href="questions.html"><span class="toc-section-number">3</span> Asking Statistical Questions</a>
 <a href="errorcontrol.html"><span class="toc-section-number">4</span> Error Control</a>
@@ -252,12 +254,12 @@ It is common that researchers interpret a <em>p</em>-value larger than 0.05 as t
 <h3>
 <span class="header-section-number">6.2.5</span> Conclusion</h3>
 <p>Using the ROPE procedure or the TOST procedure will most likely lead to very similar inferences. For all practical purposes, the differences are small. It’s quite a lot easier to perform a power analysis for TOST, and by default, TOST has greater statistical power because it uses 90% CI. But power analysis is possible for ROPE (which is a rare pleasure to see for Bayesian analyses), and you could choose to use a 90% HDI, or any other value that matches your goals. TOST will be easier and more familiar because it is just a twist on the classic t-test, but ROPE might be a great way to dip your toes in Bayesian waters and explore the many more things you can do with Bayesian posterior distributions.</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="equivalencetest.html#cb68-1"></a><span class="co"># Data is loaded because BEST analysis takes so very long</span></span>
-<span id="cb68-2"><a href="equivalencetest.html#cb68-2"></a><span class="kw">load</span>(<span class="st">"data/BESTout.Rdata"</span>)</span>
-<span id="cb68-3"><a href="equivalencetest.html#cb68-3"></a><span class="kw">plot</span>(BESTout)</span></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="equivalencetest.html#cb65-1"></a><span class="co"># Data is loaded because BEST analysis takes so very long</span></span>
+<span id="cb65-2"><a href="equivalencetest.html#cb65-2"></a><span class="kw">load</span>(<span class="st">"data/BESTout.Rdata"</span>)</span>
+<span id="cb65-3"><a href="equivalencetest.html#cb65-3"></a><span class="kw">plot</span>(BESTout)</span></code></pre></div>
 <p><img src="Statistical_Inferences_files/figure-html/unnamed-chunk-39-1.png" width="672"></p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="equivalencetest.html#cb69-1"></a><span class="co">#TOST test</span></span>
-<span id="cb69-2"><a href="equivalencetest.html#cb69-2"></a><span class="kw">TOSTtwo.raw</span>(<span class="dt">m1=</span><span class="kw">mean</span>(x),<span class="dt">m2=</span><span class="kw">mean</span>(y),<span class="dt">sd1=</span><span class="kw">sd</span>(x),<span class="dt">sd2=</span><span class="kw">sd</span>(y),<span class="dt">n1=</span><span class="kw">length</span>(x),<span class="dt">n2=</span><span class="kw">length</span>(y),<span class="dt">low_eqbound=</span><span class="op">-</span><span class="fl">0.5</span>,<span class="dt">high_eqbound=</span><span class="fl">0.5</span>, <span class="dt">alpha=</span><span class="fl">0.025</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="equivalencetest.html#cb66-1"></a><span class="co">#TOST test</span></span>
+<span id="cb66-2"><a href="equivalencetest.html#cb66-2"></a><span class="kw">TOSTtwo.raw</span>(<span class="dt">m1=</span><span class="kw">mean</span>(x),<span class="dt">m2=</span><span class="kw">mean</span>(y),<span class="dt">sd1=</span><span class="kw">sd</span>(x),<span class="dt">sd2=</span><span class="kw">sd</span>(y),<span class="dt">n1=</span><span class="kw">length</span>(x),<span class="dt">n2=</span><span class="kw">length</span>(y),<span class="dt">low_eqbound=</span><span class="op">-</span><span class="fl">0.5</span>,<span class="dt">high_eqbound=</span><span class="fl">0.5</span>, <span class="dt">alpha=</span><span class="fl">0.025</span>)</span></code></pre></div>
 <p><img src="Statistical_Inferences_files/figure-html/unnamed-chunk-39-2.png" width="672"></p>
 <pre><code>## TOST results:
 ## t-value lower bound: 4.92 	p-value lower bound: 0.0000009
@@ -281,7 +283,7 @@ It is common that researchers interpret a <em>p</em>-value larger than 0.05 as t
 ## Null Hypothesis Test Result:
 ## The null hypothesis test was non-significant, t(197.19) = 1.117, p = 0.265, given an alpha of 0.025.
 ## Based on the equivalence test and the null-hypothesis test combined, we can conclude that the observed effect is statistically not different from zero and statistically equivalent to zero.</code></pre>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="equivalencetest.html#cb71-1"></a>powerPro</span></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="equivalencetest.html#cb68-1"></a>powerPro</span></code></pre></div>
 <pre><code>##                              mean                CrIlo       CrIhi
 ##   mean:   HDI &gt; ROPE 0.0004995005 0.000000000003170522 0.001495998
 ##   mean:   HDI &lt; ROPE 0.0004995005 0.000000000003170522 0.001495998
@@ -295,8 +297,8 @@ It is common that researchers interpret a <em>p</em>-value larger than 0.05 as t
 ## effect:   HDI &lt; ROPE 0.0004995005 0.000000000003170522 0.001495998
 ## effect:  HDI in ROPE 0.9995004995 0.998504002481734654 1.000000000
 ## effect: HDI width ok 0.9995004995 0.998504002481734654 1.000000000</code></pre>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="equivalencetest.html#cb73-1"></a><span class="co">#TOST power analysis</span></span>
-<span id="cb73-2"><a href="equivalencetest.html#cb73-2"></a><span class="kw">powerTOSTtwo.raw</span>(<span class="dt">alpha=</span><span class="fl">0.025</span>,<span class="dt">statistical_power=</span><span class="fl">0.875</span>,<span class="dt">low_eqbound=</span><span class="op">-</span><span class="fl">0.5</span>,<span class="dt">high_eqbound=</span><span class="fl">0.5</span>,<span class="dt">sdpooled=</span><span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="equivalencetest.html#cb70-1"></a><span class="co">#TOST power analysis</span></span>
+<span id="cb70-2"><a href="equivalencetest.html#cb70-2"></a><span class="kw">powerTOSTtwo.raw</span>(<span class="dt">alpha=</span><span class="fl">0.025</span>,<span class="dt">statistical_power=</span><span class="fl">0.875</span>,<span class="dt">low_eqbound=</span><span class="op">-</span><span class="fl">0.5</span>,<span class="dt">high_eqbound=</span><span class="fl">0.5</span>,<span class="dt">sdpooled=</span><span class="dv">1</span>)</span></code></pre></div>
 <pre><code>## The required sample size to achieve 87.5 % power with equivalence bounds of -0.5 and 0.5 is 97.66901 per group, or 196 in total.</code></pre>
 <pre><code>## [1] 97.66901</code></pre>
 
@@ -320,7 +322,7 @@ It is common that researchers interpret a <em>p</em>-value larger than 0.05 as t
 <span style="display: inline-block; margin-left: 2em; margin-top: 16px; font-size: small">
 <span style="font-weight: bold;">Daniel Lakens</span><br/>
 <a href="https://statistical-inferences.com">statisticalinferences.com</a><br/>
-page built  2020-08-15 17:17:22
+page built  2020-08-15 19:10:14
 </span>
 </p>
 </div>

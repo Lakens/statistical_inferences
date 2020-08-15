@@ -6,9 +6,32 @@ editor_options:
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(error = FALSE, warning = FALSE)
+
+library(tidyverse)
+library(gridExtra)
+library(kableExtra)
+library(ggrepel)
+library(grid)
+library(magrittr)
+library(pwr)
+library(Superpower)
+library(ggplot2)
+library(patchwork)
+library(MASS)
+library(viridis)
+library(TOSTER)
+library(BEST)
+library(metafor)
+library(MOTE)
+library(binom)
+library(MASS)
+library(gsDesign)
+library(rpact)
+library(BUCSS)
+library(flextable)
 ```
 
-# What is a *p*-value {#pvalue}
+# *p*-values {#pvalue}
 
 For decades statisticians have complained about how researchers misunderstand *p*-values. Rozeboom (1997) has referred to null hypothesis significance testing (NHST) as "surely the most bone-headedly misguided procedure ever institutionalized in the rote training of science students" (p. 335). And still, here we are, as part of your rote training, teaching you about *p*-values and hypothesis tests. 
 
@@ -24,49 +47,48 @@ When testing predictions in empirical research, researchers often report whether
 
 Assume we ask two groups of 10 people how much they liked the extended directors cut version of the Lord of the Rings (LOTR) trilogy. The first group consists of my friends, and the second groups consists of friends of my wife. Our friends rate the trilogy on a score from 1 to 10. We can calculate the average rating by my friends, which is 8.7, and the average rating by my wife’s friends, which is 7.7. The difference is 1. 
 
-```{r friends, echo=F}
-html_table_width <- function(kable_output, width){
-  width_html <- paste0(paste0('<col width="', width, '">'), collapse = "\n")
-  sub("<table>", paste0("<table>\n", width_html), kable_output)
-}
+```{r friends, echo=F, tab.cap = "Ratings for the Lord of the Rings extended trilogy by two groups of friends.", ft.align="left"}
 
-friends <- c("friend_1","friend_2","friend_3","friend_4","friend_5","friend_6","friend_7","friend_8","friend_9","friend_10")
-myfriends = c(9,7,8,9,8,9,9,10,9,9)
-mywifesfriends = c(9,6,7,8,7,9,8,8,8,7)
-df <- data.frame(friends,myfriends,mywifesfriends)
-
-knitr::kable(df, format = "html",
-caption = 'Ratings for the Lord of the Rings extended trilogy by two groups of friends.'
-) %>%
-  html_table_width(c(120,80,80)) %>%
-  kable_styling(bootstrap_options = c("striped"), full_width = FALSE, position = "center", row_label_position = "l")
+friends <- c("friend_1", "friend_2", "friend_3", "friend_4", "friend_5", "friend_6", "friend_7", "friend_8", "friend_9", "friend_10")
+friends_daniel <- c(9, 7, 8, 9, 8, 9, 9, 10, 9, 9)
+friends_kyra <- c(9, 6, 7, 8, 7, 9, 8, 8, 8, 7)
+df <- data.frame(friends, friends_daniel, friends_kyra)
+df <- flextable(df)
+df <- autofit(df)
+df <- set_header_labels(df, friends = "", friends_daniel = "Friends Daniel", friends_kyra = "Friends Kyra")
+theme_booktabs(df)
 ```
  
 To get these data in a data frame in R, we use the code:
 
 ```{r}
-friends <- c("friend_1","friend_2","friend_3","friend_4","friend_5","friend_6","friend_7","friend_8","friend_9","friend_10")
-friends_daniel = c(9,7,8,9,8,9,9,10,9,9)
-friends_kyra = c(9,6,7,8,7,9,8,8,8,7)
-df <- data.frame(friends,friends_daniel,friends_kyra)
+friends <- c("friend_1", "friend_2", "friend_3", "friend_4", "friend_5", "friend_6", "friend_7", "friend_8", "friend_9", "friend_10")
+friends_daniel <- c(9, 7, 8, 9, 8, 9, 9, 10, 9, 9)
+friends_kyra <- c(9, 6, 7, 8, 7, 9, 8, 8, 8, 7)
+df <- data.frame(friends, friends_daniel, friends_kyra)
 ```
 
 Let's first look at the data by plotting it.
 
-```{r}
+```{r, echo = FALSE}
 # Get data frame in long format for plotting
-df_long <- gather(df, daniel_kyra, rating, friends_daniel:friends_kyra, factor_key=TRUE)
+df_long <- tidyr::gather(df, daniel_kyra, rating, friends_daniel:friends_kyra, factor_key = TRUE)
 
 # Plot the data
-ggplot(df_long, aes(x=rating, fill=daniel_kyra)) + geom_density(alpha=.3) + theme_bw()
+ggplot(df_long, aes(x = rating, fill = daniel_kyra)) +
+  geom_density(alpha = .3) +
+  theme_bw()
 ```
 
 We can also summarise the data and look at the means, sd, and sample size per group: 
 
-```{r}
-summarise(group_by(df_long, daniel_kyra),
-          mean = mean(rating), sd = sd(rating), n = n(), 
-          .groups = 'drop')
+```{r, echo = FALSE, tab.cap = "Summary statistics for our dataset.", ft.align="left"}
+sum_table <- summarise(group_by(df_long, daniel_kyra),
+                       mean = mean(rating), sd = sd(rating), n = n(), 
+                       .groups = 'drop')
+sum_table <- flextable(sum_table)
+sum_table <- autofit(sum_table)
+theme_booktabs(sum_table)
 ```
 
 We can see the groups overlap to a certain extent, but the mean ratings differ by 1 whole point, so there is also some non-overlap. The question we are no faced with is the following: Is the difference between the two groups just random variation, or can we conclude my friends really like the extended directors cut of the Lord of the Rings (LOTR) trilogy more than my wife’s friends?
@@ -708,8 +730,8 @@ Look at the fifth bar from the left. This bar now contains all the *p*-values be
 
 In our simulations, we know there is a true effect or not, but in the real world, you don’t know. When you have very high power, use an alpha level of 0.05, and find a *p*-value of *p* = .045, the data is surprising, assuming the null hypothesis is true, but it is even more surprising, assuming the alternative hypothesis is true. This shows how a significant *p*-value is not always evidence for the alternative hypothesis. For this reason, statisticians warn that *p*-values just below 0.05 (e.g., between 0.04 and 0.05) are at the very best weak support for the alternative hypothesis. If you find *p*-values in this range, consider replicating the study, or if that’s not possible, interpret the result at least a bit cautiously. If you are interested in the mathematical explanation of *p*-value distributions, instead of the current explanation that is based on simulations, you can read [@hung_behavior_1997]. 
 
-If you want to explore *p*-value distributions using the simulation code above, you can do so in the shiny app below. 
+If you want to explore *p*-value distributions using the simulation code above, you can do so in [this shiny app](http://shiny.ieis.tue.nl/pvalues/) below. 
 
-```{r shiny, echo=F}
-knitr::include_app('http://shiny.ieis.tue.nl/pvalues/', height = '1000px')
-```
+<!-- ```{r shiny, echo=F} -->
+<!-- knitr::include_app('http://shiny.ieis.tue.nl/pvalues/', height = '1000px') -->
+<!-- ``` -->
