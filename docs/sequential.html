@@ -139,8 +139,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="dropdown-content">
 <a href="index.html">Welcome</a>
 <a href="contents.html">Contents</a>
-<a href="preface.html">Preface</a>
-<a href="introduction.html">Introduction</a>
 <a href="pvalue.html"><span class="toc-section-number">1</span> What is a <em>p</em>-value</a>
 <a href="power.html"><span class="toc-section-number">2</span> Sample size justification</a>
 <a href="questions.html"><span class="toc-section-number">3</span> Asking Statistical Questions</a>
@@ -192,16 +190,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>We will start with the Pocock correction, which is the simplest way to correct the alpha level for multiple looks. Conceptually, it is very similar to the Bonferroni correction. We can see at the <a href="https://en.wikipedia.org/wiki/Pocock_boundary">Wikipedia page for the Pocock correction</a> that with 2 interim analyses the alpha level for each look is 0.0294, for three looks it is 0.0221, for 4 looks it is 0.0182, and for 5 looks it is 0.0158. We see the correction is slightly more efficient than using a Bonferroni correction (in which case the alpha levels would be 0.025, 0.0167, 0.0125, and 0.01). Applying the Pocock procedure requires 1) specifying the number of looks in advance, and 2) equally spaced looks, where each batch of observations has the same size (e.g., looking after 25, 50, 75 and 100 observations).</p>
 <p>Note that we can accurately calculate the alpha levels that should be used to 4 digits after the decimal points, but the <a href="http://daniellakens.blogspot.com/2020/01/observed-alpha-levels-why-statistical.html">alpha level you will observe for all tests in your lifetime probably has too much variability</a> to worry too much about anything after 3 digits after the decimal point (and maybe even 2). We will compute alpha levels in this tutorial with higher precision than you need to care about in real life.</p>
 <p>We will use multiple packages in R to compute corrected alpha levels for each look, such as <a href="https://cran.r-project.org/web/packages/gsDesign/index.html">gsDesign</a>, <a href="https://cran.r-project.org/web/packages/rpact/index.html">rpact</a>, and <a href="https://cran.r-project.org/web/packages/ldbounds/index.html">ldbounds</a>. RPact is also available as a <a href="https://rpact.shinyapps.io/public/">Shiny app</a>.</p>
-<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="sequential.html#cb136-1"></a><span class="co"># Use Rpact to specify a design with 2 looks and Pocock correction</span></span>
-<span id="cb136-2"><a href="sequential.html#cb136-2"></a><span class="kw">library</span>(rpact)</span>
-<span id="cb136-3"><a href="sequential.html#cb136-3"></a>design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
-<span id="cb136-4"><a href="sequential.html#cb136-4"></a>  <span class="dt">kMax =</span> <span class="dv">2</span>,</span>
-<span id="cb136-5"><a href="sequential.html#cb136-5"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"P"</span>,</span>
-<span id="cb136-6"><a href="sequential.html#cb136-6"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
-<span id="cb136-7"><a href="sequential.html#cb136-7"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
-<span id="cb136-8"><a href="sequential.html#cb136-8"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span></span>
-<span id="cb136-9"><a href="sequential.html#cb136-9"></a>)</span>
-<span id="cb136-10"><a href="sequential.html#cb136-10"></a><span class="kw">summary</span>(design)</span></code></pre></div>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="sequential.html#cb135-1"></a><span class="co"># Use Rpact to specify a design with 2 looks and Pocock correction</span></span>
+<span id="cb135-2"><a href="sequential.html#cb135-2"></a><span class="kw">library</span>(rpact)</span>
+<span id="cb135-3"><a href="sequential.html#cb135-3"></a>design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
+<span id="cb135-4"><a href="sequential.html#cb135-4"></a>  <span class="dt">kMax =</span> <span class="dv">2</span>,</span>
+<span id="cb135-5"><a href="sequential.html#cb135-5"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"P"</span>,</span>
+<span id="cb135-6"><a href="sequential.html#cb135-6"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
+<span id="cb135-7"><a href="sequential.html#cb135-7"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb135-8"><a href="sequential.html#cb135-8"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span></span>
+<span id="cb135-9"><a href="sequential.html#cb135-9"></a>)</span>
+<span id="cb135-10"><a href="sequential.html#cb135-10"></a><span class="kw">summary</span>(design)</span></code></pre></div>
 <pre><code>## Sequential analysis with a maximum of 2 looks (group sequential design)
 ## 
 ## Stage                                   1      2 
@@ -227,16 +225,16 @@ What happens to the alpha level if you have 3 looks in total?
 Solution<span id="sol-start-2" class="fa fa-plus-square solution-icon clickable" onclick="toggle_visibility('sol-body-2', 'sol-start-2')"></span>
 </p>
 <div id="sol-body-2" class="solution-body" style="display: none;">
-<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="sequential.html#cb138-1"></a><span class="co"># Make sure you have rpact installed</span></span>
-<span id="cb138-2"><a href="sequential.html#cb138-2"></a><span class="kw">library</span>(rpact)</span>
-<span id="cb138-3"><a href="sequential.html#cb138-3"></a>design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
-<span id="cb138-4"><a href="sequential.html#cb138-4"></a>  <span class="dt">kMax =</span> <span class="dv">3</span>,</span>
-<span id="cb138-5"><a href="sequential.html#cb138-5"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"P"</span>,</span>
-<span id="cb138-6"><a href="sequential.html#cb138-6"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
-<span id="cb138-7"><a href="sequential.html#cb138-7"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
-<span id="cb138-8"><a href="sequential.html#cb138-8"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span></span>
-<span id="cb138-9"><a href="sequential.html#cb138-9"></a>)</span>
-<span id="cb138-10"><a href="sequential.html#cb138-10"></a><span class="kw">summary</span>(design)</span></code></pre></div>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="sequential.html#cb137-1"></a><span class="co"># Make sure you have rpact installed</span></span>
+<span id="cb137-2"><a href="sequential.html#cb137-2"></a><span class="kw">library</span>(rpact)</span>
+<span id="cb137-3"><a href="sequential.html#cb137-3"></a>design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
+<span id="cb137-4"><a href="sequential.html#cb137-4"></a>  <span class="dt">kMax =</span> <span class="dv">3</span>,</span>
+<span id="cb137-5"><a href="sequential.html#cb137-5"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"P"</span>,</span>
+<span id="cb137-6"><a href="sequential.html#cb137-6"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
+<span id="cb137-7"><a href="sequential.html#cb137-7"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb137-8"><a href="sequential.html#cb137-8"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span></span>
+<span id="cb137-9"><a href="sequential.html#cb137-9"></a>)</span>
+<span id="cb137-10"><a href="sequential.html#cb137-10"></a><span class="kw">summary</span>(design)</span></code></pre></div>
 <pre><code>## Sequential analysis with a maximum of 3 looks (group sequential design)
 ## 
 ## Stage                                   1      2      3 
@@ -258,14 +256,14 @@ Figure 14.1: Plot of critical boundaries at each look for a 2 look design with a
 <img src="Statistical_Inferences_files/figure-html/boundplot1-1.png" alt="Plot of critical boundaries at each look for a 2 look design with a Pocock correction." width="672">
 </div>
 <p>We can also use the <code>gsDesign</code> package (not that the gsDesign package reports one-sided alpha levels, and thus returns a one-sided alpha level of 0.0147, instead of the two-sided alpha level 0.294. You will need to double the alpha level for a two-sided test (or just use rpact, which reports two-sided alpha levels when asked).</p>
-<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="sequential.html#cb140-1"></a>seq_design &lt;-<span class="st"> </span><span class="kw">gsDesign</span>(</span>
-<span id="cb140-2"><a href="sequential.html#cb140-2"></a>  <span class="dt">k =</span> <span class="dv">2</span>, <span class="co"># k = number of looks = 2</span></span>
-<span id="cb140-3"><a href="sequential.html#cb140-3"></a>  <span class="dt">test.type =</span> <span class="dv">2</span>,</span>
-<span id="cb140-4"><a href="sequential.html#cb140-4"></a>  <span class="dt">alpha =</span> <span class="fl">.025</span>, <span class="co"># gsDesign computes one-sided alpha levels, so we halve alpha</span></span>
-<span id="cb140-5"><a href="sequential.html#cb140-5"></a>  <span class="dt">sfu =</span> <span class="st">"Pocock"</span></span>
-<span id="cb140-6"><a href="sequential.html#cb140-6"></a>)</span>
-<span id="cb140-7"><a href="sequential.html#cb140-7"></a></span>
-<span id="cb140-8"><a href="sequential.html#cb140-8"></a><span class="kw">gsBoundSummary</span>(seq_design)</span></code></pre></div>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="sequential.html#cb139-1"></a>seq_design &lt;-<span class="st"> </span><span class="kw">gsDesign</span>(</span>
+<span id="cb139-2"><a href="sequential.html#cb139-2"></a>  <span class="dt">k =</span> <span class="dv">2</span>, <span class="co"># k = number of looks = 2</span></span>
+<span id="cb139-3"><a href="sequential.html#cb139-3"></a>  <span class="dt">test.type =</span> <span class="dv">2</span>,</span>
+<span id="cb139-4"><a href="sequential.html#cb139-4"></a>  <span class="dt">alpha =</span> <span class="fl">.025</span>, <span class="co"># gsDesign computes one-sided alpha levels, so we halve alpha</span></span>
+<span id="cb139-5"><a href="sequential.html#cb139-5"></a>  <span class="dt">sfu =</span> <span class="st">"Pocock"</span></span>
+<span id="cb139-6"><a href="sequential.html#cb139-6"></a>)</span>
+<span id="cb139-7"><a href="sequential.html#cb139-7"></a></span>
+<span id="cb139-8"><a href="sequential.html#cb139-8"></a><span class="kw">gsBoundSummary</span>(seq_design)</span></code></pre></div>
 <pre><code>##                Analysis               Value Efficacy Futility
 ##               IA 1: 50%                   Z   2.1783  -2.1783
 ##  N/Fixed design N: 0.55         p (1-sided)   0.0147   0.0147
@@ -313,14 +311,14 @@ Figure 14.5: Screenshot of rpact Shiny app.
 <h2>
 <span class="header-section-number">14.2</span> Comparing Spending Functions</h2>
 <p>It can be useful to explicitly compare different types of designs. As explained before, the Pocock correction maintains a fixed alpha level at each look. The O’Brien-Fleming correction uses a higher threshold for early looks, but has the advantage that the final look occurs closer to the uncorrected alpha level. Because the alpha level is very similar at the last look, so is the total required sample size. Lowering the alpha level means the sample size needs to be increased to maintain the same desired level of statistical power, so different spending functions also require a different increase in the final sample size (to compensate for the lower alpha level, while maintaining the same statistical power). Sequential designs always need to be planned for a slightly larger total sample size at the final look, although as we will see below, because we can expect to stop at earlier looks, on average sample size will be smaller when using sequential designs compared to fixed designs.</p>
-<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="sequential.html#cb142-1"></a><span class="co">#O'Brien &amp; Fleming design, 3 equally spaced stages</span></span>
-<span id="cb142-2"><a href="sequential.html#cb142-2"></a>d1 &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(<span class="dt">typeOfDesign =</span> <span class="st">"OF"</span>, <span class="dt">kMax =</span> <span class="dv">5</span>) </span>
-<span id="cb142-3"><a href="sequential.html#cb142-3"></a><span class="co"># Pocock design</span></span>
-<span id="cb142-4"><a href="sequential.html#cb142-4"></a>d2 &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(<span class="dt">typeOfDesign =</span> <span class="st">"P"</span>, <span class="dt">kMax =</span> <span class="dv">5</span>)</span>
-<span id="cb142-5"><a href="sequential.html#cb142-5"></a></span>
-<span id="cb142-6"><a href="sequential.html#cb142-6"></a>designSet &lt;-<span class="kw">getDesignSet</span>(<span class="dt">designs =</span> <span class="kw">c</span>(d1, d2), </span>
-<span id="cb142-7"><a href="sequential.html#cb142-7"></a>                         <span class="dt">variedParameters =</span> <span class="st">"typeOfDesign"</span>)</span>
-<span id="cb142-8"><a href="sequential.html#cb142-8"></a><span class="kw">plot</span>(designSet, <span class="dt">type =</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="sequential.html#cb141-1"></a><span class="co">#O'Brien &amp; Fleming design, 3 equally spaced stages</span></span>
+<span id="cb141-2"><a href="sequential.html#cb141-2"></a>d1 &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(<span class="dt">typeOfDesign =</span> <span class="st">"OF"</span>, <span class="dt">kMax =</span> <span class="dv">5</span>) </span>
+<span id="cb141-3"><a href="sequential.html#cb141-3"></a><span class="co"># Pocock design</span></span>
+<span id="cb141-4"><a href="sequential.html#cb141-4"></a>d2 &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(<span class="dt">typeOfDesign =</span> <span class="st">"P"</span>, <span class="dt">kMax =</span> <span class="dv">5</span>)</span>
+<span id="cb141-5"><a href="sequential.html#cb141-5"></a></span>
+<span id="cb141-6"><a href="sequential.html#cb141-6"></a>designSet &lt;-<span class="kw">getDesignSet</span>(<span class="dt">designs =</span> <span class="kw">c</span>(d1, d2), </span>
+<span id="cb141-7"><a href="sequential.html#cb141-7"></a>                         <span class="dt">variedParameters =</span> <span class="st">"typeOfDesign"</span>)</span>
+<span id="cb141-8"><a href="sequential.html#cb141-8"></a><span class="kw">plot</span>(designSet, <span class="dt">type =</span> <span class="dv">1</span>)</span></code></pre></div>
 <div class="figure">
 <span id="fig:spending-comparison"></span>
 <p class="caption marginnote shownote">
@@ -347,17 +345,17 @@ Another design, not discussed in the rest of this test, is the design proposed b
 Solution<span id="sol-start-3" class="fa fa-plus-square solution-icon clickable" onclick="toggle_visibility('sol-body-3', 'sol-start-3')"></span>
 </p>
 <div id="sol-body-3" class="solution-body" style="display: none;">
-<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="sequential.html#cb143-1"></a><span class="co"># Make sure you have rpact installed</span></span>
-<span id="cb143-2"><a href="sequential.html#cb143-2"></a><span class="kw">library</span>(rpact)</span>
-<span id="cb143-3"><a href="sequential.html#cb143-3"></a>d1 &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(<span class="dt">typeOfDesign =</span> <span class="st">"HP"</span>,</span>
-<span id="cb143-4"><a href="sequential.html#cb143-4"></a>                               <span class="dt">kMax =</span> <span class="dv">5</span>) </span>
-<span id="cb143-5"><a href="sequential.html#cb143-5"></a><span class="co"># Pocock</span></span>
-<span id="cb143-6"><a href="sequential.html#cb143-6"></a>d2 &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(<span class="dt">typeOfDesign =</span> <span class="st">"P"</span>,</span>
-<span id="cb143-7"><a href="sequential.html#cb143-7"></a>                               <span class="dt">kMax =</span> <span class="dv">5</span>)</span>
-<span id="cb143-8"><a href="sequential.html#cb143-8"></a></span>
-<span id="cb143-9"><a href="sequential.html#cb143-9"></a>designSet &lt;-<span class="kw">getDesignSet</span>(<span class="dt">designs =</span> <span class="kw">c</span>(d1, d2), </span>
-<span id="cb143-10"><a href="sequential.html#cb143-10"></a>                         <span class="dt">variedParameters =</span> <span class="st">"typeOfDesign"</span>)</span>
-<span id="cb143-11"><a href="sequential.html#cb143-11"></a><span class="kw">plot</span>(designSet, <span class="dt">type =</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="sequential.html#cb142-1"></a><span class="co"># Make sure you have rpact installed</span></span>
+<span id="cb142-2"><a href="sequential.html#cb142-2"></a><span class="kw">library</span>(rpact)</span>
+<span id="cb142-3"><a href="sequential.html#cb142-3"></a>d1 &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(<span class="dt">typeOfDesign =</span> <span class="st">"HP"</span>,</span>
+<span id="cb142-4"><a href="sequential.html#cb142-4"></a>                               <span class="dt">kMax =</span> <span class="dv">5</span>) </span>
+<span id="cb142-5"><a href="sequential.html#cb142-5"></a><span class="co"># Pocock</span></span>
+<span id="cb142-6"><a href="sequential.html#cb142-6"></a>d2 &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(<span class="dt">typeOfDesign =</span> <span class="st">"P"</span>,</span>
+<span id="cb142-7"><a href="sequential.html#cb142-7"></a>                               <span class="dt">kMax =</span> <span class="dv">5</span>)</span>
+<span id="cb142-8"><a href="sequential.html#cb142-8"></a></span>
+<span id="cb142-9"><a href="sequential.html#cb142-9"></a>designSet &lt;-<span class="kw">getDesignSet</span>(<span class="dt">designs =</span> <span class="kw">c</span>(d1, d2), </span>
+<span id="cb142-10"><a href="sequential.html#cb142-10"></a>                         <span class="dt">variedParameters =</span> <span class="st">"typeOfDesign"</span>)</span>
+<span id="cb142-11"><a href="sequential.html#cb142-11"></a><span class="kw">plot</span>(designSet, <span class="dt">type =</span> <span class="dv">1</span>)</span></code></pre></div>
 <p><img src="Statistical_Inferences_files/figure-html/unnamed-chunk-72-1.png" width="672"></p>
 <p class="solution-end">
 <span class="fa fa-square-o solution-icon"></span>
@@ -370,32 +368,32 @@ Solution<span id="sol-start-3" class="fa fa-plus-square solution-icon clickable"
 <span class="header-section-number">14.3</span> Sample Size for Sequential Designs</h2>
 <p>Sequential designs require somewhat more participants than a fixed design at the final look, depending on how much the alpha level at this look is lowered due to the correction for multiple comparisons. Due to early stopping, sequential designs will on average require less participants.</p>
 <p>Let’s first examine how many participants we would need in a fixed design, where we only analyze our data once. We have an alpha level of 0.05, and a Type 2 (beta) error of 0.1 - in other words, the desired power is 90%. We will perform one test, and assuming a normal distribution our critical Z-score would be 1.96, for an alpha level of 5%.</p>
-<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="sequential.html#cb144-1"></a><span class="co"># specify the design</span></span>
-<span id="cb144-2"><a href="sequential.html#cb144-2"></a>seq_design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
-<span id="cb144-3"><a href="sequential.html#cb144-3"></a>  <span class="dt">kMax =</span> <span class="dv">1</span>,</span>
-<span id="cb144-4"><a href="sequential.html#cb144-4"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"P"</span>,</span>
-<span id="cb144-5"><a href="sequential.html#cb144-5"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
-<span id="cb144-6"><a href="sequential.html#cb144-6"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
-<span id="cb144-7"><a href="sequential.html#cb144-7"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span></span>
-<span id="cb144-8"><a href="sequential.html#cb144-8"></a>)</span>
-<span id="cb144-9"><a href="sequential.html#cb144-9"></a><span class="co"># print a summary</span></span>
-<span id="cb144-10"><a href="sequential.html#cb144-10"></a><span class="kw">summary</span>(seq_design)</span></code></pre></div>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="sequential.html#cb143-1"></a><span class="co"># specify the design</span></span>
+<span id="cb143-2"><a href="sequential.html#cb143-2"></a>seq_design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
+<span id="cb143-3"><a href="sequential.html#cb143-3"></a>  <span class="dt">kMax =</span> <span class="dv">1</span>,</span>
+<span id="cb143-4"><a href="sequential.html#cb143-4"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"P"</span>,</span>
+<span id="cb143-5"><a href="sequential.html#cb143-5"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
+<span id="cb143-6"><a href="sequential.html#cb143-6"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb143-7"><a href="sequential.html#cb143-7"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span></span>
+<span id="cb143-8"><a href="sequential.html#cb143-8"></a>)</span>
+<span id="cb143-9"><a href="sequential.html#cb143-9"></a><span class="co"># print a summary</span></span>
+<span id="cb143-10"><a href="sequential.html#cb143-10"></a><span class="kw">summary</span>(seq_design)</span></code></pre></div>
 <pre><code>## Fixed sample analysis
 ## 
 ## Stage                               Fixed 
 ## Efficacy boundary (z-value scale)   1.960 
 ## Two-sided local significance level 0.0500</code></pre>
-<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="sequential.html#cb146-1"></a><span class="co"># perform a power analysis using rpact</span></span>
-<span id="cb146-2"><a href="sequential.html#cb146-2"></a><span class="co"># By setting the alternative to 0.5 and the stDev to 1, we assume a Cohen's d of 0.5 for the alternative hypothesis.</span></span>
-<span id="cb146-3"><a href="sequential.html#cb146-3"></a>power_res &lt;-<span class="st"> </span><span class="kw">getSampleSizeMeans</span>(</span>
-<span id="cb146-4"><a href="sequential.html#cb146-4"></a>  <span class="dt">design =</span> seq_design,</span>
-<span id="cb146-5"><a href="sequential.html#cb146-5"></a>  <span class="dt">groups =</span> <span class="dv">2</span>,</span>
-<span id="cb146-6"><a href="sequential.html#cb146-6"></a>  <span class="dt">alternative =</span> <span class="fl">0.5</span>, </span>
-<span id="cb146-7"><a href="sequential.html#cb146-7"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>, </span>
-<span id="cb146-8"><a href="sequential.html#cb146-8"></a>  <span class="dt">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
-<span id="cb146-9"><a href="sequential.html#cb146-9"></a>  <span class="dt">normalApproximation =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb146-10"><a href="sequential.html#cb146-10"></a></span>
-<span id="cb146-11"><a href="sequential.html#cb146-11"></a>power_res</span></code></pre></div>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="sequential.html#cb145-1"></a><span class="co"># perform a power analysis using rpact</span></span>
+<span id="cb145-2"><a href="sequential.html#cb145-2"></a><span class="co"># By setting the alternative to 0.5 and the stDev to 1, we assume a Cohen's d of 0.5 for the alternative hypothesis.</span></span>
+<span id="cb145-3"><a href="sequential.html#cb145-3"></a>power_res &lt;-<span class="st"> </span><span class="kw">getSampleSizeMeans</span>(</span>
+<span id="cb145-4"><a href="sequential.html#cb145-4"></a>  <span class="dt">design =</span> seq_design,</span>
+<span id="cb145-5"><a href="sequential.html#cb145-5"></a>  <span class="dt">groups =</span> <span class="dv">2</span>,</span>
+<span id="cb145-6"><a href="sequential.html#cb145-6"></a>  <span class="dt">alternative =</span> <span class="fl">0.5</span>, </span>
+<span id="cb145-7"><a href="sequential.html#cb145-7"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>, </span>
+<span id="cb145-8"><a href="sequential.html#cb145-8"></a>  <span class="dt">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
+<span id="cb145-9"><a href="sequential.html#cb145-9"></a>  <span class="dt">normalApproximation =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb145-10"><a href="sequential.html#cb145-10"></a></span>
+<span id="cb145-11"><a href="sequential.html#cb145-11"></a>power_res</span></code></pre></div>
 <pre><code>## Design plan parameters and output for means:
 ## 
 ## Design parameters:
@@ -426,34 +424,34 @@ Solution<span id="sol-start-3" class="fa fa-plus-square solution-icon clickable"
 ## Legend:
 ##   (i): values of treatment arm i</code></pre>
 <p>We see we need 85 participants in each group, (or 86, since we always round the number of observations up, as we can not collect 0.03 of a participant), and so we need 172 participants in total (see G*Power, which rounds up values correctly). Because this is a fixed design, we can also compute this sample size using the <code>pwr</code> package in R or any other power analysis software.</p>
-<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="sequential.html#cb148-1"></a><span class="kw">pwr.t.test</span>(</span>
-<span id="cb148-2"><a href="sequential.html#cb148-2"></a>  <span class="dt">d =</span> <span class="fl">0.5</span>,</span>
-<span id="cb148-3"><a href="sequential.html#cb148-3"></a>  <span class="dt">sig.level =</span> <span class="fl">0.05</span>,</span>
-<span id="cb148-4"><a href="sequential.html#cb148-4"></a>  <span class="dt">power =</span> <span class="fl">0.9</span>,</span>
-<span id="cb148-5"><a href="sequential.html#cb148-5"></a>  <span class="dt">type=</span><span class="st">"two.sample"</span>,</span>
-<span id="cb148-6"><a href="sequential.html#cb148-6"></a>  <span class="dt">alternative=</span><span class="st">"two.sided"</span></span>
-<span id="cb148-7"><a href="sequential.html#cb148-7"></a>)<span class="op">$</span>n</span></code></pre></div>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="sequential.html#cb147-1"></a><span class="kw">pwr.t.test</span>(</span>
+<span id="cb147-2"><a href="sequential.html#cb147-2"></a>  <span class="dt">d =</span> <span class="fl">0.5</span>,</span>
+<span id="cb147-3"><a href="sequential.html#cb147-3"></a>  <span class="dt">sig.level =</span> <span class="fl">0.05</span>,</span>
+<span id="cb147-4"><a href="sequential.html#cb147-4"></a>  <span class="dt">power =</span> <span class="fl">0.9</span>,</span>
+<span id="cb147-5"><a href="sequential.html#cb147-5"></a>  <span class="dt">type=</span><span class="st">"two.sample"</span>,</span>
+<span id="cb147-6"><a href="sequential.html#cb147-6"></a>  <span class="dt">alternative=</span><span class="st">"two.sided"</span></span>
+<span id="cb147-7"><a href="sequential.html#cb147-7"></a>)<span class="op">$</span>n</span></code></pre></div>
 <pre><code>## [1] 85.03128</code></pre>
 <p>We can now examine our design above with 2 looks, a Pocock correction, a 2 sided test with an alpha of 0.05. We will look 2 times, and expect a true effect of d = 0.5.</p>
-<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="sequential.html#cb150-1"></a><span class="co"># Our 2 look design</span></span>
-<span id="cb150-2"><a href="sequential.html#cb150-2"></a>seq_design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
-<span id="cb150-3"><a href="sequential.html#cb150-3"></a>  <span class="dt">kMax =</span> <span class="dv">2</span>,</span>
-<span id="cb150-4"><a href="sequential.html#cb150-4"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"P"</span>,</span>
-<span id="cb150-5"><a href="sequential.html#cb150-5"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
-<span id="cb150-6"><a href="sequential.html#cb150-6"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
-<span id="cb150-7"><a href="sequential.html#cb150-7"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span></span>
-<span id="cb150-8"><a href="sequential.html#cb150-8"></a>  )</span>
-<span id="cb150-9"><a href="sequential.html#cb150-9"></a></span>
-<span id="cb150-10"><a href="sequential.html#cb150-10"></a><span class="co"># Compute the sample size we need</span></span>
-<span id="cb150-11"><a href="sequential.html#cb150-11"></a>power_res &lt;-<span class="st"> </span><span class="kw">getSampleSizeMeans</span>(</span>
-<span id="cb150-12"><a href="sequential.html#cb150-12"></a>  <span class="dt">design =</span> seq_design,</span>
-<span id="cb150-13"><a href="sequential.html#cb150-13"></a>  <span class="dt">groups =</span> <span class="dv">2</span>,</span>
-<span id="cb150-14"><a href="sequential.html#cb150-14"></a>  <span class="dt">alternative =</span> <span class="fl">0.5</span>, </span>
-<span id="cb150-15"><a href="sequential.html#cb150-15"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>, </span>
-<span id="cb150-16"><a href="sequential.html#cb150-16"></a>  <span class="dt">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
-<span id="cb150-17"><a href="sequential.html#cb150-17"></a>  <span class="dt">normalApproximation =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb150-18"><a href="sequential.html#cb150-18"></a></span>
-<span id="cb150-19"><a href="sequential.html#cb150-19"></a><span class="kw">summary</span>(power_res)</span></code></pre></div>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="sequential.html#cb149-1"></a><span class="co"># Our 2 look design</span></span>
+<span id="cb149-2"><a href="sequential.html#cb149-2"></a>seq_design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
+<span id="cb149-3"><a href="sequential.html#cb149-3"></a>  <span class="dt">kMax =</span> <span class="dv">2</span>,</span>
+<span id="cb149-4"><a href="sequential.html#cb149-4"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"P"</span>,</span>
+<span id="cb149-5"><a href="sequential.html#cb149-5"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
+<span id="cb149-6"><a href="sequential.html#cb149-6"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb149-7"><a href="sequential.html#cb149-7"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span></span>
+<span id="cb149-8"><a href="sequential.html#cb149-8"></a>  )</span>
+<span id="cb149-9"><a href="sequential.html#cb149-9"></a></span>
+<span id="cb149-10"><a href="sequential.html#cb149-10"></a><span class="co"># Compute the sample size we need</span></span>
+<span id="cb149-11"><a href="sequential.html#cb149-11"></a>power_res &lt;-<span class="st"> </span><span class="kw">getSampleSizeMeans</span>(</span>
+<span id="cb149-12"><a href="sequential.html#cb149-12"></a>  <span class="dt">design =</span> seq_design,</span>
+<span id="cb149-13"><a href="sequential.html#cb149-13"></a>  <span class="dt">groups =</span> <span class="dv">2</span>,</span>
+<span id="cb149-14"><a href="sequential.html#cb149-14"></a>  <span class="dt">alternative =</span> <span class="fl">0.5</span>, </span>
+<span id="cb149-15"><a href="sequential.html#cb149-15"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>, </span>
+<span id="cb149-16"><a href="sequential.html#cb149-16"></a>  <span class="dt">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
+<span id="cb149-17"><a href="sequential.html#cb149-17"></a>  <span class="dt">normalApproximation =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb149-18"><a href="sequential.html#cb149-18"></a></span>
+<span id="cb149-19"><a href="sequential.html#cb149-19"></a><span class="kw">summary</span>(power_res)</span></code></pre></div>
 <pre><code>## Sample size calculation for a continuous endpoint
 ## 
 ## Sequential analysis with a maximum of 2 looks (group sequential design).
@@ -475,7 +473,7 @@ Solution<span id="sol-start-3" class="fa fa-plus-square solution-icon clickable"
 ## Legend:
 ##   (t): approximate treatment effect scale</code></pre>
 <p>It is important to know that <code>rpact</code> returns the <em>total</em> number of subjects at look 1 (94, so 94/2 = 47 in each group), and the total sample size at look 2 (188, so 188/2 = 94 in each group). This means that at the second look, we are now collecting 188 instead of 172 participants. This is a consequence of lowering our alpha level at each look (from 0.05 to 0.0294). To compensate for the loss of power, we need to increase our sample size. HOwever, this is compensated by the fact that sometimes we will stop after look 1, and thus on average we will collect less participants (even though we might sometimes collect more participants than we would have, had we not used a sequential design). <code>rpact</code> also computes the expected number of participants, in the long run, if the true effect size is d = 0.5.</p>
-<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="sequential.html#cb152-1"></a>power_res<span class="op">$</span>expectedNumberOfSubjectsH1</span></code></pre></div>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="sequential.html#cb151-1"></a>power_res<span class="op">$</span>expectedNumberOfSubjectsH1</span></code></pre></div>
 <pre><code>## [1] 131.9571</code></pre>
 <p>So, in the long run, if the true effect size is d = 0.5, we will collect 132 observations (66 per condition), instead of 172 in total (or 86 per condition).</p>
 <div class="question">
@@ -496,26 +494,26 @@ If we had expected an effect size of d = 0.4, what would the total sample size w
 Solution<span id="sol-start-4" class="fa fa-plus-square solution-icon clickable" onclick="toggle_visibility('sol-body-4', 'sol-start-4')"></span>
 </p>
 <div id="sol-body-4" class="solution-body" style="display: none;">
-<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="sequential.html#cb154-1"></a><span class="co"># Make sure you have rpact installed</span></span>
-<span id="cb154-2"><a href="sequential.html#cb154-2"></a><span class="kw">library</span>(rpact)</span>
-<span id="cb154-3"><a href="sequential.html#cb154-3"></a>seq_design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
-<span id="cb154-4"><a href="sequential.html#cb154-4"></a>  <span class="dt">kMax =</span> <span class="dv">2</span>,</span>
-<span id="cb154-5"><a href="sequential.html#cb154-5"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"P"</span>,</span>
-<span id="cb154-6"><a href="sequential.html#cb154-6"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
-<span id="cb154-7"><a href="sequential.html#cb154-7"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
-<span id="cb154-8"><a href="sequential.html#cb154-8"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span></span>
-<span id="cb154-9"><a href="sequential.html#cb154-9"></a>  )</span>
-<span id="cb154-10"><a href="sequential.html#cb154-10"></a></span>
-<span id="cb154-11"><a href="sequential.html#cb154-11"></a><span class="co"># Compute the sample size we need</span></span>
-<span id="cb154-12"><a href="sequential.html#cb154-12"></a>power_res &lt;-<span class="st"> </span><span class="kw">getSampleSizeMeans</span>(</span>
-<span id="cb154-13"><a href="sequential.html#cb154-13"></a>  <span class="dt">design =</span> seq_design,</span>
-<span id="cb154-14"><a href="sequential.html#cb154-14"></a>  <span class="dt">groups =</span> <span class="dv">2</span>,</span>
-<span id="cb154-15"><a href="sequential.html#cb154-15"></a>  <span class="dt">alternative =</span> <span class="fl">0.4</span>, </span>
-<span id="cb154-16"><a href="sequential.html#cb154-16"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>, </span>
-<span id="cb154-17"><a href="sequential.html#cb154-17"></a>  <span class="dt">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
-<span id="cb154-18"><a href="sequential.html#cb154-18"></a>  <span class="dt">normalApproximation =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb154-19"><a href="sequential.html#cb154-19"></a></span>
-<span id="cb154-20"><a href="sequential.html#cb154-20"></a>power_res<span class="op">$</span>expectedNumberOfSubjectsH1</span></code></pre></div>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="sequential.html#cb153-1"></a><span class="co"># Make sure you have rpact installed</span></span>
+<span id="cb153-2"><a href="sequential.html#cb153-2"></a><span class="kw">library</span>(rpact)</span>
+<span id="cb153-3"><a href="sequential.html#cb153-3"></a>seq_design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
+<span id="cb153-4"><a href="sequential.html#cb153-4"></a>  <span class="dt">kMax =</span> <span class="dv">2</span>,</span>
+<span id="cb153-5"><a href="sequential.html#cb153-5"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"P"</span>,</span>
+<span id="cb153-6"><a href="sequential.html#cb153-6"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
+<span id="cb153-7"><a href="sequential.html#cb153-7"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb153-8"><a href="sequential.html#cb153-8"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span></span>
+<span id="cb153-9"><a href="sequential.html#cb153-9"></a>  )</span>
+<span id="cb153-10"><a href="sequential.html#cb153-10"></a></span>
+<span id="cb153-11"><a href="sequential.html#cb153-11"></a><span class="co"># Compute the sample size we need</span></span>
+<span id="cb153-12"><a href="sequential.html#cb153-12"></a>power_res &lt;-<span class="st"> </span><span class="kw">getSampleSizeMeans</span>(</span>
+<span id="cb153-13"><a href="sequential.html#cb153-13"></a>  <span class="dt">design =</span> seq_design,</span>
+<span id="cb153-14"><a href="sequential.html#cb153-14"></a>  <span class="dt">groups =</span> <span class="dv">2</span>,</span>
+<span id="cb153-15"><a href="sequential.html#cb153-15"></a>  <span class="dt">alternative =</span> <span class="fl">0.4</span>, </span>
+<span id="cb153-16"><a href="sequential.html#cb153-16"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>, </span>
+<span id="cb153-17"><a href="sequential.html#cb153-17"></a>  <span class="dt">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
+<span id="cb153-18"><a href="sequential.html#cb153-18"></a>  <span class="dt">normalApproximation =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb153-19"><a href="sequential.html#cb153-19"></a></span>
+<span id="cb153-20"><a href="sequential.html#cb153-20"></a>power_res<span class="op">$</span>expectedNumberOfSubjectsH1</span></code></pre></div>
 <pre><code>## [1] 205.328</code></pre>
 <p class="solution-end">
 <span class="fa fa-square-o solution-icon"></span>
@@ -523,29 +521,29 @@ Solution<span id="sol-start-4" class="fa fa-plus-square solution-icon clickable"
 </div>
 </div>
 <p>Because power is a curve, and the true effect size is always unknown, it is useful to plot power across a range of possible effect sizes, so that we can explore the expected sample size, in the long run, if we use a sequential design, for different true effect sizes.</p>
-<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="sequential.html#cb156-1"></a><span class="co"># Use getPowerMeans and set max N to 188 based on analysis above</span></span>
-<span id="cb156-2"><a href="sequential.html#cb156-2"></a>sample_res &lt;-<span class="st"> </span><span class="kw">getPowerMeans</span>(</span>
-<span id="cb156-3"><a href="sequential.html#cb156-3"></a>  <span class="dt">design =</span> seq_design,</span>
-<span id="cb156-4"><a href="sequential.html#cb156-4"></a>  <span class="dt">groups =</span> <span class="dv">2</span>,</span>
-<span id="cb156-5"><a href="sequential.html#cb156-5"></a>  <span class="dt">alternative =</span> <span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="fl">0.1</span>), </span>
-<span id="cb156-6"><a href="sequential.html#cb156-6"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>, </span>
-<span id="cb156-7"><a href="sequential.html#cb156-7"></a>  <span class="dt">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
-<span id="cb156-8"><a href="sequential.html#cb156-8"></a>  <span class="dt">maxNumberOfSubjects =</span> <span class="dv">188</span>, <span class="co">#rounded up from 187.0829</span></span>
-<span id="cb156-9"><a href="sequential.html#cb156-9"></a>  <span class="dt">normalApproximation =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb156-10"><a href="sequential.html#cb156-10"></a></span>
-<span id="cb156-11"><a href="sequential.html#cb156-11"></a><span class="kw">plot</span>(sample_res, <span class="dt">type =</span> <span class="dv">6</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="sequential.html#cb155-1"></a><span class="co"># Use getPowerMeans and set max N to 188 based on analysis above</span></span>
+<span id="cb155-2"><a href="sequential.html#cb155-2"></a>sample_res &lt;-<span class="st"> </span><span class="kw">getPowerMeans</span>(</span>
+<span id="cb155-3"><a href="sequential.html#cb155-3"></a>  <span class="dt">design =</span> seq_design,</span>
+<span id="cb155-4"><a href="sequential.html#cb155-4"></a>  <span class="dt">groups =</span> <span class="dv">2</span>,</span>
+<span id="cb155-5"><a href="sequential.html#cb155-5"></a>  <span class="dt">alternative =</span> <span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="fl">0.1</span>), </span>
+<span id="cb155-6"><a href="sequential.html#cb155-6"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>, </span>
+<span id="cb155-7"><a href="sequential.html#cb155-7"></a>  <span class="dt">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
+<span id="cb155-8"><a href="sequential.html#cb155-8"></a>  <span class="dt">maxNumberOfSubjects =</span> <span class="dv">188</span>, <span class="co">#rounded up from 187.0829</span></span>
+<span id="cb155-9"><a href="sequential.html#cb155-9"></a>  <span class="dt">normalApproximation =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb155-10"><a href="sequential.html#cb155-10"></a></span>
+<span id="cb155-11"><a href="sequential.html#cb155-11"></a><span class="kw">plot</span>(sample_res, <span class="dt">type =</span> <span class="dv">6</span>)</span></code></pre></div>
 <p><img src="Statistical_Inferences_files/figure-html/unnamed-chunk-82-1.png" width="672"></p>
 <p>The blue line indicates the expected number of observations we need to collect. Not surprisingly, when the true effect size is 0, we will almost always continue data collection to the end. We will only stop if we observe a Type 1 error, which is rare, and thus the expected number of observations is very close to 120. On the other side of the graph we see the scenario for when the true effect size is d = 1. With such a large effect size, we will have high power at our first look, and we will almost always be able to stop at the first look. If the true effect size is 0.5, we see we can expect to collect 132 participants on average.</p>
 <p>The Pocock correction leads to a substantially lower alpha level at the last look, which requires an increase in sample size to compensate. As we saw before, the O’Brien-Fleming spending function does not require such a severe reduction in the alpha level at the last look. Let’s see how well this performs. With 2 looks, this design would not need an increase in sample size at all, yet lower the expected number of observations we would collect to 145. However, let’s add 2 additional looks at the data, for 4 looks in total.</p>
-<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="sequential.html#cb157-1"></a><span class="co"># Now a 4 look OF design</span></span>
-<span id="cb157-2"><a href="sequential.html#cb157-2"></a>seq_design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
-<span id="cb157-3"><a href="sequential.html#cb157-3"></a>  <span class="dt">kMax =</span> <span class="dv">4</span>,</span>
-<span id="cb157-4"><a href="sequential.html#cb157-4"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"OF"</span>,</span>
-<span id="cb157-5"><a href="sequential.html#cb157-5"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
-<span id="cb157-6"><a href="sequential.html#cb157-6"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
-<span id="cb157-7"><a href="sequential.html#cb157-7"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span></span>
-<span id="cb157-8"><a href="sequential.html#cb157-8"></a>  )</span>
-<span id="cb157-9"><a href="sequential.html#cb157-9"></a><span class="kw">summary</span>(seq_design)</span></code></pre></div>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="sequential.html#cb156-1"></a><span class="co"># Now a 4 look OF design</span></span>
+<span id="cb156-2"><a href="sequential.html#cb156-2"></a>seq_design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
+<span id="cb156-3"><a href="sequential.html#cb156-3"></a>  <span class="dt">kMax =</span> <span class="dv">4</span>,</span>
+<span id="cb156-4"><a href="sequential.html#cb156-4"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"OF"</span>,</span>
+<span id="cb156-5"><a href="sequential.html#cb156-5"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
+<span id="cb156-6"><a href="sequential.html#cb156-6"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb156-7"><a href="sequential.html#cb156-7"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span></span>
+<span id="cb156-8"><a href="sequential.html#cb156-8"></a>  )</span>
+<span id="cb156-9"><a href="sequential.html#cb156-9"></a><span class="kw">summary</span>(seq_design)</span></code></pre></div>
 <pre><code>## Sequential analysis with a maximum of 4 looks (group sequential design)
 ## 
 ## Stage                                    1       2       3       4 
@@ -553,15 +551,15 @@ Solution<span id="sol-start-4" class="fa fa-plus-square solution-icon clickable"
 ## Efficacy boundary (z-value scale)    4.049   2.863   2.337   2.024 
 ## Cumulative alpha spent             &lt;0.0001  0.0042  0.0209  0.0500 
 ## Two-sided local significance level &lt;0.0001  0.0042  0.0194  0.0429</code></pre>
-<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="sequential.html#cb159-1"></a>power_res &lt;-<span class="st"> </span><span class="kw">getSampleSizeMeans</span>(</span>
-<span id="cb159-2"><a href="sequential.html#cb159-2"></a>  <span class="dt">design =</span> seq_design,</span>
-<span id="cb159-3"><a href="sequential.html#cb159-3"></a>  <span class="dt">groups =</span> <span class="dv">2</span>,</span>
-<span id="cb159-4"><a href="sequential.html#cb159-4"></a>  <span class="dt">alternative =</span> <span class="fl">0.5</span>, </span>
-<span id="cb159-5"><a href="sequential.html#cb159-5"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>, </span>
-<span id="cb159-6"><a href="sequential.html#cb159-6"></a>  <span class="dt">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
-<span id="cb159-7"><a href="sequential.html#cb159-7"></a>  <span class="dt">normalApproximation =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb159-8"><a href="sequential.html#cb159-8"></a></span>
-<span id="cb159-9"><a href="sequential.html#cb159-9"></a><span class="kw">summary</span>(power_res)</span></code></pre></div>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="sequential.html#cb158-1"></a>power_res &lt;-<span class="st"> </span><span class="kw">getSampleSizeMeans</span>(</span>
+<span id="cb158-2"><a href="sequential.html#cb158-2"></a>  <span class="dt">design =</span> seq_design,</span>
+<span id="cb158-3"><a href="sequential.html#cb158-3"></a>  <span class="dt">groups =</span> <span class="dv">2</span>,</span>
+<span id="cb158-4"><a href="sequential.html#cb158-4"></a>  <span class="dt">alternative =</span> <span class="fl">0.5</span>, </span>
+<span id="cb158-5"><a href="sequential.html#cb158-5"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>, </span>
+<span id="cb158-6"><a href="sequential.html#cb158-6"></a>  <span class="dt">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
+<span id="cb158-7"><a href="sequential.html#cb158-7"></a>  <span class="dt">normalApproximation =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb158-8"><a href="sequential.html#cb158-8"></a></span>
+<span id="cb158-9"><a href="sequential.html#cb158-9"></a><span class="kw">summary</span>(power_res)</span></code></pre></div>
 <pre><code>## Sample size calculation for a continuous endpoint
 ## 
 ## Sequential analysis with a maximum of 4 looks (group sequential design).
@@ -582,39 +580,39 @@ Solution<span id="sol-start-4" class="fa fa-plus-square solution-icon clickable"
 ## 
 ## Legend:
 ##   (t): approximate treatment effect scale</code></pre>
-<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="sequential.html#cb161-1"></a>sample_res &lt;-<span class="st"> </span><span class="kw">getPowerMeans</span>(</span>
-<span id="cb161-2"><a href="sequential.html#cb161-2"></a>  <span class="dt">design =</span> seq_design,</span>
-<span id="cb161-3"><a href="sequential.html#cb161-3"></a>  <span class="dt">groups =</span> <span class="dv">2</span>,</span>
-<span id="cb161-4"><a href="sequential.html#cb161-4"></a>  <span class="dt">alternative =</span> <span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="fl">0.1</span>), </span>
-<span id="cb161-5"><a href="sequential.html#cb161-5"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>, </span>
-<span id="cb161-6"><a href="sequential.html#cb161-6"></a>  <span class="dt">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
-<span id="cb161-7"><a href="sequential.html#cb161-7"></a>  <span class="dt">maxNumberOfSubjects =</span> <span class="dv">174</span>, </span>
-<span id="cb161-8"><a href="sequential.html#cb161-8"></a>  <span class="dt">normalApproximation =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="sequential.html#cb160-1"></a>sample_res &lt;-<span class="st"> </span><span class="kw">getPowerMeans</span>(</span>
+<span id="cb160-2"><a href="sequential.html#cb160-2"></a>  <span class="dt">design =</span> seq_design,</span>
+<span id="cb160-3"><a href="sequential.html#cb160-3"></a>  <span class="dt">groups =</span> <span class="dv">2</span>,</span>
+<span id="cb160-4"><a href="sequential.html#cb160-4"></a>  <span class="dt">alternative =</span> <span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="fl">0.1</span>), </span>
+<span id="cb160-5"><a href="sequential.html#cb160-5"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>, </span>
+<span id="cb160-6"><a href="sequential.html#cb160-6"></a>  <span class="dt">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
+<span id="cb160-7"><a href="sequential.html#cb160-7"></a>  <span class="dt">maxNumberOfSubjects =</span> <span class="dv">174</span>, </span>
+<span id="cb160-8"><a href="sequential.html#cb160-8"></a>  <span class="dt">normalApproximation =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <p>We see that with 4 looks, we will not need to increase the maximum sample size a lot, as we only need 174 instead of 172 participants.</p>
-<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="sequential.html#cb162-1"></a>power_res<span class="op">$</span>maxNumberOfSubjects</span></code></pre></div>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="sequential.html#cb161-1"></a>power_res<span class="op">$</span>maxNumberOfSubjects</span></code></pre></div>
 <pre><code>## [1] 173.8317</code></pre>
 <p>There is a noticeable reduction in the average number of samples we can expect to collect, if the true effect size is d = 0.5.</p>
-<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="sequential.html#cb164-1"></a>power_res<span class="op">$</span>expectedNumberOfSubjectsH1</span></code></pre></div>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="sequential.html#cb163-1"></a>power_res<span class="op">$</span>expectedNumberOfSubjectsH1</span></code></pre></div>
 <pre><code>## [1] 130.5056</code></pre>
 <p>If we plot this expected sample size across different true effect sizes, we see that we become more efficient - only at the cost of 1) analyzing our data 4 times, and 2) needing to preregister our analysis plan. Preregistration is required, because sequential analyses give a lot of additional freedom that can possibly inflate error rates substantially. So performing computations as performed here, and preregistering your analysis plan, is required - but worth it.</p>
-<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="sequential.html#cb166-1"></a><span class="kw">plot</span>(sample_res, <span class="dt">type =</span> <span class="dv">6</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="sequential.html#cb165-1"></a><span class="kw">plot</span>(sample_res, <span class="dt">type =</span> <span class="dv">6</span>)</span></code></pre></div>
 <p><img src="Statistical_Inferences_files/figure-html/unnamed-chunk-86-1.png" width="672"></p>
 <p>We can redo the power analysis in for the original 2 look design in gsDesign. The graph shows that if the true effect size is d = 0.5 we have approximately 59% power after the first look, and 90% power after the second look, given our adjusted alpha level.</p>
-<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="sequential.html#cb167-1"></a>seqdesign &lt;-<span class="st"> </span><span class="kw">gsDesign</span>(</span>
-<span id="cb167-2"><a href="sequential.html#cb167-2"></a>  <span class="dt">k =</span> <span class="dv">2</span>, <span class="co"># k = number of looks = 2</span></span>
-<span id="cb167-3"><a href="sequential.html#cb167-3"></a>  <span class="dt">test.type =</span> <span class="dv">2</span>,</span>
-<span id="cb167-4"><a href="sequential.html#cb167-4"></a>  <span class="dt">alpha =</span> <span class="fl">.025</span>,</span>
-<span id="cb167-5"><a href="sequential.html#cb167-5"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span>,</span>
-<span id="cb167-6"><a href="sequential.html#cb167-6"></a>  <span class="dt">sfu =</span> <span class="st">"Pocock"</span>,</span>
-<span id="cb167-7"><a href="sequential.html#cb167-7"></a>  <span class="co"># gsDesign calculates d as a within subjects d. </span></span>
-<span id="cb167-8"><a href="sequential.html#cb167-8"></a>  <span class="co"># We need the /sqrt(2) to turn it from d_z into d</span></span>
-<span id="cb167-9"><a href="sequential.html#cb167-9"></a>  <span class="dt">delta =</span> <span class="fl">0.5</span><span class="op">/</span><span class="kw">sqrt</span>(<span class="dv">2</span>), </span>
-<span id="cb167-10"><a href="sequential.html#cb167-10"></a>  <span class="dt">delta0 =</span> <span class="dv">0</span>,</span>
-<span id="cb167-11"><a href="sequential.html#cb167-11"></a>  <span class="dt">delta1 =</span> <span class="fl">0.5</span></span>
-<span id="cb167-12"><a href="sequential.html#cb167-12"></a>) <span class="co"># spending function = Pocock</span></span>
-<span id="cb167-13"><a href="sequential.html#cb167-13"></a></span>
-<span id="cb167-14"><a href="sequential.html#cb167-14"></a><span class="co"># All required info is in:</span></span>
-<span id="cb167-15"><a href="sequential.html#cb167-15"></a>seqdesign</span></code></pre></div>
+<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="sequential.html#cb166-1"></a>seqdesign &lt;-<span class="st"> </span><span class="kw">gsDesign</span>(</span>
+<span id="cb166-2"><a href="sequential.html#cb166-2"></a>  <span class="dt">k =</span> <span class="dv">2</span>, <span class="co"># k = number of looks = 2</span></span>
+<span id="cb166-3"><a href="sequential.html#cb166-3"></a>  <span class="dt">test.type =</span> <span class="dv">2</span>,</span>
+<span id="cb166-4"><a href="sequential.html#cb166-4"></a>  <span class="dt">alpha =</span> <span class="fl">.025</span>,</span>
+<span id="cb166-5"><a href="sequential.html#cb166-5"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span>,</span>
+<span id="cb166-6"><a href="sequential.html#cb166-6"></a>  <span class="dt">sfu =</span> <span class="st">"Pocock"</span>,</span>
+<span id="cb166-7"><a href="sequential.html#cb166-7"></a>  <span class="co"># gsDesign calculates d as a within subjects d. </span></span>
+<span id="cb166-8"><a href="sequential.html#cb166-8"></a>  <span class="co"># We need the /sqrt(2) to turn it from d_z into d</span></span>
+<span id="cb166-9"><a href="sequential.html#cb166-9"></a>  <span class="dt">delta =</span> <span class="fl">0.5</span><span class="op">/</span><span class="kw">sqrt</span>(<span class="dv">2</span>), </span>
+<span id="cb166-10"><a href="sequential.html#cb166-10"></a>  <span class="dt">delta0 =</span> <span class="dv">0</span>,</span>
+<span id="cb166-11"><a href="sequential.html#cb166-11"></a>  <span class="dt">delta1 =</span> <span class="fl">0.5</span></span>
+<span id="cb166-12"><a href="sequential.html#cb166-12"></a>) <span class="co"># spending function = Pocock</span></span>
+<span id="cb166-13"><a href="sequential.html#cb166-13"></a></span>
+<span id="cb166-14"><a href="sequential.html#cb166-14"></a><span class="co"># All required info is in:</span></span>
+<span id="cb166-15"><a href="sequential.html#cb166-15"></a>seqdesign</span></code></pre></div>
 <pre><code>## Symmetric two-sided group sequential design with
 ## 90 % power and 2.5 % Type I Error.
 ## Spending computations assume trial stops
@@ -643,8 +641,8 @@ Solution<span id="sol-start-4" class="fa fa-plus-square solution-icon clickable"
 ##    Theta      1      2 Total
 ##   0.0000 0.0147 0.0103 0.025
 ##   0.3536 0.0000 0.0000 0.000</code></pre>
-<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="sequential.html#cb169-1"></a><span class="co"># We can look at the sample sizes as expected compared to a fixed design</span></span>
-<span id="cb169-2"><a href="sequential.html#cb169-2"></a><span class="kw">plot</span>(seqdesign, <span class="dt">plottype =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="sequential.html#cb168-1"></a><span class="co"># We can look at the sample sizes as expected compared to a fixed design</span></span>
+<span id="cb168-2"><a href="sequential.html#cb168-2"></a><span class="kw">plot</span>(seqdesign, <span class="dt">plottype =</span> <span class="dv">2</span>)</span></code></pre></div>
 <p><img src="Statistical_Inferences_files/figure-html/unnamed-chunk-87-1.png" width="672"></p>
 <div id="alpha-spending-functions" class="section level3">
 <h3>
@@ -680,28 +678,28 @@ Figure 14.7: Comparison of the O’Brien-Fleming boundaries and the O’Brien-FL
 <h3>
 <span class="header-section-number">14.3.2</span> Updating Boundaries During an Experiment</h3>
 <p>Although alpha spending functions control the Type 1 error rate even when there are deviations from the pre-planned looks, this does require recalculating the boundaries based on the amount of information that has been observed. In this example, we follow an <a href="https://vignettes.rpact.org/html/rpact_boundary_update_example.html">rpact vignette</a>. Imagine a two-sided design with an O’Brien-Fleming-type alpha-spending function, and alpha of 0.025, a desired power of 90%, with 3 looks, planned when 50%, 75%, and 100% of our maximum sample has been collected.</p>
-<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="sequential.html#cb170-1"></a><span class="co"># Original design:</span></span>
-<span id="cb170-2"><a href="sequential.html#cb170-2"></a>seq_design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
-<span id="cb170-3"><a href="sequential.html#cb170-3"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
-<span id="cb170-4"><a href="sequential.html#cb170-4"></a>  <span class="dt">kMax =</span> <span class="dv">3</span>,</span>
-<span id="cb170-5"><a href="sequential.html#cb170-5"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
-<span id="cb170-6"><a href="sequential.html#cb170-6"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span>,</span>
-<span id="cb170-7"><a href="sequential.html#cb170-7"></a>  <span class="dt">informationRates =</span> <span class="kw">c</span>(<span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="dv">1</span>),</span>
-<span id="cb170-8"><a href="sequential.html#cb170-8"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"asOF"</span></span>
-<span id="cb170-9"><a href="sequential.html#cb170-9"></a>)</span>
-<span id="cb170-10"><a href="sequential.html#cb170-10"></a></span>
-<span id="cb170-11"><a href="sequential.html#cb170-11"></a><span class="co"># Initial sample size calculation</span></span>
-<span id="cb170-12"><a href="sequential.html#cb170-12"></a>sampleSizeResult &lt;-<span class="st"> </span><span class="kw">getSampleSizeMeans</span>(</span>
-<span id="cb170-13"><a href="sequential.html#cb170-13"></a>  <span class="dt">design =</span> seq_design,</span>
-<span id="cb170-14"><a href="sequential.html#cb170-14"></a>  <span class="dt">groups =</span> <span class="dv">2</span>,</span>
-<span id="cb170-15"><a href="sequential.html#cb170-15"></a>  <span class="dt">alternative =</span> <span class="fl">0.5</span>,</span>
-<span id="cb170-16"><a href="sequential.html#cb170-16"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>,</span>
-<span id="cb170-17"><a href="sequential.html#cb170-17"></a>  <span class="dt">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
-<span id="cb170-18"><a href="sequential.html#cb170-18"></a>  <span class="dt">normalApproximation =</span> <span class="ot">FALSE</span></span>
-<span id="cb170-19"><a href="sequential.html#cb170-19"></a>)</span>
-<span id="cb170-20"><a href="sequential.html#cb170-20"></a></span>
-<span id="cb170-21"><a href="sequential.html#cb170-21"></a><span class="co"># Summarize design</span></span>
-<span id="cb170-22"><a href="sequential.html#cb170-22"></a><span class="kw">summary</span>(sampleSizeResult)</span></code></pre></div>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="sequential.html#cb169-1"></a><span class="co"># Original design:</span></span>
+<span id="cb169-2"><a href="sequential.html#cb169-2"></a>seq_design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
+<span id="cb169-3"><a href="sequential.html#cb169-3"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
+<span id="cb169-4"><a href="sequential.html#cb169-4"></a>  <span class="dt">kMax =</span> <span class="dv">3</span>,</span>
+<span id="cb169-5"><a href="sequential.html#cb169-5"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb169-6"><a href="sequential.html#cb169-6"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span>,</span>
+<span id="cb169-7"><a href="sequential.html#cb169-7"></a>  <span class="dt">informationRates =</span> <span class="kw">c</span>(<span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="dv">1</span>),</span>
+<span id="cb169-8"><a href="sequential.html#cb169-8"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"asOF"</span></span>
+<span id="cb169-9"><a href="sequential.html#cb169-9"></a>)</span>
+<span id="cb169-10"><a href="sequential.html#cb169-10"></a></span>
+<span id="cb169-11"><a href="sequential.html#cb169-11"></a><span class="co"># Initial sample size calculation</span></span>
+<span id="cb169-12"><a href="sequential.html#cb169-12"></a>sampleSizeResult &lt;-<span class="st"> </span><span class="kw">getSampleSizeMeans</span>(</span>
+<span id="cb169-13"><a href="sequential.html#cb169-13"></a>  <span class="dt">design =</span> seq_design,</span>
+<span id="cb169-14"><a href="sequential.html#cb169-14"></a>  <span class="dt">groups =</span> <span class="dv">2</span>,</span>
+<span id="cb169-15"><a href="sequential.html#cb169-15"></a>  <span class="dt">alternative =</span> <span class="fl">0.5</span>,</span>
+<span id="cb169-16"><a href="sequential.html#cb169-16"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>,</span>
+<span id="cb169-17"><a href="sequential.html#cb169-17"></a>  <span class="dt">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
+<span id="cb169-18"><a href="sequential.html#cb169-18"></a>  <span class="dt">normalApproximation =</span> <span class="ot">FALSE</span></span>
+<span id="cb169-19"><a href="sequential.html#cb169-19"></a>)</span>
+<span id="cb169-20"><a href="sequential.html#cb169-20"></a></span>
+<span id="cb169-21"><a href="sequential.html#cb169-21"></a><span class="co"># Summarize design</span></span>
+<span id="cb169-22"><a href="sequential.html#cb169-22"></a><span class="kw">summary</span>(sampleSizeResult)</span></code></pre></div>
 <pre><code>## Sample size calculation for a continuous endpoint
 ## 
 ## Sequential analysis with a maximum of 3 looks (group sequential design).
@@ -723,16 +721,16 @@ Figure 14.7: Comparison of the O’Brien-Fleming boundaries and the O’Brien-FL
 ## Legend:
 ##   (t): approximate treatment effect scale</code></pre>
 <p>The a-priori power analysis shows that, assuming an effect size of 0.5, we plan to look after 87, 130, 174 observations. Now imagine that due to logistical issues, we do not have to ability to analyze the data until we have collected data from 95, instead of 87, participants. So our first look at the data does not occur at 50% of our sample, but at 95/174 = 54.6%. We can recalculate the alpha levels we should use for this and future looks, and update our sample size calculation. This reveals we should use an alpha level of 0.0048 for the current look (instead of 0.0031). and the next look should occur after 131 participants in total, not 130. We see the differences are not very substantial, but if the deviation from the planned looks increases, the changes might become more impactful. Note that even if the number of looks was not pre-planned, we would use similar calculations at each look, but instead increase the number of looks (e.g., perform an analysis with 1 interim look at time = 95/174, and if the second look occurs after 146 participants, we would run an analysis with two interim looks, one at 95/174 and a second at 146/174, see Proschan et al., 2006, chapter 5).</p>
-<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="sequential.html#cb172-1"></a>seq_design_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
-<span id="cb172-2"><a href="sequential.html#cb172-2"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
-<span id="cb172-3"><a href="sequential.html#cb172-3"></a>  <span class="dt">kMax =</span> <span class="dv">3</span>,</span>
-<span id="cb172-4"><a href="sequential.html#cb172-4"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
-<span id="cb172-5"><a href="sequential.html#cb172-5"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span>,</span>
-<span id="cb172-6"><a href="sequential.html#cb172-6"></a>  <span class="dt">informationRates =</span> <span class="kw">c</span>(<span class="dv">95</span><span class="op">/</span><span class="dv">174</span>, <span class="fl">0.75</span>, <span class="dv">1</span>),</span>
-<span id="cb172-7"><a href="sequential.html#cb172-7"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"asOF"</span></span>
-<span id="cb172-8"><a href="sequential.html#cb172-8"></a>)</span>
-<span id="cb172-9"><a href="sequential.html#cb172-9"></a></span>
-<span id="cb172-10"><a href="sequential.html#cb172-10"></a><span class="kw">summary</span>(seq_design_<span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="sequential.html#cb171-1"></a>seq_design_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
+<span id="cb171-2"><a href="sequential.html#cb171-2"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
+<span id="cb171-3"><a href="sequential.html#cb171-3"></a>  <span class="dt">kMax =</span> <span class="dv">3</span>,</span>
+<span id="cb171-4"><a href="sequential.html#cb171-4"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb171-5"><a href="sequential.html#cb171-5"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span>,</span>
+<span id="cb171-6"><a href="sequential.html#cb171-6"></a>  <span class="dt">informationRates =</span> <span class="kw">c</span>(<span class="dv">95</span><span class="op">/</span><span class="dv">174</span>, <span class="fl">0.75</span>, <span class="dv">1</span>),</span>
+<span id="cb171-7"><a href="sequential.html#cb171-7"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"asOF"</span></span>
+<span id="cb171-8"><a href="sequential.html#cb171-8"></a>)</span>
+<span id="cb171-9"><a href="sequential.html#cb171-9"></a></span>
+<span id="cb171-10"><a href="sequential.html#cb171-10"></a><span class="kw">summary</span>(seq_design_<span class="dv">2</span>)</span></code></pre></div>
 <pre><code>## Sequential analysis with a maximum of 3 looks (group sequential design)
 ## 
 ## Stage                                   1      2      3 
@@ -740,17 +738,17 @@ Figure 14.7: Comparison of the O’Brien-Fleming boundaries and the O’Brien-FL
 ## Efficacy boundary (z-value scale)   2.818  2.370  2.015 
 ## Cumulative alpha spent             0.0048 0.0193 0.0500 
 ## Two-sided local significance level 0.0048 0.0178 0.0439</code></pre>
-<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="sequential.html#cb174-1"></a><span class="co"># Update power analysis</span></span>
-<span id="cb174-2"><a href="sequential.html#cb174-2"></a></span>
-<span id="cb174-3"><a href="sequential.html#cb174-3"></a>power_update_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">getPowerMeans</span>(</span>
-<span id="cb174-4"><a href="sequential.html#cb174-4"></a>  <span class="dt">design =</span> seq_design_<span class="dv">2</span>,</span>
-<span id="cb174-5"><a href="sequential.html#cb174-5"></a>  <span class="dt">groups =</span> <span class="dv">2</span>,</span>
-<span id="cb174-6"><a href="sequential.html#cb174-6"></a>  <span class="dt">alternative =</span> <span class="fl">0.5</span>, </span>
-<span id="cb174-7"><a href="sequential.html#cb174-7"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>, </span>
-<span id="cb174-8"><a href="sequential.html#cb174-8"></a>  <span class="dt">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
-<span id="cb174-9"><a href="sequential.html#cb174-9"></a>  <span class="dt">maxNumberOfSubjects =</span> <span class="dv">174</span>, </span>
-<span id="cb174-10"><a href="sequential.html#cb174-10"></a>  <span class="dt">normalApproximation =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb174-11"><a href="sequential.html#cb174-11"></a><span class="kw">summary</span>(power_update_<span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="sequential.html#cb173-1"></a><span class="co"># Update power analysis</span></span>
+<span id="cb173-2"><a href="sequential.html#cb173-2"></a></span>
+<span id="cb173-3"><a href="sequential.html#cb173-3"></a>power_update_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">getPowerMeans</span>(</span>
+<span id="cb173-4"><a href="sequential.html#cb173-4"></a>  <span class="dt">design =</span> seq_design_<span class="dv">2</span>,</span>
+<span id="cb173-5"><a href="sequential.html#cb173-5"></a>  <span class="dt">groups =</span> <span class="dv">2</span>,</span>
+<span id="cb173-6"><a href="sequential.html#cb173-6"></a>  <span class="dt">alternative =</span> <span class="fl">0.5</span>, </span>
+<span id="cb173-7"><a href="sequential.html#cb173-7"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>, </span>
+<span id="cb173-8"><a href="sequential.html#cb173-8"></a>  <span class="dt">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
+<span id="cb173-9"><a href="sequential.html#cb173-9"></a>  <span class="dt">maxNumberOfSubjects =</span> <span class="dv">174</span>, </span>
+<span id="cb173-10"><a href="sequential.html#cb173-10"></a>  <span class="dt">normalApproximation =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb173-11"><a href="sequential.html#cb173-11"></a><span class="kw">summary</span>(power_update_<span class="dv">1</span>)</span></code></pre></div>
 <pre><code>## Power calculation for a continuous endpoint
 ## 
 ## Sequential analysis with a maximum of 3 looks (group sequential design).
@@ -789,29 +787,29 @@ What if we had look even later, after 105 participants? Which alpha level should
 Solution<span id="sol-start-5" class="fa fa-plus-square solution-icon clickable" onclick="toggle_visibility('sol-body-5', 'sol-start-5')"></span>
 </p>
 <div id="sol-body-5" class="solution-body" style="display: none;">
-<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="sequential.html#cb176-1"></a><span class="co"># Make sure you have rpact installed</span></span>
-<span id="cb176-2"><a href="sequential.html#cb176-2"></a><span class="kw">library</span>(rpact)</span>
-<span id="cb176-3"><a href="sequential.html#cb176-3"></a>seq_design_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
-<span id="cb176-4"><a href="sequential.html#cb176-4"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
-<span id="cb176-5"><a href="sequential.html#cb176-5"></a>  <span class="dt">kMax =</span> <span class="dv">3</span>,</span>
-<span id="cb176-6"><a href="sequential.html#cb176-6"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
-<span id="cb176-7"><a href="sequential.html#cb176-7"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span>,</span>
-<span id="cb176-8"><a href="sequential.html#cb176-8"></a>  <span class="dt">informationRates =</span> <span class="kw">c</span>(<span class="dv">105</span><span class="op">/</span><span class="dv">174</span>, <span class="fl">0.75</span>, <span class="dv">1</span>),</span>
-<span id="cb176-9"><a href="sequential.html#cb176-9"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"asOF"</span></span>
-<span id="cb176-10"><a href="sequential.html#cb176-10"></a>)</span>
-<span id="cb176-11"><a href="sequential.html#cb176-11"></a></span>
-<span id="cb176-12"><a href="sequential.html#cb176-12"></a><span class="co"># Update power analysis</span></span>
-<span id="cb176-13"><a href="sequential.html#cb176-13"></a></span>
-<span id="cb176-14"><a href="sequential.html#cb176-14"></a>power_update_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">getPowerMeans</span>(</span>
-<span id="cb176-15"><a href="sequential.html#cb176-15"></a>  <span class="dt">design =</span> seq_design_<span class="dv">2</span>,</span>
-<span id="cb176-16"><a href="sequential.html#cb176-16"></a>  <span class="dt">groups =</span> <span class="dv">2</span>,</span>
-<span id="cb176-17"><a href="sequential.html#cb176-17"></a>  <span class="dt">alternative =</span> <span class="fl">0.5</span>, </span>
-<span id="cb176-18"><a href="sequential.html#cb176-18"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>, </span>
-<span id="cb176-19"><a href="sequential.html#cb176-19"></a>  <span class="dt">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
-<span id="cb176-20"><a href="sequential.html#cb176-20"></a>  <span class="dt">maxNumberOfSubjects =</span> <span class="dv">174</span>, </span>
-<span id="cb176-21"><a href="sequential.html#cb176-21"></a>  <span class="dt">normalApproximation =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb176-22"><a href="sequential.html#cb176-22"></a></span>
-<span id="cb176-23"><a href="sequential.html#cb176-23"></a><span class="kw">summary</span>(power_update_<span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="sequential.html#cb175-1"></a><span class="co"># Make sure you have rpact installed</span></span>
+<span id="cb175-2"><a href="sequential.html#cb175-2"></a><span class="kw">library</span>(rpact)</span>
+<span id="cb175-3"><a href="sequential.html#cb175-3"></a>seq_design_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
+<span id="cb175-4"><a href="sequential.html#cb175-4"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
+<span id="cb175-5"><a href="sequential.html#cb175-5"></a>  <span class="dt">kMax =</span> <span class="dv">3</span>,</span>
+<span id="cb175-6"><a href="sequential.html#cb175-6"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb175-7"><a href="sequential.html#cb175-7"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span>,</span>
+<span id="cb175-8"><a href="sequential.html#cb175-8"></a>  <span class="dt">informationRates =</span> <span class="kw">c</span>(<span class="dv">105</span><span class="op">/</span><span class="dv">174</span>, <span class="fl">0.75</span>, <span class="dv">1</span>),</span>
+<span id="cb175-9"><a href="sequential.html#cb175-9"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"asOF"</span></span>
+<span id="cb175-10"><a href="sequential.html#cb175-10"></a>)</span>
+<span id="cb175-11"><a href="sequential.html#cb175-11"></a></span>
+<span id="cb175-12"><a href="sequential.html#cb175-12"></a><span class="co"># Update power analysis</span></span>
+<span id="cb175-13"><a href="sequential.html#cb175-13"></a></span>
+<span id="cb175-14"><a href="sequential.html#cb175-14"></a>power_update_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">getPowerMeans</span>(</span>
+<span id="cb175-15"><a href="sequential.html#cb175-15"></a>  <span class="dt">design =</span> seq_design_<span class="dv">2</span>,</span>
+<span id="cb175-16"><a href="sequential.html#cb175-16"></a>  <span class="dt">groups =</span> <span class="dv">2</span>,</span>
+<span id="cb175-17"><a href="sequential.html#cb175-17"></a>  <span class="dt">alternative =</span> <span class="fl">0.5</span>, </span>
+<span id="cb175-18"><a href="sequential.html#cb175-18"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>, </span>
+<span id="cb175-19"><a href="sequential.html#cb175-19"></a>  <span class="dt">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
+<span id="cb175-20"><a href="sequential.html#cb175-20"></a>  <span class="dt">maxNumberOfSubjects =</span> <span class="dv">174</span>, </span>
+<span id="cb175-21"><a href="sequential.html#cb175-21"></a>  <span class="dt">normalApproximation =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb175-22"><a href="sequential.html#cb175-22"></a></span>
+<span id="cb175-23"><a href="sequential.html#cb175-23"></a><span class="kw">summary</span>(power_update_<span class="dv">1</span>)</span></code></pre></div>
 <pre><code>## Power calculation for a continuous endpoint
 ## 
 ## Sequential analysis with a maximum of 3 looks (group sequential design).
@@ -832,7 +830,7 @@ Solution<span id="sol-start-5" class="fa fa-plus-square solution-icon clickable"
 ## 
 ## Legend:
 ##   (t): approximate treatment effect scale</code></pre>
-<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="sequential.html#cb178-1"></a><span class="co"># So the answer is 0.0078</span></span></code></pre></div>
+<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="sequential.html#cb177-1"></a><span class="co"># So the answer is 0.0078</span></span></code></pre></div>
 <p class="solution-end">
 <span class="fa fa-square-o solution-icon"></span>
 </p>
@@ -844,18 +842,18 @@ Solution<span id="sol-start-5" class="fa fa-plus-square solution-icon clickable"
 <h2>
 <span class="header-section-number">14.4</span> Test for (non-)inferiority</h2>
 <p>In an equivalence test, it is common to compare the observed effect against an upper and lower bound of the equivalence range. <code>rpact</code> supports <strong>non-inferiority and inferiority tests</strong>, where the null hypothesis is one of the equivalence bound (e.g., d = 0.5) and the alternative hypothesis is an effect of 0. In essence, this is a directional equivalence test where we consider an effect too small to be meaningful (inferior) if it is smaller than the upper bound of the equivalence range, for example d = 0.5 - also when the effect is on the opposite direction (e.g., d = 0.7). Alternatively, we can be interested in showing an effect is not smaller than the lower equivalence bound, for example d = -0.5, which allows us to conclude the effect is not more negative (non-inferior) than the smallest effect we care about. We can first examine a normal power analysis for a non-inferiority test for a fixed design for 90% power.</p>
-<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="sequential.html#cb179-1"></a><span class="co"># First for no sequential design</span></span>
-<span id="cb179-2"><a href="sequential.html#cb179-2"></a><span class="co"># Corresponds to PASS software</span></span>
-<span id="cb179-3"><a href="sequential.html#cb179-3"></a>sampleSizeNoninf &lt;-<span class="st"> </span><span class="kw">getSampleSizeMeans</span>(</span>
-<span id="cb179-4"><a href="sequential.html#cb179-4"></a>  <span class="dt">thetaH0 =</span> <span class="fl">-0.5</span>,</span>
-<span id="cb179-5"><a href="sequential.html#cb179-5"></a>  <span class="dt">alternative =</span> <span class="fl">0.0</span>,</span>
-<span id="cb179-6"><a href="sequential.html#cb179-6"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>,</span>
-<span id="cb179-7"><a href="sequential.html#cb179-7"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
-<span id="cb179-8"><a href="sequential.html#cb179-8"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span>,</span>
-<span id="cb179-9"><a href="sequential.html#cb179-9"></a>  <span class="dt">sided =</span> <span class="dv">1</span>,</span>
-<span id="cb179-10"><a href="sequential.html#cb179-10"></a>  <span class="dt">normalApproximation =</span> <span class="ot">FALSE</span></span>
-<span id="cb179-11"><a href="sequential.html#cb179-11"></a>)</span>
-<span id="cb179-12"><a href="sequential.html#cb179-12"></a>sampleSizeNoninf</span></code></pre></div>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="sequential.html#cb178-1"></a><span class="co"># First for no sequential design</span></span>
+<span id="cb178-2"><a href="sequential.html#cb178-2"></a><span class="co"># Corresponds to PASS software</span></span>
+<span id="cb178-3"><a href="sequential.html#cb178-3"></a>sampleSizeNoninf &lt;-<span class="st"> </span><span class="kw">getSampleSizeMeans</span>(</span>
+<span id="cb178-4"><a href="sequential.html#cb178-4"></a>  <span class="dt">thetaH0 =</span> <span class="fl">-0.5</span>,</span>
+<span id="cb178-5"><a href="sequential.html#cb178-5"></a>  <span class="dt">alternative =</span> <span class="fl">0.0</span>,</span>
+<span id="cb178-6"><a href="sequential.html#cb178-6"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>,</span>
+<span id="cb178-7"><a href="sequential.html#cb178-7"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb178-8"><a href="sequential.html#cb178-8"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span>,</span>
+<span id="cb178-9"><a href="sequential.html#cb178-9"></a>  <span class="dt">sided =</span> <span class="dv">1</span>,</span>
+<span id="cb178-10"><a href="sequential.html#cb178-10"></a>  <span class="dt">normalApproximation =</span> <span class="ot">FALSE</span></span>
+<span id="cb178-11"><a href="sequential.html#cb178-11"></a>)</span>
+<span id="cb178-12"><a href="sequential.html#cb178-12"></a>sampleSizeNoninf</span></code></pre></div>
 <pre><code>## Design plan parameters and output for means:
 ## 
 ## Design parameters:
@@ -884,22 +882,22 @@ Solution<span id="sol-start-5" class="fa fa-plus-square solution-icon clickable"
 ## Legend:
 ##   (i): values of treatment arm i</code></pre>
 <p>Now, we can repeat the analysis, but first specify our original sequential design, with the small deviation that we need to specify a one-sided test. In practice, this will yield identical results as a power analysis for an equivalence test with symmetrical equivalence bounds and an expected true effect size of zero. However, the use of one-sided test often also directly reflects our hypothesis interest, so it might often be the test that reflects your research question.</p>
-<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="sequential.html#cb181-1"></a>seq_design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
-<span id="cb181-2"><a href="sequential.html#cb181-2"></a>  <span class="dt">kMax =</span> <span class="dv">2</span>,</span>
-<span id="cb181-3"><a href="sequential.html#cb181-3"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"P"</span>,</span>
-<span id="cb181-4"><a href="sequential.html#cb181-4"></a>  <span class="dt">sided =</span> <span class="dv">1</span>,</span>
-<span id="cb181-5"><a href="sequential.html#cb181-5"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
-<span id="cb181-6"><a href="sequential.html#cb181-6"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span></span>
-<span id="cb181-7"><a href="sequential.html#cb181-7"></a>)</span>
-<span id="cb181-8"><a href="sequential.html#cb181-8"></a></span>
-<span id="cb181-9"><a href="sequential.html#cb181-9"></a>sampleSizeNoninf &lt;-<span class="st"> </span><span class="kw">getSampleSizeMeans</span>(</span>
-<span id="cb181-10"><a href="sequential.html#cb181-10"></a>  <span class="dt">design =</span> seq_design,</span>
-<span id="cb181-11"><a href="sequential.html#cb181-11"></a>  <span class="dt">thetaH0 =</span> <span class="fl">-0.5</span>,</span>
-<span id="cb181-12"><a href="sequential.html#cb181-12"></a>  <span class="dt">alternative =</span> <span class="fl">0.0</span>,</span>
-<span id="cb181-13"><a href="sequential.html#cb181-13"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>,</span>
-<span id="cb181-14"><a href="sequential.html#cb181-14"></a>  <span class="dt">normalApproximation =</span> <span class="ot">FALSE</span></span>
-<span id="cb181-15"><a href="sequential.html#cb181-15"></a>)</span>
-<span id="cb181-16"><a href="sequential.html#cb181-16"></a>sampleSizeNoninf</span></code></pre></div>
+<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="sequential.html#cb180-1"></a>seq_design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
+<span id="cb180-2"><a href="sequential.html#cb180-2"></a>  <span class="dt">kMax =</span> <span class="dv">2</span>,</span>
+<span id="cb180-3"><a href="sequential.html#cb180-3"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"P"</span>,</span>
+<span id="cb180-4"><a href="sequential.html#cb180-4"></a>  <span class="dt">sided =</span> <span class="dv">1</span>,</span>
+<span id="cb180-5"><a href="sequential.html#cb180-5"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb180-6"><a href="sequential.html#cb180-6"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span></span>
+<span id="cb180-7"><a href="sequential.html#cb180-7"></a>)</span>
+<span id="cb180-8"><a href="sequential.html#cb180-8"></a></span>
+<span id="cb180-9"><a href="sequential.html#cb180-9"></a>sampleSizeNoninf &lt;-<span class="st"> </span><span class="kw">getSampleSizeMeans</span>(</span>
+<span id="cb180-10"><a href="sequential.html#cb180-10"></a>  <span class="dt">design =</span> seq_design,</span>
+<span id="cb180-11"><a href="sequential.html#cb180-11"></a>  <span class="dt">thetaH0 =</span> <span class="fl">-0.5</span>,</span>
+<span id="cb180-12"><a href="sequential.html#cb180-12"></a>  <span class="dt">alternative =</span> <span class="fl">0.0</span>,</span>
+<span id="cb180-13"><a href="sequential.html#cb180-13"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>,</span>
+<span id="cb180-14"><a href="sequential.html#cb180-14"></a>  <span class="dt">normalApproximation =</span> <span class="ot">FALSE</span></span>
+<span id="cb180-15"><a href="sequential.html#cb180-15"></a>)</span>
+<span id="cb180-16"><a href="sequential.html#cb180-16"></a>sampleSizeNoninf</span></code></pre></div>
 <pre><code>## Design plan parameters and output for means:
 ## 
 ## Design parameters:
@@ -959,24 +957,24 @@ If we had tested against a lower bound of d = -0.3, which sample size would we n
 Solution<span id="sol-start-6" class="fa fa-plus-square solution-icon clickable" onclick="toggle_visibility('sol-body-6', 'sol-start-6')"></span>
 </p>
 <div id="sol-body-6" class="solution-body" style="display: none;">
-<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="sequential.html#cb183-1"></a><span class="co"># Make sure you have rpact installed</span></span>
-<span id="cb183-2"><a href="sequential.html#cb183-2"></a><span class="kw">library</span>(rpact)</span>
-<span id="cb183-3"><a href="sequential.html#cb183-3"></a>seq_design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
-<span id="cb183-4"><a href="sequential.html#cb183-4"></a>  <span class="dt">kMax =</span> <span class="dv">2</span>,</span>
-<span id="cb183-5"><a href="sequential.html#cb183-5"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"P"</span>,</span>
-<span id="cb183-6"><a href="sequential.html#cb183-6"></a>  <span class="dt">sided =</span> <span class="dv">1</span>,</span>
-<span id="cb183-7"><a href="sequential.html#cb183-7"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
-<span id="cb183-8"><a href="sequential.html#cb183-8"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span></span>
-<span id="cb183-9"><a href="sequential.html#cb183-9"></a>)</span>
-<span id="cb183-10"><a href="sequential.html#cb183-10"></a></span>
-<span id="cb183-11"><a href="sequential.html#cb183-11"></a>sampleSizeNoninf &lt;-<span class="st"> </span><span class="kw">getSampleSizeMeans</span>(</span>
-<span id="cb183-12"><a href="sequential.html#cb183-12"></a>  <span class="dt">design =</span> seq_design,</span>
-<span id="cb183-13"><a href="sequential.html#cb183-13"></a>  <span class="dt">thetaH0 =</span> <span class="fl">-0.3</span>,</span>
-<span id="cb183-14"><a href="sequential.html#cb183-14"></a>  <span class="dt">alternative =</span> <span class="fl">0.0</span>,</span>
-<span id="cb183-15"><a href="sequential.html#cb183-15"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>,</span>
-<span id="cb183-16"><a href="sequential.html#cb183-16"></a>  <span class="dt">normalApproximation =</span> <span class="ot">FALSE</span></span>
-<span id="cb183-17"><a href="sequential.html#cb183-17"></a>)</span>
-<span id="cb183-18"><a href="sequential.html#cb183-18"></a>sampleSizeNoninf</span></code></pre></div>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="sequential.html#cb182-1"></a><span class="co"># Make sure you have rpact installed</span></span>
+<span id="cb182-2"><a href="sequential.html#cb182-2"></a><span class="kw">library</span>(rpact)</span>
+<span id="cb182-3"><a href="sequential.html#cb182-3"></a>seq_design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
+<span id="cb182-4"><a href="sequential.html#cb182-4"></a>  <span class="dt">kMax =</span> <span class="dv">2</span>,</span>
+<span id="cb182-5"><a href="sequential.html#cb182-5"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"P"</span>,</span>
+<span id="cb182-6"><a href="sequential.html#cb182-6"></a>  <span class="dt">sided =</span> <span class="dv">1</span>,</span>
+<span id="cb182-7"><a href="sequential.html#cb182-7"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb182-8"><a href="sequential.html#cb182-8"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span></span>
+<span id="cb182-9"><a href="sequential.html#cb182-9"></a>)</span>
+<span id="cb182-10"><a href="sequential.html#cb182-10"></a></span>
+<span id="cb182-11"><a href="sequential.html#cb182-11"></a>sampleSizeNoninf &lt;-<span class="st"> </span><span class="kw">getSampleSizeMeans</span>(</span>
+<span id="cb182-12"><a href="sequential.html#cb182-12"></a>  <span class="dt">design =</span> seq_design,</span>
+<span id="cb182-13"><a href="sequential.html#cb182-13"></a>  <span class="dt">thetaH0 =</span> <span class="fl">-0.3</span>,</span>
+<span id="cb182-14"><a href="sequential.html#cb182-14"></a>  <span class="dt">alternative =</span> <span class="fl">0.0</span>,</span>
+<span id="cb182-15"><a href="sequential.html#cb182-15"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>,</span>
+<span id="cb182-16"><a href="sequential.html#cb182-16"></a>  <span class="dt">normalApproximation =</span> <span class="ot">FALSE</span></span>
+<span id="cb182-17"><a href="sequential.html#cb182-17"></a>)</span>
+<span id="cb182-18"><a href="sequential.html#cb182-18"></a>sampleSizeNoninf</span></code></pre></div>
 <pre><code>## Design plan parameters and output for means:
 ## 
 ## Design parameters:
@@ -1017,7 +1015,7 @@ Solution<span id="sol-start-6" class="fa fa-plus-square solution-icon clickable"
 ## Legend:
 ##   (i): values of treatment arm i
 ##   [k]: values at stage k</code></pre>
-<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="sequential.html#cb185-1"></a><span class="co"># So the answer is 424 in total, 212 in each group</span></span></code></pre></div>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="sequential.html#cb184-1"></a><span class="co"># So the answer is 424 in total, 212 in each group</span></span></code></pre></div>
 <p class="solution-end">
 <span class="fa fa-square-o solution-icon"></span>
 </p>
@@ -1030,35 +1028,35 @@ Solution<span id="sol-start-6" class="fa fa-plus-square solution-icon clickable"
 <p>To declare that a meaningful effect is absent, one should specify a smallest effect size of interest, and perform an equivalence test. However, sometimes you might not be able to justify a choice for a smallest effect size of interest. In such study designs, it is still possible to decide to stop a study at an interim look because continuing data collection is impossible of unlikely to yield a significant effect.</p>
 <p>In the most extreme case, it will be impossible for the additional data you collect to lead to a statistically significant result. To illustrate this in a hypothetical scenario, imagine that after collecting 90 out of 100 observations, the observed effect size is very close to zero. The critical effect size in an independent <em>t</em>-test with 50 participants in each group and an alpha level of, say, 0.02, is d = 0.47. If your primary dependent variable is measured on a 7 point Likert scale, it might be that even if every of the remaining 5 participants in group 1 answer 1, and every of the remaining participants in group 2 answers 7, the effect size in the total group of 100 participants can never reach the critical effect size. If the goal of your study was to detect significant effect, at this point you know for a fact that goal will not be reached. Stopping a study at an interim analysis because the final result will not yield a significant effect is called <strong>curtailment</strong>.</p>
 <p>In less extreme cases, it might still be possible for the study to observe a significant effect, but the probability is extremely low. The probability of finding a significant result, given the data that have been observed up to an interim analysis, is called <strong>conditional power</strong>. Let’s imagine that in our previous example, after 50 observations, we also observed an effect zero close to zero, and we would have 25% power to find a significant result, for some expected effect size. Wassmer and Brannath <span class="citation">(<label for="tufte-mn-108" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-108" class="margin-toggle">2016<span class="marginnote">Wassmer, G., &amp; Brannath, W. (2016). <em>Group Sequential and Confirmatory Adaptive Designs in Clinical Trials</em>. Springer International Publishing. <a href="https://doi.org/10.1007/978-3-319-32562-0">https://doi.org/10.1007/978-3-319-32562-0</a></span>)</span> write, due to the direct relation between conditional power and p-values, stopping the trial if the conditional power is lower than some desired threshold is equivalent to stopping a study if the <em>p</em>-value is larger than some critical level. <code>rpact</code> allows us to compute conditional power. Let’s assume that in our 2-stage design, after the first interim analysis, we observe an effect of d = 0.1, while we expected d = 0.5. What is the probability that, if the true effect size is d = 0.5, we find a significant result after adding the second batch of 94 participants?</p>
-<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="sequential.html#cb186-1"></a><span class="co"># Our 2 look design</span></span>
-<span id="cb186-2"><a href="sequential.html#cb186-2"></a>seq_design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
-<span id="cb186-3"><a href="sequential.html#cb186-3"></a>  <span class="dt">kMax =</span> <span class="dv">2</span>,</span>
-<span id="cb186-4"><a href="sequential.html#cb186-4"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"P"</span>,</span>
-<span id="cb186-5"><a href="sequential.html#cb186-5"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
-<span id="cb186-6"><a href="sequential.html#cb186-6"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
-<span id="cb186-7"><a href="sequential.html#cb186-7"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span></span>
-<span id="cb186-8"><a href="sequential.html#cb186-8"></a>)</span>
-<span id="cb186-9"><a href="sequential.html#cb186-9"></a></span>
-<span id="cb186-10"><a href="sequential.html#cb186-10"></a>dataMeans &lt;-<span class="st"> </span><span class="kw">getDataset</span>(</span>
-<span id="cb186-11"><a href="sequential.html#cb186-11"></a>  <span class="dt">n1 =</span> <span class="kw">c</span>(<span class="dv">94</span>), </span>
-<span id="cb186-12"><a href="sequential.html#cb186-12"></a>  <span class="dt">n2 =</span> <span class="kw">c</span>(<span class="dv">94</span>), </span>
-<span id="cb186-13"><a href="sequential.html#cb186-13"></a>  <span class="dt">means1 =</span> <span class="kw">c</span>(<span class="fl">1.1</span>), <span class="co">#for directional test, means 1 &gt; means 2</span></span>
-<span id="cb186-14"><a href="sequential.html#cb186-14"></a>  <span class="dt">means2 =</span> <span class="kw">c</span>(<span class="dv">1</span>),</span>
-<span id="cb186-15"><a href="sequential.html#cb186-15"></a>  <span class="dt">stDevs1 =</span><span class="kw">c</span>(<span class="dv">1</span>), </span>
-<span id="cb186-16"><a href="sequential.html#cb186-16"></a>  <span class="dt">stDevs2 =</span><span class="kw">c</span>(<span class="dv">1</span>))</span>
-<span id="cb186-17"><a href="sequential.html#cb186-17"></a></span>
-<span id="cb186-18"><a href="sequential.html#cb186-18"></a><span class="co"># Get analysis results</span></span>
-<span id="cb186-19"><a href="sequential.html#cb186-19"></a><span class="co"># Effect sizes are raw effect sizes, not standardized.</span></span>
-<span id="cb186-20"><a href="sequential.html#cb186-20"></a>stage_res &lt;-<span class="st"> </span><span class="kw">getStageResults</span>(seq_design, </span>
-<span id="cb186-21"><a href="sequential.html#cb186-21"></a>                   <span class="dt">equalVariances =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb186-22"><a href="sequential.html#cb186-22"></a>                   <span class="dt">dataInput =</span> dataMeans)</span>
-<span id="cb186-23"><a href="sequential.html#cb186-23"></a></span>
-<span id="cb186-24"><a href="sequential.html#cb186-24"></a><span class="co"># Compute conditional power after the first look</span></span>
-<span id="cb186-25"><a href="sequential.html#cb186-25"></a><span class="kw">getConditionalPower</span>(<span class="dt">design =</span> seq_design,</span>
-<span id="cb186-26"><a href="sequential.html#cb186-26"></a>                    <span class="dt">stageResults =</span> stage_res, </span>
-<span id="cb186-27"><a href="sequential.html#cb186-27"></a>                    <span class="dt">nPlanned =</span> <span class="kw">c</span>(<span class="dv">94</span>),</span>
-<span id="cb186-28"><a href="sequential.html#cb186-28"></a>                    <span class="dt">thetaH1 =</span> <span class="fl">0.5</span>,</span>
-<span id="cb186-29"><a href="sequential.html#cb186-29"></a>                    <span class="dt">assumedStDev =</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="sequential.html#cb185-1"></a><span class="co"># Our 2 look design</span></span>
+<span id="cb185-2"><a href="sequential.html#cb185-2"></a>seq_design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
+<span id="cb185-3"><a href="sequential.html#cb185-3"></a>  <span class="dt">kMax =</span> <span class="dv">2</span>,</span>
+<span id="cb185-4"><a href="sequential.html#cb185-4"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"P"</span>,</span>
+<span id="cb185-5"><a href="sequential.html#cb185-5"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
+<span id="cb185-6"><a href="sequential.html#cb185-6"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb185-7"><a href="sequential.html#cb185-7"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span></span>
+<span id="cb185-8"><a href="sequential.html#cb185-8"></a>)</span>
+<span id="cb185-9"><a href="sequential.html#cb185-9"></a></span>
+<span id="cb185-10"><a href="sequential.html#cb185-10"></a>dataMeans &lt;-<span class="st"> </span><span class="kw">getDataset</span>(</span>
+<span id="cb185-11"><a href="sequential.html#cb185-11"></a>  <span class="dt">n1 =</span> <span class="kw">c</span>(<span class="dv">94</span>), </span>
+<span id="cb185-12"><a href="sequential.html#cb185-12"></a>  <span class="dt">n2 =</span> <span class="kw">c</span>(<span class="dv">94</span>), </span>
+<span id="cb185-13"><a href="sequential.html#cb185-13"></a>  <span class="dt">means1 =</span> <span class="kw">c</span>(<span class="fl">1.1</span>), <span class="co">#for directional test, means 1 &gt; means 2</span></span>
+<span id="cb185-14"><a href="sequential.html#cb185-14"></a>  <span class="dt">means2 =</span> <span class="kw">c</span>(<span class="dv">1</span>),</span>
+<span id="cb185-15"><a href="sequential.html#cb185-15"></a>  <span class="dt">stDevs1 =</span><span class="kw">c</span>(<span class="dv">1</span>), </span>
+<span id="cb185-16"><a href="sequential.html#cb185-16"></a>  <span class="dt">stDevs2 =</span><span class="kw">c</span>(<span class="dv">1</span>))</span>
+<span id="cb185-17"><a href="sequential.html#cb185-17"></a></span>
+<span id="cb185-18"><a href="sequential.html#cb185-18"></a><span class="co"># Get analysis results</span></span>
+<span id="cb185-19"><a href="sequential.html#cb185-19"></a><span class="co"># Effect sizes are raw effect sizes, not standardized.</span></span>
+<span id="cb185-20"><a href="sequential.html#cb185-20"></a>stage_res &lt;-<span class="st"> </span><span class="kw">getStageResults</span>(seq_design, </span>
+<span id="cb185-21"><a href="sequential.html#cb185-21"></a>                   <span class="dt">equalVariances =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb185-22"><a href="sequential.html#cb185-22"></a>                   <span class="dt">dataInput =</span> dataMeans)</span>
+<span id="cb185-23"><a href="sequential.html#cb185-23"></a></span>
+<span id="cb185-24"><a href="sequential.html#cb185-24"></a><span class="co"># Compute conditional power after the first look</span></span>
+<span id="cb185-25"><a href="sequential.html#cb185-25"></a><span class="kw">getConditionalPower</span>(<span class="dt">design =</span> seq_design,</span>
+<span id="cb185-26"><a href="sequential.html#cb185-26"></a>                    <span class="dt">stageResults =</span> stage_res, </span>
+<span id="cb185-27"><a href="sequential.html#cb185-27"></a>                    <span class="dt">nPlanned =</span> <span class="kw">c</span>(<span class="dv">94</span>),</span>
+<span id="cb185-28"><a href="sequential.html#cb185-28"></a>                    <span class="dt">thetaH1 =</span> <span class="fl">0.5</span>,</span>
+<span id="cb185-29"><a href="sequential.html#cb185-29"></a>                    <span class="dt">assumedStDev =</span> <span class="dv">1</span>)</span></code></pre></div>
 <pre><code>## $nPlanned
 ## [1] NA 94
 ## 
@@ -1083,43 +1081,43 @@ Repeat the conditional power analysis above, assuming you now think the true eff
 Solution<span id="sol-start-7" class="fa fa-plus-square solution-icon clickable" onclick="toggle_visibility('sol-body-7', 'sol-start-7')"></span>
 </p>
 <div id="sol-body-7" class="solution-body" style="display: none;">
-<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="sequential.html#cb188-1"></a><span class="co"># Make sure you have rpact installed</span></span>
-<span id="cb188-2"><a href="sequential.html#cb188-2"></a><span class="kw">library</span>(rpact)</span>
-<span id="cb188-3"><a href="sequential.html#cb188-3"></a><span class="co"># Our 2 look design</span></span>
-<span id="cb188-4"><a href="sequential.html#cb188-4"></a>seq_design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
-<span id="cb188-5"><a href="sequential.html#cb188-5"></a>  <span class="dt">kMax =</span> <span class="dv">2</span>,</span>
-<span id="cb188-6"><a href="sequential.html#cb188-6"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"P"</span>,</span>
-<span id="cb188-7"><a href="sequential.html#cb188-7"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
-<span id="cb188-8"><a href="sequential.html#cb188-8"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
-<span id="cb188-9"><a href="sequential.html#cb188-9"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span></span>
-<span id="cb188-10"><a href="sequential.html#cb188-10"></a>)</span>
-<span id="cb188-11"><a href="sequential.html#cb188-11"></a></span>
-<span id="cb188-12"><a href="sequential.html#cb188-12"></a>dataMeans &lt;-<span class="st"> </span><span class="kw">getDataset</span>(</span>
-<span id="cb188-13"><a href="sequential.html#cb188-13"></a>  <span class="dt">n1 =</span> <span class="kw">c</span>(<span class="dv">94</span>), </span>
-<span id="cb188-14"><a href="sequential.html#cb188-14"></a>  <span class="dt">n2 =</span> <span class="kw">c</span>(<span class="dv">94</span>), </span>
-<span id="cb188-15"><a href="sequential.html#cb188-15"></a>  <span class="dt">means1 =</span> <span class="kw">c</span>(<span class="fl">1.1</span>), <span class="co">#for directional test, means 1 &gt; means 2</span></span>
-<span id="cb188-16"><a href="sequential.html#cb188-16"></a>  <span class="dt">means2 =</span> <span class="kw">c</span>(<span class="dv">1</span>),</span>
-<span id="cb188-17"><a href="sequential.html#cb188-17"></a>  <span class="dt">stDevs1 =</span><span class="kw">c</span>(<span class="dv">1</span>), </span>
-<span id="cb188-18"><a href="sequential.html#cb188-18"></a>  <span class="dt">stDevs2 =</span><span class="kw">c</span>(<span class="dv">1</span>))</span>
-<span id="cb188-19"><a href="sequential.html#cb188-19"></a></span>
-<span id="cb188-20"><a href="sequential.html#cb188-20"></a><span class="co"># Get analysis results</span></span>
-<span id="cb188-21"><a href="sequential.html#cb188-21"></a><span class="co"># Effect sizes are raw effect sizes, not standardized.</span></span>
-<span id="cb188-22"><a href="sequential.html#cb188-22"></a>stage_res &lt;-<span class="st"> </span><span class="kw">getStageResults</span>(seq_design, </span>
-<span id="cb188-23"><a href="sequential.html#cb188-23"></a>                   <span class="dt">equalVariances =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb188-24"><a href="sequential.html#cb188-24"></a>                   <span class="dt">dataInput =</span> dataMeans)</span>
-<span id="cb188-25"><a href="sequential.html#cb188-25"></a></span>
-<span id="cb188-26"><a href="sequential.html#cb188-26"></a><span class="co"># Compute conditional power after the first look</span></span>
-<span id="cb188-27"><a href="sequential.html#cb188-27"></a><span class="kw">getConditionalPower</span>(<span class="dt">design =</span> seq_design,</span>
-<span id="cb188-28"><a href="sequential.html#cb188-28"></a>                    <span class="dt">stageResults =</span> stage_res, </span>
-<span id="cb188-29"><a href="sequential.html#cb188-29"></a>                    <span class="dt">nPlanned =</span> <span class="kw">c</span>(<span class="dv">94</span>),</span>
-<span id="cb188-30"><a href="sequential.html#cb188-30"></a>                    <span class="dt">thetaH1 =</span> <span class="fl">0.3</span>,</span>
-<span id="cb188-31"><a href="sequential.html#cb188-31"></a>                    <span class="dt">assumedStDev =</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="sequential.html#cb187-1"></a><span class="co"># Make sure you have rpact installed</span></span>
+<span id="cb187-2"><a href="sequential.html#cb187-2"></a><span class="kw">library</span>(rpact)</span>
+<span id="cb187-3"><a href="sequential.html#cb187-3"></a><span class="co"># Our 2 look design</span></span>
+<span id="cb187-4"><a href="sequential.html#cb187-4"></a>seq_design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
+<span id="cb187-5"><a href="sequential.html#cb187-5"></a>  <span class="dt">kMax =</span> <span class="dv">2</span>,</span>
+<span id="cb187-6"><a href="sequential.html#cb187-6"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"P"</span>,</span>
+<span id="cb187-7"><a href="sequential.html#cb187-7"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
+<span id="cb187-8"><a href="sequential.html#cb187-8"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb187-9"><a href="sequential.html#cb187-9"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span></span>
+<span id="cb187-10"><a href="sequential.html#cb187-10"></a>)</span>
+<span id="cb187-11"><a href="sequential.html#cb187-11"></a></span>
+<span id="cb187-12"><a href="sequential.html#cb187-12"></a>dataMeans &lt;-<span class="st"> </span><span class="kw">getDataset</span>(</span>
+<span id="cb187-13"><a href="sequential.html#cb187-13"></a>  <span class="dt">n1 =</span> <span class="kw">c</span>(<span class="dv">94</span>), </span>
+<span id="cb187-14"><a href="sequential.html#cb187-14"></a>  <span class="dt">n2 =</span> <span class="kw">c</span>(<span class="dv">94</span>), </span>
+<span id="cb187-15"><a href="sequential.html#cb187-15"></a>  <span class="dt">means1 =</span> <span class="kw">c</span>(<span class="fl">1.1</span>), <span class="co">#for directional test, means 1 &gt; means 2</span></span>
+<span id="cb187-16"><a href="sequential.html#cb187-16"></a>  <span class="dt">means2 =</span> <span class="kw">c</span>(<span class="dv">1</span>),</span>
+<span id="cb187-17"><a href="sequential.html#cb187-17"></a>  <span class="dt">stDevs1 =</span><span class="kw">c</span>(<span class="dv">1</span>), </span>
+<span id="cb187-18"><a href="sequential.html#cb187-18"></a>  <span class="dt">stDevs2 =</span><span class="kw">c</span>(<span class="dv">1</span>))</span>
+<span id="cb187-19"><a href="sequential.html#cb187-19"></a></span>
+<span id="cb187-20"><a href="sequential.html#cb187-20"></a><span class="co"># Get analysis results</span></span>
+<span id="cb187-21"><a href="sequential.html#cb187-21"></a><span class="co"># Effect sizes are raw effect sizes, not standardized.</span></span>
+<span id="cb187-22"><a href="sequential.html#cb187-22"></a>stage_res &lt;-<span class="st"> </span><span class="kw">getStageResults</span>(seq_design, </span>
+<span id="cb187-23"><a href="sequential.html#cb187-23"></a>                   <span class="dt">equalVariances =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb187-24"><a href="sequential.html#cb187-24"></a>                   <span class="dt">dataInput =</span> dataMeans)</span>
+<span id="cb187-25"><a href="sequential.html#cb187-25"></a></span>
+<span id="cb187-26"><a href="sequential.html#cb187-26"></a><span class="co"># Compute conditional power after the first look</span></span>
+<span id="cb187-27"><a href="sequential.html#cb187-27"></a><span class="kw">getConditionalPower</span>(<span class="dt">design =</span> seq_design,</span>
+<span id="cb187-28"><a href="sequential.html#cb187-28"></a>                    <span class="dt">stageResults =</span> stage_res, </span>
+<span id="cb187-29"><a href="sequential.html#cb187-29"></a>                    <span class="dt">nPlanned =</span> <span class="kw">c</span>(<span class="dv">94</span>),</span>
+<span id="cb187-30"><a href="sequential.html#cb187-30"></a>                    <span class="dt">thetaH1 =</span> <span class="fl">0.3</span>,</span>
+<span id="cb187-31"><a href="sequential.html#cb187-31"></a>                    <span class="dt">assumedStDev =</span> <span class="dv">1</span>)</span></code></pre></div>
 <pre><code>## $nPlanned
 ## [1] NA 94
 ## 
 ## $conditionalPower
 ## [1]        NA 0.1730899</code></pre>
-<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="sequential.html#cb190-1"></a><span class="co"># So the answer is conditional power is 17.31%</span></span></code></pre></div>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="sequential.html#cb189-1"></a><span class="co"># So the answer is conditional power is 17.31%</span></span></code></pre></div>
 <p class="solution-end">
 <span class="fa fa-square-o solution-icon"></span>
 </p>
@@ -1135,18 +1133,18 @@ Figure 14.8: O’Brien-Fleming-type boundaries for 3 looks to declare a signific
 <img src="Statistical_Inferences_files/figure-html/futility1-1.png" alt="O'Brien-Fleming-type boundaries for 3 looks to declare a significant effect (red line) or to stop for futility (blue line)." width="672">
 </div>
 <p>Instead of setting the <em>z</em>-scores for futility manually, we can also compute bounds based on a beta-spending function. At the last look in our sequential design, which we designed to have 90% power, we are willing to accept the null-hypothesis with a 10% error rate. Just as we are willing to distribute our Type 1 error rate across interim analyses, we might be willing to stop for futility at earlier looks, even if we are then making a Type 2 error. If there actually is no effect, such designs are more efficient. One can choose binding and non-binding beta-spending functions (meaning one has to stop, or one can continue on) - the latter is typically recommended. Adding futility bounds based on beta-spending functions reduce power, and increase the required sample size to reach a desired power, but this is on average compensated by the fact you studies stop earlier due to futility, and can thus make designs more efficient. In the plot below, we use an O’Brien-Fleming type design for both the alpha-spending function and the beta-spending function.</p>
-<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="sequential.html#cb191-1"></a><span class="co"># Formal beta spending function</span></span>
-<span id="cb191-2"><a href="sequential.html#cb191-2"></a>design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
-<span id="cb191-3"><a href="sequential.html#cb191-3"></a>  <span class="dt">sided =</span> <span class="dv">1</span>,</span>
-<span id="cb191-4"><a href="sequential.html#cb191-4"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
-<span id="cb191-5"><a href="sequential.html#cb191-5"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span>,</span>
-<span id="cb191-6"><a href="sequential.html#cb191-6"></a>  <span class="dt">informationRates =</span> <span class="kw">c</span>(<span class="fl">0.33</span>, <span class="fl">0.67</span>, <span class="dv">1</span>),</span>
-<span id="cb191-7"><a href="sequential.html#cb191-7"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"asOF"</span>,</span>
-<span id="cb191-8"><a href="sequential.html#cb191-8"></a>  <span class="dt">typeBetaSpending=</span><span class="st">"bsOF"</span>,</span>
-<span id="cb191-9"><a href="sequential.html#cb191-9"></a>  <span class="dt">bindingFutility =</span> <span class="ot">FALSE</span></span>
-<span id="cb191-10"><a href="sequential.html#cb191-10"></a>)</span>
-<span id="cb191-11"><a href="sequential.html#cb191-11"></a></span>
-<span id="cb191-12"><a href="sequential.html#cb191-12"></a><span class="kw">plot</span>(design)</span></code></pre></div>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="sequential.html#cb190-1"></a><span class="co"># Formal beta spending function</span></span>
+<span id="cb190-2"><a href="sequential.html#cb190-2"></a>design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
+<span id="cb190-3"><a href="sequential.html#cb190-3"></a>  <span class="dt">sided =</span> <span class="dv">1</span>,</span>
+<span id="cb190-4"><a href="sequential.html#cb190-4"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb190-5"><a href="sequential.html#cb190-5"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span>,</span>
+<span id="cb190-6"><a href="sequential.html#cb190-6"></a>  <span class="dt">informationRates =</span> <span class="kw">c</span>(<span class="fl">0.33</span>, <span class="fl">0.67</span>, <span class="dv">1</span>),</span>
+<span id="cb190-7"><a href="sequential.html#cb190-7"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"asOF"</span>,</span>
+<span id="cb190-8"><a href="sequential.html#cb190-8"></a>  <span class="dt">typeBetaSpending=</span><span class="st">"bsOF"</span>,</span>
+<span id="cb190-9"><a href="sequential.html#cb190-9"></a>  <span class="dt">bindingFutility =</span> <span class="ot">FALSE</span></span>
+<span id="cb190-10"><a href="sequential.html#cb190-10"></a>)</span>
+<span id="cb190-11"><a href="sequential.html#cb190-11"></a></span>
+<span id="cb190-12"><a href="sequential.html#cb190-12"></a><span class="kw">plot</span>(design)</span></code></pre></div>
 <p><img src="Statistical_Inferences_files/figure-html/unnamed-chunk-105-1.png" width="672"></p>
 <div id="sequential-analyses-using-bayes-factors." class="section level3">
 <h3>
@@ -1160,44 +1158,44 @@ Figure 14.8: O’Brien-Fleming-type boundaries for 3 looks to declare a signific
 <p>When reporting results for a sequential analyses, there are two things to keep in mind. First, whenever we stop a study early because of a significant effect, there is a risk that we stopped on a random high estimate. This means the effect sizes is larger than the true effect size. Approaches have been developed to correct effect size estimates for single studies. These correction aim to retrieve an accurate effect size estimate from a study that was designed with the goal to examine whether the null hypothesis could be rejected. As <span class="citation">Schönbrodt et al. (<label for="tufte-mn-113" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-113" class="margin-toggle">2017<span class="marginnote">Schönbrodt, F. D., Wagenmakers, E.-J., Zehetleitner, M., &amp; Perugini, M. (2017). Sequential hypothesis testing with Bayes factors: Efficiently testing mean differences. <em>Psychological Methods</em>, <em>22</em>(2), 322–339. <a href="https://doi.org/10.1037/MET0000061">https://doi.org/10.1037/MET0000061</a></span>)</span> show, a meta-analysis of studies that used sequential designs will yield an accurate effect size, because studies that stop early, and have smaller sample sizes, are weighed less and are compensated by the larger studies that did not stop early. Although researchers are free to report adjusted effect size estimates after a sequential design, it might be more important not to confuse the question a study is designed to answer. If you want to accurately estimate an effect size, design a study based on parameter accuracy. If you want to efficiently examined whether you can reject the null hypothesis, design a study where you perform a sequential analysis.</p>
 <p>The same issue occurs when reporting <em>p</em>-values. A <em>p</em>-value is the probability of observing a result at least as extreme as the result that was observed, given that the null hypothesis is true. When using sequential analyses, more than
 one analysis is performed, and the definition of a result “at least as extreme” needs to be redefined. The recommended procedure to determine what “at least as extreme” means is to order the outcomes of a series of sequential analyses in terms of the stage at which the study was stopped, where earlier stopping is more extreme than later stopping, and where studies with higher Z-values are more extreme, when different studies are stopped at the same time <span class="citation">(Proschan et al., <label for="tufte-mn-114" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-114" class="margin-toggle">2006<span class="marginnote">Proschan, M. A., Lan, K. K. G., &amp; Wittes, J. T. (2006). <em>Statistical monitoring of clinical trials: A unified approach</em>. Springer.</span>)</span>. This is referred to as <strong>stagewise ordering</strong>. Similalry, procedures exist to compute adjusted confidence intervals for sequential designs. <code>rpact</code> allows one to compute stagewise ordered <em>p</em>-values for some designs (e.g., <em>t</em>-tests). For practical purposes, reporting these adjusted estimates might be less important in studies design to test a hypothesis efficiently, while controlling error rates, and reporting a normal <em>p</em>-value, effect size estimate, and confidence interval will most likely suffice, as long as one keeps in mind that the sequential design has a small impact on these values, and that accurate effect size estimates require a meta-analytic estimate from multiple studies, some of which stopped earlier, and some at the final look.</p>
-<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="sequential.html#cb192-1"></a><span class="co"># Our 2 look design</span></span>
-<span id="cb192-2"><a href="sequential.html#cb192-2"></a>seq_design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
-<span id="cb192-3"><a href="sequential.html#cb192-3"></a>  <span class="dt">kMax =</span> <span class="dv">2</span>,</span>
-<span id="cb192-4"><a href="sequential.html#cb192-4"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"P"</span>,</span>
-<span id="cb192-5"><a href="sequential.html#cb192-5"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
-<span id="cb192-6"><a href="sequential.html#cb192-6"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
-<span id="cb192-7"><a href="sequential.html#cb192-7"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span></span>
-<span id="cb192-8"><a href="sequential.html#cb192-8"></a>)</span>
-<span id="cb192-9"><a href="sequential.html#cb192-9"></a></span>
-<span id="cb192-10"><a href="sequential.html#cb192-10"></a><span class="co"># Specify our observed data after N = 188</span></span>
-<span id="cb192-11"><a href="sequential.html#cb192-11"></a><span class="co"># Note, you enter the means and sd for each batch.</span></span>
-<span id="cb192-12"><a href="sequential.html#cb192-12"></a><span class="co"># So for the second look, you ignore the 94 observations from look 1</span></span>
-<span id="cb192-13"><a href="sequential.html#cb192-13"></a><span class="co"># Alternatively use overallN1 etc, see help file</span></span>
-<span id="cb192-14"><a href="sequential.html#cb192-14"></a></span>
-<span id="cb192-15"><a href="sequential.html#cb192-15"></a>dataMeans &lt;-<span class="st"> </span><span class="kw">getDataset</span>(</span>
-<span id="cb192-16"><a href="sequential.html#cb192-16"></a>  <span class="dt">n1 =</span> <span class="kw">c</span>(<span class="dv">94</span>,<span class="dv">94</span>), </span>
-<span id="cb192-17"><a href="sequential.html#cb192-17"></a>  <span class="dt">n2 =</span> <span class="kw">c</span>(<span class="dv">94</span>,<span class="dv">94</span>), </span>
-<span id="cb192-18"><a href="sequential.html#cb192-18"></a>  <span class="dt">means1 =</span> <span class="kw">c</span>(<span class="fl">1.1</span>,<span class="fl">1.5</span>), <span class="co">#for directional test, means 1 &gt; means 2</span></span>
-<span id="cb192-19"><a href="sequential.html#cb192-19"></a>  <span class="dt">means2 =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>),</span>
-<span id="cb192-20"><a href="sequential.html#cb192-20"></a>  <span class="dt">stDevs1 =</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>), </span>
-<span id="cb192-21"><a href="sequential.html#cb192-21"></a>  <span class="dt">stDevs2 =</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
-<span id="cb192-22"><a href="sequential.html#cb192-22"></a></span>
-<span id="cb192-23"><a href="sequential.html#cb192-23"></a><span class="co"># Get analysis results</span></span>
-<span id="cb192-24"><a href="sequential.html#cb192-24"></a><span class="co"># Effect sizes are raw effect sizes, not standardized.</span></span>
-<span id="cb192-25"><a href="sequential.html#cb192-25"></a><span class="kw">getAnalysisResults</span>(seq_design, </span>
-<span id="cb192-26"><a href="sequential.html#cb192-26"></a>                   <span class="dt">equalVariances =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb192-27"><a href="sequential.html#cb192-27"></a>                   <span class="dt">dataInput =</span> dataMeans)</span></code></pre></div>
-<pre><code>## [PROGRESS] Stage results calculated [0.0557 secs] 
+<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="sequential.html#cb191-1"></a><span class="co"># Our 2 look design</span></span>
+<span id="cb191-2"><a href="sequential.html#cb191-2"></a>seq_design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
+<span id="cb191-3"><a href="sequential.html#cb191-3"></a>  <span class="dt">kMax =</span> <span class="dv">2</span>,</span>
+<span id="cb191-4"><a href="sequential.html#cb191-4"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"P"</span>,</span>
+<span id="cb191-5"><a href="sequential.html#cb191-5"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
+<span id="cb191-6"><a href="sequential.html#cb191-6"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb191-7"><a href="sequential.html#cb191-7"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span></span>
+<span id="cb191-8"><a href="sequential.html#cb191-8"></a>)</span>
+<span id="cb191-9"><a href="sequential.html#cb191-9"></a></span>
+<span id="cb191-10"><a href="sequential.html#cb191-10"></a><span class="co"># Specify our observed data after N = 188</span></span>
+<span id="cb191-11"><a href="sequential.html#cb191-11"></a><span class="co"># Note, you enter the means and sd for each batch.</span></span>
+<span id="cb191-12"><a href="sequential.html#cb191-12"></a><span class="co"># So for the second look, you ignore the 94 observations from look 1</span></span>
+<span id="cb191-13"><a href="sequential.html#cb191-13"></a><span class="co"># Alternatively use overallN1 etc, see help file</span></span>
+<span id="cb191-14"><a href="sequential.html#cb191-14"></a></span>
+<span id="cb191-15"><a href="sequential.html#cb191-15"></a>dataMeans &lt;-<span class="st"> </span><span class="kw">getDataset</span>(</span>
+<span id="cb191-16"><a href="sequential.html#cb191-16"></a>  <span class="dt">n1 =</span> <span class="kw">c</span>(<span class="dv">94</span>,<span class="dv">94</span>), </span>
+<span id="cb191-17"><a href="sequential.html#cb191-17"></a>  <span class="dt">n2 =</span> <span class="kw">c</span>(<span class="dv">94</span>,<span class="dv">94</span>), </span>
+<span id="cb191-18"><a href="sequential.html#cb191-18"></a>  <span class="dt">means1 =</span> <span class="kw">c</span>(<span class="fl">1.1</span>,<span class="fl">1.5</span>), <span class="co">#for directional test, means 1 &gt; means 2</span></span>
+<span id="cb191-19"><a href="sequential.html#cb191-19"></a>  <span class="dt">means2 =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>),</span>
+<span id="cb191-20"><a href="sequential.html#cb191-20"></a>  <span class="dt">stDevs1 =</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>), </span>
+<span id="cb191-21"><a href="sequential.html#cb191-21"></a>  <span class="dt">stDevs2 =</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb191-22"><a href="sequential.html#cb191-22"></a></span>
+<span id="cb191-23"><a href="sequential.html#cb191-23"></a><span class="co"># Get analysis results</span></span>
+<span id="cb191-24"><a href="sequential.html#cb191-24"></a><span class="co"># Effect sizes are raw effect sizes, not standardized.</span></span>
+<span id="cb191-25"><a href="sequential.html#cb191-25"></a><span class="kw">getAnalysisResults</span>(seq_design, </span>
+<span id="cb191-26"><a href="sequential.html#cb191-26"></a>                   <span class="dt">equalVariances =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb191-27"><a href="sequential.html#cb191-27"></a>                   <span class="dt">dataInput =</span> dataMeans)</span></code></pre></div>
+<pre><code>## [PROGRESS] Stage results calculated [0.026 secs] 
 ## [PROGRESS] Conditional power calculated [0 secs] 
-## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.008 secs] 
-## [PROGRESS] Repeated confidence interval of stage 1 calculated [1.0397 secs] 
-## [PROGRESS] Repeated confidence interval of stage 2 calculated [1.3049 secs] 
-## [PROGRESS] Repeated confidence interval calculated [2.3516 secs] 
-## [PROGRESS] Overall repeated p-values of stage 1 calculated [0.5585 secs] 
-## [PROGRESS] Overall repeated p-values of stage 2 calculated [0.6966 secs] 
-## [PROGRESS] Repeated p-values calculated [1.2581 secs] 
+## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.002 secs] 
+## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.5017 secs] 
+## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.5246 secs] 
+## [PROGRESS] Repeated confidence interval calculated [1.0303 secs] 
+## [PROGRESS] Overall repeated p-values of stage 1 calculated [0.2539 secs] 
+## [PROGRESS] Overall repeated p-values of stage 2 calculated [0.2628 secs] 
+## [PROGRESS] Repeated p-values calculated [0.5177 secs] 
 ## [PROGRESS] Final p-value calculated [0.003 secs] 
-## [PROGRESS] Final confidence interval calculated [0.075 secs]</code></pre>
+## [PROGRESS] Final confidence interval calculated [0.072 secs]</code></pre>
 <pre><code>## Analysis results (group sequential design):
 ##   Stages                                       : 1, 2 
 ##   Information rates                            : 0.500, 1.000 
@@ -1246,8 +1244,8 @@ one analysis is performed, and the definition of a result “at least as extreme
 <img src="images/logo.png" style="width: 100px; padding: 0; display: inline; vertical-align: top">
 <span style="display: inline-block; margin-left: 2em; margin-top: 16px; font-size: small">
 <span style="font-weight: bold;">Daniel Lakens</span><br/>
-<a href="https://statistical-inferences.com">statistical-inferences.com</a><br/>
-page built  2020-08-15 14:05:32
+<a href="https://statistical-inferences.com">statisticalinferences.com</a><br/>
+page built  2020-08-15 17:17:22
 </span>
 </p>
 </div>

@@ -11,7 +11,7 @@ write_custom_footer <- function() {
       "<img src=\"images/logo.png\" style=\"width: 100px; padding: 0; display: inline; vertical-align: top\">",
       "<span style=\"display: inline-block; margin-left: 2em; margin-top: 16px; font-size: small\">",
       "<span style=\"font-weight: bold;\">Daniel Lakens</span><br/>",
-      "<a href=\"https://statistical-inferences.com\">statistical-inferences.com</a><br/>",
+      "<a href=\"https://statistical-inferences.com\">statisticalinferences.com</a><br/>",
       paste("page built ", as.character(Sys.time())),
       "</span>",
       "</p>",
