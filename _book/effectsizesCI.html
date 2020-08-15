@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="5 Effect Sizes and Confidence Intervals | Improving Your Statistical Inferences" />
+<meta property="og:type" content="book" />
+<meta property="og:url" content="http://themethodsection.com/ebook/" />
+<meta property="og:image" content="http://themethodsection.com/ebook/images/cover.jpg" />
+<meta property="og:description" content="Online textbook to Improve Your Statistical Inferences" />
+
+
+<meta name="author" content="Daniel Lakens" />
+
+<meta name="date" content="2020-08-15" />
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+
+<meta name="description" content="Online textbook to Improve Your Statistical Inferences">
+
+<title>5 Effect Sizes and Confidence Intervals | Improving Your Statistical Inferences</title>
+
+<link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
+<link href="libs/tufte-css-2015.12.29/envisioned.css" rel="stylesheet" />
+<link href="libs/msmb-css-0/msmb.css" rel="stylesheet" />
+<script>
+function toggle_visibility(id1, id2) {
+var e = document.getElementById(id1);
+var f = document.getElementById(id2);
+
+e.style.display = ((e.style.display!='none') ? 'none' : 'block');
+
+if(f.classList.contains('fa-plus-square')) {
+    f.classList.add('fa-minus-square')
+    f.classList.remove('fa-plus-square')
+} else {
+    f.classList.add('fa-plus-square')
+    f.classList.remove('fa-minus-square')
+}
+
+}
+</script>
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" href="center.css" type="text/css" />
+<link rel="stylesheet" href="custom-msmbstyle.css" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="index.html">Welcome</a>
+<a href="contents.html">Contents</a>
+<a href="preface.html">Preface</a>
+<a href="introduction.html">Introduction</a>
+<a href="pvalue.html"><span class="toc-section-number">1</span> What is a <em>p</em>-value</a>
+<a href="power.html"><span class="toc-section-number">2</span> Sample size justification</a>
+<a href="questions.html"><span class="toc-section-number">3</span> Asking Statistical Questions</a>
+<a href="errorcontrol.html"><span class="toc-section-number">4</span> Error Control</a>
+<a id="active-page" href="effectsizesCI.html"><span class="toc-section-number">5</span> Effect Sizes and Confidence Intervals</a><ul class="toc-sections">
+<li class="toc"><a href="#effect-sizes"> Effect sizes</a></li>
+<li class="toc"><a href="#cohend"> Cohen’s <em>d</em></a></li>
+<li class="toc"><a href="#r-correlations"> <em>r</em> (correlations)</a></li>
+<li class="toc"><a href="#confint"> Confidence Intervals</a></li>
+<li class="toc"><a href="#computing-confidence-intervals-around-effect-sizes"> Computing Confidence Intervals around Effect Sizes</a></li>
+</ul>
+<a href="equivalencetest.html"><span class="toc-section-number">6</span> Equivalence Testing</a>
+<a href="severity.html"><span class="toc-section-number">7</span> Severe Tests and Risky Predictions</a>
+<a href="sesoi.html"><span class="toc-section-number">8</span> Smallest Effect Size of Interest</a>
+<a href="meta.html"><span class="toc-section-number">9</span> Meta-analysis</a>
+<a href="bias.html"><span class="toc-section-number">10</span> Bias detection</a>
+<a href="computationalreproducibility.html"><span class="toc-section-number">11</span> Computational Reproducibility</a>
+<a href="prereg.html"><span class="toc-section-number">12</span> Preregistration and Transparency</a>
+<a href="bayes.html"><span class="toc-section-number">13</span> Bayesian statistics</a>
+<a href="sequential.html"><span class="toc-section-number">14</span> Sequential Analysis</a>
+<a href="references.html"><span class="toc-section-number">15</span> References</a>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body><div id="effectsizesCI" class="section level1">
+<h1>
+<span class="header-section-number">5</span> Effect Sizes and Confidence Intervals</h1>
+<div id="effect-sizes" class="section level2">
+<h2>
+<span class="header-section-number">5.1</span> Effect sizes</h2>
+<p>What is the most important outcome of an empirical study? You might be tempted to say it’s the <em>p</em>-value of the statistical test, given that it is practically always reported in articles, and determines whether we call something ‘significant’ or not. However, as Cohen <span class="citation">Cohen (<label for="tufte-mn-54" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-54" class="margin-toggle">1990<span class="marginnote">Cohen, J. (1990). Things I have learned (so far). <em>American Psychologist</em>, <em>45</em>(12), 1304–1312. <a href="https://doi.org/10.1037/0003-066X.45.12.1304">https://doi.org/10.1037/0003-066X.45.12.1304</a></span>)</span> writes in his ‘Things I’ve learned (so far)’:</p>
+<blockquote>
+<p>I have learned and taught that the primary product of a research inquiry is one or more measures of effect size, not <em>p</em>-values.</p>
+</blockquote>
+<p>Although what you want to learn from your data is different in every study, and there rarely is any single thing you always want to know, effect sizes are a very important part of the information we gain from data collection. A measure of effect size is a quantitative description of the strength of a phenomenon. It is expressed as a number on a scale, and which scale is used depends on the effect size measure that is used. For <strong>unstandardized effect sizes</strong>, we can use a scale that people are very familiar with. For example, children grow on average 6 centimeters a year between the age of 2 and puberty. We can interpret 6 centimeters a year as an effect size. It is obvious an effect size has many benefits over a <em>p</em>-value. A <em>p</em>-value gives an indication that it is very unlikely children stay the same size as they become older – effect sizes tell us what size clothes we can expect children to wear when they are a certain age, and how long it will take before their new clothes are too small.</p>
+<p>Researchers often report <strong>standardized effect sizes</strong> because many psychological variables are not measured on a scale people are familiar with, or are often measured on different scales. If you ask people how happy they are, an answer of ‘5’ will mean something very different if you asked then on a scale from 1 to 5 than if you asked them on a scale from 1 to 9. Standardized effect sizes allow researchers to present the magnitude of the reported effects in a standardized metric. Therefore, standardized effect sizes can be understood and compared regardless of the scale that was used to measure the dependent variable. Such standardized effect sizes allow researchers to communicate the practical significance of their results (the practical consequences of the findings for daily life), instead of only reporting the statistical significance (how surprising is the data, given the assumption that there is no effect in the population).</p>
+<p>Standardized effect sizes also allow researchers to draw <strong>meta-analytic conclusions</strong> by comparing standardized effect sizes across studies. In a meta-analysis, researchers look at the results of a large number of studies and calculate the average effect size across studies to draw more reliable conclusions. Finally, standardized effect sizes from previous studies can be used when planning a new study. An <strong>a-priori power analysis</strong> can provide an indication of the average sample size a study needs to observe a statistically significant result with a desired probability.</p>
+<p>It is important to make a distinction between ‘<strong>statistically significant</strong>’ and ‘<strong>substantially interesting</strong>’. For example, we might be able to reliably measure that on average, men who are 19 years old will grow another 20 millimeters before they are 21. This difference might very well be statistically significant, but if you go shopping for clothes when you are a 19-year old man, it is not something you need to think about. The most important way to evaluate whether an effect is substantially interesting is to look at the effect size.</p>
+<div id="the-facebook-experiment" class="section level3">
+<h3>
+<span class="header-section-number">5.1.1</span> The Facebook experiment</h3>
+<p>In the summer of 2014 there were some concerns about an experiment Facebook had performed on its users to examine ‘emotional mood contagion’, or the idea that people’s moods can be influenced by the mood of people around them. You can read the article <a href="http://www.pnas.org/content/111/24/8788.full">here</a>. For starters, there was substantial concern about the ethical aspects of the study, primarily because the researchers who performed the study had not asked <strong>informed consent</strong> from the participants in the study (you and me), nor did they ask for permission from the <strong>institutional review board</strong> (or ethics committee) of their university.</p>
+<p>One of the other criticisms on the study was that it could be dangerous to influence people’s mood. As Nancy J. Smyth, dean of the University of Buffalo’s School of Social Work wrote on her <a href="https://njsmyth.wordpress.com/2014/06/29/did-facebooks-secret-mood-manipulation-experiment-create-harm/">Social Work blog</a>: “There might even have been increased self-harm episodes, out of control anger, or dare I say it, suicide attempts or suicides that resulted from the experimental manipulation. Did this experiment create harm? The problem is, we will never know, because the protections for human subjects were never put into place”.</p>
+<p>If this Facebook experiment had such a strong effect on people’s mood that it made some people commit suicide who would otherwise not have committed suicide, this would obviously be problematic. So let us look at the effects the manipulation Facebook used had on people a bit more closely.</p>
+<p>From the article, let’s see what the researchers manipulated:</p>
+<blockquote>
+<p>Two parallel experiments were conducted for positive and negative emotion: One in which exposure to friends’ positive emotional content in their News Feed was reduced, and one in which exposure to negative emotional content in their News Feed was reduced. In these conditions, when a person loaded their News Feed, posts that contained emotional content of the relevant emotional valence, each emotional post had between a 10% and 90% chance (based on their User ID) of being omitted from their News Feed for that specific viewing.</p>
+</blockquote>
+<p>Then what they measured:</p>
+<blockquote>
+<p>For each experiment, two dependent variables were examined pertaining to emotionality expressed in people’s own status updates: the percentage of all words produced by a given person that was either positive or negative during the experimental period. In total, over 3 million posts were analyzed, containing over 122 million words, 4 million of which were positive (3.6%) and 1.8 million negative (1.6%).</p>
+</blockquote>
+<p>And then what they found:</p>
+<blockquote>
+<p>When positive posts were reduced in the News Feed, the percentage of positive words in people’s status updates decreased by B = −0.1% compared with control [t(310,044) = −5.63, P &lt; 0.001, Cohen’s d = 0.02], whereas the percentage of words that were negative increased by B = 0.04% (t = 2.71, P = 0.007, d = 0.001). Conversely, when negative posts were reduced, the percent of words that were negative decreased by B = −0.07% [t(310,541) = −5.51, P &lt; 0.001, d = 0.02] and the percentage of words that were positive, conversely, increased by B = 0.06% (t = 2.19, P &lt; 0.003, d = 0.008).</p>
+</blockquote>
+<p>Here, we will focus on the negative effects of the Facebook study (so specifically, the increase in negative words people used) to get an idea of whether there is a risk of an increase in suicide rates. Even though apparently there was a negative effect, it is not easy to get an understanding about the size of the effect from the numbers as mentioned in the text. Moreover, the number of posts that the researchers analyzed was really large. With a large sample, it becomes important to check if the size of the effect is such that the finding is substantially interesting, because with large sample sizes even
+minute differences will turn out to be statistically significant (we will look at this in more detail below). For that, we need a better understanding of “effect sizes”.</p>
+<p>Now that we realize why effect sizes are important, let us look more closely at the most commonly used effect sizes, and how these are calculated.</p>
+<p>Effect sizes can be grouped into two families <span class="citation">(Rosenthal et al., <label for="tufte-mn-55" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-55" class="margin-toggle">2000<span class="marginnote">Rosenthal, R., Rosnow, R. L., &amp; Rubin, D. B. (2000). <em>Contrasts and effect sizes in behavioral research: A correlational approach</em>. Cambridge University Press.</span>)</span>: The <strong>d family</strong> (based on standardized mean differences) and the <strong>r family</strong> (based on measures of strength of association). Conceptually, the <em>d</em> family effect sizes are based on a comparison between the difference between the observations, divided by the standard deviation of these observations. This means that a Cohen’s <em>d</em> = 1 means the standardized difference between two groups equals one standard deviation. The <em>r</em> family effect sizes are based on the proportion of variance that is explained by group membership (e.g., a correlation of <em>r</em> = 0.5 indicates 25% (<em>r</em>2) of the variance is explained by the difference between groups). Don’t worry if you do not exactly get what this means at this point. The crucial issue is that we need to understand how to interpret the size of an effect, and that there are different ways to express the size of this effect.</p>
+</div>
+</div>
+<div id="cohend" class="section level2">
+<h2>
+<span class="header-section-number">5.2</span> Cohen’s <em>d</em>
+</h2>
+<p>The size of the effect in the Facebook study is given by the statistic Cohen’s <em>d</em> (which we will discuss in more detail below). Cohen’s <em>d</em> (the <em>d</em> is italicized) is used to describe the standardized mean difference of an effect. This value can be used to compare effects across studies, even when the dependent variables are measured in different ways, for example when one study uses 7-point scales to measure dependent variables, while the other study uses 9-point scales, or even when completely different measures are used, such as when one study uses self-report measures, and another study used physiological measurements.</p>
+<p>Cohen’s <em>d</em> ranges from 0 to infinity. Before we get into the statistical details, let’s first visualize what a Cohen’s d of 0.001 (as was found in the Facebook study) means.</p>
+<p>We will use a vizualization from <a href="http://rpsychologist.com/d3/cohend/" class="uri">http://rpsychologist.com/d3/cohend/</a>, a website made by Kristoffer Magnusson, that allows you to visualize the differences between two measurements (such as the increase in negative words used by the Facebook user when the number of positive words on the timeline was reduced).</p>
+<div class="figure">
+<span id="fig:rpsychd1"></span>
+<p class="caption marginnote shownote">
+Figure 5.1: A vizualization of 2 groups (although the difference is hardly visible) representing d = 0.001.
+</p>
+<img src="images/rpsychd1.png" alt="A vizualization of 2 groups (although the difference is hardly visible) representing d = 0.001." width="537">
+</div>
+<p>Below the vizualization on the website, you can read some ways to interpret Cohen’s d in non-mathematical terms (the summary is provided about a number of people, but in the Facebook study, we are examining numbers of words). It says “Moreover, in order to have one more favorable outcome in the treatment group compared to the control group, we need to treat 3570.4 people on average.” This means in the Facebook study a person needs to type 3570 words before 1 word will be more negative instead of positive. I don’t know how often you type this amount of words on Facebook, but I think we can agree this effect is not noticeable on an individual level.</p>
+<p>This illustrates the difference between a statistical difference and practical significance (or substantial interest). The effect is so small that it is unlikely to be noticeable for a single individual. Hence, in this case, and without further evidence, we would not worry too much about the extra suicides the research could have caused. Nevertheless, even such small effects can matter in other kinds of research. If an intervention makes people spend more money with a <em>d</em> = 0.001, and you have millions of transactions a year, a very small effect might very well make you a lot of money.</p>
+<p>A large meta-analytic effort by Richard, Bond, and Stookes-Zoota (2003) estimated the median effect size in psychological studies to have a Cohen’s d = 0.43. Let’s use the vizualization to get a feeling for this effect size.</p>
+<div class="figure">
+<span id="fig:rpsychd2"></span>
+<p class="caption marginnote shownote">
+Figure 5.2: A vizualization of 2 groups representing d = 0.43.
+</p>
+<img src="images/rpsychd2.png" alt="A vizualization of 2 groups representing d = 0.43." width="517">
+</div>
+<p>Assume we know that people are more likely to comply with a large request after an initial smaller request, than when you ask the large request directly (this is known as the foot-in-the-door effect), and that in a specific context this effect size is 0.43. Given this effect size, how likely is it that a random person drawn from the ‘small initial request condition’ will be more likely to agree with your larger request, compared to a person in the ‘no initial small request’ condition? We see in Figure <a href="effectsizesCI.html#fig:rpsychd2">5.2</a> that this <em>probability of superiority</em> is 61.9%.</p>
+<div class="figure">
+<span id="fig:rpsychd3"></span>
+<p class="caption marginnote shownote">
+Figure 5.3: A vizualization of 2 groups representing d = 2.
+</p>
+<img src="images/rpsychd3.png" alt="A vizualization of 2 groups representing d = 2." width="518">
+</div>
+<p>Based on <a href="http://www.nature.com/pr/journal/v73/n3/full/pr2012189a.html">this data</a>, the difference between the height of 21-year old men and women in The Netherlands is approximately 13 centimeters (in an unstandardized effect size), or a standardized effect size of <em>d</em> = 2. If I pick a random man and a random woman walking down the street in my hometown of Rotterdam, how likely is it that the man will be taller than the woman? We see this is quite (92.1%) likely. But even with a huge effect size, which is much larger than most effects researchers study, there is still considerable overlap in the two distributions. If we conclude the length of people in one group is larger than the length of people in another group, this does not mean everyone in one group is larger than everyone in the other group!</p>
+<p>To understand Cohen’s <em>d</em>, let’s first look at the formula for the
+<em>t</em>-statistic:</p>
+<p><span class="math display">\[
+t = \frac{{\overline{M}}_{1}{- \overline{M}}_{2}}{\text{SD}_{\text{pooled}} \times \sqrt{\frac{1}{n_{1}} + \frac{1}{n_{2}}}}
+\]</span></p>
+<p>Here <span class="math display">\[{\overline{M}}_{1}{- \overline{M}}_{2}\]</span> is the difference between the means, and <span class="math display">\[\text{SD}_{\text{pooled}}\]</span> is the pooled standard deviation (see Lakens, 2013), and n1 and n2 are the sample sizes of the two groups you are comparing. The <em>t</em>-value (because it follows a known distribution) is used to determine whether the difference between two groups in a <em>t</em>-test is statistically significant. The formula for Cohen’s <em>d</em> is very similar:</p>
+<p>Cohen’s <em>d</em> = <span class="math display">\[\frac{{\overline{M}}_{1}{-\overline{M}}_{2}}{\text{SD}_{\text{pooled}}}\]</span></p>
+<p>You can calculate Cohen’s <em>d</em> by hand from the independent samples <em>t</em>-value (which can often be convenient when the result section of the paper you are reading does not report effect sizes) through:</p>
+<p><span class="math display">\[d = t ⨯ \sqrt{\frac{1}{n_{1}} + \frac{1}{n_{2}}}\]</span></p>
+<p>As you can see, the sample size is part of the formula for a <em>t</em>-value, but it is not part of the formula for Cohen’s <em>d</em>. Let’s assume the difference between two means we observe is 1, and the pooled standard deviation is also 1. What, on average, happens to the <em>t</em>-value and Cohen’s <em>d</em>, as we would simulate studies, as a function of the sample size in these simulations? Given the mean difference and standard deviation, as the sample size becomes
+bigger, the <em>t</em>-value become larger, and Cohen’s <em>d</em> gets closer to the true
+value. That is, whereas the <em>t</em>-value (and the corresponding <em>p</em>-value) increase as a function of the sample size, Cohen’s d only becomes more accurate. This makes <em>p</em>-values a function of the sample size, when there is a true effect, and this means <em>p</em>-values can not be used to make a statement about whether an effect is <em>practically significant</em>. Reporting and interpreting the effect size will inform you about the practical significance of an effect, and therefore it is almost always beneficial to report effect sizes alongside any statistical test.</p>
+<div id="correcting-for-bias" class="section level3">
+<h3>
+<span class="header-section-number">5.2.1</span> Correcting for Bias</h3>
+<p>Population effect sizes are almost always estimated on the basis of samples, and as a measure of the population effect size estimate based on sample averages, Cohen’s <em>d</em> overestimates the true population effect (when Cohen’s <em>d</em> refers to the population, the Greek letter δ is often used). Therefore, corrections for bias are used (even though these corrections do not always lead to a completely unbiased effect size estimate). In the <em>d</em> family of effect sizes, the correction for bias in the population effect size estimate of Cohen’s δ is known as Hedges’ <em>g</em> (although different people use different names – <em>d_unbiased</em> is also used). This correction for bias is only really noticeable in small sample sizes, but since we often use software to calculate effect sizes anyway, it makes sense to always report Hedge’s <em>g</em> instead of Cohen’s <em>d</em>.</p>
+<p>A commonly used interpretation of Cohen’s <em>d</em> is to refer to effect sizes as small (<em>d</em> = 0.2), medium (<em>d</em> = 0.5), and large (<em>d</em> = 0.8) based on benchmarks suggested by Cohen (1988) – note, in the video I talk about d = 0.3 being a small effect size, but 0.2 is the benchmark for a small effect as specified by Cohen). However, these values are arbitrary and should not be interpreted too rigidly. Furthermore, small effect sizes can have large consequences, such as an intervention that leads to a reliable reduction in suicide rates with an effect size of <em>d</em> = 0.1. On the other hand, you have to start somewhere in getting a feeling for effect sizes, and these benchmarks are a good starting point.</p>
+<p>An interesting, though not often used, interpretation of differences between groups can be provided by the common language effect size <span class="citation">(McGraw &amp; Wong, <label for="tufte-mn-56" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-56" class="margin-toggle">1992<span class="marginnote">McGraw, K. O., &amp; Wong, S. P. (1992). A common language effect size statistic. <em>Psychological Bulletin</em>, <em>111</em>(2), 361–365. <a href="https://doi.org/10.1037/0033-2909.111.2.361">https://doi.org/10.1037/0033-2909.111.2.361</a></span>)</span>, also known as the probability of superiority. It expresses the probability that a randomly sampled person from one group will have a higher observed measurement than a randomly sampled person from the other group (for between designs) or the other measurement (for within-designs) the probability that an individual has a higher value on one measurement than the other. We used it earlier and it is provided by the website that visualizes Cohen’s d.</p>
+</div>
+</div>
+<div id="r-correlations" class="section level2">
+<h2>
+<span class="header-section-number">5.3</span> <em>r</em> (correlations)</h2>
+<p>The second effect size that is widely used is <em>r</em>. You might remember that <em>r</em> is used to refer to a correlation. The correlation of two continuous variables can range from 0 (completely unrelated) to 1 (perfect positive relationship) or -1 (perfect negative relationship). Obviously, given the flexibility of human behavior (free will has a lot to do with it) correlations between psychological variables are rarely 1. The median effect size <em>r</em> in psychology is (for what such an estimate is worth) .21 <span class="citation">(Richard et al., <label for="tufte-mn-57" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-57" class="margin-toggle">2003<span class="marginnote">Richard, F. D., Bond, C. F., &amp; Stokes-Zoota, J. J. (2003). One Hundred Years of Social Psychology Quantitatively Described. <em>Review of General Psychology</em>, <em>7</em>(4), 331–363. <a href="https://doi.org/10.1037/1089-2680.7.4.331">https://doi.org/10.1037/1089-2680.7.4.331</a></span>)</span>. As mentioned earlier, the <em>r</em> family effect sizes describe the proportion of variance that is explained by the independent variable, or <span class="math inline">\(r^2\)</span>.</p>
+<p>Earlier, I mentioned the average effect size in psychology is <em>d</em> = 0.43. You might, therefore, think a <em>d</em> = 0.43 and an <em>r</em> = .21 should be related somehow, and they are:</p>
+<p><span class="math inline">\(r = \frac{d_s}{\sqrt{{d_s^{2}}^{+}\frac{N^{2} - 2N}{n_{1} \times n_{2}}}}\)</span></p>
+<p>The subscript s underneath Cohen’s <em>d</em> is used to specify this Cohen’s <em>d</em> is calculated based on the sample, not based on the population. This is almost always the case (except in simulation studies, where you can set the effect size in the population), and <em>N</em> is the total sample size of both groups, whereas n1 and n2 are the sample sizes of the two groups you are comparing. You can go to <a href="http://rpsychologist.com/d3/correlation/" class="uri">http://rpsychologist.com/d3/correlation/</a> to look at a good visualization of the proportion of variance that is explained by group membership, and the relationship between <em>r</em> and <em>r</em>2.</p>
+<p>Effect sizes can be implausibly large. Let’s take a look at a study that actually examines the number of suicides – as a function of the amount of country music played on the radio. You can find the paper <a href="http://sf.oxfordjournals.org/content/71/1/211.short">here</a> (for <a href="http://www.fourcornersdailypost.com/UserFiles/File/2011/CountryMusicSuicide.pdf">a free PDF version, click here</a>). It won an <a href="http://www.abc.net.au/science/articles/2004/10/01/1211441.htm">Ig Nobel prize for studies that first make you laugh, and then think</a>. I guess in this case the study should make you think about the importance of interpreting effect sizes.</p>
+<p>The authors predicted the following:</p>
+<blockquote>
+<p>We contend that the themes found in country music-foster a suicidal mood among people already at risk of suicide and that it is thereby associated with a high suicide rate.</p>
+</blockquote>
+<p>Then they collected data:</p>
+<blockquote>
+<p>Our sample is comprised of 49 large metropolitan areas for which data on music were available. Exposure to country music is measured as the proportion of radio airtime devoted to country music. Suicide data were extracted from the annual Mortality Tapes, obtained from the Inter-University Consortium for Political and Social Research (ICPSR) at the University of Michigan. The dependent variable is the number of suicides per 100,000 population.</p>
+</blockquote>
+<p>And they concluded:</p>
+<blockquote>
+<p>A significant zero-order correlation was found between white suicide rates and country music (r = .54, p &lt; .05). The greater the airtime given to country music, the greater the white suicide rate.</p>
+</blockquote>
+<p>Cohen (1988) has provided benchmarks to define small (<em>r</em> = 0.1), medium (<em>r</em> = 0.3), and large (<em>r</em> = 0.5) effects. This means the effect of listening to country music on suicide rates is large. Remember that it is preferable to relate the effect size to other effects in the literature instead of to these benchmarks. What do you think of the likelihood that listening to country music is strongly associated with higher suicide rates? Is country music really that bad? Probably not - which demonstrates the importance of not just reporting, but also interpreting, the effect size.</p>
+<p>If you were doubtful about the possibility that this effect was real, you might not be surprised by the fact that <a href="http://sf.oxfordjournals.org/content/74/1/327.short">other researchers were not able to reproduce the analysis of the original authors</a>. It is likely that the results are spurious, or a Type 1 error.</p>
+<p>Eta squared η² (part of the <em>r</em> family of effect sizes, and an extension of r that can be used for more than two sets of observations) measures the proportion of the variation in Y that is associated with membership of the different groups deﬁned by X, or the sum of squares of the effect divided by the total sum of squares:</p>
+<p><span class="math inline">\(\eta^{2}\)</span> = <span class="math inline">\(\frac{\text{SS}_{\text{effect}}}{\text{SS}_{\text{total}}}\)</span></p>
+<p>An η² of .13 means that 13% of the total variance can be accounted for by group membership. Although η² is an efficient way to compare the sizes of effects within a study (given that every effect is interpreted in relation to the total variance, all η² from a single study sum to 100%), eta squared cannot easily be compared between studies, because the total variability in a study (SStotal) depends on the design of a study, and increases when additional variables are manipulated (e.g., when independent variables are added). Keppel (1991) has recommended partial eta squared (<span class="math inline">\(\eta_{p}^{2}\)</span>) to improve the comparability
+of effect sizes between studies, which expresses the sum of squares of the effect in relation to the sum of squares of the effect and the sum of squares of the error associated with the effect. Partial eta squared is calculated as:</p>
+<p><span class="math inline">\(\eta_{p}^{2}\)</span> = <span class="math inline">\(\frac{\text{SS}_{\text{effect}}}{\text{SS}_{\text{effect}} + \text{SS}_{\text{error}}}\)</span></p>
+<p>For designs with fixed factors (manipulated factors, or factors that exhaust all levels of the independent variable, such as alive vs. dead), but not for designs with measured factors or covariates, partial eta squared can be computed from the <em>F</em>-value and its degrees of freedom <span class="citation">(Cohen, <label for="tufte-mn-58" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-58" class="margin-toggle">1988<span class="marginnote">Cohen, J. (1988). <em>Statistical power analysis for the behavioral sciences</em> (2nd ed). L. Erlbaum Associates.</span>)</span>:</p>
+<p><span class="math inline">\(\eta_{p}^{2}\)</span> =<span class="math inline">\(\frac{F \times \text{df}_{\text{effect}}}{{F \times \text{df}}_{\text{effect}} + \text{df}_{\text{error}}}\)</span></p>
+<p>For example, for an <em>F</em>(1, 38) = 7.21, <span class="math inline">\(\eta_{p}^{2}\)</span> = 7.21 ⨯ 1/(7.21 ⨯ 1 +
+38) = 0.16.</p>
+<p>Eta squared can be transformed into Cohen’s <em>d</em>:</p>
+<p><em>d</em> = 2<span class="math inline">\(\times f\)</span> where <span class="math inline">\(f^{2} = \eta^{2}/(1 - \eta^{2})\)</span></p>
+<p>As with Cohen’s <em>d</em>, η² is a biased estimate of the true effect size in the
+population. Two less biased effect size estimates have been proposed, epsilon
+squared <span class="math inline">\(\varepsilon^{2}\)</span> and omega squared <span class="math inline">\(\omega^{2}\)</span>. Because these
+effect sizes are less biased, it is always better to use them. Partial epsilon
+squared and partial omega squared can be calculated based on the <em>F</em>-value and
+degrees of freedom.</p>
+<p><span class="math display">\[
+\omega_{p}^{2} = \frac{F - 1}{F + \ \frac{\text{df}_{\text{error}} + 1}{\text{df}_{\text{effect}}}}
+\]</span></p>
+<p><span class="math display">\[
+\varepsilon_{p}^{2} = \frac{F - 1}{F + \ \frac{\text{df}_{\text{error}}}{\text{df}_{\text{effect}}}}
+\]</span></p>
+<p>For further reading about effect size estimates, see <a href="http://journal.frontiersin.org/article/10.3389/fpsyg.2013.00863/full">this practical primer</a> I
+have written <span class="citation">(Lakens, <label for="tufte-mn-59" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-59" class="margin-toggle">2013<span class="marginnote">Lakens, D. (2013). Calculating and reporting effect sizes to facilitate cumulative science: A practical primer for t-tests and ANOVAs. <em>Frontiers in Psychology</em>, <em>4</em>. <a href="https://doi.org/10.3389/fpsyg.2013.00863">https://doi.org/10.3389/fpsyg.2013.00863</a></span>)</span>.</p>
+</div>
+<div id="confint" class="section level2">
+<h2>
+<span class="header-section-number">5.4</span> Confidence Intervals</h2>
+<p>As Kelley and Rausch <span class="citation">Kelley &amp; Rausch (<label for="tufte-mn-60" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-60" class="margin-toggle">2006<span class="marginnote">Kelley, K., &amp; Rausch, J. R. (2006). Sample size planning for the standardized mean difference: Accuracy in parameter estimation via narrow confidence intervals. <em>Psychological Methods</em>, <em>11</em>(4), 363.</span>)</span> explain, it is misleading to report point estimates without illustrating the uncertainty surrounding that estimate. Pretending as if the outcome of your statistical test is the final and exact answer is misleading, and you should always communicate the remaining uncertainty when you report statistical analyses. Here, we will examine this question in detail by learning how to think about, calculate, and report confidence intervals around estimates from samples.</p>
+<div id="population-vs.-samples" class="section level3">
+<h3>
+<span class="header-section-number">5.4.1</span> Population vs. Samples</h3>
+<p>In statistics, we differentiate between the population and the sample. The population is everyone you are interested in, such as all people in the world, elderly who are depressed, or people who buy innovative products. Your sample is everyone you were able to measure from the population you are interested in. We similarly distinguish between a parameter and a statistic. A parameter is a characteristic of the population, while a statistic is a characteristic of a sample. Sometimes, you have data about your entire population. For example, we have measured the height of all the people who have ever walked on the moon. We
+can calculate the average height of these twelve individuals, and so we know the true parameter. We do not need inferential statistics. However, we do not know the average height of all people who have ever walked on the earth. Therefore, we need to estimate this parameter, using a statistic based on a sample.</p>
+<p>In addition to the goal of observing a significant difference in a study (for example a <em>p</em> &lt; .05), researchers can have the goal of estimating a parameter accurately (regardless of whether this estimate differs from the null-hypothesis or not). Confidence intervals can be calculated around any statistic in your data.</p>
+<p>Confidence intervals are a statement about the percentage of confidence intervals that contain the true parameter value. This behavior of confidence intervals is nicely visualized on this website by Kristoffer Magnusson: <a href="http://rpsychologist.com/d3/CI/" class="uri">http://rpsychologist.com/d3/CI/</a>. We see blue dots that represent means from a sample, fall around a red vertical line, which represents the true value of the parameter in the population. We see the blue dots do not always fall exactly on the red line. This illustrates the important fact that there is always variation in samples.</p>
+<p>The horizontal lines around the blue dots are the confidence intervals. By default, the visualization shows 95% confidence intervals. Most of the lines are black, but some are red. In fact, in the long run, 95% of the horizontal bars will be black, and 5% will be red.</p>
+<p>We can now see what is meant by the sentence “Confidence intervals are a statement about the percentage of confidence intervals that contain the true parameter value“. For 95% of the samples, the red line (the population parameter) is contained within the 95% confidence interval around the sample mean.</p>
+<p>As we will see when we turn to the formulas for confidence intervals, sample means and their confidence intervals depend on the sample size. The larger the sample size, the smaller the confidence intervals.</p>
+</div>
+<div id="relatCIp" class="section level3">
+<h3>
+<span class="header-section-number">5.4.2</span> The relation between confidence intervals and <em>p</em>-values</h3>
+<p>There is a direct relationship between the CI of an effect size and the statistical difference from 0 of the effect. For example, if an effect is statistically different (<em>p</em> &lt; 0.05) from 0 in a two-sided <em>t</em>-test with an alpha of .05, the 95% CI for the mean difference between two groups will never include zero. Confidence intervals are usually said to be more informative than <em>p</em>-values, because they do not only provide information about the statistical difference from 0 of an effect but they also communicate the precision of the effect size estimate. If 0 is not contained in the confidence interval around the mean difference, the effect is statistically different from zero – it might be a false positive, but the <em>p</em>-value will be smaller than 0.05.</p>
+<p>Confidence intervals are often used in forest plots that communicate the results from a meta-analysis. In the plot below, we see 4 rows. Each row shows the effect size estimate from one study (in Hedges’ g). For example, study 1 yielded an effect size estimate of 0.44, with a confidence interval around the effect size from 0.08 to 0.8. The horizontal black line, similarly to the visualization we played around with before, is the width of the confidence interval. When it does not touch the effect size 0 (indicated by a black vertical line) the effect is statistically significant.</p>
+<p><img src="images/metasmall.png"></p>
+<p>We can see, based on the fact that the confidence intervals do not overlap with 0, that studies 1, 2, and 4 were statistically significant.The light blue diamond is the meta-analytic effect size. Instead of using a black horizontal line, the upper limit and lower limit of the confidence interval are indicated by the left and right points of the diamond. The center of the diamond is the meta-analytic effect size estimate. A meta-analysis calculates the effect size by combining and weighing all studies. The confidence interval for a meta-analytic effect size estimate is always narrower than that for a single study, because of the combined sample size of all studies included in the meta-analysis.</p>
+</div>
+<div id="the-standard-error-and-95-confidence-intervals" class="section level3">
+<h3>
+<span class="header-section-number">5.4.3</span> The Standard Error and 95% Confidence Intervals</h3>
+<p>To calculate a confidence interval, we need the standard error. The standard error (SE) estimates the variability between sample means that would be obtained after taking several measurements from the same population. It is easy to confuse it with the standard deviation, which is the degree to which individuals within the sample differ from the sample mean. Formally, statisticians distinguish between σ and <span class="math inline">\(\widehat{\sigma}\)</span>, where the hat means the value is estimated from a sample, and the lack of a hat means it is the population value – but I’ll leave out the hat, even when I’ll mostly talk about estimated values based on a sample in the formulas below. Mathematically (where σ is the standard
+deviation),</p>
+<p>Standard Error (SE) = σ/√n</p>
+<p>The standard error of the sample will tend to zero with increasing sample size, because the estimate of the population mean will become more and more accurate. The standard deviation of the sample will become more and more similar to the population standard deviation as the sample size increases, but it will not become smaller. Where the standard deviation is a statistic that is descriptive of your sample, the standard error describes bounds on a random sampling process.</p>
+<p>The Standard Error is used to construct confidence intervals (CI) around sample estimates, such as the mean, or differences between means, or whatever statistics you might be interested in. To calculate a confidence interval around a mean (indicated by the Greek letter mu: μ), we use the <em>t</em> distribution with the corresponding degrees of freedom (<em>df</em> : in a one-sample <em>t</em>-test, the degrees of freedom are n-1):</p>
+<p>μ±<em>t</em>df, 1-(α/2) × SE</p>
+<p>With a 95% confidence interval, the α = 0.05, and thus the critical <em>t</em>-value for the degrees of freedom for 1- α /2, or the 0.975th quantile is calculated. Remember that a <em>t</em>-distribution has slightly thicker tails than a Z-distribution. Where the 0.975th quantile for a Z-distribution is 1.96, the value for a <em>t</em>-distribution with for example df = 19 is 2.093. This value is multiplied by the standard error, and added (for the upper limit of the confidence interval) or subtracted (for the lower limit of the confidence
+interval) from the mean.</p>
+</div>
+<div id="overlapping-confidence-intervals" class="section level3">
+<h3>
+<span class="header-section-number">5.4.4</span> Overlapping Confidence Intervals</h3>
+<p>Confidence intervals are often used in plots. In the example below, you see three estimates (the dots), surrounded by three lines (the 95% confidence intervals). The left two dots (X and Y) represent the <strong>means</strong> of the independent groups X and Y on a scale from 0 to 7 (see the axis from 0-7 on the left side of the plot). The dotted lines between the two confidence intervals visualize the overlap between the confidence intervals around the means. The two confidence intervals around means in columns X and Y are commonly shown in a
+figure in a scientific article. The third dot, slightly larger, is the <strong>difference</strong> between X and Y, and slightly thicker line visualizes the confidence interval of the difference. The difference score uses the axis on the right (from -3 to 3). In the plot below, the mean of group X is 3.3, the mean of group Y is 5.1, and the difference is 1.8.</p>
+<p>The width of the confidence interval depends on the sample size, the confidence interval level, and the standard error, as you have seen before. In the plot on the left below, the sample size was 50 people in each group, while on the right, the sample size was 500 people in each group. The difference in the width of the confidence intervals is substantial. It is also clear that accurate estimates require large samples.</p>
+<p><img src="images/cismall.png"></p>
+<p><img src="images/cilarge.png"></p>
+<p>As mentioned earlier, when a 95% confidence interval does not contain 0, the effect is statistically different from 0. For a <em>t</em>-test, this is true for the confidence interval around an effect size, or around a mean difference, because the mean difference, or the standardized mean difference (the effect size) are directly related to the significance test. In the plots above, the mean difference and the 95% confidence interval around it are visible on the right of each plot. When this 95% confidence interval does not contain 0, the t-test is significant at an alpha of 0.05. But the two confidence intervals around the
+individual means can be more difficult to interpret in relation to whether the means differ enough to be statistically significant. Open CI_Overlap.R, and run the code. It will generate plots like the one above. Run the entire script as often as you want (notice the variability in the <em>p</em>-values due to the relatively low power in the test!), to answer the following question. The <em>p</em>-value in the plot will tell you if the difference is statistically significant, and what the <em>p</em>-value is.</p>
+<p>Q6: How much do two 95% confidence intervals around individual means from
+independent groups overlap when the effect is only just statistically
+significant (<em>p</em> ≈ 0.05) at an alpha of 0.05?</p>
+<ol style="list-style-type: upper-alpha">
+<li><p>When the 95% confidence interval around one mean does not contain the mean of
+the other group, the groups differ significantly from each other.</p></li>
+<li><p>When the 95% confidence interval around one mean does not overlap with the
+95% confidence interval of the mean of the other group, the groups differ
+significantly from each other.</p></li>
+<li><p>When the overlap between two confidence intervals is approximately half of
+one side of the confidence interval, the groups differ significantly from each
+other.</p></li>
+<li><p>There is no relationship between the overlap of the 95% confidence intervals
+around two independent means, and the <em>p</em>-value for the difference between these
+groups.</p></li>
+</ol>
+<p>Note that this visual overlap rule can only be used when the comparison is made between independent groups, not between dependent groups! The 95% confidence interval around effect sizes is therefore typically more easily interpretable in relation to the significance of a test.</p>
+</div>
+<div id="prediction-intervals" class="section level3">
+<h3>
+<span class="header-section-number">5.4.5</span> Prediction Intervals</h3>
+<p>Even though 95% of future confidence intervals will contain the true parameter, a 95% confidence interval will not contain 95% of future individual observations. Sometimes, researchers want to predict the interval within which a single value will fall. This is called the prediction interval. It is always much wider than a confidence interval. The reason is that individual observations can vary substantially, but means of future samples (which fall within a normal confidence interval 95% of the time) will vary much less.</p>
+<p>Open the file CI_mean.R. Run the entire script. This scripts will simulate a single sample with a population mean of 100 and standard deviation of 15, and calculate the mean (M) and standard deviation (sd) of the sample. The black dotted line illustrates the true mean. 95% of the CI should contain the true mean (100).</p>
+<p><img src="images/predict.png"></p>
+<p>The orange background illustrates the 95% confidence interval, calculated as we did manually before. The lighter yellow background illustrates the 95% prediction interval (PI). To calculate it, we need a slightly different formula for the standard error, namely:</p>
+<p>Standard Error (SE) = σ*√(1+1/N)</p>
+<p>When we rewrite the formula used for the confidence interval to σ*√(1/N), we see the difference between a confidence interval and the prediction interval is in the “1+” which always leads to wider intervals. Prediction intervals are <strong>wider</strong>, because they are constructed so that they will contain <strong>a future single value</strong> 95% of the time.</p>
+</div>
+<div id="capture-percentages" class="section level3">
+<h3>
+<span class="header-section-number">5.4.6</span> Capture Percentages</h3>
+<p>One thing people find difficult to understand is why a 95% confidence interval does not provide us with the interval where 95% of future means will fall. The % of means that falls within a single confidence interval is called the <strong>capture percentage</strong>. A 95% confidence interval is only a 95% capture percentage when the statistic (such as an effect size) you observe in a single sample happens to be exactly the same as the true parameter. This situation is illustrated in the picture below. The observed effect size (dot) falls exactly on the true effect size (vertical dotted line). In this case, and <em>only in this case</em>, 95% of future means will fall within this 95% confidence interval.</p>
+<p><img src="images/capture1.jpg"></p>
+<p>However, you can’t know whether your observed effect size happens to be exactly the same as the population effect size. When this is not the case (and it is almost never exactly the case) less than 95% of future effect sizes will fall within the CI from your current sample. The right side of the figure illustrates this. Let’s assume we observed an effect size much lower to the true effect size. We know that effect sizes from the sample are randomly distributed around the true effect size. Very often, we should find effect size estimates in our sample that fall outside the 95% confidence interval of the single sample we happen to have observed. So, the percentage of future means that fall within a single confidence interval depends upon which single confidence interval you happened to observe! In the long run, a 95% CI has an 83.4% capture probability <span class="citation">(Cumming &amp; Maillardet, <label for="tufte-mn-61" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-61" class="margin-toggle">2006<span class="marginnote">Cumming, G., &amp; Maillardet, R. (2006). Confidence intervals and replication: Where will the next mean fall? <em>Psychological Methods</em>, <em>11</em>(3), 217–227. <a href="https://doi.org/10.1037/1082-989X.11.3.217">https://doi.org/10.1037/1082-989X.11.3.217</a></span>)</span>.</p>
+<p>Let’s experience this through simulation. The simulation in the R script generates a large number of additional samples, after the initial one that was plotted. The simulation returns the number of CI that contains the mean (which should be 95% in the long run). The simulation also returns the % of means from future studies that fall within the 95% of the original study, or the capture percentage. It differs from (and is often lower, but sometimes higher, than) the confidence interval.</p>
+<p>Q8: Run the simulations multiple times. Look at the output you will get in the R
+console. For example: “95.077 % of the 95% confidence intervals contained the
+true mean” and “The capture percentage for the plotted study, or the % of values
+within the observed confidence interval from 88.17208 to 103.1506 is: 82.377 %”.
+While running the simulations multiple times, look at the confidence interval
+around the sample mean, and relate this to the capture percentage. Which
+statement is true?</p>
+<ol style="list-style-type: upper-alpha">
+<li><p>The farther the sample mean is from the true population mean, the lower the
+capture percentage.</p></li>
+<li><p>The farther the sample mean is from the true population mean, the higher the
+capture percentage.</p></li>
+</ol>
+<p>Q9: Simulations in R are randomly generated, but you can make a specific
+simulation reproducible by setting the seed of the random generation process.
+Copy-paste “set.seed(1000)” to the first line of the R script, and run the
+simulation. The sample mean should be 94. What is the capture percentage? (Don’t
+forget to remove the set.seed command if you want to generate more random
+simulations!).</p>
+<ol style="list-style-type: upper-alpha">
+<li><p>95%</p></li>
+<li><p>42.1%</p></li>
+<li><p>84.3%</p></li>
+<li><p>89.2%</p></li>
+</ol>
+<p>Capture percentages are rarely directly used to make statistical inferences. The
+main reason we discuss them here is really to prevent the common
+misunderstanding that 95% of future means fall within a single confidence
+interval: Capture percentages clearly show that is not true. Prediction
+intervals are also rarely used in psychology, but are more common in data
+science.</p>
+<p>In this assignment you have learned why it is important to provide a measure of the uncertainty of your estimates. We have discussed the correct interpretation of confidence intervals, the meaning of prediction intervals, and the difference between a confidence interval and a capture percentage.</p>
+</div>
+</div>
+<div id="computing-confidence-intervals-around-effect-sizes" class="section level2">
+<h2>
+<span class="header-section-number">5.5</span> Computing Confidence Intervals around Effect Sizes</h2>
+<div id="mote" class="section level3">
+<h3>
+<span class="header-section-number">5.5.1</span> MOTE</h3>
+<p>Currently the easiest and most complete solution to calculating effect sizes and confidence intervals is <a href="https://www.aggieerin.com/shiny-server/">MOTE</a> made by Dr. Erin Buchanan and her lab. The website comes with a full collections of tutorials, comparisons with other software packages, and demonstration videos giving incredible accessible overviews of how to compute effect sizes for a wide range of tests. For example, the video below gives an overview for an independent <em>t</em>-test</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/kH3UOoFh9Ng?start=9" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+<p>MOTE is also available as an R package <span class="citation">(Buchanan et al., <label for="tufte-mn-62" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-62" class="margin-toggle">2017<span class="marginnote">Buchanan, E. M., Scofield, J., &amp; Valentine, K. D. (2017). <em>MOTE: Effect Size and Confidence Interval Calculator.</em></span>)</span>. It contains many useful functions, such as ways to compute effect sizes from summary statistics, which provide output that can conveniently be embedded in an R Markdown document:</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="effectsizesCI.html#cb53-1"></a><span class="kw">library</span>(MOTE)</span>
+<span id="cb53-2"><a href="effectsizesCI.html#cb53-2"></a></span>
+<span id="cb53-3"><a href="effectsizesCI.html#cb53-3"></a>res &lt;-<span class="st"> </span><span class="kw">d.ind.t</span>(<span class="dt">m1 =</span> <span class="fl">1.7</span>, <span class="dt">m2 =</span> <span class="fl">2.1</span>, <span class="dt">sd1 =</span> <span class="fl">1.01</span>, <span class="dt">sd2 =</span> <span class="fl">0.96</span>, <span class="dt">n1 =</span> <span class="dv">77</span>, <span class="dt">n2 =</span> <span class="dv">78</span>, <span class="dt">a =</span> <span class="fl">.05</span>)</span>
+<span id="cb53-4"><a href="effectsizesCI.html#cb53-4"></a>res<span class="op">$</span>statistic</span></code></pre></div>
+<pre><code>## [1] "$t$(153) = -2.53, $p$ = .013"</code></pre>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="effectsizesCI.html#cb55-1"></a>res<span class="op">$</span>estimate</span></code></pre></div>
+<pre><code>## [1] "$d_s$ = -0.41, 95\\% CI [-0.72, -0.09]"</code></pre>
+<p>Although many solutions exists to compute Cohen’s d, MOTE sets itself apart by allowing researchers to compute effect sizes and confidence intervals for many additional effect sizes, such as (partial) omega squared for between subjects ANOVA (<span class="math inline">\(\omega^{2}\)</span> and <span class="math inline">\(\omega^{2}_p\)</span>), generalized omega squared for ANOVA (<span class="math inline">\(\omega^{2}_G\)</span>), Epsilon squared for ANOVA (<span class="math inline">\(\varepsilon^{2}\)</span>) and (partial) generalized eta squared for ANOVA (<span class="math inline">\(\eta^{2}_G\)</span>), as well as Hedges’ g (bias corrected Cohen’s d). If you are want to compute effect sizes and their confidence intervals, this is the first resource you should try.</p>
+</div>
+<div id="jasp" class="section level3">
+<h3>
+<span class="header-section-number">5.5.2</span> JASP</h3>
+<p>Free statistical software <a href="https://jasp-stats.org/">JAPS</a> is a strong alternative to SPSS that (unlike SPSS) allows users to compute Cohen’s d and the confidence interval for both independent and dependent <em>t</em>tests.</p>
+<div class="figure">
+<span id="fig:jasp1"></span>
+<p class="caption marginnote shownote">
+Figure 5.4: JASP menu option allows you to select Cohen’s d and a CI around it.
+</p>
+<img src="images/jaspeffectci1.png" alt="JASP menu option allows you to select Cohen's d and a CI around it." width="295">
+</div>
+<div class="figure">
+<span id="fig:jasp2"></span>
+<p class="caption marginnote shownote">
+Figure 5.5: JASP output returns Cohen’s d and the confidence interval around it.
+</p>
+<img src="images/jaspeffectci2.png" alt="JASP output returns Cohen's d and the confidence interval around it." width="396">
+</div>
+<p>JASP also allows you to compute omega squared <span class="math inline">\(\omega^{2}\)</span>, the less biased version of <span class="math inline">\(\varepsilon^{2}\)</span> and</p>
+</div>
+<div id="esci-software" class="section level3">
+<h3>
+<span class="header-section-number">5.5.3</span> ESCI software</h3>
+<p>For people who prefer to use <a href="https://thenewstatistics.com/itns/esci/">ESCI software</a> by Geoff Cumming, ESCI also has an option to provide 95% CI around Cohen’s d, both for independent as for dependent <em>t</em>-tests. However, the option is slightly hidden - you need to scroll to the right, where you can check a box which is placed out of view.</p>
+<div class="figure">
+<span id="fig:esci"></span>
+<p class="caption marginnote shownote">
+Figure 5.6: ESCI software has a somewhat hidden option to compute 95% CI around Cohen’s d for within and between <em>t</em>-tests.
+</p>
+<img src="images/esci1.PNG" alt="ESCI software has a somewhat hidden option to compute 95% CI around Cohen's d for within and between *t*-tests." width="711">
+</div>
+</div>
+<div id="mbess" class="section level3">
+<h3>
+<span class="header-section-number">5.5.4</span> MBESS</h3>
+<p>MBESS is another R package that has a range of options to compute effect sizes and their confidence intervals <span class="citation">(Kelley, <label for="tufte-mn-63" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-63" class="margin-toggle">2007<span class="marginnote">Kelley, K. (2007). Confidence Intervals for Standardized Effect Sizes: Theory, Application, and Implementation. <em>Journal of Statistical Software</em>, <em>20</em>(8). <a href="https://doi.org/10.18637/JSS.V020.I08">https://doi.org/10.18637/JSS.V020.I08</a></span>)</span>. The code below reproduces the example for MOTE above.</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="effectsizesCI.html#cb57-1"></a><span class="kw">library</span>(MBESS)</span>
+<span id="cb57-2"><a href="effectsizesCI.html#cb57-2"></a></span>
+<span id="cb57-3"><a href="effectsizesCI.html#cb57-3"></a><span class="co"># Cohen's d</span></span>
+<span id="cb57-4"><a href="effectsizesCI.html#cb57-4"></a><span class="kw">smd</span>(<span class="dt">Mean.1 =</span> <span class="fl">1.7</span>, </span>
+<span id="cb57-5"><a href="effectsizesCI.html#cb57-5"></a>    <span class="dt">Mean.2 =</span> <span class="fl">2.1</span>, </span>
+<span id="cb57-6"><a href="effectsizesCI.html#cb57-6"></a>    <span class="dt">s.1 =</span> <span class="fl">1.01</span>, </span>
+<span id="cb57-7"><a href="effectsizesCI.html#cb57-7"></a>    <span class="dt">s.2 =</span> <span class="fl">0.96</span>, </span>
+<span id="cb57-8"><a href="effectsizesCI.html#cb57-8"></a>    <span class="dt">n.1 =</span> <span class="dv">77</span>, </span>
+<span id="cb57-9"><a href="effectsizesCI.html#cb57-9"></a>    <span class="dt">n.2 =</span> <span class="dv">78</span>)</span></code></pre></div>
+<pre><code>## [1] -0.406028</code></pre>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="effectsizesCI.html#cb59-1"></a><span class="co"># Hedges' g</span></span>
+<span id="cb59-2"><a href="effectsizesCI.html#cb59-2"></a><span class="kw">smd</span>(<span class="dt">Mean.1 =</span> <span class="fl">1.7</span>, </span>
+<span id="cb59-3"><a href="effectsizesCI.html#cb59-3"></a>    <span class="dt">Mean.2 =</span> <span class="fl">2.1</span>, </span>
+<span id="cb59-4"><a href="effectsizesCI.html#cb59-4"></a>    <span class="dt">s.1 =</span> <span class="fl">1.01</span>, </span>
+<span id="cb59-5"><a href="effectsizesCI.html#cb59-5"></a>    <span class="dt">s.2 =</span> <span class="fl">0.96</span>, </span>
+<span id="cb59-6"><a href="effectsizesCI.html#cb59-6"></a>    <span class="dt">n.1 =</span> <span class="dv">77</span>, </span>
+<span id="cb59-7"><a href="effectsizesCI.html#cb59-7"></a>    <span class="dt">n.2 =</span> <span class="dv">78</span>, </span>
+<span id="cb59-8"><a href="effectsizesCI.html#cb59-8"></a>    <span class="dt">Unbiased =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>## [1] -0.4040338</code></pre>
+<p>To get the confidence interval for the proportion of variance (r², or η², or partial η²) in a fixed factor analysis of variance we need the ci.pvaf function. We need to specify the F-value, degrees of freedom, the sample size, and the confidence level.</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="effectsizesCI.html#cb61-1"></a><span class="kw">ci.pvaf</span>(<span class="dt">F.value=</span><span class="fl">5.72</span>, <span class="dt">df.1=</span><span class="dv">1</span>, <span class="dt">df.2=</span><span class="dv">198</span>, <span class="dt">N=</span><span class="dv">200</span>, <span class="dt">conf.level=</span>.<span class="dv">90</span>)</span></code></pre></div>
+<pre><code>## $Lower.Limit.Proportion.of.Variance.Accounted.for
+## [1] 0.002600261
+## 
+## $Probability.Less.Lower.Limit
+## [1] 0.05
+## 
+## $Upper.Limit.Proportion.of.Variance.Accounted.for
+## [1] 0.07563493
+## 
+## $Probability.Greater.Upper.Limit
+## [1] 0.05
+## 
+## $Actual.Coverage
+## [1] 0.9</code></pre>
+<p>For within designs, the MBESS package returns an error. For example:</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="effectsizesCI.html#cb63-1"></a><span class="kw">ci.pvaf</span>(<span class="dt">F.value =</span> <span class="fl">25.73</span>, <span class="dt">df.1 =</span> <span class="dv">2</span>, <span class="dt">df.2 =</span> <span class="dv">28</span>, <span class="dt">N =</span> <span class="dv">18</span>, <span class="dt">conf.level =</span> <span class="fl">0.9</span>)</span></code></pre></div>
+<pre><code>## Error in ci.pvaf(F.value = 25.73, df.1 = 2, df.2 = 28, N = 18, conf.level = 0.9): N must be larger than df.1+df.2</code></pre>
+<p>This error is correct in between-subjects designs (where the sample size is larger than the degrees of freedom) but this is not true in within-designs (where the sample size is smaller than the degrees of freedom for many of the tests). Thankfully, Ken Kelley (who made the MBESS package) helped me out in an e-mail by pointing out you could just use the R Code within the ci.pvaf function and adapt it. Just change the F-value, confidence level, and the df.1 and df.2.</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="effectsizesCI.html#cb65-1"></a>Lims &lt;-<span class="st"> </span><span class="kw">conf.limits.ncf</span>(<span class="dt">F.value =</span> <span class="dv">7</span>, <span class="dt">conf.level =</span> <span class="fl">0.90</span>, df<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="dv">4</span>, df<span class="fl">.2</span> &lt;-<span class="st"> </span><span class="dv">50</span>)</span>
+<span id="cb65-2"><a href="effectsizesCI.html#cb65-2"></a>Lower.lim &lt;-<span class="st"> </span>Lims<span class="op">$</span>Lower.Limit<span class="op">/</span>(Lims<span class="op">$</span>Lower.Limit <span class="op">+</span><span class="st"> </span>df<span class="fl">.1</span> <span class="op">+</span><span class="st"> </span>df<span class="fl">.2</span> <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</span>
+<span id="cb65-3"><a href="effectsizesCI.html#cb65-3"></a>Upper.lim &lt;-<span class="st"> </span>Lims<span class="op">$</span>Upper.Limit<span class="op">/</span>(Lims<span class="op">$</span>Upper.Limit <span class="op">+</span><span class="st"> </span>df<span class="fl">.1</span> <span class="op">+</span><span class="st"> </span>df<span class="fl">.2</span> <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</span>
+<span id="cb65-4"><a href="effectsizesCI.html#cb65-4"></a>Lower.lim</span></code></pre></div>
+<pre><code>## [1] 0.1418798</code></pre>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="effectsizesCI.html#cb67-1"></a>Upper.lim</span></code></pre></div>
+<pre><code>## [1] 0.4630716</code></pre>
+</div>
+<div id="why-should-you-report-90-ci-for-eta-squared" class="section level3">
+<h3>
+<span class="header-section-number">5.5.5</span> Why should you report 90% CI for eta-squared?</h3>
+<p>You will see that in the code above I used a 90% CI for effect sizes calculated for an <em>F</em>-test. The reason for this is explained by <a href="http://core.ecu.edu/psyc/wuenschk/StatHelp/StatHelp.htm">Karl Wuensch</a>, a leader in the field of applied statistics education, who has gone out of his way to explain this in a very clear document, including examples, <a href="http://core.ecu.edu/psyc/wuenschk/docs30/CI-Eta2-Alpha.doc">which you can find here</a>. If you don’t want to read it, you should know that while Cohen’s d can be both positive and negative, r² or η² are squared, and can therefore only be positive. This is related to the fact that <em>F</em>-tests (as commonly used in ANOVA) are one-sided. If you calculate a 95% CI, you can get situations where the confidence interval includes 0, but the test reveals a statistical difference with a <em>p</em> &lt; .05 (for a more mathematical explanation, see <span class="citation">Steiger (<label for="tufte-mn-64" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-64" class="margin-toggle">2004<span class="marginnote">Steiger, J. H. (2004). Beyond the F Test: Effect Size Confidence Intervals and Tests of Close Fit in the Analysis of Variance and Contrast Analysis. <em>Psychological Methods</em>, <em>9</em>(2), 164–182. <a href="https://doi.org/10.1037/1082-989X.9.2.164">https://doi.org/10.1037/1082-989X.9.2.164</a></span>)</span>. This means that a 95% CI around Cohen’s d equals a 90% CI around η² for exactly the same test.</p>
+<p>As a final detail, because eta-squared cannot be smaller than zero, the lower bound for the confidence interval can not be smaller than 0. This means that a confidence interval for an effect that is not statistically different from 0 has to start at 0. You report such a CI as 90% CI [.00; .XX] where the XX is the upper limit of the CI.</p>
+
+</div>
+</div>
+</div></body></html>
+
+<p style="text-align: center;">
+<a href="errorcontrol.html"><button class="btn btn-default">Previous</button></a>
+<a href="equivalencetest.html"><button class="btn btn-default">Next</button></a>
+</p>
+<p class="build-date">Page built: 
+2020-08-15
+</p>
+</div>
+</div>
+
+<div class="row" style="padding-top: 2em;">
+<p style="text-align: center">
+<img src="images/logo.png" style="width: 100px; padding: 0; display: inline; vertical-align: top">
+<span style="display: inline-block; margin-left: 2em; margin-top: 16px; font-size: small">
+<span style="font-weight: bold;">Daniel Lakens</span><br/>
+<a href="https://statistical-inferences.com">statistical-inferences.com</a><br/>
+page built  2020-08-15 13:49:00
+</span>
+</p>
+</div>
+
+
+</body>
+</html>

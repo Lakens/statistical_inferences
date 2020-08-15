@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="1 What is a p-value | Improving Your Statistical Inferences" />
+<meta property="og:type" content="book" />
+<meta property="og:url" content="http://themethodsection.com/ebook/" />
+<meta property="og:image" content="http://themethodsection.com/ebook/images/cover.jpg" />
+<meta property="og:description" content="Online textbook to Improve Your Statistical Inferences" />
+
+
+<meta name="author" content="Daniel Lakens" />
+
+<meta name="date" content="2020-08-15" />
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+
+<meta name="description" content="Online textbook to Improve Your Statistical Inferences">
+
+<title>1 What is a p-value | Improving Your Statistical Inferences</title>
+
+<link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
+<link href="libs/tufte-css-2015.12.29/envisioned.css" rel="stylesheet" />
+<link href="libs/msmb-css-0/msmb.css" rel="stylesheet" />
+<script>
+function toggle_visibility(id1, id2) {
+var e = document.getElementById(id1);
+var f = document.getElementById(id2);
+
+e.style.display = ((e.style.display!='none') ? 'none' : 'block');
+
+if(f.classList.contains('fa-plus-square')) {
+    f.classList.add('fa-minus-square')
+    f.classList.remove('fa-plus-square')
+} else {
+    f.classList.add('fa-plus-square')
+    f.classList.remove('fa-minus-square')
+}
+
+}
+</script>
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" href="center.css" type="text/css" />
+<link rel="stylesheet" href="custom-msmbstyle.css" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="index.html">Welcome</a>
+<a href="contents.html">Contents</a>
+<a href="preface.html">Preface</a>
+<a href="introduction.html">Introduction</a>
+<a id="active-page" href="pvalue.html"><span class="toc-section-number">1</span> What is a <em>p</em>-value</a><ul class="toc-sections">
+<li class="toc"><a href="#what-is-a-p-value"> What is a <em>p</em>-value?</a></li>
+<li class="toc"><a href="#NA"> Fisher vs. Neyman</a></li>
+<li class="toc"><a href="#preventing-common-misconceptions-about-p-values"> Preventing common misconceptions about <em>p</em>-values</a></li>
+<li class="toc"><a href="#which-p-values-can-you-expect"> Which <em>p</em>-values can you expect?</a></li>
+</ul>
+<a href="power.html"><span class="toc-section-number">2</span> Sample size justification</a>
+<a href="questions.html"><span class="toc-section-number">3</span> Asking Statistical Questions</a>
+<a href="errorcontrol.html"><span class="toc-section-number">4</span> Error Control</a>
+<a href="effectsizesCI.html"><span class="toc-section-number">5</span> Effect Sizes and Confidence Intervals</a>
+<a href="equivalencetest.html"><span class="toc-section-number">6</span> Equivalence Testing</a>
+<a href="severity.html"><span class="toc-section-number">7</span> Severe Tests and Risky Predictions</a>
+<a href="sesoi.html"><span class="toc-section-number">8</span> Smallest Effect Size of Interest</a>
+<a href="meta.html"><span class="toc-section-number">9</span> Meta-analysis</a>
+<a href="bias.html"><span class="toc-section-number">10</span> Bias detection</a>
+<a href="computationalreproducibility.html"><span class="toc-section-number">11</span> Computational Reproducibility</a>
+<a href="prereg.html"><span class="toc-section-number">12</span> Preregistration and Transparency</a>
+<a href="bayes.html"><span class="toc-section-number">13</span> Bayesian statistics</a>
+<a href="sequential.html"><span class="toc-section-number">14</span> Sequential Analysis</a>
+<a href="references.html"><span class="toc-section-number">15</span> References</a>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body><div id="pvalue" class="section level1">
+<h1>
+<span class="header-section-number">1</span> What is a <em>p</em>-value</h1>
+<p>For decades statisticians have complained about how researchers misunderstand <em>p</em>-values. Rozeboom (1997) has referred to null hypothesis significance testing (NHST) as “surely the most bone-headedly misguided procedure ever institutionalized in the rote training of science students” (p. 335). And still, here we are, as part of your rote training, teaching you about <em>p</em>-values and hypothesis tests.</p>
+<p>One of the biggest problems with <em>p</em>-values is that the people who use them typically don’t understand how to interpret <em>p</em>-values. I think one reason that <em>p</em>-values are commonly misunderstood is that teachers rarely take enough time to really explain what they mean. Probabilities are not intuitive. If we expect people to truly understand what <em>p</em>-values mean, we should probably repeatedly explain the probability they express until it clicks. So here we go!</p>
+<div id="what-is-a-p-value" class="section level2">
+<h2>
+<span class="header-section-number">1.1</span> What is a <em>p</em>-value?</h2>
+<p>
+<span class="marginnote shownote">
+<!--
+<div class="figure">--><span id="fig:worship"></span>
+<img src="images/worship.jpg" alt="Scientists have a tendency to worship *p*-values below a value of 0.05." width="237"><!--
+<p class="caption marginnote">-->Figure 1.1: Scientists have a tendency to worship <em>p</em>-values below a value of 0.05.<!--</p>-->
+<!--</div>--></span>
+</p>
+<p>When testing predictions in empirical research, researchers often report whether their results are statistically different from 0. For example, a researcher might be interested in whether the use of a cell-phone increases the likelihood of getting into a car accident compared to not using a cell phone. A researcher might ask one group of individuals to use cell phones while driving in a driving simulator, while a control group does not use cell phones. The researcher might predict cell phone users get into more accidents, and test this prediction by comparing whether the difference between the two groups in the experiment is statistically different from zero. This is typically referred to as null-hypothesis significance testing (NHST). The ‘significance’ part of this name is a misnomer: what we understand as the ‘significance’ of a finding in normal English depends on its theoretical or practical importance and has very little to do with statistics. Instead, we will therefore refer to such tests as ‘null-hypothesis testing’, and use ‘statistical difference’ for what is sometimes referred to in the literature as a ‘significant finding’ or a ‘statistically significant finding’.</p>
+<p>Assume we ask two groups of 10 people how much they liked the extended directors cut version of the Lord of the Rings (LOTR) trilogy. The first group consists of my friends, and the second groups consists of friends of my wife. Our friends rate the trilogy on a score from 1 to 10. We can calculate the average rating by my friends, which is 8.7, and the average rating by my wife’s friends, which is 7.7. The difference is 1.</p>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<col width="120">
+<col width="80">
+<col width="80">
+<caption>
+<span id="tab:friends">Table 1.1: </span>Ratings for the Lord of the Rings extended trilogy by two groups of friends.
+</caption>
+<thead><tr>
+<th style="text-align:left;">
+friends
+</th>
+<th style="text-align:right;">
+myfriends
+</th>
+<th style="text-align:right;">
+mywifesfriends
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+friend_1
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+friend_2
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+friend_3
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+friend_4
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+friend_5
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+friend_6
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+friend_7
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+friend_8
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+friend_9
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+friend_10
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+7
+</td>
+</tr>
+</tbody>
+</table>
+<p>To get these data in a data frame in R, we use the code:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="pvalue.html#cb1-1"></a>friends &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"friend_1"</span>,<span class="st">"friend_2"</span>,<span class="st">"friend_3"</span>,<span class="st">"friend_4"</span>,<span class="st">"friend_5"</span>,<span class="st">"friend_6"</span>,<span class="st">"friend_7"</span>,<span class="st">"friend_8"</span>,<span class="st">"friend_9"</span>,<span class="st">"friend_10"</span>)</span>
+<span id="cb1-2"><a href="pvalue.html#cb1-2"></a>friends_daniel =<span class="st"> </span><span class="kw">c</span>(<span class="dv">9</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">9</span>,<span class="dv">9</span>)</span>
+<span id="cb1-3"><a href="pvalue.html#cb1-3"></a>friends_kyra =<span class="st"> </span><span class="kw">c</span>(<span class="dv">9</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">7</span>,<span class="dv">9</span>,<span class="dv">8</span>,<span class="dv">8</span>,<span class="dv">8</span>,<span class="dv">7</span>)</span>
+<span id="cb1-4"><a href="pvalue.html#cb1-4"></a>df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(friends,friends_daniel,friends_kyra)</span></code></pre></div>
+<p>Let’s first look at the data by plotting it.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="pvalue.html#cb2-1"></a><span class="co"># Get data frame in long format for plotting</span></span>
+<span id="cb2-2"><a href="pvalue.html#cb2-2"></a>df_long &lt;-<span class="st"> </span><span class="kw">gather</span>(df, daniel_kyra, rating, friends_daniel<span class="op">:</span>friends_kyra, <span class="dt">factor_key=</span><span class="ot">TRUE</span>)</span>
+<span id="cb2-3"><a href="pvalue.html#cb2-3"></a></span>
+<span id="cb2-4"><a href="pvalue.html#cb2-4"></a><span class="co"># Plot the data</span></span>
+<span id="cb2-5"><a href="pvalue.html#cb2-5"></a><span class="kw">ggplot</span>(df_long, <span class="kw">aes</span>(<span class="dt">x=</span>rating, <span class="dt">fill=</span>daniel_kyra)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>(<span class="dt">alpha=</span>.<span class="dv">3</span>) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</span></code></pre></div>
+<p><img src="Statistical_Inferences_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
+<p>We can also summarise the data and look at the means, sd, and sample size per group:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="pvalue.html#cb3-1"></a><span class="kw">summarise</span>(<span class="kw">group_by</span>(df_long, daniel_kyra),</span>
+<span id="cb3-2"><a href="pvalue.html#cb3-2"></a>          <span class="dt">mean =</span> <span class="kw">mean</span>(rating), <span class="dt">sd =</span> <span class="kw">sd</span>(rating), <span class="dt">n =</span> <span class="kw">n</span>(), </span>
+<span id="cb3-3"><a href="pvalue.html#cb3-3"></a>          <span class="dt">.groups =</span> <span class="st">'drop'</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 2 x 4
+##   daniel_kyra     mean    sd     n
+##   &lt;fct&gt;          &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;
+## 1 friends_daniel   8.7 0.823    10
+## 2 friends_kyra     7.7 0.949    10</code></pre>
+<p>We can see the groups overlap to a certain extent, but the mean ratings differ by 1 whole point, so there is also some non-overlap. The question we are no faced with is the following: Is the difference between the two groups just random variation, or can we conclude my friends really like the extended directors cut of the Lord of the Rings (LOTR) trilogy more than my wife’s friends?</p>
+<p>In null-hypothesis testing we try to answer this question by calculating the probability of observing a specific, or more extreme, outcome of a test (i.e., a difference in movie ratings of 1 point or more) assuming that the null hypothesis is true (i.e., there is no real difference between how much my friends and my wife’s friends like the extended directors cut of LOTR). This probability is called the <em>p</em>-value.</p>
+<p>The null-hypothesis assumes that if we would ask an infinite number of my friends and an infinite number of my wife’s friends how much they like LOTR, the difference between these huge groups is exactly 0. However, in a small sample of my friends and my wife’s friends (say 10 friends in each group), random variation is very likely to lead to a difference larger or smaller than 0. How do we know whether an observed difference is due to random variation around a difference of 0, or whether an observed difference is due to random variation around a real difference between our friends?</p>
+<p>To answer this question we need to know is what constitutes a reasonable expectation about how much the differences between groups can vary, if we would repeatedly ask samples of groups of friends to rate LOTR. When we compare two groups, we use the means, standard deviations, and number of observations in each group to calculate the <em>t</em>-statistic.</p>
+<p>With the means (<em>M</em>), standard deviations (<em>SD</em>) and sample size (<em>N</em>) for each of the two groups from the Table above we can examine the probability that the difference between the two groups is larger than 0, given the data we have available. This is done by calculating the <em>t</em>-statistic, which is related to a probability (a <em>p</em>-value) of getting the observed or a more extreme <em>t</em>-statistic in the <em>t</em>-distribution. The <em>t</em>-distribution describes samples drawn from a population. It is similar to the normal distribution (which describes the entire population). Because the <em>t</em>-distribution describes the probability density function for a specific sample, the shape depends on the sample size. The larger the sample, the more similar the <em>t</em>-distribution becomes to the normal distribution. Below, you can see the normal distribution (with M = 0 and SD = 1) in black, and the <em>t</em>-distribution for 10 and 5 degrees of freedom. We can see the <em>t</em>-distribution has somewhat thicker tails than the normal distribution.</p>
+<p><img src="Statistical_Inferences_files/figure-html/normal-vs-t-1.png" width="672"></p>
+<p>Now we have a probability density function to compare our <em>t</em>-statistic against, all we need to do is to perform the <em>t</em>-test. R by default performs Welch’s <em>t</em>-test, which does not assume equal variances, instead of Student’s <em>t</em>-test, which does. This is a sensible default <span class="citation">(Delacre et al., <label for="tufte-mn-1" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-1" class="margin-toggle">2017<span class="marginnote">Delacre, M., Lakens, D., &amp; Leys, C. (2017). Why Psychologists Should by Default Use Welch’s <em>t</em>-test Instead of Student’s <em>t</em>-test. <em>International Review of Social Psychology</em>, <em>30</em>(1). <a href="https://doi.org/10.5334/irsp.82">https://doi.org/10.5334/irsp.82</a></span>)</span>.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="pvalue.html#cb5-1"></a><span class="kw">t.test</span>(rating <span class="op">~</span><span class="st"> </span>daniel_kyra, <span class="dt">data =</span> df_long)</span></code></pre></div>
+<pre><code>## 
+## 	Welch Two Sample t-test
+## 
+## data:  rating by daniel_kyra
+## t = 2.5175, df = 17.65, p-value = 0.02172
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  0.1642993 1.8357007
+## sample estimates:
+## mean in group friends_daniel   mean in group friends_kyra 
+##                          8.7                          7.7</code></pre>
+<p>The <em>t</em>-value is 2.5175. The <em>t</em>-test returns the probability of finding a difference as extreme, or more extreme, as the observed difference. We can graph the <em>t</em>-distribution (for df = 18) and a vertical line at t = 2.5175 in R using:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="pvalue.html#cb7-1"></a>x &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="dt">length =</span> <span class="dv">1000</span>)</span>
+<span id="cb7-2"><a href="pvalue.html#cb7-2"></a><span class="kw">plot</span>(x, <span class="kw">dt</span>(x, <span class="dt">df =</span> <span class="dv">18</span>), <span class="dt">col =</span> <span class="st">"black"</span>, <span class="dt">type =</span> <span class="st">"l"</span>,</span>
+<span id="cb7-3"><a href="pvalue.html#cb7-3"></a>     <span class="dt">xlab =</span> <span class="st">"t-value"</span>, <span class="dt">ylab =</span> <span class="st">""</span>, <span class="dt">main =</span> <span class="st">"t-distribution"</span>)</span>
+<span id="cb7-4"><a href="pvalue.html#cb7-4"></a><span class="kw">abline</span>(<span class="dt">v =</span> <span class="fl">2.5175</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb7-5"><a href="pvalue.html#cb7-5"></a>x &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="fl">2.5175</span>, <span class="dv">5</span>, <span class="dt">length =</span> <span class="dv">100</span>)</span>
+<span id="cb7-6"><a href="pvalue.html#cb7-6"></a>z &lt;-<span class="st"> </span>(<span class="kw">dt</span>(x, <span class="dt">df =</span> <span class="dv">18</span>))</span>
+<span id="cb7-7"><a href="pvalue.html#cb7-7"></a><span class="kw">polygon</span>(<span class="kw">c</span>(<span class="fl">2.5175</span>, x, <span class="dv">8</span>), <span class="kw">c</span>(<span class="dv">0</span>, z, <span class="dv">0</span>), <span class="dt">col =</span> <span class="kw">rgb</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.5</span>))</span></code></pre></div>
+<p><img src="Statistical_Inferences_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
+<p>Let’s recall the definition of a <em>p</em>-value: A <em>p</em>-value is the probability of the observed or more extreme data, assuming the null hypothesis is true. The assumption that the null-hypothesis is true is represented by the <em>t</em>-distribution being centered around 0, which is the <em>t</em>-value if the difference between the two groups is exactly 0. The probability of an outcome as high, or higher, as the one observed, is indicated by the blue area. This is known as a one-tailed probability. It is equivalent to the probability that my friends like the extended directors cut of LOTR more than my wife’s friends.</p>
+<p>However, that wasn’t my question. My question was whether my friends and my wife’s friends would differ in how much they liked the LOTR movies. It would have been just as interesting to find my friends liked the movies less than my wife’s friends. Since many of my friends have read the book more than 20 times, and it’s often the case that people like the book better than the movie, an opposite outcome would have been just as likely. Furthermore, there has only been one person in my family who has been to a marathon movie night in the cinema when the third LOTR movie came out, and it wasn’t me. So let’s plot the probability that we found a positive or negative difference, as or more extreme as the one observed (the two-tailed probability). Let’s plot this:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="pvalue.html#cb8-1"></a>x &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="dt">length =</span> <span class="dv">100</span>)</span>
+<span id="cb8-2"><a href="pvalue.html#cb8-2"></a><span class="kw">plot</span>(x, <span class="kw">dt</span>(x, <span class="dt">df =</span> <span class="dv">18</span>), <span class="dt">col =</span> <span class="st">"black"</span>, <span class="dt">type =</span> <span class="st">"l"</span>, <span class="dt">xlab =</span> <span class="st">"t-value"</span>, <span class="dt">ylab =</span> <span class="st">""</span>, <span class="dt">main =</span> <span class="st">"t-distribution"</span>)</span>
+<span id="cb8-3"><a href="pvalue.html#cb8-3"></a><span class="kw">abline</span>(<span class="dt">v =</span> <span class="fl">2.5175</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb8-4"><a href="pvalue.html#cb8-4"></a><span class="kw">abline</span>(<span class="dt">v =</span> <span class="fl">-2.5175</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb8-5"><a href="pvalue.html#cb8-5"></a><span class="kw">abline</span>(<span class="dt">v =</span> <span class="fl">-2.100922</span>, <span class="dt">col =</span> <span class="st">"grey"</span>, <span class="dt">lty =</span> <span class="dv">3</span>)</span>
+<span id="cb8-6"><a href="pvalue.html#cb8-6"></a><span class="kw">abline</span>(<span class="dt">v =</span> <span class="fl">2.100922</span>, <span class="dt">col =</span> <span class="st">"grey"</span>, <span class="dt">lty =</span> <span class="dv">3</span>)</span>
+<span id="cb8-7"><a href="pvalue.html#cb8-7"></a>x &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="fl">2.5175</span>, <span class="dv">5</span>, <span class="dt">length =</span> <span class="dv">100</span>)</span>
+<span id="cb8-8"><a href="pvalue.html#cb8-8"></a>z &lt;-<span class="st"> </span>(<span class="kw">dt</span>(x, <span class="dt">df =</span> <span class="dv">18</span>))</span>
+<span id="cb8-9"><a href="pvalue.html#cb8-9"></a><span class="kw">polygon</span>(<span class="kw">c</span>(<span class="fl">2.5175</span>, x, <span class="dv">8</span>), <span class="kw">c</span>(<span class="dv">0</span>, z, <span class="dv">0</span>), <span class="dt">col =</span> <span class="kw">rgb</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.5</span>))</span>
+<span id="cb8-10"><a href="pvalue.html#cb8-10"></a>x &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">5</span>, <span class="fl">-2.5175</span>, <span class="dt">length =</span> <span class="dv">100</span>)</span>
+<span id="cb8-11"><a href="pvalue.html#cb8-11"></a>z &lt;-<span class="st"> </span>(<span class="kw">dt</span>(x, <span class="dt">df =</span> <span class="dv">18</span>))</span>
+<span id="cb8-12"><a href="pvalue.html#cb8-12"></a><span class="kw">polygon</span>(<span class="kw">c</span>(<span class="op">-</span><span class="dv">8</span>, x, <span class="fl">-2.5175</span>), <span class="kw">c</span>(<span class="dv">0</span>, z, <span class="dv">0</span>), <span class="dt">col =</span> <span class="kw">rgb</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.5</span>))</span></code></pre></div>
+<p><img src="Statistical_Inferences_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
+<p>I have plotted two critical values by horizontal grey dotted lines, which indicate the critical <em>t</em>-values for a difference to be significant (<em>p</em> &lt; .05) for a <em>t</em>-distribution with 18 degrees of freedom. We can see that the observed difference is more extreme than the minimal critical values. However, we want to know what the exact probability of the two blue areas under the curve is. The <em>t</em>-test already provided us with the information, but let’s calculate it. For the left tail, the probability of a value smaller than <em>t</em> = -2.5175 can be found by:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="pvalue.html#cb9-1"></a><span class="kw">pt</span>(<span class="op">-</span><span class="fl">2.5175</span>, <span class="dt">df =</span> <span class="dv">18</span>)</span></code></pre></div>
+<pre><code>## [1] 0.01075515</code></pre>
+<p>If we would simply change the sign on -2.5175, we would get the probability of a value smaller than 2.5175. What we want is the probability of a value higher than that, which equals:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="pvalue.html#cb11-1"></a><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pt</span>(<span class="fl">2.5175</span>, <span class="dt">df =</span> <span class="dv">18</span>)</span></code></pre></div>
+<pre><code>## [1] 0.01075515</code></pre>
+<p>This value is identical to the probability in the other tail because the <em>t</em>-distribution is symmetric. If we add these two probabilities together, we get <em>p</em> = 0.02151. This is the same as the <em>p</em>-value provided by the <em>t</em>-test we performed earlier returned.</p>
+<p><em>For a video lecture on this topic, see:</em></p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/RVxHlsIw_Do" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+</div>
+<div id="fisher-vs.-neyman" class="section level2">
+<h2>
+<span class="header-section-number">1.2</span> Fisher vs. Neyman</h2>
+<p>The correct definition of a <em>p</em>-value is the probability of observing the sample data, or more extreme data, assuming the null hypothesis is true. The interpretation of a <em>p</em>-value depends on the statistical philosophy one subscribes to. In a Fisherian framework a <em>p</em>-value is interpreted as a continuous measure of compatibility between the observed data and the null-hypothesis <span class="citation">(Greenland et al., <label for="tufte-mn-2" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-2" class="margin-toggle">2016<span class="marginnote">Greenland, S., Senn, S. J., Rothman, K. J., Carlin, J. B., Poole, C., Goodman, S. N., &amp; Altman, D. G. (2016). Statistical tests, P values, confidence intervals, and power: A guide to misinterpretations. <em>European Journal of Epidemiology</em>, <em>31</em>(4), 337–350. <a href="https://doi.org/10.1007/s10654-016-0149-3">https://doi.org/10.1007/s10654-016-0149-3</a></span>)</span>. The compatibility of observed data with the null model falls between 1 (perfectly compatible) and 0 (extremely incompatible), and every individual can interpret the <em>p</em>-value with “statistical thoughtfulness”.</p>
+<p>In a Neyman-Pearson framework the goal of statistical tests is to guide the behavior of researchers with respect to a hypothesis. Based on the results of a statistical test, and without ever knowing whether the hypothesis is true or not, researchers choose to tentatively act as if the null hypothesis or the alternative hypothesis is true. In psychology, researchers often use an imperfect hybrid of the Fisherian and Neyman-Pearson frameworks, but the latter is, according to Dienes <span class="citation">Dienes (<label for="tufte-mn-3" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-3" class="margin-toggle">2008<span class="marginnote">Dienes, Z. (2008). <em>Understanding psychology as a science: An introduction to scientific and statistical inference</em>. Palgrave Macmillan.</span>)</span> “the logic underlying all the statistics you see in the professional journals of psychology”.</p>
+<p>When a Neyman-Pearson hypothesis test is performed the observed <em>p</em>-value is only used to check if it is smaller than the chosen alpha level, but it does not matter how much smaller it is. For example, if an alpha level of 0.01 is used, both a <em>p</em> = 0.006 and a <em>p</em> = 0.000001 lead the researchers to decide to act as if the state of the world is best described by the alternative hypothesis. A Neyman-Pearson hypothesis test is not concerned with quantifying the amount of evidence. As Neyman <span class="citation">(<label for="tufte-mn-4" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-4" class="margin-toggle">1957<span class="marginnote">Neyman, J. (1957). "Inductive Behavior" as a Basic Concept of Philosophy of Science. <em>Revue de L’Institut International de Statistique / Review of the International Statistical Institute</em>, <em>25</em>(1/3), 7. <a href="https://doi.org/10.2307/1401671">https://doi.org/10.2307/1401671</a></span>)</span> writes:</p>
+<blockquote>
+<p>The content of the concept of inductive behavior is the recognition that the purpose of every piece of serious research is to provide grounds for the selection of one of several contemplated courses of action.</p>
+</blockquote>
+<p>Intuitively, one might feel like decisions about how to act should not be based on the results of a single statistical test, and this point is often raised as a criticism of a Neyman-Pearson approach to statistical inferences. However, such criticisms rarely use the same definition of an ‘act’ as Neyman used. It is true that, for example, the decision to implement a new government policy should not be based on a single study result. However, Neyman considered making a scientific claim an ‘act’ as well, and wrote (1957, p. 10) that the concluding phase of a study involves:</p>
+<blockquote>
+<p>an act of will or a decision to take a particular action, perhaps to assume a particular attitude towards the various sets of hypotheses</p>
+</blockquote>
+<p>Cox <span class="citation">(<label for="tufte-mn-5" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-5" class="margin-toggle">1958<span class="marginnote">Cox, D. R. (1958). Some Problems Connected with Statistical Inference. <em>Annals of Mathematical Statistics</em>, <em>29</em>(2), 357–372. <a href="https://doi.org/10.1214/aoms/1177706618">https://doi.org/10.1214/aoms/1177706618</a></span>)</span> writes:</p>
+<blockquote>
+<p>it might be argued that in making an inference we are ‘deciding’ to make a statement of a certain type about the populations and that therefore, provided that the word decision is not interpreted too narrowly, the study of statistical decisions embraces that of inference. The point here is that one of the main general problems of statistical inference consists in deciding what types of statement can usefully be made and exactly what they mean.</p>
+</blockquote>
+<p>There is room to choose how to interpret a <em>p</em>-value, based on the philosophy of science you ascribe to. I follow a Neyman-Pearson framework.</p>
+</div>
+<div id="preventing-common-misconceptions-about-p-values" class="section level2">
+<h2>
+<span class="header-section-number">1.3</span> Preventing common misconceptions about <em>p</em>-values</h2>
+<p>A <em>p</em>-value is the probability of the observed data, or more extreme data, under the assumption that the null hypothesis is true. To understand what this means, it might be especially useful to know what this doesn’t mean. First, we need to know what ‘the assumption that the null hypothesis is true’ looks like, and which data we should expect if the null hypothesis is true. Although the null hypothesis can be any value, in this assignment we will assume the null hypothesis is specified as a mean difference of 0. For example, we might be interested in calculating the difference between a control condition and an experimental condition on a dependent variable.</p>
+<p>It is useful to distinguish the null hypothesis (the prediction that the mean difference in the population is exactly 0) and the null model (a model of the data we should expect when we collect data when the null hypothesis is true). The null hypothesis is a point at 0, but the null model is a distribution. It is visualized in textbooks or power analysis software using pictures as you can see below, with <em>t</em>-values on the horizontal axis, and a critical <em>t</em>-value somewhere between 1.96 – 2.00 (depending on the sample size). This is done because the statistical test when comparing two groups is based on the <em>t</em>-distribution, and the <em>p</em>-value is statistically significant when the <em>t</em>-value is larger than a critical <em>t</em>-value.</p>
+<p>I personally find things become a lot clearer if you plot the null model as mean differences instead of <em>t</em>-values. So below, you can see a null model for the mean differences we can expect when compare two groups of 50 observations where the true difference between the two groups is 0, and the standard deviation is in each group is 1<label for="tufte-sn-1" class="margin-toggle sidenote-number">1</label><input type="checkbox" id="tufte-sn-1" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">1</span> Because the standard deviation is 1, you can also interpret the mean differences as a Cohen’s d effect size. So this is also the distribution you can expect for a Cohen’s d of 0, when collecting 50 observations.</span></p>
+<p><img src="Statistical_Inferences_files/figure-html/fig.1.3.1-1.png" width="672"></p>
+<p>The first thing to notice is that we expect that the mean of the null model is 0. Looking at the x-axis, we see the plotted distribution is centered on 0. But even if the mean difference in the population is 0 that does not imply every sample we draw from the population will give a mean difference of exactly zero. There is variation around the population value, as a function of the standard deviation and the sample size.</p>
+<p>The y-axis of the graph represents the density, which provides an indication of the relative likelihood of measuring a particular value of a continuous distribution. We can see that the most likely mean difference is the true population value of zero, and that larger differences from zero become increasingly less likely. The graph has two areas that are colored red. These areas represent 2.5% of the most extreme values in the left tail of the distribution, and 2.5% of the most extreme values in the right tail of the distribution. Together, they make up 5% of the most extreme mean differences we would expect to observe, given our number of observations, when the true mean difference is exactly 0. When a mean difference in the red area is observed, the corresponding statistical test will be statistically significant at a 5% alpha level. In other words, not more than 5% of the observed mean differences will be far enough away from 0 to be considered surprising. Because the null hypothesis is true, observing a ‘surprising’ mean difference in the red areas is a Type 1 error.</p>
+<p>Let’s assume that the null model in the Figure above is true, and that we observe a mean difference of 0.5 between the two groups. This observed difference falls in the red area in the right tail of the distribution. This means that the observed mean difference is relatively surprising, under the assumption that the true mean difference is 0. If the true mean difference is 0, the probability density functions shows that we should not expect a mean difference of 0.5 very often. If we calculate a <em>p</em>-value for this observation, it would be lower than 5%. The probability of observing a mean difference that is at least far away from 0 as 0.5 (either to the left from the mean, or to the right, when we do a two-tailed test) is less than 5%.</p>
+<p>One reason why I prefer to plot the null model in raw scores instead of <em>t</em>-values is that you can see how the null model changes when the sample size increases. When we collect 5000 instead of 50 observations, we see the null model is still centered on 0 – but in our null model we now expect most values will fall very close around 0.</p>
+<p><img src="Statistical_Inferences_files/figure-html/fig.1.3.2-1.png" width="672"></p>
+<p>The distribution is much narrower because the distribution of mean differences is based on the standard error of the difference between means. This value is calculated based on the standard deviation and the sample size, as follows:</p>
+<p><span class="math inline">\(\sqrt{\frac{\sigma_{1}^{2}}{n_{1}}+\frac{\sigma_{2}^{2}}{n_{2}}}\)</span></p>
+<p>This formula shows that the standard deviations of each group (σ) are squared and divided by the sample size of that group, added together, after which the square root is taken. The larger the sample size the bigger the number we divide by, and thus the smaller standard error of the difference between means. In our n = 50 example this is:</p>
+<p><span class="math inline">\(\sqrt{\frac{1^{2}}{50}+\frac{1^{2}}{50}}\)</span></p>
+<p>The standard error of the differences between means is thus 0.2 for n = 50 in each group, and for n = 5000 it is 0.02. Assuming a normal distribution 95% of the observations fall between 1.96 SE. So for 50 samples per group, the mean differences should fall between -1.96 * 0.2 = -0.392, and +1.96 * 0.2 = 0.392, and we can see the red areas start from approximately -0.392 to 0.392 for n = 50. For 5000 samples per group, the mean differences should fall between -1.96 * 0.02, and +1.96 * 0.02; in other words between -0.0392 to 0.0392 for n = 5000. Due to the larger sample size with n = 5000 observations per group, we should expect to observe mean differences in our sample closer to 0 compared to our null model when we had only 50 observations.</p>
+<p>If we collected n = 5000, and we would again observe a mean difference of 0.5, it should be clear that this same difference is even more surprising than it was when we collected 50 observations. We are now almost ready to address common misconceptions about <em>p</em>-values, but before we can do this, we need to introduce a model of the data when the null is not true. If we are not sampling data from a model where the true mean difference is 0, what does our alternative model look like? Some software (such as G*power, see Figure <a href="pvalue.html#fig:gpower-screenshot">1.2</a>) will visualize both the null model (red curve) and the alternative model (blue curve) in their output:</p>
+<p>
+<span class="marginnote shownote">
+<!--
+<div class="figure">--><span id="fig:gpower-screenshot"></span>
+<img src="images/1.3.3.png" alt="Screenshot from Gpower software" width="656"><!--
+<p class="caption marginnote">-->Figure 1.2: Screenshot from Gpower software<!--</p>-->
+<!--</div>--></span>
+</p>
+<p>When we do a study, we rarely already know what the true mean difference is (if we already knew, why would we do the study?). But let’s assume there is an all-knowing entity. Following Paul Meehl, we will call this all-knowing entity ‘Omniscient Jones’. Before we collect our sample of 50 observations, Omniscient Jones already knows that the true mean difference in the population is 0.5. Again, we should expect some variation around 0.5 in this alternative model. The figure below shows the expected data pattern when the null hypothesis is true (now indicated by a grey line) and it shows an alternative model, assuming a true mean difference of 0.5 exists in the population (indicated by a black line).</p>
+<p><img src="Statistical_Inferences_files/figure-html/fig.1.3.4-1.png" width="672"></p>
+<p>But Omniscient Jones could have said the true difference was much larger. Let’s assume we do another study, but now before we collect our 50 observations, Omniscient Jones tells us that the true mean difference is 1.5. The null model does not change, but the alternative model now moves over to the right.</p>
+<p>You can play around with the alternative and null models in this online app: <a href="http://shiny.ieis.tue.nl/d_p_power/" class="uri">http://shiny.ieis.tue.nl/d_p_power/</a>. The app allows you to specify the sample size in each group of an independent <em>t</em>-test (from 2 to infinity), the mean difference (from 0 to 2), and the alpha level. In the plot, the red areas visualize Type 1 errors. The blue area visualizes the Type 2 error rate (which we will discuss below). The app also tells you the critical value: There is a vertical line (with n = 50 this line falls at a mean difference of 0.4) and a verbal label that says: “Effects larger than 0.4 will be statistically significant”. Note that the same is true for effects smaller than -0.4, even though there is no second label there, but the app shows the situation for a two-sided independent <em>t</em>-test.</p>
+<p>You can see that on the left of the vertical line that indicates the critical mean difference there is a blue area that is part of the alternative model. This is the Type 2 error rate (or 1 - the power of the study). If a study has 80% power, 80% of the mean differences we will observe should fall on the right of the critical value indicated by the line. If the alternative model is true, but we observe an effect smaller than the critical value, the observed <em>p</em>-value will be larger than 0.05, even when there is a true effect. You can check in the app that the larger the sample size, the further to the right the entire alternative distribution falls, and thus the higher the power. You can also see that the larger the sample size, the narrower the distribution, and the less of the distribution will fall below the critical value (as long as the true population mean is larger than the critical value). Finally, the larger the alpha level, the further to the left the critical mean difference moves, and the smaller the area of the alternative distribution that falls below the critical value.</p>
+<p>The app also plots 3 graphs that illustrate the power curves as a function of different alpha levels, sample sizes, or true mean differences. Play around in the app by changing the values. Get a feel for how each variable impacts the null- and alternative models, the mean difference that will be statistically significant, and the Type 1 and Type 2 error rates.</p>
+<p>So far, several aspects of null models should have become clear. First of all, the population value in a traditional null hypothesis is a value of 0, but in any sample you draw, the observed difference falls in a distribution centered on 0, and will thus most often be slightly larger or smaller than 0. Second, the width of this distribution depends on the sample size and the standard deviation. The larger the sample size in the study, the narrower the distribution will be around 0. Finally, when a mean difference is observed that falls in the tails of the null model, this can be considered surprising. The further away from the null-value, the more surprising this result is. But when the null model is true, these surprising values will happen with a probability specified by the alpha level (and are called Type 1 errors). Remember that a Type 1 error occurs when a researcher concludes there is a difference in the population, while the true mean difference in the population is zero.</p>
+<p>We are now finally ready to address some common misconceptions about <em>p</em>-values. Let’s go through a list of common misconceptions that have been reported in the scientific literature. Some of these examples might sounds like semantics. It is easy to at first glance think that the statement communicates the right idea, even if the written version is not formally correct. However, when a statement is not formally correct, it is wrong. And exactly because people so often misunderstand <em>p</em>-values, it is worth it to be formally correct about how they should be interpreted.</p>
+<div id="misconception1" class="section level3">
+<h3>
+<span class="header-section-number">1.3.1</span> Misunderstanding 1: A non-significant <em>p</em>-value means that the null hypothesis is true</h3>
+<p>A common version of this misconception is reading a sentence such as ‘because p &gt; 0.05 we can conclude that there is no effect’. Another version of such a sentence is ‘there was no difference, (p &gt; 0.05)’.</p>
+<p>Before we look at this misconception in some detail, I want to remind you of one fact that is easy to remember, and will enable you to recognize many misconceptions about <em>p</em>-values: <em>p</em>-values are a statement about the probability of data, not a statement about the probability of a hypothesis or the probability of a theory. Whenever you see <em>p</em>-values interpreted as a probability of a theory or a hypothesis, you know something is not right. Examples of statements about a hypothesis are ‘The null hypothesis is true’, or ‘The alternative hypothesis is true’, because both these statements say that the probability that the null or alternative model is true is 100%. A subtler version is a statement such as ‘the observed difference is not due to chance’. The observed difference is only ‘due to chance’ (instead of due to the presence of a real difference) when the null hypothesis is true, and as before, this statement implies it is 100% probable that the null hypothesis is true.</p>
+<p>When you conclude that ‘there is no effect’ or that ‘there is no difference’ you are similarly claiming that it is 100% probable that the null hypothesis is true. But since <em>p</em>-values are statements about the probability of data, you should refrain from making statements about the probability of a theory solely based on a <em>p</em>-value. That’s ok. <em>p</em>-values were designed to help you identify surprising results from a noisy data generation process (aka the real world). They were not designed to quantify the probability that a hypothesis is true.</p>
+<p>Let’s take a concrete example that will illustrate why a non-significant result does not mean that the null hypothesis is true. In the figure below, Omniscient Jones tells us the true mean difference is 0.5. We can see this, because the alternative distribution which visualized the probability of the mean differences we should expect when the null hypothesis is true is centered on 0.5. We have observed a mean difference of 0.35. This value is not extreme enough to be statistically different from 0. We can see this, because the value does not fall within the red area of the null model (and hence, the <em>p</em>-value is not smaller than our alpha level).</p>
+<p>Nevertheless, we see that observing a mean difference of 0.35 is not only quite likely given that the true mean difference is 0.5, but observing a mean difference of 0.35 is much more likely under the alternative model, than under the null model. You can see this by comparing the height of the density curve at a difference of 0.35 for the null model, which is approximately 0.5, and the height of the density curve for the alternative model, which is approximately 1.5.</p>
+<p><img src="Statistical_Inferences_files/figure-html/fig.1.3.6-1.png" width="672"></p>
+<p>All the <em>p</em>-value tells us is that a mean difference of 0.35 is not extremely surprising, if we assume the null hypothesis is true. There can be many reasons for this. In the real world, where we have no Omniscient Jones to tell us about the true mean difference, it is possible that there is a true effect, as illustrated in the figure above.</p>
+<p>So what should we say instead? The solution is subtle, but important. Let’s revisit the two examples of incorrect statements we made earlier. First, ‘because p &gt; 0.05 we can conclude that there is no effect’ is incorrect, because there might very well be an effect (and remember <em>p</em>-values are statements about data, not about the probability that there is an effect or is no effect). Fisher’s interpretation of a <em>p</em>-value was that we can conclude a rare event has happened, or that the null hypothesis is false (he writes literally: “Either an exceptionally rare chance has occurred, or the theory of random distribution is not true”). This might sound like it is a statement about the probability of a theory, but it is really just stating the two possible scenarios under which low <em>p</em>-values occur (when you have made a Type 1 error, or when the alternative hypothesis is true). Both remain possible, and we do not quantify the probability of either possible reality (e.g., we are not saying it is 95% probable that the null hypothesis is false). From a Neyman-Pearson perspective a p &gt; .05 means that we can not act as if the null hypothesis can be rejected, without maintaining our desired error rate of 5%.
+If you are interested in concluding an effect is absent, null hypothesis testing is not the tool to use. A null hypothesis test answers the question ‘can I reject the null hypothesis with a desired error rate’. If you can not do this, and p &gt; 0.05, no conclusion can be drawn based only on the <em>p</em>-value (remember the concept of 無 ‘mu’: the answer is neither yes nor no). Luckily, statistical approaches have been developed to ask questions about the absence of an effect such as equivalence testing, Bayes factors, and Bayesian estimation (see Harms &amp; Lakens, 2018, for an overview). In the assignment in week 6 we will learn about equivalence tests in more detail.
+The second incorrect statement was ‘there was no difference’’. This statement is somewhat easier to correct. You can instead write ‘there was no statistically significant difference’. Granted, this is a bit tautological, because you are basically saying that the <em>p</em>-value was larger than the alpha level in two different ways, but at least this statement is formally correct. The difference between ‘there was no difference’ and ‘there was no statistically significant difference’ might sound like semantics, but in the first case you are formally saying ‘the difference was 0’ while in the second you are saying ‘there was no difference large enough to yield a <em>p</em> &lt; .05’. Although I have never seen anyone do this, a more informative message might be ‘because given our sample size of 50 per group, and our alpha level of 0.05, only observed differences more extreme than 0.4 could be statistically significant, and our observed mean difference was 0.35, we could not reject the null hypothesis’. If this feels like a very unsatisfactory conclusion, remember that a null hypothesis test was not designed to draw interesting conclusions about the absence of effects – you will need to learn about equivalence tests to get a more satisfactory answers about null effects.</p>
+</div>
+<div id="misunderstanding-2-a-significant-p-value-means-that-the-null-hypothesis-is-false." class="section level3">
+<h3>
+<span class="header-section-number">1.3.2</span> Misunderstanding 2: A significant <em>p</em>-value means that the null hypothesis is false.</h3>
+<p>This is the opposite misconception from the one we discussed previously. Examples of incorrect statements based on this misconception are ‘<em>p</em> &lt; .05, therefore there is an effect’, or ‘there is a difference between the two groups, <em>p</em> &lt; .05’. As before, both these statements imply it is 100% probable that the null model is false, and an alternative model is true.</p>
+<p>As a simple example of why such extreme statements are incorrect, imagine we generate a series of numbers in R using the following command:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="pvalue.html#cb13-1"></a><span class="kw">rnorm</span>(<span class="dt">n =</span> <span class="dv">50</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>##  [1]  0.17531239 -0.46969821  0.98162765 -1.74086166 -0.09317256  0.07556326
+##  [7]  0.76595464 -1.35998323 -1.99998849  0.45742151 -1.25034367  0.66543573
+## [13]  0.56594337  1.42002950  0.92846520  0.23190450 -0.10432295  0.04868459
+## [19]  0.01038441 -0.69562210 -1.66605541  0.91552339 -0.45192513 -1.72235951
+## [25] -0.05789155 -0.56111763  2.72919715 -1.13217511  0.56249689  0.71802599
+## [31]  0.05433347  0.73050498  0.64507287  0.81005513 -0.19199176 -1.61850933
+## [37] -0.79823805 -2.92381709 -0.75563606 -1.93836587 -1.60023867 -0.40198088
+## [43] -1.05764779  0.28605132 -0.74220749  1.70073489 -1.20219443 -1.99916440
+## [49]  0.34304489  0.75117938</code></pre>
+<p>This command generates 50 random observations from a distribution with a mean of 0 and a standard deviation of 1 (in the long run – the mean and standard deviation will vary in each sample that is generated). Imagine we run this command once, and we observe a mean of 0.5. The figure below visualizes this scenario. We can perform a one-sample <em>t</em>-test against 0, and this test tells us, with a <em>p</em> &lt; .05, that the data we have observed is surprisingly different from 0, assuming the random number generator in R functions as it should and generates data with a true mean of 0.</p>
+<p><img src="Statistical_Inferences_files/figure-html/fig.1.3.7-1.png" width="672"></p>
+<p>The significant <em>p</em>-value does not allow us to conclude that the null hypothesis (“the random number generator works”) is false. It is true that the mean of the 50 samples we generated was surprisingly extreme. But a low <em>p</em>-value simply tells us that an observation is surprising. We should observe such surprising observations with a low probability when the null hypothesis is true – but they still happen. Therefore, a significant result does not mean an alternative hypothesis is true – the result can also be a Type 1 error, and in the example above, Omniscient Jones knows that this is the case.</p>
+<p>Let’s revisit the incorrect statement ‘<em>p</em> &lt; .05, therefore there is an effect’. A correct interpretation of a significant <em>p</em>-value requires us to acknowledge the possibility that our significant result might be a Type 1 error. Remember that Fisher would conclude that “Either an exceptionally rare chance has occurred, or the theory of random distribution is not true”. A correct interpretation in terms of Neyman Pearson statistics would be: “we can act as if the null hypothesis is false, and we would not be wrong more than 5% of the time in the long run”. Note the specific use of the word ‘act’, which does not imply anything about whether this specific hypothesis is true or false, but merely states that if we act as if the null-hypothesis is false any time we observe <em>p</em> &lt; alpha, we will not make an error more than alpha percent of the time.</p>
+<p>Both these formally correct statements are a bit long. In scientific articles, we often read a shorter statement such as: ‘we can reject the null hypothesis’, or ‘we can accept the alternative hypothesis’. These statements might be made with the assumption that readers will themselves add ‘with a 5% probability of being wrong, in the long run’. But it might be useful to add ‘with a 5% long run error rate’ at least the first time you make such a statement in your article to remind readers.</p>
+<p>In the example above we have a very strong subjective prior probability that the random number generator in R works. Alternative statistical procedures to incorporate such prior beliefs are Bayesian statistics (week 2) or false positive report probabilities (week 3). In frequentist statistics, the idea is that you need to replicate your study several times. You will observe a Type 1 error every now and then, but you are unlikely to observe a Type 1 error three times in a row. Alternatively, you can lower the alpha level in a single study to reduce the probability of a Type 1 error rate.</p>
+</div>
+<div id="misunderstanding-3-a-significant-p-value-means-that-a-practically-important-effect-has-been-discovered" class="section level3">
+<h3>
+<span class="header-section-number">1.3.3</span> Misunderstanding 3: A significant <em>p</em>-value means that a practically important effect has been discovered</h3>
+<p>A common concern when interpreting <em>p</em>-values is that ‘significant’ in normal language implies ‘important’, and thus a ‘significant’ effect is interpreted as an ‘important’ effect. However, the question whether an effect is important is completely orthogonal to the question whether it is different from zero, or even how large the effect is. Not all effects have practical impact. The smaller the effect, the less likely such effects will be noticed by individuals, but such effects might still have a large impact on a societal level. Therefore, the general take home message is that statistical significance does not answer the question whether an effect matters in practice, or is ‘practically important’. To answer the question whether an effect matters, you need to present a cost-benefit analysis.</p>
+<p>This issue of practical significance most often comes up in studies with a very large sample size. As we have seen before, with an increasing sample size, the width of the density distribution around the null-value becomes more and more narrow, and the values that are considered surprising fall closer and closer to zero.</p>
+<p>If we plot the null model for a very large sample size (e.g., n = 10000 per group) we see that even very small mean differences (differences more extreme than a mean difference of 0.04) will be considered ‘surprising’. This still means that if there really is no difference in the population, you will observe differences larger than 0.04 less than 5% of the time, in the long run, and 95% of the observed differences will be smaller than a mean difference of 0.04. But it becomes more difficult to argue for the practical significance of such effects. Imagine that a specific intervention is successful in changing people’s spending behavior, and when implementing some intervention people save 12 cents per year. It is difficult to argue how this effect will make any individual happier. However, if this money is combined, it will yield over 2 million, which could be used to treat diseases in developing countries, where it would have a real impact. The cost of the intervention might be considered too high if the goal is to make individuals happier, but it might be consider worthwhile if the goal is to raise 2 million for charity.</p>
+<p>Not all effects in psychology are additive (we can not combine or transfer an increase in happiness of 0.04 scale points), so it is often more difficult to argue for the importance of small effects in subjective feelings. A cost-benefit analysis might show small effects matter a lot, but whether or not this is the case can not be inferred from a <em>p</em>-value.</p>
+<p>Note that nothing about this is a problem with the interpretation of a <em>p</em>-value per se: A <em>p</em> &lt; 0.05 still correctly indicates that, if the null hypothesis is true, we have observed data that should be considered surprising. However, just because data is surprising, does not mean we need to care about it. It is mainly the verbal label ‘significant’ that causes confusion here – it is perhaps less confusing to think of a ‘significant’ effect as a ‘surprising’ effect, but not necessarily as an ‘important’ effect.</p>
+</div>
+<div id="misunderstanding-4-if-you-have-observed-a-significant-finding-the-probability-that-you-have-made-a-type-1-error-a-false-positive-is-5." class="section level3">
+<h3>
+<span class="header-section-number">1.3.4</span> Misunderstanding 4: If you have observed a significant finding, the probability that you have made a Type 1 error (a false positive) is 5%.</h3>
+<p>This misinterpretation is one possible explanation of the incorrect statement that a <em>p</em>-value is ‘the probability that the data are observed by chance.’ Assume we collect 20 observations, and Omniscient Jones tells us the null hypothesis is true (as in the example above where we generated random numbers in R). This means we are sampling from the distribution in the figure below.</p>
+<p><img src="Statistical_Inferences_files/figure-html/fig.1.3.8-1.png" width="672"></p>
+<p>If this is our reality, it means that 100% of the time that we observe a significant result, it is a false positive (or Type I error). Thus, 100% of our significant results are Type 1 errors.</p>
+<p>It is important to distinguish probabilities before collecting the data and analyzing the result, and probabilities after collecting data and analyzing the results. What the Type 1 error rate controls, is that from all studies we will perform in the future where the null hypothesis is true, not more than 5% of our observed mean differences will fall in the red tail areas. But after we have seen that our data falls in the tail areas with <em>p</em> &lt; alpha, and we know that the null hypothesis is true, these observed significant effects are always a Type 1 error. If you read carefully, you will notice that this misunderstanding is cause by differences in the question that is asked. “If I have observed a <em>p</em> &lt; .05, what is the probability that the null hypothesis is true?” is a different question than “If the null hypothesis is true, what is the probability of observing this (or more extreme) data”. Only the latter question is answered by a <em>p</em>-value. The first question can not be answered without making a subjective judgment about the probability that the null hypothesis is true prior to collecting the data (see the lectures on Bayesian statistics in week 2).</p>
+</div>
+<div id="misunderstanding-5-one-minus-the-p-value-is-the-probability-that-the-effect-will-replicate-when-repeated." class="section level3">
+<h3>
+<span class="header-section-number">1.3.5</span> Misunderstanding 5: One minus the <em>p</em>-value is the probability that the effect will replicate when repeated.</h3>
+<p>It is impossible to calculate the probability that an effect will replicate, based on only the <em>p</em>-value. The main reason for this is that we do not know the true mean difference. If we were Omniscient Jones, and we knew the true mean difference (e.g., a difference between the two groups of 0.5 scale points) we would know the statistical power of our test. The statistical power is the probability that we will find a significant result, if the alternative model is true (i.e. if there is a true effect). For example, reading the text in the left bar in the app, we see that with N = 50 per group, and alpha level of 0.05, and a true mean difference of 0.5, the probability of finding a significant result (or the statistical power) is 69.69%. If we would observe a significant effect in this scenario (e.g., <em>p</em> = 0.03) it is not true that there is a 97% probability that an exact replication of the study (with the same sample size) would again yield a significant effect. The probability that a study yields a significant effect is determined by the statistical power - not by the <em>p</em>-value in a previous study.
+What we can generally take away from this last misunderstanding is the fact that the probability of replication depends on the presence versus the absence of a true effect. In other words, as stated above, if a true effect exists then the level of statistical power informs us about how frequently we should yield a significant result (e.g., 80% power means we should observe significant result 80% of the time). On the other hand, if the effect is null (or non-existent) then significant results will be observed only 5% of the time in the long run (i.e. the Type 1 error rate given an alpha of 0.05). Therefore, either the statistical power or the alpha level equals the probability of replication, depending on if there is or isn’t a true effect.</p>
+</div>
+</div>
+<div id="which-p-values-can-you-expect" class="section level2">
+<h2>
+<span class="header-section-number">1.4</span> Which <em>p</em>-values can you expect?</h2>
+<p>Which <em>p</em>-values can you expect to observe if there is a true effect, and you repeat the same study one-hundred thousand times? And which <em>p</em>-values can you expect if there is no true effect, and you repeat the same study one-hundred thousand times? Take a moment to try to answer these two questions for yourself, before you will learn the answer in this assignment.</p>
+<p>In your life, you might never do enough studies to get a feel for which <em>p</em>-values you should expect Luckily, we can easily simulate studies, calculate a <em>p</em>-value for each simulated study, and see what happens. Understanding which <em>p</em>-values you can expect is very important, because it will help you to better interpret <em>p</em>-values.</p>
+<p>Which <em>p</em>-values you can expect is completely determined by the statistical power of the study, or the probability that you will observe a significant effect, if there is a true effect. The statistical power ranges from 0 to 1. We can illustrate this by simulating one-sample <em>t</em>-tests. The idea is that we simulate IQ scores for a group of people. We know the standard deviation of IQ scores is 15. For now, we will set the mean IQ score in the simulated group to 106, which we will compare to the average IQ score of all people (which is known to be 100 – that’s how IQ tests are normalized). We are testing if the people in our simulated sample have an IQ that differs from the average (and we know the correct answer is ‘yes’, because we made it so in the simulation).</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="pvalue.html#cb15-1"></a><span class="co">#Set number of simulations</span></span>
+<span id="cb15-2"><a href="pvalue.html#cb15-2"></a>nSims &lt;-<span class="st"> </span><span class="dv">100000</span> <span class="co">#number of simulated experiments</span></span>
+<span id="cb15-3"><a href="pvalue.html#cb15-3"></a></span>
+<span id="cb15-4"><a href="pvalue.html#cb15-4"></a>M&lt;-<span class="dv">106</span> <span class="co">#Mean IQ score in the sample (will be compared with 100 in a one-sample t-test)</span></span>
+<span id="cb15-5"><a href="pvalue.html#cb15-5"></a>n&lt;-<span class="dv">26</span> <span class="co">#set sample size</span></span>
+<span id="cb15-6"><a href="pvalue.html#cb15-6"></a>SD&lt;-<span class="dv">15</span> <span class="co">#SD of the simulated data</span></span>
+<span id="cb15-7"><a href="pvalue.html#cb15-7"></a><span class="co">#With a mean difference of 6, and SD of 15, and a sample size of 26, the test has 50% power)</span></span>
+<span id="cb15-8"><a href="pvalue.html#cb15-8"></a>  </span>
+<span id="cb15-9"><a href="pvalue.html#cb15-9"></a>p &lt;-<span class="kw">numeric</span>(nSims) <span class="co">#set up empty variable to store all simulated *p*-values</span></span>
+<span id="cb15-10"><a href="pvalue.html#cb15-10"></a>bars&lt;-<span class="dv">20</span></span>
+<span id="cb15-11"><a href="pvalue.html#cb15-11"></a><span class="co">#Run simulation</span></span>
+<span id="cb15-12"><a href="pvalue.html#cb15-12"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nSims){ <span class="co">#for each simulated experiment</span></span>
+<span id="cb15-13"><a href="pvalue.html#cb15-13"></a>  x&lt;-<span class="kw">rnorm</span>(<span class="dt">n =</span> n, <span class="dt">mean =</span> M, <span class="dt">sd =</span> SD) <span class="co">#Simulate data with specified mean, standard deviation, and sample size</span></span>
+<span id="cb15-14"><a href="pvalue.html#cb15-14"></a>  z&lt;-<span class="kw">t.test</span>(x, <span class="dt">mu=</span><span class="dv">100</span>) <span class="co">#perform the t-test against mu (set to value you want to test against)</span></span>
+<span id="cb15-15"><a href="pvalue.html#cb15-15"></a>  p[i]&lt;-z<span class="op">$</span>p.value <span class="co">#get the *p*-value and store it</span></span>
+<span id="cb15-16"><a href="pvalue.html#cb15-16"></a>}</span>
+<span id="cb15-17"><a href="pvalue.html#cb15-17"></a></span>
+<span id="cb15-18"><a href="pvalue.html#cb15-18"></a><span class="co">#Check power by summing significant *p*-values and dividing by number of simulations</span></span>
+<span id="cb15-19"><a href="pvalue.html#cb15-19"></a>(<span class="kw">sum</span>(p <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>)<span class="op">/</span>nSims) <span class="co">#power</span></span></code></pre></div>
+<p>In the simulation, we generate n = 26 normally distributed IQ scores with a mean of M (106 by default) and a standard deviation of 15. We then perform a one-sample <em>t</em>-test and store the <em>p</em>-value. If we would plot the distribution of</p>
+<div class="figure">
+<span id="fig:pdistr1"></span>
+<p class="caption marginnote shownote">
+Figure 1.3: Distribution of <em>p</em>-values when power = 50%.
+</p>
+<img src="Statistical_Inferences_files/figure-html/pdistr1-1.png" alt="Distribution of *p*-values when power = 50%." width="672">
+</div>
+<p>On the x-axis we see <em>p</em>-values from 0 to 1 in 20 bars, and on the y-axis we see how frequently these <em>p</em>-values were observed. There is a horizontal red dotted line that indicates an alpha of 5% (located at a frequency of 100.000*0.05 = 5000) – but you can ignore this line for now. In the title of the graph, the statistical power that is achieved in the simulated studies is given (assuming an alpha of 0.05): The studies have 50% power.
+<strong> <em>P</em>-value distribution when there is no effect</strong></p>
+<p>When there is no true effect, <em>p</em>-values are what is called ‘uniformly distributed under the null’. Every <em>p</em>-value is equally likely when the null hypothesis is true, and every bar in the graph will contain 5% of all the <em>p</em>-values (as indicated by the dotted red line). When there is no true effect, a <em>p</em>-value of 0.08 is just as likely as a <em>p</em>-value of 0.98. This is important to realize. When there is no true effect, <em>p</em>-values are uniformly distributed. When there is a true effect, the <em>p</em>-value distribution depends on the power, and the higher the power, the more <em>p</em>-values fall below 0.05, and the steeper the <em>p</em>-value distribution becomes.</p>
+<div class="figure">
+<span id="fig:pdistr2"></span>
+<p class="caption marginnote shownote">
+Figure 1.4: Distribution of <em>p</em>-values when power = 50%.
+</p>
+<img src="Statistical_Inferences_files/figure-html/pdistr2-1.png" alt="Distribution of *p*-values when power = 50%." width="672">
+</div>
+<div id="lindleys-paradox" class="section level3">
+<h3>
+<span class="header-section-number">1.4.1</span> Lindley’s paradox</h3>
+<p>Let’s take a look at just the <em>p</em>-values below 0.05. The goal of this section is to cure you from a bi-polar <em>p</em>-value disorder, where people incorrectly think all <em>p</em>-values &gt; 0.05 are support for the null-hypothesis, and all <em>p</em>-values below 0.05 are support for the alternative hypothesis. We will perform a similar simulation as above, but now with very high (99%) statistical power. We will plot the <em>p</em>-value distribution, just zooming in on <em>p</em>-values just below 0.05.</p>
+<div class="figure">
+<span id="fig:paradox"></span>
+<p class="caption marginnote shownote">
+Figure 1.5: <em>P</em>-value distribution for 99% power, where <em>p</em>-values just below 0.05 are more likely when H0 is true than when H1 is true
+</p>
+<img src="images/1.4.4.png" alt="*P*-value distribution for 99% power, where *p*-values just below 0.05 are more likely when H0 is true than when H1 is true" width="614">
+</div>
+<p>Look at the fifth bar from the left. This bar now contains all the <em>p</em>-values between 0.04 and 0.05. You will notice something peculiar. The grey line indicates the expected frequency in each bar, assuming the null hypothesis is true. See how the bar with <em>p</em>-values between 0.04 and 0.05 is lower than the grey line? We have simulated studies with 99% power. When power is very high, <em>p</em>-values between 0.04 and 0.05 are very rare – they occur less than 1% of the time (most <em>p</em>-values are smaller than 0.01). When the null hypothesis is true, <em>p</em>-values between 0.04 and 0.05 occur exactly 1% of the time (because <em>p</em>-values are uniformly distributed). Now ask yourself: When you have very high power, and you observe a <em>p</em>-value between 0.04 and 0.05, is it more likely that the null-hypothesis is true, or that the alternative hypothesis is true? Given that you are more likely to observe <em>p</em>-values between 0.04 and 0.05 when the null hypothesis is true, than when the alternative hypothesis is true, you should interpret a <em>p</em>-value significant with an alpha of 0.05 as more likely when the null hypothesis is true, than when the alternative hypothesis is true. I said I’d cure you from your bi-polar <em>p</em>-value disorder, didn’t I?</p>
+<p>In our simulations, we know there is a true effect or not, but in the real world, you don’t know. When you have very high power, use an alpha level of 0.05, and find a <em>p</em>-value of <em>p</em> = .045, the data is surprising, assuming the null hypothesis is true, but it is even more surprising, assuming the alternative hypothesis is true. This shows how a significant <em>p</em>-value is not always evidence for the alternative hypothesis. For this reason, statisticians warn that <em>p</em>-values just below 0.05 (e.g., between 0.04 and 0.05) are at the very best weak support for the alternative hypothesis. If you find <em>p</em>-values in this range, consider replicating the study, or if that’s not possible, interpret the result at least a bit cautiously. If you are interested in the mathematical explanation of <em>p</em>-value distributions, instead of the current explanation that is based on simulations, you can read <span class="citation">(Hung et al., <label for="tufte-mn-6" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-6" class="margin-toggle">1997<span class="marginnote">Hung, H. M. J., O’Neill, R. T., Bauer, P., &amp; Kohne, K. (1997). The Behavior of the P-Value When the Alternative Hypothesis is True. <em>Biometrics</em>, <em>53</em>(1), 11–22. <a href="https://doi.org/10.2307/2533093">https://doi.org/10.2307/2533093</a></span>)</span>.</p>
+<p>If you want to explore <em>p</em>-value distributions using the simulation code above, you can do so in the shiny app below.</p>
+<iframe src="http://shiny.ieis.tue.nl/pvalues/?showcase=0" width="672" height="1000px">
+</iframe>
+
+</div>
+</div>
+</div></body></html>
+
+<p style="text-align: center;">
+<a href="introduction.html"><button class="btn btn-default">Previous</button></a>
+<a href="power.html"><button class="btn btn-default">Next</button></a>
+</p>
+<p class="build-date">Page built: 
+2020-08-15
+</p>
+</div>
+</div>
+
+<div class="row" style="padding-top: 2em;">
+<p style="text-align: center">
+<img src="images/logo.png" style="width: 100px; padding: 0; display: inline; vertical-align: top">
+<span style="display: inline-block; margin-left: 2em; margin-top: 16px; font-size: small">
+<span style="font-weight: bold;">Daniel Lakens</span><br/>
+<a href="https://statistical-inferences.com">statistical-inferences.com</a><br/>
+page built  2020-08-15 13:49:00
+</span>
+</p>
+</div>
+
+
+</body>
+</html>

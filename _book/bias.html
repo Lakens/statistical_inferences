@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="10 Bias detection | Improving Your Statistical Inferences" />
+<meta property="og:type" content="book" />
+<meta property="og:url" content="http://themethodsection.com/ebook/" />
+<meta property="og:image" content="http://themethodsection.com/ebook/images/cover.jpg" />
+<meta property="og:description" content="Online textbook to Improve Your Statistical Inferences" />
+
+
+<meta name="author" content="Daniel Lakens" />
+
+<meta name="date" content="2020-08-15" />
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+
+<meta name="description" content="Online textbook to Improve Your Statistical Inferences">
+
+<title>10 Bias detection | Improving Your Statistical Inferences</title>
+
+<link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
+<link href="libs/tufte-css-2015.12.29/envisioned.css" rel="stylesheet" />
+<link href="libs/msmb-css-0/msmb.css" rel="stylesheet" />
+<script>
+function toggle_visibility(id1, id2) {
+var e = document.getElementById(id1);
+var f = document.getElementById(id2);
+
+e.style.display = ((e.style.display!='none') ? 'none' : 'block');
+
+if(f.classList.contains('fa-plus-square')) {
+    f.classList.add('fa-minus-square')
+    f.classList.remove('fa-plus-square')
+} else {
+    f.classList.add('fa-plus-square')
+    f.classList.remove('fa-minus-square')
+}
+
+}
+</script>
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" href="center.css" type="text/css" />
+<link rel="stylesheet" href="custom-msmbstyle.css" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="index.html">Welcome</a>
+<a href="contents.html">Contents</a>
+<a href="preface.html">Preface</a>
+<a href="introduction.html">Introduction</a>
+<a href="pvalue.html"><span class="toc-section-number">1</span> What is a <em>p</em>-value</a>
+<a href="power.html"><span class="toc-section-number">2</span> Sample size justification</a>
+<a href="questions.html"><span class="toc-section-number">3</span> Asking Statistical Questions</a>
+<a href="errorcontrol.html"><span class="toc-section-number">4</span> Error Control</a>
+<a href="effectsizesCI.html"><span class="toc-section-number">5</span> Effect Sizes and Confidence Intervals</a>
+<a href="equivalencetest.html"><span class="toc-section-number">6</span> Equivalence Testing</a>
+<a href="severity.html"><span class="toc-section-number">7</span> Severe Tests and Risky Predictions</a>
+<a href="sesoi.html"><span class="toc-section-number">8</span> Smallest Effect Size of Interest</a>
+<a href="meta.html"><span class="toc-section-number">9</span> Meta-analysis</a>
+<a id="active-page" href="bias.html"><span class="toc-section-number">10</span> Bias detection</a><ul class="toc-sections">
+<li class="toc"><a href="#bias-detection"> Bias Detection</a></li>
+</ul>
+<a href="computationalreproducibility.html"><span class="toc-section-number">11</span> Computational Reproducibility</a>
+<a href="prereg.html"><span class="toc-section-number">12</span> Preregistration and Transparency</a>
+<a href="bayes.html"><span class="toc-section-number">13</span> Bayesian statistics</a>
+<a href="sequential.html"><span class="toc-section-number">14</span> Sequential Analysis</a>
+<a href="references.html"><span class="toc-section-number">15</span> References</a>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body><div id="bias" class="section level1">
+<h1>
+<span class="header-section-number">10</span> Bias detection</h1>
+<p>fix headers
+add code for trim and fill
+integrate each bias technique with the example, not mention each twice.</p>
+<div id="bias-detection" class="section level2">
+<h2>
+<span class="header-section-number">10.1</span> Bias Detection</h2>
+<p>Publication bias is one of the biggest challenges that science faces. <strong>Publication bias</strong> is the practice of selectively submitting and publishing scientific research, often based on whether or not the results are ‘statistically significant’ or not. The scientific literature is dominated by these statistically significant results. At the same time, we know that many studies researchers perform do not yield significant results. When scientists only have access to significant results, but not to all results, they are lacking a complete overview of the evidence for a hypothesis. In extreme cases, selective reporting can lead to a situation where there are hundreds of statistically significant results in the published literature, but no true effect because there are even more non-significant studies that are not shared. This is known as the <strong>file-drawer problem</strong>, when non-significant results are hidden away in file-drawers (or nowadays, folders on your computer) and not available to the scientific community. Every scientist should work towards solving the publication bias, because it is extremely difficult to learn what is likely to be true as long as scientists do not share all their results.</p>
+<p>Publication bias can only be fixed by making all your research results available to fellow scientists, irrespective of the <em>p</em>-value of the main hypothesis test. In the past, this has not been done, and as a consequence, we have to try to detect the extent to which publication bias impacts our ability to accurately evaluate the literature. Meta-analyses should always carefully examine the impact of publication bias on the meta-analytic effect size estimate - even though only an estimated 57% of meta-analyses in Psychological Bulletin report that they assessed publication bias <span class="citation">(Polanin et al., <label for="tufte-mn-79" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-79" class="margin-toggle">2020<span class="marginnote">Polanin, J. R., Hennessy, E. A., &amp; Tsuji, S. (2020). Transparency and Reproducibility of Meta-Analyses in Psychology: A Meta-Review. <em>Perspectives on Psychological Science</em>, <em>15</em>(4), 1026–1041. <a href="https://doi.org/10.1177/1745691620906416">https://doi.org/10.1177/1745691620906416</a></span>)</span>. Several techniques to detect publication bias have been developed, and this continues to be a very active field of research. All techniques are based on specific assumptions, which you should consider before applying a test. There is no silver bullet: None of these techniques can fix publication bias. None of them can tell you with certainty what the true meta-analytic effect size is corrected for publication bias. The best these methods can do is detect publication bias caused by specific mechanisms, under specific conditions.</p>
+<p>There are some older methods that you will read in some meta-analyses, but which are no longer recommended. The first is known as <strong>fail-safe N</strong>. The idea was to calculate the number of non-significant results one would need to have in file-drawers before an observed meta-analytic effect size estimate would no longer be statistically different from 0. I won’t explain how it is calculated, because it does not work (even the person who developed it acknowledges this), it is misleading, and a kitten dies each time someone uses it. Currently, the only use fail-safe N has is as a tool to identify meta-analyses that are not state-of-the-art.</p>
+<div id="funnel-plots" class="section level3">
+<h3>
+<span class="header-section-number">10.1.1</span> Funnel Plots</h3>
+<p>A second approach is known as the ‘trim-and-fill’ technique. Before we can explain what trim-and-fill aims to do, it’s useful to explain a common way to visualize meta-analyses which is known as a <strong>funnel plot</strong>. In a funnel plot, the x-axis is used to plot the effect size of each study, and the y-axis is used to plot the ‘precision’ of each effect size. Typically, the y-axis is used to plot the standard error of each effect size estimate. The larger the study, the more precise the effect size estimate, the smaller the standard error, and thus the higher up in the funnel plot the study will be. Note that the y-axis has 0 at the top. That means that an infinitely precise study would be at the top of the graph. In the funnel plot below, there are no studies with a standard error less than 0.066, which means that there are no studies in the meta-analysis with such large sample sizes that they have this high level of precision.</p>
+<div class="figure">
+<span id="fig:funnelplot1"></span>
+<p class="caption marginnote shownote">
+Figure 10.1: Default funnel plot.
+</p>
+<img src="images/funnelplot1.png" alt="Default funnel plot." width="494">
+</div>
+<p>You see a white triangle against the gray background, which is what gives the funnel plot its name. The funnel indicates the 95% CI around the meta-analytic effect size estimate (indicated by the horizontal vertical line at 0.4 in the plot above. That is, if the true effect size is d = 0.4 in the plot above, we should expect 95% of the effect size estimates to fall within the funnel. If sample sizes are small, effect size estimates will vary more around the true effect size (as you can see at the bottom of the funnel), and if sample sizes are larger, the effect size estimates vary more narrowly around the true effect size (as you can see at the top of the funnel). Some points fall outside the funnel plot (when the funnel plot is based on the 95% CI, 5% of the effects should fall outside of the funnel, in the long run). In real life meta-analyses, it isn’t very likely that all studies are sampled from a population with a true effect size of d = 0.4. Thus, the figure above is an idealistic representation. When the number of studies in a meta-analysis is small, it is very difficult to interpret a funnel-plot.</p>
+<p>Sometimes, it can be useful to center the funnel at 0, instead of at the meta-analytic effect size estimate. Below, you can see the same data as above, but now presented against a background of a funnel centered at 0. The funnel now indicates the effect sizes we should expect if there is no true effect. Studies that fall outside the funnel have a 95% confidence interval that does not include 0. These studies will thus be statistically significant. Therefore, a funnel centered at zero allows you to easily see which studies are statistically significant, and which are not. When there is no publication bias, as in the figure below, effect sizes should be distributed randomly around the true effect size. This means there will be a reasonable number of non-significant effects.</p>
+<div class="figure">
+<span id="fig:funnelplot2"></span>
+<p class="caption marginnote shownote">
+Figure 10.2: Funnel plot with funnel centered at 0.
+</p>
+<img src="images/funnelplot2.png" alt="Funnel plot with funnel centered at 0." width="516">
+</div>
+<p>If there is extreme publication bias, as in the figure below, all the points within the funnel would be missing. Instead of normal variation around the true effect size, there is asymmetry in the effect size distribution. Several techniques that aim to detect publication bias focus on this asymmetry.</p>
+<div class="figure">
+<span id="fig:funnelplot3"></span>
+<p class="caption marginnote shownote">
+Figure 10.3: Funnel plot with publication bias.
+</p>
+<img src="images/funnelplot3.png" alt="Funnel plot with publication bias." width="526">
+</div>
+<p>When there is publication bias because researchers only publish statistically significant results (p &lt; alpha), and you calculate the effect size in a meta-analysis, the meta-analytic effect size estimate is <strong>higher</strong> when there is publication bias (where researchers publish only effects with p &lt; alpha) compared to when there is no publication bias. This is because publication bias filters out the smaller, non-significant, effect sizes. which are then not included in the meta-analysis. This leads to a meta-analytic effect size estimate that is larger than the true population effect size. With strong publication bias, we know the meta-analytic effect size is inflated, but we don’t know by how much. The true effect size could just be a bit smaller, but the true effect size could also be 0, in the most extreme case.</p>
+</div>
+<div id="trim-and-fill" class="section level3">
+<h3>
+<span class="header-section-number">10.1.2</span> Trim and Fill</h3>
+<p>Trim and fill is a technique that aims to augment a dataset by adding hypothetical ‘missing’ studies (that may be in the ‘file-drawer’). The procedure starts by removing (‘trimming’) small studies that bias the meta-analytic effect size, then estimates the true effect size, and ends with ‘filling’ in a funnel plot with studies that are assumed to be missing due to publication bias. In the picture below, you can see the same data as above, but now with added unfilled circles which represent ‘imputed’ studies. If you look closely, you’ll see these points each have a mirror image on the opposite side of the meta-analytic effect size estimate (this is clearest in the lower half of the funnel plot).</p>
+<div class="figure">
+<span id="fig:trimfill1"></span>
+<p class="caption marginnote shownote">
+Figure 10.4: Funnel plot with assumed missing effects added through trim-and-fill.
+</p>
+<img src="images/trimfill1.png" alt="Funnel plot with assumed missing effects added through trim-and-fill." width="451">
+</div>
+<p>Trim-and-fill is not created to examine publication bias based on whether studies yield significant p-values, or not. Instead, it’s created for publication bias caused by effects that are strongly (perhaps even significantly!) in the opposite direction of the remaining studies or the effect a researcher wants to find. Think of a meta-analysis on the benefits of some treatment, where the 8 studies that revealed the treatment actually makes people feel much worse are hidden in the file drawer.</p>
+<p>Trim-and-fill is not very good under many realistic publication bias scenarios. The method is criticized for its reliance on the strong assumption of symmetry in the funnel plot. When publication bias is based on the <em>p</em>-value of the study (arguably the most important source of publication bias in many fields) the trim-and-fill method does not perform well enough to yield a corrected meta-analytic effect size estimate that is close to the true effect size (Peters, Sutton, Jones, Abrams, &amp; Rushton, 2007; Terrin, Schmid, Lau, &amp; Olkin, 2003). When the assumptions are met, it can be used as a <strong>sensitivity analysis.</strong> When the difference between the trim-and-fill corrected effect size estimate and the uncorrected meta-analytic effect size estimate is small, publication bias due to the <em>p</em>-value of the individual studies is unlikely to change the conclusions of the meta-analysis. Researchers should not report the trim-and-fill corrected effect size estimate as a realistic estimate of the true effect size if there would not be publication bias (Peters et al., 2007). Many meta-analysts make this error, but regrettably, that’s not how trim-and-fill can be used.</p>
+</div>
+<div id="pet-peese" class="section level3">
+<h3>
+<span class="header-section-number">10.1.3</span> PET-PEESE</h3>
+<p>A more novel class of solutions to publication bias is <strong>meta-regression</strong>. Instead of plotting a line through individual data-points, in meta-regression a line is plotted through data points that each represent a study. As with normal regression, the more data meta-regression is based on, the more precise the estimate is, and therefore, the more studies in a meta-analysis, the better meta-regression will work in practice. If the number of studies is small, all bias detection tests lose power, and this is something that one should keep in mind when using meta-regression. Furthermore, regression requires sufficient variation in the data, which in the case of meta-regression means a wide range of sample sizes (recommendations indicate meta-regression performs well if studies have a range from 15 to 200 participants in each group – which is not typical for most research areas in psychology). Meta-regression techniques typically estimate the population effect size if precision was perfect (so when the standard error = 0).</p>
+<p>One meta-regression technique is known as PET-PEESE (for a discussion, see Stanley, 2017). It consists of a ‘precision-effect-test’ (PET) which can be used in a Neyman-Pearson framework to test whether there is a true effect beyond the inflation due to selective reporting. The PET test works as follows: When the 95% CI around the PET estimate at the intercept SE = 0 does not contain an effect size of 0, we can reject the null hypothesis of no true effect.</p>
+<p>The estimated effect size for PET is calculated with: d = β0 + β1SEi + ui where d is the estimated effect size, SE is the standard error, and the equation is estimated using weighted least squares (WLS), with 1/SE2i as the weights. The PET estimate underestimates the effect size when there is a true effect. Therefore, the PET-PEESE procedure recommends first using PET to test whether there is a true effect or not. If PET suggests there is a true effect, then PEESE should be used to estimate the meta-analytic effect size. In PEESE, the standard error (used in PET) is replaced by the variance (i.e., the standard error squared): d = γ0 + γ1SE2i + ui, which Stanley and Doucouliagos (2014) find reduces the bias of the estimated meta-regression intercept.</p>
+<p>PET-PEESE has limitations, as all bias detection techniques have. The biggest limitations are that it does not work well when there are few studies, all studies in a meta-analysis have small sample sizes, or when there is large heterogeneity in the meta-analysis (Stanley, 2017). When these situations apply (and they will in practice), PET-PEESE might not be a good approach. Furthermore, there are some situations where there might be a correlation between sample size and precision, which in practice will often be linked to heterogeneity in the effect sizes included in a meta-analysis. For example, if true effects are different across studies, and people perform power analyses with accurate information about the expected true effect size, large effect sizes in a meta-analysis will have small sample sizes, and small effects will have large sample sizes. Meta-regression is, like normal regression, a way to test for an association, but you need to think about the causal mechanism behind the association.</p>
+</div>
+<div id="p-curve-analysis" class="section level3">
+<h3>
+<span class="header-section-number">10.1.4</span> P-curve Analysis</h3>
+<p>Another novel approach to examining publication bias is <em>p</em>-curve analysis. This is a meta-analytic technique that does not focus on effect sizes, but analyzes the <em>p</em>-values of the statistical tests for the main hypothesis in a paper (Simonsohn, Nelson, &amp; Simmons, 2014a). A similar meta-analytic technique is <em>p</em>-uniform (van Assen, van Aert, &amp; Wicherts, 2015). When the null-hypothesis is true, <em>p</em>-values are uniformly distributed (see week 1 of my first MOOC). When there is a true effect p-values are skewed to the right, which means there should be more small <em>p</em>-values (e.g., <em>p</em> = 0.01) than high <em>p</em>-values (<em>p</em> = 0.04) in a set of studies.</p>
+<p><em>P</em>-curve analysis tests whether the curve of the <em>p</em>-values is flatter than what would be expected if the studies you analyze had 33% power (which suggests the distribution looks more like one expected when the null-hypothesis is true), or more right-skewed than a uniform <em>p</em>-value distribution (which suggests the studies might have examined a true effect and had at least some power). As an example, let’s consider Figure 3 from Simonsohn and colleagues (2014). The authors compared 20 papers in the Journal of Personality and Social Psychology that used a covariate in the analysis, and 20 studies that did not use a covariate. The authors suspected that researchers might add a covariate in their analyses to try to find a <em>p</em>-value smaller than 0.05, when the first analysis they tried did not yield a significant effect. This is exactly what they found.</p>
+<p>When you look at the <em>p</em>-curve, you can see five points in the blue line. <em>P</em>-curve analysis is performed <em>only</em> on statistically significant results, based on the assumption that these are always published. Thus, it looks at the distribution of <em>p</em>-values below 0.05, and the 5 points illustrate all <em>p</em>-values between 0 and 0.01, 0.01 and 0.02, 0.02 and 0.03, 0.03 and 0.04, and 0.04 and 0.05. In the figure on the right, you see a relatively normal right-skewed <em>p</em>-value distribution with more low than high <em>p</em>-values. The <em>p</em>-curve analysis shows the blue line in the right figure is more right-skewed than the uniform red line (where the red line is the distribution you’d expect if there was no true effect).</p>
+<div class="figure">
+<span id="fig:pcurve"></span>
+<p class="caption marginnote shownote">
+Figure 10.5: Figure 3 from Simonsohn et al (2014) showing a p-curve with and without bias.
+</p>
+<img src="images/pcurve.png" alt="Figure 3 from Simonsohn et al (2014) showing a p-curve with and without bias." width="1010">
+</div>
+<p>In the left figure we see the opposite pattern, with mainly high <em>p</em>-values around 0.05, and almost no <em>p</em>-values around 0.01. Because the blue line is significantly less right-skewed than the green line, the <em>p</em>-curve analysis suggests this set of studies lacks ‘evidential value’. Using the term ‘evidential value’ is not formally correct when talking about <em>p</em>-values (evidence is always relative, and better reserved for when talking about likelihoods for example), so it’s best to interpret this as ‘the data do not look as if they come from a <em>p</em>-value distribution that reflects the presence of a true effect’.</p>
+<p>P-curve analysis is a useful tool. But it is important to correctly interpret what a <em>p</em>-curve analysis can tell you. A right-skewed <em>p</em>-curve does not prove that there is no bias, or that the hypothesis is true. A flat <em>p</em>-curve does not prove that the theory is incorrect, but it does show that the studies you analyzed do not provide evidence for the presence of a true effect. When many people have studied a particular topic, and the result is a flat <em>p</em>-value distribution, this is probably not an effect you want to build on. The two tests for right-skewed and a flat distribution perform relatively well even when there is some heterogeneity in the effect size distribution.</p>
+</div>
+<div id="tiva" class="section level3">
+<h3>
+<span class="header-section-number">10.1.5</span> TIVA</h3>
+<p>The Test of Insufficient Variance (TIVA) is another new meta-analytic method (published on a <a href="https://replicationindex.wordpress.com/2014/12/30/the-test-of-insufficient-variance-tiva-a-new-tool-for-the-detection-of-questionable-research-practices/">blog</a> instead of in a scientific article!) developed by Uli Schimmack. It also uses <em>p</em>-values from reported tests, and builds on the relationship between <em>p</em>-values and Z-values. If all studies examine the same fixed effect, the Z-scores related to <em>p</em>-values should follow a normal distribution, and individual studies should vary as a function of sampling variability. The variance of an unbiased set of Z-scores is not smaller than 1. The variance can be larger than 1, for example, when the studies have different true effects.</p>
+<p>In biased sets of studies, the variance of the Z-scores can be smaller than 1. When non-significant studies are not published, the variance decreases. Another reason for low variance is the use of flexibility during the data-analysis, such as performing multiple analyses, but only reporting those analyses that yield a significant result.</p>
+<p>TIVA tests whether the variance that is observed is surprising, assuming the dataset is unbiased. A significant <em>p</em>-value for the TIVA test allows you to reject the hypothesis that the studies are unbiased. Uli Schimmack shows how the studies reported by Bem (2011) in his article on pre-cognition are biased, which suggests that the observed effect size in these studies is inflated. TIVA provides a more powerful test than related tests aimed to detect the presence of publication bias, such as the Test for Excessive Significance (Ioannidis &amp; Trikalinos, 2007).</p>
+</div>
+<div id="lets-detect-some-bias" class="section level3">
+<h3>
+<span class="header-section-number">10.1.6</span> Let’s Detect Some Bias!</h3>
+<p>The script below simulates meta-analyses based on a standardized mean difference, and stores all the results we need to examine bias detection tools.</p>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="bias.html#cb106-1"></a><span class="co">#Install packages if needed</span></span>
+<span id="cb106-2"><a href="bias.html#cb106-2"></a><span class="kw">library</span>(metafor)</span>
+<span id="cb106-3"><a href="bias.html#cb106-3"></a><span class="kw">library</span>(truncnorm)</span>
+<span id="cb106-4"><a href="bias.html#cb106-4"></a></span>
+<span id="cb106-5"><a href="bias.html#cb106-5"></a><span class="kw">set.seed</span>(<span class="dv">5522</span>)</span>
+<span id="cb106-6"><a href="bias.html#cb106-6"></a></span>
+<span id="cb106-7"><a href="bias.html#cb106-7"></a>nSims &lt;-<span class="st"> </span><span class="dv">100</span> <span class="co"># number of simulated experiments</span></span>
+<span id="cb106-8"><a href="bias.html#cb106-8"></a>pub.bias &lt;-<span class="st"> </span><span class="dv">0</span> <span class="co"># set percentage of significant results in the literature</span></span>
+<span id="cb106-9"><a href="bias.html#cb106-9"></a></span>
+<span id="cb106-10"><a href="bias.html#cb106-10"></a>pop.m1 &lt;-<span class="st"> </span><span class="dv">100</span> <span class="co"># If there is a large true effect, the simulation will take a very long time because non-significant p-values are very very rare</span></span>
+<span id="cb106-11"><a href="bias.html#cb106-11"></a>pop.sd1 &lt;-<span class="st"> </span><span class="dv">15</span></span>
+<span id="cb106-12"><a href="bias.html#cb106-12"></a>pop.m2 &lt;-<span class="st"> </span><span class="dv">100</span></span>
+<span id="cb106-13"><a href="bias.html#cb106-13"></a>pop.sd2 &lt;-<span class="st"> </span><span class="dv">15</span></span>
+<span id="cb106-14"><a href="bias.html#cb106-14"></a>metadata.sig &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">m1 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">m2 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">sd1 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">sd2 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">n1 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">n2 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">pvalues =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">pcurve =</span> <span class="kw">numeric</span>(<span class="dv">0</span>))</span>
+<span id="cb106-15"><a href="bias.html#cb106-15"></a>metadata.nonsig &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">m1 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">m2 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">sd1 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">sd2 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">n1 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">n2 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">pvalues =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">pcurve =</span> <span class="kw">numeric</span>(<span class="dv">0</span>))</span>
+<span id="cb106-16"><a href="bias.html#cb106-16"></a></span>
+<span id="cb106-17"><a href="bias.html#cb106-17"></a><span class="co"># simulate significant effects in the expected direction</span></span>
+<span id="cb106-18"><a href="bias.html#cb106-18"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nSims) { <span class="co"># for each simulated experiment</span></span>
+<span id="cb106-19"><a href="bias.html#cb106-19"></a>  p &lt;-<span class="st"> </span><span class="dv">1</span> <span class="co"># reset p to 1 </span></span>
+<span id="cb106-20"><a href="bias.html#cb106-20"></a>  n &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">rtruncnorm</span>(<span class="dv">1</span>, <span class="dv">20</span>, <span class="dv">300</span>, <span class="dv">50</span>, <span class="dv">100</span>)) <span class="co">#draw data from a truncated normal distribution between 20 and 300 with a mean of 50 and sd of 100</span></span>
+<span id="cb106-21"><a href="bias.html#cb106-21"></a>  <span class="cf">while</span> (p <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.025</span>) { <span class="co">#continue simulating as along as p is not significant</span></span>
+<span id="cb106-22"><a href="bias.html#cb106-22"></a>    x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dt">n =</span> n, <span class="dt">mean =</span> pop.m1, <span class="dt">sd =</span> pop.sd1) <span class="co">#produce  simulated participants</span></span>
+<span id="cb106-23"><a href="bias.html#cb106-23"></a>    y &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dt">n =</span> n, <span class="dt">mean =</span> pop.m2, <span class="dt">sd =</span> pop.sd2) <span class="co">#produce  simulated participants</span></span>
+<span id="cb106-24"><a href="bias.html#cb106-24"></a>    p &lt;-<span class="st"> </span><span class="kw">t.test</span>(x,y, <span class="dt">alternative =</span> <span class="st">"greater"</span>, <span class="dt">var.equal =</span> <span class="ot">TRUE</span>, <span class="dt">alpha =</span> <span class="fl">0.025</span>)<span class="op">$</span>p.value</span>
+<span id="cb106-25"><a href="bias.html#cb106-25"></a>  }</span>
+<span id="cb106-26"><a href="bias.html#cb106-26"></a>  metadata.sig[i,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">mean</span>(x)</span>
+<span id="cb106-27"><a href="bias.html#cb106-27"></a>  metadata.sig[i,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">mean</span>(y)</span>
+<span id="cb106-28"><a href="bias.html#cb106-28"></a>  metadata.sig[i,<span class="dv">3</span>] &lt;-<span class="st"> </span><span class="kw">sd</span>(x)</span>
+<span id="cb106-29"><a href="bias.html#cb106-29"></a>  metadata.sig[i,<span class="dv">4</span>] &lt;-<span class="st"> </span><span class="kw">sd</span>(y)</span>
+<span id="cb106-30"><a href="bias.html#cb106-30"></a>  metadata.sig[i,<span class="dv">5</span>] &lt;-<span class="st"> </span>n</span>
+<span id="cb106-31"><a href="bias.html#cb106-31"></a>  metadata.sig[i,<span class="dv">6</span>] &lt;-<span class="st"> </span>n</span>
+<span id="cb106-32"><a href="bias.html#cb106-32"></a>  out &lt;-<span class="st"> </span><span class="kw">t.test</span>(x, y, <span class="dt">var.equal =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb106-33"><a href="bias.html#cb106-33"></a>  metadata.sig[i,<span class="dv">7</span>] &lt;-<span class="st"> </span>out<span class="op">$</span>p.value</span>
+<span id="cb106-34"><a href="bias.html#cb106-34"></a>  metadata.sig[i,<span class="dv">8</span>] &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">"t("</span>,out<span class="op">$</span>parameter,<span class="st">")="</span>,out<span class="op">$</span>statistic)</span>
+<span id="cb106-35"><a href="bias.html#cb106-35"></a>}</span>
+<span id="cb106-36"><a href="bias.html#cb106-36"></a></span>
+<span id="cb106-37"><a href="bias.html#cb106-37"></a><span class="co"># simulate non-significant effects (two-sided)</span></span>
+<span id="cb106-38"><a href="bias.html#cb106-38"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nSims) { <span class="co"># for each simulated experiment</span></span>
+<span id="cb106-39"><a href="bias.html#cb106-39"></a>  p &lt;-<span class="st"> </span><span class="dv">0</span> <span class="co"># reset p to 1 </span></span>
+<span id="cb106-40"><a href="bias.html#cb106-40"></a>  n &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">rtruncnorm</span>(<span class="dv">1</span>, <span class="dv">20</span>, <span class="dv">300</span>, <span class="dv">50</span>, <span class="dv">100</span>))</span>
+<span id="cb106-41"><a href="bias.html#cb106-41"></a>  <span class="cf">while</span> (p <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>) { <span class="co"># continue simulating as along as p is significant</span></span>
+<span id="cb106-42"><a href="bias.html#cb106-42"></a>    x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dt">n =</span> n, <span class="dt">mean =</span> pop.m1, <span class="dt">sd =</span> pop.sd1) <span class="co"># produce  simulated participants</span></span>
+<span id="cb106-43"><a href="bias.html#cb106-43"></a>    y &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dt">n =</span> n, <span class="dt">mean =</span> pop.m2, <span class="dt">sd =</span> pop.sd2) <span class="co"># produce  simulated participants</span></span>
+<span id="cb106-44"><a href="bias.html#cb106-44"></a>    p &lt;-<span class="st"> </span><span class="kw">t.test</span>(x, y, <span class="dt">var.equal =</span> <span class="ot">TRUE</span>)<span class="op">$</span>p.value</span>
+<span id="cb106-45"><a href="bias.html#cb106-45"></a>  }</span>
+<span id="cb106-46"><a href="bias.html#cb106-46"></a>  metadata.nonsig[i,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">mean</span>(x)</span>
+<span id="cb106-47"><a href="bias.html#cb106-47"></a>  metadata.nonsig[i,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">mean</span>(y)</span>
+<span id="cb106-48"><a href="bias.html#cb106-48"></a>  metadata.nonsig[i,<span class="dv">3</span>] &lt;-<span class="st"> </span><span class="kw">sd</span>(x)</span>
+<span id="cb106-49"><a href="bias.html#cb106-49"></a>  metadata.nonsig[i,<span class="dv">4</span>] &lt;-<span class="st"> </span><span class="kw">sd</span>(y)</span>
+<span id="cb106-50"><a href="bias.html#cb106-50"></a>  metadata.nonsig[i,<span class="dv">5</span>] &lt;-<span class="st"> </span>n</span>
+<span id="cb106-51"><a href="bias.html#cb106-51"></a>  metadata.nonsig[i,<span class="dv">6</span>] &lt;-<span class="st"> </span>n</span>
+<span id="cb106-52"><a href="bias.html#cb106-52"></a>  out &lt;-<span class="st"> </span><span class="kw">t.test</span>(x, y, <span class="dt">var.equal =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb106-53"><a href="bias.html#cb106-53"></a>  metadata.nonsig[i,<span class="dv">7</span>] &lt;-<span class="st"> </span>out<span class="op">$</span>p.value</span>
+<span id="cb106-54"><a href="bias.html#cb106-54"></a>  metadata.nonsig[i,<span class="dv">8</span>] &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">"t("</span>,out<span class="op">$</span>parameter,<span class="st">")="</span>,out<span class="op">$</span>statistic)</span>
+<span id="cb106-55"><a href="bias.html#cb106-55"></a>}</span>
+<span id="cb106-56"><a href="bias.html#cb106-56"></a></span>
+<span id="cb106-57"><a href="bias.html#cb106-57"></a><span class="co"># Combine significant and non-significant data. Select percentage based on % of publication bias</span></span>
+<span id="cb106-58"><a href="bias.html#cb106-58"></a>metadata &lt;-<span class="st"> </span><span class="kw">rbind</span>(metadata.nonsig[<span class="kw">sample</span>(<span class="kw">nrow</span>(metadata.nonsig), nSims <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>pub.bias)), ], metadata.sig[<span class="kw">sample</span>(<span class="kw">nrow</span>(metadata.sig), nSims <span class="op">*</span><span class="st"> </span>(pub.bias)), ])</span>
+<span id="cb106-59"><a href="bias.html#cb106-59"></a></span>
+<span id="cb106-60"><a href="bias.html#cb106-60"></a>metadata &lt;-<span class="st"> </span><span class="kw">escalc</span>(<span class="dt">n1i =</span> n1, <span class="dt">n2i =</span> n2, <span class="dt">m1i =</span> m1, <span class="dt">m2i =</span> m2, <span class="dt">sd1i =</span> sd1, <span class="dt">sd2i =</span> sd2, <span class="dt">measure =</span> <span class="st">"SMD"</span>, <span class="dt">data =</span> metadata)</span>
+<span id="cb106-61"><a href="bias.html#cb106-61"></a><span class="co"># add se for PET-PEESE analysis</span></span>
+<span id="cb106-62"><a href="bias.html#cb106-62"></a>metadata<span class="op">$</span>sei &lt;-<span class="st"> </span><span class="kw">sqrt</span>(metadata<span class="op">$</span>vi)</span></code></pre></div>
+<p>The number of studies that are simulated is set to 100, and the script allows you to specify the amount of publication bias. When set to 1, all studies are significant, when set to 0, all studies will be non-significant (we will for now ignore the possibility that Type 1 errors will occur and could be published, even when there is no true effect). The unbiased percentage of significant results depends on the power (if there is a true effect) or the Type 1 error rate. Two groups of observations are simulated based on equal population means of 100. Thus, there is no true effect. Let’s start by looking at what unbiased research looks like. Because we set a seed, the simulation will yield the same results every time it is run - remove the set.seed function to get different results each time.</p>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="bias.html#cb107-1"></a><span class="co"># perform a meta-analysis with the metafor package</span></span>
+<span id="cb107-2"><a href="bias.html#cb107-2"></a>result &lt;-<span class="st"> </span><span class="kw">rma</span>(yi, vi, <span class="dt">data =</span> metadata, <span class="dt">method =</span> <span class="st">"FE"</span>)</span>
+<span id="cb107-3"><a href="bias.html#cb107-3"></a>result</span></code></pre></div>
+<pre><code>## 
+## Fixed-Effects Model (k = 100)
+## 
+## I^2 (total heterogeneity / total variability):   0.00%
+## H^2 (total variability / sampling variability):  0.81
+## 
+## Test for Heterogeneity:
+## Q(df = 99) = 80.5599, p-val = 0.9121
+## 
+## Model Results:
+## 
+## estimate      se    zval    pval    ci.lb   ci.ub 
+##   0.0049  0.0132  0.3725  0.7095  -0.0210  0.0309    
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+<p>We see there are 100 studies in the meta-analysis (k = 100), and there is no statistically significant heterogeneity (<em>p</em> = 0.988, which is not surprising because we programmed the simulation so that all studies have the same true effect sizes, there is no heterogeneity in effect sizes). We also get the results for the meta-analysis. The meta-analytic estimate is d = 0.0049. The meta-analytic effect size is very close to 0 (as it should be, because the true effect size is indeed 0). The standard error around this estimate is 0.0132. With 100 studies, we have a very accurate estimate of the true effect size. The Z-value for the test against d = 0 is 0.3725, and the <em>p</em>-value for this test is 0.7095. There is no statistically significant difference, so we can not reject the hypothesis that the true effect size is 0. The CI around the effect size estimate (-0.021, 0.031) includes 0.</p>
+<p>It is easy to create a forest plot, where each effect size from each study is plotted on a separate line.</p>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="bias.html#cb109-1"></a><span class="co"># Forest plot with 95% CI </span></span>
+<span id="cb109-2"><a href="bias.html#cb109-2"></a><span class="kw">forest</span>(result, <span class="dt">level =</span> <span class="fl">0.95</span>)</span></code></pre></div>
+<div class="figure">
+<span id="fig:forestplot"></span>
+<p class="caption marginnote shownote">
+Figure 10.6: Forest plot.
+</p>
+<img src="Statistical_Inferences_files/figure-html/forestplot-1.png" alt="Forest plot." width="480">
+</div>
+<p>The forest plot is a bit big, with 100 studies, but we see they randomly vary around 0 as they should. The small diamond at the bottom represents the meta-analytic effect size estimate (the center of the diamond) and the 95% CI around it (the left and right edge of the diamond).</p>
+<p>We can also easily plot a beautifully unbiased funnel plot.</p>
+<div class="figure">
+<span id="fig:funnelexample"></span>
+<p class="caption marginnote shownote">
+Figure 10.7: Funnel plot without bias.
+</p>
+<img src="Statistical_Inferences_files/figure-html/funnelexample-1.png" alt="Funnel plot without bias." width="672">
+</div>
+<p>The meta-analytic effect size estimate of 0.0049 is indicated by the triangle at the top of the figure. All studies (the black dots) fall within the white triangle, which indicates the 95% CI around 0 for different standard errors (and thus, for studies of different sizes). Studies with a small standard error (and thus a large number of observations) are at the top, while studies with less observations have a larger standard error, and are on the bottom of the plot.</p>
+</div>
+<div id="introducing-bias" class="section level3">
+<h3>
+<span class="header-section-number">10.1.7</span> Introducing bias</h3>
+<p>Now that we know what a real null effect looks like, let’s introduce bias. We can set extreme publication bias by including only significant results in the meta-analysis, setting bias to 1. The forest plot now looks much more peculiar.</p>
+<div class="figure">
+<span id="fig:metasimbias"></span>
+<p class="caption marginnote shownote">
+Figure 10.8: Forest plot with bias.
+</p>
+<img src="Statistical_Inferences_files/figure-html/metasimbias-1.png" alt="Forest plot with bias." width="480">
+</div>
+<p>The forest plot in the figure looks quite peculiar, as the studies have confidence intervals that only just fail to include 0, suggesting most studies are only just statistically significant. This suggests publication bias.</p>
+<p>All studies are significant. A fixed effect meta-analytic effect size estimate is indicated on the bottom of the plot, and is estimated to be d = 0.31. We can also look at the meta-analysis results:</p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="bias.html#cb110-1"></a><span class="co"># perform a meta-analysis with the metafor package</span></span>
+<span id="cb110-2"><a href="bias.html#cb110-2"></a>result &lt;-<span class="st"> </span><span class="kw">rma</span>(yi, vi, <span class="dt">data =</span> metadata, <span class="dt">method =</span> <span class="st">"FE"</span>)</span>
+<span id="cb110-3"><a href="bias.html#cb110-3"></a>result</span></code></pre></div>
+<pre><code>## 
+## Fixed-Effects Model (k = 100)
+## 
+## I^2 (total heterogeneity / total variability):   0.00%
+## H^2 (total variability / sampling variability):  0.58
+## 
+## Test for Heterogeneity:
+## Q(df = 99) = 57.1108, p-val = 0.9998
+## 
+## Model Results:
+## 
+## estimate      se     zval    pval   ci.lb   ci.ub 
+##   0.3144  0.0139  22.5530  &lt;.0001  0.2871  0.3417  *** 
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+<p>As we see, even thought the true effect size in our simulation is 0, with extreme publication bias, all individual studies are significant, and the meta-analytic effect size estimate will be severely inflated (d = 0.31 instead of d = 0), such that it can give the impression there is overwhelming support for H1 when H0 is true.</p>
+</div>
+<div id="bias-detection-techniques" class="section level3">
+<h3>
+<span class="header-section-number">10.1.8</span> Bias detection techniques</h3>
+<p>Let’s explore how PET-PEESE meta-regression attempts to give us an unbiased effect size estimate, under specific assumptions of how publication bias is caused.</p>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="bias.html#cb112-1"></a><span class="co"># PET PEESE code below is adapted from Joe Hilgard: https://github.com/Joe-Hilgard/PETPEESE/blob/master/PETPEESE_functions.R</span></span>
+<span id="cb112-2"><a href="bias.html#cb112-2"></a><span class="co"># PET</span></span>
+<span id="cb112-3"><a href="bias.html#cb112-3"></a>PET &lt;-<span class="st"> </span><span class="kw">rma</span>(<span class="dt">yi =</span> yi, <span class="dt">sei =</span> sei, <span class="dt">mods =</span> <span class="op">~</span>sei, <span class="dt">data =</span> metadata, <span class="dt">method =</span> <span class="st">"FE"</span>)</span>
+<span id="cb112-4"><a href="bias.html#cb112-4"></a></span>
+<span id="cb112-5"><a href="bias.html#cb112-5"></a><span class="co"># PEESE</span></span>
+<span id="cb112-6"><a href="bias.html#cb112-6"></a>PEESE &lt;-<span class="st"> </span><span class="kw">rma</span>(<span class="dt">yi =</span> yi, <span class="dt">sei =</span> sei, <span class="dt">mods =</span> <span class="op">~</span><span class="kw">I</span>(sei<span class="op">^</span><span class="dv">2</span>), <span class="dt">data =</span> metadata, <span class="dt">method =</span> <span class="st">"FE"</span>)</span>
+<span id="cb112-7"><a href="bias.html#cb112-7"></a></span>
+<span id="cb112-8"><a href="bias.html#cb112-8"></a><span class="co"># Funnel Plot </span></span>
+<span id="cb112-9"><a href="bias.html#cb112-9"></a><span class="kw">funnel</span>(result, <span class="dt">level =</span> <span class="fl">0.95</span>, <span class="dt">refline =</span> <span class="dv">0</span>, <span class="dt">main =</span> <span class="kw">paste</span>(<span class="st">"FE d ="</span>, <span class="kw">round</span>(result<span class="op">$</span>b[<span class="dv">1</span>],<span class="dv">2</span>),<span class="st">"PET d ="</span>, <span class="kw">round</span>(PET<span class="op">$</span>b[<span class="dv">1</span>],<span class="dv">2</span>),<span class="st">"PEESE d ="</span>, <span class="kw">round</span>(PEESE<span class="op">$</span>b[<span class="dv">1</span>],<span class="dv">2</span>)))</span>
+<span id="cb112-10"><a href="bias.html#cb112-10"></a><span class="kw">abline</span>(<span class="dt">v =</span> result<span class="op">$</span>b[<span class="dv">1</span>], <span class="dt">lty =</span> <span class="st">"dashed"</span>) <span class="co">#draw vertical line at meta-analytic effect size estimate</span></span>
+<span id="cb112-11"><a href="bias.html#cb112-11"></a><span class="kw">points</span>(<span class="dt">x =</span> result<span class="op">$</span>b[<span class="dv">1</span>], <span class="dt">y =</span> <span class="dv">0</span>, <span class="dt">cex =</span> <span class="fl">1.5</span>, <span class="dt">pch =</span> <span class="dv">17</span>) <span class="co">#draw point at meta-analytic effect size estimate</span></span>
+<span id="cb112-12"><a href="bias.html#cb112-12"></a><span class="co"># PET PEESE code below is adapted from Joe Hilgard: https://github.com/Joe-Hilgard/PETPEESE/blob/master/PETPEESE_functions.R</span></span>
+<span id="cb112-13"><a href="bias.html#cb112-13"></a><span class="co"># PEESE line and point</span></span>
+<span id="cb112-14"><a href="bias.html#cb112-14"></a>sei &lt;-<span class="st"> </span>(<span class="kw">seq</span>(<span class="dv">0</span>, <span class="kw">max</span>(<span class="kw">sqrt</span>(result<span class="op">$</span>vi)), <span class="fl">.001</span>))</span>
+<span id="cb112-15"><a href="bias.html#cb112-15"></a>vi &lt;-<span class="st"> </span>sei<span class="op">^</span><span class="dv">2</span></span>
+<span id="cb112-16"><a href="bias.html#cb112-16"></a>yi &lt;-<span class="st"> </span>PEESE<span class="op">$</span>b[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>PEESE<span class="op">$</span>b[<span class="dv">2</span>]<span class="op">*</span>vi</span>
+<span id="cb112-17"><a href="bias.html#cb112-17"></a>grid &lt;-<span class="st"> </span><span class="kw">data.frame</span>(yi, vi, sei)</span>
+<span id="cb112-18"><a href="bias.html#cb112-18"></a><span class="kw">lines</span>(<span class="dt">x =</span> grid<span class="op">$</span>yi, <span class="dt">y =</span> grid<span class="op">$</span>sei, <span class="dt">typ =</span> <span class="st">'l'</span>) <span class="co"># add line for PEESE</span></span>
+<span id="cb112-19"><a href="bias.html#cb112-19"></a><span class="kw">points</span>(<span class="dt">x =</span> (PEESE<span class="op">$</span>b[<span class="dv">1</span>]), <span class="dt">y =</span> <span class="dv">0</span>, <span class="dt">cex =</span> <span class="fl">1.5</span>, <span class="dt">pch =</span> <span class="dv">5</span>) <span class="co"># add point estimate for PEESE</span></span>
+<span id="cb112-20"><a href="bias.html#cb112-20"></a><span class="co"># PET line and point</span></span>
+<span id="cb112-21"><a href="bias.html#cb112-21"></a><span class="kw">abline</span>(<span class="dt">a =</span> <span class="op">-</span>PET<span class="op">$</span>b[<span class="dv">1</span>]<span class="op">/</span>PET<span class="op">$</span>b[<span class="dv">2</span>], <span class="dt">b =</span> <span class="dv">1</span><span class="op">/</span>PET<span class="op">$</span>b[<span class="dv">2</span>]) <span class="co"># add line for PET</span></span>
+<span id="cb112-22"><a href="bias.html#cb112-22"></a><span class="kw">points</span>(<span class="dt">x =</span> PET<span class="op">$</span>b[<span class="dv">1</span>], <span class="dt">y =</span> <span class="dv">0</span>, <span class="dt">cex =</span> <span class="fl">1.5</span>) <span class="co"># add point estimate for PET</span></span>
+<span id="cb112-23"><a href="bias.html#cb112-23"></a><span class="kw">segments</span>(<span class="dt">x0 =</span> PET<span class="op">$</span>ci.lb[<span class="dv">1</span>], <span class="dt">y0 =</span> <span class="dv">0</span>, <span class="dt">x1 =</span> PET<span class="op">$</span>ci.ub[<span class="dv">1</span>], <span class="dt">y1 =</span> <span class="dv">0</span>, <span class="dt">lty =</span> <span class="st">"dashed"</span>) <span class="co">#Add 95% CI around PET</span></span></code></pre></div>
+<div class="figure">
+<span id="fig:petpeese"></span>
+<p class="caption marginnote shownote">
+Figure 10.9: Funnel plot with PET_PEESE regression lines.
+</p>
+<img src="Statistical_Inferences_files/figure-html/petpeese-1.png" alt="Funnel plot with PET_PEESE regression lines." width="672">
+</div>
+<p>In addition to the funnel plot, we see 3 lines through the plots. The vertical line at d = 0.31 is the meta-analytic effect size estimate, which is upwardly biased because we are averaging over statistically significant studies only. There are 2 additional lines, which are the meta-regression lines for PET-PEESE based on the formulas detailed previously. The straight line gives us the PET estimate at a SE of 0 (an infinite sample, at the top of the plot), indicated by the circle. The dotted line around this PET estimate is the 95% confidence interval around the estimate. In this case, the 95% CI contains 0, which means that based on the PET estimate of d = 0.02, we cannot reject a meta-analytic effect size of 0. Note that even with 100 studies, the 95% CI is quite wide. Meta-regression is, just like normal regression, only as accurate as we have data. This is one limitation of PET-PEESE meta-regression: With small numbers of studies in the meta-analysis, it has low accuracy.</p>
+<p>The general procedure for PET-PEESE is to perform PET, and if we can reject an effect of 0, the PEESE estimate is the best estimate for the unbiased effect size (the diamond at SE = 0). The PEESE estimate is d = 0.18, but this should not be used since we can not reject the null based on the PET estimate. The only difference between PET and PEESE is that PET is based on the standard error, while the PEESE estimate uses the variance. Using PET-PEESE meta-regression we can conclude there is reason to worry. Although we can’t be certain, the normal meta-analytic effect size estimate seems to be affected (maybe severely) by some form of bias.</p>
+</div>
+<div id="tiva-1" class="section level3">
+<h3>
+<span class="header-section-number">10.1.9</span> TIVA</h3>
+<p>Let’s explore our biased meta-analysis with other bias detection tools. Code code below allows us to perform the Test of Insufficient Variance.</p>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="bias.html#cb113-1"></a><span class="co"># TIVA code (Uli Schimmack: https://replicationindex.wordpress.com/2014/12/30/the-test-of-insufficient-variance-tiva-a-new-tool-for-the-detection-of-questionable-research-practices/)</span></span>
+<span id="cb113-2"><a href="bias.html#cb113-2"></a>k =<span class="st"> </span><span class="kw">length</span>(metadata<span class="op">$</span>pvalues) </span>
+<span id="cb113-3"><a href="bias.html#cb113-3"></a>z =<span class="st"> </span><span class="kw">qnorm</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>metadata<span class="op">$</span>pvalues<span class="op">/</span><span class="dv">2</span>)</span>
+<span id="cb113-4"><a href="bias.html#cb113-4"></a>var.z =<span class="st"> </span><span class="kw">var</span>(z) </span>
+<span id="cb113-5"><a href="bias.html#cb113-5"></a>tiva.p =<span class="st"> </span><span class="kw">pchisq</span>(var.z <span class="op">*</span><span class="st"> </span>(k <span class="op">-</span><span class="st"> </span><span class="dv">1</span>),k <span class="op">-</span><span class="st"> </span><span class="dv">1</span>) </span>
+<span id="cb113-6"><a href="bias.html#cb113-6"></a>var.z </span></code></pre></div>
+<pre><code>## [1] 0.117546</code></pre>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="bias.html#cb115-1"></a><span class="kw">round</span>(tiva.p,<span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<p>The variance is very small (0.11, much lower than 1) and a test against the normal variance we would expect shows the observed variance is statistically different from 1 (<em>p</em> &lt; 0.001). This suggests strong bias, and there is no good reason to assume the normal meta-analytic effect size estimate is accurate.</p>
+<p>Finally, the script provides the test statistics for the 100 simulated <em>t</em>-tests that are included in the meta-analysis. The first few rows look like:</p>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="bias.html#cb117-1"></a><span class="kw">cat</span>(metadata<span class="op">$</span>pcurve[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>],<span class="dt">sep =</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span></code></pre></div>
+<pre><code>## t(146)=2.6766329007035
+## t(258)=2.84977661171535
+## t(188)=2.73540213686467
+## t(76)=2.34374683727237
+## t(170)=2.13211285378042</code></pre>
+<p>You can go to the online <em>p</em>-curve app at <a href="http://www.p-curve.com/app4/" class="uri">http://www.p-curve.com/app4/</a> where you can paste all test results, and click the ‘Make the p-curve’ button. Note that the p-curve app will only yield a result when therre are <em>p</em>-values smaller than 0.05 - if all test statistics yield a <em>p</em> &gt; 0.05, the <em>p</em>-curve cannot be computed.</p>
+<p>Below, we will compute the p-curve based on the p-values directly.</p>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="bias.html#cb119-1"></a><span class="co"># Adapted from https://github.com/nicebread/p-checker/blob/master/p-curve.R</span></span>
+<span id="cb119-2"><a href="bias.html#cb119-2"></a></span>
+<span id="cb119-3"><a href="bias.html#cb119-3"></a>ncp33z &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">power=</span><span class="dv">1</span><span class="op">/</span><span class="dv">3</span>, <span class="dt">p.crit=</span>.<span class="dv">05</span>) {      </span>
+<span id="cb119-4"><a href="bias.html#cb119-4"></a>      xc =<span class="st"> </span><span class="kw">qnorm</span>(<span class="dt">p=</span><span class="dv">1</span><span class="op">-</span>p.crit<span class="op">/</span><span class="dv">2</span>)</span>
+<span id="cb119-5"><a href="bias.html#cb119-5"></a>      <span class="co">#Find noncentrality parameter (ncp) that leads 33% power to obtain xc</span></span>
+<span id="cb119-6"><a href="bias.html#cb119-6"></a>	  f =<span class="st"> </span><span class="cf">function</span>(delta, pr, x) <span class="kw">pnorm</span>(x, <span class="dt">mean =</span> delta) <span class="op">-</span><span class="st"> </span>(<span class="dv">1</span><span class="op">-</span>power)</span>
+<span id="cb119-7"><a href="bias.html#cb119-7"></a>	  out =<span class="st"> </span><span class="kw">uniroot</span>(f, <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">37.62</span>), <span class="dt">x =</span> xc)</span>
+<span id="cb119-8"><a href="bias.html#cb119-8"></a>	  <span class="kw">return</span>(out<span class="op">$</span>root) </span>
+<span id="cb119-9"><a href="bias.html#cb119-9"></a>}</span>
+<span id="cb119-10"><a href="bias.html#cb119-10"></a></span>
+<span id="cb119-11"><a href="bias.html#cb119-11"></a>theoretical_power_curve &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">power=</span><span class="dv">1</span><span class="op">/</span><span class="dv">3</span>, <span class="dt">p.max=</span>.<span class="dv">05</span>, <span class="dt">normalize=</span><span class="ot">TRUE</span>) {</span>
+<span id="cb119-12"><a href="bias.html#cb119-12"></a>	<span class="co"># compute arbitrary test statistics for requested power</span></span>
+<span id="cb119-13"><a href="bias.html#cb119-13"></a>	<span class="kw">library</span>(pwr)</span>
+<span id="cb119-14"><a href="bias.html#cb119-14"></a>	d &lt;-<span class="st"> </span><span class="fl">0.2</span></span>
+<span id="cb119-15"><a href="bias.html#cb119-15"></a>	n &lt;-<span class="st"> </span><span class="kw">pwr.t.test</span>(<span class="dt">d=</span><span class="fl">0.2</span>, <span class="dt">power=</span>power)<span class="op">$</span>n<span class="op">*</span><span class="dv">2</span></span>
+<span id="cb119-16"><a href="bias.html#cb119-16"></a>	</span>
+<span id="cb119-17"><a href="bias.html#cb119-17"></a>	crit &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="fl">0.01</span>, p.max, <span class="dt">by=</span>.<span class="dv">01</span>)</span>
+<span id="cb119-18"><a href="bias.html#cb119-18"></a>	pdens &lt;-<span class="st"> </span><span class="kw">c</span>()</span>
+<span id="cb119-19"><a href="bias.html#cb119-19"></a>	<span class="cf">for</span> (cr <span class="cf">in</span> crit) {</span>
+<span id="cb119-20"><a href="bias.html#cb119-20"></a>		pdens &lt;-<span class="st"> </span><span class="kw">c</span>(pdens, <span class="kw">pwr.t.test</span>(<span class="dt">d=</span><span class="fl">0.2</span>, <span class="dt">power=</span><span class="ot">NULL</span>, <span class="dt">n=</span>n<span class="op">/</span><span class="dv">2</span>, <span class="dt">sig.level=</span>cr)<span class="op">$</span>power)</span>
+<span id="cb119-21"><a href="bias.html#cb119-21"></a>	}</span>
+<span id="cb119-22"><a href="bias.html#cb119-22"></a>	p.dens &lt;-<span class="st"> </span><span class="kw">diff</span>(<span class="kw">c</span>(<span class="dv">0</span>, pdens))</span>
+<span id="cb119-23"><a href="bias.html#cb119-23"></a>	<span class="cf">if</span> (normalize <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>) p.dens &lt;-<span class="st"> </span>p.dens<span class="op">/</span><span class="kw">sum</span>(p.dens)</span>
+<span id="cb119-24"><a href="bias.html#cb119-24"></a>		</span>
+<span id="cb119-25"><a href="bias.html#cb119-25"></a>	<span class="kw">names</span>(p.dens) &lt;-<span class="st"> </span><span class="kw">as.character</span>(crit)</span>
+<span id="cb119-26"><a href="bias.html#cb119-26"></a>	<span class="kw">return</span>(p.dens)</span>
+<span id="cb119-27"><a href="bias.html#cb119-27"></a>}</span>
+<span id="cb119-28"><a href="bias.html#cb119-28"></a></span>
+<span id="cb119-29"><a href="bias.html#cb119-29"></a>p.crit=.<span class="dv">05</span></span>
+<span id="cb119-30"><a href="bias.html#cb119-30"></a>power=<span class="dv">1</span><span class="op">/</span><span class="dv">3</span></span>
+<span id="cb119-31"><a href="bias.html#cb119-31"></a></span>
+<span id="cb119-32"><a href="bias.html#cb119-32"></a><span class="co">#get p-values from metadata</span></span>
+<span id="cb119-33"><a href="bias.html#cb119-33"></a>p_vals &lt;-<span class="st"> </span>metadata<span class="op">$</span>pvalues</span>
+<span id="cb119-34"><a href="bias.html#cb119-34"></a>res &lt;-<span class="st"> </span><span class="kw">data.frame</span>()</span>
+<span id="cb119-35"><a href="bias.html#cb119-35"></a></span>
+<span id="cb119-36"><a href="bias.html#cb119-36"></a>z &lt;-<span class="st"> </span><span class="kw">qnorm</span>(p_vals<span class="op">/</span><span class="dv">2</span>, <span class="dt">lower.tail=</span><span class="ot">FALSE</span>)</span>
+<span id="cb119-37"><a href="bias.html#cb119-37"></a>ppr &lt;-<span class="st"> </span>p_vals<span class="op">*</span>(<span class="dv">1</span><span class="op">/</span>p.crit)	<span class="co"># pp-value for right-skew </span></span>
+<span id="cb119-38"><a href="bias.html#cb119-38"></a>ppl &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">-</span>ppr		<span class="co"># pp-value for left-skew</span></span>
+<span id="cb119-39"><a href="bias.html#cb119-39"></a>ncp33 &lt;-<span class="st"> </span><span class="kw">ncp33z</span>(<span class="dt">power=</span>power, <span class="dt">p.crit=</span>p.crit)</span>
+<span id="cb119-40"><a href="bias.html#cb119-40"></a>pp33 &lt;-<span class="st"> </span>(<span class="kw">pnorm</span>(z, <span class="dt">mean=</span>ncp33, <span class="dt">sd=</span><span class="dv">1</span>)<span class="op">-</span>(<span class="dv">1</span><span class="op">-</span>power))<span class="op">*</span>(<span class="dv">1</span><span class="op">/</span>power)</span>
+<span id="cb119-41"><a href="bias.html#cb119-41"></a></span>
+<span id="cb119-42"><a href="bias.html#cb119-42"></a>res &lt;-<span class="st"> </span><span class="kw">rbind</span>(res, <span class="kw">data.frame</span>(<span class="dt">p=</span>p_vals, <span class="dt">ppr=</span>ppr, <span class="dt">ppl=</span>ppl, <span class="dt">pp33=</span>pp33))</span>
+<span id="cb119-43"><a href="bias.html#cb119-43"></a></span>
+<span id="cb119-44"><a href="bias.html#cb119-44"></a><span class="co"># recode extreme values	</span></span>
+<span id="cb119-45"><a href="bias.html#cb119-45"></a></span>
+<span id="cb119-46"><a href="bias.html#cb119-46"></a>res<span class="op">$</span>ppr[res<span class="op">$</span>ppr <span class="op">&lt;</span><span class="st"> </span><span class="fl">.00001</span>] &lt;-<span class="st"> </span><span class="fl">.00001</span></span>
+<span id="cb119-47"><a href="bias.html#cb119-47"></a>res<span class="op">$</span>ppl[res<span class="op">$</span>ppl <span class="op">&lt;</span><span class="st"> </span><span class="fl">.00001</span>] &lt;-<span class="st"> </span><span class="fl">.00001</span></span>
+<span id="cb119-48"><a href="bias.html#cb119-48"></a>res<span class="op">$</span>pp33[res<span class="op">$</span>pp33 <span class="op">&lt;</span><span class="st"> </span><span class="fl">.00001</span>] &lt;-<span class="st"> </span><span class="fl">.00001</span></span>
+<span id="cb119-49"><a href="bias.html#cb119-49"></a>res<span class="op">$</span>ppr[res<span class="op">$</span>ppr <span class="op">&gt;</span><span class="st"> </span><span class="fl">.99999</span>] &lt;-<span class="st"> </span><span class="fl">.99999</span></span>
+<span id="cb119-50"><a href="bias.html#cb119-50"></a>res<span class="op">$</span>ppl[res<span class="op">$</span>ppl <span class="op">&gt;</span><span class="st"> </span><span class="fl">.99999</span>] &lt;-<span class="st"> </span><span class="fl">.99999</span></span>
+<span id="cb119-51"><a href="bias.html#cb119-51"></a>res<span class="op">$</span>pp33[res<span class="op">$</span>pp33 <span class="op">&gt;</span><span class="st"> </span><span class="fl">.99999</span>] &lt;-<span class="st"> </span><span class="fl">.99999</span></span>
+<span id="cb119-52"><a href="bias.html#cb119-52"></a></span>
+<span id="cb119-53"><a href="bias.html#cb119-53"></a><span class="co"># remove non-significant values</span></span>
+<span id="cb119-54"><a href="bias.html#cb119-54"></a>res[res<span class="op">$</span>p <span class="op">&gt;</span><span class="st"> </span>p.crit, ] &lt;-<span class="st"> </span><span class="ot">NA</span></span>
+<span id="cb119-55"><a href="bias.html#cb119-55"></a></span>
+<span id="cb119-56"><a href="bias.html#cb119-56"></a><span class="co"># New p-curve computation (p-curve app 3.0, http://www.p-curve.com/app3/)</span></span>
+<span id="cb119-57"><a href="bias.html#cb119-57"></a>p_curve_<span class="dv">3</span> &lt;-<span class="st"> </span><span class="cf">function</span>(pps) {</span>
+<span id="cb119-58"><a href="bias.html#cb119-58"></a></span>
+<span id="cb119-59"><a href="bias.html#cb119-59"></a>	pps &lt;-<span class="st"> </span><span class="kw">na.omit</span>(pps)</span>
+<span id="cb119-60"><a href="bias.html#cb119-60"></a></span>
+<span id="cb119-61"><a href="bias.html#cb119-61"></a>	<span class="co"># STOUFFER: Overall tests aggregating pp-values</span></span>
+<span id="cb119-62"><a href="bias.html#cb119-62"></a>	ktot &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="op">!</span><span class="kw">is.na</span>(pps<span class="op">$</span>ppr))</span>
+<span id="cb119-63"><a href="bias.html#cb119-63"></a>	Z_ppr &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">qnorm</span>(pps<span class="op">$</span>ppr))<span class="op">/</span><span class="kw">sqrt</span>(ktot)          <span class="co"># right skew</span></span>
+<span id="cb119-64"><a href="bias.html#cb119-64"></a>	Z_ppl &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">qnorm</span>(pps<span class="op">$</span>ppl))<span class="op">/</span><span class="kw">sqrt</span>(ktot)          <span class="co"># left skew</span></span>
+<span id="cb119-65"><a href="bias.html#cb119-65"></a>	Z_pp33&lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">qnorm</span>(pps<span class="op">$</span>pp33))<span class="op">/</span><span class="kw">sqrt</span>(ktot)         <span class="co"># 33%</span></span>
+<span id="cb119-66"><a href="bias.html#cb119-66"></a>	</span>
+<span id="cb119-67"><a href="bias.html#cb119-67"></a>	p_ppr &lt;-<span class="st"> </span><span class="kw">pnorm</span>(Z_ppr)</span>
+<span id="cb119-68"><a href="bias.html#cb119-68"></a>	p_ppl &lt;-<span class="st"> </span><span class="kw">pnorm</span>(Z_ppl)</span>
+<span id="cb119-69"><a href="bias.html#cb119-69"></a>	p_pp33&lt;-<span class="st"> </span><span class="kw">pnorm</span>(Z_pp33)</span>
+<span id="cb119-70"><a href="bias.html#cb119-70"></a></span>
+<span id="cb119-71"><a href="bias.html#cb119-71"></a>	<span class="kw">return</span>(<span class="kw">list</span>(</span>
+<span id="cb119-72"><a href="bias.html#cb119-72"></a>		<span class="dt">Z_evidence =</span> Z_ppr, </span>
+<span id="cb119-73"><a href="bias.html#cb119-73"></a>		<span class="dt">p_evidence =</span> p_ppr, </span>
+<span id="cb119-74"><a href="bias.html#cb119-74"></a>		<span class="dt">Z_hack =</span> Z_ppl, </span>
+<span id="cb119-75"><a href="bias.html#cb119-75"></a>		<span class="dt">p_hack =</span> p_ppl, </span>
+<span id="cb119-76"><a href="bias.html#cb119-76"></a>		<span class="dt">Z_lack =</span> Z_pp33, </span>
+<span id="cb119-77"><a href="bias.html#cb119-77"></a>		<span class="dt">p_lack =</span> p_pp33,</span>
+<span id="cb119-78"><a href="bias.html#cb119-78"></a>		<span class="dt">inconclusive =</span> <span class="kw">ifelse</span>(p_ppr<span class="op">&gt;</span>.<span class="dv">05</span> <span class="op">&amp;</span><span class="st"> </span>p_ppl<span class="op">&gt;</span>.<span class="dv">05</span> <span class="op">&amp;</span><span class="st"> </span>p_pp33<span class="op">&gt;</span>.<span class="dv">05</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>)))</span>
+<span id="cb119-79"><a href="bias.html#cb119-79"></a>}</span>
+<span id="cb119-80"><a href="bias.html#cb119-80"></a></span>
+<span id="cb119-81"><a href="bias.html#cb119-81"></a><span class="co">#p_curve_3(pps = res)</span></span>
+<span id="cb119-82"><a href="bias.html#cb119-82"></a></span>
+<span id="cb119-83"><a href="bias.html#cb119-83"></a><span class="co"># Create p-curve plot</span></span>
+<span id="cb119-84"><a href="bias.html#cb119-84"></a></span>
+<span id="cb119-85"><a href="bias.html#cb119-85"></a><span class="kw">plot</span>(<span class="ot">NA</span>, <span class="dt">xlim=</span><span class="kw">c</span>(<span class="dv">0</span>, p.crit), <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">100</span>), <span class="dt">xlab=</span><span class="st">"p-value"</span>, <span class="dt">ylab=</span><span class="st">"Percentage of p values"</span>)</span>
+<span id="cb119-86"><a href="bias.html#cb119-86"></a><span class="kw">abline</span>(<span class="dt">h=</span><span class="dv">1</span><span class="op">/</span>p.crit, <span class="dt">col=</span><span class="st">"red"</span>, <span class="dt">lty=</span><span class="st">"dashed"</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb119-87"><a href="bias.html#cb119-87"></a><span class="kw">legend</span>(<span class="st">"topright"</span>, <span class="dt">lty=</span><span class="kw">c</span>(<span class="st">"solid"</span>, <span class="st">"dotted"</span>, <span class="st">"dashed"</span>), <span class="dt">col=</span><span class="kw">c</span>(<span class="st">"dodgerblue"</span>, <span class="st">"darkgreen"</span>, <span class="st">"red"</span>), <span class="dt">legend=</span><span class="kw">c</span>(<span class="st">"Observed p-curve"</span>, <span class="kw">paste0</span>(<span class="kw">round</span>(power,<span class="dv">2</span>), <span class="st">"% power curve"</span>), <span class="st">"Nil effect"</span>), <span class="dt">bty=</span><span class="st">"n"</span>)</span>
+<span id="cb119-88"><a href="bias.html#cb119-88"></a></span>
+<span id="cb119-89"><a href="bias.html#cb119-89"></a>bins &lt;-<span class="st"> </span><span class="kw">table</span>(<span class="kw">cut</span>(res<span class="op">$</span>p, <span class="dt">breaks=</span><span class="kw">seq</span>(<span class="dv">0</span>, p.crit, <span class="dt">by=</span>.<span class="dv">01</span>)))</span>
+<span id="cb119-90"><a href="bias.html#cb119-90"></a>perc &lt;-<span class="st"> </span>(bins<span class="op">/</span><span class="kw">sum</span>(bins))<span class="op">*</span><span class="dv">100</span></span>
+<span id="cb119-91"><a href="bias.html#cb119-91"></a></span>
+<span id="cb119-92"><a href="bias.html#cb119-92"></a><span class="co"># empirical p-curve</span></span>
+<span id="cb119-93"><a href="bias.html#cb119-93"></a><span class="kw">lines</span>(<span class="dt">x=</span><span class="kw">seq</span>(<span class="dv">0</span>, p.crit<span class="fl">-.01</span>, <span class="dt">by=</span>.<span class="dv">01</span>)<span class="op">+</span>.<span class="dv">005</span>, <span class="dt">y=</span>perc, <span class="dt">col=</span><span class="st">"dodgerblue"</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb119-94"><a href="bias.html#cb119-94"></a>		</span>
+<span id="cb119-95"><a href="bias.html#cb119-95"></a><span class="co"># 33% (or any other) power curve</span></span>
+<span id="cb119-96"><a href="bias.html#cb119-96"></a><span class="kw">lines</span>(<span class="dt">x=</span><span class="kw">seq</span>(<span class="dv">0</span>, p.crit<span class="fl">-.01</span>, <span class="dt">by=</span>.<span class="dv">01</span>)<span class="op">+</span>.<span class="dv">005</span>, <span class="dt">y=</span><span class="kw">theoretical_power_curve</span>(power, <span class="dt">p.max=</span>p.crit)<span class="op">*</span><span class="dv">100</span>, <span class="dt">col=</span><span class="st">"darkgreen"</span>, <span class="dt">lty=</span><span class="st">"dashed"</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb119-97"><a href="bias.html#cb119-97"></a></span>
+<span id="cb119-98"><a href="bias.html#cb119-98"></a><span class="kw">text</span>(<span class="dt">x=</span><span class="kw">seq</span>(<span class="dv">0</span>, p.crit<span class="fl">-.01</span>, <span class="dt">by=</span>.<span class="dv">01</span>)<span class="op">+</span>.<span class="dv">006</span>, <span class="dt">y=</span>perc <span class="op">+</span><span class="st"> </span><span class="dv">8</span>, <span class="dt">col=</span><span class="st">"black"</span>, <span class="dt">label=</span><span class="kw">paste0</span>(<span class="kw">round</span>(perc), <span class="st">"%"</span>), <span class="dt">cex=</span>)</span>
+<span id="cb119-99"><a href="bias.html#cb119-99"></a></span>
+<span id="cb119-100"><a href="bias.html#cb119-100"></a><span class="kw">legend</span>(<span class="st">"topleft"</span>, <span class="dt">legend=</span><span class="kw">c</span>(<span class="kw">paste0</span>(<span class="st">"Test for right skewness: p = "</span>, <span class="kw">round</span>(<span class="kw">p_curve_3</span>(<span class="dt">pps =</span> res)<span class="op">$</span>p_evidence,<span class="dv">2</span>)), <span class="kw">paste0</span>(<span class="st">"Test for flatness: p = "</span>, <span class="kw">round</span>(<span class="kw">p_curve_3</span>(<span class="dt">pps =</span> res)<span class="op">$</span>p_lack,<span class="dv">2</span>))), <span class="dt">bty=</span><span class="st">"n"</span>)</span></code></pre></div>
+<p><img src="Statistical_Inferences_files/figure-html/unnamed-chunk-52-1.png" width="672"></p>
+<p>The output will in the p-curve app will look similar to the figure above The <em>p</em>-curve analysis shows that there is no evidential value in the set of studies (the curve is not right-skewed, as we would expect if there is a true effect and decent power to detect such an effect), and the <em>p</em>-value distribution is flatter than we would expect if we have 33% power, so the curve lacks evidential value.</p>
+<p>Based on the continuous Stouffer’s test for the full <em>p</em>-curve, we can conclude the observed <em>p</em>-value distribution is not skewed enough to be interpreted as the presence of a true effect size, and it is flatter than we would expect if the studies had 33% power. <strong>Therefore, we can conclude these studies do not provide support for the theory that generated these studies</strong>. The theory might still be true - but the set of studies we have analyzed here do not provide support for the theory.</p>
+</div>
+<div id="z-curve-analysis" class="section level3">
+<h3>
+<span class="header-section-number">10.1.10</span> Z-curve analysis</h3>
+<p>A relatively novel technique is <em>z</em>-curve, which is basically a meta-analysis of observed power (Bartos &amp; Schimmack, 2020; Schimmack &amp; Brunner, 2020). This analysis can be used to examine selection bias in the literature. Scientists often selectively report only statistically significant results in their manuscript, and fail to report non-significant tests they have performed. This selection for significant results introduces bias in the scientific literature.</p>
+<p>Like a traditional meta-analysis, <em>z</em>-curve transforms observed test results (<em>p</em>-values) into <em>z</em>-scores. Using mixtures of normal distributions centered at means 0 to 6, <em>z</em>-curve aims to estimate the average power of the studies. The newest version of <em>z</em>-curve then calculates the <em>observed discovery rate</em> (the percentage of significant results, or the observed power), the <em>expected discovery rate</em> (EDR: the proportion of the area under the curve on the right side of the significance criterion) and the expected replication rate (ERR: the proportion of successfully replicated significant studies from all significant studies). <em>Z</em>-curve is able to correct for selection bias for positive results (under specific assumptions), and can estimate the EDR and ERR using only the significant <em>p</em>-values.</p>
+<p>To examine the presence of bias, it is preferable to submit non-significant and significant <em>p</em>-values to a <em>z</em>-curve analysis, even if only the significant <em>p</em>-values are used to produce estimates. Publication bias can then be examined by comparing the ODR to the EDR. If the results of studies are shared in a well-structured meta-study file, all the <em>p</em>-values needed to perform a <em>z</em>-curve analysis are directly available, and it is clear which statistical test is related to a hypothesis is researchers are interested in including only specific analyses in the <em>z</em>-curve.</p>
+<p>Since our simulated studies have bias, the <em>z</em>-curve analysis should be able to indicate this.</p>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="bias.html#cb120-1"></a><span class="co"># devtools::install_github("FBartos/zcurve")</span></span>
+<span id="cb120-2"><a href="bias.html#cb120-2"></a><span class="kw">library</span>(zcurve)</span>
+<span id="cb120-3"><a href="bias.html#cb120-3"></a></span>
+<span id="cb120-4"><a href="bias.html#cb120-4"></a><span class="co"># Get the p-value for each analysis</span></span>
+<span id="cb120-5"><a href="bias.html#cb120-5"></a>p_vals &lt;-<span class="st"> </span>metadata<span class="op">$</span>pvalues</span>
+<span id="cb120-6"><a href="bias.html#cb120-6"></a>z &lt;-<span class="st"> </span><span class="kw">qnorm</span>(<span class="dv">1</span><span class="op">-</span>p_vals<span class="op">/</span><span class="dv">2</span>)</span>
+<span id="cb120-7"><a href="bias.html#cb120-7"></a><span class="co"># Perform the z-curve analysis using the z-curve package</span></span>
+<span id="cb120-8"><a href="bias.html#cb120-8"></a>z_res &lt;-<span class="st"> </span>zcurve<span class="op">::</span><span class="kw">zcurve</span>(z, <span class="dt">method =</span> <span class="st">"EM"</span>, <span class="dt">bootstrap =</span> <span class="dv">1000</span>)</span>
+<span id="cb120-9"><a href="bias.html#cb120-9"></a><span class="kw">plot</span>(z_res, <span class="dt">annotation =</span> <span class="ot">TRUE</span>, <span class="dt">CI =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<p><img src="Statistical_Inferences_files/figure-html/unnamed-chunk-53-1.png" width="672"></p>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="bias.html#cb121-1"></a><span class="kw">print</span>(z_res)</span></code></pre></div>
+<pre><code>## Call:
+## zcurve::zcurve(z = z, method = "EM", bootstrap = 1000)
+## 
+## Estimates:
+##        ERR        EDR 
+## 0.06461901 0.05470193</code></pre>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="bias.html#cb123-1"></a><span class="kw">summary</span>(z_res, <span class="dt">all =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>## Call:
+## zcurve::zcurve(z = z, method = "EM", bootstrap = 1000)
+## 
+## model: EM via EM
+## 
+##               Estimate  l.CI   u.CI
+## ERR              0.065 0.050  0.157
+## EDR              0.055 0.050  0.142
+## Soric FDR        0.910 0.319  1.000
+## File Drawer R   17.281 6.062 19.000
+## Expected N        1828   706   2000
+## Missing N         1728   606   1900
+## 
+## Model converged in 18 + 113 iterations
+## Fitted using 100 z-values. 100 supplied, 100 significant (ODR = 1.00, 95% CI [0.95, 1.00]).
+## Q = -7.69, 95% CI[-22.84, 8.62]</code></pre>
+<p>We see that 100 out of 100 studies were significant, which makes the observed power (across all these studies with different sample sizes) 100% (95% CI[0.95;1]). The expected discovery rate (EDR) is only 5%, which differs statistically differ from the observed discovery rate, which means there is clear indication of selection bias based on the <em>z</em>-curve analysis. The expected replicability rate for these studies is 6% 95% CI[0.05;0.06] which is in line with the expectation that we will only observe 5% Type 1 errors. Thus, even though we only entered significant <em>p</em>-values, Z-curve analysis correctly suggests that we should not expect these results to replicate.</p>
+</div>
+<div id="conclusion" class="section level3">
+<h3>
+<span class="header-section-number">10.1.11</span> Conclusion</h3>
+<p>Publication bias is a big problem in science. It is present in almost all meta-analyses performed on the primary hypothesis test in scientific articles, because these articles are much more likely to be submitted and accepted for publication if this test is statistically significant. Meta-analytic effect size estimates that are not corrected for bias will almost always overestimate the true effect size. Publication bias inflates the effect size estimate to an unknown extent – but it could even be the case that the true effect size is zero!</p>
+<p>There is a lot of activity in the literature on tests for publication bias. There are many different tests, and you need to carefully check the assumptions of each test before applying it. Most tests don’t work well when there is large heterogeneity, and heterogeneity is quite likely. I’d currently recommend applying multiple tests that should, based on the literature, give informative results based on the studies in your meta-analysis. When you plan to perform a meta-analysis, you should always examine whether there is publication bias. Given that bias detection tests is an active field, read up on the latest work in this area. None of the bias detection techniques discussed in this assignment will be a silver bullet, but they will be better than naively interpreting the uncorrected effect size estimate from the meta-analysis.</p>
+
+</div>
+</div>
+</div></body></html>
+
+<p style="text-align: center;">
+<a href="meta.html"><button class="btn btn-default">Previous</button></a>
+<a href="computationalreproducibility.html"><button class="btn btn-default">Next</button></a>
+</p>
+<p class="build-date">Page built: 
+2020-08-15
+</p>
+</div>
+</div>
+
+<div class="row" style="padding-top: 2em;">
+<p style="text-align: center">
+<img src="images/logo.png" style="width: 100px; padding: 0; display: inline; vertical-align: top">
+<span style="display: inline-block; margin-left: 2em; margin-top: 16px; font-size: small">
+<span style="font-weight: bold;">Daniel Lakens</span><br/>
+<a href="https://statistical-inferences.com">statistical-inferences.com</a><br/>
+page built  2020-08-15 13:49:00
+</span>
+</p>
+</div>
+
+
+</body>
+</html>
