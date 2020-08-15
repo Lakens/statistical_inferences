@@ -25,6 +25,7 @@ library(metafor)
 library(MOTE)
 library(binom)
 library(MASS)
+library(BUCSS)
 knitr::opts_chunk$set(error = FALSE, warning = FALSE, message = FALSE)
 ```
 
@@ -269,13 +270,17 @@ knitr::kable(table_pow_rec, caption = "Overview of recommendations when reportin
 
 If the study is not performed for educational purposes, but the goal is answer a research question, the feasibility justification might indicate that there is no value in collecting the data. If it wasn't possible to conclude that one should not proceed with the data collection, there is no use of justifying the sample size. There should be cases where it is unlikely there will ever be enough data to perform a meta-analysis (for example because of a lack of general interest in the topic), the information will not be used to make any decisions, and the statistical tests do not allow you to test a hypothesis or estimate an effect size estimate with any useful accuracy. It should be a feasibility justification - not a feasibility excuse. If there is no good justification to collect the maximum number of observations that is feasible, performing the study nevertheless is a waste of participants time, and/or a waste of money if data collection has associated costs. Collecting data without a good justification why the planned sample size will yield worthwhile information has an ethical component. As Button and colleagues @button_power_2013 write: 
 
->Low power therefore has an ethical dimension — unreliable research is inefficient and wasteful. This applies to both human and animal research". 
+>Low power therefore has an ethical dimension — unreliable research is inefficient and wasteful. This applies to both human and animal research. 
 
 Think carefully if you can defend data collection based on a feasibility justification. Sometimes data collection is just not feasible, and we should accept this.
 
 ## A-priori power analysis
 
 When designing a study where the goal is to observe a statistically significant effect, researchers often want to make sure their sample size is large enough to have sufficient power to detect effects they expect, or effects they are interested in observing. This is done by performing an *a-priori* power analysis. Given a specified effect size, alpha level, and desired power, an a-priori power analysis will inform you about the sample size you need to collect. In Figure \@ref(fig:power-2) you see how the statistical power increases as the number of observations (per group) in an independent *t*-test with an alpha level of 0.05 increases.
+
+It is important to highlight what the goal of a power analysis is, and what isn't the goal. The goal of an a-priori power analysis is not to achieve sufficient power for the true effect size. The true effect size is unknown. **The goal of an a-priori power analysis to achieve sufficient power given a specific assumption of the true effect size**. Researchers often complain that a-priori power analysis is impossible given uncertainty about the true effect size. But when we design a study, we are uncertain about many things. We are not sure our data will be normally distributed, whether there will be a floor or ceiling effect, whether our manipulation works in a specific population, or whether our theory is true. We design studies based on assumptions. If our assumptions are wrong, we learn from our data.
+
+This goal of a-priori power analysis is perhaps best illustrated by the useful recommendation to make sure your study is well powered to demonstrate the presence, [and the absence](#powerforabsence), of an effect. For example, you might want to perform an a-priori power analysis for an equivalence test that has has sufficient power to reject an effect size observed in an earlier study using the [small telescopes approach](#smalltelescopes), while also having sufficient power for a smallest effect size that would theoretically be predicted. We compute power, assuming either of these two effect sizes are the true effect size, and aim to collect the largest sample size that either of these analyses indicate. This does not guarantee we have sufficient power for the true effect size - it simply means we have sufficient power given an assumption of what the true effect size might be. After collecting the data, we draw inferences about what we have learn, under the assumption of a true effect of a specific size. We do not draw conclusions about the (always unknown) 'true' effect size. Therefore, an a-priori power analysis is useful, as long as we have interesting assumptions about what effect sizes we might be interested in.  
 
 ```{r, power-2, fig.margin=FALSE, echo=FALSE, fig.cap="Power curve for an independent *t*-test as a function of the sample size."}
 N <- 50
@@ -426,7 +431,7 @@ Superpower::plot_power(design_result, max_n = 200, verbose = FALSE)
 
 ```
 
-### Justifying the effect size used in an a-priori power analysis
+### Justifying the effect size used in an a-priori power analysis{#justifyeffectsize}
 
 One challenge in power analysis is that you never know the true effect size. This leads to the ‘sample size samba’ [@schulz_sample_2005]. Researchers go back and forth between the effect size they expect, and the sample size they are willing to collect, until they 'expect' the effect size that, in an a-priori power analysis, leads to the sample size they are willing to collect. This practice obviously makes a power analysis a useless procedure. If you perform an a-priori power analysis, it is essential that you have a good justification for the effect size you rely on, or the result of the power analysis has no value.
 
@@ -580,6 +585,10 @@ The third issue that researchers often miss is that G\*Power has a very unfortun
 knitr::include_graphics("images/gpowwithin2.png")
 ```
 
+### A-priori power analysis for the absence of an effect {#powerforabsence}
+
+It is 
+
 ### Reporting an a-priori power analysis.
 
 As with all the analyses you rely on in your work, make sure the power analysis is computationally reproducible. If you performed power analyses in R, you can store the script. In G\*Power, you can save the several power analyses you performed consecutively in the app under the 'protocol of power analysis' tab by saving them as a .rtf file or printing them as a pdf file. 
@@ -632,6 +641,28 @@ This brings us to the second situation where we want to deviate from α = 0.05, 
 If we plan to perform a two-sided *t*-test, and can collect at most 50 observations in each independent group, and we want to have 90% power, and expect a population effect size of 0.5, we would have 70% power if we set our alpha level to 0.05. If we can not increase our sample size beyond 50 per group, and we need to make a decision based on the data we will collect, we could set our alpha level to 0.065 to have a Type 1 error rate 4 times as high as our Type 2 error rate (0.262). Alternatively, we can choose to weigh both types of error equally, and set the alpha level to 0.149. The choice of α and β can be further improved by taking priors probabilities of H0 and H1 into account [@miller_quest_2019] In the end, as Neyman and Pearson @neyman_problem_1933 write: 
 
 >The use of these statistical tools in any given case, in determining just how the balance should be struck, must be left to the investigator.
+
+### Reporting a compromise power analysis
+
+A compromise power analysis requires you to specify the sample size. This sample size itself requires a justification, so a compromise power analysis will typically be performed together with a feasibility justification for a sample size. It is especially important to perform a compromise power analysis if your feasibility justification is strongly based on the fact that a decision is made, in which case you will want to think carefully about the Type 1 and Type 2 error rates you are willing to accept. However, a compromise power analysis also makes sense if the sample size is very large, but you did not have the freedom to set the sample size. This might happen if, for example, your research is part of a larger international survey and the sample size is based on other research questions.
+
+Furthermore, a compromise power analysis still needs a [justification for the effect size](#justifyeffectsize). After all, it computes the levels for the Type 1 and Type 2 error rate, based on a specific sample size, effect size, and relative seriousness of both Types of errors.
+
+```{r table-compromise-just, echo = FALSE}
+
+table_compromise <- data.frame(c(
+  "What is the justification for the sample size?",
+  "What is the justification for the effect size?",
+  "What is the relative seriousness of Type 1 vs Type 2 error rates?"), 
+  c("Specify the justification for the sample size, for example based on feasibility, or that the sample size was fixed based on reasons outside of your control", 
+    "Justify the effect size, whether it is based on a smallest effect size of interest, a meta-analytic effect size estimate, or the estimate of a single previous study.",
+  "How much more serious are the consequences of making one type of error, compared to the other type of error? Cohen believed a Type 1 error was 4 times as serious as a Type 2 error, but both types of errors can also be equally serious, or a Type 2 error can be more problematic than a Type 1 error."))
+
+colnames(table_compromise) <- c("What to take into account", "How to take it into account?")
+
+knitr::kable(table_compromise, caption = "Overview of recommendations when justifying error rates based on a compromise power analysis.")
+```
+
 
 ## Observed (post-hoc) power analysis {#observedpower}
 
@@ -733,7 +764,24 @@ Editors sometimes ask researchers to report post-hoc power analyses when authors
 
 What you should do instead is report a [sensitivity power analysis](#sensitivitypower), preferably by plotting power across a wide range of possible true effect sizes. Many of the recommendations in Table \@ref(tab:table-pow-rec) apply if one wants to evaluate power after the data has been collected. The best solution is, not surprisingly, to design a study that will yield informative results regardless of whether the alternative hypothesis is true or the null hypothesis is true, by performing an a-priori power analysis both for the NHST and for an equivalence test. 
 
-## Why Within-Subject Designs Typically Require Fewer Observations than Between-Subject Designs
+
+## Designing efficient studies
+
+So far, we have focused on how to perform a power analysis based on assumptions about what the true effect size is. Although the true effect size is unknown, there is a true effect size in the population, and it has an impact on our statistical power. It is therefore useful to consider how we can design studies that will be optimally efficient to answer our research question. There are some ways in which we can increase the power of our test that are worth exploring. 
+
+### Use directional tests where relevant. 
+
+Researchers often make directional predictions, such as ‘we predict X is larger than Y’. The statistical test that logically follows from this prediction is a directional (or one-sided) *t*-test. A directional test moves the Type 1 error rate to one side of the tail, which lowers the critical value, and requires less observations to achieve the same statistical power. Although there is some discussion about when directional tests are appropriate, they are perfectly defensible from a Neyman-Pearson perspective on hypothesis testing. However, there might be situations where you do not want to ask a directional test. Sometimes it might be important for an effect opposite to your prediction to also reach statistical significance. For example, when you are evaluating a recently introduced educational intervention, and you predict the intervention will increase the performence of students, you might want to remain open to the possibility that students perform worse, to be able to recommend abandoning the new intervention. It is also possible to distribute the error rate in a 'lop-sided' manner, for example assigning a stricter error rate to effects in the negative than in the positive direction [@rice_heads_1994].
+
+### Use sequential analysis whenever possible
+
+[Sequential analyses](##sequential) greatly increase the efficiency of tests [@lakens_performing_2014]. For any of the ways in which you determined the sample size of your study that have been discussed here, a sequential design, where error rates are controlled as you repeatedly analyze the data that comes in, will on average decrease the sample size you will collect. 
+
+### Increase your alpha level
+
+As explained in the section on [compromise power analysis](#compromisepower) balancing error rates by increasing your alpha level also increases the statistical power (or reduces the Type 2 error rate). Obviously this comes at an increased probability of fooling yourself. The risk of doing so should be carefully weighed, which typically requires taking into account the prior probability that the null-hypothesis is true [@miller_quest_2019]. If you *have* to make a decision, and the data you can feasibly collect is limited, a compromise power analysis is justified, and so is increasing the alpha level.
+
+### Use within designs where possible
 
 One widely recommended approach to increase power is using a within subject design. Indeed, you need fewer observations to detect a mean difference between two conditions in a within-subjects design (in a dependent *t*-test) than in a between-subjects design (in an independent t-test). The reason is straightforward, but not always explained, and even less often expressed in the easy equation below. The sample size needed in within-designs (NW) relative to the sample needed in between-designs (NB), assuming normal distributions, is (from Maxwell & Delaney, 2004, p. 561, formula 45): 
 
@@ -928,30 +976,7 @@ Since most dependent variables in within designs in psychology are positively co
 <!-- knitr::include_app('http://shiny.ieis.tue.nl/within_between/', height = '4000px') -->
 <!-- ``` -->
 
-
-## Designing efficient studies
-
-TO BE UPDATED - COPY PASTED FROM BLOG
-
-So far, we have focused on how to perform a power analysis, under the ass. However,  are some things you should immediately implement if you use hypothesis tests, and data collection is costly.
-
-**1) Use directional tests where relevant.** 
-
-Just following statements such as ‘we predict X is larger than Y’ up with a logically consistent test of that claim (e.g., a one-sided t-test) will easily give you an increase of 10% power in any well-designed study. If you feel you need to give effects in both directions a non-zero probability, then at least use lopsided tests.
-
-**2) Use sequential analysis whenever possible.**
-
-It’s like optional stopping, but then without the questionable inflation of the false positive rate. Sequential analyses greatly increase the efficiency of tests [@lakens_performing_2014].
-
-**3) Increase your alpha level.** 
-
-As we wrote in our Justify Your Alpha paper as an argument to not require an alpha level of 0.005: “without (1) increased funding, (2) a reward system that values large-scale collaboration and (3) clear recommendations for how to evaluate research with sample size constraints, lowering the significance threshold could adversely affect the breadth of research questions examined.” If you *have* to make a decision, and the data you can feasibly collect is limited, consider performing a compromise power analysis.
-
-**4) Use within designs where possible.**
-
-Especially when measurements are strongly correlated, this can lead to a substantial increase in power, as explained above.
-
-**5) Remove statistical variation where possible**
+### Remove statistical variation where possible
 
 The smaller the variation, the larger the standardized effect size (because we are dividing the raw effect by a smaller denominator) and thus the higher the power given the same number of observations. For an overview of different approaches to reduce the variance, see @allison_power_1997. They discuss:
 
@@ -962,35 +987,37 @@ The smaller the variation, the larger the standardized effect size (because we a
 
 Another approach they do not mention is to, where possible, collect multiple observations from the same participant. This can also increase power, especially if there is variation at the individual level, and you analyze data with hierarchical models.
 
-**6) Use Bayesian statistics with informed priors.**
+### Use Bayesian statistics with informed priors
 
 Regrettably, almost all approaches to statistical inferences become very limited when the number of observations is small. If you are very confident in your predictions (and your peers agree), incorporating prior information will give you a benefit. For a discussion of the benefits and risks of such an approach, see @van_de_schoot_analyzing_2015.
 
-Now if you care about efficiency, you might already have incorporated all these things. There is no way to further improve the statistical power of your tests, and by all plausible estimates of effects sizes you can expect or the smallest effect size you would be interested in, statistical power is low. Now what should you do?
+## What to do if best practices in study design won’t save you?
 
-### What to do if best practices in study design won’t save you?
+In the end, getting an informative answer requires designing an informative experiment, and sometimes no matter how efficient you design your experiment, you will need to collect more data. Sometimes. there are no secret tricks or magical solutions. So what should we do then? The solutions below are, regrettably, a lot more work than making a small change to the design of your study. But it is about time we start to take them seriously.
 
-The first thing to realize is that you should not look at statistics to save you. There are no secret tricks or magical solutions. Highly informative experiments require a large number of observations. So what should we do then? The solutions below are, regrettably, a lot more work than making a small change to the design of your study. But it is about time we start to take them seriously. This is a list of solutions I see – but there is no doubt more we can/should do, so by all means, let me know your suggestions on twitter or in the comments.
-
-**1) Ask for a lot more money in your grant proposals.**
+### Ask for a lot more money in your grant proposals
 
 Some grant organizations distribute funds to be awarded as a function of how much money is requested. If you need more money to collect informative data, ask for it. Obviously grants are incredibly difficult to get, but if you ask for money, include a budget that acknowledges that data collection is not as cheap as you hoped some years ago. In my experience, psychologists are often asking for much less money to collect data than other scientists. Increasing the requested funds for participant payment by a factor of 10 is often reasonable, given the requirements of journals to provide a solid sample size justification, and the more realistic effect size estimates that are emerging from preregistered studies.
 
-**2) Improve management.**
+### Improve management
 
-If the implicit or explicit goals that you should meet are still the same now as they were 5 years ago, and you did not receive a miraculous increase in money and time to do research, then an update of the evaluation criteria is long overdue. I sincerely hope your manager is capable of this, but some ‘upward management’ might be needed. In the coda of Lakens & Evers (2014) we wrote “All else being equal, a researcher running properly powered studies will clearly contribute more to cumulative science than a researcher running underpowered studies, and if researchers take their science seriously, it should be the former who is rewarded in tenure systems and reward procedures, not the latter.” and “We believe reliable research should be facilitated above all else, and doing so clearly requires an immediate and irrevocable change from current evaluation practices in academia that mainly focus on quantity.” After publishing this paper, and despite the fact I was an ECR on a tenure track, I thought it would be at least principled if I sent this coda to the head of my own department. He replied that the things we wrote made perfect sense, instituted a recommendation to aim for 90% power in studies our department intends to publish, and has since then tried to make sure quality, and not quantity, is used in evaluations within the faculty (as you might have guessed, I am not on the job market, nor do I ever hope to be).
+If the implicit or explicit goals that you should meet are still the same now as they were 10 years ago, and you did not receive a miraculous increase in money and time to do research, then an update of the evaluation criteria is long overdue. I sincerely hope your manager is capable of this, but some ‘upward management’ might be needed. In the coda of Lakens & Evers (2014) we wrote:
 
-**3) Change what is expected from PhD students.**
+>All else being equal, a researcher running properly powered studies will clearly contribute more to cumulative science than a researcher running underpowered studies, and if researchers take their science seriously, it should be the former who is rewarded in tenure systems and reward procedures, not the latter.
 
-When I did my PhD, there was the assumption that you performed enough research in the 4 years you are employed as a full-time researcher to write a thesis with 3 to 5 empirical chapters (with some chapters having multiple studies). These studies were ideally published, but at least publishable. If we consider it important for PhD students to produce multiple publishable scientific articles during their PhD’s, this will greatly limit the types of research they can do. Instead of evaluating PhD students based on their publications, we can see the PhD as a time where researchers learn skills to become an independent researcher, and evaluate them not based on publishable units, but in terms of clearly identifiable skills. I personally doubt data collection is particularly educational after the 20th participant, and I would probably prefer to  hire a post-doc who had well-developed skills in programming, statistics, and who broadly read the literature, then someone who used that time to collect participant 21 to 200. If we make it easier for PhD students to demonstrate their skills level (which would include at least 1 well written article, I personally think) we can evaluate what they have learned in a more sensible manner than now. Currently, difference in the resources PhD students have at their disposal are a huge confound as we try to judge their skill based on their resume. Researchers at rich universities obviously have more resources – it should not be difficult to develop tools that allow us to judge the skills of people where resources are much less of a confound.
+### Change what is expected from PhD students
 
-**4) Think about the questions we collectively want answered, instead of the questions we can individually answer.**
+When I did my PhD, there was the assumption that you performed enough research in the 4 years you are employed as a full-time researcher to write a thesis with 3 to 5 empirical chapters (with some chapters having multiple studies). These studies were ideally published, but at least publishable. If we consider it important for PhD students to produce multiple publishable scientific articles during their PhD’s, this will greatly limit the types of research they can do. Instead of evaluating PhD students based on their publications, we can see the PhD as a time where researchers learn skills to become an independent researcher, and evaluate them not based on publishable units, but in terms of clearly identifiable skills. I personally doubt data collection is particularly educational after the 20th participant, and I would probably prefer to  hire a post-doc who had well-developed skills in programming, statistics, and who broadly read the literature, then someone who used that time to collect participant 21 to 200. If we make it easier for PhD students to demonstrate their skills level we can evaluate what they have learned in a more sensible manner than by counting the number of publications they wrote. Currently, difference in the resources PhD students have at their disposal are a huge confound as we try to judge their skill based on their resume. Researchers at rich universities obviously have more resources – it should not be difficult to develop tools that allow us to judge the skills of people where resources are much less of a confound.
 
-Our society has some serious issues that psychologists can help address. These questions are incredibly complex. I have long lost faith in the idea that a bottom-up organized scientific discipline that rewards individual scientists will manage to generate reliable and useful knowledge that can help to solve these societal issues. For some of these questions we need well-coordinated research lines where hundreds of scholars work together, pool their resources and skills, and collectively pursuit answers to these important questions. And if we are going to limit ourselves in our research to the questions we can answer in our own small labs, these big societal challenges are not going to be solved. Call me a pessimist. There is a reason we resort to forming unions and organizations that have to goal to collectively coordinate what we do. If you greatly dislike team science, don’t worry – there will always be options to make scientific contributions by yourself. But now, there are almost no ways for scientists who want to pursue huge challenges in large well-organized collectives of hundreds or thousands of scholars (for a recent exception that proves my rule by remaining unfunded: see the Psychological Science Accelerator). If you honestly believe your research question is important enough to be answered, then get together with everyone who also thinks so, and pursue answers collectively. Doing so should, eventually (I know science funders are slow) also be more convincing as you ask for more resources to do the resource (as in point 1).
+### Think about the questions we collectively want answered, instead of the questions we can individually answer
+
+Our society has some serious issues that psychologists can help address. These questions are incredibly complex. I have long lost faith in the idea that a bottom-up organized scientific discipline that rewards individual scientists will manage to generate reliable and useful knowledge that can help to solve these societal issues. For some of these questions we need well-coordinated research lines where hundreds of scholars work together, pool their resources and skills, and collectively pursuit answers to these important questions. And if we are going to limit ourselves in our research to the questions we can answer in our own small labs, these big societal challenges are not going to be solved. Call me a pessimist. 
+
+There is a reason we resort to forming unions and organizations that have to goal to collectively coordinate what we do. If you greatly dislike team science, don’t worry – there will always be options to make scientific contributions by yourself. But now, there are almost no ways for scientists who want to pursue huge challenges in large well-organized collectives of hundreds or thousands of scholars (for a recent exception that proves my rule by remaining unfunded: see the [Psychological Science Accelerator](https://psysciacc.org/)). If you honestly believe your research question is important enough to be answered, then get together with everyone who also thinks so, and pursue answers collectively.
 
 ## Planning for precision
 
 NOT COMPLETED YET.
 
-Imagine we want to learn about the average reading speed. This is important information when we present written information on dynamic displays (e.g., subtitles under movies, transit information in subways). We want to make sure that most people will be able to read the text we present before it is gone. The number of words we read isn't fixed, but depends on what we read, and individual differences [@brysbaert_how_2019]. 
+<!-- Imagine we want to learn about the average reading speed. This is important information when we present written information on dynamic displays (e.g., subtitles under movies, transit information in subways). We want to make sure that most people will be able to read the text we present before it is gone. The number of words we read isn't fixed, but depends on what we read, and individual differences [@brysbaert_how_2019].  -->
 
