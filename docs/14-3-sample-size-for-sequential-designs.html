@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="14.3 Sample Size for Sequential Designs | Improving Your Statistical Inferences" />
+<meta property="og:type" content="book" />
+<meta property="og:url" content="http://themethodsection.com/ebook/" />
+<meta property="og:image" content="http://themethodsection.com/ebook/images/cover.jpg" />
+<meta property="og:description" content="Online textbook to Improve Your Statistical Inferences" />
+
+
+<meta name="author" content="Daniel Lakens" />
+
+<meta name="date" content="2020-08-15" />
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+
+<meta name="description" content="Online textbook to Improve Your Statistical Inferences">
+
+<title>14.3 Sample Size for Sequential Designs | Improving Your Statistical Inferences</title>
+
+<link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
+<link href="libs/tufte-css-2015.12.29/envisioned.css" rel="stylesheet" />
+<link href="libs/msmb-css-0/msmb.css" rel="stylesheet" />
+<script>
+function toggle_visibility(id1, id2) {
+var e = document.getElementById(id1);
+var f = document.getElementById(id2);
+
+e.style.display = ((e.style.display!='none') ? 'none' : 'block');
+
+if(f.classList.contains('fa-plus-square')) {
+    f.classList.add('fa-minus-square')
+    f.classList.remove('fa-plus-square')
+} else {
+    f.classList.add('fa-plus-square')
+    f.classList.remove('fa-minus-square')
+}
+
+}
+</script>
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+
+</head>
+
+<body>
+
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="index.html">Welcome</a>
+<a href="contents.html">Contents</a>
+<a href="1-pvalue.html"><span class="toc-section-number">1</span> <em>p</em>-values</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="1-1-what-is-a-p-value.html"><span class="toc-section-number">1.1</span> What is a <em>p</em>-value?</a>
+<a href="1-2-fisher-vs-neyman.html.-neyman"><span class="toc-section-number">1.2</span> Fisher vs. Neyman</a>
+<a href="1-3-preventing-common-misconceptions-about-p-values.html"><span class="toc-section-number">1.3</span> Preventing common misconceptions about <em>p</em>-values</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="1-3-preventing-common-misconceptions-about-p-values.html"><span class="toc-section-number">1.3.1</span> Misunderstanding 1: A non-significant <em>p</em>-value means that the null hypothesis is true</a>
+<a href="1-3-preventing-common-misconceptions-about-p-values.html."><span class="toc-section-number">1.3.2</span> Misunderstanding 2: A significant <em>p</em>-value means that the null hypothesis is false.</a>
+<a href="1-3-preventing-common-misconceptions-about-p-values.html"><span class="toc-section-number">1.3.3</span> Misunderstanding 3: A significant <em>p</em>-value means that a practically important effect has been discovered</a>
+<a href="1-3-preventing-common-misconceptions-about-p-values.html."><span class="toc-section-number">1.3.4</span> Misunderstanding 4: If you have observed a significant finding, the probability that you have made a Type 1 error (a false positive) is 5%.</a>
+<a href="1-3-preventing-common-misconceptions-about-p-values.html."><span class="toc-section-number">1.3.5</span> Misunderstanding 5: One minus the <em>p</em>-value is the probability that the effect will replicate when repeated.</a>
+</div>
+</li>
+</ul>
+<a href="1-4-which-p-values-can-you-expect.html"><span class="toc-section-number">1.4</span> Which <em>p</em>-values can you expect?</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="1-4-which-p-values-can-you-expect.html"><span class="toc-section-number">1.4.1</span> Lindley’s paradox</a>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<a href="2-power.html"><span class="toc-section-number">2</span> Sample size justification</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="2-1-measuring-the-entire-population.html"><span class="toc-section-number">2.1</span> Measuring the Entire Population</a>
+<a href="2-2-feasibility.html"><span class="toc-section-number">2.2</span> Feasibility</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="2-2-feasibility.html"><span class="toc-section-number">2.2.1</span> The smallest effect size that can be statistically significant</a>
+<a href="2-2-feasibility.html"><span class="toc-section-number">2.2.2</span> Compute the width of the confidence interval around the effect size</a>
+<a href="2-2-feasibility.html"><span class="toc-section-number">2.2.3</span> Plot a sensitivity power analysis</a>
+<a href="2-2-feasibility.html."><span class="toc-section-number">2.2.4</span> Reporting a feasibility justification.</a>
+</div>
+</li>
+</ul>
+<a href="2-3-a-priori-power-analysis.html"><span class="toc-section-number">2.3</span> A-priori power analysis</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="2-3-a-priori-power-analysis.html."><span class="toc-section-number">2.3.1</span> Performing a power analysis.</a>
+<a href="2-3-a-priori-power-analysis.html"><span class="toc-section-number">2.3.2</span> Justifying the effect size used in an a-priori power analysis</a>
+<a href="2-3-a-priori-power-analysis.html"><span class="toc-section-number">2.3.3</span> Justifying the error rates used in an a-priori power analysis</a>
+<a href="2-3-a-priori-power-analysis.html"><span class="toc-section-number">2.3.4</span> Some advice when using G*Power</a>
+<a href="2-3-a-priori-power-analysis.html"><span class="toc-section-number">2.3.5</span> A-priori power analysis for the absence of an effect</a>
+<a href="2-3-a-priori-power-analysis.html."><span class="toc-section-number">2.3.6</span> Reporting an a-priori power analysis.</a>
+</div>
+</li>
+</ul>
+<a href="2-4-compromisepower.html"><span class="toc-section-number">2.4</span> Compromise power analysis</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="2-4-compromisepower.html"><span class="toc-section-number">2.4.1</span> Reporting a compromise power analysis</a>
+</div>
+</li>
+</ul>
+<a href="2-5-observedpower.html"><span class="toc-section-number">2.5</span> Observed (post-hoc) power analysis</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="2-5-observedpower.html"><span class="toc-section-number">2.5.1</span> What to do if your editor asks for post-hoc power?</a>
+</div>
+</li>
+</ul>
+<a href="2-6-designing-efficient-studies.html"><span class="toc-section-number">2.6</span> Designing efficient studies</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="2-6-designing-efficient-studies.html."><span class="toc-section-number">2.6.1</span> Use directional tests where relevant.</a>
+<a href="2-6-designing-efficient-studies.html"><span class="toc-section-number">2.6.2</span> Use sequential analysis whenever possible</a>
+<a href="2-6-designing-efficient-studies.html"><span class="toc-section-number">2.6.3</span> Increase your alpha level</a>
+<a href="2-6-designing-efficient-studies.html"><span class="toc-section-number">2.6.4</span> Use within designs where possible</a>
+<a href="2-6-designing-efficient-studies.html"><span class="toc-section-number">2.6.5</span> Remove statistical variation where possible</a>
+<a href="2-6-designing-efficient-studies.html"><span class="toc-section-number">2.6.6</span> Use Bayesian statistics with informed priors</a>
+</div>
+</li>
+</ul>
+<a href="2-7-what-if-best-practices-are-not-enough.html"><span class="toc-section-number">2.7</span> What if best practices are not enough?</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="2-7-what-if-best-practices-are-not-enough.html"><span class="toc-section-number">2.7.1</span> Ask for more money in your grant proposals</a>
+<a href="2-7-what-if-best-practices-are-not-enough.html"><span class="toc-section-number">2.7.2</span> Improve management</a>
+<a href="2-7-what-if-best-practices-are-not-enough.html"><span class="toc-section-number">2.7.3</span> Change what is expected from PhD students</a>
+<a href="2-7-what-if-best-practices-are-not-enough.html"><span class="toc-section-number">2.7.4</span> Get answers collectively</a>
+</div>
+</li>
+</ul>
+<a href="2-8-planning-for-precision.html"><span class="toc-section-number">2.8</span> Planning for precision</a>
+</div>
+</li>
+</ul>
+<a href="3-questions.html"><span class="toc-section-number">3</span> Asking Statistical Questions</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="3-1-do-you-really-want-to-test-a-hypothesis.html"><span class="toc-section-number">3.1</span> Do You Really Want to Test a Hypothesis?</a>
+<a href="3-2-goals-of-tests.html"><span class="toc-section-number">3.2</span> Goals of tests</a>
+</div>
+</li>
+</ul>
+<a href="4-errorcontrol.html"><span class="toc-section-number">4</span> Error Control</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="4-1-why-you-dont-need-to-adjust-your-alpha-level-for-all-tests-youll-do-in-your-lifetime-.html."><span class="toc-section-number">4.1</span> Why you don’t need to adjust your alpha level for all tests you’ll do in your lifetime.</a>
+<a href="4-2-why-banning-p-values-might-not-solve-our-problems-.html."><span class="toc-section-number">4.2</span> Why banning p-values might not solve our problems.</a>
+<a href="4-3-error-control-in-exploratory-anovas-the-how-and-the-why.html"><span class="toc-section-number">4.3</span> Error Control in Exploratory ANOVA’s: The How and the Why</a>
+</div>
+</li>
+</ul>
+<a href="5-effectsizesCI.html"><span class="toc-section-number">5</span> Effect Sizes and Confidence Intervals</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="5-1-effect-sizes.html"><span class="toc-section-number">5.1</span> Effect sizes</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="5-1-effect-sizes.html"><span class="toc-section-number">5.1.1</span> The Facebook experiment</a>
+</div>
+</li>
+</ul>
+<a href="5-2-cohend.html"><span class="toc-section-number">5.2</span> Cohen’s <em>d</em></a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="5-2-cohend.html"><span class="toc-section-number">5.2.1</span> Correcting for Bias</a>
+</div>
+</li>
+</ul>
+<a href="5-3-r-correlations.html"><span class="toc-section-number">5.3</span> <em>r</em> (correlations)</a>
+<a href="5-4-confint.html"><span class="toc-section-number">5.4</span> Confidence Intervals</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="5-4-confint.html.-samples"><span class="toc-section-number">5.4.1</span> Population vs. Samples</a>
+<a href="5-4-confint.html"><span class="toc-section-number">5.4.2</span> The relation between confidence intervals and <em>p</em>-values</a>
+<a href="5-4-confint.html"><span class="toc-section-number">5.4.3</span> The Standard Error and 95% Confidence Intervals</a>
+<a href="5-4-confint.html"><span class="toc-section-number">5.4.4</span> Overlapping Confidence Intervals</a>
+<a href="5-4-confint.html"><span class="toc-section-number">5.4.5</span> Prediction Intervals</a>
+<a href="5-4-confint.html"><span class="toc-section-number">5.4.6</span> Capture Percentages</a>
+</div>
+</li>
+</ul>
+<a href="5-5-computing-confidence-intervals-around-effect-sizes.html"><span class="toc-section-number">5.5</span> Computing Confidence Intervals around Effect Sizes</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="5-5-computing-confidence-intervals-around-effect-sizes.html"><span class="toc-section-number">5.5.1</span> MOTE</a>
+<a href="5-5-computing-confidence-intervals-around-effect-sizes.html"><span class="toc-section-number">5.5.2</span> JASP</a>
+<a href="5-5-computing-confidence-intervals-around-effect-sizes.html"><span class="toc-section-number">5.5.3</span> ESCI software</a>
+<a href="5-5-computing-confidence-intervals-around-effect-sizes.html"><span class="toc-section-number">5.5.4</span> MBESS</a>
+<a href="5-5-computing-confidence-intervals-around-effect-sizes.html"><span class="toc-section-number">5.5.5</span> Why should you report 90% CI for eta-squared?</a>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<a href="6-equivalencetest.html"><span class="toc-section-number">6</span> Equivalence Testing</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="6-1-absence-of-evidence-is-not-evidence-of-absence-.html."><span class="toc-section-number">6.1</span> Absence of evidence is not evidence of absence.</a>
+<a href="6-2-justifysesoi.html"><span class="toc-section-number">6.2</span> JUstifying a smallest effect size of interest</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="6-2-justifysesoi.html"><span class="toc-section-number">6.2.1</span> Rejecting the presence of a meaningful effect</a>
+</div>
+</li>
+</ul>
+<a href="bayesian-estimation-using-rope-and-equivalence-tests-.html.">Bayesian estimation using ROPE and equivalence tests.</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="bayesian-estimation-using-rope-and-equivalence-tests-.html"><span class="toc-section-number">6.2.2</span> 95% HDI vs 90% CI</a>
+<a href="bayesian-estimation-using-rope-and-equivalence-tests-.html"><span class="toc-section-number">6.2.3</span> Power analysis for Equivalence Tests</a>
+<a href="bayesian-estimation-using-rope-and-equivalence-tests-.html"><span class="toc-section-number">6.2.4</span> Use of prior information</a>
+<a href="bayesian-estimation-using-rope-and-equivalence-tests-.html"><span class="toc-section-number">6.2.5</span> Conclusion</a>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<a href="7-severity.html"><span class="toc-section-number">7</span> Severe Tests and Risky Predictions</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="7-1-testing-range-predictions.html"><span class="toc-section-number">7.1</span> Testing Range Predictions</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="7-1-testing-range-predictions.html"><span class="toc-section-number">7.1.1</span> Risky Predictions</a>
+<a href="7-1-testing-range-predictions.html"><span class="toc-section-number">7.1.2</span> Systematic Noise</a>
+<a href="7-1-testing-range-predictions.html"><span class="toc-section-number">7.1.3</span> Range Predictions</a>
+<a href="7-1-testing-range-predictions.html"><span class="toc-section-number">7.1.4</span> Directional Tests</a>
+<a href="7-1-testing-range-predictions.html"><span class="toc-section-number">7.1.5</span> Minimal Effect Tests</a>
+<a href="7-1-testing-range-predictions.html"><span class="toc-section-number">7.1.6</span> Range Predictions in PRactice</a>
+</div>
+</li>
+</ul>
+<a href="7-2-verisimilitude-belief-and-progress-in-psychological-science.html"><span class="toc-section-number">7.2</span> Verisimilitude, Belief, and Progress in Psychological Science</a>
+</div>
+</li>
+</ul>
+<a href="8-sesoi.html"><span class="toc-section-number">8</span> Smallest Effect Size of Interest</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="8-1-what-would-falsify-your-theory.html"><span class="toc-section-number">8.1</span> What would falsify your theory?</a>
+<a href="8-2-what-would-falsify-your-theory-in-practice.html"><span class="toc-section-number">8.2</span> What would falsify your theory in practice?</a>
+<a href="8-3-specifying-a-sesoi-based-on-theory-or-costs-and-benefits.html"><span class="toc-section-number">8.3</span> Specifying a SESOI based on theory or costs and benefits</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="8-3-specifying-a-sesoi-based-on-theory-or-costs-and-benefits.html"><span class="toc-section-number">8.3.1</span> Example of a theoretically predicted SESOI</a>
+<a href="8-3-specifying-a-sesoi-based-on-theory-or-costs-and-benefits.html"><span class="toc-section-number">8.3.2</span> Anchor based methods to set a SESOI</a>
+<a href="8-3-specifying-a-sesoi-based-on-theory-or-costs-and-benefits.html"><span class="toc-section-number">8.3.3</span> Cost benefit analysis</a>
+<a href="8-3-specifying-a-sesoi-based-on-theory-or-costs-and-benefits.html"><span class="toc-section-number">8.3.4</span> Setting the SESOI based on effects feasible to study</a>
+</div>
+</li>
+</ul>
+<a href="8-4-smalltelescopes.html"><span class="toc-section-number">8.4</span> The small telescopes approach</a>
+<a href="8-5-setting-the-sesoi-based-on-resources-.html."><span class="toc-section-number">8.5</span> Setting the SESOI based on resources.</a>
+<a href="8-6-setting-the-smallest-effect-size-of-interest-in-replication-studies.html"><span class="toc-section-number">8.6</span> Setting the smallest effect size of interest in replication studies</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="8-6-setting-the-smallest-effect-size-of-interest-in-replication-studies.html"><span class="toc-section-number">8.6.1</span> Setting the SESOI based on theoretical predictions</a>
+<a href="8-6-setting-the-smallest-effect-size-of-interest-in-replication-studies.html"><span class="toc-section-number">8.6.2</span> Setting the smallest effect size of interest based on resources</a>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<a href="9-meta.html"><span class="toc-section-number">9</span> Meta-analysis</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="9-1-random-variation.html"><span class="toc-section-number">9.1</span> Random Variation</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="9-1-random-variation.html"><span class="toc-section-number">9.1.1</span> Variation in single samples</a>
+<a href="9-1-random-variation.html."><span class="toc-section-number">9.1.2</span> Variance in two groups, and their difference.</a>
+<a href="9-1-random-variation.html"><span class="toc-section-number">9.1.3</span> Correlations between two groups</a>
+<a href="9-1-random-variation.html."><span class="toc-section-number">9.1.4</span> Confidence Intervals around Standard Deviations.</a>
+</div>
+</li>
+</ul>
+<a href="9-2-mixed.html"><span class="toc-section-number">9.2</span> Mixed Results</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="9-2-mixed.html"><span class="toc-section-number">9.2.1</span> Likelihoods of sets of studies</a>
+</div>
+</li>
+</ul>
+<a href="9-3-introduction-to-meta-analysis.html"><span class="toc-section-number">9.3</span> Introduction to Meta-Analysis</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="9-3-introduction-to-meta-analysis.html"><span class="toc-section-number">9.3.1</span> Single study meta-analysis</a>
+<a href="9-3-introduction-to-meta-analysis.html"><span class="toc-section-number">9.3.2</span> Simulating meta-analyses of mean standardized differences</a>
+<a href="9-3-introduction-to-meta-analysis.html"><span class="toc-section-number">9.3.3</span> Fixed Effect vs Random Effects</a>
+<a href="9-3-introduction-to-meta-analysis.html"><span class="toc-section-number">9.3.4</span> Simulating meta-analyses for dichotomous outcomes</a>
+<a href="9-3-introduction-to-meta-analysis.html"><span class="toc-section-number">9.3.5</span> Heterogeneity</a>
+<a href="9-3-introduction-to-meta-analysis.html"><span class="toc-section-number">9.3.6</span> Improving the reproducibility of meta-analyses</a>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<a href="10-bias.html"><span class="toc-section-number">10</span> Bias detection</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="10-1-bias-detection.html"><span class="toc-section-number">10.1</span> Bias Detection</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="10-1-bias-detection.html"><span class="toc-section-number">10.1.1</span> Funnel Plots</a>
+<a href="10-1-bias-detection.html"><span class="toc-section-number">10.1.2</span> Trim and Fill</a>
+<a href="10-1-bias-detection.html"><span class="toc-section-number">10.1.3</span> PET-PEESE</a>
+<a href="10-1-bias-detection.html"><span class="toc-section-number">10.1.4</span> P-curve Analysis</a>
+<a href="10-1-bias-detection.html"><span class="toc-section-number">10.1.5</span> TIVA</a>
+<a href="10-1-bias-detection.html"><span class="toc-section-number">10.1.6</span> Let’s Detect Some Bias!</a>
+<a href="10-1-bias-detection.html"><span class="toc-section-number">10.1.7</span> Introducing bias</a>
+<a href="10-1-bias-detection.html"><span class="toc-section-number">10.1.8</span> Bias detection techniques</a>
+<a href="10-1-bias-detection.html"><span class="toc-section-number">10.1.9</span> TIVA</a>
+<a href="10-1-bias-detection.html"><span class="toc-section-number">10.1.10</span> Z-curve analysis</a>
+<a href="bayesian-estimation-using-rope-and-equivalence-tests-.html"><span class="toc-section-number">10.1.11</span> Conclusion</a>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<a href="11-computationalreproducibility.html"><span class="toc-section-number">11</span> Computational Reproducibility</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="11-1-step-1-setting-up-a-github-repository.html"><span class="toc-section-number">11.1</span> Step 1: Setting up a GitHub repository</a>
+<a href="11-2-step-2-cloning-your-github-repository-into-rstudio.html"><span class="toc-section-number">11.2</span> Step 2: Cloning your GitHub repository into RStudio</a>
+<a href="11-3-step-3-creating-an-r-markdown-file.html"><span class="toc-section-number">11.3</span> Step 3: Creating an R Markdown file</a>
+<a href="11-4-step-4-reproducible-data-analysis-in-r-studio.html"><span class="toc-section-number">11.4</span> Step 4: Reproducible Data Analysis in R Studio</a>
+<a href="11-5-step-5-committing-and-pushing-to-github.html"><span class="toc-section-number">11.5</span> Step 5: Committing and Pushing to GitHub</a>
+<a href="11-6-step-6-reproducible-data-analysis.html"><span class="toc-section-number">11.6</span> Step 6: Reproducible Data Analysis</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="11-6-step-6-reproducible-data-analysis.html"><span class="toc-section-number">11.6.1</span> Extra: APA formatted manuscripts in papaja</a>
+</div>
+</li>
+</ul>
+<a href="11-7-step-7-organizing-your-data-and-code.html"><span class="toc-section-number">11.7</span> Step 7: Organizing Your Data and Code</a>
+<a href="11-8-step-8-archiving-your-data-and-code.html"><span class="toc-section-number">11.8</span> Step 8: Archiving Your Data and Code</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="11-8-step-8-archiving-your-data-and-code.html"><span class="toc-section-number">11.8.1</span> EXTRA: Sharing Reproducible Code on Code Ocean</a>
+</div>
+</li>
+</ul>
+<a href="11-9-some-points-for-improvement-in-computational-reproducibility.html"><span class="toc-section-number">11.9</span> Some points for improvement in computational reproducibility</a>
+<a href="bayesian-estimation-using-rope-and-equivalence-tests-.html"><span class="toc-section-number">11.10</span> Conclusion</a>
+</div>
+</li>
+</ul>
+<a href="12-prereg.html"><span class="toc-section-number">12</span> Preregistration and Transparency</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="12-1-trust-in-scientists.html"><span class="toc-section-number">12.1</span> Trust in scientists</a>
+<a href="12-2-the-value-of-preregistration.html"><span class="toc-section-number">12.2</span> The value of preregistration</a>
+<a href="12-3-registered-reports.html"><span class="toc-section-number">12.3</span> Registered Reports</a>
+<a href="12-4-preregister-your-study.html"><span class="toc-section-number">12.4</span> Preregister your study?</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="12-4-preregister-your-study.html"><span class="toc-section-number">12.4.1</span> How to preregister</a>
+</div>
+</li>
+</ul>
+<a href="12-5-what-does-a-formalized-test-of-a-prediction-look-like.html"><span class="toc-section-number">12.5</span> What Does a Formalized Test of a Prediction Look Like?</a>
+<a href="12-6-are-you-ready-to-preregister-a-hypothesis-test.html"><span class="toc-section-number">12.6</span> Are you ready to preregister a hypothesis test?</a>
+</div>
+</li>
+</ul>
+<a href="13-bayes.html"><span class="toc-section-number">13</span> Bayesian statistics</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="13-1-likelihoods.html"><span class="toc-section-number">13.1</span> Likelihoods</a>
+<a href="13-2-bayes-factors.html"><span class="toc-section-number">13.2</span> Bayes factors</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="13-2-bayes-factors.html"><span class="toc-section-number">13.2.1</span> Updating our belief</a>
+</div>
+</li>
+</ul>
+<a href="13-3-bayesest.html"><span class="toc-section-number">13.3</span> Bayesian Estimation</a>
+</div>
+</li>
+</ul>
+<a href="14-sequential.html"><span class="toc-section-number">14</span> Sequential Analysis</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="14-1-choosing-alpha-levels-for-sequential-analyses-.html."><span class="toc-section-number">14.1</span> Choosing alpha levels for sequential analyses.</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="14-1-choosing-alpha-levels-for-sequential-analyses-.html"><span class="toc-section-number">14.1.1</span> Pocock correction</a>
+</div>
+</li>
+</ul>
+<a href="14-2-comparing-spending-functions.html"><span class="toc-section-number">14.2</span> Comparing Spending Functions</a>
+<a id="active-page" href="14-3-sample-size-for-sequential-designs.html"><span class="toc-section-number">14.3</span> Sample Size for Sequential Designs</a><ul class="navbar"><ul class="toc-sections">
+<li class="toc"><a href="#sample-size-for-sequential-designs"> Sample Size for Sequential Designs</a></li>
+</ul>
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="14-3-sample-size-for-sequential-designs.html"><span class="toc-section-number">14.3.1</span> Alpha spending functions</a>
+<a href="14-3-sample-size-for-sequential-designs.html"><span class="toc-section-number">14.3.2</span> Updating Boundaries During an Experiment</a>
+</div>
+</li>
+</ul>
+<a href="14-4-test-for-non-inferiority.html"><span class="toc-section-number">14.4</span> Test for (non-)inferiority</a>
+<a href="14-5-stopping-for-futility.html"><span class="toc-section-number">14.5</span> Stopping for futility</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="14-5-stopping-for-futility.html."><span class="toc-section-number">14.5.1</span> Sequential analyses using Bayes factors.</a>
+<a href="14-5-stopping-for-futility.html."><span class="toc-section-number">14.5.2</span> Reporting results after a sequential analysis.</a>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<a href="15-references.html"><span class="toc-section-number">15</span> References</a>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body><div id="sample-size-for-sequential-designs" class="section level2">
+<h2>
+<span class="header-section-number">14.3</span> Sample Size for Sequential Designs</h2>
+<p>Sequential designs require somewhat more participants than a fixed design at the final look, depending on how much the alpha level at this look is lowered due to the correction for multiple comparisons. Due to early stopping, sequential designs will on average require less participants.</p>
+<p>Let’s first examine how many participants we would need in a fixed design, where we only analyze our data once. We have an alpha level of 0.05, and a Type 2 (beta) error of 0.1 - in other words, the desired power is 90%. We will perform one test, and assuming a normal distribution our critical Z-score would be 1.96, for an alpha level of 5%.</p>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="14-3-sample-size-for-sequential-designs.html#cb140-1"></a><span class="co"># specify the design</span></span>
+<span id="cb140-2"><a href="14-3-sample-size-for-sequential-designs.html#cb140-2"></a>seq_design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
+<span id="cb140-3"><a href="14-3-sample-size-for-sequential-designs.html#cb140-3"></a>  <span class="dt">kMax =</span> <span class="dv">1</span>,</span>
+<span id="cb140-4"><a href="14-3-sample-size-for-sequential-designs.html#cb140-4"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"P"</span>,</span>
+<span id="cb140-5"><a href="14-3-sample-size-for-sequential-designs.html#cb140-5"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
+<span id="cb140-6"><a href="14-3-sample-size-for-sequential-designs.html#cb140-6"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb140-7"><a href="14-3-sample-size-for-sequential-designs.html#cb140-7"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span></span>
+<span id="cb140-8"><a href="14-3-sample-size-for-sequential-designs.html#cb140-8"></a>)</span>
+<span id="cb140-9"><a href="14-3-sample-size-for-sequential-designs.html#cb140-9"></a><span class="co"># print a summary</span></span>
+<span id="cb140-10"><a href="14-3-sample-size-for-sequential-designs.html#cb140-10"></a><span class="kw">summary</span>(seq_design)</span></code></pre></div>
+<pre><code>## Fixed sample analysis
+## 
+## Stage                               Fixed 
+## Efficacy boundary (z-value scale)   1.960 
+## Two-sided local significance level 0.0500</code></pre>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="14-3-sample-size-for-sequential-designs.html#cb142-1"></a><span class="co"># perform a power analysis using rpact</span></span>
+<span id="cb142-2"><a href="14-3-sample-size-for-sequential-designs.html#cb142-2"></a><span class="co"># By setting the alternative to 0.5 and the stDev to 1, we assume a Cohen's d of 0.5 for the alternative hypothesis.</span></span>
+<span id="cb142-3"><a href="14-3-sample-size-for-sequential-designs.html#cb142-3"></a>power_res &lt;-<span class="st"> </span><span class="kw">getSampleSizeMeans</span>(</span>
+<span id="cb142-4"><a href="14-3-sample-size-for-sequential-designs.html#cb142-4"></a>  <span class="dt">design =</span> seq_design,</span>
+<span id="cb142-5"><a href="14-3-sample-size-for-sequential-designs.html#cb142-5"></a>  <span class="dt">groups =</span> <span class="dv">2</span>,</span>
+<span id="cb142-6"><a href="14-3-sample-size-for-sequential-designs.html#cb142-6"></a>  <span class="dt">alternative =</span> <span class="fl">0.5</span>, </span>
+<span id="cb142-7"><a href="14-3-sample-size-for-sequential-designs.html#cb142-7"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>, </span>
+<span id="cb142-8"><a href="14-3-sample-size-for-sequential-designs.html#cb142-8"></a>  <span class="dt">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
+<span id="cb142-9"><a href="14-3-sample-size-for-sequential-designs.html#cb142-9"></a>  <span class="dt">normalApproximation =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb142-10"><a href="14-3-sample-size-for-sequential-designs.html#cb142-10"></a></span>
+<span id="cb142-11"><a href="14-3-sample-size-for-sequential-designs.html#cb142-11"></a>power_res</span></code></pre></div>
+<pre><code>## Design plan parameters and output for means:
+## 
+## Design parameters:
+##   Significance level                           : 0.0500 
+##   Type II error rate                           : 0.1 
+##   Two-sided power                              : FALSE 
+##   Test                                         : two-sided 
+## 
+## User defined parameters:
+##   Alternatives                                 : 0.5 
+## 
+## Default parameters:
+##   Normal approximation                         : FALSE 
+##   Mean ratio                                   : FALSE 
+##   Theta H0                                     : 0 
+##   Standard deviation                           : 1 
+##   Treatment groups                             : 2 
+##   Planned allocation ratio                     : 1 
+## 
+## Sample size and output:
+##   Number of subjects fixed                     : 170.1 
+##   Number of subjects fixed (1)                 : 85.0 
+##   Number of subjects fixed (2)                 : 85.0 
+##   Lower critical values (effect scale)         : -0.303 
+##   Upper critical values (effect scale)         : 0.303 
+##   Local two-sided significance levels          : 0.0500 
+## 
+## Legend:
+##   (i): values of treatment arm i</code></pre>
+<p>We see we need 85 participants in each group, (or 86, since we always round the number of observations up, as we can not collect 0.03 of a participant), and so we need 172 participants in total (see G*Power, which rounds up values correctly). Because this is a fixed design, we can also compute this sample size using the <code>pwr</code> package in R or any other power analysis software.</p>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="14-3-sample-size-for-sequential-designs.html#cb144-1"></a><span class="kw">pwr.t.test</span>(</span>
+<span id="cb144-2"><a href="14-3-sample-size-for-sequential-designs.html#cb144-2"></a>  <span class="dt">d =</span> <span class="fl">0.5</span>,</span>
+<span id="cb144-3"><a href="14-3-sample-size-for-sequential-designs.html#cb144-3"></a>  <span class="dt">sig.level =</span> <span class="fl">0.05</span>,</span>
+<span id="cb144-4"><a href="14-3-sample-size-for-sequential-designs.html#cb144-4"></a>  <span class="dt">power =</span> <span class="fl">0.9</span>,</span>
+<span id="cb144-5"><a href="14-3-sample-size-for-sequential-designs.html#cb144-5"></a>  <span class="dt">type=</span><span class="st">"two.sample"</span>,</span>
+<span id="cb144-6"><a href="14-3-sample-size-for-sequential-designs.html#cb144-6"></a>  <span class="dt">alternative=</span><span class="st">"two.sided"</span></span>
+<span id="cb144-7"><a href="14-3-sample-size-for-sequential-designs.html#cb144-7"></a>)<span class="op">$</span>n</span></code></pre></div>
+<pre><code>## [1] 85.03128</code></pre>
+<p>We can now examine our design above with 2 looks, a Pocock correction, a 2 sided test with an alpha of 0.05. We will look 2 times, and expect a true effect of d = 0.5.</p>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="14-3-sample-size-for-sequential-designs.html#cb146-1"></a><span class="co"># Our 2 look design</span></span>
+<span id="cb146-2"><a href="14-3-sample-size-for-sequential-designs.html#cb146-2"></a>seq_design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
+<span id="cb146-3"><a href="14-3-sample-size-for-sequential-designs.html#cb146-3"></a>  <span class="dt">kMax =</span> <span class="dv">2</span>,</span>
+<span id="cb146-4"><a href="14-3-sample-size-for-sequential-designs.html#cb146-4"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"P"</span>,</span>
+<span id="cb146-5"><a href="14-3-sample-size-for-sequential-designs.html#cb146-5"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
+<span id="cb146-6"><a href="14-3-sample-size-for-sequential-designs.html#cb146-6"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb146-7"><a href="14-3-sample-size-for-sequential-designs.html#cb146-7"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span></span>
+<span id="cb146-8"><a href="14-3-sample-size-for-sequential-designs.html#cb146-8"></a>  )</span>
+<span id="cb146-9"><a href="14-3-sample-size-for-sequential-designs.html#cb146-9"></a></span>
+<span id="cb146-10"><a href="14-3-sample-size-for-sequential-designs.html#cb146-10"></a><span class="co"># Compute the sample size we need</span></span>
+<span id="cb146-11"><a href="14-3-sample-size-for-sequential-designs.html#cb146-11"></a>power_res &lt;-<span class="st"> </span><span class="kw">getSampleSizeMeans</span>(</span>
+<span id="cb146-12"><a href="14-3-sample-size-for-sequential-designs.html#cb146-12"></a>  <span class="dt">design =</span> seq_design,</span>
+<span id="cb146-13"><a href="14-3-sample-size-for-sequential-designs.html#cb146-13"></a>  <span class="dt">groups =</span> <span class="dv">2</span>,</span>
+<span id="cb146-14"><a href="14-3-sample-size-for-sequential-designs.html#cb146-14"></a>  <span class="dt">alternative =</span> <span class="fl">0.5</span>, </span>
+<span id="cb146-15"><a href="14-3-sample-size-for-sequential-designs.html#cb146-15"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>, </span>
+<span id="cb146-16"><a href="14-3-sample-size-for-sequential-designs.html#cb146-16"></a>  <span class="dt">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
+<span id="cb146-17"><a href="14-3-sample-size-for-sequential-designs.html#cb146-17"></a>  <span class="dt">normalApproximation =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb146-18"><a href="14-3-sample-size-for-sequential-designs.html#cb146-18"></a></span>
+<span id="cb146-19"><a href="14-3-sample-size-for-sequential-designs.html#cb146-19"></a><span class="kw">summary</span>(power_res)</span></code></pre></div>
+<pre><code>## Sample size calculation for a continuous endpoint
+## 
+## Sequential analysis with a maximum of 2 looks (group sequential design).
+## The sample size was calculated for a two-sample t-test (two-sided),
+## alternative = 0.5, standard deviation = 1, allocation ratio = 1, and power 90%.
+## 
+## Stage                                         1      2 
+## Information rate                            50%   100% 
+## Efficacy boundary (z-value scale)         2.178  2.178 
+## Number of subjects                           94    188 
+## Cumulative alpha spent                   0.0294 0.0500 
+## Cumulative power                         0.5893 0.9000 
+## Two-sided local significance level       0.0294 0.0294 
+## Lower efficacy boundary (t)              -0.458 -0.321 
+## Upper efficacy boundary (t)               0.458  0.321 
+## Exit probability for efficacy (under H0) 0.0294 
+## Exit probability for efficacy (under H1) 0.5893 
+## 
+## Legend:
+##   (t): approximate treatment effect scale</code></pre>
+<p>It is important to know that <code>rpact</code> returns the <em>total</em> number of subjects at look 1 (94, so 94/2 = 47 in each group), and the total sample size at look 2 (188, so 188/2 = 94 in each group). This means that at the second look, we are now collecting 188 instead of 172 participants. This is a consequence of lowering our alpha level at each look (from 0.05 to 0.0294). To compensate for the loss of power, we need to increase our sample size. HOwever, this is compensated by the fact that sometimes we will stop after look 1, and thus on average we will collect less participants (even though we might sometimes collect more participants than we would have, had we not used a sequential design). <code>rpact</code> also computes the expected number of participants, in the long run, if the true effect size is d = 0.5.</p>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="14-3-sample-size-for-sequential-designs.html#cb148-1"></a>power_res<span class="op">$</span>expectedNumberOfSubjectsH1</span></code></pre></div>
+<pre><code>## [1] 131.9571</code></pre>
+<p>So, in the long run, if the true effect size is d = 0.5, we will collect 132 observations (66 per condition), instead of 172 in total (or 86 per condition).</p>
+<div class="question">
+<p class="question-begin">
+► Question
+</p>
+<div class="question-body">
+<p>
+If we had expected an effect size of d = 0.4, what would the total sample size we needed to collect for 90% power be?
+</p>
+<p class="question-end">
+<span class="fa fa-square-o solution-icon"></span>
+</p>
+</div>
+</div>
+<div class="solution">
+<p class="solution-begin">
+Solution<span id="sol-start-4" class="fa fa-plus-square solution-icon clickable" onclick="toggle_visibility('sol-body-4', 'sol-start-4')"></span>
+</p>
+<div id="sol-body-4" class="solution-body" style="display: none;">
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="14-3-sample-size-for-sequential-designs.html#cb150-1"></a><span class="co"># Make sure you have rpact installed</span></span>
+<span id="cb150-2"><a href="14-3-sample-size-for-sequential-designs.html#cb150-2"></a><span class="kw">library</span>(rpact)</span>
+<span id="cb150-3"><a href="14-3-sample-size-for-sequential-designs.html#cb150-3"></a>seq_design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
+<span id="cb150-4"><a href="14-3-sample-size-for-sequential-designs.html#cb150-4"></a>  <span class="dt">kMax =</span> <span class="dv">2</span>,</span>
+<span id="cb150-5"><a href="14-3-sample-size-for-sequential-designs.html#cb150-5"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"P"</span>,</span>
+<span id="cb150-6"><a href="14-3-sample-size-for-sequential-designs.html#cb150-6"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
+<span id="cb150-7"><a href="14-3-sample-size-for-sequential-designs.html#cb150-7"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb150-8"><a href="14-3-sample-size-for-sequential-designs.html#cb150-8"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span></span>
+<span id="cb150-9"><a href="14-3-sample-size-for-sequential-designs.html#cb150-9"></a>  )</span>
+<span id="cb150-10"><a href="14-3-sample-size-for-sequential-designs.html#cb150-10"></a></span>
+<span id="cb150-11"><a href="14-3-sample-size-for-sequential-designs.html#cb150-11"></a><span class="co"># Compute the sample size we need</span></span>
+<span id="cb150-12"><a href="14-3-sample-size-for-sequential-designs.html#cb150-12"></a>power_res &lt;-<span class="st"> </span><span class="kw">getSampleSizeMeans</span>(</span>
+<span id="cb150-13"><a href="14-3-sample-size-for-sequential-designs.html#cb150-13"></a>  <span class="dt">design =</span> seq_design,</span>
+<span id="cb150-14"><a href="14-3-sample-size-for-sequential-designs.html#cb150-14"></a>  <span class="dt">groups =</span> <span class="dv">2</span>,</span>
+<span id="cb150-15"><a href="14-3-sample-size-for-sequential-designs.html#cb150-15"></a>  <span class="dt">alternative =</span> <span class="fl">0.4</span>, </span>
+<span id="cb150-16"><a href="14-3-sample-size-for-sequential-designs.html#cb150-16"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>, </span>
+<span id="cb150-17"><a href="14-3-sample-size-for-sequential-designs.html#cb150-17"></a>  <span class="dt">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
+<span id="cb150-18"><a href="14-3-sample-size-for-sequential-designs.html#cb150-18"></a>  <span class="dt">normalApproximation =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb150-19"><a href="14-3-sample-size-for-sequential-designs.html#cb150-19"></a></span>
+<span id="cb150-20"><a href="14-3-sample-size-for-sequential-designs.html#cb150-20"></a>power_res<span class="op">$</span>expectedNumberOfSubjectsH1</span></code></pre></div>
+<pre><code>## [1] 205.328</code></pre>
+<p class="solution-end">
+<span class="fa fa-square-o solution-icon"></span>
+</p>
+</div>
+</div>
+<p>Because power is a curve, and the true effect size is always unknown, it is useful to plot power across a range of possible effect sizes, so that we can explore the expected sample size, in the long run, if we use a sequential design, for different true effect sizes.</p>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="14-3-sample-size-for-sequential-designs.html#cb152-1"></a><span class="co"># Use getPowerMeans and set max N to 188 based on analysis above</span></span>
+<span id="cb152-2"><a href="14-3-sample-size-for-sequential-designs.html#cb152-2"></a>sample_res &lt;-<span class="st"> </span><span class="kw">getPowerMeans</span>(</span>
+<span id="cb152-3"><a href="14-3-sample-size-for-sequential-designs.html#cb152-3"></a>  <span class="dt">design =</span> seq_design,</span>
+<span id="cb152-4"><a href="14-3-sample-size-for-sequential-designs.html#cb152-4"></a>  <span class="dt">groups =</span> <span class="dv">2</span>,</span>
+<span id="cb152-5"><a href="14-3-sample-size-for-sequential-designs.html#cb152-5"></a>  <span class="dt">alternative =</span> <span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="fl">0.1</span>), </span>
+<span id="cb152-6"><a href="14-3-sample-size-for-sequential-designs.html#cb152-6"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>, </span>
+<span id="cb152-7"><a href="14-3-sample-size-for-sequential-designs.html#cb152-7"></a>  <span class="dt">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
+<span id="cb152-8"><a href="14-3-sample-size-for-sequential-designs.html#cb152-8"></a>  <span class="dt">maxNumberOfSubjects =</span> <span class="dv">188</span>, <span class="co">#rounded up from 187.0829</span></span>
+<span id="cb152-9"><a href="14-3-sample-size-for-sequential-designs.html#cb152-9"></a>  <span class="dt">normalApproximation =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb152-10"><a href="14-3-sample-size-for-sequential-designs.html#cb152-10"></a></span>
+<span id="cb152-11"><a href="14-3-sample-size-for-sequential-designs.html#cb152-11"></a><span class="kw">plot</span>(sample_res, <span class="dt">type =</span> <span class="dv">6</span>)</span></code></pre></div>
+<p><img src="Statistical_Inferences_files/figure-html/unnamed-chunk-82-1.png" width="672"></p>
+<p>The blue line indicates the expected number of observations we need to collect. Not surprisingly, when the true effect size is 0, we will almost always continue data collection to the end. We will only stop if we observe a Type 1 error, which is rare, and thus the expected number of observations is very close to 120. On the other side of the graph we see the scenario for when the true effect size is d = 1. With such a large effect size, we will have high power at our first look, and we will almost always be able to stop at the first look. If the true effect size is 0.5, we see we can expect to collect 132 participants on average.</p>
+<p>The Pocock correction leads to a substantially lower alpha level at the last look, which requires an increase in sample size to compensate. As we saw before, the O’Brien-Fleming spending function does not require such a severe reduction in the alpha level at the last look. Let’s see how well this performs. With 2 looks, this design would not need an increase in sample size at all, yet lower the expected number of observations we would collect to 145. However, let’s add 2 additional looks at the data, for 4 looks in total.</p>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="14-3-sample-size-for-sequential-designs.html#cb153-1"></a><span class="co"># Now a 4 look OF design</span></span>
+<span id="cb153-2"><a href="14-3-sample-size-for-sequential-designs.html#cb153-2"></a>seq_design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
+<span id="cb153-3"><a href="14-3-sample-size-for-sequential-designs.html#cb153-3"></a>  <span class="dt">kMax =</span> <span class="dv">4</span>,</span>
+<span id="cb153-4"><a href="14-3-sample-size-for-sequential-designs.html#cb153-4"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"OF"</span>,</span>
+<span id="cb153-5"><a href="14-3-sample-size-for-sequential-designs.html#cb153-5"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
+<span id="cb153-6"><a href="14-3-sample-size-for-sequential-designs.html#cb153-6"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb153-7"><a href="14-3-sample-size-for-sequential-designs.html#cb153-7"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span></span>
+<span id="cb153-8"><a href="14-3-sample-size-for-sequential-designs.html#cb153-8"></a>  )</span>
+<span id="cb153-9"><a href="14-3-sample-size-for-sequential-designs.html#cb153-9"></a><span class="kw">summary</span>(seq_design)</span></code></pre></div>
+<pre><code>## Sequential analysis with a maximum of 4 looks (group sequential design)
+## 
+## Stage                                    1       2       3       4 
+## Information rate                       25%     50%     75%    100% 
+## Efficacy boundary (z-value scale)    4.049   2.863   2.337   2.024 
+## Cumulative alpha spent             &lt;0.0001  0.0042  0.0209  0.0500 
+## Two-sided local significance level &lt;0.0001  0.0042  0.0194  0.0429</code></pre>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="14-3-sample-size-for-sequential-designs.html#cb155-1"></a>power_res &lt;-<span class="st"> </span><span class="kw">getSampleSizeMeans</span>(</span>
+<span id="cb155-2"><a href="14-3-sample-size-for-sequential-designs.html#cb155-2"></a>  <span class="dt">design =</span> seq_design,</span>
+<span id="cb155-3"><a href="14-3-sample-size-for-sequential-designs.html#cb155-3"></a>  <span class="dt">groups =</span> <span class="dv">2</span>,</span>
+<span id="cb155-4"><a href="14-3-sample-size-for-sequential-designs.html#cb155-4"></a>  <span class="dt">alternative =</span> <span class="fl">0.5</span>, </span>
+<span id="cb155-5"><a href="14-3-sample-size-for-sequential-designs.html#cb155-5"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>, </span>
+<span id="cb155-6"><a href="14-3-sample-size-for-sequential-designs.html#cb155-6"></a>  <span class="dt">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
+<span id="cb155-7"><a href="14-3-sample-size-for-sequential-designs.html#cb155-7"></a>  <span class="dt">normalApproximation =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb155-8"><a href="14-3-sample-size-for-sequential-designs.html#cb155-8"></a></span>
+<span id="cb155-9"><a href="14-3-sample-size-for-sequential-designs.html#cb155-9"></a><span class="kw">summary</span>(power_res)</span></code></pre></div>
+<pre><code>## Sample size calculation for a continuous endpoint
+## 
+## Sequential analysis with a maximum of 4 looks (group sequential design).
+## The sample size was calculated for a two-sample t-test (two-sided),
+## alternative = 0.5, standard deviation = 1, allocation ratio = 1, and power 90%.
+## 
+## Stage                                          1       2       3       4 
+## Information rate                             25%     50%     75%    100% 
+## Efficacy boundary (z-value scale)          4.049   2.863   2.337   2.024 
+## Number of subjects                            44      87     131     174 
+## Cumulative alpha spent                   &lt;0.0001  0.0042  0.0209  0.0500 
+## Cumulative power                          0.0080  0.2930  0.6960  0.9000 
+## Two-sided local significance level       &lt;0.0001  0.0042  0.0194  0.0429 
+## Lower efficacy boundary (t)               -1.370  -0.631  -0.415  -0.309 
+## Upper efficacy boundary (t)                1.370   0.631   0.415   0.309 
+## Exit probability for efficacy (under H0) &lt;0.0001  0.0042  0.0167 
+## Exit probability for efficacy (under H1)  0.0080  0.2850  0.4031 
+## 
+## Legend:
+##   (t): approximate treatment effect scale</code></pre>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="14-3-sample-size-for-sequential-designs.html#cb157-1"></a>sample_res &lt;-<span class="st"> </span><span class="kw">getPowerMeans</span>(</span>
+<span id="cb157-2"><a href="14-3-sample-size-for-sequential-designs.html#cb157-2"></a>  <span class="dt">design =</span> seq_design,</span>
+<span id="cb157-3"><a href="14-3-sample-size-for-sequential-designs.html#cb157-3"></a>  <span class="dt">groups =</span> <span class="dv">2</span>,</span>
+<span id="cb157-4"><a href="14-3-sample-size-for-sequential-designs.html#cb157-4"></a>  <span class="dt">alternative =</span> <span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="fl">0.1</span>), </span>
+<span id="cb157-5"><a href="14-3-sample-size-for-sequential-designs.html#cb157-5"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>, </span>
+<span id="cb157-6"><a href="14-3-sample-size-for-sequential-designs.html#cb157-6"></a>  <span class="dt">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
+<span id="cb157-7"><a href="14-3-sample-size-for-sequential-designs.html#cb157-7"></a>  <span class="dt">maxNumberOfSubjects =</span> <span class="dv">174</span>, </span>
+<span id="cb157-8"><a href="14-3-sample-size-for-sequential-designs.html#cb157-8"></a>  <span class="dt">normalApproximation =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<p>We see that with 4 looks, we will not need to increase the maximum sample size a lot, as we only need 174 instead of 172 participants.</p>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="14-3-sample-size-for-sequential-designs.html#cb158-1"></a>power_res<span class="op">$</span>maxNumberOfSubjects</span></code></pre></div>
+<pre><code>## [1] 173.8317</code></pre>
+<p>There is a noticeable reduction in the average number of samples we can expect to collect, if the true effect size is d = 0.5.</p>
+<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="14-3-sample-size-for-sequential-designs.html#cb160-1"></a>power_res<span class="op">$</span>expectedNumberOfSubjectsH1</span></code></pre></div>
+<pre><code>## [1] 130.5056</code></pre>
+<p>If we plot this expected sample size across different true effect sizes, we see that we become more efficient - only at the cost of 1) analyzing our data 4 times, and 2) needing to preregister our analysis plan. Preregistration is required, because sequential analyses give a lot of additional freedom that can possibly inflate error rates substantially. So performing computations as performed here, and preregistering your analysis plan, is required - but worth it.</p>
+<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="14-3-sample-size-for-sequential-designs.html#cb162-1"></a><span class="kw">plot</span>(sample_res, <span class="dt">type =</span> <span class="dv">6</span>)</span></code></pre></div>
+<p><img src="Statistical_Inferences_files/figure-html/unnamed-chunk-86-1.png" width="672"></p>
+<p>We can redo the power analysis in for the original 2 look design in gsDesign. The graph shows that if the true effect size is d = 0.5 we have approximately 59% power after the first look, and 90% power after the second look, given our adjusted alpha level.</p>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="14-3-sample-size-for-sequential-designs.html#cb163-1"></a>seqdesign &lt;-<span class="st"> </span><span class="kw">gsDesign</span>(</span>
+<span id="cb163-2"><a href="14-3-sample-size-for-sequential-designs.html#cb163-2"></a>  <span class="dt">k =</span> <span class="dv">2</span>, <span class="co"># k = number of looks = 2</span></span>
+<span id="cb163-3"><a href="14-3-sample-size-for-sequential-designs.html#cb163-3"></a>  <span class="dt">test.type =</span> <span class="dv">2</span>,</span>
+<span id="cb163-4"><a href="14-3-sample-size-for-sequential-designs.html#cb163-4"></a>  <span class="dt">alpha =</span> <span class="fl">.025</span>,</span>
+<span id="cb163-5"><a href="14-3-sample-size-for-sequential-designs.html#cb163-5"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span>,</span>
+<span id="cb163-6"><a href="14-3-sample-size-for-sequential-designs.html#cb163-6"></a>  <span class="dt">sfu =</span> <span class="st">"Pocock"</span>,</span>
+<span id="cb163-7"><a href="14-3-sample-size-for-sequential-designs.html#cb163-7"></a>  <span class="co"># gsDesign calculates d as a within subjects d. </span></span>
+<span id="cb163-8"><a href="14-3-sample-size-for-sequential-designs.html#cb163-8"></a>  <span class="co"># We need the /sqrt(2) to turn it from d_z into d</span></span>
+<span id="cb163-9"><a href="14-3-sample-size-for-sequential-designs.html#cb163-9"></a>  <span class="dt">delta =</span> <span class="fl">0.5</span><span class="op">/</span><span class="kw">sqrt</span>(<span class="dv">2</span>), </span>
+<span id="cb163-10"><a href="14-3-sample-size-for-sequential-designs.html#cb163-10"></a>  <span class="dt">delta0 =</span> <span class="dv">0</span>,</span>
+<span id="cb163-11"><a href="14-3-sample-size-for-sequential-designs.html#cb163-11"></a>  <span class="dt">delta1 =</span> <span class="fl">0.5</span></span>
+<span id="cb163-12"><a href="14-3-sample-size-for-sequential-designs.html#cb163-12"></a>) <span class="co"># spending function = Pocock</span></span>
+<span id="cb163-13"><a href="14-3-sample-size-for-sequential-designs.html#cb163-13"></a></span>
+<span id="cb163-14"><a href="14-3-sample-size-for-sequential-designs.html#cb163-14"></a><span class="co"># All required info is in:</span></span>
+<span id="cb163-15"><a href="14-3-sample-size-for-sequential-designs.html#cb163-15"></a>seqdesign</span></code></pre></div>
+<pre><code>## Symmetric two-sided group sequential design with
+## 90 % power and 2.5 % Type I Error.
+## Spending computations assume trial stops
+## if a bound is crossed.
+## 
+##              
+##   Analysis N   Z   Nominal p  Spend
+##          1 47 2.18    0.0147 0.0147
+##          2 93 2.18    0.0147 0.0103
+##      Total                   0.0250 
+## 
+## ++ alpha spending:
+##  Pocock boundary.
+## 
+## Boundary crossing probabilities and expected sample size
+## assume any cross stops the trial
+## 
+## Upper boundary (power or Type I Error)
+##           Analysis
+##    Theta      1      2 Total E{N}
+##   0.0000 0.0147 0.0103 0.025 91.1
+##   0.3536 0.5893 0.3107 0.900 65.2
+## 
+## Lower boundary (futility or Type II Error)
+##           Analysis
+##    Theta      1      2 Total
+##   0.0000 0.0147 0.0103 0.025
+##   0.3536 0.0000 0.0000 0.000</code></pre>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="14-3-sample-size-for-sequential-designs.html#cb165-1"></a><span class="co"># We can look at the sample sizes as expected compared to a fixed design</span></span>
+<span id="cb165-2"><a href="14-3-sample-size-for-sequential-designs.html#cb165-2"></a><span class="kw">plot</span>(seqdesign, <span class="dt">plottype =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="Statistical_Inferences_files/figure-html/unnamed-chunk-87-1.png" width="672"></p>
+<div id="alpha-spending-functions" class="section level3">
+<h3>
+<span class="header-section-number">14.3.1</span> Alpha spending functions</h3>
+<p>The Pocock and O’Brien-Fleming spending functions we discussed so far have an important limitation <span class="citation">(Proschan et al., <label for="tufte-mn-106" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-106" class="margin-toggle">2006<span class="marginnote">Proschan, M. A., Lan, K. K. G., &amp; Wittes, J. T. (2006). <em>Statistical monitoring of clinical trials: A unified approach</em>. Springer.</span>)</span>. They require a pre-specified number of looks (e.g., 4) that is equally spaced (e.g., after 25%, 50%, 75%, and 100%). It is not always possible to stop data collection exactly after for example the 50th participant, because you need to pause data collection to analyze the data, which might not be possible if additional sessions are scheduled on the day the 50th observation is collected. An important contribution to the sequential testing literature was made by Lan and DeMets <span class="citation">(<label for="tufte-mn-107" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-107" class="margin-toggle">1983<span class="marginnote">Lan, K. K. G., &amp; DeMets, D. L. (1983). Discrete Sequential Boundaries for Clinical Trials. <em>Biometrika</em>, <em>70</em>(3), 659. <a href="https://doi.org/10.2307/2336502">https://doi.org/10.2307/2336502</a></span>)</span> who created <strong>alpha spending functions</strong>, where the boundary at the decision time does not depend on the future decision times or the total number of decision times.</p>
+<p>We see the O’Brien-Fleming-like alpha spending function is quite similar to the discrete O’Brien-Fleming bounds.</p>
+<div class="figure">
+<span id="fig:spending-comparison-2"></span>
+<p class="caption marginnote shownote">
+Figure 14.7: Comparison of the O’Brien-Fleming boundaries and the O’Brien-FLiming-like alpha spending function.
+</p>
+<img src="Statistical_Inferences_files/figure-html/spending-comparison-2-1.png" alt="Comparison of the O'Brien-Fleming boundaries and the O'Brien-FLiming-like alpha spending function." width="672">
+</div>
+<p>There is a wide range of alpha spending functions possible. In addition to a Pocock-type and O’Brien-Fleming-type alpha spending function <code>rpact</code> has the Kim &amp; DeMets alpha spending function and the Hwang, Shi &amp; DeCani alpha spending function, but users can also specify a custom spending function. Again, the main benefit of these spending functions is that neither the number nor the timing of the looks needs to be specified in advance, which makes alpha spending approaches much more flexible. However, it is important that the decision to perform an interim analysis is not based on collected data, as this can still increase the Type 1 error rate.</p>
+<!-- ```{r spending-comparison-3, fig.margin=FALSE, echo=FALSE, fig.cap="Comparison of different alpha spending functions."} -->
+<!-- #Pocock type -->
+<!-- d1 <- getDesignGroupSequential(typeOfDesign = "asP", -->
+<!--                                kMax = 5)  -->
+<!-- # OF-like continuous spending function -->
+<!-- d2 <- getDesignGroupSequential(typeOfDesign = "asOF", -->
+<!--                                kMax = 5) -->
+<!-- d3 <- getDesignGroupSequential(typeOfDesign = "asKD", -->
+<!--                                kMax = 5) -->
+<!-- d4 <- getDesignGroupSequential(typeOfDesign = "asHSD", -->
+<!--                                kMax = 5) -->
+<!-- designSet <-getDesignSet(designs = c(d1, d2, d3, d4),  -->
+<!--                          variedParameters = "typeOfDesign") -->
+<!-- plot(designSet, -->
+<!--      type = 1) -->
+<!-- ``` -->
+</div>
+<div id="updating-boundaries-during-an-experiment" class="section level3">
+<h3>
+<span class="header-section-number">14.3.2</span> Updating Boundaries During an Experiment</h3>
+<p>Although alpha spending functions control the Type 1 error rate even when there are deviations from the pre-planned looks, this does require recalculating the boundaries based on the amount of information that has been observed. In this example, we follow an <a href="https://vignettes.rpact.org/html/rpact_boundary_update_example.html">rpact vignette</a>. Imagine a two-sided design with an O’Brien-Fleming-type alpha-spending function, and alpha of 0.025, a desired power of 90%, with 3 looks, planned when 50%, 75%, and 100% of our maximum sample has been collected.</p>
+<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="14-3-sample-size-for-sequential-designs.html#cb166-1"></a><span class="co"># Original design:</span></span>
+<span id="cb166-2"><a href="14-3-sample-size-for-sequential-designs.html#cb166-2"></a>seq_design &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
+<span id="cb166-3"><a href="14-3-sample-size-for-sequential-designs.html#cb166-3"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
+<span id="cb166-4"><a href="14-3-sample-size-for-sequential-designs.html#cb166-4"></a>  <span class="dt">kMax =</span> <span class="dv">3</span>,</span>
+<span id="cb166-5"><a href="14-3-sample-size-for-sequential-designs.html#cb166-5"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb166-6"><a href="14-3-sample-size-for-sequential-designs.html#cb166-6"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span>,</span>
+<span id="cb166-7"><a href="14-3-sample-size-for-sequential-designs.html#cb166-7"></a>  <span class="dt">informationRates =</span> <span class="kw">c</span>(<span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="dv">1</span>),</span>
+<span id="cb166-8"><a href="14-3-sample-size-for-sequential-designs.html#cb166-8"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"asOF"</span></span>
+<span id="cb166-9"><a href="14-3-sample-size-for-sequential-designs.html#cb166-9"></a>)</span>
+<span id="cb166-10"><a href="14-3-sample-size-for-sequential-designs.html#cb166-10"></a></span>
+<span id="cb166-11"><a href="14-3-sample-size-for-sequential-designs.html#cb166-11"></a><span class="co"># Initial sample size calculation</span></span>
+<span id="cb166-12"><a href="14-3-sample-size-for-sequential-designs.html#cb166-12"></a>sampleSizeResult &lt;-<span class="st"> </span><span class="kw">getSampleSizeMeans</span>(</span>
+<span id="cb166-13"><a href="14-3-sample-size-for-sequential-designs.html#cb166-13"></a>  <span class="dt">design =</span> seq_design,</span>
+<span id="cb166-14"><a href="14-3-sample-size-for-sequential-designs.html#cb166-14"></a>  <span class="dt">groups =</span> <span class="dv">2</span>,</span>
+<span id="cb166-15"><a href="14-3-sample-size-for-sequential-designs.html#cb166-15"></a>  <span class="dt">alternative =</span> <span class="fl">0.5</span>,</span>
+<span id="cb166-16"><a href="14-3-sample-size-for-sequential-designs.html#cb166-16"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>,</span>
+<span id="cb166-17"><a href="14-3-sample-size-for-sequential-designs.html#cb166-17"></a>  <span class="dt">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
+<span id="cb166-18"><a href="14-3-sample-size-for-sequential-designs.html#cb166-18"></a>  <span class="dt">normalApproximation =</span> <span class="ot">FALSE</span></span>
+<span id="cb166-19"><a href="14-3-sample-size-for-sequential-designs.html#cb166-19"></a>)</span>
+<span id="cb166-20"><a href="14-3-sample-size-for-sequential-designs.html#cb166-20"></a></span>
+<span id="cb166-21"><a href="14-3-sample-size-for-sequential-designs.html#cb166-21"></a><span class="co"># Summarize design</span></span>
+<span id="cb166-22"><a href="14-3-sample-size-for-sequential-designs.html#cb166-22"></a><span class="kw">summary</span>(sampleSizeResult)</span></code></pre></div>
+<pre><code>## Sample size calculation for a continuous endpoint
+## 
+## Sequential analysis with a maximum of 3 looks (group sequential design).
+## The sample size was calculated for a two-sample t-test (two-sided),
+## alternative = 0.5, standard deviation = 1, allocation ratio = 1, and power 90%.
+## 
+## Stage                                         1      2      3 
+## Information rate                            50%    75%   100% 
+## Efficacy boundary (z-value scale)         2.963  2.359  2.014 
+## Number of subjects                           87    130    174 
+## Cumulative alpha spent                   0.0031 0.0193 0.0500 
+## Cumulative power                         0.2580 0.6853 0.9000 
+## Two-sided local significance level       0.0031 0.0183 0.0440 
+## Lower efficacy boundary (t)              -0.656 -0.419 -0.308 
+## Upper efficacy boundary (t)               0.656  0.419  0.308 
+## Exit probability for efficacy (under H0) 0.0031 0.0162 
+## Exit probability for efficacy (under H1) 0.2580 0.4273 
+## 
+## Legend:
+##   (t): approximate treatment effect scale</code></pre>
+<p>The a-priori power analysis shows that, assuming an effect size of 0.5, we plan to look after 87, 130, 174 observations. Now imagine that due to logistical issues, we do not have to ability to analyze the data until we have collected data from 95, instead of 87, participants. So our first look at the data does not occur at 50% of our sample, but at 95/174 = 54.6%. We can recalculate the alpha levels we should use for this and future looks, and update our sample size calculation. This reveals we should use an alpha level of 0.0048 for the current look (instead of 0.0031). and the next look should occur after 131 participants in total, not 130. We see the differences are not very substantial, but if the deviation from the planned looks increases, the changes might become more impactful. Note that even if the number of looks was not pre-planned, we would use similar calculations at each look, but instead increase the number of looks (e.g., perform an analysis with 1 interim look at time = 95/174, and if the second look occurs after 146 participants, we would run an analysis with two interim looks, one at 95/174 and a second at 146/174, see Proschan et al., 2006, chapter 5).</p>
+<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="14-3-sample-size-for-sequential-designs.html#cb168-1"></a>seq_design_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
+<span id="cb168-2"><a href="14-3-sample-size-for-sequential-designs.html#cb168-2"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
+<span id="cb168-3"><a href="14-3-sample-size-for-sequential-designs.html#cb168-3"></a>  <span class="dt">kMax =</span> <span class="dv">3</span>,</span>
+<span id="cb168-4"><a href="14-3-sample-size-for-sequential-designs.html#cb168-4"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb168-5"><a href="14-3-sample-size-for-sequential-designs.html#cb168-5"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span>,</span>
+<span id="cb168-6"><a href="14-3-sample-size-for-sequential-designs.html#cb168-6"></a>  <span class="dt">informationRates =</span> <span class="kw">c</span>(<span class="dv">95</span><span class="op">/</span><span class="dv">174</span>, <span class="fl">0.75</span>, <span class="dv">1</span>),</span>
+<span id="cb168-7"><a href="14-3-sample-size-for-sequential-designs.html#cb168-7"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"asOF"</span></span>
+<span id="cb168-8"><a href="14-3-sample-size-for-sequential-designs.html#cb168-8"></a>)</span>
+<span id="cb168-9"><a href="14-3-sample-size-for-sequential-designs.html#cb168-9"></a></span>
+<span id="cb168-10"><a href="14-3-sample-size-for-sequential-designs.html#cb168-10"></a><span class="kw">summary</span>(seq_design_<span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## Sequential analysis with a maximum of 3 looks (group sequential design)
+## 
+## Stage                                   1      2      3 
+## Information rate                    54.6%    75%   100% 
+## Efficacy boundary (z-value scale)   2.818  2.370  2.015 
+## Cumulative alpha spent             0.0048 0.0193 0.0500 
+## Two-sided local significance level 0.0048 0.0178 0.0439</code></pre>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="14-3-sample-size-for-sequential-designs.html#cb170-1"></a><span class="co"># Update power analysis</span></span>
+<span id="cb170-2"><a href="14-3-sample-size-for-sequential-designs.html#cb170-2"></a></span>
+<span id="cb170-3"><a href="14-3-sample-size-for-sequential-designs.html#cb170-3"></a>power_update_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">getPowerMeans</span>(</span>
+<span id="cb170-4"><a href="14-3-sample-size-for-sequential-designs.html#cb170-4"></a>  <span class="dt">design =</span> seq_design_<span class="dv">2</span>,</span>
+<span id="cb170-5"><a href="14-3-sample-size-for-sequential-designs.html#cb170-5"></a>  <span class="dt">groups =</span> <span class="dv">2</span>,</span>
+<span id="cb170-6"><a href="14-3-sample-size-for-sequential-designs.html#cb170-6"></a>  <span class="dt">alternative =</span> <span class="fl">0.5</span>, </span>
+<span id="cb170-7"><a href="14-3-sample-size-for-sequential-designs.html#cb170-7"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>, </span>
+<span id="cb170-8"><a href="14-3-sample-size-for-sequential-designs.html#cb170-8"></a>  <span class="dt">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
+<span id="cb170-9"><a href="14-3-sample-size-for-sequential-designs.html#cb170-9"></a>  <span class="dt">maxNumberOfSubjects =</span> <span class="dv">174</span>, </span>
+<span id="cb170-10"><a href="14-3-sample-size-for-sequential-designs.html#cb170-10"></a>  <span class="dt">normalApproximation =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb170-11"><a href="14-3-sample-size-for-sequential-designs.html#cb170-11"></a><span class="kw">summary</span>(power_update_<span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## Power calculation for a continuous endpoint
+## 
+## Sequential analysis with a maximum of 3 looks (group sequential design).
+## The results were calculated for a two-sample t-test (two-sided),
+## alternative = 0.5, standard deviation = 1, allocation ratio = 1.
+## 
+## Stage                                         1      2      3 
+## Information rate                          54.6%    75%   100% 
+## Efficacy boundary (z-value scale)         2.818  2.370  2.015 
+## Number of subjects                           96    131    174 
+## Cumulative alpha spent                   0.0048 0.0193 0.0500 
+## Cumulative power                         0.3516 0.6917 0.9045 
+## Two-sided local significance level       0.0048 0.0178 0.0439 
+## Lower efficacy boundary (t)              -0.578 -0.415 -0.306 
+## Upper efficacy boundary (t)               0.578  0.415  0.306 
+## Exit probability for efficacy (under H0) 0.0048 0.0145 
+## Exit probability for efficacy (under H1) 0.3516 0.3401 
+## 
+## Legend:
+##   (t): approximate treatment effect scale</code></pre>
+<div class="question">
+<p class="question-begin">
+► Question
+</p>
+<div class="question-body">
+<p>
+What if we had look even later, after 105 participants? Which alpha level should we have used for the first interim test?
+</p>
+<p class="question-end">
+<span class="fa fa-square-o solution-icon"></span>
+</p>
+</div>
+</div>
+<div class="solution">
+<p class="solution-begin">
+Solution<span id="sol-start-5" class="fa fa-plus-square solution-icon clickable" onclick="toggle_visibility('sol-body-5', 'sol-start-5')"></span>
+</p>
+<div id="sol-body-5" class="solution-body" style="display: none;">
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="14-3-sample-size-for-sequential-designs.html#cb172-1"></a><span class="co"># Make sure you have rpact installed</span></span>
+<span id="cb172-2"><a href="14-3-sample-size-for-sequential-designs.html#cb172-2"></a><span class="kw">library</span>(rpact)</span>
+<span id="cb172-3"><a href="14-3-sample-size-for-sequential-designs.html#cb172-3"></a>seq_design_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">getDesignGroupSequential</span>(</span>
+<span id="cb172-4"><a href="14-3-sample-size-for-sequential-designs.html#cb172-4"></a>  <span class="dt">sided =</span> <span class="dv">2</span>,</span>
+<span id="cb172-5"><a href="14-3-sample-size-for-sequential-designs.html#cb172-5"></a>  <span class="dt">kMax =</span> <span class="dv">3</span>,</span>
+<span id="cb172-6"><a href="14-3-sample-size-for-sequential-designs.html#cb172-6"></a>  <span class="dt">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb172-7"><a href="14-3-sample-size-for-sequential-designs.html#cb172-7"></a>  <span class="dt">beta =</span> <span class="fl">0.1</span>,</span>
+<span id="cb172-8"><a href="14-3-sample-size-for-sequential-designs.html#cb172-8"></a>  <span class="dt">informationRates =</span> <span class="kw">c</span>(<span class="dv">105</span><span class="op">/</span><span class="dv">174</span>, <span class="fl">0.75</span>, <span class="dv">1</span>),</span>
+<span id="cb172-9"><a href="14-3-sample-size-for-sequential-designs.html#cb172-9"></a>  <span class="dt">typeOfDesign =</span> <span class="st">"asOF"</span></span>
+<span id="cb172-10"><a href="14-3-sample-size-for-sequential-designs.html#cb172-10"></a>)</span>
+<span id="cb172-11"><a href="14-3-sample-size-for-sequential-designs.html#cb172-11"></a></span>
+<span id="cb172-12"><a href="14-3-sample-size-for-sequential-designs.html#cb172-12"></a><span class="co"># Update power analysis</span></span>
+<span id="cb172-13"><a href="14-3-sample-size-for-sequential-designs.html#cb172-13"></a></span>
+<span id="cb172-14"><a href="14-3-sample-size-for-sequential-designs.html#cb172-14"></a>power_update_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">getPowerMeans</span>(</span>
+<span id="cb172-15"><a href="14-3-sample-size-for-sequential-designs.html#cb172-15"></a>  <span class="dt">design =</span> seq_design_<span class="dv">2</span>,</span>
+<span id="cb172-16"><a href="14-3-sample-size-for-sequential-designs.html#cb172-16"></a>  <span class="dt">groups =</span> <span class="dv">2</span>,</span>
+<span id="cb172-17"><a href="14-3-sample-size-for-sequential-designs.html#cb172-17"></a>  <span class="dt">alternative =</span> <span class="fl">0.5</span>, </span>
+<span id="cb172-18"><a href="14-3-sample-size-for-sequential-designs.html#cb172-18"></a>  <span class="dt">stDev =</span> <span class="dv">1</span>, </span>
+<span id="cb172-19"><a href="14-3-sample-size-for-sequential-designs.html#cb172-19"></a>  <span class="dt">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
+<span id="cb172-20"><a href="14-3-sample-size-for-sequential-designs.html#cb172-20"></a>  <span class="dt">maxNumberOfSubjects =</span> <span class="dv">174</span>, </span>
+<span id="cb172-21"><a href="14-3-sample-size-for-sequential-designs.html#cb172-21"></a>  <span class="dt">normalApproximation =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb172-22"><a href="14-3-sample-size-for-sequential-designs.html#cb172-22"></a></span>
+<span id="cb172-23"><a href="14-3-sample-size-for-sequential-designs.html#cb172-23"></a><span class="kw">summary</span>(power_update_<span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## Power calculation for a continuous endpoint
+## 
+## Sequential analysis with a maximum of 3 looks (group sequential design).
+## The results were calculated for a two-sample t-test (two-sided),
+## alternative = 0.5, standard deviation = 1, allocation ratio = 1.
+## 
+## Stage                                         1      2      3 
+## Information rate                          60.3%    75%   100% 
+## Efficacy boundary (z-value scale)         2.660  2.388  2.016 
+## Number of subjects                          105    131    174 
+## Cumulative alpha spent                   0.0078 0.0193 0.0500 
+## Cumulative power                         0.4610 0.6894 0.9043 
+## Two-sided local significance level       0.0078 0.0170 0.0438 
+## Lower efficacy boundary (t)              -0.519 -0.418 -0.306 
+## Upper efficacy boundary (t)               0.519  0.418  0.306 
+## Exit probability for efficacy (under H0) 0.0078 0.0115 
+## Exit probability for efficacy (under H1) 0.4610 0.2284 
+## 
+## Legend:
+##   (t): approximate treatment effect scale</code></pre>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="14-3-sample-size-for-sequential-designs.html#cb174-1"></a><span class="co"># So the answer is 0.0078</span></span></code></pre></div>
+<p class="solution-end">
+<span class="fa fa-square-o solution-icon"></span>
+</p>
+</div>
+</div>
+</div>
+</div></body></html>
+
+<p style="text-align: center;">
+<a href="14-2-comparing-spending-functions.html"><button class="btn btn-default">Previous</button></a>
+<a href="14-4-test-for-non-inferiority.html"><button class="btn btn-default">Next</button></a>
+</p>
+<p class="build-date">Page built: 
+2020-08-15
+</p>
+</div>
+</div>
+
+
+
+</body>
+</html>

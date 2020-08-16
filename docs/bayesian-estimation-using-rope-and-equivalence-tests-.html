@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="Bayesian estimation using ROPE and equivalence tests. | Improving Your Statistical Inferences" />
+<meta property="og:type" content="book" />
+<meta property="og:url" content="http://themethodsection.com/ebook/" />
+<meta property="og:image" content="http://themethodsection.com/ebook/images/cover.jpg" />
+<meta property="og:description" content="Online textbook to Improve Your Statistical Inferences" />
+
+
+<meta name="author" content="Daniel Lakens" />
+
+<meta name="date" content="2020-08-15" />
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+
+<meta name="description" content="Online textbook to Improve Your Statistical Inferences">
+
+<title>Bayesian estimation using ROPE and equivalence tests. | Improving Your Statistical Inferences</title>
+
+<link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
+<link href="libs/tufte-css-2015.12.29/envisioned.css" rel="stylesheet" />
+<link href="libs/msmb-css-0/msmb.css" rel="stylesheet" />
+<script>
+function toggle_visibility(id1, id2) {
+var e = document.getElementById(id1);
+var f = document.getElementById(id2);
+
+e.style.display = ((e.style.display!='none') ? 'none' : 'block');
+
+if(f.classList.contains('fa-plus-square')) {
+    f.classList.add('fa-minus-square')
+    f.classList.remove('fa-plus-square')
+} else {
+    f.classList.add('fa-plus-square')
+    f.classList.remove('fa-minus-square')
+}
+
+}
+</script>
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+
+</head>
+
+<body>
+
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="index.html">Welcome</a>
+<a href="contents.html">Contents</a>
+<a href="1-pvalue.html"><span class="toc-section-number">1</span> <em>p</em>-values</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="1-1-what-is-a-p-value.html"><span class="toc-section-number">1.1</span> What is a <em>p</em>-value?</a>
+<a href="1-2-fisher-vs-neyman.html.-neyman"><span class="toc-section-number">1.2</span> Fisher vs. Neyman</a>
+<a href="1-3-preventing-common-misconceptions-about-p-values.html"><span class="toc-section-number">1.3</span> Preventing common misconceptions about <em>p</em>-values</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="1-3-preventing-common-misconceptions-about-p-values.html"><span class="toc-section-number">1.3.1</span> Misunderstanding 1: A non-significant <em>p</em>-value means that the null hypothesis is true</a>
+<a href="1-3-preventing-common-misconceptions-about-p-values.html."><span class="toc-section-number">1.3.2</span> Misunderstanding 2: A significant <em>p</em>-value means that the null hypothesis is false.</a>
+<a href="1-3-preventing-common-misconceptions-about-p-values.html"><span class="toc-section-number">1.3.3</span> Misunderstanding 3: A significant <em>p</em>-value means that a practically important effect has been discovered</a>
+<a href="1-3-preventing-common-misconceptions-about-p-values.html."><span class="toc-section-number">1.3.4</span> Misunderstanding 4: If you have observed a significant finding, the probability that you have made a Type 1 error (a false positive) is 5%.</a>
+<a href="1-3-preventing-common-misconceptions-about-p-values.html."><span class="toc-section-number">1.3.5</span> Misunderstanding 5: One minus the <em>p</em>-value is the probability that the effect will replicate when repeated.</a>
+</div>
+</li>
+</ul>
+<a href="1-4-which-p-values-can-you-expect.html"><span class="toc-section-number">1.4</span> Which <em>p</em>-values can you expect?</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="1-4-which-p-values-can-you-expect.html"><span class="toc-section-number">1.4.1</span> Lindley’s paradox</a>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<a href="2-power.html"><span class="toc-section-number">2</span> Sample size justification</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="2-1-measuring-the-entire-population.html"><span class="toc-section-number">2.1</span> Measuring the Entire Population</a>
+<a href="2-2-feasibility.html"><span class="toc-section-number">2.2</span> Feasibility</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="2-2-feasibility.html"><span class="toc-section-number">2.2.1</span> The smallest effect size that can be statistically significant</a>
+<a href="2-2-feasibility.html"><span class="toc-section-number">2.2.2</span> Compute the width of the confidence interval around the effect size</a>
+<a href="2-2-feasibility.html"><span class="toc-section-number">2.2.3</span> Plot a sensitivity power analysis</a>
+<a href="2-2-feasibility.html."><span class="toc-section-number">2.2.4</span> Reporting a feasibility justification.</a>
+</div>
+</li>
+</ul>
+<a href="2-3-a-priori-power-analysis.html"><span class="toc-section-number">2.3</span> A-priori power analysis</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="2-3-a-priori-power-analysis.html."><span class="toc-section-number">2.3.1</span> Performing a power analysis.</a>
+<a href="2-3-a-priori-power-analysis.html"><span class="toc-section-number">2.3.2</span> Justifying the effect size used in an a-priori power analysis</a>
+<a href="2-3-a-priori-power-analysis.html"><span class="toc-section-number">2.3.3</span> Justifying the error rates used in an a-priori power analysis</a>
+<a href="2-3-a-priori-power-analysis.html"><span class="toc-section-number">2.3.4</span> Some advice when using G*Power</a>
+<a href="2-3-a-priori-power-analysis.html"><span class="toc-section-number">2.3.5</span> A-priori power analysis for the absence of an effect</a>
+<a href="2-3-a-priori-power-analysis.html."><span class="toc-section-number">2.3.6</span> Reporting an a-priori power analysis.</a>
+</div>
+</li>
+</ul>
+<a href="2-4-compromisepower.html"><span class="toc-section-number">2.4</span> Compromise power analysis</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="2-4-compromisepower.html"><span class="toc-section-number">2.4.1</span> Reporting a compromise power analysis</a>
+</div>
+</li>
+</ul>
+<a href="2-5-observedpower.html"><span class="toc-section-number">2.5</span> Observed (post-hoc) power analysis</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="2-5-observedpower.html"><span class="toc-section-number">2.5.1</span> What to do if your editor asks for post-hoc power?</a>
+</div>
+</li>
+</ul>
+<a href="2-6-designing-efficient-studies.html"><span class="toc-section-number">2.6</span> Designing efficient studies</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="2-6-designing-efficient-studies.html."><span class="toc-section-number">2.6.1</span> Use directional tests where relevant.</a>
+<a href="2-6-designing-efficient-studies.html"><span class="toc-section-number">2.6.2</span> Use sequential analysis whenever possible</a>
+<a href="2-6-designing-efficient-studies.html"><span class="toc-section-number">2.6.3</span> Increase your alpha level</a>
+<a href="2-6-designing-efficient-studies.html"><span class="toc-section-number">2.6.4</span> Use within designs where possible</a>
+<a href="2-6-designing-efficient-studies.html"><span class="toc-section-number">2.6.5</span> Remove statistical variation where possible</a>
+<a href="2-6-designing-efficient-studies.html"><span class="toc-section-number">2.6.6</span> Use Bayesian statistics with informed priors</a>
+</div>
+</li>
+</ul>
+<a href="2-7-what-if-best-practices-are-not-enough.html"><span class="toc-section-number">2.7</span> What if best practices are not enough?</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="2-7-what-if-best-practices-are-not-enough.html"><span class="toc-section-number">2.7.1</span> Ask for more money in your grant proposals</a>
+<a href="2-7-what-if-best-practices-are-not-enough.html"><span class="toc-section-number">2.7.2</span> Improve management</a>
+<a href="2-7-what-if-best-practices-are-not-enough.html"><span class="toc-section-number">2.7.3</span> Change what is expected from PhD students</a>
+<a href="2-7-what-if-best-practices-are-not-enough.html"><span class="toc-section-number">2.7.4</span> Get answers collectively</a>
+</div>
+</li>
+</ul>
+<a href="2-8-planning-for-precision.html"><span class="toc-section-number">2.8</span> Planning for precision</a>
+</div>
+</li>
+</ul>
+<a href="3-questions.html"><span class="toc-section-number">3</span> Asking Statistical Questions</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="3-1-do-you-really-want-to-test-a-hypothesis.html"><span class="toc-section-number">3.1</span> Do You Really Want to Test a Hypothesis?</a>
+<a href="3-2-goals-of-tests.html"><span class="toc-section-number">3.2</span> Goals of tests</a>
+</div>
+</li>
+</ul>
+<a href="4-errorcontrol.html"><span class="toc-section-number">4</span> Error Control</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="4-1-why-you-dont-need-to-adjust-your-alpha-level-for-all-tests-youll-do-in-your-lifetime-.html."><span class="toc-section-number">4.1</span> Why you don’t need to adjust your alpha level for all tests you’ll do in your lifetime.</a>
+<a href="4-2-why-banning-p-values-might-not-solve-our-problems-.html."><span class="toc-section-number">4.2</span> Why banning p-values might not solve our problems.</a>
+<a href="4-3-error-control-in-exploratory-anovas-the-how-and-the-why.html"><span class="toc-section-number">4.3</span> Error Control in Exploratory ANOVA’s: The How and the Why</a>
+</div>
+</li>
+</ul>
+<a href="5-effectsizesCI.html"><span class="toc-section-number">5</span> Effect Sizes and Confidence Intervals</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="5-1-effect-sizes.html"><span class="toc-section-number">5.1</span> Effect sizes</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="5-1-effect-sizes.html"><span class="toc-section-number">5.1.1</span> The Facebook experiment</a>
+</div>
+</li>
+</ul>
+<a href="5-2-cohend.html"><span class="toc-section-number">5.2</span> Cohen’s <em>d</em></a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="5-2-cohend.html"><span class="toc-section-number">5.2.1</span> Correcting for Bias</a>
+</div>
+</li>
+</ul>
+<a href="5-3-r-correlations.html"><span class="toc-section-number">5.3</span> <em>r</em> (correlations)</a>
+<a href="5-4-confint.html"><span class="toc-section-number">5.4</span> Confidence Intervals</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="5-4-confint.html.-samples"><span class="toc-section-number">5.4.1</span> Population vs. Samples</a>
+<a href="5-4-confint.html"><span class="toc-section-number">5.4.2</span> The relation between confidence intervals and <em>p</em>-values</a>
+<a href="5-4-confint.html"><span class="toc-section-number">5.4.3</span> The Standard Error and 95% Confidence Intervals</a>
+<a href="5-4-confint.html"><span class="toc-section-number">5.4.4</span> Overlapping Confidence Intervals</a>
+<a href="5-4-confint.html"><span class="toc-section-number">5.4.5</span> Prediction Intervals</a>
+<a href="5-4-confint.html"><span class="toc-section-number">5.4.6</span> Capture Percentages</a>
+</div>
+</li>
+</ul>
+<a href="5-5-computing-confidence-intervals-around-effect-sizes.html"><span class="toc-section-number">5.5</span> Computing Confidence Intervals around Effect Sizes</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="5-5-computing-confidence-intervals-around-effect-sizes.html"><span class="toc-section-number">5.5.1</span> MOTE</a>
+<a href="5-5-computing-confidence-intervals-around-effect-sizes.html"><span class="toc-section-number">5.5.2</span> JASP</a>
+<a href="5-5-computing-confidence-intervals-around-effect-sizes.html"><span class="toc-section-number">5.5.3</span> ESCI software</a>
+<a href="5-5-computing-confidence-intervals-around-effect-sizes.html"><span class="toc-section-number">5.5.4</span> MBESS</a>
+<a href="5-5-computing-confidence-intervals-around-effect-sizes.html"><span class="toc-section-number">5.5.5</span> Why should you report 90% CI for eta-squared?</a>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<a href="6-equivalencetest.html"><span class="toc-section-number">6</span> Equivalence Testing</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="6-1-absence-of-evidence-is-not-evidence-of-absence-.html."><span class="toc-section-number">6.1</span> Absence of evidence is not evidence of absence.</a>
+<a href="6-2-justifysesoi.html"><span class="toc-section-number">6.2</span> JUstifying a smallest effect size of interest</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="6-2-justifysesoi.html"><span class="toc-section-number">6.2.1</span> Rejecting the presence of a meaningful effect</a>
+</div>
+</li>
+</ul>
+<a id="active-page" href="bayesian-estimation-using-rope-and-equivalence-tests-.html.">Bayesian estimation using ROPE and equivalence tests.</a><ul class="navbar"><ul class="toc-sections">
+<li class="toc"><a href="#NA">Bayesian estimation using ROPE and equivalence tests.</a></li>
+</ul>
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="bayesian-estimation-using-rope-and-equivalence-tests-.html"><span class="toc-section-number">6.2.2</span> 95% HDI vs 90% CI</a>
+<a href="bayesian-estimation-using-rope-and-equivalence-tests-.html"><span class="toc-section-number">6.2.3</span> Power analysis for Equivalence Tests</a>
+<a href="bayesian-estimation-using-rope-and-equivalence-tests-.html"><span class="toc-section-number">6.2.4</span> Use of prior information</a>
+<a href="bayesian-estimation-using-rope-and-equivalence-tests-.html"><span class="toc-section-number">6.2.5</span> Conclusion</a>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<a href="7-severity.html"><span class="toc-section-number">7</span> Severe Tests and Risky Predictions</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="7-1-testing-range-predictions.html"><span class="toc-section-number">7.1</span> Testing Range Predictions</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="7-1-testing-range-predictions.html"><span class="toc-section-number">7.1.1</span> Risky Predictions</a>
+<a href="7-1-testing-range-predictions.html"><span class="toc-section-number">7.1.2</span> Systematic Noise</a>
+<a href="7-1-testing-range-predictions.html"><span class="toc-section-number">7.1.3</span> Range Predictions</a>
+<a href="7-1-testing-range-predictions.html"><span class="toc-section-number">7.1.4</span> Directional Tests</a>
+<a href="7-1-testing-range-predictions.html"><span class="toc-section-number">7.1.5</span> Minimal Effect Tests</a>
+<a href="7-1-testing-range-predictions.html"><span class="toc-section-number">7.1.6</span> Range Predictions in PRactice</a>
+</div>
+</li>
+</ul>
+<a href="7-2-verisimilitude-belief-and-progress-in-psychological-science.html"><span class="toc-section-number">7.2</span> Verisimilitude, Belief, and Progress in Psychological Science</a>
+</div>
+</li>
+</ul>
+<a href="8-sesoi.html"><span class="toc-section-number">8</span> Smallest Effect Size of Interest</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="8-1-what-would-falsify-your-theory.html"><span class="toc-section-number">8.1</span> What would falsify your theory?</a>
+<a href="8-2-what-would-falsify-your-theory-in-practice.html"><span class="toc-section-number">8.2</span> What would falsify your theory in practice?</a>
+<a href="8-3-specifying-a-sesoi-based-on-theory-or-costs-and-benefits.html"><span class="toc-section-number">8.3</span> Specifying a SESOI based on theory or costs and benefits</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="8-3-specifying-a-sesoi-based-on-theory-or-costs-and-benefits.html"><span class="toc-section-number">8.3.1</span> Example of a theoretically predicted SESOI</a>
+<a href="8-3-specifying-a-sesoi-based-on-theory-or-costs-and-benefits.html"><span class="toc-section-number">8.3.2</span> Anchor based methods to set a SESOI</a>
+<a href="8-3-specifying-a-sesoi-based-on-theory-or-costs-and-benefits.html"><span class="toc-section-number">8.3.3</span> Cost benefit analysis</a>
+<a href="8-3-specifying-a-sesoi-based-on-theory-or-costs-and-benefits.html"><span class="toc-section-number">8.3.4</span> Setting the SESOI based on effects feasible to study</a>
+</div>
+</li>
+</ul>
+<a href="8-4-smalltelescopes.html"><span class="toc-section-number">8.4</span> The small telescopes approach</a>
+<a href="8-5-setting-the-sesoi-based-on-resources-.html."><span class="toc-section-number">8.5</span> Setting the SESOI based on resources.</a>
+<a href="8-6-setting-the-smallest-effect-size-of-interest-in-replication-studies.html"><span class="toc-section-number">8.6</span> Setting the smallest effect size of interest in replication studies</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="8-6-setting-the-smallest-effect-size-of-interest-in-replication-studies.html"><span class="toc-section-number">8.6.1</span> Setting the SESOI based on theoretical predictions</a>
+<a href="8-6-setting-the-smallest-effect-size-of-interest-in-replication-studies.html"><span class="toc-section-number">8.6.2</span> Setting the smallest effect size of interest based on resources</a>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<a href="9-meta.html"><span class="toc-section-number">9</span> Meta-analysis</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="9-1-random-variation.html"><span class="toc-section-number">9.1</span> Random Variation</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="9-1-random-variation.html"><span class="toc-section-number">9.1.1</span> Variation in single samples</a>
+<a href="9-1-random-variation.html."><span class="toc-section-number">9.1.2</span> Variance in two groups, and their difference.</a>
+<a href="9-1-random-variation.html"><span class="toc-section-number">9.1.3</span> Correlations between two groups</a>
+<a href="9-1-random-variation.html."><span class="toc-section-number">9.1.4</span> Confidence Intervals around Standard Deviations.</a>
+</div>
+</li>
+</ul>
+<a href="9-2-mixed.html"><span class="toc-section-number">9.2</span> Mixed Results</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="9-2-mixed.html"><span class="toc-section-number">9.2.1</span> Likelihoods of sets of studies</a>
+</div>
+</li>
+</ul>
+<a href="9-3-introduction-to-meta-analysis.html"><span class="toc-section-number">9.3</span> Introduction to Meta-Analysis</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="9-3-introduction-to-meta-analysis.html"><span class="toc-section-number">9.3.1</span> Single study meta-analysis</a>
+<a href="9-3-introduction-to-meta-analysis.html"><span class="toc-section-number">9.3.2</span> Simulating meta-analyses of mean standardized differences</a>
+<a href="9-3-introduction-to-meta-analysis.html"><span class="toc-section-number">9.3.3</span> Fixed Effect vs Random Effects</a>
+<a href="9-3-introduction-to-meta-analysis.html"><span class="toc-section-number">9.3.4</span> Simulating meta-analyses for dichotomous outcomes</a>
+<a href="9-3-introduction-to-meta-analysis.html"><span class="toc-section-number">9.3.5</span> Heterogeneity</a>
+<a href="9-3-introduction-to-meta-analysis.html"><span class="toc-section-number">9.3.6</span> Improving the reproducibility of meta-analyses</a>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<a href="10-bias.html"><span class="toc-section-number">10</span> Bias detection</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="10-1-bias-detection.html"><span class="toc-section-number">10.1</span> Bias Detection</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="10-1-bias-detection.html"><span class="toc-section-number">10.1.1</span> Funnel Plots</a>
+<a href="10-1-bias-detection.html"><span class="toc-section-number">10.1.2</span> Trim and Fill</a>
+<a href="10-1-bias-detection.html"><span class="toc-section-number">10.1.3</span> PET-PEESE</a>
+<a href="10-1-bias-detection.html"><span class="toc-section-number">10.1.4</span> P-curve Analysis</a>
+<a href="10-1-bias-detection.html"><span class="toc-section-number">10.1.5</span> TIVA</a>
+<a href="10-1-bias-detection.html"><span class="toc-section-number">10.1.6</span> Let’s Detect Some Bias!</a>
+<a href="10-1-bias-detection.html"><span class="toc-section-number">10.1.7</span> Introducing bias</a>
+<a href="10-1-bias-detection.html"><span class="toc-section-number">10.1.8</span> Bias detection techniques</a>
+<a href="10-1-bias-detection.html"><span class="toc-section-number">10.1.9</span> TIVA</a>
+<a href="10-1-bias-detection.html"><span class="toc-section-number">10.1.10</span> Z-curve analysis</a>
+<a href="bayesian-estimation-using-rope-and-equivalence-tests-.html"><span class="toc-section-number">10.1.11</span> Conclusion</a>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<a href="11-computationalreproducibility.html"><span class="toc-section-number">11</span> Computational Reproducibility</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="11-1-step-1-setting-up-a-github-repository.html"><span class="toc-section-number">11.1</span> Step 1: Setting up a GitHub repository</a>
+<a href="11-2-step-2-cloning-your-github-repository-into-rstudio.html"><span class="toc-section-number">11.2</span> Step 2: Cloning your GitHub repository into RStudio</a>
+<a href="11-3-step-3-creating-an-r-markdown-file.html"><span class="toc-section-number">11.3</span> Step 3: Creating an R Markdown file</a>
+<a href="11-4-step-4-reproducible-data-analysis-in-r-studio.html"><span class="toc-section-number">11.4</span> Step 4: Reproducible Data Analysis in R Studio</a>
+<a href="11-5-step-5-committing-and-pushing-to-github.html"><span class="toc-section-number">11.5</span> Step 5: Committing and Pushing to GitHub</a>
+<a href="11-6-step-6-reproducible-data-analysis.html"><span class="toc-section-number">11.6</span> Step 6: Reproducible Data Analysis</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="11-6-step-6-reproducible-data-analysis.html"><span class="toc-section-number">11.6.1</span> Extra: APA formatted manuscripts in papaja</a>
+</div>
+</li>
+</ul>
+<a href="11-7-step-7-organizing-your-data-and-code.html"><span class="toc-section-number">11.7</span> Step 7: Organizing Your Data and Code</a>
+<a href="11-8-step-8-archiving-your-data-and-code.html"><span class="toc-section-number">11.8</span> Step 8: Archiving Your Data and Code</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="11-8-step-8-archiving-your-data-and-code.html"><span class="toc-section-number">11.8.1</span> EXTRA: Sharing Reproducible Code on Code Ocean</a>
+</div>
+</li>
+</ul>
+<a href="11-9-some-points-for-improvement-in-computational-reproducibility.html"><span class="toc-section-number">11.9</span> Some points for improvement in computational reproducibility</a>
+<a href="bayesian-estimation-using-rope-and-equivalence-tests-.html"><span class="toc-section-number">11.10</span> Conclusion</a>
+</div>
+</li>
+</ul>
+<a href="12-prereg.html"><span class="toc-section-number">12</span> Preregistration and Transparency</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="12-1-trust-in-scientists.html"><span class="toc-section-number">12.1</span> Trust in scientists</a>
+<a href="12-2-the-value-of-preregistration.html"><span class="toc-section-number">12.2</span> The value of preregistration</a>
+<a href="12-3-registered-reports.html"><span class="toc-section-number">12.3</span> Registered Reports</a>
+<a href="12-4-preregister-your-study.html"><span class="toc-section-number">12.4</span> Preregister your study?</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="12-4-preregister-your-study.html"><span class="toc-section-number">12.4.1</span> How to preregister</a>
+</div>
+</li>
+</ul>
+<a href="12-5-what-does-a-formalized-test-of-a-prediction-look-like.html"><span class="toc-section-number">12.5</span> What Does a Formalized Test of a Prediction Look Like?</a>
+<a href="12-6-are-you-ready-to-preregister-a-hypothesis-test.html"><span class="toc-section-number">12.6</span> Are you ready to preregister a hypothesis test?</a>
+</div>
+</li>
+</ul>
+<a href="13-bayes.html"><span class="toc-section-number">13</span> Bayesian statistics</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="13-1-likelihoods.html"><span class="toc-section-number">13.1</span> Likelihoods</a>
+<a href="13-2-bayes-factors.html"><span class="toc-section-number">13.2</span> Bayes factors</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="13-2-bayes-factors.html"><span class="toc-section-number">13.2.1</span> Updating our belief</a>
+</div>
+</li>
+</ul>
+<a href="13-3-bayesest.html"><span class="toc-section-number">13.3</span> Bayesian Estimation</a>
+</div>
+</li>
+</ul>
+<a href="14-sequential.html"><span class="toc-section-number">14</span> Sequential Analysis</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="14-1-choosing-alpha-levels-for-sequential-analyses-.html."><span class="toc-section-number">14.1</span> Choosing alpha levels for sequential analyses.</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="14-1-choosing-alpha-levels-for-sequential-analyses-.html"><span class="toc-section-number">14.1.1</span> Pocock correction</a>
+</div>
+</li>
+</ul>
+<a href="14-2-comparing-spending-functions.html"><span class="toc-section-number">14.2</span> Comparing Spending Functions</a>
+<a href="14-3-sample-size-for-sequential-designs.html"><span class="toc-section-number">14.3</span> Sample Size for Sequential Designs</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="14-3-sample-size-for-sequential-designs.html"><span class="toc-section-number">14.3.1</span> Alpha spending functions</a>
+<a href="14-3-sample-size-for-sequential-designs.html"><span class="toc-section-number">14.3.2</span> Updating Boundaries During an Experiment</a>
+</div>
+</li>
+</ul>
+<a href="14-4-test-for-non-inferiority.html"><span class="toc-section-number">14.4</span> Test for (non-)inferiority</a>
+<a href="14-5-stopping-for-futility.html"><span class="toc-section-number">14.5</span> Stopping for futility</a><ul class="navbar">
+<li class="msmb"><p class="title">Improving Your Statistical Inferences<p><p class="author">Daniel Lakens</p>
+<li class="dropdown" style="float:right">
+<a href="javascript:void(0)" class="dropbtn">&#x25BE; Chapters</a>
+<div class="dropdown-content">
+<a href="14-5-stopping-for-futility.html."><span class="toc-section-number">14.5.1</span> Sequential analyses using Bayes factors.</a>
+<a href="14-5-stopping-for-futility.html."><span class="toc-section-number">14.5.2</span> Reporting results after a sequential analysis.</a>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<a href="15-references.html"><span class="toc-section-number">15</span> References</a>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body>
+<div id="bayesian-estimation-using-rope-and-equivalence-tests." class="section level2 unnumbered">
+<h2>Bayesian estimation using ROPE and equivalence tests.</h2>
+<p>When we perform a study, we would like to conclude there is an effect, when there is an effect. But it is just as important to be able to conclude there is no effect, when there is no effect. I’ve recently published a paper that makes Frequentist equivalence tests (using the two-one-sided tests, or TOST, approach) as easy as possible (Lakens, 2017). Equivalence tests allow you to reject the presence of any effect you care about. In Bayesian estimation, one way to argue for the absence of a meaningful effect is the Region of Practical Equivalence (ROPE) procedure (Kruschke, 2014, chapter 12), which is “somewhat analogous to frequentist equivalence testing” (Kruschke &amp; Liddell, 2017).</p>
+<p>In the ROPE procedure, a 95% Highest Density Interval (HDI) is calculated based on a posterior distribution (which is calculated based on a prior and the data). Kruschke suggests that: “if the 95 % HDI falls entirely inside the ROPE then we decide to accept the ROPE’d value for practical purposes”. Note that the same HDI can also be used to reject the null hypothesis, where in Frequentist statistics, even though the confidence interval plays a similar role, you would still perform both a traditional t-test and the TOST procedure.</p>
+<p>The only real difference with equivalence testing is that instead of using a confidence interval, a Bayesian Highest Density Interval is used. If the prior used by Kruschke was perfectly uniform, ROPE and equivalence testing would identical, barring philosophical differences in how the numbers should be interpreted. The BEST package by default uses a ‘broad’ prior, and therefore the 95% CI and 95% HDI are not exactly the same, but they are very close, for single comparisons. When multiple comparisons are made, (for example when using sequential analyses, Lakens, 2014), the CI needs to be adjusted to maintain the desired error rate, but in Bayesian statistics, error rates are not directly controlled (they are limited due to ‘shrinkage’, but can be inflated beyond 5%, and often considerably so).</p>
+<p>In the code below, I randomly generate random normally distributed data (with means of 0 and a sd of 1) and perform the ROPE procedure and the TOST. The 95% HDI is from -0.10 to 0.42, and the 95% CI is from -0.11 to 0.41, with mean differences of 0.17 or 0.15.</p>
+<p>Indeed, if you will forgive me the pun, you might say these two approaches are practically equivalent. But there are some subtle differences between ROPE and TOST</p>
+<div id="hdi-vs-90-ci" class="section level3">
+<h3>
+<span class="header-section-number">6.2.2</span> 95% HDI vs 90% CI</h3>
+<p>Kruschke (2014, Chapter 5) writes: “How should we define “reasonably credible”? One way is by saying that any points within the 95% HDI are reasonably credible.” There is not a strong justification for the use of a 95% HDI over a 96% of 93% HDI, except that it mirrors the familiar use of a 95% CI in Frequentist statistics. In Frequentist statistics, the 95% confidence interval is directly related to the 5% alpha level that is commonly deemed acceptable for a maximum Type 1 error rate (even though this alpha level is in itself a convention without strong justification).</p>
+<p>But here’s the catch: The TOST equivalence testing procedure does not use a 95% CI, but a 90% CI. The reason for this is that two one-sided tests are performed. Each of these tests has a 5% error rate. You might intuitively think that doing two tests with a 5% error rate will increase the overall Type 1 error rate, but in this case, that’s not true. You could easily replace the two tests, with just one test, testing the observed effect against the equivalence bound (upper or lower) closest to it. If this test is statistically significant, so is the other – and thus, there is no alpha inflation in this specific case. That’s why the TOST procedure uses a 90% CI to have a 5% error rate, while the same researcher would use a 95% CI in a traditional two-sided t-test to examine whether the observed effect is statistically different from 0, while maintaining a 5% error rate (see also Senn, 2007, section 22.2.4)</p>
+<p>This nicely illustrates the difference between estimation (where you just want to have a certain level of accuracy, such as 95%), and Frequentist hypothesis testing, where you want to distinguish between signal and noise, and not be wrong more than 5% of the time when you declare there is a signal. ROPE keeps the accuracy the same across tests, Frequentist approaches keep the error rate constant. From a Frequentist perspective, ROPE is more conservative than TOST, like the use of alpha = 0.025 is more conservative than the use of alpha = 0.05.</p>
+</div>
+<div id="powerequiv" class="section level3">
+<h3>
+<span class="header-section-number">6.2.3</span> Power analysis for Equivalence Tests</h3>
+<p>For an equivalence test, power analysis can be performed based on closed functions, and the calculations take just a fraction of a second. I find that useful, for example in my role in our ethics board, where we evaluate proposals that have to justify their sample size, and we often check power calculations. Kruschke has an excellent R package (BEST) that can do power analyses for the ROPE procedure. This is great work – but the simulations take a while (a little bit over an hour for 1000 simulations).</p>
+<p>Because the BESTpower function relies on simulations, you need to specify the sample size, and it will calculate the power. That’s actually the reverse of what you typically want in a power analysis (you want to input the desired power, and see which sample size you need). This means you most likely need to run multiple simulations in BESTpower, before you have determined the sample size that will yield good power. Furthermore, the software requires your to specify the expected means and standard deviations, instead of simply an expected effect size. Instead of Frequentist power analysis, where the hypothesized effect size is a point value (e.g., d = 0.4), Bayesian power analysis models the alternative as a distribution, acknowledging there is uncertainty.</p>
+<p>In the end, however, the result of a power analysis for ROPE and for TOST is actually remarkably similar. Using the code below to perform the power analysis for ROPE, we see that 100 participants in each group give us approximately 88.4% power (with 2000 simulations, this estimate is still a bit uncertain) to get a 95% HDI that falls within our ROPE of -0.5 to 0.5, assuming standard deviations of 1.</p>
+<p>We can use the powerTOSTtwo.raw function in the TOSTER package (using an alpha of 0.025 instead of 0.05, to mirror to 95% HDI) to calculate the sample size we would need to achieve 88.4% power for independent t-test (using equivalence bounds of -0.5 and 0.5, and standard deviations of 1):</p>
+<p>powerTOSTtwo.raw(alpha=0.025,statistical_power=0.875,low_eqbound=-0.5,high_eqbound=0.5,sdpooled=1)</p>
+<p>The outcome is 100 as well. So if you use a broad prior, it seems you can save yourself some time by using the power analysis for equivalence tests, without severe consequences.</p>
+</div>
+<div id="use-of-prior-information" class="section level3">
+<h3>
+<span class="header-section-number">6.2.4</span> Use of prior information</h3>
+<p>The biggest benefit of ROPE over TOST is that is allows you to incorporate prior information in your data analysis. If you have reliable prior information, ROPE can use this information, which is especially useful if you don’t have a lot of data. If you use priors, it is typically advised to check the robustness of the posterior against reasonable changes in the prior (Kruschke, 2013).</p>
+</div>
+<div id="conclusion" class="section level3">
+<h3>
+<span class="header-section-number">6.2.5</span> Conclusion</h3>
+<p>Using the ROPE procedure or the TOST procedure will most likely lead to very similar inferences. For all practical purposes, the differences are small. It’s quite a lot easier to perform a power analysis for TOST, and by default, TOST has greater statistical power because it uses 90% CI. But power analysis is possible for ROPE (which is a rare pleasure to see for Bayesian analyses), and you could choose to use a 90% HDI, or any other value that matches your goals. TOST will be easier and more familiar because it is just a twist on the classic t-test, but ROPE might be a great way to dip your toes in Bayesian waters and explore the many more things you can do with Bayesian posterior distributions.</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="bayesian-estimation-using-rope-and-equivalence-tests-.html#cb65-1"></a><span class="co"># Data is loaded because BEST analysis takes so very long</span></span>
+<span id="cb65-2"><a href="bayesian-estimation-using-rope-and-equivalence-tests-.html#cb65-2"></a><span class="kw">load</span>(<span class="st">"data/BESTout.Rdata"</span>)</span>
+<span id="cb65-3"><a href="bayesian-estimation-using-rope-and-equivalence-tests-.html#cb65-3"></a><span class="kw">plot</span>(BESTout)</span></code></pre></div>
+<p><img src="Statistical_Inferences_files/figure-html/unnamed-chunk-39-1.png" width="672"></p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="bayesian-estimation-using-rope-and-equivalence-tests-.html#cb66-1"></a><span class="co">#TOST test</span></span>
+<span id="cb66-2"><a href="bayesian-estimation-using-rope-and-equivalence-tests-.html#cb66-2"></a><span class="kw">TOSTtwo.raw</span>(<span class="dt">m1=</span><span class="kw">mean</span>(x),<span class="dt">m2=</span><span class="kw">mean</span>(y),<span class="dt">sd1=</span><span class="kw">sd</span>(x),<span class="dt">sd2=</span><span class="kw">sd</span>(y),<span class="dt">n1=</span><span class="kw">length</span>(x),<span class="dt">n2=</span><span class="kw">length</span>(y),<span class="dt">low_eqbound=</span><span class="op">-</span><span class="fl">0.5</span>,<span class="dt">high_eqbound=</span><span class="fl">0.5</span>, <span class="dt">alpha=</span><span class="fl">0.025</span>)</span></code></pre></div>
+<p><img src="Statistical_Inferences_files/figure-html/unnamed-chunk-39-2.png" width="672"></p>
+<pre><code>## TOST results:
+## t-value lower bound: 4.92 	p-value lower bound: 0.0000009
+## t-value upper bound: -2.69 	p-value upper bound: 0.004
+## degrees of freedom : 197.19
+## 
+## Equivalence bounds (raw scores):
+## low eqbound: -0.5 
+## high eqbound: 0.5
+## 
+## TOST confidence interval:
+## lower bound 95% CI: -0.112
+## upper bound 95% CI:  0.406
+## 
+## NHST confidence interval:
+## lower bound 97.5% CI: -0.15
+## upper bound 97.5% CI:  0.443
+## 
+## Equivalence Test Result:
+## The equivalence test was significant, t(197.19) = -2.691, p = 0.00387, given equivalence bounds of -0.500 and 0.500 (on a raw scale) and an alpha of 0.025.
+## Null Hypothesis Test Result:
+## The null hypothesis test was non-significant, t(197.19) = 1.117, p = 0.265, given an alpha of 0.025.
+## Based on the equivalence test and the null-hypothesis test combined, we can conclude that the observed effect is statistically not different from zero and statistically equivalent to zero.</code></pre>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="bayesian-estimation-using-rope-and-equivalence-tests-.html#cb68-1"></a>powerPro</span></code></pre></div>
+<pre><code>##                              mean                CrIlo       CrIhi
+##   mean:   HDI &gt; ROPE 0.0004995005 0.000000000003170522 0.001495998
+##   mean:   HDI &lt; ROPE 0.0004995005 0.000000000003170522 0.001495998
+##   mean:  HDI in ROPE 0.8746253746 0.860031476620433444 0.889009125
+##   mean: HDI width ok 0.9995004995 0.998504002481734654 1.000000000
+##     sd:   HDI &gt; ROPE 0.0004995005 0.000000000003170522 0.001495998
+##     sd:   HDI &lt; ROPE 0.0004995005 0.000000000003170522 0.001495998
+##     sd:  HDI in ROPE 0.9995004995 0.998504002481734654 1.000000000
+##     sd: HDI width ok 0.9995004995 0.998504002481734654 1.000000000
+## effect:   HDI &gt; ROPE 0.0004995005 0.000000000003170522 0.001495998
+## effect:   HDI &lt; ROPE 0.0004995005 0.000000000003170522 0.001495998
+## effect:  HDI in ROPE 0.9995004995 0.998504002481734654 1.000000000
+## effect: HDI width ok 0.9995004995 0.998504002481734654 1.000000000</code></pre>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="bayesian-estimation-using-rope-and-equivalence-tests-.html#cb70-1"></a><span class="co">#TOST power analysis</span></span>
+<span id="cb70-2"><a href="bayesian-estimation-using-rope-and-equivalence-tests-.html#cb70-2"></a><span class="kw">powerTOSTtwo.raw</span>(<span class="dt">alpha=</span><span class="fl">0.025</span>,<span class="dt">statistical_power=</span><span class="fl">0.875</span>,<span class="dt">low_eqbound=</span><span class="op">-</span><span class="fl">0.5</span>,<span class="dt">high_eqbound=</span><span class="fl">0.5</span>,<span class="dt">sdpooled=</span><span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## The required sample size to achieve 87.5 % power with equivalence bounds of -0.5 and 0.5 is 97.66901 per group, or 196 in total.</code></pre>
+<pre><code>## [1] 97.66901</code></pre>
+
+</div>
+</div>
+<!-- </div> -->
+</body></html>
+
+<p style="text-align: center;">
+<a href="6-2-justifysesoi.html"><button class="btn btn-default">Previous</button></a>
+<a href="7-severity.html"><button class="btn btn-default">Next</button></a>
+</p>
+<p class="build-date">Page built: 
+2020-08-15
+</p>
+</div>
+</div>
+
+
+
+</body>
+</html>

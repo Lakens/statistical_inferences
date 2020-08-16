@@ -47,16 +47,15 @@ When testing predictions in empirical research, researchers often report whether
 
 Assume we ask two groups of 10 people how much they liked the extended directors cut version of the Lord of the Rings (LOTR) trilogy. The first group consists of my friends, and the second groups consists of friends of my wife. Our friends rate the trilogy on a score from 1 to 10. We can calculate the average rating by my friends, which is 8.7, and the average rating by my wife’s friends, which is 7.7. The difference is 1. 
 
-```{r friends, echo=F, tab.cap = "Ratings for the Lord of the Rings extended trilogy by two groups of friends.", ft.align="left"}
+```{r friends, echo=F, tab.cap = "Ratings for the Lord of the Rings extended trilogy by two groups of friends."}
 
 friends <- c("friend_1", "friend_2", "friend_3", "friend_4", "friend_5", "friend_6", "friend_7", "friend_8", "friend_9", "friend_10")
 friends_daniel <- c(9, 7, 8, 9, 8, 9, 9, 10, 9, 9)
 friends_kyra <- c(9, 6, 7, 8, 7, 9, 8, 8, 8, 7)
 df <- data.frame(friends, friends_daniel, friends_kyra)
-df <- flextable(df)
-df <- autofit(df)
-df <- set_header_labels(df, friends = "", friends_daniel = "Friends Daniel", friends_kyra = "Friends Kyra")
-theme_booktabs(df)
+colnames(df) <- c("", "Friends Daniel", "Friends Kyra")
+
+kable_styling(kable(df, caption = 'Ratings for the Lord of the Rings extended trilogy by two groups of friends.', align = c("l", "c", "c"), booktabs = TRUE), bootstrap_options = "striped", full_width = FALSE, position = "left")
 ```
  
 To get these data in a data frame in R, we use the code:
@@ -82,13 +81,12 @@ ggplot(df_long, aes(x = rating, fill = daniel_kyra)) +
 
 We can also summarise the data and look at the means, sd, and sample size per group: 
 
-```{r, echo = FALSE, tab.cap = "Summary statistics for our dataset.", ft.align="left"}
+```{r, echo = FALSE, tab.cap = "Summary statistics for our dataset."}
 sum_table <- summarise(group_by(df_long, daniel_kyra),
                        mean = mean(rating), sd = sd(rating), n = n(), 
                        .groups = 'drop')
-sum_table <- flextable(sum_table)
-sum_table <- autofit(sum_table)
-theme_booktabs(sum_table)
+
+kable_styling(kable(df, caption = 'Summary statistics.', booktabs = TRUE), bootstrap_options = "striped", full_width = FALSE, position = "left")
 ```
 
 We can see the groups overlap to a certain extent, but the mean ratings differ by 1 whole point, so there is also some non-overlap. The question we are no faced with is the following: Is the difference between the two groups just random variation, or can we conclude my friends really like the extended directors cut of the Lord of the Rings (LOTR) trilogy more than my wife’s friends?
