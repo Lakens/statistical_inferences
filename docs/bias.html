@@ -14,7 +14,7 @@
 
 <meta name="author" content="Daniel Lakens" />
 
-<meta name="date" content="2020-08-16" />
+<meta name="date" content="2020-08-26" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -175,7 +175,7 @@ integrate each bias technique with the example, not mention each twice.</p>
 <h2>
 <span class="header-section-number">10.1</span> Bias Detection</h2>
 <p>Publication bias is one of the biggest challenges that science faces. <strong>Publication bias</strong> is the practice of selectively submitting and publishing scientific research, often based on whether or not the results are ‘statistically significant’ or not. The scientific literature is dominated by these statistically significant results. At the same time, we know that many studies researchers perform do not yield significant results. When scientists only have access to significant results, but not to all results, they are lacking a complete overview of the evidence for a hypothesis. In extreme cases, selective reporting can lead to a situation where there are hundreds of statistically significant results in the published literature, but no true effect because there are even more non-significant studies that are not shared. This is known as the <strong>file-drawer problem</strong>, when non-significant results are hidden away in file-drawers (or nowadays, folders on your computer) and not available to the scientific community. Every scientist should work towards solving the publication bias, because it is extremely difficult to learn what is likely to be true as long as scientists do not share all their results.</p>
-<p>Publication bias can only be fixed by making all your research results available to fellow scientists, irrespective of the <em>p</em>-value of the main hypothesis test. In the past, this has not been done, and as a consequence, we have to try to detect the extent to which publication bias impacts our ability to accurately evaluate the literature. Meta-analyses should always carefully examine the impact of publication bias on the meta-analytic effect size estimate - even though only an estimated 57% of meta-analyses in Psychological Bulletin report that they assessed publication bias <span class="citation">(Polanin et al., <label for="tufte-mn-80" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-80" class="margin-toggle">2020<span class="marginnote">Polanin, J. R., Hennessy, E. A., &amp; Tsuji, S. (2020). Transparency and Reproducibility of Meta-Analyses in Psychology: A Meta-Review. <em>Perspectives on Psychological Science</em>, <em>15</em>(4), 1026–1041. <a href="https://doi.org/10.1177/1745691620906416">https://doi.org/10.1177/1745691620906416</a></span>)</span>. Several techniques to detect publication bias have been developed, and this continues to be a very active field of research. All techniques are based on specific assumptions, which you should consider before applying a test. There is no silver bullet: None of these techniques can fix publication bias. None of them can tell you with certainty what the true meta-analytic effect size is corrected for publication bias. The best these methods can do is detect publication bias caused by specific mechanisms, under specific conditions.</p>
+<p>Publication bias can only be fixed by making all your research results available to fellow scientists, irrespective of the <em>p</em>-value of the main hypothesis test. In the past, this has not been done, and as a consequence, we have to try to detect the extent to which publication bias impacts our ability to accurately evaluate the literature. Meta-analyses should always carefully examine the impact of publication bias on the meta-analytic effect size estimate - even though only an estimated 57% of meta-analyses in Psychological Bulletin report that they assessed publication bias <span class="citation">(Polanin et al., <label for="tufte-mn-88" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-88" class="margin-toggle">2020<span class="marginnote">Polanin, J. R., Hennessy, E. A., &amp; Tsuji, S. (2020). Transparency and Reproducibility of Meta-Analyses in Psychology: A Meta-Review. <em>Perspectives on Psychological Science</em>, <em>15</em>(4), 1026–1041. <a href="https://doi.org/10.1177/1745691620906416">https://doi.org/10.1177/1745691620906416</a></span>)</span>. Several techniques to detect publication bias have been developed, and this continues to be a very active field of research. All techniques are based on specific assumptions, which you should consider before applying a test. There is no silver bullet: None of these techniques can fix publication bias. None of them can tell you with certainty what the true meta-analytic effect size is corrected for publication bias. The best these methods can do is detect publication bias caused by specific mechanisms, under specific conditions.</p>
 <p>There are some older methods that you will read in some meta-analyses, but which are no longer recommended. The first is known as <strong>fail-safe N</strong>. The idea was to calculate the number of non-significant results one would need to have in file-drawers before an observed meta-analytic effect size estimate would no longer be statistically different from 0. I won’t explain how it is calculated, because it does not work (even the person who developed it acknowledges this), it is misleading, and a kitten dies each time someone uses it. Currently, the only use fail-safe N has is as a tool to identify meta-analyses that are not state-of-the-art.</p>
 <div id="funnel-plots" class="section level3">
 <h3>
@@ -256,72 +256,72 @@ Figure 10.5: Figure 3 from Simonsohn et al (2014) showing a p-curve with and wit
 <h3>
 <span class="header-section-number">10.1.6</span> Let’s Detect Some Bias!</h3>
 <p>The script below simulates meta-analyses based on a standardized mean difference, and stores all the results we need to examine bias detection tools.</p>
-<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="bias.html#cb90-1"></a><span class="co">#Install packages if needed</span></span>
-<span id="cb90-2"><a href="bias.html#cb90-2"></a><span class="kw">library</span>(metafor)</span>
-<span id="cb90-3"><a href="bias.html#cb90-3"></a><span class="kw">library</span>(truncnorm)</span>
-<span id="cb90-4"><a href="bias.html#cb90-4"></a></span>
-<span id="cb90-5"><a href="bias.html#cb90-5"></a><span class="kw">set.seed</span>(<span class="dv">5522</span>)</span>
-<span id="cb90-6"><a href="bias.html#cb90-6"></a></span>
-<span id="cb90-7"><a href="bias.html#cb90-7"></a>nSims &lt;-<span class="st"> </span><span class="dv">100</span> <span class="co"># number of simulated experiments</span></span>
-<span id="cb90-8"><a href="bias.html#cb90-8"></a>pub.bias &lt;-<span class="st"> </span><span class="dv">0</span> <span class="co"># set percentage of significant results in the literature</span></span>
-<span id="cb90-9"><a href="bias.html#cb90-9"></a></span>
-<span id="cb90-10"><a href="bias.html#cb90-10"></a>pop.m1 &lt;-<span class="st"> </span><span class="dv">100</span> <span class="co"># If there is a large true effect, the simulation will take a very long time because non-significant p-values are very very rare</span></span>
-<span id="cb90-11"><a href="bias.html#cb90-11"></a>pop.sd1 &lt;-<span class="st"> </span><span class="dv">15</span></span>
-<span id="cb90-12"><a href="bias.html#cb90-12"></a>pop.m2 &lt;-<span class="st"> </span><span class="dv">100</span></span>
-<span id="cb90-13"><a href="bias.html#cb90-13"></a>pop.sd2 &lt;-<span class="st"> </span><span class="dv">15</span></span>
-<span id="cb90-14"><a href="bias.html#cb90-14"></a>metadata.sig &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">m1 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">m2 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">sd1 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">sd2 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">n1 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">n2 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">pvalues =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">pcurve =</span> <span class="kw">numeric</span>(<span class="dv">0</span>))</span>
-<span id="cb90-15"><a href="bias.html#cb90-15"></a>metadata.nonsig &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">m1 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">m2 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">sd1 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">sd2 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">n1 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">n2 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">pvalues =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">pcurve =</span> <span class="kw">numeric</span>(<span class="dv">0</span>))</span>
-<span id="cb90-16"><a href="bias.html#cb90-16"></a></span>
-<span id="cb90-17"><a href="bias.html#cb90-17"></a><span class="co"># simulate significant effects in the expected direction</span></span>
-<span id="cb90-18"><a href="bias.html#cb90-18"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nSims) { <span class="co"># for each simulated experiment</span></span>
-<span id="cb90-19"><a href="bias.html#cb90-19"></a>  p &lt;-<span class="st"> </span><span class="dv">1</span> <span class="co"># reset p to 1 </span></span>
-<span id="cb90-20"><a href="bias.html#cb90-20"></a>  n &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">rtruncnorm</span>(<span class="dv">1</span>, <span class="dv">20</span>, <span class="dv">300</span>, <span class="dv">50</span>, <span class="dv">100</span>)) <span class="co">#draw data from a truncated normal distribution between 20 and 300 with a mean of 50 and sd of 100</span></span>
-<span id="cb90-21"><a href="bias.html#cb90-21"></a>  <span class="cf">while</span> (p <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.025</span>) { <span class="co">#continue simulating as along as p is not significant</span></span>
-<span id="cb90-22"><a href="bias.html#cb90-22"></a>    x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dt">n =</span> n, <span class="dt">mean =</span> pop.m1, <span class="dt">sd =</span> pop.sd1) <span class="co">#produce  simulated participants</span></span>
-<span id="cb90-23"><a href="bias.html#cb90-23"></a>    y &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dt">n =</span> n, <span class="dt">mean =</span> pop.m2, <span class="dt">sd =</span> pop.sd2) <span class="co">#produce  simulated participants</span></span>
-<span id="cb90-24"><a href="bias.html#cb90-24"></a>    p &lt;-<span class="st"> </span><span class="kw">t.test</span>(x,y, <span class="dt">alternative =</span> <span class="st">"greater"</span>, <span class="dt">var.equal =</span> <span class="ot">TRUE</span>, <span class="dt">alpha =</span> <span class="fl">0.025</span>)<span class="op">$</span>p.value</span>
-<span id="cb90-25"><a href="bias.html#cb90-25"></a>  }</span>
-<span id="cb90-26"><a href="bias.html#cb90-26"></a>  metadata.sig[i,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">mean</span>(x)</span>
-<span id="cb90-27"><a href="bias.html#cb90-27"></a>  metadata.sig[i,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">mean</span>(y)</span>
-<span id="cb90-28"><a href="bias.html#cb90-28"></a>  metadata.sig[i,<span class="dv">3</span>] &lt;-<span class="st"> </span><span class="kw">sd</span>(x)</span>
-<span id="cb90-29"><a href="bias.html#cb90-29"></a>  metadata.sig[i,<span class="dv">4</span>] &lt;-<span class="st"> </span><span class="kw">sd</span>(y)</span>
-<span id="cb90-30"><a href="bias.html#cb90-30"></a>  metadata.sig[i,<span class="dv">5</span>] &lt;-<span class="st"> </span>n</span>
-<span id="cb90-31"><a href="bias.html#cb90-31"></a>  metadata.sig[i,<span class="dv">6</span>] &lt;-<span class="st"> </span>n</span>
-<span id="cb90-32"><a href="bias.html#cb90-32"></a>  out &lt;-<span class="st"> </span><span class="kw">t.test</span>(x, y, <span class="dt">var.equal =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb90-33"><a href="bias.html#cb90-33"></a>  metadata.sig[i,<span class="dv">7</span>] &lt;-<span class="st"> </span>out<span class="op">$</span>p.value</span>
-<span id="cb90-34"><a href="bias.html#cb90-34"></a>  metadata.sig[i,<span class="dv">8</span>] &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">"t("</span>,out<span class="op">$</span>parameter,<span class="st">")="</span>,out<span class="op">$</span>statistic)</span>
-<span id="cb90-35"><a href="bias.html#cb90-35"></a>}</span>
-<span id="cb90-36"><a href="bias.html#cb90-36"></a></span>
-<span id="cb90-37"><a href="bias.html#cb90-37"></a><span class="co"># simulate non-significant effects (two-sided)</span></span>
-<span id="cb90-38"><a href="bias.html#cb90-38"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nSims) { <span class="co"># for each simulated experiment</span></span>
-<span id="cb90-39"><a href="bias.html#cb90-39"></a>  p &lt;-<span class="st"> </span><span class="dv">0</span> <span class="co"># reset p to 1 </span></span>
-<span id="cb90-40"><a href="bias.html#cb90-40"></a>  n &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">rtruncnorm</span>(<span class="dv">1</span>, <span class="dv">20</span>, <span class="dv">300</span>, <span class="dv">50</span>, <span class="dv">100</span>))</span>
-<span id="cb90-41"><a href="bias.html#cb90-41"></a>  <span class="cf">while</span> (p <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>) { <span class="co"># continue simulating as along as p is significant</span></span>
-<span id="cb90-42"><a href="bias.html#cb90-42"></a>    x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dt">n =</span> n, <span class="dt">mean =</span> pop.m1, <span class="dt">sd =</span> pop.sd1) <span class="co"># produce  simulated participants</span></span>
-<span id="cb90-43"><a href="bias.html#cb90-43"></a>    y &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dt">n =</span> n, <span class="dt">mean =</span> pop.m2, <span class="dt">sd =</span> pop.sd2) <span class="co"># produce  simulated participants</span></span>
-<span id="cb90-44"><a href="bias.html#cb90-44"></a>    p &lt;-<span class="st"> </span><span class="kw">t.test</span>(x, y, <span class="dt">var.equal =</span> <span class="ot">TRUE</span>)<span class="op">$</span>p.value</span>
-<span id="cb90-45"><a href="bias.html#cb90-45"></a>  }</span>
-<span id="cb90-46"><a href="bias.html#cb90-46"></a>  metadata.nonsig[i,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">mean</span>(x)</span>
-<span id="cb90-47"><a href="bias.html#cb90-47"></a>  metadata.nonsig[i,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">mean</span>(y)</span>
-<span id="cb90-48"><a href="bias.html#cb90-48"></a>  metadata.nonsig[i,<span class="dv">3</span>] &lt;-<span class="st"> </span><span class="kw">sd</span>(x)</span>
-<span id="cb90-49"><a href="bias.html#cb90-49"></a>  metadata.nonsig[i,<span class="dv">4</span>] &lt;-<span class="st"> </span><span class="kw">sd</span>(y)</span>
-<span id="cb90-50"><a href="bias.html#cb90-50"></a>  metadata.nonsig[i,<span class="dv">5</span>] &lt;-<span class="st"> </span>n</span>
-<span id="cb90-51"><a href="bias.html#cb90-51"></a>  metadata.nonsig[i,<span class="dv">6</span>] &lt;-<span class="st"> </span>n</span>
-<span id="cb90-52"><a href="bias.html#cb90-52"></a>  out &lt;-<span class="st"> </span><span class="kw">t.test</span>(x, y, <span class="dt">var.equal =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb90-53"><a href="bias.html#cb90-53"></a>  metadata.nonsig[i,<span class="dv">7</span>] &lt;-<span class="st"> </span>out<span class="op">$</span>p.value</span>
-<span id="cb90-54"><a href="bias.html#cb90-54"></a>  metadata.nonsig[i,<span class="dv">8</span>] &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">"t("</span>,out<span class="op">$</span>parameter,<span class="st">")="</span>,out<span class="op">$</span>statistic)</span>
-<span id="cb90-55"><a href="bias.html#cb90-55"></a>}</span>
-<span id="cb90-56"><a href="bias.html#cb90-56"></a></span>
-<span id="cb90-57"><a href="bias.html#cb90-57"></a><span class="co"># Combine significant and non-significant data. Select percentage based on % of publication bias</span></span>
-<span id="cb90-58"><a href="bias.html#cb90-58"></a>metadata &lt;-<span class="st"> </span><span class="kw">rbind</span>(metadata.nonsig[<span class="kw">sample</span>(<span class="kw">nrow</span>(metadata.nonsig), nSims <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>pub.bias)), ], metadata.sig[<span class="kw">sample</span>(<span class="kw">nrow</span>(metadata.sig), nSims <span class="op">*</span><span class="st"> </span>(pub.bias)), ])</span>
-<span id="cb90-59"><a href="bias.html#cb90-59"></a></span>
-<span id="cb90-60"><a href="bias.html#cb90-60"></a>metadata &lt;-<span class="st"> </span><span class="kw">escalc</span>(<span class="dt">n1i =</span> n1, <span class="dt">n2i =</span> n2, <span class="dt">m1i =</span> m1, <span class="dt">m2i =</span> m2, <span class="dt">sd1i =</span> sd1, <span class="dt">sd2i =</span> sd2, <span class="dt">measure =</span> <span class="st">"SMD"</span>, <span class="dt">data =</span> metadata)</span>
-<span id="cb90-61"><a href="bias.html#cb90-61"></a><span class="co"># add se for PET-PEESE analysis</span></span>
-<span id="cb90-62"><a href="bias.html#cb90-62"></a>metadata<span class="op">$</span>sei &lt;-<span class="st"> </span><span class="kw">sqrt</span>(metadata<span class="op">$</span>vi)</span></code></pre></div>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="bias.html#cb95-1"></a><span class="co">#Install packages if needed</span></span>
+<span id="cb95-2"><a href="bias.html#cb95-2"></a><span class="kw">library</span>(metafor)</span>
+<span id="cb95-3"><a href="bias.html#cb95-3"></a><span class="kw">library</span>(truncnorm)</span>
+<span id="cb95-4"><a href="bias.html#cb95-4"></a></span>
+<span id="cb95-5"><a href="bias.html#cb95-5"></a><span class="kw">set.seed</span>(<span class="dv">5522</span>)</span>
+<span id="cb95-6"><a href="bias.html#cb95-6"></a></span>
+<span id="cb95-7"><a href="bias.html#cb95-7"></a>nSims &lt;-<span class="st"> </span><span class="dv">100</span> <span class="co"># number of simulated experiments</span></span>
+<span id="cb95-8"><a href="bias.html#cb95-8"></a>pub.bias &lt;-<span class="st"> </span><span class="dv">0</span> <span class="co"># set percentage of significant results in the literature</span></span>
+<span id="cb95-9"><a href="bias.html#cb95-9"></a></span>
+<span id="cb95-10"><a href="bias.html#cb95-10"></a>pop.m1 &lt;-<span class="st"> </span><span class="dv">100</span> <span class="co"># If there is a large true effect, the simulation will take a very long time because non-significant p-values are very very rare</span></span>
+<span id="cb95-11"><a href="bias.html#cb95-11"></a>pop.sd1 &lt;-<span class="st"> </span><span class="dv">15</span></span>
+<span id="cb95-12"><a href="bias.html#cb95-12"></a>pop.m2 &lt;-<span class="st"> </span><span class="dv">100</span></span>
+<span id="cb95-13"><a href="bias.html#cb95-13"></a>pop.sd2 &lt;-<span class="st"> </span><span class="dv">15</span></span>
+<span id="cb95-14"><a href="bias.html#cb95-14"></a>metadata.sig &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">m1 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">m2 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">sd1 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">sd2 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">n1 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">n2 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">pvalues =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">pcurve =</span> <span class="kw">numeric</span>(<span class="dv">0</span>))</span>
+<span id="cb95-15"><a href="bias.html#cb95-15"></a>metadata.nonsig &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">m1 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">m2 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">sd1 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">sd2 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">n1 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">n2 =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">pvalues =</span> <span class="kw">numeric</span>(<span class="dv">0</span>), <span class="dt">pcurve =</span> <span class="kw">numeric</span>(<span class="dv">0</span>))</span>
+<span id="cb95-16"><a href="bias.html#cb95-16"></a></span>
+<span id="cb95-17"><a href="bias.html#cb95-17"></a><span class="co"># simulate significant effects in the expected direction</span></span>
+<span id="cb95-18"><a href="bias.html#cb95-18"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nSims) { <span class="co"># for each simulated experiment</span></span>
+<span id="cb95-19"><a href="bias.html#cb95-19"></a>  p &lt;-<span class="st"> </span><span class="dv">1</span> <span class="co"># reset p to 1 </span></span>
+<span id="cb95-20"><a href="bias.html#cb95-20"></a>  n &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">rtruncnorm</span>(<span class="dv">1</span>, <span class="dv">20</span>, <span class="dv">300</span>, <span class="dv">50</span>, <span class="dv">100</span>)) <span class="co">#draw data from a truncated normal distribution between 20 and 300 with a mean of 50 and sd of 100</span></span>
+<span id="cb95-21"><a href="bias.html#cb95-21"></a>  <span class="cf">while</span> (p <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.025</span>) { <span class="co">#continue simulating as along as p is not significant</span></span>
+<span id="cb95-22"><a href="bias.html#cb95-22"></a>    x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dt">n =</span> n, <span class="dt">mean =</span> pop.m1, <span class="dt">sd =</span> pop.sd1) <span class="co">#produce  simulated participants</span></span>
+<span id="cb95-23"><a href="bias.html#cb95-23"></a>    y &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dt">n =</span> n, <span class="dt">mean =</span> pop.m2, <span class="dt">sd =</span> pop.sd2) <span class="co">#produce  simulated participants</span></span>
+<span id="cb95-24"><a href="bias.html#cb95-24"></a>    p &lt;-<span class="st"> </span><span class="kw">t.test</span>(x,y, <span class="dt">alternative =</span> <span class="st">"greater"</span>, <span class="dt">var.equal =</span> <span class="ot">TRUE</span>, <span class="dt">alpha =</span> <span class="fl">0.025</span>)<span class="op">$</span>p.value</span>
+<span id="cb95-25"><a href="bias.html#cb95-25"></a>  }</span>
+<span id="cb95-26"><a href="bias.html#cb95-26"></a>  metadata.sig[i,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">mean</span>(x)</span>
+<span id="cb95-27"><a href="bias.html#cb95-27"></a>  metadata.sig[i,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">mean</span>(y)</span>
+<span id="cb95-28"><a href="bias.html#cb95-28"></a>  metadata.sig[i,<span class="dv">3</span>] &lt;-<span class="st"> </span><span class="kw">sd</span>(x)</span>
+<span id="cb95-29"><a href="bias.html#cb95-29"></a>  metadata.sig[i,<span class="dv">4</span>] &lt;-<span class="st"> </span><span class="kw">sd</span>(y)</span>
+<span id="cb95-30"><a href="bias.html#cb95-30"></a>  metadata.sig[i,<span class="dv">5</span>] &lt;-<span class="st"> </span>n</span>
+<span id="cb95-31"><a href="bias.html#cb95-31"></a>  metadata.sig[i,<span class="dv">6</span>] &lt;-<span class="st"> </span>n</span>
+<span id="cb95-32"><a href="bias.html#cb95-32"></a>  out &lt;-<span class="st"> </span><span class="kw">t.test</span>(x, y, <span class="dt">var.equal =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb95-33"><a href="bias.html#cb95-33"></a>  metadata.sig[i,<span class="dv">7</span>] &lt;-<span class="st"> </span>out<span class="op">$</span>p.value</span>
+<span id="cb95-34"><a href="bias.html#cb95-34"></a>  metadata.sig[i,<span class="dv">8</span>] &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">"t("</span>,out<span class="op">$</span>parameter,<span class="st">")="</span>,out<span class="op">$</span>statistic)</span>
+<span id="cb95-35"><a href="bias.html#cb95-35"></a>}</span>
+<span id="cb95-36"><a href="bias.html#cb95-36"></a></span>
+<span id="cb95-37"><a href="bias.html#cb95-37"></a><span class="co"># simulate non-significant effects (two-sided)</span></span>
+<span id="cb95-38"><a href="bias.html#cb95-38"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nSims) { <span class="co"># for each simulated experiment</span></span>
+<span id="cb95-39"><a href="bias.html#cb95-39"></a>  p &lt;-<span class="st"> </span><span class="dv">0</span> <span class="co"># reset p to 1 </span></span>
+<span id="cb95-40"><a href="bias.html#cb95-40"></a>  n &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">rtruncnorm</span>(<span class="dv">1</span>, <span class="dv">20</span>, <span class="dv">300</span>, <span class="dv">50</span>, <span class="dv">100</span>))</span>
+<span id="cb95-41"><a href="bias.html#cb95-41"></a>  <span class="cf">while</span> (p <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>) { <span class="co"># continue simulating as along as p is significant</span></span>
+<span id="cb95-42"><a href="bias.html#cb95-42"></a>    x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dt">n =</span> n, <span class="dt">mean =</span> pop.m1, <span class="dt">sd =</span> pop.sd1) <span class="co"># produce  simulated participants</span></span>
+<span id="cb95-43"><a href="bias.html#cb95-43"></a>    y &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dt">n =</span> n, <span class="dt">mean =</span> pop.m2, <span class="dt">sd =</span> pop.sd2) <span class="co"># produce  simulated participants</span></span>
+<span id="cb95-44"><a href="bias.html#cb95-44"></a>    p &lt;-<span class="st"> </span><span class="kw">t.test</span>(x, y, <span class="dt">var.equal =</span> <span class="ot">TRUE</span>)<span class="op">$</span>p.value</span>
+<span id="cb95-45"><a href="bias.html#cb95-45"></a>  }</span>
+<span id="cb95-46"><a href="bias.html#cb95-46"></a>  metadata.nonsig[i,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">mean</span>(x)</span>
+<span id="cb95-47"><a href="bias.html#cb95-47"></a>  metadata.nonsig[i,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">mean</span>(y)</span>
+<span id="cb95-48"><a href="bias.html#cb95-48"></a>  metadata.nonsig[i,<span class="dv">3</span>] &lt;-<span class="st"> </span><span class="kw">sd</span>(x)</span>
+<span id="cb95-49"><a href="bias.html#cb95-49"></a>  metadata.nonsig[i,<span class="dv">4</span>] &lt;-<span class="st"> </span><span class="kw">sd</span>(y)</span>
+<span id="cb95-50"><a href="bias.html#cb95-50"></a>  metadata.nonsig[i,<span class="dv">5</span>] &lt;-<span class="st"> </span>n</span>
+<span id="cb95-51"><a href="bias.html#cb95-51"></a>  metadata.nonsig[i,<span class="dv">6</span>] &lt;-<span class="st"> </span>n</span>
+<span id="cb95-52"><a href="bias.html#cb95-52"></a>  out &lt;-<span class="st"> </span><span class="kw">t.test</span>(x, y, <span class="dt">var.equal =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb95-53"><a href="bias.html#cb95-53"></a>  metadata.nonsig[i,<span class="dv">7</span>] &lt;-<span class="st"> </span>out<span class="op">$</span>p.value</span>
+<span id="cb95-54"><a href="bias.html#cb95-54"></a>  metadata.nonsig[i,<span class="dv">8</span>] &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">"t("</span>,out<span class="op">$</span>parameter,<span class="st">")="</span>,out<span class="op">$</span>statistic)</span>
+<span id="cb95-55"><a href="bias.html#cb95-55"></a>}</span>
+<span id="cb95-56"><a href="bias.html#cb95-56"></a></span>
+<span id="cb95-57"><a href="bias.html#cb95-57"></a><span class="co"># Combine significant and non-significant data. Select percentage based on % of publication bias</span></span>
+<span id="cb95-58"><a href="bias.html#cb95-58"></a>metadata &lt;-<span class="st"> </span><span class="kw">rbind</span>(metadata.nonsig[<span class="kw">sample</span>(<span class="kw">nrow</span>(metadata.nonsig), nSims <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>pub.bias)), ], metadata.sig[<span class="kw">sample</span>(<span class="kw">nrow</span>(metadata.sig), nSims <span class="op">*</span><span class="st"> </span>(pub.bias)), ])</span>
+<span id="cb95-59"><a href="bias.html#cb95-59"></a></span>
+<span id="cb95-60"><a href="bias.html#cb95-60"></a>metadata &lt;-<span class="st"> </span><span class="kw">escalc</span>(<span class="dt">n1i =</span> n1, <span class="dt">n2i =</span> n2, <span class="dt">m1i =</span> m1, <span class="dt">m2i =</span> m2, <span class="dt">sd1i =</span> sd1, <span class="dt">sd2i =</span> sd2, <span class="dt">measure =</span> <span class="st">"SMD"</span>, <span class="dt">data =</span> metadata)</span>
+<span id="cb95-61"><a href="bias.html#cb95-61"></a><span class="co"># add se for PET-PEESE analysis</span></span>
+<span id="cb95-62"><a href="bias.html#cb95-62"></a>metadata<span class="op">$</span>sei &lt;-<span class="st"> </span><span class="kw">sqrt</span>(metadata<span class="op">$</span>vi)</span></code></pre></div>
 <p>The number of studies that are simulated is set to 100, and the script allows you to specify the amount of publication bias. When set to 1, all studies are significant, when set to 0, all studies will be non-significant (we will for now ignore the possibility that Type 1 errors will occur and could be published, even when there is no true effect). The unbiased percentage of significant results depends on the power (if there is a true effect) or the Type 1 error rate. Two groups of observations are simulated based on equal population means of 100. Thus, there is no true effect. Let’s start by looking at what unbiased research looks like. Because we set a seed, the simulation will yield the same results every time it is run - remove the set.seed function to get different results each time.</p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="bias.html#cb91-1"></a><span class="co"># perform a meta-analysis with the metafor package</span></span>
-<span id="cb91-2"><a href="bias.html#cb91-2"></a>result &lt;-<span class="st"> </span><span class="kw">rma</span>(yi, vi, <span class="dt">data =</span> metadata, <span class="dt">method =</span> <span class="st">"FE"</span>)</span>
-<span id="cb91-3"><a href="bias.html#cb91-3"></a>result</span></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="bias.html#cb96-1"></a><span class="co"># perform a meta-analysis with the metafor package</span></span>
+<span id="cb96-2"><a href="bias.html#cb96-2"></a>result &lt;-<span class="st"> </span><span class="kw">rma</span>(yi, vi, <span class="dt">data =</span> metadata, <span class="dt">method =</span> <span class="st">"FE"</span>)</span>
+<span id="cb96-3"><a href="bias.html#cb96-3"></a>result</span></code></pre></div>
 <pre><code>## 
 ## Fixed-Effects Model (k = 100)
 ## 
@@ -340,8 +340,8 @@ Figure 10.5: Figure 3 from Simonsohn et al (2014) showing a p-curve with and wit
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>We see there are 100 studies in the meta-analysis (k = 100), and there is no statistically significant heterogeneity (<em>p</em> = 0.988, which is not surprising because we programmed the simulation so that all studies have the same true effect sizes, there is no heterogeneity in effect sizes). We also get the results for the meta-analysis. The meta-analytic estimate is d = 0.0049. The meta-analytic effect size is very close to 0 (as it should be, because the true effect size is indeed 0). The standard error around this estimate is 0.0132. With 100 studies, we have a very accurate estimate of the true effect size. The Z-value for the test against d = 0 is 0.3725, and the <em>p</em>-value for this test is 0.7095. There is no statistically significant difference, so we can not reject the hypothesis that the true effect size is 0. The CI around the effect size estimate (-0.021, 0.031) includes 0.</p>
 <p>It is easy to create a forest plot, where each effect size from each study is plotted on a separate line.</p>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="bias.html#cb93-1"></a><span class="co"># Forest plot with 95% CI </span></span>
-<span id="cb93-2"><a href="bias.html#cb93-2"></a><span class="kw">forest</span>(result, <span class="dt">level =</span> <span class="fl">0.95</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="bias.html#cb98-1"></a><span class="co"># Forest plot with 95% CI </span></span>
+<span id="cb98-2"><a href="bias.html#cb98-2"></a><span class="kw">forest</span>(result, <span class="dt">level =</span> <span class="fl">0.95</span>)</span></code></pre></div>
 <div class="figure">
 <span id="fig:forestplot"></span>
 <p class="caption marginnote shownote">
@@ -373,9 +373,9 @@ Figure 10.8: Forest plot with bias.
 </div>
 <p>The forest plot in the figure looks quite peculiar, as the studies have confidence intervals that only just fail to include 0, suggesting most studies are only just statistically significant. This suggests publication bias.</p>
 <p>All studies are significant. A fixed effect meta-analytic effect size estimate is indicated on the bottom of the plot, and is estimated to be d = 0.31. We can also look at the meta-analysis results:</p>
-<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="bias.html#cb94-1"></a><span class="co"># perform a meta-analysis with the metafor package</span></span>
-<span id="cb94-2"><a href="bias.html#cb94-2"></a>result &lt;-<span class="st"> </span><span class="kw">rma</span>(yi, vi, <span class="dt">data =</span> metadata, <span class="dt">method =</span> <span class="st">"FE"</span>)</span>
-<span id="cb94-3"><a href="bias.html#cb94-3"></a>result</span></code></pre></div>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="bias.html#cb99-1"></a><span class="co"># perform a meta-analysis with the metafor package</span></span>
+<span id="cb99-2"><a href="bias.html#cb99-2"></a>result &lt;-<span class="st"> </span><span class="kw">rma</span>(yi, vi, <span class="dt">data =</span> metadata, <span class="dt">method =</span> <span class="st">"FE"</span>)</span>
+<span id="cb99-3"><a href="bias.html#cb99-3"></a>result</span></code></pre></div>
 <pre><code>## 
 ## Fixed-Effects Model (k = 100)
 ## 
@@ -398,29 +398,29 @@ Figure 10.8: Forest plot with bias.
 <h3>
 <span class="header-section-number">10.1.8</span> Bias detection techniques</h3>
 <p>Let’s explore how PET-PEESE meta-regression attempts to give us an unbiased effect size estimate, under specific assumptions of how publication bias is caused.</p>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="bias.html#cb96-1"></a><span class="co"># PET PEESE code below is adapted from Joe Hilgard: https://github.com/Joe-Hilgard/PETPEESE/blob/master/PETPEESE_functions.R</span></span>
-<span id="cb96-2"><a href="bias.html#cb96-2"></a><span class="co"># PET</span></span>
-<span id="cb96-3"><a href="bias.html#cb96-3"></a>PET &lt;-<span class="st"> </span><span class="kw">rma</span>(<span class="dt">yi =</span> yi, <span class="dt">sei =</span> sei, <span class="dt">mods =</span> <span class="op">~</span>sei, <span class="dt">data =</span> metadata, <span class="dt">method =</span> <span class="st">"FE"</span>)</span>
-<span id="cb96-4"><a href="bias.html#cb96-4"></a></span>
-<span id="cb96-5"><a href="bias.html#cb96-5"></a><span class="co"># PEESE</span></span>
-<span id="cb96-6"><a href="bias.html#cb96-6"></a>PEESE &lt;-<span class="st"> </span><span class="kw">rma</span>(<span class="dt">yi =</span> yi, <span class="dt">sei =</span> sei, <span class="dt">mods =</span> <span class="op">~</span><span class="kw">I</span>(sei<span class="op">^</span><span class="dv">2</span>), <span class="dt">data =</span> metadata, <span class="dt">method =</span> <span class="st">"FE"</span>)</span>
-<span id="cb96-7"><a href="bias.html#cb96-7"></a></span>
-<span id="cb96-8"><a href="bias.html#cb96-8"></a><span class="co"># Funnel Plot </span></span>
-<span id="cb96-9"><a href="bias.html#cb96-9"></a><span class="kw">funnel</span>(result, <span class="dt">level =</span> <span class="fl">0.95</span>, <span class="dt">refline =</span> <span class="dv">0</span>, <span class="dt">main =</span> <span class="kw">paste</span>(<span class="st">"FE d ="</span>, <span class="kw">round</span>(result<span class="op">$</span>b[<span class="dv">1</span>],<span class="dv">2</span>),<span class="st">"PET d ="</span>, <span class="kw">round</span>(PET<span class="op">$</span>b[<span class="dv">1</span>],<span class="dv">2</span>),<span class="st">"PEESE d ="</span>, <span class="kw">round</span>(PEESE<span class="op">$</span>b[<span class="dv">1</span>],<span class="dv">2</span>)))</span>
-<span id="cb96-10"><a href="bias.html#cb96-10"></a><span class="kw">abline</span>(<span class="dt">v =</span> result<span class="op">$</span>b[<span class="dv">1</span>], <span class="dt">lty =</span> <span class="st">"dashed"</span>) <span class="co">#draw vertical line at meta-analytic effect size estimate</span></span>
-<span id="cb96-11"><a href="bias.html#cb96-11"></a><span class="kw">points</span>(<span class="dt">x =</span> result<span class="op">$</span>b[<span class="dv">1</span>], <span class="dt">y =</span> <span class="dv">0</span>, <span class="dt">cex =</span> <span class="fl">1.5</span>, <span class="dt">pch =</span> <span class="dv">17</span>) <span class="co">#draw point at meta-analytic effect size estimate</span></span>
-<span id="cb96-12"><a href="bias.html#cb96-12"></a><span class="co"># PET PEESE code below is adapted from Joe Hilgard: https://github.com/Joe-Hilgard/PETPEESE/blob/master/PETPEESE_functions.R</span></span>
-<span id="cb96-13"><a href="bias.html#cb96-13"></a><span class="co"># PEESE line and point</span></span>
-<span id="cb96-14"><a href="bias.html#cb96-14"></a>sei &lt;-<span class="st"> </span>(<span class="kw">seq</span>(<span class="dv">0</span>, <span class="kw">max</span>(<span class="kw">sqrt</span>(result<span class="op">$</span>vi)), <span class="fl">.001</span>))</span>
-<span id="cb96-15"><a href="bias.html#cb96-15"></a>vi &lt;-<span class="st"> </span>sei<span class="op">^</span><span class="dv">2</span></span>
-<span id="cb96-16"><a href="bias.html#cb96-16"></a>yi &lt;-<span class="st"> </span>PEESE<span class="op">$</span>b[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>PEESE<span class="op">$</span>b[<span class="dv">2</span>]<span class="op">*</span>vi</span>
-<span id="cb96-17"><a href="bias.html#cb96-17"></a>grid &lt;-<span class="st"> </span><span class="kw">data.frame</span>(yi, vi, sei)</span>
-<span id="cb96-18"><a href="bias.html#cb96-18"></a><span class="kw">lines</span>(<span class="dt">x =</span> grid<span class="op">$</span>yi, <span class="dt">y =</span> grid<span class="op">$</span>sei, <span class="dt">typ =</span> <span class="st">'l'</span>) <span class="co"># add line for PEESE</span></span>
-<span id="cb96-19"><a href="bias.html#cb96-19"></a><span class="kw">points</span>(<span class="dt">x =</span> (PEESE<span class="op">$</span>b[<span class="dv">1</span>]), <span class="dt">y =</span> <span class="dv">0</span>, <span class="dt">cex =</span> <span class="fl">1.5</span>, <span class="dt">pch =</span> <span class="dv">5</span>) <span class="co"># add point estimate for PEESE</span></span>
-<span id="cb96-20"><a href="bias.html#cb96-20"></a><span class="co"># PET line and point</span></span>
-<span id="cb96-21"><a href="bias.html#cb96-21"></a><span class="kw">abline</span>(<span class="dt">a =</span> <span class="op">-</span>PET<span class="op">$</span>b[<span class="dv">1</span>]<span class="op">/</span>PET<span class="op">$</span>b[<span class="dv">2</span>], <span class="dt">b =</span> <span class="dv">1</span><span class="op">/</span>PET<span class="op">$</span>b[<span class="dv">2</span>]) <span class="co"># add line for PET</span></span>
-<span id="cb96-22"><a href="bias.html#cb96-22"></a><span class="kw">points</span>(<span class="dt">x =</span> PET<span class="op">$</span>b[<span class="dv">1</span>], <span class="dt">y =</span> <span class="dv">0</span>, <span class="dt">cex =</span> <span class="fl">1.5</span>) <span class="co"># add point estimate for PET</span></span>
-<span id="cb96-23"><a href="bias.html#cb96-23"></a><span class="kw">segments</span>(<span class="dt">x0 =</span> PET<span class="op">$</span>ci.lb[<span class="dv">1</span>], <span class="dt">y0 =</span> <span class="dv">0</span>, <span class="dt">x1 =</span> PET<span class="op">$</span>ci.ub[<span class="dv">1</span>], <span class="dt">y1 =</span> <span class="dv">0</span>, <span class="dt">lty =</span> <span class="st">"dashed"</span>) <span class="co">#Add 95% CI around PET</span></span></code></pre></div>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="bias.html#cb101-1"></a><span class="co"># PET PEESE code below is adapted from Joe Hilgard: https://github.com/Joe-Hilgard/PETPEESE/blob/master/PETPEESE_functions.R</span></span>
+<span id="cb101-2"><a href="bias.html#cb101-2"></a><span class="co"># PET</span></span>
+<span id="cb101-3"><a href="bias.html#cb101-3"></a>PET &lt;-<span class="st"> </span><span class="kw">rma</span>(<span class="dt">yi =</span> yi, <span class="dt">sei =</span> sei, <span class="dt">mods =</span> <span class="op">~</span>sei, <span class="dt">data =</span> metadata, <span class="dt">method =</span> <span class="st">"FE"</span>)</span>
+<span id="cb101-4"><a href="bias.html#cb101-4"></a></span>
+<span id="cb101-5"><a href="bias.html#cb101-5"></a><span class="co"># PEESE</span></span>
+<span id="cb101-6"><a href="bias.html#cb101-6"></a>PEESE &lt;-<span class="st"> </span><span class="kw">rma</span>(<span class="dt">yi =</span> yi, <span class="dt">sei =</span> sei, <span class="dt">mods =</span> <span class="op">~</span><span class="kw">I</span>(sei<span class="op">^</span><span class="dv">2</span>), <span class="dt">data =</span> metadata, <span class="dt">method =</span> <span class="st">"FE"</span>)</span>
+<span id="cb101-7"><a href="bias.html#cb101-7"></a></span>
+<span id="cb101-8"><a href="bias.html#cb101-8"></a><span class="co"># Funnel Plot </span></span>
+<span id="cb101-9"><a href="bias.html#cb101-9"></a><span class="kw">funnel</span>(result, <span class="dt">level =</span> <span class="fl">0.95</span>, <span class="dt">refline =</span> <span class="dv">0</span>, <span class="dt">main =</span> <span class="kw">paste</span>(<span class="st">"FE d ="</span>, <span class="kw">round</span>(result<span class="op">$</span>b[<span class="dv">1</span>],<span class="dv">2</span>),<span class="st">"PET d ="</span>, <span class="kw">round</span>(PET<span class="op">$</span>b[<span class="dv">1</span>],<span class="dv">2</span>),<span class="st">"PEESE d ="</span>, <span class="kw">round</span>(PEESE<span class="op">$</span>b[<span class="dv">1</span>],<span class="dv">2</span>)))</span>
+<span id="cb101-10"><a href="bias.html#cb101-10"></a><span class="kw">abline</span>(<span class="dt">v =</span> result<span class="op">$</span>b[<span class="dv">1</span>], <span class="dt">lty =</span> <span class="st">"dashed"</span>) <span class="co">#draw vertical line at meta-analytic effect size estimate</span></span>
+<span id="cb101-11"><a href="bias.html#cb101-11"></a><span class="kw">points</span>(<span class="dt">x =</span> result<span class="op">$</span>b[<span class="dv">1</span>], <span class="dt">y =</span> <span class="dv">0</span>, <span class="dt">cex =</span> <span class="fl">1.5</span>, <span class="dt">pch =</span> <span class="dv">17</span>) <span class="co">#draw point at meta-analytic effect size estimate</span></span>
+<span id="cb101-12"><a href="bias.html#cb101-12"></a><span class="co"># PET PEESE code below is adapted from Joe Hilgard: https://github.com/Joe-Hilgard/PETPEESE/blob/master/PETPEESE_functions.R</span></span>
+<span id="cb101-13"><a href="bias.html#cb101-13"></a><span class="co"># PEESE line and point</span></span>
+<span id="cb101-14"><a href="bias.html#cb101-14"></a>sei &lt;-<span class="st"> </span>(<span class="kw">seq</span>(<span class="dv">0</span>, <span class="kw">max</span>(<span class="kw">sqrt</span>(result<span class="op">$</span>vi)), <span class="fl">.001</span>))</span>
+<span id="cb101-15"><a href="bias.html#cb101-15"></a>vi &lt;-<span class="st"> </span>sei<span class="op">^</span><span class="dv">2</span></span>
+<span id="cb101-16"><a href="bias.html#cb101-16"></a>yi &lt;-<span class="st"> </span>PEESE<span class="op">$</span>b[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>PEESE<span class="op">$</span>b[<span class="dv">2</span>]<span class="op">*</span>vi</span>
+<span id="cb101-17"><a href="bias.html#cb101-17"></a>grid &lt;-<span class="st"> </span><span class="kw">data.frame</span>(yi, vi, sei)</span>
+<span id="cb101-18"><a href="bias.html#cb101-18"></a><span class="kw">lines</span>(<span class="dt">x =</span> grid<span class="op">$</span>yi, <span class="dt">y =</span> grid<span class="op">$</span>sei, <span class="dt">typ =</span> <span class="st">'l'</span>) <span class="co"># add line for PEESE</span></span>
+<span id="cb101-19"><a href="bias.html#cb101-19"></a><span class="kw">points</span>(<span class="dt">x =</span> (PEESE<span class="op">$</span>b[<span class="dv">1</span>]), <span class="dt">y =</span> <span class="dv">0</span>, <span class="dt">cex =</span> <span class="fl">1.5</span>, <span class="dt">pch =</span> <span class="dv">5</span>) <span class="co"># add point estimate for PEESE</span></span>
+<span id="cb101-20"><a href="bias.html#cb101-20"></a><span class="co"># PET line and point</span></span>
+<span id="cb101-21"><a href="bias.html#cb101-21"></a><span class="kw">abline</span>(<span class="dt">a =</span> <span class="op">-</span>PET<span class="op">$</span>b[<span class="dv">1</span>]<span class="op">/</span>PET<span class="op">$</span>b[<span class="dv">2</span>], <span class="dt">b =</span> <span class="dv">1</span><span class="op">/</span>PET<span class="op">$</span>b[<span class="dv">2</span>]) <span class="co"># add line for PET</span></span>
+<span id="cb101-22"><a href="bias.html#cb101-22"></a><span class="kw">points</span>(<span class="dt">x =</span> PET<span class="op">$</span>b[<span class="dv">1</span>], <span class="dt">y =</span> <span class="dv">0</span>, <span class="dt">cex =</span> <span class="fl">1.5</span>) <span class="co"># add point estimate for PET</span></span>
+<span id="cb101-23"><a href="bias.html#cb101-23"></a><span class="kw">segments</span>(<span class="dt">x0 =</span> PET<span class="op">$</span>ci.lb[<span class="dv">1</span>], <span class="dt">y0 =</span> <span class="dv">0</span>, <span class="dt">x1 =</span> PET<span class="op">$</span>ci.ub[<span class="dv">1</span>], <span class="dt">y1 =</span> <span class="dv">0</span>, <span class="dt">lty =</span> <span class="st">"dashed"</span>) <span class="co">#Add 95% CI around PET</span></span></code></pre></div>
 <div class="figure">
 <span id="fig:petpeese"></span>
 <p class="caption marginnote shownote">
@@ -435,18 +435,18 @@ Figure 10.9: Funnel plot with PET_PEESE regression lines.
 <h3>
 <span class="header-section-number">10.1.9</span> TIVA</h3>
 <p>Let’s explore our biased meta-analysis with other bias detection tools. Code code below allows us to perform the Test of Insufficient Variance.</p>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="bias.html#cb97-1"></a><span class="co"># TIVA code (Uli Schimmack: https://replicationindex.wordpress.com/2014/12/30/the-test-of-insufficient-variance-tiva-a-new-tool-for-the-detection-of-questionable-research-practices/)</span></span>
-<span id="cb97-2"><a href="bias.html#cb97-2"></a>k =<span class="st"> </span><span class="kw">length</span>(metadata<span class="op">$</span>pvalues) </span>
-<span id="cb97-3"><a href="bias.html#cb97-3"></a>z =<span class="st"> </span><span class="kw">qnorm</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>metadata<span class="op">$</span>pvalues<span class="op">/</span><span class="dv">2</span>)</span>
-<span id="cb97-4"><a href="bias.html#cb97-4"></a>var.z =<span class="st"> </span><span class="kw">var</span>(z) </span>
-<span id="cb97-5"><a href="bias.html#cb97-5"></a>tiva.p =<span class="st"> </span><span class="kw">pchisq</span>(var.z <span class="op">*</span><span class="st"> </span>(k <span class="op">-</span><span class="st"> </span><span class="dv">1</span>),k <span class="op">-</span><span class="st"> </span><span class="dv">1</span>) </span>
-<span id="cb97-6"><a href="bias.html#cb97-6"></a>var.z </span></code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="bias.html#cb102-1"></a><span class="co"># TIVA code (Uli Schimmack: https://replicationindex.wordpress.com/2014/12/30/the-test-of-insufficient-variance-tiva-a-new-tool-for-the-detection-of-questionable-research-practices/)</span></span>
+<span id="cb102-2"><a href="bias.html#cb102-2"></a>k =<span class="st"> </span><span class="kw">length</span>(metadata<span class="op">$</span>pvalues) </span>
+<span id="cb102-3"><a href="bias.html#cb102-3"></a>z =<span class="st"> </span><span class="kw">qnorm</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>metadata<span class="op">$</span>pvalues<span class="op">/</span><span class="dv">2</span>)</span>
+<span id="cb102-4"><a href="bias.html#cb102-4"></a>var.z =<span class="st"> </span><span class="kw">var</span>(z) </span>
+<span id="cb102-5"><a href="bias.html#cb102-5"></a>tiva.p =<span class="st"> </span><span class="kw">pchisq</span>(var.z <span class="op">*</span><span class="st"> </span>(k <span class="op">-</span><span class="st"> </span><span class="dv">1</span>),k <span class="op">-</span><span class="st"> </span><span class="dv">1</span>) </span>
+<span id="cb102-6"><a href="bias.html#cb102-6"></a>var.z </span></code></pre></div>
 <pre><code>## [1] 0.117546</code></pre>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="bias.html#cb99-1"></a><span class="kw">round</span>(tiva.p,<span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="bias.html#cb104-1"></a><span class="kw">round</span>(tiva.p,<span class="dv">3</span>)</span></code></pre></div>
 <pre><code>## [1] 0</code></pre>
 <p>The variance is very small (0.11, much lower than 1) and a test against the normal variance we would expect shows the observed variance is statistically different from 1 (<em>p</em> &lt; 0.001). This suggests strong bias, and there is no good reason to assume the normal meta-analytic effect size estimate is accurate.</p>
 <p>Finally, the script provides the test statistics for the 100 simulated <em>t</em>-tests that are included in the meta-analysis. The first few rows look like:</p>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="bias.html#cb101-1"></a><span class="kw">cat</span>(metadata<span class="op">$</span>pcurve[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>],<span class="dt">sep =</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="bias.html#cb106-1"></a><span class="kw">cat</span>(metadata<span class="op">$</span>pcurve[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>],<span class="dt">sep =</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span></code></pre></div>
 <pre><code>## t(146)=2.6766329007035
 ## t(258)=2.84977661171535
 ## t(188)=2.73540213686467
@@ -454,107 +454,107 @@ Figure 10.9: Funnel plot with PET_PEESE regression lines.
 ## t(170)=2.13211285378042</code></pre>
 <p>You can go to the online <em>p</em>-curve app at <a href="http://www.p-curve.com/app4/" class="uri">http://www.p-curve.com/app4/</a> where you can paste all test results, and click the ‘Make the p-curve’ button. Note that the p-curve app will only yield a result when therre are <em>p</em>-values smaller than 0.05 - if all test statistics yield a <em>p</em> &gt; 0.05, the <em>p</em>-curve cannot be computed.</p>
 <p>Below, we will compute the p-curve based on the p-values directly.</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="bias.html#cb103-1"></a><span class="co"># Adapted from https://github.com/nicebread/p-checker/blob/master/p-curve.R</span></span>
-<span id="cb103-2"><a href="bias.html#cb103-2"></a></span>
-<span id="cb103-3"><a href="bias.html#cb103-3"></a>ncp33z &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">power=</span><span class="dv">1</span><span class="op">/</span><span class="dv">3</span>, <span class="dt">p.crit=</span>.<span class="dv">05</span>) {      </span>
-<span id="cb103-4"><a href="bias.html#cb103-4"></a>      xc =<span class="st"> </span><span class="kw">qnorm</span>(<span class="dt">p=</span><span class="dv">1</span><span class="op">-</span>p.crit<span class="op">/</span><span class="dv">2</span>)</span>
-<span id="cb103-5"><a href="bias.html#cb103-5"></a>      <span class="co">#Find noncentrality parameter (ncp) that leads 33% power to obtain xc</span></span>
-<span id="cb103-6"><a href="bias.html#cb103-6"></a>	  f =<span class="st"> </span><span class="cf">function</span>(delta, pr, x) <span class="kw">pnorm</span>(x, <span class="dt">mean =</span> delta) <span class="op">-</span><span class="st"> </span>(<span class="dv">1</span><span class="op">-</span>power)</span>
-<span id="cb103-7"><a href="bias.html#cb103-7"></a>	  out =<span class="st"> </span><span class="kw">uniroot</span>(f, <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">37.62</span>), <span class="dt">x =</span> xc)</span>
-<span id="cb103-8"><a href="bias.html#cb103-8"></a>	  <span class="kw">return</span>(out<span class="op">$</span>root) </span>
-<span id="cb103-9"><a href="bias.html#cb103-9"></a>}</span>
-<span id="cb103-10"><a href="bias.html#cb103-10"></a></span>
-<span id="cb103-11"><a href="bias.html#cb103-11"></a>theoretical_power_curve &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">power=</span><span class="dv">1</span><span class="op">/</span><span class="dv">3</span>, <span class="dt">p.max=</span>.<span class="dv">05</span>, <span class="dt">normalize=</span><span class="ot">TRUE</span>) {</span>
-<span id="cb103-12"><a href="bias.html#cb103-12"></a>	<span class="co"># compute arbitrary test statistics for requested power</span></span>
-<span id="cb103-13"><a href="bias.html#cb103-13"></a>	<span class="kw">library</span>(pwr)</span>
-<span id="cb103-14"><a href="bias.html#cb103-14"></a>	d &lt;-<span class="st"> </span><span class="fl">0.2</span></span>
-<span id="cb103-15"><a href="bias.html#cb103-15"></a>	n &lt;-<span class="st"> </span><span class="kw">pwr.t.test</span>(<span class="dt">d=</span><span class="fl">0.2</span>, <span class="dt">power=</span>power)<span class="op">$</span>n<span class="op">*</span><span class="dv">2</span></span>
-<span id="cb103-16"><a href="bias.html#cb103-16"></a>	</span>
-<span id="cb103-17"><a href="bias.html#cb103-17"></a>	crit &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="fl">0.01</span>, p.max, <span class="dt">by=</span>.<span class="dv">01</span>)</span>
-<span id="cb103-18"><a href="bias.html#cb103-18"></a>	pdens &lt;-<span class="st"> </span><span class="kw">c</span>()</span>
-<span id="cb103-19"><a href="bias.html#cb103-19"></a>	<span class="cf">for</span> (cr <span class="cf">in</span> crit) {</span>
-<span id="cb103-20"><a href="bias.html#cb103-20"></a>		pdens &lt;-<span class="st"> </span><span class="kw">c</span>(pdens, <span class="kw">pwr.t.test</span>(<span class="dt">d=</span><span class="fl">0.2</span>, <span class="dt">power=</span><span class="ot">NULL</span>, <span class="dt">n=</span>n<span class="op">/</span><span class="dv">2</span>, <span class="dt">sig.level=</span>cr)<span class="op">$</span>power)</span>
-<span id="cb103-21"><a href="bias.html#cb103-21"></a>	}</span>
-<span id="cb103-22"><a href="bias.html#cb103-22"></a>	p.dens &lt;-<span class="st"> </span><span class="kw">diff</span>(<span class="kw">c</span>(<span class="dv">0</span>, pdens))</span>
-<span id="cb103-23"><a href="bias.html#cb103-23"></a>	<span class="cf">if</span> (normalize <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>) p.dens &lt;-<span class="st"> </span>p.dens<span class="op">/</span><span class="kw">sum</span>(p.dens)</span>
-<span id="cb103-24"><a href="bias.html#cb103-24"></a>		</span>
-<span id="cb103-25"><a href="bias.html#cb103-25"></a>	<span class="kw">names</span>(p.dens) &lt;-<span class="st"> </span><span class="kw">as.character</span>(crit)</span>
-<span id="cb103-26"><a href="bias.html#cb103-26"></a>	<span class="kw">return</span>(p.dens)</span>
-<span id="cb103-27"><a href="bias.html#cb103-27"></a>}</span>
-<span id="cb103-28"><a href="bias.html#cb103-28"></a></span>
-<span id="cb103-29"><a href="bias.html#cb103-29"></a>p.crit=.<span class="dv">05</span></span>
-<span id="cb103-30"><a href="bias.html#cb103-30"></a>power=<span class="dv">1</span><span class="op">/</span><span class="dv">3</span></span>
-<span id="cb103-31"><a href="bias.html#cb103-31"></a></span>
-<span id="cb103-32"><a href="bias.html#cb103-32"></a><span class="co">#get p-values from metadata</span></span>
-<span id="cb103-33"><a href="bias.html#cb103-33"></a>p_vals &lt;-<span class="st"> </span>metadata<span class="op">$</span>pvalues</span>
-<span id="cb103-34"><a href="bias.html#cb103-34"></a>res &lt;-<span class="st"> </span><span class="kw">data.frame</span>()</span>
-<span id="cb103-35"><a href="bias.html#cb103-35"></a></span>
-<span id="cb103-36"><a href="bias.html#cb103-36"></a>z &lt;-<span class="st"> </span><span class="kw">qnorm</span>(p_vals<span class="op">/</span><span class="dv">2</span>, <span class="dt">lower.tail=</span><span class="ot">FALSE</span>)</span>
-<span id="cb103-37"><a href="bias.html#cb103-37"></a>ppr &lt;-<span class="st"> </span>p_vals<span class="op">*</span>(<span class="dv">1</span><span class="op">/</span>p.crit)	<span class="co"># pp-value for right-skew </span></span>
-<span id="cb103-38"><a href="bias.html#cb103-38"></a>ppl &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">-</span>ppr		<span class="co"># pp-value for left-skew</span></span>
-<span id="cb103-39"><a href="bias.html#cb103-39"></a>ncp33 &lt;-<span class="st"> </span><span class="kw">ncp33z</span>(<span class="dt">power=</span>power, <span class="dt">p.crit=</span>p.crit)</span>
-<span id="cb103-40"><a href="bias.html#cb103-40"></a>pp33 &lt;-<span class="st"> </span>(<span class="kw">pnorm</span>(z, <span class="dt">mean=</span>ncp33, <span class="dt">sd=</span><span class="dv">1</span>)<span class="op">-</span>(<span class="dv">1</span><span class="op">-</span>power))<span class="op">*</span>(<span class="dv">1</span><span class="op">/</span>power)</span>
-<span id="cb103-41"><a href="bias.html#cb103-41"></a></span>
-<span id="cb103-42"><a href="bias.html#cb103-42"></a>res &lt;-<span class="st"> </span><span class="kw">rbind</span>(res, <span class="kw">data.frame</span>(<span class="dt">p=</span>p_vals, <span class="dt">ppr=</span>ppr, <span class="dt">ppl=</span>ppl, <span class="dt">pp33=</span>pp33))</span>
-<span id="cb103-43"><a href="bias.html#cb103-43"></a></span>
-<span id="cb103-44"><a href="bias.html#cb103-44"></a><span class="co"># recode extreme values	</span></span>
-<span id="cb103-45"><a href="bias.html#cb103-45"></a></span>
-<span id="cb103-46"><a href="bias.html#cb103-46"></a>res<span class="op">$</span>ppr[res<span class="op">$</span>ppr <span class="op">&lt;</span><span class="st"> </span><span class="fl">.00001</span>] &lt;-<span class="st"> </span><span class="fl">.00001</span></span>
-<span id="cb103-47"><a href="bias.html#cb103-47"></a>res<span class="op">$</span>ppl[res<span class="op">$</span>ppl <span class="op">&lt;</span><span class="st"> </span><span class="fl">.00001</span>] &lt;-<span class="st"> </span><span class="fl">.00001</span></span>
-<span id="cb103-48"><a href="bias.html#cb103-48"></a>res<span class="op">$</span>pp33[res<span class="op">$</span>pp33 <span class="op">&lt;</span><span class="st"> </span><span class="fl">.00001</span>] &lt;-<span class="st"> </span><span class="fl">.00001</span></span>
-<span id="cb103-49"><a href="bias.html#cb103-49"></a>res<span class="op">$</span>ppr[res<span class="op">$</span>ppr <span class="op">&gt;</span><span class="st"> </span><span class="fl">.99999</span>] &lt;-<span class="st"> </span><span class="fl">.99999</span></span>
-<span id="cb103-50"><a href="bias.html#cb103-50"></a>res<span class="op">$</span>ppl[res<span class="op">$</span>ppl <span class="op">&gt;</span><span class="st"> </span><span class="fl">.99999</span>] &lt;-<span class="st"> </span><span class="fl">.99999</span></span>
-<span id="cb103-51"><a href="bias.html#cb103-51"></a>res<span class="op">$</span>pp33[res<span class="op">$</span>pp33 <span class="op">&gt;</span><span class="st"> </span><span class="fl">.99999</span>] &lt;-<span class="st"> </span><span class="fl">.99999</span></span>
-<span id="cb103-52"><a href="bias.html#cb103-52"></a></span>
-<span id="cb103-53"><a href="bias.html#cb103-53"></a><span class="co"># remove non-significant values</span></span>
-<span id="cb103-54"><a href="bias.html#cb103-54"></a>res[res<span class="op">$</span>p <span class="op">&gt;</span><span class="st"> </span>p.crit, ] &lt;-<span class="st"> </span><span class="ot">NA</span></span>
-<span id="cb103-55"><a href="bias.html#cb103-55"></a></span>
-<span id="cb103-56"><a href="bias.html#cb103-56"></a><span class="co"># New p-curve computation (p-curve app 3.0, http://www.p-curve.com/app3/)</span></span>
-<span id="cb103-57"><a href="bias.html#cb103-57"></a>p_curve_<span class="dv">3</span> &lt;-<span class="st"> </span><span class="cf">function</span>(pps) {</span>
-<span id="cb103-58"><a href="bias.html#cb103-58"></a></span>
-<span id="cb103-59"><a href="bias.html#cb103-59"></a>	pps &lt;-<span class="st"> </span><span class="kw">na.omit</span>(pps)</span>
-<span id="cb103-60"><a href="bias.html#cb103-60"></a></span>
-<span id="cb103-61"><a href="bias.html#cb103-61"></a>	<span class="co"># STOUFFER: Overall tests aggregating pp-values</span></span>
-<span id="cb103-62"><a href="bias.html#cb103-62"></a>	ktot &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="op">!</span><span class="kw">is.na</span>(pps<span class="op">$</span>ppr))</span>
-<span id="cb103-63"><a href="bias.html#cb103-63"></a>	Z_ppr &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">qnorm</span>(pps<span class="op">$</span>ppr))<span class="op">/</span><span class="kw">sqrt</span>(ktot)          <span class="co"># right skew</span></span>
-<span id="cb103-64"><a href="bias.html#cb103-64"></a>	Z_ppl &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">qnorm</span>(pps<span class="op">$</span>ppl))<span class="op">/</span><span class="kw">sqrt</span>(ktot)          <span class="co"># left skew</span></span>
-<span id="cb103-65"><a href="bias.html#cb103-65"></a>	Z_pp33&lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">qnorm</span>(pps<span class="op">$</span>pp33))<span class="op">/</span><span class="kw">sqrt</span>(ktot)         <span class="co"># 33%</span></span>
-<span id="cb103-66"><a href="bias.html#cb103-66"></a>	</span>
-<span id="cb103-67"><a href="bias.html#cb103-67"></a>	p_ppr &lt;-<span class="st"> </span><span class="kw">pnorm</span>(Z_ppr)</span>
-<span id="cb103-68"><a href="bias.html#cb103-68"></a>	p_ppl &lt;-<span class="st"> </span><span class="kw">pnorm</span>(Z_ppl)</span>
-<span id="cb103-69"><a href="bias.html#cb103-69"></a>	p_pp33&lt;-<span class="st"> </span><span class="kw">pnorm</span>(Z_pp33)</span>
-<span id="cb103-70"><a href="bias.html#cb103-70"></a></span>
-<span id="cb103-71"><a href="bias.html#cb103-71"></a>	<span class="kw">return</span>(<span class="kw">list</span>(</span>
-<span id="cb103-72"><a href="bias.html#cb103-72"></a>		<span class="dt">Z_evidence =</span> Z_ppr, </span>
-<span id="cb103-73"><a href="bias.html#cb103-73"></a>		<span class="dt">p_evidence =</span> p_ppr, </span>
-<span id="cb103-74"><a href="bias.html#cb103-74"></a>		<span class="dt">Z_hack =</span> Z_ppl, </span>
-<span id="cb103-75"><a href="bias.html#cb103-75"></a>		<span class="dt">p_hack =</span> p_ppl, </span>
-<span id="cb103-76"><a href="bias.html#cb103-76"></a>		<span class="dt">Z_lack =</span> Z_pp33, </span>
-<span id="cb103-77"><a href="bias.html#cb103-77"></a>		<span class="dt">p_lack =</span> p_pp33,</span>
-<span id="cb103-78"><a href="bias.html#cb103-78"></a>		<span class="dt">inconclusive =</span> <span class="kw">ifelse</span>(p_ppr<span class="op">&gt;</span>.<span class="dv">05</span> <span class="op">&amp;</span><span class="st"> </span>p_ppl<span class="op">&gt;</span>.<span class="dv">05</span> <span class="op">&amp;</span><span class="st"> </span>p_pp33<span class="op">&gt;</span>.<span class="dv">05</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>)))</span>
-<span id="cb103-79"><a href="bias.html#cb103-79"></a>}</span>
-<span id="cb103-80"><a href="bias.html#cb103-80"></a></span>
-<span id="cb103-81"><a href="bias.html#cb103-81"></a><span class="co">#p_curve_3(pps = res)</span></span>
-<span id="cb103-82"><a href="bias.html#cb103-82"></a></span>
-<span id="cb103-83"><a href="bias.html#cb103-83"></a><span class="co"># Create p-curve plot</span></span>
-<span id="cb103-84"><a href="bias.html#cb103-84"></a></span>
-<span id="cb103-85"><a href="bias.html#cb103-85"></a><span class="kw">plot</span>(<span class="ot">NA</span>, <span class="dt">xlim=</span><span class="kw">c</span>(<span class="dv">0</span>, p.crit), <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">100</span>), <span class="dt">xlab=</span><span class="st">"p-value"</span>, <span class="dt">ylab=</span><span class="st">"Percentage of p values"</span>)</span>
-<span id="cb103-86"><a href="bias.html#cb103-86"></a><span class="kw">abline</span>(<span class="dt">h=</span><span class="dv">1</span><span class="op">/</span>p.crit, <span class="dt">col=</span><span class="st">"red"</span>, <span class="dt">lty=</span><span class="st">"dashed"</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb103-87"><a href="bias.html#cb103-87"></a><span class="kw">legend</span>(<span class="st">"topright"</span>, <span class="dt">lty=</span><span class="kw">c</span>(<span class="st">"solid"</span>, <span class="st">"dotted"</span>, <span class="st">"dashed"</span>), <span class="dt">col=</span><span class="kw">c</span>(<span class="st">"dodgerblue"</span>, <span class="st">"darkgreen"</span>, <span class="st">"red"</span>), <span class="dt">legend=</span><span class="kw">c</span>(<span class="st">"Observed p-curve"</span>, <span class="kw">paste0</span>(<span class="kw">round</span>(power,<span class="dv">2</span>), <span class="st">"% power curve"</span>), <span class="st">"Nil effect"</span>), <span class="dt">bty=</span><span class="st">"n"</span>)</span>
-<span id="cb103-88"><a href="bias.html#cb103-88"></a></span>
-<span id="cb103-89"><a href="bias.html#cb103-89"></a>bins &lt;-<span class="st"> </span><span class="kw">table</span>(<span class="kw">cut</span>(res<span class="op">$</span>p, <span class="dt">breaks=</span><span class="kw">seq</span>(<span class="dv">0</span>, p.crit, <span class="dt">by=</span>.<span class="dv">01</span>)))</span>
-<span id="cb103-90"><a href="bias.html#cb103-90"></a>perc &lt;-<span class="st"> </span>(bins<span class="op">/</span><span class="kw">sum</span>(bins))<span class="op">*</span><span class="dv">100</span></span>
-<span id="cb103-91"><a href="bias.html#cb103-91"></a></span>
-<span id="cb103-92"><a href="bias.html#cb103-92"></a><span class="co"># empirical p-curve</span></span>
-<span id="cb103-93"><a href="bias.html#cb103-93"></a><span class="kw">lines</span>(<span class="dt">x=</span><span class="kw">seq</span>(<span class="dv">0</span>, p.crit<span class="fl">-.01</span>, <span class="dt">by=</span>.<span class="dv">01</span>)<span class="op">+</span>.<span class="dv">005</span>, <span class="dt">y=</span>perc, <span class="dt">col=</span><span class="st">"dodgerblue"</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb103-94"><a href="bias.html#cb103-94"></a>		</span>
-<span id="cb103-95"><a href="bias.html#cb103-95"></a><span class="co"># 33% (or any other) power curve</span></span>
-<span id="cb103-96"><a href="bias.html#cb103-96"></a><span class="kw">lines</span>(<span class="dt">x=</span><span class="kw">seq</span>(<span class="dv">0</span>, p.crit<span class="fl">-.01</span>, <span class="dt">by=</span>.<span class="dv">01</span>)<span class="op">+</span>.<span class="dv">005</span>, <span class="dt">y=</span><span class="kw">theoretical_power_curve</span>(power, <span class="dt">p.max=</span>p.crit)<span class="op">*</span><span class="dv">100</span>, <span class="dt">col=</span><span class="st">"darkgreen"</span>, <span class="dt">lty=</span><span class="st">"dashed"</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb103-97"><a href="bias.html#cb103-97"></a></span>
-<span id="cb103-98"><a href="bias.html#cb103-98"></a><span class="kw">text</span>(<span class="dt">x=</span><span class="kw">seq</span>(<span class="dv">0</span>, p.crit<span class="fl">-.01</span>, <span class="dt">by=</span>.<span class="dv">01</span>)<span class="op">+</span>.<span class="dv">006</span>, <span class="dt">y=</span>perc <span class="op">+</span><span class="st"> </span><span class="dv">8</span>, <span class="dt">col=</span><span class="st">"black"</span>, <span class="dt">label=</span><span class="kw">paste0</span>(<span class="kw">round</span>(perc), <span class="st">"%"</span>), <span class="dt">cex=</span>)</span>
-<span id="cb103-99"><a href="bias.html#cb103-99"></a></span>
-<span id="cb103-100"><a href="bias.html#cb103-100"></a><span class="kw">legend</span>(<span class="st">"topleft"</span>, <span class="dt">legend=</span><span class="kw">c</span>(<span class="kw">paste0</span>(<span class="st">"Test for right skewness: p = "</span>, <span class="kw">round</span>(<span class="kw">p_curve_3</span>(<span class="dt">pps =</span> res)<span class="op">$</span>p_evidence,<span class="dv">2</span>)), <span class="kw">paste0</span>(<span class="st">"Test for flatness: p = "</span>, <span class="kw">round</span>(<span class="kw">p_curve_3</span>(<span class="dt">pps =</span> res)<span class="op">$</span>p_lack,<span class="dv">2</span>))), <span class="dt">bty=</span><span class="st">"n"</span>)</span></code></pre></div>
-<p><img src="Statistical_Inferences_files/figure-html/unnamed-chunk-42-1.png" width="672"></p>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="bias.html#cb108-1"></a><span class="co"># Adapted from https://github.com/nicebread/p-checker/blob/master/p-curve.R</span></span>
+<span id="cb108-2"><a href="bias.html#cb108-2"></a></span>
+<span id="cb108-3"><a href="bias.html#cb108-3"></a>ncp33z &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">power=</span><span class="dv">1</span><span class="op">/</span><span class="dv">3</span>, <span class="dt">p.crit=</span>.<span class="dv">05</span>) {      </span>
+<span id="cb108-4"><a href="bias.html#cb108-4"></a>      xc =<span class="st"> </span><span class="kw">qnorm</span>(<span class="dt">p=</span><span class="dv">1</span><span class="op">-</span>p.crit<span class="op">/</span><span class="dv">2</span>)</span>
+<span id="cb108-5"><a href="bias.html#cb108-5"></a>      <span class="co">#Find noncentrality parameter (ncp) that leads 33% power to obtain xc</span></span>
+<span id="cb108-6"><a href="bias.html#cb108-6"></a>	  f =<span class="st"> </span><span class="cf">function</span>(delta, pr, x) <span class="kw">pnorm</span>(x, <span class="dt">mean =</span> delta) <span class="op">-</span><span class="st"> </span>(<span class="dv">1</span><span class="op">-</span>power)</span>
+<span id="cb108-7"><a href="bias.html#cb108-7"></a>	  out =<span class="st"> </span><span class="kw">uniroot</span>(f, <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">37.62</span>), <span class="dt">x =</span> xc)</span>
+<span id="cb108-8"><a href="bias.html#cb108-8"></a>	  <span class="kw">return</span>(out<span class="op">$</span>root) </span>
+<span id="cb108-9"><a href="bias.html#cb108-9"></a>}</span>
+<span id="cb108-10"><a href="bias.html#cb108-10"></a></span>
+<span id="cb108-11"><a href="bias.html#cb108-11"></a>theoretical_power_curve &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">power=</span><span class="dv">1</span><span class="op">/</span><span class="dv">3</span>, <span class="dt">p.max=</span>.<span class="dv">05</span>, <span class="dt">normalize=</span><span class="ot">TRUE</span>) {</span>
+<span id="cb108-12"><a href="bias.html#cb108-12"></a>	<span class="co"># compute arbitrary test statistics for requested power</span></span>
+<span id="cb108-13"><a href="bias.html#cb108-13"></a>	<span class="kw">library</span>(pwr)</span>
+<span id="cb108-14"><a href="bias.html#cb108-14"></a>	d &lt;-<span class="st"> </span><span class="fl">0.2</span></span>
+<span id="cb108-15"><a href="bias.html#cb108-15"></a>	n &lt;-<span class="st"> </span><span class="kw">pwr.t.test</span>(<span class="dt">d=</span><span class="fl">0.2</span>, <span class="dt">power=</span>power)<span class="op">$</span>n<span class="op">*</span><span class="dv">2</span></span>
+<span id="cb108-16"><a href="bias.html#cb108-16"></a>	</span>
+<span id="cb108-17"><a href="bias.html#cb108-17"></a>	crit &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="fl">0.01</span>, p.max, <span class="dt">by=</span>.<span class="dv">01</span>)</span>
+<span id="cb108-18"><a href="bias.html#cb108-18"></a>	pdens &lt;-<span class="st"> </span><span class="kw">c</span>()</span>
+<span id="cb108-19"><a href="bias.html#cb108-19"></a>	<span class="cf">for</span> (cr <span class="cf">in</span> crit) {</span>
+<span id="cb108-20"><a href="bias.html#cb108-20"></a>		pdens &lt;-<span class="st"> </span><span class="kw">c</span>(pdens, <span class="kw">pwr.t.test</span>(<span class="dt">d=</span><span class="fl">0.2</span>, <span class="dt">power=</span><span class="ot">NULL</span>, <span class="dt">n=</span>n<span class="op">/</span><span class="dv">2</span>, <span class="dt">sig.level=</span>cr)<span class="op">$</span>power)</span>
+<span id="cb108-21"><a href="bias.html#cb108-21"></a>	}</span>
+<span id="cb108-22"><a href="bias.html#cb108-22"></a>	p.dens &lt;-<span class="st"> </span><span class="kw">diff</span>(<span class="kw">c</span>(<span class="dv">0</span>, pdens))</span>
+<span id="cb108-23"><a href="bias.html#cb108-23"></a>	<span class="cf">if</span> (normalize <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>) p.dens &lt;-<span class="st"> </span>p.dens<span class="op">/</span><span class="kw">sum</span>(p.dens)</span>
+<span id="cb108-24"><a href="bias.html#cb108-24"></a>		</span>
+<span id="cb108-25"><a href="bias.html#cb108-25"></a>	<span class="kw">names</span>(p.dens) &lt;-<span class="st"> </span><span class="kw">as.character</span>(crit)</span>
+<span id="cb108-26"><a href="bias.html#cb108-26"></a>	<span class="kw">return</span>(p.dens)</span>
+<span id="cb108-27"><a href="bias.html#cb108-27"></a>}</span>
+<span id="cb108-28"><a href="bias.html#cb108-28"></a></span>
+<span id="cb108-29"><a href="bias.html#cb108-29"></a>p.crit=.<span class="dv">05</span></span>
+<span id="cb108-30"><a href="bias.html#cb108-30"></a>power=<span class="dv">1</span><span class="op">/</span><span class="dv">3</span></span>
+<span id="cb108-31"><a href="bias.html#cb108-31"></a></span>
+<span id="cb108-32"><a href="bias.html#cb108-32"></a><span class="co">#get p-values from metadata</span></span>
+<span id="cb108-33"><a href="bias.html#cb108-33"></a>p_vals &lt;-<span class="st"> </span>metadata<span class="op">$</span>pvalues</span>
+<span id="cb108-34"><a href="bias.html#cb108-34"></a>res &lt;-<span class="st"> </span><span class="kw">data.frame</span>()</span>
+<span id="cb108-35"><a href="bias.html#cb108-35"></a></span>
+<span id="cb108-36"><a href="bias.html#cb108-36"></a>z &lt;-<span class="st"> </span><span class="kw">qnorm</span>(p_vals<span class="op">/</span><span class="dv">2</span>, <span class="dt">lower.tail=</span><span class="ot">FALSE</span>)</span>
+<span id="cb108-37"><a href="bias.html#cb108-37"></a>ppr &lt;-<span class="st"> </span>p_vals<span class="op">*</span>(<span class="dv">1</span><span class="op">/</span>p.crit)	<span class="co"># pp-value for right-skew </span></span>
+<span id="cb108-38"><a href="bias.html#cb108-38"></a>ppl &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">-</span>ppr		<span class="co"># pp-value for left-skew</span></span>
+<span id="cb108-39"><a href="bias.html#cb108-39"></a>ncp33 &lt;-<span class="st"> </span><span class="kw">ncp33z</span>(<span class="dt">power=</span>power, <span class="dt">p.crit=</span>p.crit)</span>
+<span id="cb108-40"><a href="bias.html#cb108-40"></a>pp33 &lt;-<span class="st"> </span>(<span class="kw">pnorm</span>(z, <span class="dt">mean=</span>ncp33, <span class="dt">sd=</span><span class="dv">1</span>)<span class="op">-</span>(<span class="dv">1</span><span class="op">-</span>power))<span class="op">*</span>(<span class="dv">1</span><span class="op">/</span>power)</span>
+<span id="cb108-41"><a href="bias.html#cb108-41"></a></span>
+<span id="cb108-42"><a href="bias.html#cb108-42"></a>res &lt;-<span class="st"> </span><span class="kw">rbind</span>(res, <span class="kw">data.frame</span>(<span class="dt">p=</span>p_vals, <span class="dt">ppr=</span>ppr, <span class="dt">ppl=</span>ppl, <span class="dt">pp33=</span>pp33))</span>
+<span id="cb108-43"><a href="bias.html#cb108-43"></a></span>
+<span id="cb108-44"><a href="bias.html#cb108-44"></a><span class="co"># recode extreme values	</span></span>
+<span id="cb108-45"><a href="bias.html#cb108-45"></a></span>
+<span id="cb108-46"><a href="bias.html#cb108-46"></a>res<span class="op">$</span>ppr[res<span class="op">$</span>ppr <span class="op">&lt;</span><span class="st"> </span><span class="fl">.00001</span>] &lt;-<span class="st"> </span><span class="fl">.00001</span></span>
+<span id="cb108-47"><a href="bias.html#cb108-47"></a>res<span class="op">$</span>ppl[res<span class="op">$</span>ppl <span class="op">&lt;</span><span class="st"> </span><span class="fl">.00001</span>] &lt;-<span class="st"> </span><span class="fl">.00001</span></span>
+<span id="cb108-48"><a href="bias.html#cb108-48"></a>res<span class="op">$</span>pp33[res<span class="op">$</span>pp33 <span class="op">&lt;</span><span class="st"> </span><span class="fl">.00001</span>] &lt;-<span class="st"> </span><span class="fl">.00001</span></span>
+<span id="cb108-49"><a href="bias.html#cb108-49"></a>res<span class="op">$</span>ppr[res<span class="op">$</span>ppr <span class="op">&gt;</span><span class="st"> </span><span class="fl">.99999</span>] &lt;-<span class="st"> </span><span class="fl">.99999</span></span>
+<span id="cb108-50"><a href="bias.html#cb108-50"></a>res<span class="op">$</span>ppl[res<span class="op">$</span>ppl <span class="op">&gt;</span><span class="st"> </span><span class="fl">.99999</span>] &lt;-<span class="st"> </span><span class="fl">.99999</span></span>
+<span id="cb108-51"><a href="bias.html#cb108-51"></a>res<span class="op">$</span>pp33[res<span class="op">$</span>pp33 <span class="op">&gt;</span><span class="st"> </span><span class="fl">.99999</span>] &lt;-<span class="st"> </span><span class="fl">.99999</span></span>
+<span id="cb108-52"><a href="bias.html#cb108-52"></a></span>
+<span id="cb108-53"><a href="bias.html#cb108-53"></a><span class="co"># remove non-significant values</span></span>
+<span id="cb108-54"><a href="bias.html#cb108-54"></a>res[res<span class="op">$</span>p <span class="op">&gt;</span><span class="st"> </span>p.crit, ] &lt;-<span class="st"> </span><span class="ot">NA</span></span>
+<span id="cb108-55"><a href="bias.html#cb108-55"></a></span>
+<span id="cb108-56"><a href="bias.html#cb108-56"></a><span class="co"># New p-curve computation (p-curve app 3.0, http://www.p-curve.com/app3/)</span></span>
+<span id="cb108-57"><a href="bias.html#cb108-57"></a>p_curve_<span class="dv">3</span> &lt;-<span class="st"> </span><span class="cf">function</span>(pps) {</span>
+<span id="cb108-58"><a href="bias.html#cb108-58"></a></span>
+<span id="cb108-59"><a href="bias.html#cb108-59"></a>	pps &lt;-<span class="st"> </span><span class="kw">na.omit</span>(pps)</span>
+<span id="cb108-60"><a href="bias.html#cb108-60"></a></span>
+<span id="cb108-61"><a href="bias.html#cb108-61"></a>	<span class="co"># STOUFFER: Overall tests aggregating pp-values</span></span>
+<span id="cb108-62"><a href="bias.html#cb108-62"></a>	ktot &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="op">!</span><span class="kw">is.na</span>(pps<span class="op">$</span>ppr))</span>
+<span id="cb108-63"><a href="bias.html#cb108-63"></a>	Z_ppr &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">qnorm</span>(pps<span class="op">$</span>ppr))<span class="op">/</span><span class="kw">sqrt</span>(ktot)          <span class="co"># right skew</span></span>
+<span id="cb108-64"><a href="bias.html#cb108-64"></a>	Z_ppl &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">qnorm</span>(pps<span class="op">$</span>ppl))<span class="op">/</span><span class="kw">sqrt</span>(ktot)          <span class="co"># left skew</span></span>
+<span id="cb108-65"><a href="bias.html#cb108-65"></a>	Z_pp33&lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">qnorm</span>(pps<span class="op">$</span>pp33))<span class="op">/</span><span class="kw">sqrt</span>(ktot)         <span class="co"># 33%</span></span>
+<span id="cb108-66"><a href="bias.html#cb108-66"></a>	</span>
+<span id="cb108-67"><a href="bias.html#cb108-67"></a>	p_ppr &lt;-<span class="st"> </span><span class="kw">pnorm</span>(Z_ppr)</span>
+<span id="cb108-68"><a href="bias.html#cb108-68"></a>	p_ppl &lt;-<span class="st"> </span><span class="kw">pnorm</span>(Z_ppl)</span>
+<span id="cb108-69"><a href="bias.html#cb108-69"></a>	p_pp33&lt;-<span class="st"> </span><span class="kw">pnorm</span>(Z_pp33)</span>
+<span id="cb108-70"><a href="bias.html#cb108-70"></a></span>
+<span id="cb108-71"><a href="bias.html#cb108-71"></a>	<span class="kw">return</span>(<span class="kw">list</span>(</span>
+<span id="cb108-72"><a href="bias.html#cb108-72"></a>		<span class="dt">Z_evidence =</span> Z_ppr, </span>
+<span id="cb108-73"><a href="bias.html#cb108-73"></a>		<span class="dt">p_evidence =</span> p_ppr, </span>
+<span id="cb108-74"><a href="bias.html#cb108-74"></a>		<span class="dt">Z_hack =</span> Z_ppl, </span>
+<span id="cb108-75"><a href="bias.html#cb108-75"></a>		<span class="dt">p_hack =</span> p_ppl, </span>
+<span id="cb108-76"><a href="bias.html#cb108-76"></a>		<span class="dt">Z_lack =</span> Z_pp33, </span>
+<span id="cb108-77"><a href="bias.html#cb108-77"></a>		<span class="dt">p_lack =</span> p_pp33,</span>
+<span id="cb108-78"><a href="bias.html#cb108-78"></a>		<span class="dt">inconclusive =</span> <span class="kw">ifelse</span>(p_ppr<span class="op">&gt;</span>.<span class="dv">05</span> <span class="op">&amp;</span><span class="st"> </span>p_ppl<span class="op">&gt;</span>.<span class="dv">05</span> <span class="op">&amp;</span><span class="st"> </span>p_pp33<span class="op">&gt;</span>.<span class="dv">05</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>)))</span>
+<span id="cb108-79"><a href="bias.html#cb108-79"></a>}</span>
+<span id="cb108-80"><a href="bias.html#cb108-80"></a></span>
+<span id="cb108-81"><a href="bias.html#cb108-81"></a><span class="co">#p_curve_3(pps = res)</span></span>
+<span id="cb108-82"><a href="bias.html#cb108-82"></a></span>
+<span id="cb108-83"><a href="bias.html#cb108-83"></a><span class="co"># Create p-curve plot</span></span>
+<span id="cb108-84"><a href="bias.html#cb108-84"></a></span>
+<span id="cb108-85"><a href="bias.html#cb108-85"></a><span class="kw">plot</span>(<span class="ot">NA</span>, <span class="dt">xlim=</span><span class="kw">c</span>(<span class="dv">0</span>, p.crit), <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">100</span>), <span class="dt">xlab=</span><span class="st">"p-value"</span>, <span class="dt">ylab=</span><span class="st">"Percentage of p values"</span>)</span>
+<span id="cb108-86"><a href="bias.html#cb108-86"></a><span class="kw">abline</span>(<span class="dt">h=</span><span class="dv">1</span><span class="op">/</span>p.crit, <span class="dt">col=</span><span class="st">"red"</span>, <span class="dt">lty=</span><span class="st">"dashed"</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb108-87"><a href="bias.html#cb108-87"></a><span class="kw">legend</span>(<span class="st">"topright"</span>, <span class="dt">lty=</span><span class="kw">c</span>(<span class="st">"solid"</span>, <span class="st">"dotted"</span>, <span class="st">"dashed"</span>), <span class="dt">col=</span><span class="kw">c</span>(<span class="st">"dodgerblue"</span>, <span class="st">"darkgreen"</span>, <span class="st">"red"</span>), <span class="dt">legend=</span><span class="kw">c</span>(<span class="st">"Observed p-curve"</span>, <span class="kw">paste0</span>(<span class="kw">round</span>(power,<span class="dv">2</span>), <span class="st">"% power curve"</span>), <span class="st">"Nil effect"</span>), <span class="dt">bty=</span><span class="st">"n"</span>)</span>
+<span id="cb108-88"><a href="bias.html#cb108-88"></a></span>
+<span id="cb108-89"><a href="bias.html#cb108-89"></a>bins &lt;-<span class="st"> </span><span class="kw">table</span>(<span class="kw">cut</span>(res<span class="op">$</span>p, <span class="dt">breaks=</span><span class="kw">seq</span>(<span class="dv">0</span>, p.crit, <span class="dt">by=</span>.<span class="dv">01</span>)))</span>
+<span id="cb108-90"><a href="bias.html#cb108-90"></a>perc &lt;-<span class="st"> </span>(bins<span class="op">/</span><span class="kw">sum</span>(bins))<span class="op">*</span><span class="dv">100</span></span>
+<span id="cb108-91"><a href="bias.html#cb108-91"></a></span>
+<span id="cb108-92"><a href="bias.html#cb108-92"></a><span class="co"># empirical p-curve</span></span>
+<span id="cb108-93"><a href="bias.html#cb108-93"></a><span class="kw">lines</span>(<span class="dt">x=</span><span class="kw">seq</span>(<span class="dv">0</span>, p.crit<span class="fl">-.01</span>, <span class="dt">by=</span>.<span class="dv">01</span>)<span class="op">+</span>.<span class="dv">005</span>, <span class="dt">y=</span>perc, <span class="dt">col=</span><span class="st">"dodgerblue"</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb108-94"><a href="bias.html#cb108-94"></a>		</span>
+<span id="cb108-95"><a href="bias.html#cb108-95"></a><span class="co"># 33% (or any other) power curve</span></span>
+<span id="cb108-96"><a href="bias.html#cb108-96"></a><span class="kw">lines</span>(<span class="dt">x=</span><span class="kw">seq</span>(<span class="dv">0</span>, p.crit<span class="fl">-.01</span>, <span class="dt">by=</span>.<span class="dv">01</span>)<span class="op">+</span>.<span class="dv">005</span>, <span class="dt">y=</span><span class="kw">theoretical_power_curve</span>(power, <span class="dt">p.max=</span>p.crit)<span class="op">*</span><span class="dv">100</span>, <span class="dt">col=</span><span class="st">"darkgreen"</span>, <span class="dt">lty=</span><span class="st">"dashed"</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb108-97"><a href="bias.html#cb108-97"></a></span>
+<span id="cb108-98"><a href="bias.html#cb108-98"></a><span class="kw">text</span>(<span class="dt">x=</span><span class="kw">seq</span>(<span class="dv">0</span>, p.crit<span class="fl">-.01</span>, <span class="dt">by=</span>.<span class="dv">01</span>)<span class="op">+</span>.<span class="dv">006</span>, <span class="dt">y=</span>perc <span class="op">+</span><span class="st"> </span><span class="dv">8</span>, <span class="dt">col=</span><span class="st">"black"</span>, <span class="dt">label=</span><span class="kw">paste0</span>(<span class="kw">round</span>(perc), <span class="st">"%"</span>), <span class="dt">cex=</span>)</span>
+<span id="cb108-99"><a href="bias.html#cb108-99"></a></span>
+<span id="cb108-100"><a href="bias.html#cb108-100"></a><span class="kw">legend</span>(<span class="st">"topleft"</span>, <span class="dt">legend=</span><span class="kw">c</span>(<span class="kw">paste0</span>(<span class="st">"Test for right skewness: p = "</span>, <span class="kw">round</span>(<span class="kw">p_curve_3</span>(<span class="dt">pps =</span> res)<span class="op">$</span>p_evidence,<span class="dv">2</span>)), <span class="kw">paste0</span>(<span class="st">"Test for flatness: p = "</span>, <span class="kw">round</span>(<span class="kw">p_curve_3</span>(<span class="dt">pps =</span> res)<span class="op">$</span>p_lack,<span class="dv">2</span>))), <span class="dt">bty=</span><span class="st">"n"</span>)</span></code></pre></div>
+<p><img src="Statistical_Inferences_files/figure-html/unnamed-chunk-45-1.png" width="672"></p>
 <p>The output will in the p-curve app will look similar to the figure above The <em>p</em>-curve analysis shows that there is no evidential value in the set of studies (the curve is not right-skewed, as we would expect if there is a true effect and decent power to detect such an effect), and the <em>p</em>-value distribution is flatter than we would expect if we have 33% power, so the curve lacks evidential value.</p>
 <p>Based on the continuous Stouffer’s test for the full <em>p</em>-curve, we can conclude the observed <em>p</em>-value distribution is not skewed enough to be interpreted as the presence of a true effect size, and it is flatter than we would expect if the studies had 33% power. <strong>Therefore, we can conclude these studies do not provide support for the theory that generated these studies</strong>. The theory might still be true - but the set of studies we have analyzed here do not provide support for the theory.</p>
 </div>
@@ -565,24 +565,24 @@ Figure 10.9: Funnel plot with PET_PEESE regression lines.
 <p>Like a traditional meta-analysis, <em>z</em>-curve transforms observed test results (<em>p</em>-values) into <em>z</em>-scores. Using mixtures of normal distributions centered at means 0 to 6, <em>z</em>-curve aims to estimate the average power of the studies. The newest version of <em>z</em>-curve then calculates the <em>observed discovery rate</em> (the percentage of significant results, or the observed power), the <em>expected discovery rate</em> (EDR: the proportion of the area under the curve on the right side of the significance criterion) and the expected replication rate (ERR: the proportion of successfully replicated significant studies from all significant studies). <em>Z</em>-curve is able to correct for selection bias for positive results (under specific assumptions), and can estimate the EDR and ERR using only the significant <em>p</em>-values.</p>
 <p>To examine the presence of bias, it is preferable to submit non-significant and significant <em>p</em>-values to a <em>z</em>-curve analysis, even if only the significant <em>p</em>-values are used to produce estimates. Publication bias can then be examined by comparing the ODR to the EDR. If the results of studies are shared in a well-structured meta-study file, all the <em>p</em>-values needed to perform a <em>z</em>-curve analysis are directly available, and it is clear which statistical test is related to a hypothesis is researchers are interested in including only specific analyses in the <em>z</em>-curve.</p>
 <p>Since our simulated studies have bias, the <em>z</em>-curve analysis should be able to indicate this.</p>
-<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="bias.html#cb104-1"></a><span class="co"># devtools::install_github("FBartos/zcurve")</span></span>
-<span id="cb104-2"><a href="bias.html#cb104-2"></a><span class="kw">library</span>(zcurve)</span>
-<span id="cb104-3"><a href="bias.html#cb104-3"></a></span>
-<span id="cb104-4"><a href="bias.html#cb104-4"></a><span class="co"># Get the p-value for each analysis</span></span>
-<span id="cb104-5"><a href="bias.html#cb104-5"></a>p_vals &lt;-<span class="st"> </span>metadata<span class="op">$</span>pvalues</span>
-<span id="cb104-6"><a href="bias.html#cb104-6"></a>z &lt;-<span class="st"> </span><span class="kw">qnorm</span>(<span class="dv">1</span><span class="op">-</span>p_vals<span class="op">/</span><span class="dv">2</span>)</span>
-<span id="cb104-7"><a href="bias.html#cb104-7"></a><span class="co"># Perform the z-curve analysis using the z-curve package</span></span>
-<span id="cb104-8"><a href="bias.html#cb104-8"></a>z_res &lt;-<span class="st"> </span>zcurve<span class="op">::</span><span class="kw">zcurve</span>(z, <span class="dt">method =</span> <span class="st">"EM"</span>, <span class="dt">bootstrap =</span> <span class="dv">1000</span>)</span>
-<span id="cb104-9"><a href="bias.html#cb104-9"></a><span class="kw">plot</span>(z_res, <span class="dt">annotation =</span> <span class="ot">TRUE</span>, <span class="dt">CI =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
-<p><img src="Statistical_Inferences_files/figure-html/unnamed-chunk-43-1.png" width="672"></p>
-<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="bias.html#cb105-1"></a><span class="kw">print</span>(z_res)</span></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="bias.html#cb109-1"></a><span class="co"># devtools::install_github("FBartos/zcurve")</span></span>
+<span id="cb109-2"><a href="bias.html#cb109-2"></a><span class="kw">library</span>(zcurve)</span>
+<span id="cb109-3"><a href="bias.html#cb109-3"></a></span>
+<span id="cb109-4"><a href="bias.html#cb109-4"></a><span class="co"># Get the p-value for each analysis</span></span>
+<span id="cb109-5"><a href="bias.html#cb109-5"></a>p_vals &lt;-<span class="st"> </span>metadata<span class="op">$</span>pvalues</span>
+<span id="cb109-6"><a href="bias.html#cb109-6"></a>z &lt;-<span class="st"> </span><span class="kw">qnorm</span>(<span class="dv">1</span><span class="op">-</span>p_vals<span class="op">/</span><span class="dv">2</span>)</span>
+<span id="cb109-7"><a href="bias.html#cb109-7"></a><span class="co"># Perform the z-curve analysis using the z-curve package</span></span>
+<span id="cb109-8"><a href="bias.html#cb109-8"></a>z_res &lt;-<span class="st"> </span>zcurve<span class="op">::</span><span class="kw">zcurve</span>(z, <span class="dt">method =</span> <span class="st">"EM"</span>, <span class="dt">bootstrap =</span> <span class="dv">1000</span>)</span>
+<span id="cb109-9"><a href="bias.html#cb109-9"></a><span class="kw">plot</span>(z_res, <span class="dt">annotation =</span> <span class="ot">TRUE</span>, <span class="dt">CI =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<p><img src="Statistical_Inferences_files/figure-html/unnamed-chunk-46-1.png" width="672"></p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="bias.html#cb110-1"></a><span class="kw">print</span>(z_res)</span></code></pre></div>
 <pre><code>## Call:
 ## zcurve::zcurve(z = z, method = "EM", bootstrap = 1000)
 ## 
 ## Estimates:
 ##        ERR        EDR 
 ## 0.06461901 0.05470193</code></pre>
-<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="bias.html#cb107-1"></a><span class="kw">summary</span>(z_res, <span class="dt">all =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="bias.html#cb112-1"></a><span class="kw">summary</span>(z_res, <span class="dt">all =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <pre><code>## Call:
 ## zcurve::zcurve(z = z, method = "EM", bootstrap = 1000)
 ## 
@@ -616,7 +616,7 @@ Figure 10.9: Funnel plot with PET_PEESE regression lines.
 <a href="computationalreproducibility.html"><button class="btn btn-default">Next</button></a>
 </p>
 <p class="build-date">Page built: 
-2020-08-16
+2020-08-26
 </p>
 </div>
 </div>
@@ -627,7 +627,7 @@ Figure 10.9: Funnel plot with PET_PEESE regression lines.
 <span style="display: inline-block; margin-left: 2em; margin-top: 16px; font-size: small">
 <span style="font-weight: bold;">Daniel Lakens</span><br/>
 <a href="https://statistical-inferences.com">statisticalinferences.com</a><br/>
-page built  2020-08-16 22:01:01
+page built  2020-08-26 17:59:06
 </span>
 </p>
 </div>

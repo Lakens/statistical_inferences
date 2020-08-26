@@ -316,7 +316,7 @@ A-priori power calculations are performed under the assumption that there is an 
 knitr::include_graphics("images/2.1.1.png")
 ```
 
-The goal of an a-priori power analysis is to increase the sample size up to the level that the desired power, the probability of finding a significant result if there is a true effect, or 1-β, is at a desired level for an effect size one is interested in detecting, given a specific alpha level.
+The goal of an a-priori power analysis is to increase the sample size up to the level that the desired power, the probability of finding a significant result if there is a true effect, or 1-β, is at a desired level for an effect size one is interested in detecting, given a specific alpha level. If you plan to perform multiple hypothesis tests in a single study, you perform a power analysis for each test, and collect the largest sample size required for the tests.
 
 In Figure \@ref(fig:power-3) you see two distributions. The left (grey) distribution is centered at 0. This is our model for the null hypothesis. If the null hypothesis is true we can find statistically significant results if the effect size is extreme enough (in a two-sided test either in the positive or negative direction), but these would be Type 1 errors (the red areas under the curve). 
 
@@ -438,6 +438,12 @@ One challenge in power analysis is that you never know the true effect size. Thi
 #### Using a smallest effect size of interest
 
 Best practice is to justify an a-priori power analysis based on a smallest effect size of interest. Because the population effect size is always uncertain (indeed, estimating this is typically one of the goals of the study) this means there is considerable uncertainty about the achieved power in any study (see Figure \@ref(fig:power-1)). However, there the smallest effect size of interest is not uncertain. A smallest effect of interest may be subjective (one researcher might find effect sizes smaller than d = 0.3 meaningless, while another researcher might still be interested in effects up to d = 0.1), but it does not have uncertainty. This means that if you enter it in an a-priori power analyses, you will be guaranteed to have the desired power (or higher power) for the smallest effect size you care about. The topic of how to justify a smallest effect size of interest is discussed in a [dedicated chapter](#sesoi).
+
+```{marginfigure}
+<iframe width="300" height="169" src="https://www.youtube.com/embed/pj3zTdpj5VE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> Training material for applied statisticians to guide researchers through a choice for a smallest effect size of interest. [https://youtu.be/pj3zTdpj5VE](https://youtu.be/pj3zTdpj5VE)
+```
+
+Researchers often find it difficult to justify an effect size of interest. It's ok to ask for help, for example from an applied statistician. Applied statisticians are explicitly trained to help researchers to think through this question (check out the YouTube video in the margin!). 
 
 #### Using an estimate of a meta-analysis
 
@@ -591,7 +597,24 @@ knitr::include_graphics("images/gpowwithin2.png")
 
 ### A-priori power analysis for the absence of an effect {#powerforabsence}
 
-It is 
+When designing an informative study, it is important to plan for the both the presence, as the absence, of an effect. One important aspect of performing a power analysis is that it requires you to specify the alternative hypothesis. After you have a clear idea about the effect size you want to have sufficient power to detect, if it is present, it is also useful to think about the smallest effect size you want to reject, if it is absent. 
+
+Power analysis works exactly the same for null-hypothesis tests, as it works for range predictions such as equivalence tests. It is possible to perform an a-priori, observed, and sensitivity power analysis for an equivalence test. There is a small increase in the number of observations required to reject the null hypothesis with 80% power assuming the true effect size is d = 0.4, than you need to reject effects more extreme than -0.4 or 0.4 with 80% power, for an independent *t*-test. In general, when interested in performing multiple tests, each power analysis will suggest a required sample size, and you choose the largest sample size to make sure the desired power is achieved for each test. If the goal is to be able to detect and reject an effect size of d = 0.4 with 90% power, we need 132 participants in each group for the NHST, and 136 participants in each group for the equivalence test, and would design a study with 272 participants for an informative result.
+
+```{r}
+power.t.test(
+   sig.level = 0.05,
+   power = .9, 
+   delta = 0.4)
+```
+
+```{r}
+TOSTER::powerTOSTtwo(
+  alpha = 0.05, 
+  statistical_power = 0.9, 
+  low_eqbound_d = -0.4, 
+  high_eqbound_d = 0.4)
+```
 
 ### Reporting an a-priori power analysis.
 
@@ -768,10 +791,30 @@ Editors sometimes ask researchers to report post-hoc power analyses when authors
 
 What you should do instead is report a [sensitivity power analysis](#sensitivitypower), preferably by plotting power across a wide range of possible true effect sizes. Many of the recommendations in Table \@ref(tab:table-pow-rec) apply if one wants to evaluate power after the data has been collected. The best solution is, not surprisingly, to design a study that will yield informative results regardless of whether the alternative hypothesis is true or the null hypothesis is true, by performing an a-priori power analysis both for the NHST and for an equivalence test. 
 
+## Planning for precision
+
+Some researchers have suggested to justify sample sizes based on a desired level of precision of the estimate [@cumming_introduction_2016; @maxwell_sample_2008]. Instead of designing a study so that a certain desired power to reject a hypothesis is achieved, the goal is to collect sufficient data that leads to a desired with of the confidence interval around the parameter estimate. The width of the confidence around the parameter estimate depends on the standard deviation (SD) and the number of observation (N). The only aspect you need to justify for a sample size justification based on accuracy is the desired width of the confidence interval, and your assumption about the population standard deviation of the measure.
+
+If you have determined the desired accuracy, and have a good estimate of the true standard deviation of your measure, it is easy to calculate the sample size you need for a given level of accuracy. Let’s assume you are measuring the IQ of a group of individuals, and you want 95% of the results to estimate the mean IQ within an error range of 2 IQ points. Let's assumedata is normally distributed. You first convert the 95% confidence interval to a Z-score (for a 95% CI, Z = 1.96), and use the formula:
+
+$$N = (Z × SD/error)^2$$
+where N is the number of observations you need, SD is you assumption of the standard deviation in the population, and the error is the width of the confidence interval you are willing to accept. In this example, (1.96 × 15 / 2)^2 = 216 people (rounded down). This means that is we collect 216 observations, and the population standard deviation is indeed 15, in the long run, when we add or subtract 2 from our observed sample estimate, this range of value (our confidence interval around the sample mean) will include the true population value 95% of the time. If we are happy with this level of accuracy, we would collect 216 observations. A benefit of this approach is that we do not need to specify the true population parameter, or the true effect size. We will end up with an accurate estimate, regardless of whether the true mean is 50 or 100, or when we compute a confidence interval around mean differences, we are accurate regardless of whether the true effect size is 0 or 0.5. This makes it relatively straightforward to plan for accuracy when faced with uncertainty about the true effect. If sample size calculations are based on non-central *t*-distributions, the effect size estimate needs to be provided, but has relatively little influence on the required sample size. It is possible to also incorporate uncertainty about the observed effect size in the sample due to random variation in the sample size calculation, known as *assurance* [@kelley_sample_2006].
+
+What is less straightforward is to justify the desired level of accuracy. There is no literature that helps applied researchers to choose a desired width of the confidence interval. Richard Morey -@morey_power_2020 convincingly argues that most practical use-cases of planning for precision involve wanting to distinguish an observed effect from other effect sizes. That is, we want an estimate that is precise enough so that we are unlikely to mistakenly observe a range of effect sizes that we would not like erroneously assume is true. However, this is actually a hypothesis test in disguise. To make sure we are unlikely to confuse our estimate with some alternative range of possible parameter values, we need to design a study such that we have sufficient power to reject effects in that range, with a certain error rate.
+
+It is possible to decide upon a confidence interval width that is generally accepted by peers in a specific research field, in a similar way as the 5% alpha level is a norm in certain fields. The question how a confidence interval width should be justified in situations where the research questions does not reduce to a hypothesis test requires further research. The MBESS package in R provides functions to compute sample sizes for a wide range of tests [@kelley_confidence_2007].
+
+## Sample size justifcation in qualitative research
+
+In qualitative research the dominant reason to decide upon a sample size is because collecting data from additional participants yields no new information. This is known as *saturation*, and is indicated by the observation that new data replicates earlier observations, without adding new information. For example, let's imagine we ask people why they have a pet. Interviews might reveal reasons that are grouped into categories, but after interviewing 20 people, no new categories emerge, at which point saturation has been reached. Alternative philosophies to qualitative research exist, and not all value planning for saturation. Regrettably, principled approaches to justify sample sizes have not been developed for these alternative philosophies.
+
+When sampling, the goal is often not to pick a representative sample, but an appropriate sample, that contains a sufficiently diverse number of subjects such that saturation is reached efficiently. Although it is important to justify the sample size in qualitative research, good guidelines are scarce. This is problematic, because might lead researchers to use inappropriate heuristics that leads to either too few observations (which means the researcher misses important insights) or too many observations (which leads to a lot of unnecessary work). Fugard and Potts -@fugard_supporting_2015 show how to move towards a more informed justification for the sample size in qualitative research based on 1) the number of codes that exist in the population (e.g., the number of reasons people have pets), 2) the probability a code can be observed in a single information source (e.g., the probability that someone you interview will mention each possible reason for having a pet), and 3)  the number of times you want to observe each code. They provide an R formula based on binomial probabilities to compute a required sample size to reach a desired probability of observing codes.
+
+A more advanced approach is used in Rijnsoever -@rijnsoever_i_2017, which also explores the importance of different sampling strategies. In general, purposefully sampling information from sources you expect will yield novel information is much more efficient than random sampling, but this also requires a good overview of the expected codes, and the sub-populations in which each code can be observed. Sometimes, it is possible to identify information sources that, when interviewed, would at least yield one new code (e.g., based on informal communication before an interview). A good sample size justification in qualitative research is based on 1) an identification of the populations, including any sub-populations, 2) an estimate of the number of codes in the (sub-)population, 3) the probability a code is encountered in an information source, and 4) the sampling strategy that is used.
 
 ## Designing efficient studies
 
-So far, we have focused on how to perform a power analysis based on assumptions about what the true effect size is. Although the true effect size is unknown, there is a true effect size in the population, and it has an impact on our statistical power. It is therefore useful to consider how we can design studies that will be optimally efficient to answer our research question. There are some ways in which we can increase the power of our test that are worth exploring. 
+So far, we have mainly focused on how to perform a power analysis based on assumptions about what the true effect size is. Although the true effect size is unknown, there is a true effect size in the population, and it has an impact on our statistical power. It is therefore useful to consider how we can design studies that will be optimally efficient to answer our research question. There are some ways in which we can increase the power of our test that are worth exploring. 
 
 ### Use directional tests where relevant. 
 
@@ -789,9 +832,9 @@ As explained in the section on [compromise power analysis](#compromisepower) bal
 
 One widely recommended approach to increase power is using a within subject design. Indeed, you need fewer observations to detect a mean difference between two conditions in a within-subjects design (in a dependent *t*-test) than in a between-subjects design (in an independent t-test). The reason is straightforward, but not always explained, and even less often expressed in the easy equation below. The sample size needed in within-designs (NW) relative to the sample needed in between-designs (NB), assuming normal distributions, is (from Maxwell & Delaney, 2004, p. 561, formula 45): 
 
-NW = NB (1-ρ)/2
+$$NW = \frac{NB (1-ρ)}{2}$$
 
-The “/2” part of the equation is due to the fact that in a two-condition within design every participant provides two data-points. The extent to which this reduces the sample size compared to a between-subject design depends on the correlation between the two dependent variables, as indicated by the (1-ρ) part of the equation. If the correlation is 0, a within-subject design simply needs half as many observations as a between-subject design (e.g., 64 instead 128 observations). The higher the correlation, the larger the relative benefit of within designs, and whenever the correlation is negative (up to -1) the relative benefit disappears. Note than when the correlation is -1, you need 128 observations in a within-design and 128 observations in a between-design, but in a within-design you will need to collect two measurements from each participant, making a within design more work than a between-design. However, negative correlations between dependent variables in psychology are rare, and perfectly negative correlations will probably never occur.
+We divide by two due to the fact that in a two-condition within design every participant provides two data-points. The extent to which this reduces the sample size compared to a between-subject design depends on the correlation between the two dependent variables, as indicated by the (1-ρ) part of the equation. If the correlation is 0, a within-subject design simply needs half as many observations as a between-subject design (e.g., 64 instead 128 observations). The higher the correlation, the larger the relative benefit of within designs, and whenever the correlation is negative (up to -1) the relative benefit disappears. Note than when the correlation is -1, you need 128 observations in a within-design and 128 observations in a between-design, but in a within-design you will need to collect two measurements from each participant, making a within design more work than a between-design. However, negative correlations between dependent variables in psychology are rare, and perfectly negative correlations will probably never occur.
 
 So what does the correlation do so that it increases the power of within designs, or reduces the number of observations you need? Let’s see what effect the correlation has on power by simulating and plotting correlated data. In the R script below, I’m simulating two measurements of IQ scores with a specific sample size (i.e., 10000), mean (i.e., 100 vs 106), standard deviation (i.e., 15), and correlation between the two measurements. The script generates three plots.
 
@@ -999,10 +1042,3 @@ When I did my PhD, there was the assumption that you performed enough research i
 Our society has some serious issues that psychologists can help address. These questions are incredibly complex. I have long lost faith in the idea that a bottom-up organized scientific discipline that rewards individual scientists will manage to generate reliable and useful knowledge that can help to solve these societal issues. For some of these questions we need well-coordinated research lines where hundreds of scholars work together, pool their resources and skills, and collectively pursuit answers to these important questions. And if we are going to limit ourselves in our research to the questions we can answer in our own small labs, these big societal challenges are not going to be solved. Call me a pessimist. 
 
 There is a reason we resort to forming unions and organizations that have to goal to collectively coordinate what we do. If you greatly dislike team science, don’t worry – there will always be options to make scientific contributions by yourself. But now, there are almost no ways for scientists who want to pursue huge challenges in large well-organized collectives of hundreds or thousands of scholars (for a recent exception that proves my rule by remaining unfunded: see the [Psychological Science Accelerator](https://psysciacc.org/)). If you honestly believe your research question is important enough to be answered, then get together with everyone who also thinks so, and pursue answers collectively.
-
-## Planning for precision
-
-NOT COMPLETED YET.
-
-<!-- Imagine we want to learn about the average reading speed. This is important information when we present written information on dynamic displays (e.g., subtitles under movies, transit information in subways). We want to make sure that most people will be able to read the text we present before it is gone. The number of words we read isn't fixed, but depends on what we read, and individual differences [@brysbaert_how_2019].  -->
-
