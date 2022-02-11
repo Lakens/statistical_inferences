@@ -2,32 +2,29 @@
 title: "Improving Your Statistical Inferences"
 author: "Daniel Lakens"
 date: "`r Sys.Date()`"
-cover-image: "images/cover.jpg"
-knit: "bookdown::preview_chapter"
-site: "bookdown::bookdown_site"
-monofont: "Arial"
-monofontoptions: "Scale=0.7"
-bibliography: [mooc_book.bib]
-csl: apa.csl # I prefer APA style citations, downloaded from https://www.zotero.org/styles?q=id%3Aapa
+site: bookdown::bookdown_site
+documentclass: krantz
+bibliography: [book.bib]
+monofont: "Source Code Pro"
+# url: your book url like https://bookdown.org/yihui/bookdown
+# cover-image: path to the social sharing image like images/cover.jpg
+description: |
+  This is a minimal example of using the bookdown package to write a book.
+  The HTML output format for this example is bookdown::bs4_book,
+  set in the _output.yml file.
+biblio-style: apalike
+csl: apa.csl # Downloaded from https://www.zotero.org/styles?q=id%3Aapa
 link-citations: yes
-url: 'http\://statisticalinferences.com'
-description: "Online textbook to Improve Your Statistical Inferences"
 output:
-  msmbstyle::msmb_html_book:
-  # bookdown::tufte_html_book:
-    tufte_variant: "envisioned"
-    toc: TRUE
-    toc_depth: 1
-    split_by: chapter
-    split_bib: no
-    margin_references: TRUE
-    css: [style.css, center.css, custom-msmbstyle.css]
-    includes:
-      after_body: footer.html
+  bookdown::pdf_book:
+    pandoc_args: --top-level-division=chapter
 ---
 
 # Welcome {-}
 
+```{r, include = FALSE}
+knitr::opts_chunk$set(error = FALSE, warning = FALSE, message = FALSE, out.width  = '100%', fig.width  = 8, fig.height = 5, fig.align  = 'center')
+```
 ```{r setup, include=FALSE}
 
 # in style.css
@@ -59,6 +56,7 @@ library(gsDesign)
 library(rpact)
 library(BUCSS)
 library(flextable)
+library(zcurve)
 
 options(scipen = 999)
 
@@ -69,38 +67,26 @@ html_table_width <- function(kable_output, width){
   sub("<table>", paste0("<table>\n", width_html), kable_output)
 }
 
-source("footer.R")     # import write_custom_footer()
-write_custom_footer()  # overwrite footer.html with today's page built date
+# source("footer.R")     # import write_custom_footer()
+# ==write_custom_footer()  # overwrite footer.html with today's page built date
 ```
 
 This online book captures the information in my [blog](https://daniellakens.blogspot.com/), the educational information in my MOOCs [Improving Your Statistical Inferences](https://www.coursera.org/learn/statistical-inferences) and [Improving Your Statistical Questions](https://www.coursera.org/learn/improving-statistical-questions), and my [scientific work](https://scholar.google.nl/citations?user=ZbqYyrsAAAAJ&hl=en) in one place. The goal is to make the information easier to find, more accessible to users, and present the most up to date information based on progressive insights, recent scientific developments, and new statistical software.
 
-This work is shared under the [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](https://creativecommons.org/licenses/by-nc-nd/4.0/). Thanks to Peder Isager, Anne Scheel, and Leonid Thiokin for feedback and pushback, my collaborators Casper Albers, Aaron Caldwell, Harlan Cambell, Nicholar Coles, Lisa DeBruine, Marie Delacre, Zoltan Dienes, Noah van Dongen, Alexander Etz, Ellen Evers, Jaroslav Gottfriend, Seth Green, Christopher Harms, Arianne Herrera-Bennett, Joe Hilgard, Neil McLatchie, Brian Nosek, Pepijn Obels, Amy Orben, Janneke Staaks, and thanks to Eric Green for the template of his book [The Methods Section](https://read.themethodsection.com/).
+I have used my right to re-use and adapt my own open access articles, without adding quotation marks or citing myself. This work is shared under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](https://creativecommons.org/licenses/by-nc-nd/4.0/). Thanks to my collaborators Casper Albers, Farid Anvari, Aaron Caldwell, Harlan Cambell, Nicholas Coles, Lisa DeBruine, Marie Delacre, Zoltan Dienes, Noah van Dongen, Alexander Etz, Ellen Evers, Jaroslav Gottfriend, Seth Green, Christopher Harms, Arianne Herrera-Bennett, Joe Hilgard, Peder Isager, Maximilian Maier, Neil McLatchie, Brian Nosek, Pepijn Obels, Amy Orben, Anne Scheel, Janneke Staaks, Leo Tiokhin, Mehmet Tunç, Duygu Uygun Tunç, who have contributed to the work I have done in the past that has in part formed the basis of this book.
 
 If you find any mistakes, or have suggestions for improvement, let me know at D.Lakens\@tue.nl. I hope this material will be of use to you. 
 
 
 Dr. Daniël Lakens
 
-```{r me, echo=F, fig.width = 50}
+```{r me, echo=F, out.width  = '30%'}
 knitr::include_graphics("images/me.png")
 ```
 
-
-
-# Contents{-}
-
-- [Chapter 1: What is a p-value](#pvalue)
-- [Chapter 2: What is power](#power)
-- [Chapter 3: Asking statistical questions](#questions)
-- [Chapter 4: Error control](#errorcontrol)
-- [Chapter 5: Effect sizes and Confidence Intervals](#effectsizeCI)
-- [Chapter 6: Equivalence Testing](#equivalencetest)
-- [Chapter 7: Severe Tests and Risky Predictions](#severity)
-- [Chapter 8: Smallest Effect Size of Interest](#sesoi)
-- [Chapter 9: Meta-Analysis](#meta)
-- [Chapter 10: Bias Detection](#bias)
-- [Chapter 11: Computational Reproducibility](#computationalreproducibility)
-- [Chapter 12: Preregistration and Transparency](#prereg)
-- [Chapter 13: Bayesian Statistics](#bayes)
-- [Chapter 14: Sequential Analysis](#sequential)
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```
