@@ -3,13 +3,11 @@
 # Asking Statistical Questions {#questions}
 
 At the core of the design of a new study is the evaluation of its **information quality**: the potential of a particular dataset for achieving a given analysis goal by employing data analysis methods and considering a given utility 
-@kenett_information_2016. The goal of data collection is to gain information through **empirical research** where observations are collected and analyzed, often through statistical models. 
-
-Three approaches to statistical modelling can be distinguished @shmueli_explain_2010: Description, explanation, and prediction. Description aims to answer questions about features of the empirical manifestation of some phenomenon. 
+[@kenett_information_2016]. The goal of data collection is to gain information through **empirical research** where observations are collected and analyzed, often through statistical models. Three approaches to statistical modelling can be distinguished @shmueli_explain_2010: Description, explanation, and prediction, which are discussed below. The utility often depends on which effects are deemed interesting. A thorough evaluation of the informatin quality of a study therefore depends on clearly specifying the goal of data collection, the statistical modelling approach that is chosen, and the usefulness of the data to draw conclusions about effects of interest with the chosen analysis method. A study with low information quality might not be worth performing, as the data that will be collected has low potential to achieve the analysis goal. 
 
 ## Description
 
-Description can involve unique events (e.g., case studies of single patients), classes of events (e.g., patients with a certain disease). Examples of features of interest are duration (how long), quantity (how many), location (where), etc.
+Description aims to answer questions about features of the empirical manifestation of some phenomenon. Description can involve unique events (e.g., case studies of single patients), classes of events (e.g., patients with a certain disease). Examples of features of interest are duration (how long), quantity (how many), location (where), etc.
 
 An example of a descriptive question is research by [Kinsey](https://en.wikipedia.org/wiki/Kinsey_Reports), who studied the sexual behavior and experiences of Americans in a time that very little scientific research was available on this topic. He used interviews that provided the statistical basis to draw conclusions about sexuality in the United States, which, at the time, challenged conventional beliefs about sexuality.
 
@@ -85,3 +83,7 @@ First, the two competing models should both be good players. Just as in a dart g
 Second, for a hypothesis test to be interesting you need to have designed an informative study. When designing a study, you need to be able to make sure that the methodological rule provides a severe test, where you are likely to corroborate a prediction if it is correct, while at the same time fail to corroborate a prediction when it is wrong [@mayo_statistical_2018]. If the world champion in darts and I stand 20 inches away from a dart board and can just push the dart in the location where we want it to end up, it is not possible to show my lack of skill. If we are both are blindfolded and throwing the darts from 100 feet, it is not possible for the world champion to display their skill. In a hypothesis test, the statistical severity of a test is determined by the error rates. Therefore, a researcher needs to be able to adequately control error rates to perform a test of a hypothesis with high informational value. 
 
 By now it is hopefully clear that a hypothesis tests are a very specific tool, that answer a very specific question: After applying a methodological rule to observed data, which decision should I make if I do not want to make incorrect decisions too often? If you have no desire to use a methodological procedure to decide between competing theories, there is no real reason to report the results of a hypothesis test. Even though it might feel like you should test a hypothesis when doing research, carefully thinking about the statistical question you want to ask might reveal that alternative statistical approaches, such as describing the data you have observed, quantifying your personal beliefs about hypotheses, or reporting the relative likelihood of data under different hypotheses might be the approach that answers the question you really want to know. 
+
+<!-- ## Statistical Decision Theory -->
+
+

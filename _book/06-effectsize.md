@@ -1,6 +1,6 @@
 
 
-# Effect Sizes {#effectsizesCI}
+# Effect Sizes {#effectsize}
 
 Effect sizes are an important statistical outcome in most empirical studies. Researchers want to know whether an intervention or experimental manipulation has an effect greater than zero, or (when it is obvious an effect exists) how big the effect is. Researchers are often reminded to report effect sizes, because they are useful for three reasons. First, they allow researchers to present the magnitude of the reported effects, which allow researchers to reflect on the **practical significance** of the  effects they report, in addition to the *statistical* significance. Second, effect sizes allow researchers to draw meta-analytic conclusions by comparing standardized effect sizes across studies. Third, effect sizes from previous studies can be used when planning a new study in an a-priori power analysis.
 
@@ -11,12 +11,6 @@ For people in parts of the world that do not use the metric system, if might be 
 Standardized effect sizes are common when variables are not measured on a scale people are familiar with, or are measured on different scales within the same research area. If you ask people how happy they are, an answer of ‘5’ will mean something very different if you asked people to answer on a scale from 1 to 5 than if you asked them to answer on a scale from 1 to 9. Standardized effect sizes can be understood and compared regardless of the scale that was used to measure the dependent variable. Despite the ease of use of standardized effect size measures, there are good arguments to report and interpret unstandardized effect sizes wherever possible [@baguley_standardized_2009].
 
 Standardized effect sizes can be grouped in two families (Rosenthal, 1994): The d family (consisting of standardized mean differences) and the r family (measures of strength of association). Conceptually, the d family effect sizes are based on the difference between observations, divided by the standard deviation of these observations. The r family effect sizes describe the proportion of variance that is explained by group membership [e.g., a correlation (r) of 0.5 indicates 25% (r2) of the variance is explained by the difference between groups]. These effect sizes are calculated from the sum of squares (the difference between individual observations and the mean for the group, squared, and summed) for the effect divided by the sums of squares for other factors in the design.
-
-
-
-GRAB INTRO TEXT FROM MY EFFECT SIZE PAPER. UPDATE EXCERSIS TO CALCULATE EFFECT SIZES FROM SPREADSHEET TO MOTE. SPLIT OFF CONFIDENCE INTERVAL SECTION, and add BAYESIAN ESTIMATION to that section on confidence intervals
-
-
 
 ## Effect sizes
 
@@ -55,19 +49,10 @@ minute differences will turn out to be statistically significant (we will look a
 
 ## The Hungry Judges study
 
-
-```r
-knitr::include_graphics("images/hungryjudges.png")
-```
-
 <div class="figure" style="text-align: center">
-<img src="images/hungryjudges.png" alt="Proportion of rulings in favor of the prisoners by ordinal position. Circled points indicate the first decision in each of the three decision sessions; tick marks on x axis denote every third case; dotted line denotes food break. From Danziger, S., Levav, J., &amp; Avnaim-Pesso, L. (2011). Extraneous factors in judicial decisions. Proceedings of the National Academy of Sciences, 108(17), 6889–6892. https://doi.org/10.1073/PNAS.1018033108. Copyright 2011 National Academy of Sciences" width="100%" />
-<p class="caption">(\#fig:unnamed-chunk-2)Proportion of rulings in favor of the prisoners by ordinal position. Circled points indicate the first decision in each of the three decision sessions; tick marks on x axis denote every third case; dotted line denotes food break. From Danziger, S., Levav, J., & Avnaim-Pesso, L. (2011). Extraneous factors in judicial decisions. Proceedings of the National Academy of Sciences, 108(17), 6889–6892. https://doi.org/10.1073/PNAS.1018033108. Copyright 2011 National Academy of Sciences</p>
+<img src="images/hungryjudges.png" alt="Proportion of rulings in favor of the prisoners by ordinal position. Circled points indicate the first decision in each of the three decision sessions; tick marks on x axis denote every third case; dotted line denotes food break. From Danziger, S., Levav, J., &amp; Avnaim-Pesso, L. (2011). Extraneous factors in judicial decisions. Proceedings of the National Academy of Sciences, 108(17), 6889–6892. https://doi.org/10.1073/PNAS.1018033108" width="100%" />
+<p class="caption">(\#fig:hungryjudges)Proportion of rulings in favor of the prisoners by ordinal position. Circled points indicate the first decision in each of the three decision sessions; tick marks on x axis denote every third case; dotted line denotes food break. From Danziger, S., Levav, J., & Avnaim-Pesso, L. (2011). Extraneous factors in judicial decisions. Proceedings of the National Academy of Sciences, 108(17), 6889–6892. https://doi.org/10.1073/PNAS.1018033108</p>
 </div>
-
-```r
-# Figures shared because PNAS copyright says: "Permission is not required to use original figures or tables for noncommercial and educational use (i.e., in a review article, in a book that is not for sale) if the article published under the exclusive PNAS License to Publish. Please include a full journal reference and, for articles published in volumes 90–105 (1993–2008), include "Copyright (copyright year) National Academy of Sciences" as a copyright note." https://www.pnas.org/page/about/rights-permissions
-```
 
 
 
@@ -256,7 +241,7 @@ design <- Superpower::ANOVA_design(
   sd = 2)
 ```
 
-<img src="06-effectsize_files/figure-html/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="06-effectsize_files/figure-html/unnamed-chunk-2-1.png" width="100%" style="display: block; margin: auto;" />
 
 ```r
 Superpower::power_oneway_between(design, alpha_level = 0.03)$Cohen_f
@@ -281,7 +266,7 @@ We therefore might want to increase our sample size for our planned study. Using
 Superpower::plot_power(design, alpha_level = 0.03, min_n = 45, max_n = 150)$plot_ANOVA
 ```
 
-<img src="06-effectsize_files/figure-html/unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="06-effectsize_files/figure-html/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;" />
 
 ```
 ## Achieved Power and Sample Size for ANOVA-level effects
@@ -289,7 +274,7 @@ Superpower::plot_power(design, alpha_level = 0.03, min_n = 45, max_n = 150)$plot
 ## 1        a Desired Power Achieved 97          90.16            90
 ```
 
-<img src="06-effectsize_files/figure-html/unnamed-chunk-4-2.png" width="100%" style="display: block; margin: auto;" />
+<img src="06-effectsize_files/figure-html/unnamed-chunk-3-2.png" width="100%" style="display: block; margin: auto;" />
 
 ### Interaction Effects
 
@@ -301,13 +286,13 @@ There are two types of interactions, as visualized below. In an ordinal interact
 
 ### Calculating effect sizes for interactions
 
-<img src="06-effectsize_files/figure-html/unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="06-effectsize_files/figure-html/unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;" />
 
 Mathematically the interaction effect is computed as the cell mean minus the sum of the grand mean, the marginal mean in each condition of one factor minus the grand mean, and the marginal mean in each condition for the other factor minus grand mean (see Maxwell et al., 2017).
 
 Let's consider two cases, one where we have a perfect disordinal interaction (the means of 0 and 1 flip around in the other condition, and are 1 and 0) or an ordinal interaction (the effect is present in one condtion, 0 and 1, but disappears in the other condition, with means 0 and 0). We can calcuate the interaction effect as follows. First, let's look at the interaction in a 2x2 matrix:
 
-<img src="06-effectsize_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="06-effectsize_files/figure-html/unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;" />
 
 ```
 ##    a1 a2
@@ -369,7 +354,7 @@ design <- Superpower::ANOVA_design(
   sd = 2)
 ```
 
-<img src="06-effectsize_files/figure-html/unnamed-chunk-7-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="06-effectsize_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;" />
 
 ```r
 Superpower::ANOVA_exact(design, alpha_level = 0.03)
@@ -427,7 +412,7 @@ design <- Superpower::ANOVA_design(
   sd = 2)
 ```
 
-<img src="06-effectsize_files/figure-html/unnamed-chunk-8-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="06-effectsize_files/figure-html/unnamed-chunk-7-1.png" width="100%" style="display: block; margin: auto;" />
 
 ```r
 Superpower::ANOVA_exact(design, alpha_level = 0.03)
