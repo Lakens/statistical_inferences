@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>Chapter 12 The Value of Information | Improving Your Statistical Inferences</title>
+
+    <meta name="author" content="Daniel Lakens" />
+  
+   <meta name="description" content="<p>This is a minimal example of using the bookdown package to write a book.
+The HTML output format for this example is bookdown::bs4_book,
+set in the _output.yml file.</p>" />
+   <meta name="generator" content="placeholder" />
+  <meta property="og:title" content="Chapter 12 The Value of Information | Improving Your Statistical Inferences" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="<p>This is a minimal example of using the bookdown package to write a book.
+The HTML output format for this example is bookdown::bs4_book,
+set in the _output.yml file.</p>" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 12 The Value of Information | Improving Your Statistical Inferences" />
+  
+  <meta name="twitter:description" content="<p>This is a minimal example of using the bookdown package to write a book.
+The HTML output format for this example is bookdown::bs4_book,
+set in the _output.yml file.</p>" />
+  
+  <!-- JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script>
+    <script src="libs/header-attrs-2.11/header-attrs.js"></script>
+    <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet" />
+    <script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script>
+    <script src="libs/bs3compat-0.3.1/transition.js"></script>
+    <script src="libs/bs3compat-0.3.1/tabs.js"></script>
+    <script src="libs/bs3compat-0.3.1/bs3compat.js"></script>
+    <link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet" />
+    <script src="libs/bs4_book-1.0.0/bs4_book.js"></script>
+    <script src="libs/kePrint-0.0.1/kePrint.js"></script>
+    <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script>
+
+  <!-- CSS -->
+    <link rel="stylesheet" href="bs4_style.css" />
+  
+</head>
+
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book">
+    <a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Improving Your Statistical Inferences</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+      </form>
+
+      <nav aria-label="Table of contents">
+        <h2>Table of contents</h2>
+        <div id="book-toc"></div>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="#">View book source <i class="fab fa-github"></i></a></li></p>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="col-sm-12 col-md-9 col-lg-7" id="content">
+<div id="the-value-of-information" class="section level1" number="12">
+<h1><span class="header-section-number">Chapter 12</span> The Value of Information</h1>
+<p>Since all scientists are faced with resource limitations, they need to balance the cost of collecting each additional datapoint against the increase in information that datapoint provides. This is referred to as the <em>value of information</em> <span class="citation">(<a href="references.html#ref-eckermann_value_2010" role="doc-biblioref">Eckermann et al., 2010</a>)</span>. Calculating the value of information is notoriously difficult <span class="citation">(<a href="references.html#ref-detsky_using_1990" role="doc-biblioref">Detsky, 1990</a>)</span>. Researchers need to specify the cost of collecting data, and weigh the costs of data collection against the increase in utility that having access to the data provides. From a value of information perspective not every data point that can be collected is equally valuable <span class="citation">(<a href="references.html#ref-halpern_sample_2001" role="doc-biblioref">J. Halpern et al., 2001</a>; <a href="references.html#ref-wilson_practical_2015" role="doc-biblioref">Wilson, 2015</a>)</span>. Whenever additional observations do not change inferences in a meaningful way, the costs of data collection can outweigh the benefits.</p>
+<p>The value of additional information will in most cases be a non-monotonic function, especially when it depends on multiple inferential goals. A researcher might be interested in comparing an effect against a previously observed large effect in the literature, a theoretically predicted medium effect, and the smallest effect that would be practically relevant. In such a situation the expected value of sampling information will lead to different optimal sample sizes for each inferential goal. It could be valuable to collect informative data about a large effect, with additional data having less (or even a negative) marginal utility, up to a point where the data becomes increasingly informative about a medium effect size, with the value of sampling additional information decreasing once more until the study becomes increasingly informative about the presence or absence of a smallest effect of interest.</p>
+<!-- ```{r, non-monotonic, fig.cap="Example of a non-monotonically increasing value of information as a function of the sample size."} -->
+<!-- plot(-1000, xlim = c(0,1600), ylim = c(0,1000), xlab = "Sample Size", ylab = "Value of Information", main = "", cex.lab = 1.3, cex.axis = 1.2, yaxt ='n') -->
+<!-- g <- function(x) x/2 + 110 * sin(0.01 * x) -->
+<!-- curve(g, 0, 1600, lwd = 3, add = TRUE) -->
+<!-- ``` -->
+<p>Because of the difficulty of quantifying the value of information, scientists typically use less formal approaches to justify the amount of data they set out to collect in a study. Even though the cost-benefit analysis is not always made explicit in reported sample size justifications, the value of information perspective is almost always implicitly the underlying framework that sample size justifications are based on. Throughout the subsequent discussion of sample size justifications, the importance of considering the value of information given inferential goals will repeatedly be highlighted.</p>
+<div id="measuring-almost-the-entire-population" class="section level2" number="12.1">
+<h2><span class="header-section-number">12.1</span> Measuring (Almost) the Entire Population</h2>
+<p>In some instances it might be possible to collect data from (almost) the entire population under investigation. For example, researchers might use census data, are able to collect data from all employees at a firm or study a small population of top athletes. Whenever it is possible to measure the entire population, the sample size justification becomes straightforward: the researcher used all the data that is available.</p>
+<p>When the entire population is measured there is no need to perform a hypothesis test. After all, there is no population to generalize to.<a href="references.html#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> When data from the entire population has been collected the population effect size is known, and there is no confidence interval to compute. If the total population size is known, but not measured completely, then the confidence interval width should shrink to zero the closer a study gets to measuring the entire population. This is known as the finite population correction factor for the variance of the estimator <span class="citation">(<a href="references.html#ref-kish_survey_1965" role="doc-biblioref">Kish, 1965</a>)</span>. The variance of a sample mean is <span class="math inline">\(\sigma^2/n\)</span>, which for finite populations is multiplied by the finite population correction factor of the standard error:
+<span class="math display">\[FPC = \sqrt{\frac{(N - n)}{(N-1)}}\]</span>
+where <em>N</em> is the size of the population, and <em>n</em> is the size of the sample. When <em>N</em> is much larger than <em>n</em>, the correction factor will be close to 1 (and therefore this correction is typically ignored when populations are very large, even when populations are finite), and will not have a noticeable effect on the variance. When the total population is measured the correction factor is 0, such that the variance becomes 0 as well. For example, when the total population consists of 100 top athletes, and data is collected from a sample of 35 athletes, the finite population correction is <span class="math inline">\(\sqrt{(100 - 35)/(100-1)}\)</span> = 0.81. The <code>superb</code> R package can compute population corrected confidence intervals <span class="citation">(<a href="references.html#ref-cousineau_superb_2019" role="doc-biblioref">Cousineau &amp; Chiasson, 2019</a>)</span>.</p>
+</div>
+<div id="resource-constraints" class="section level2" number="12.2">
+<h2><span class="header-section-number">12.2</span> Resource Constraints</h2>
+<p>A common reason for the number of observations in a study is that resource constraints limit the amount of data that can be collected at a reasonable cost <span class="citation">(<a href="references.html#ref-lenth_practical_2001" role="doc-biblioref">Lenth, 2001</a>)</span>. In practice, sample sizes are always limited by the resources that are available. Researchers practically always have resource limitations, and therefore even when resource constraints are not the primary justification for the sample size in a study, it is always a secondary justification.</p>
+<p>Despite the omnipresence of resource limitations, the topic often receives little attention in texts on experimental design (for an example of an exception, see <span class="citation">Bulus &amp; Dong (<a href="references.html#ref-bulus_bound_2021" role="doc-biblioref">2021</a>)</span>). This might make it feel like acknowledging resource constraints is not appropriate, but the opposite is true: Because resource limitations always play a role, a responsible scientist carefully evaluates resource constraints when designing a study. Resource constraint justifications are based on a trade-off between the costs of data collection, and the value of having access to the information the data provides. Even if researchers do not explicitly quantify this trade-off, it is revealed in their actions. For example, researchers rarely spend all the resources they have on a single study. Given resource constraints, researchers are confronted with an optimization problem of how to spend resources across multiple research questions.</p>
+<p>Time and money are two resource limitations all scientists face. A PhD student has a certain time to complete a PhD thesis, and is typically expected to complete multiple research lines in this time. In addition to time limitations, researchers have limited financial resources that often directly influence how much data can be collected. A third limitation in some research lines is that there might simply be a very small number of individuals from whom data can be collected, such as when studying patients with a rare disease. A resource constraint justification puts limited resources at the center of the justification for the sample size that will be collected, and <em>starts</em> with the resources a scientist has available. These resources are translated into an expected number of observations (<em>N</em>) that a researcher expects they will be able to collect with an amount of money in a given time. The challenge is to evaluate whether collecting <em>N</em> observations is worthwhile. How do we decide if a study will be informative, and when should we conclude that data collection is <em>not</em> worthwhile?</p>
+<p>When evaluating whether resource constraints make data collection uninformative, researchers need to explicitly consider which inferential goals they have when collecting data <span class="citation">(<a href="references.html#ref-parker_sample_2003" role="doc-biblioref">Parker &amp; Berman, 2003</a>)</span>. Having data always provides more knowledge about the research question than not having data, so in an absolute sense, all data that is collected has value. However, it is possible that the benefits of collecting the data are outweighed by the costs of data collection.</p>
+<p>It is most straightforward to evaluate whether data collection has value when we know for certain that someone will make a decision, with or without data. In such situations any additional data will reduce the error rates of a well-calibrated decision process, even if only ever so slightly. For example, without data we will not perform better than a coin flip if we guess which of two conditions has a higher true mean score on a measure. With some data, we can perform better than a coin flip by picking the condition that has the highest mean. With a small amount of data we would still very likely make a mistake, but the error rate is smaller than without any data. In these cases, the value of information might be positive, as long as the reduction in error rates is more beneficial than the cost of data collection.</p>
+<p>Another way in which a small dataset can be valuable is if its existence eventually makes it possible to perform a meta-analysis <span class="citation">(<a href="references.html#ref-maxwell_ethics_2011" role="doc-biblioref">Maxwell &amp; Kelley, 2011</a>)</span>. This argument in favor of collecting a small dataset requires 1) that researchers share the data in a way that a future meta-analyst can find it, and 2) that there is a decent probability that someone will perform a high-quality meta-analysis that will include this data in the future <span class="citation">(<a href="references.html#ref-halpern_continuing_2002" role="doc-biblioref">S. D. Halpern et al., 2002</a>)</span>. The uncertainty about whether there will ever be such a meta-analysis should be weighed against the costs of data collection.</p>
+<p>One way to increase the probability of a future meta-analysis is if researchers commit to performing this meta-analysis themselves, by combining several studies they have performed into a small-scale meta-analysis <span class="citation">(<a href="references.html#ref-cumming_new_2014" role="doc-biblioref">Cumming, 2014</a>)</span>. For example, a researcher might plan to repeat a study for the next 12 years in a class they teach, with the expectation that after 12 years a meta-analysis of 12 studies would be sufficient to draw informative inferences (but see <span class="citation">ter Schure &amp; Grünwald (<a href="references.html#ref-ter_schure_accumulation_2019" role="doc-biblioref">2019</a>)</span>). If it is not plausible that a researcher will collect all the required data by themselves, they can attempt to set up a collaboration where fellow researchers in their field commit to collecting similar data with identical measures. If it is not likely that sufficient data will emerge over time to reach the inferential goals, there might be no value in collecting the data.</p>
+<p>Even if a researcher believes it is worth collecting data because a future meta-analysis will be performed, they will most likely perform a statistical test on the data. To make sure their expectations about the results of such a test are well-calibrated, it is important to consider which effect sizes are of interest, and to perform a sensitivity power analysis to evaluate the probability of a Type II error for effects of interest. From the six ways to evaluate which effect sizes are interesting that will be discussed in the second part of this review, it is useful to consider the smallest effect size that can be statistically significant, the expected width of the confidence interval around the effect size, and effects that can be expected in a specific research area, and to evaluate the power for these effect sizes in a sensitivity power analysis. If a decision or claim is made, a compromise power analysis is worthwhile to consider when deciding upon the error rates while planning the study. When reporting a resource constraints sample size justification it is recommended to address the five considerations in Table <a href="the-value-of-information.html#tab:table-pow-rec">12.1</a>. Addressing these points explicitly facilitates evaluating if the data is worthwhile to collect. To make it easier to address all relevant points explicitly, an interactive form to implement the recommendations in this manuscript can be found at <a href="https://shiny.ieis.tue.nl/sample_size_justification/" class="uri">https://shiny.ieis.tue.nl/sample_size_justification/</a>.</p>
+<table>
+<caption>
+<span id="tab:table-pow-rec">Table 12.1: </span>Overview of recommendations when reporting a sample size justification based on resource constraints.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Type of justification
+</th>
+<th style="text-align:left;">
+When is this justification applicable?
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Measure entire population
+</td>
+<td style="text-align:left;">
+A researcher can specify the entire population, it is finite, and it is possible
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+to measure (almost) every entity in the population.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Resource constraints
+</td>
+<td style="text-align:left;">
+Limited resources are the primary reason for the choice of the sample size
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+a researcher can collect.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Accuracy
+</td>
+<td style="text-align:left;">
+The research question focusses on the size of a parameter, and a researcher
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+collects sufficient data to have an estimate with a desired level of accuracy.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A-priori power analysis
+</td>
+<td style="text-align:left;">
+The research question has the aim to test whether certain effect sizes can
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+be statistically rejected with a desired statistical power.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Heuristics
+</td>
+<td style="text-align:left;">
+A researcher decides upon the sample size based on a heuristic, general rule
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+or norm that is described in the literature, or communicated orally.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+No justification
+</td>
+<td style="text-align:left;">
+A researcher has no reason to choose a specific sample size, or does not have
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+a clearly specified inferential goal and wants to communicate this honestly.
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="a-priori-power-analysis" class="section level2" number="12.3">
+<h2><span class="header-section-number">12.3</span> A-priori Power Analysis</h2>
+<p>When designing a study where the goal is to test whether a statistically significant effect is present, researchers often want to make sure their sample size is large enough to prevent erroneous conclusions for a range of effect sizes they care about. In this approach to justifying a sample size, the value of information is to collect observations up to the point that the probability of an erroneous inference is, in the long run, not larger than a desired value. If a researcher performs a hypothesis test, there are four possible outcomes:</p>
+<ol style="list-style-type: decimal">
+<li>A false positive (or Type I error), determined by the <span class="math inline">\(\alpha\)</span> level. A test yields a significant result, even though the null hypothesis is true.</li>
+<li>A false negative (or Type II error), determined by <span class="math inline">\(\beta\)</span>, or 1 - power. A test yields a non-significant result, even though the alternative hypothesis is true.</li>
+<li>A true negative, determined by 1-<span class="math inline">\(\alpha\)</span>. A test yields a non-significant result when the null hypothesis is true.</li>
+<li>A true positive, determined by 1-<span class="math inline">\(\beta\)</span>. A test yields a significant result when the alternative hypothesis is true.</li>
+</ol>
+<p>Given a specified effect size, alpha level, and power, an a-priori power analysis can be used to calculate the number of observations required to achieve the desired error rates, given the effect size.<a href="references.html#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> Figure <a href="the-value-of-information.html#fig:power-2">12.1</a> illustrates how the statistical power increases as the number of observations (per group) increases in an independent <em>t</em> test with a two-sided alpha level of 0.05. If we are interested in detecting an effect of <em>d</em> = 0.5, a sample size of 90 per condition would give us more than 90% power. Statistical power can be computed to determine the number of participants, or the number of items <span class="citation">(<a href="references.html#ref-westfall_statistical_2014" role="doc-biblioref">Westfall et al., 2014</a>)</span> but can also be performed for single case studies <span class="citation">(<a href="references.html#ref-ferron_power_1996" role="doc-biblioref">Ferron &amp; Onghena, 1996</a>; <a href="references.html#ref-mcintosh_power_2020" role="doc-biblioref">McIntosh &amp; Rittmo, 2020</a>)</span></p>
+<p>Although it is common to set the Type I error rate to 5% and aim for 80% power, error rates should be justified <span class="citation">(<a href="references.html#ref-lakens_justify_2018" role="doc-biblioref">Lakens, Adolfi, et al., 2018</a>)</span>. As explained in the section on compromise power analysis, the default recommendation to aim for 80% power lacks a solid justification. In general, the lower the error rates (and thus the higher the power), the more informative a study will be, but the more resources are required. Researchers should carefully weigh the costs of increasing the sample size against the benefits of lower error rates, which would probably make studies designed to achieve a power of 90% or 95% more common for articles reporting a single study. An additional consideration is whether the researcher plans to publish an article consisting of a set of replication and extension studies, in which case the probability of observing multiple Type I errors will be very low, but the probability of observing mixed results even when there is a true effect increases <span class="citation">(<a href="references.html#ref-lakens_too_2017" role="doc-biblioref">Lakens &amp; Etz, 2017</a>)</span>, which would also be a reason to aim for studies with low Type II error rates, perhaps even by slightly increasing the alpha level for each individual study.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:power-2"></span>
+<img src="08-samplesizejustification_files/figure-html/power-2-1.png" alt="Power curve for an independent *t* test with an effect of *d* = 0.5 and $\alpha$ = 0.05 as a function of the sample size." width="100%" />
+<p class="caption">
+Figure 12.1: Power curve for an independent <em>t</em> test with an effect of <em>d</em> = 0.5 and <span class="math inline">\(\alpha\)</span> = 0.05 as a function of the sample size.
+</p>
+</div>
+<p>Figure <a href="the-value-of-information.html#fig:power-3">12.2</a> visualizes two distributions. The left distribution (dashed line) is centered at 0. This is a model for the null hypothesis. If the null hypothesis is true a statistically significant result will be observed if the effect size is extreme enough (in a two-sided test either in the positive or negative direction), but any significant result would be a Type I error (the dark grey areas under the curve). If there is no true effect, formally statistical power for a null hypothesis significance test is undefined. Any significant effects observed if the null hypothesis is true are Type I errors, or false positives, which occur at the chosen alpha level. The right distribution (solid line) is centered on an effect of <em>d</em> = 0.5. This is the specified model for the alternative hypothesis in this study, illustrating the expectation of an effect of <em>d</em> = 0.5 if the alternative hypothesis is true. Even though there is a true effect, studies will not always find a statistically significant result. This happens when, due to random variation, the observed effect size is too close to 0 to be statistically significant. Such results are false negatives (the light grey area under the curve on the right). To increase power, we can collect a larger sample size. As the sample size increases, the distributions become more narrow, reducing the probability of a Type II error.<a href="references.html#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="the-value-of-information.html#cb1-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb1-2"><a href="the-value-of-information.html#cb1-2" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb1-3"><a href="the-value-of-information.html#cb1-3" aria-hidden="true" tabindex="-1"></a>p_upper <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
+<span id="cb1-4"><a href="the-value-of-information.html#cb1-4" aria-hidden="true" tabindex="-1"></a>ncp <span class="ot">&lt;-</span> (d <span class="sc">*</span> <span class="fu">sqrt</span>(N <span class="sc">/</span> <span class="dv">2</span>)) <span class="co"># Calculate non-centrality parameter d</span></span>
+<span id="cb1-5"><a href="the-value-of-information.html#cb1-5" aria-hidden="true" tabindex="-1"></a>crit_d <span class="ot">&lt;-</span> <span class="fu">abs</span>(<span class="fu">qt</span>(p_upper <span class="sc">/</span> <span class="dv">2</span>, (N <span class="sc">*</span> <span class="dv">2</span>) <span class="sc">-</span> <span class="dv">2</span>)) <span class="sc">/</span> <span class="fu">sqrt</span>(N <span class="sc">/</span> <span class="dv">2</span>)</span>
+<span id="cb1-6"><a href="the-value-of-information.html#cb1-6" aria-hidden="true" tabindex="-1"></a>low_x <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="sc">-</span><span class="dv">1</span> <span class="sc">-</span> crit_d)</span>
+<span id="cb1-7"><a href="the-value-of-information.html#cb1-7" aria-hidden="true" tabindex="-1"></a>high_x <span class="ot">&lt;-</span> <span class="fu">max</span>(d <span class="sc">+</span> <span class="dv">1</span> <span class="sc">+</span> crit_d)</span>
+<span id="cb1-8"><a href="the-value-of-information.html#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># calc d-distribution</span></span>
+<span id="cb1-9"><a href="the-value-of-information.html#cb1-9" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(low_x, high_x, <span class="at">length =</span> <span class="dv">10000</span>) <span class="co"># create x values</span></span>
+<span id="cb1-10"><a href="the-value-of-information.html#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Set max Y for graph</span></span>
+<span id="cb1-11"><a href="the-value-of-information.html#cb1-11" aria-hidden="true" tabindex="-1"></a>d_dist <span class="ot">&lt;-</span> <span class="fu">dt</span>(x <span class="sc">*</span> <span class="fu">sqrt</span>(N <span class="sc">/</span> <span class="dv">2</span>), <span class="at">df =</span> (N <span class="sc">*</span> <span class="dv">2</span>) <span class="sc">-</span> <span class="dv">2</span>, <span class="at">ncp =</span> ncp) <span class="sc">*</span> <span class="fu">sqrt</span>(N <span class="sc">/</span> <span class="dv">2</span>) <span class="co"># calculate distribution of d based on t-distribution</span></span>
+<span id="cb1-12"><a href="the-value-of-information.html#cb1-12" aria-hidden="true" tabindex="-1"></a>y_max <span class="ot">&lt;-</span> <span class="fu">max</span>(d_dist) <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb1-13"><a href="the-value-of-information.html#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># create plot</span></span>
+<span id="cb1-14"><a href="the-value-of-information.html#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">bg =</span> <span class="st">&quot;white&quot;</span>)</span>
+<span id="cb1-15"><a href="the-value-of-information.html#cb1-15" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">round</span>(d, <span class="dv">2</span>)</span>
+<span id="cb1-16"><a href="the-value-of-information.html#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="at">xlim =</span> <span class="fu">c</span>(low_x, high_x), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, y_max), <span class="at">xlab =</span> <span class="fu">substitute</span>(<span class="fu">paste</span>(<span class="st">&quot;Cohen&#39;s d&quot;</span>)), <span class="at">ylab =</span> <span class="st">&quot;Density&quot;</span>, <span class="at">main =</span> <span class="st">&quot;&quot;</span>, <span class="at">cex.lab =</span> <span class="fl">1.3</span>, <span class="at">cex.axis =</span> <span class="fl">1.2</span>)</span>
+<span id="cb1-17"><a href="the-value-of-information.html#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># abline(v = seq(low_x,high_x,0.1), h = seq(0,0.5,0.1), col = &quot;lightgrey&quot;, lty = 1)</span></span>
+<span id="cb1-18"><a href="the-value-of-information.html#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">#    axis(side = 1, at = seq(low_x,high_x,0.1), labels = FALSE)</span></span>
+<span id="cb1-19"><a href="the-value-of-information.html#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Add Type I error rate right</span></span>
+<span id="cb1-20"><a href="the-value-of-information.html#cb1-20" aria-hidden="true" tabindex="-1"></a>crit_d <span class="ot">&lt;-</span> <span class="fu">abs</span>(<span class="fu">qt</span>(p_upper <span class="sc">/</span> <span class="dv">2</span>, (N <span class="sc">*</span> <span class="dv">2</span>) <span class="sc">-</span> <span class="dv">2</span>)) <span class="sc">/</span> <span class="fu">sqrt</span>(N <span class="sc">/</span> <span class="dv">2</span>)</span>
+<span id="cb1-21"><a href="the-value-of-information.html#cb1-21" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">seq</span>(crit_d, <span class="dv">10</span>, <span class="at">length =</span> <span class="dv">10000</span>)</span>
+<span id="cb1-22"><a href="the-value-of-information.html#cb1-22" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> (<span class="fu">dt</span>(y <span class="sc">*</span> <span class="fu">sqrt</span>(N <span class="sc">/</span> <span class="dv">2</span>), <span class="at">df =</span> (N <span class="sc">*</span> <span class="dv">2</span>) <span class="sc">-</span> <span class="dv">2</span>) <span class="sc">*</span> <span class="fu">sqrt</span>(N <span class="sc">/</span> <span class="dv">2</span>)) <span class="co"># determine upperbounds polygon</span></span>
+<span id="cb1-23"><a href="the-value-of-information.html#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(<span class="fu">c</span>(crit_d, y, <span class="dv">10</span>), <span class="fu">c</span>(<span class="dv">0</span>, z, <span class="dv">0</span>), <span class="at">col =</span> <span class="fu">rgb</span>(<span class="fl">0.3</span>, <span class="fl">0.3</span>, <span class="fl">0.3</span>), <span class="at">border =</span> <span class="fu">rgb</span>(<span class="fl">0.3</span>, <span class="fl">0.3</span>, <span class="fl">0.3</span>))</span>
+<span id="cb1-24"><a href="the-value-of-information.html#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Add Type I error rate left</span></span>
+<span id="cb1-25"><a href="the-value-of-information.html#cb1-25" aria-hidden="true" tabindex="-1"></a>crit_d <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fu">abs</span>(<span class="fu">qt</span>(p_upper <span class="sc">/</span> <span class="dv">2</span>, (N <span class="sc">*</span> <span class="dv">2</span>) <span class="sc">-</span> <span class="dv">2</span>)) <span class="sc">/</span> <span class="fu">sqrt</span>(N <span class="sc">/</span> <span class="dv">2</span>)</span>
+<span id="cb1-26"><a href="the-value-of-information.html#cb1-26" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">10</span>, crit_d, <span class="at">length =</span> <span class="dv">10000</span>)</span>
+<span id="cb1-27"><a href="the-value-of-information.html#cb1-27" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> (<span class="fu">dt</span>(y <span class="sc">*</span> <span class="fu">sqrt</span>(N <span class="sc">/</span> <span class="dv">2</span>), <span class="at">df =</span> (N <span class="sc">*</span> <span class="dv">2</span>) <span class="sc">-</span> <span class="dv">2</span>) <span class="sc">*</span> <span class="fu">sqrt</span>(N <span class="sc">/</span> <span class="dv">2</span>)) <span class="co"># determine upperbounds polygon</span></span>
+<span id="cb1-28"><a href="the-value-of-information.html#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(<span class="fu">c</span>(y, crit_d, crit_d), <span class="fu">c</span>(z, <span class="dv">0</span>, <span class="dv">0</span>), <span class="at">col =</span> <span class="fu">rgb</span>(<span class="fl">0.3</span>, <span class="fl">0.3</span>, <span class="fl">0.3</span>), <span class="at">border =</span> <span class="fu">rgb</span>(<span class="fl">0.3</span>, <span class="fl">0.3</span>, <span class="fl">0.3</span>))</span>
+<span id="cb1-29"><a href="the-value-of-information.html#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Add Type II error rate</span></span>
+<span id="cb1-30"><a href="the-value-of-information.html#cb1-30" aria-hidden="true" tabindex="-1"></a>crit_d <span class="ot">&lt;-</span> <span class="fu">abs</span>(<span class="fu">qt</span>(p_upper <span class="sc">/</span> <span class="dv">2</span>, (N <span class="sc">*</span> <span class="dv">2</span>) <span class="sc">-</span> <span class="dv">2</span>)) <span class="sc">/</span> <span class="fu">sqrt</span>(N <span class="sc">/</span> <span class="dv">2</span>)</span>
+<span id="cb1-31"><a href="the-value-of-information.html#cb1-31" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">10</span>, crit_d, <span class="at">length =</span> <span class="dv">10000</span>)</span>
+<span id="cb1-32"><a href="the-value-of-information.html#cb1-32" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> (<span class="fu">dt</span>(y <span class="sc">*</span> <span class="fu">sqrt</span>(N <span class="sc">/</span> <span class="dv">2</span>), <span class="at">df =</span> (N <span class="sc">*</span> <span class="dv">2</span>) <span class="sc">-</span> <span class="dv">2</span>, <span class="at">ncp =</span> ncp) <span class="sc">*</span> <span class="fu">sqrt</span>(N <span class="sc">/</span> <span class="dv">2</span>)) <span class="co"># determine upperbounds polygon</span></span>
+<span id="cb1-33"><a href="the-value-of-information.html#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(<span class="fu">c</span>(y, crit_d, crit_d), <span class="fu">c</span>(<span class="dv">0</span>, z, <span class="dv">0</span>), <span class="at">col =</span> <span class="fu">rgb</span>(<span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>), <span class="at">border =</span> <span class="fu">rgb</span>(<span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>))</span>
+<span id="cb1-34"><a href="the-value-of-information.html#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="co"># add d = 0 line</span></span>
+<span id="cb1-35"><a href="the-value-of-information.html#cb1-35" aria-hidden="true" tabindex="-1"></a>d_dist <span class="ot">&lt;-</span> <span class="fu">dt</span>(x <span class="sc">*</span> <span class="fu">sqrt</span>(N <span class="sc">/</span> <span class="dv">2</span>), <span class="at">df =</span> (N <span class="sc">*</span> <span class="dv">2</span>) <span class="sc">-</span> <span class="dv">2</span>, <span class="at">ncp =</span> <span class="dv">0</span>) <span class="sc">*</span> <span class="fu">sqrt</span>(N <span class="sc">/</span> <span class="dv">2</span>)</span>
+<span id="cb1-36"><a href="the-value-of-information.html#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(x, d_dist, <span class="at">col =</span> <span class="st">&quot;grey40&quot;</span>, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">lwd =</span> <span class="dv">3</span>, <span class="at">lty =</span> <span class="dv">5</span>)</span>
+<span id="cb1-37"><a href="the-value-of-information.html#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="co"># add effect line</span></span>
+<span id="cb1-38"><a href="the-value-of-information.html#cb1-38" aria-hidden="true" tabindex="-1"></a>d_dist <span class="ot">&lt;-</span> <span class="fu">dt</span>(x <span class="sc">*</span> <span class="fu">sqrt</span>(N <span class="sc">/</span> <span class="dv">2</span>), <span class="at">df =</span> (N <span class="sc">*</span> <span class="dv">2</span>) <span class="sc">-</span> <span class="dv">2</span>, <span class="at">ncp =</span> ncp) <span class="sc">*</span> <span class="fu">sqrt</span>(N <span class="sc">/</span> <span class="dv">2</span>) <span class="co"># calculate distribution of d based on t-distribution</span></span>
+<span id="cb1-39"><a href="the-value-of-information.html#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(x, d_dist, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:power-3"></span>
+<img src="08-samplesizejustification_files/figure-html/power-3-1.png" alt="Null (*d* = 0, grey dashed line) and alternative (*d* = 0.5, solid black line) hypothesis, with $\alpha$ = 0.05 and n = 80 per group." width="100%" />
+<p class="caption">
+Figure 12.2: Null (<em>d</em> = 0, grey dashed line) and alternative (<em>d</em> = 0.5, solid black line) hypothesis, with <span class="math inline">\(\alpha\)</span> = 0.05 and n = 80 per group.
+</p>
+</div>
+<p>It is important to highlight that the goal of an a-priori power analysis is <em>not</em> to achieve sufficient power for the true effect size. The true effect size is unknown. The goal of an a-priori power analysis is to achieve sufficient power, given a specific <em>assumption</em> of the effect size a researcher wants to detect. Just like a Type I error rate is the maximum probability of making a Type I error conditional on the assumption that the null hypothesis is true, an a-priori power analysis is computed under the assumption of a specific effect size. It is unknown if this assumption is correct. All a researcher can do is to make sure their assumptions are well justified. Statistical inferences based on a test where the Type II error is controlled are conditional on the assumption of a specific effect size. They allow the inference that, assuming the true effect size is at least as large as that used in the a-priori power analysis, the maximum Type II error rate in a study is not larger than a desired value.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="the-value-of-information.html#cb2-1" aria-hidden="true" tabindex="-1"></a>pow_eq <span class="ot">&lt;-</span> TOSTER<span class="sc">::</span><span class="fu">powerTOSTtwo</span>(</span>
+<span id="cb2-2"><a href="the-value-of-information.html#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.05</span>, </span>
+<span id="cb2-3"><a href="the-value-of-information.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">statistical_power =</span> <span class="fl">0.9</span>, </span>
+<span id="cb2-4"><a href="the-value-of-information.html#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">low_eqbound_d =</span> <span class="sc">-</span><span class="fl">0.4</span>, </span>
+<span id="cb2-5"><a href="the-value-of-information.html#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">high_eqbound_d =</span> <span class="fl">0.4</span>)</span></code></pre></div>
+<p>This point is perhaps best illustrated if we consider a study where an a-priori power analysis is performed both for a test of the <em>presence</em> of an effect, as for a test of the <em>absence</em> of an effect. When designing a study, it essential to consider the possibility that there is no effect (e.g., a mean difference of zero). An a-priori power analysis can be performed both for a null hypothesis significance test, as for a test of the absence of a meaningful effect, such as an equivalence test that can statistically provide support for the null hypothesis by rejecting the presence of effects that are large enough to matter <span class="citation">(<a href="references.html#ref-lakens_equivalence_2017" role="doc-biblioref">Lakens, 2017</a>; <a href="references.html#ref-meyners_equivalence_2012" role="doc-biblioref">Meyners, 2012</a>; <a href="references.html#ref-rogers_using_1993" role="doc-biblioref">Rogers et al., 1993</a>)</span>. When multiple primary tests will be performed based on the same sample, each analysis requires a dedicated sample size justification. If possible, a sample size is collected that guarantees that all tests are informative, which means that the collected sample size is based on the largest sample size returned by any of the a-priori power analyses.</p>
+<p>For example, if the goal of a study is to detect or reject an effect size of <em>d</em> = 0.4 with 90% power, and the alpha level is set to 0.05 for a two-sided independent <em>t</em> test, a researcher would need to collect 133 participants in each condition for an informative null hypothesis test, and 136 participants in each condition for an informative equivalence test. Therefore, the researcher should aim to collect 272 participants in total for an informative result for both tests that are planned. This does not guarantee a study has sufficient power for the true effect size (which can never be known), but it guarantees the study has sufficient power given an assumption of the effect a researcher is interested in detecting or rejecting. Therefore, an a-priori power analysis is useful, as long as a researcher can justify the effect sizes they are interested in.</p>
+<p>If researchers correct the alpha level when testing multiple hypotheses, the a-priori power analysis should be based on this corrected alpha level. For example, if four tests are performed, an overall Type I error rate of 5% is desired, and a Bonferroni correction is used, the a-priori power analysis should be based on a corrected alpha level of .0125.</p>
+<p>An a-priori power analysis can be performed analytically, or by performing computer simulations. Analytic solutions are faster but less flexible. A common challenge researchers face when attempting to perform power analyses for more complex or uncommon tests is that available software does not offer analytic solutions. In these cases simulations can provide a flexible solution to perform power analyses for any test <span class="citation">(<a href="references.html#ref-morris_using_2019" role="doc-biblioref">Morris et al., 2019</a>)</span>. The following code is an example of a power analysis in R based on 10000 simulations for a one-sample <em>t</em> test against zero for a sample size of 20, assuming a true effect of <em>d</em> = 0.5. All simulations consist of first randomly generating data based on assumptions of the data generating mechanism (e.g., a normal distribution with a mean of 0.5 and a standard deviation of 1), followed by a test performed on the data. By computing the percentage of significant results, power can be computed for any design.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="the-value-of-information.html#cb3-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">10000</span>)   <span class="co"># to store p-values</span></span>
+<span id="cb3-2"><a href="the-value-of-information.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10000</span>) {  <span class="co">#simulate 10k tests</span></span>
+<span id="cb3-3"><a href="the-value-of-information.html#cb3-3" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">mean =</span> <span class="fl">0.5</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb3-4"><a href="the-value-of-information.html#cb3-4" aria-hidden="true" tabindex="-1"></a>  p[i] <span class="ot">&lt;-</span> <span class="fu">t.test</span>(x)<span class="sc">$</span>p.value <span class="co"># store p-value</span></span>
+<span id="cb3-5"><a href="the-value-of-information.html#cb3-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-6"><a href="the-value-of-information.html#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(p <span class="sc">&lt;</span> <span class="fl">0.05</span>) <span class="sc">/</span> <span class="dv">10000</span> <span class="co"># Compute power</span></span></code></pre></div>
+<p>There is a wide range of tools available to perform power analyses. Whichever tool a researcher decides to use, it will take time to learn how to use the software correctly to perform a meaningful a-priori power analysis. Resources to educate psychologists about power analysis consist of book-length treatments <span class="citation">(<a href="references.html#ref-aberson_applied_2019" role="doc-biblioref">Aberson, 2019</a>; <a href="references.html#ref-cohen_statistical_1988" role="doc-biblioref">Cohen, 1988</a>; <a href="references.html#ref-julious_sample_2004" role="doc-biblioref">Julious, 2004</a>; <a href="references.html#ref-murphy_statistical_2014" role="doc-biblioref">Murphy et al., 2014</a>)</span>, general introductions <span class="citation">(<a href="references.html#ref-baguley_understanding_2004" role="doc-biblioref">Baguley, 2004</a>; <a href="references.html#ref-brysbaert_how_2019-1" role="doc-biblioref">Brysbaert, 2019</a>; <a href="references.html#ref-faul_gpower_2007" role="doc-biblioref">Faul et al., 2007</a>; <a href="references.html#ref-maxwell_sample_2008" role="doc-biblioref">Maxwell et al., 2008</a>; <a href="references.html#ref-perugini_practical_2018" role="doc-biblioref">Perugini et al., 2018</a>)</span>, and an increasing number of applied tutorials for specific tests <span class="citation">(<a href="references.html#ref-brysbaert_power_2018" role="doc-biblioref">Brysbaert &amp; Stevens, 2018</a>; <a href="references.html#ref-debruine_understanding_2019" role="doc-biblioref">DeBruine &amp; Barr, 2019</a>; <a href="references.html#ref-green_simr_2016" role="doc-biblioref">P. Green &amp; MacLeod, 2016</a>; <a href="references.html#ref-kruschke_bayesian_2013" role="doc-biblioref">Kruschke, 2013</a>; <a href="references.html#ref-lakens_simulation-based_2021" role="doc-biblioref">Lakens &amp; Caldwell, 2021</a>; <a href="references.html#ref-schoemann_determining_2017" role="doc-biblioref">Schoemann et al., 2017</a>; <a href="references.html#ref-westfall_statistical_2014" role="doc-biblioref">Westfall et al., 2014</a>)</span>. It is important to be trained in the basics of power analysis, and it can be extremely beneficial to learn how to perform simulation-based power analyses. At the same time, it is often recommended to enlist the help of an expert, especially when a researcher lacks experience with a power analysis for a specific test.</p>
+<p>When reporting an a-priori power analysis, make sure that the power analysis is completely reproducible. If power analyses are performed in R it is possible to share the analysis script and information about the version of the package. In many software packages it is possible to export the power analysis that is performed as a PDF file. For example, in G*Power analyses can be exported under the 'protocol of power analysis' tab. If the software package provides no way to export the analysis, add a screenshot of the power analysis to the supplementary files.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:gpowprotocol"></span>
+<img src="images/gpowprotocol.png" alt="All details about the power analysis that is performed can be exported in G*Power." width="240" />
+<p class="caption">
+Figure 12.3: All details about the power analysis that is performed can be exported in G*Power.
+</p>
+</div>
+<p>The reproducible report needs to be accompanied by justifications for the choices that were made with respect to the values used in the power analysis. If the effect size used in the power analysis is based on previous research the factors presented in Table <a href="what-is-your-inferential-goal.html#tab:tablemetajust">13.1</a> (if the effect size is based on a meta-analysis) or Table <a href="what-is-your-inferential-goal.html#tab:table-es-just">13.2</a> (if the effect size is based on a single study) should be discussed. If an effect size estimate is based on the existing literature, provide a full citation, and preferably a direct quote from the article where the effect size estimate is reported. If the effect size is based on a smallest effect size of interest, this value should not just be stated, but justified (e.g., based on theoretical predictions or practical implications, see <span class="citation">Lakens, Scheel, et al. (<a href="references.html#ref-lakens_equivalence_2018" role="doc-biblioref">2018</a>)</span>). For an overview of all aspects that should be reported when describing an a-priori power analysis, see Table <a href="the-value-of-information.html#tab:table-pow-rec-2">12.2</a>.</p>
+<table>
+<caption>
+<span id="tab:table-pow-rec-2">Table 12.2: </span>Overview of recommendations when reporting an a-priori power analysis.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Type of justification
+</th>
+<th style="text-align:left;">
+When is this justification applicable?
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Measure entire population
+</td>
+<td style="text-align:left;">
+A researcher can specify the entire population, it is finite, and it is possible
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+to measure (almost) every entity in the population.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Resource constraints
+</td>
+<td style="text-align:left;">
+Limited resources are the primary reason for the choice of the sample size
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+a researcher can collect.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Accuracy
+</td>
+<td style="text-align:left;">
+The research question focusses on the size of a parameter, and a researcher
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+collects sufficient data to have an estimate with a desired level of accuracy.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A-priori power analysis
+</td>
+<td style="text-align:left;">
+The research question has the aim to test whether certain effect sizes can
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+be statistically rejected with a desired statistical power.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Heuristics
+</td>
+<td style="text-align:left;">
+A researcher decides upon the sample size based on a heuristic, general rule
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+or norm that is described in the literature, or communicated orally.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+No justification
+</td>
+<td style="text-align:left;">
+A researcher has no reason to choose a specific sample size, or does not have
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+a clearly specified inferential goal and wants to communicate this honestly.
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="planning-for-precision" class="section level2" number="12.4">
+<h2><span class="header-section-number">12.4</span> Planning for Precision</h2>
+<p>Some researchers have suggested to justify sample sizes based on a desired level of precision of the estimate <span class="citation">(<a href="references.html#ref-cumming_introduction_2016" role="doc-biblioref">Cumming &amp; Calin-Jageman, 2016</a>; <a href="references.html#ref-kruschke_rejecting_2018" role="doc-biblioref">Kruschke, 2018</a>; <a href="references.html#ref-maxwell_sample_2008" role="doc-biblioref">Maxwell et al., 2008</a>)</span>. The goal when justifying a sample size based on precision is to collect data to achieve a desired width of the confidence interval around a parameter estimate. The width of the confidence interval around the parameter estimate depends on the standard deviation and the number of observations. The only aspect a researcher needs to justify for a sample size justification based on accuracy is the desired width of the confidence interval with respect to their inferential goal, and their assumption about the population standard deviation of the measure.</p>
+<p>If a researcher has determined the desired accuracy, and has a good estimate of the true standard deviation of the measure, it is straightforward to calculate the sample size needed for a desired level of accuracy. For example, when measuring the IQ of a group of individuals a researcher might desire to estimate the IQ score within an error range of 2 IQ points for 95% of the observed means, in the long run. The required sample size to achieve this desired level of accuracy (assuming normally distributed data) can be computed by:</p>
+<p><span class="math display">\[N = \left(\frac{z \cdot sd}{error}\right)^2\]</span></p>
+<p>where <em>N</em> is the number of observations, <em>z</em> is the critical value related to the desired confidence interval, <em>sd</em> is the standard deviation of IQ scores in the population, and <em>error</em> is the width of the confidence interval within which the mean should fall, with the desired error rate. In this example, (1.96 × 15 / 2)^2 = 216.1 observations. If a researcher desires 95% of the means to fall within a 2 IQ point range around the true population mean, 217 observations should be collected. If a desired accuracy for a non-zero mean difference is computed, accuracy is based on a non-central <em>t</em>-distribution. For these calculations an expected effect size estimate needs to be provided, but it has relatively little influence on the required sample size <span class="citation">(<a href="references.html#ref-maxwell_sample_2008" role="doc-biblioref">Maxwell et al., 2008</a>)</span>. It is also possible to incorporate uncertainty about the observed effect size in the sample size calculation, known as <em>assurance</em> <span class="citation">(<a href="references.html#ref-kelley_sample_2006" role="doc-biblioref">Kelley &amp; Rausch, 2006</a>)</span>. The MBESS package in R provides functions to compute sample sizes for a wide range of tests <span class="citation">(<a href="references.html#ref-kelley_confidence_2007" role="doc-biblioref">Kelley, 2007</a>)</span>.</p>
+<p>What is less straightforward is to justify how a desired level of accuracy is related to inferential goals. There is no literature that helps researchers to choose a desired width of the confidence interval. Morey <span class="citation">(<a href="references.html#ref-morey_power_2020" role="doc-biblioref">2020</a>)</span> convincingly argues that most practical use-cases of planning for precision involve an inferential goal of distinguishing an observed effect from other effect sizes (for a Bayesian perspective, see <span class="citation">Kruschke (<a href="references.html#ref-kruschke_rejecting_2018" role="doc-biblioref">2018</a>)</span>). For example, a researcher might expect an effect size of <em>r</em> = 0.4 and would treat observed correlations that differ more than 0.2 (i.e., 0.2 &lt; <em>r</em> &lt; 0.6) differently, in that effects of <em>r</em> = 0.6 or larger are considered too large to be caused by the assumed underlying mechanism <span class="citation">(<a href="references.html#ref-hilgard_maximal_2021" role="doc-biblioref">Hilgard, 2021</a>)</span>, while effects smaller than <em>r</em> = 0.2 are considered too small to support the theoretical prediction. If the goal is indeed to get an effect size estimate that is precise enough so that two effects can be differentiated with high probability, the inferential goal is actually a hypothesis test, which requires designing a study with sufficient power to reject effects (e.g., testing a range prediction of correlations between 0.2 and 0.6).</p>
+<p>If researchers do not want to test a hypothesis, for example because they prefer an estimation approach over a testing approach, then in the absence of clear guidelines that help researchers to justify a desired level of precision, one solution might be to rely on a generally accepted norm of precision to aim for. This norm could be based on ideas about a certain resolution below which measurements in a research area no longer lead to noticeably different inferences. Just as researchers normatively use an alpha level of 0.05, they could plan studies to achieve a desired confidence interval width around the observed effect that is determined by a norm. Future work is needed to help researchers choose a confidence interval width when planning for accuracy.</p>
+</div>
+<div id="heuristics" class="section level2" number="12.5">
+<h2><span class="header-section-number">12.5</span> Heuristics</h2>
+<p>When a researcher uses a heuristic, they are not able to justify their sample size themselves, but they trust in a sample size recommended by some authority. When I started as a PhD student in 2005 it was common to collect 15 participants in each between subject condition. When asked why this was a common practice, no one was really sure, but people trusted there was a justification somewhere in the literature. Now, I realize there was no justification for the heuristics we used. As <span class="citation">Berkeley (<a href="references.html#ref-berkeley_defence_1735" role="doc-biblioref">1735</a>)</span> already observed: "Men learn the elements of science from others: And every learner hath a deference more or less to authority, especially the young learners, few of that kind caring to dwell long upon principles, but inclining rather to take them upon trust: And things early admitted by repetition become familiar: And this familiarity at length passeth for evidence."</p>
+<p>Some papers provide researchers with simple rules of thumb about the sample size that should be collected. Such papers clearly fill a need, and are cited a lot, even when the advice in these articles is flawed. For example, <span class="citation">Wilson VanVoorhis &amp; Morgan (<a href="references.html#ref-wilson_vanvoorhis_understanding_2007" role="doc-biblioref">2007</a>)</span> translate an absolute <em>minimum</em> of 50+8 observations for regression analyses suggested by a rule of thumb examined in <span class="citation">S. B. Green (<a href="references.html#ref-green_how_1991" role="doc-biblioref">1991</a>)</span> into the recommendation to collect ~50 observations. Green actually concludes in his article that "In summary, no specific minimum number of subjects or minimum ratio of subjects-to-predictors was supported". He does discuss how a general rule of thumb of N = 50 + 8 provided an accurate minimum number of observations for the 'typical' study in the social sciences because these have a 'medium' effect size, as Green claims by citing Cohen (1988). Cohen actually didn't claim that the typical study in the social sciences has a 'medium' effect size, and instead said (1988, p. 13): "Many effects sought in personality, social, and clinical-psychological research are likely to be small effects as here defined". We see how a string of mis-citations eventually leads to a misleading rule of thumb.</p>
+<p>Rules of thumb seem to primarily emerge due to mis-citations and/or overly simplistic recommendations. Simonsohn, Nelson, and Simmons <span class="citation">(<a href="references.html#ref-simmons_false-positive_2011" role="doc-biblioref">2011</a>)</span> recommended that "Authors must collect at least 20 observations per cell". A later recommendation by the same authors presented at a conference suggested to use n &gt; 50, unless you study large effects <span class="citation">(<a href="references.html#ref-simmons_life_2013" role="doc-biblioref">Simmons et al., 2013</a>)</span>. Regrettably, this advice is now often mis-cited as a justification to collect no more than 50 observations per condition without considering the expected effect size. If authors justify a specific sample size (e.g., n = 50) based on a general recommendation in another paper, either they are mis-citing the paper, or the paper they are citing is flawed.</p>
+<p>Another common heuristic is to collect the same number of observations as were collected in a previous study. This strategy is not recommended in scientific disciplines with widespread publication bias, and/or where novel and surprising findings from largely exploratory single studies are published. Using the same sample size as a previous study is only a valid approach if the sample size justification in the previous study also applies to the current study. Instead of stating that you intend to collect the same sample size as an earlier study, repeat the sample size justification, and update it in light of any new information (such as the effect size in the earlier study, see Table <a href="what-is-your-inferential-goal.html#tab:table-es-just">13.2</a>).</p>
+<p>Peer reviewers and editors should carefully scrutinize rules of thumb sample size justifications, because they can make it seem like a study has high informational value for an inferential goal even when the study will yield uninformative results. Whenever one encounters a sample size justification based on a heuristic, ask yourself: 'Why is this heuristic used?' It is important to know what the logic behind a heuristic is to determine whether the heuristic is valid for a specific situation. In most cases, heuristics are based on weak logic, and not widely applicable. It might be possible that fields develop valid heuristics for sample size justifications. For example, it is possible that a research area reaches widespread agreement that effects smaller than <em>d</em> = 0.3 are too small to be of interest, and all studies in a field use sequential designs (see below) that have 90% power to detect a <em>d</em> = 0.3. Alternatively, it is possible that a field agrees that data should be collected with a desired level of accuracy, irrespective of the true effect size. In these cases, valid heuristics would exist based on generally agreed goals of data collection. For example, <span class="citation">Simonsohn (<a href="references.html#ref-simonsohn_small_2015" role="doc-biblioref">2015</a>)</span> suggests to design replication studies that have 2.5 times as large sample sizes as the original study, as this provides 80% power for an equivalence test against an equivalence bound set to the effect the original study had 33% power to detect, assuming the true effect size is 0. As original authors typically do not specify which effect size would falsify their hypothesis, the heuristic underlying this 'small telescopes' approach is a good starting point for a replication study with the inferential goal to reject the presence of an effect as large as was described in an earlier publication. It is the responsibility of researchers to gain the knowledge to distinguish valid heuristics from mindless heuristics, and to be able to evaluate whether a heuristic will yield an informative result given the inferential goal of the researchers in a specific study, or not.</p>
+</div>
+<div id="no-justification" class="section level2" number="12.6">
+<h2><span class="header-section-number">12.6</span> No Justification</h2>
+<p>It might sound like a <em>contradictio in terminis</em>, but it is useful to distinguish a final category where researchers explicitly state they do not have a justification for their sample size. Perhaps the resources were available to collect more data, but they were not used. A researcher could have performed a power analysis, or planned for precision, but they did not. In those cases, instead of pretending there was a justification for the sample size, honesty requires you to state there is no sample size justification. This is not necessarily bad. It is still possible to discuss the smallest effect size of interest, the minimal statistically detectable effect, the width of the confidence interval around the effect size, and to plot a sensitivity power analysis, in relation to the sample size that was collected. If a researcher truly had no specific inferential goals when collecting the data, such an evaluation can perhaps be performed based on reasonable inferential goals peers would have when they learn about the existence of the collected data.</p>
+<p>Do not try to spin a story where it looks like a study was highly informative when it was not. Instead, transparently evaluate how informative the study was given effect sizes that were of interest, and make sure that the conclusions follow from the data. The lack of a sample size justification might not be problematic, but it might mean that a study was not informative for most effect sizes of interest, which makes it especially difficult to interpret non-significant effects, or estimates with large uncertainty.</p>
+</div>
+</div>
+  </main>
+
+  <div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page">
+      <h2>On this page</h2>
+      <div id="book-on-this-page"></div>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          <li><a id="book-source" href="#">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="#">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5">
+  <div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Improving Your Statistical Inferences</strong>" was written by Daniel Lakens. It was last built on 2022-02-09.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+<script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+
+</html>
