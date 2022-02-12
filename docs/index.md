@@ -1,37 +1,39 @@
-## Welcome to GitHub Pages
+--- 
+title: "Improving Your Statistical Inferences"
+author: "Daniel Lakens"
+date: "2022-02-12"
+site: bookdown::bookdown_site
+documentclass: krantz
+bibliography: [book.bib]
+monofont: "Source Code Pro"
+# url: your book url like https://bookdown.org/yihui/bookdown
+# cover-image: path to the social sharing image like images/cover.jpg
+description: |
+  This is a minimal example of using the bookdown package to write a book.
+  The HTML output format for this example is bookdown::bs4_book,
+  set in the _output.yml file.
+biblio-style: apalike
+csl: apa.csl # Downloaded from https://www.zotero.org/styles?q=id%3Aapa
+link-citations: yes
+output:
+  bookdown::pdf_book:
+    pandoc_args: --top-level-division=chapter
+---
 
-You can use the [editor on GitHub](https://github.com/Lakens/statistical_inferences/edit/master/docs/index.md) to maintain and preview the content for your website in Markdown files.
+# Welcome {-}
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
-### Markdown
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
 
-```markdown
-Syntax highlighted code block
+This online book captures the information in my [blog](https://daniellakens.blogspot.com/), the educational information in my MOOCs [Improving Your Statistical Inferences](https://www.coursera.org/learn/statistical-inferences) and [Improving Your Statistical Questions](https://www.coursera.org/learn/improving-statistical-questions), and my [scientific work](https://scholar.google.nl/citations?user=ZbqYyrsAAAAJ&hl=en) in one place. The goal is to make the information easier to find, more accessible to users, and present the most up to date information based on progressive insights, recent scientific developments, and new statistical software.
 
-# Header 1
-## Header 2
-### Header 3
+I have used my right to re-use and adapt my own open access articles, without adding quotation marks or citing myself. This work is shared under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](https://creativecommons.org/licenses/by-nc-nd/4.0/). Thanks to my collaborators Casper Albers, Farid Anvari, Aaron Caldwell, Harlan Cambell, Nicholas Coles, Lisa DeBruine, Marie Delacre, Zoltan Dienes, Noah van Dongen, Alexander Etz, Ellen Evers, Jaroslav Gottfriend, Seth Green, Christopher Harms, Arianne Herrera-Bennett, Joe Hilgard, Peder Isager, Maximilian Maier, Neil McLatchie, Brian Nosek, Pepijn Obels, Amy Orben, Anne Scheel, Janneke Staaks, Leo Tiokhin, Mehmet Tunç, Duygu Uygun Tunç, who have contributed to the work I have done in the past that has in part formed the basis of this book.
 
-- Bulleted
-- List
+If you find any mistakes, or have suggestions for improvement, let me know at D.Lakens\@tue.nl. I hope this material will be of use to you. 
 
-1. Numbered
-2. List
 
-**Bold** and _Italic_ and `Code` text
+Dr. Daniël Lakens
 
-[Link](url) and ![Image](src)
-```
+<img src="images/me.png" width="30%" style="display: block; margin: auto;" />
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
 
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Lakens/statistical_inferences/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
