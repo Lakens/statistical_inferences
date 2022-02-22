@@ -251,7 +251,14 @@ One should also carefully reflect on the choice of the alpha level when an exper
 
 The second reason is most relevant for large data sets, and is related to [Lindley's paradox](#lindley). As the statistical power increases, some *p*-values below 0.05 (e.g., *p* = 0.04) can be more likely when there is *no* effect than when there *is* an effect. To prevent situations where a frequentist rejects the null hypothesis based on *p* < 0.05, when the evidence in the test favors the null hypothesis over the alternative hypothesis, it is recommended to lower the alpha level as a function of the sample size. The need to do so is discussed by @leamer_specification_1978, who writes "The rule of thumb quite popular now, that is, setting the significance level arbitrarily to .05, is shown to be deficient in the sense that from every reasonable viewpoint the significance level should be a decreasing function of sample size." The idea of this approach is to reduce the alpha level such that a Bayes factor or likelihood computed for the a significant results would never be evidence *for* the null hypothesis (for an online Shiny app to perform such calculations, see [here](https://shiny.ieis.tue.nl/JustifyAlpha/)).
 
-## Why you don't need to adjust your alpha level for all tests you'll do in your lifetime.
+
+```r
+knitr::include_url("https://shiny.ieis.tue.nl/JustifyAlpha/")
+```
+
+<iframe src="https://shiny.ieis.tue.nl/JustifyAlpha/" width="100%" height="400px" data-external="1"></iframe>
+
+## Why you don't need to adjust your alpha level for all tests you'll do in your lifetime.{#multiplecomparisons}
 
 Some researchers criticize corrections for multiple comparisons because one might as well correct for all tests you do in your lifetime [@perneger_whats_1998. If you choose to use a Neyman-Pearson approasch to statistics the only reason to correct for all tests you perform in your lifetime is when all the work you have done in your life tests a single theory, and you would use your last words to decide to accept or reject this theory, as long as only one of all individual tests you have performed yielded a p < α. Researchers rarely work like this.
 

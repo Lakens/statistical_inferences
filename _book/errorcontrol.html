@@ -49,7 +49,8 @@
 <li><a class="" href="effectsize.html"><span class="header-section-number">6</span> Effect Sizes</a></li>
 <li><a class="" href="confint.html"><span class="header-section-number">7</span> Confidence Intervals</a></li>
 <li><a class="" href="power.html"><span class="header-section-number">8</span> Sample size justification</a></li>
-<li><a class="" href="references.html"><span class="header-section-number">9</span> References</a></li>
+<li><a class="" href="equivalencetest.html"><span class="header-section-number">9</span> Equivalence Testing</a></li>
+<li><a class="" href="references.html"><span class="header-section-number">10</span> References</a></li>
 </ul>
 
         <div class="book-extra">
@@ -296,10 +297,14 @@ Figure 2.11: Weighted combined error rate, minimized at alpha = 0.037.
 197 matter of convention having little scientific or logical basis. When the power of tests is likely to be low under these levels of significance, and when Type 1 and Type 2 errors are of approximately equal importance, the .30 and .20 levels of significance may be more appropriate than the .05 and .01 levels.” The reasoning here is that a design that has 70% power for the smallest effect size of interest would not balance the Type 1 and Type 2 error rates in a sensible manner. Of course, such an increase An increase of the alpha level should only be deemed acceptable when authors can justify that the costs of the increase in the Type 1 error rate is sufficiently compensated by the benefit of decreased Type 2 error rate. This will encompass cases where (1) the study will have practical implications that require decision making, (2) a cost-benefit analysis is provided that gives a clear rationale for relatively high costs of a Type 2 error, (3) the probability that H1 is false is relatively low, and (4) it is not feasible to blackuce overall error rates by collecting more data.</p>
 <p>One should also carefully reflect on the choice of the alpha level when an experiment achieves very high statistical power for all effect sizes that are considered meaningful. If a study has 99% power for effect sizes of interest, and thus a 1% Type 2 error rate, but uses the default 5% alpha level, it also suffers from a lack of balance, and the use of a lower alpha level would lead to a more balanced decision, and increase the severity of the test.</p>
 <p>The second reason is most relevant for large data sets, and is related to <a href="#lindley">Lindley's paradox</a>. As the statistical power increases, some <em>p</em>-values below 0.05 (e.g., <em>p</em> = 0.04) can be more likely when there is <em>no</em> effect than when there <em>is</em> an effect. To prevent situations where a frequentist rejects the null hypothesis based on <em>p</em> &lt; 0.05, when the evidence in the test favors the null hypothesis over the alternative hypothesis, it is recommended to lower the alpha level as a function of the sample size. The need to do so is discussed by <span class="citation">Leamer (<a href="references.html#ref-leamer_specification_1978" role="doc-biblioref">1978</a>)</span>, who writes "The rule of thumb quite popular now, that is, setting the significance level arbitrarily to .05, is shown to be deficient in the sense that from every reasonable viewpoint the significance level should be a decreasing function of sample size." The idea of this approach is to reduce the alpha level such that a Bayes factor or likelihood computed for the a significant results would never be evidence <em>for</em> the null hypothesis (for an online Shiny app to perform such calculations, see <a href="https://shiny.ieis.tue.nl/JustifyAlpha/">here</a>).</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_url.html">include_url</a></span><span class="op">(</span><span class="st">"https://shiny.ieis.tue.nl/JustifyAlpha/"</span><span class="op">)</span></code></pre></div>
+<iframe src="https://shiny.ieis.tue.nl/JustifyAlpha/" width="100%" height="400px" data-external="1">
+</iframe>
 </div>
-<div id="why-you-dont-need-to-adjust-your-alpha-level-for-all-tests-youll-do-in-your-lifetime." class="section level2" number="2.5">
+<div id="multiplecomparisons" class="section level2" number="2.5">
 <h2>
-<span class="header-section-number">2.5</span> Why you don't need to adjust your alpha level for all tests you'll do in your lifetime.<a class="anchor" aria-label="anchor" href="#why-you-dont-need-to-adjust-your-alpha-level-for-all-tests-youll-do-in-your-lifetime."><i class="fas fa-link"></i></a>
+<span class="header-section-number">2.5</span> Why you don't need to adjust your alpha level for all tests you'll do in your lifetime.<a class="anchor" aria-label="anchor" href="#multiplecomparisons"><i class="fas fa-link"></i></a>
 </h2>
 <p>Some researchers criticize corrections for multiple comparisons because one might as well correct for all tests you do in your lifetime [<span class="citation">Perneger (<a href="references.html#ref-perneger_whats_1998" role="doc-biblioref">1998</a>)</span>. If you choose to use a Neyman-Pearson approasch to statistics the only reason to correct for all tests you perform in your lifetime is when all the work you have done in your life tests a single theory, and you would use your last words to decide to accept or reject this theory, as long as only one of all individual tests you have performed yielded a p &lt; α. Researchers rarely work like this.</p>
 <p>Instead, in a Neyman-Pearson approach to hypothesis testing, the goal is to use data to make decisions about how to act. Neyman <span class="citation">(<a href="references.html#ref-neyman_inductive_1957" role="doc-biblioref">Neyman, 1957</a>)</span> calls his approach <strong>inductive behavior</strong>. The outcome of an experiment leads one to take different possible actions, which can be either practical (e.g., implement a new procedure, abandon a research line) or scientific (e.g., claim there is or is no effect). From an error-statistical approach <span class="citation">(<a href="references.html#ref-mayo_statistical_2018" role="doc-biblioref">Mayo, 2018</a>)</span> inflated Type 1 error rates mean that it has become very likely that you will be able to claim support for your hypothesis, even when the hypothesis is wrong. This reduces the severity of the test. To prevent this, we need to control our error rate at the level of our claim.</p>
@@ -473,7 +478,7 @@ likely than slightly <strong>higher</strong> <em>p</em>-values (<em>p</em> = 0.0
 <li><a class="nav-link" href="#type-1-error-inflation"><span class="header-section-number">2.2</span> Type 1 error inflation</a></li>
 <li><a class="nav-link" href="#optional-stopping"><span class="header-section-number">2.3</span> Optional stopping</a></li>
 <li><a class="nav-link" href="#justifyerrorrate"><span class="header-section-number">2.4</span> Justifying Error Rates</a></li>
-<li><a class="nav-link" href="#why-you-dont-need-to-adjust-your-alpha-level-for-all-tests-youll-do-in-your-lifetime."><span class="header-section-number">2.5</span> Why you don't need to adjust your alpha level for all tests you'll do in your lifetime.</a></li>
+<li><a class="nav-link" href="#multiplecomparisons"><span class="header-section-number">2.5</span> Why you don't need to adjust your alpha level for all tests you'll do in your lifetime.</a></li>
 <li><a class="nav-link" href="#power-analysis"><span class="header-section-number">2.6</span> Power Analysis</a></li>
 <li>
 <a class="nav-link" href="#test-yourself-1"><span class="header-section-number">2.7</span> Test Yourself</a><ul class="nav navbar-nav">
@@ -498,7 +503,7 @@ likely than slightly <strong>higher</strong> <em>p</em>-values (<em>p</em> = 0.0
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Improving Your Statistical Inferences</strong>" was written by Daniel Lakens. It was last built on 2022-02-12.</p>
+    <p>"<strong>Improving Your Statistical Inferences</strong>" was written by Daniel Lakens. It was last built on 2022-02-21.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
