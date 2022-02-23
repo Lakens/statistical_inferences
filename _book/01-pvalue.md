@@ -28,12 +28,12 @@ Cox [-@cox_problems_1958] writes:
 
 >it might be argued that in making an inference we are 'deciding' to make a statement of a certain type about the populations and that therefore, provided that the word decision is not interpreted too narrowly, the study of statistical decisions embraces that of inference. The point here is that one of the main general problems of statistical inference consists in deciding what types of statement can usefully be made and exactly what they mean.
 
-Thus, in a Neyman-Pearson approach, *p*-values form the basis of decisions about which claims to make. In science, such claims underly most novel experiments in the form of *auxiliary hypotheses*, or the assumptions about underlying hypotheses that are assumed to be accurate in order for a test to work as planned. For example, if it is important that participants can see color in a planned experiment, we assume it is true that the [Ishihara test](https://en.wikipedia.org/wiki/Ishihara_test) successfully identifies which participants are colorblind. 
+Thus, in a Neyman-Pearson approach, *p*-values form the basis of decisions about which claims to make. In science, such claims underly most novel experiments in the form of **auxiliary hypotheses**, or the assumptions about underlying hypotheses that are assumed to be accurate in order for a test to work as planned. For example, if it is important that participants can see color in a planned experiment, we assume it is true that the [Ishihara test](https://en.wikipedia.org/wiki/Ishihara_test) successfully identifies which participants are colorblind. 
 
 ## Creating a null model
 
 <div class="figure" style="text-align: center">
-<img src="images/worship.jpg" alt="Scientists have a tendency to worship *p*-values below a value of 0.05." width="100%" />
+<img src="images/worship.jpg" alt="Scientists have a tendency to worship *p*-values below a value of 0.05." width="25%" />
 <p class="caption">(\#fig:worship)Scientists have a tendency to worship *p*-values below a value of 0.05.</p>
 </div>
 
@@ -189,7 +189,7 @@ When there is no true effect, *p*-values are **uniformly distributed**. This mea
 <p class="caption">(\#fig:pdistr2)Distribution of *p*-values when power = 50%.</p>
 </div>
 
-## Lindley's paradox(#lindley)
+## Lindley's paradox{#lindley}
 
 As the statistical power increases, some *p*-values below 0.05 (e.g., *p* = 0.04) can be more likely when there is *no* effect than when there *is* an effect. This is known as Lindley's paradox [@lindley_statistical_1957], or sometimes the Jeffreys-Lindley paradox [@spanos_who_2013]. Because the distribution of *p*-values is a function of the statistical power [@cumming_replication_2008], the higher the power, the more right-skewed the distribution becomes (i.e., the more likely it becomes that small *p*-values are observed). When there is no true effect *p*-values are uniformly distributed, and 1% of observed *p*-values fall between 0.04 and 0.05. When the statistical power is extremely high, not only will most *p*-values fall below 0.05, most *p*-values will fall below 0.01. In Figure \@ref(fig:paradox) we see that with high power very small *p*-values (e.g., 0.001) are more likely to be observed when there *is* an effect than when there is *no* effect (e.g., the dotted black curve representing 99% power falls above the grey horizontal line representing the uniform distribution when the null is true for a *p*-value of 0.01). 
 
@@ -216,7 +216,7 @@ Even when we have made correct claims, the underlying theory can be false. Poppe
 
 Some statisticians recommend interpreting *p*-values as measures of *evidence*. For example, Bland [-@bland_introduction_2015] teaches that *p*-values can be interpreted as a 'rough and ready' guide for the strength of evidence, and that *p* > 0.1 indicates 'little or no evidence', 0.01 < *p* < 0.05 indicates 'evidence', *p* < 0.001 is 'very strong evidence'. This is incorrect [@lakens_why_2022], as is clear from the previous sections on Lindley's paradox, and uniform *p*-value distributions. If you want to quantify *evidence*, see the chapters on [likelihoods][#likelihoods] or [Bayesian statistics][#bayes].
 
-## Preventing common misconceptions about *p*-values
+## Preventing common misconceptions about *p*-values{#misconceptions}
 
 A *p*-value is the probability of the observed data, or more extreme data, under the assumption that the null hypothesis is true. To understand what this means, it might be especially useful to know what this doesn’t mean. First, we need to know what ‘the assumption that the null hypothesis is true’ looks like, and which data we should expect if the null hypothesis is true. Although the null hypothesis can be any value, in this assignment we will assume the null hypothesis is specified as a mean difference of 0. For example, we might be interested in calculating the difference between a control condition and an experimental condition on a dependent variable. 
 
@@ -258,7 +258,6 @@ When we do a study, we rarely already know what the true mean difference is (if 
 <img src="01-pvalue_files/figure-html/fig.1.3.4-1.png" width="100%" style="display: block; margin: auto;" />
 
 But Omniscient Jones could have said the true difference was much larger. Let’s assume we do another study, but now before we collect our 50 observations, Omniscient Jones tells us that the true mean difference is 1.5. The null model does not change, but the alternative model now moves over to the right. 
-
 
 
 

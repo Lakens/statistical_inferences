@@ -81,7 +81,7 @@ Figure 9.1: The mean difference and its confidence interval plotted below the <e
 </p>
 </div>
 <p>Let's first look at the left curve. We see the highlighted area in the tails that highlights which observed mean differences would be extreme enough to statistically reject an effect of -0.5. Our observed mean difference of -0.32 lies very close to 0.5, and if we look at the left distribution, the mean is not far enough away from 0.5 to fall in the green area that indicates when observed differences would be statistically significant. We can also perform the equivalence test using the TOSTER package, and look at the statistical test.</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/tsum_TOST.html">tsum_TOST</a></span><span class="op">(</span>m1 <span class="op">=</span> <span class="fl">4.55</span>, m2 <span class="op">=</span> <span class="fl">4.87</span>, sd1 <span class="op">=</span> <span class="fl">1.05</span>, sd2 <span class="op">=</span> <span class="fl">1.11</span>,
                   n1 <span class="op">=</span> <span class="fl">15</span>, n2 <span class="op">=</span> <span class="fl">15</span>, low_eqbound <span class="op">=</span> <span class="op">-</span><span class="fl">0.5</span>, high_eqbound <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
@@ -116,7 +116,7 @@ Figure 9.2: The mean difference and its confidence interval plotted below the th
 </p>
 </div>
 <p>If we wanted to have sufficient power to detect an effect of 0, which sample size would we need to collect?</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/power_t_TOST.html">power_t_TOST</a></span><span class="op">(</span>power <span class="op">=</span> <span class="fl">0.9</span>, delta <span class="op">=</span> <span class="fl">0</span>,
                      alpha <span class="op">=</span> <span class="fl">0.05</span>, type <span class="op">=</span> <span class="st">"two.sample"</span>,
                      low_eqbound <span class="op">=</span> <span class="op">-</span><span class="fl">0.5</span>, high_eqbound <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
@@ -132,7 +132,7 @@ Figure 9.2: The mean difference and its confidence interval plotted below the th
 ##          bounds = -0.5, 0.5
 ## 
 ## NOTE: n is number in *each* group</code></pre>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/tsum_TOST.html">tsum_TOST</a></span><span class="op">(</span>m1 <span class="op">=</span> <span class="fl">4.55</span>, m2 <span class="op">=</span> <span class="fl">4.87</span>, sd1 <span class="op">=</span> <span class="fl">1.05</span>, sd2 <span class="op">=</span> <span class="fl">1.11</span>,
                   n1 <span class="op">=</span> <span class="fl">88</span>, n2 <span class="op">=</span> <span class="fl">88</span>, low_eqbound <span class="op">=</span> <span class="op">-</span><span class="fl">0.5</span>, high_eqbound <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
@@ -158,7 +158,7 @@ Figure 9.2: The mean difference and its confidence interval plotted below the th
 ## 
 ## Note: SMD confidence intervals are an approximation. See vignette("SMD_calcs").</code></pre>
 <p>You might not expect a true difference of exactly zero of the mood manipulation. For example, you might deem it reasonable to expect a true effect of d = 0.2. You are still interested in showing this effect is too small too matter, which you defined as a difference of 0.5. If the true effect size is indeed d = 0.2, we should expect to observe effects much closer to the equivalence bound 0.5. To be able to reliable exclude effects larger than 0.5, we will need a larger sample size, similar to how we need a larger sample size for a null-hypothesis test powered to detect a d = 0.3, than a null-hypothesis test powered to detect a d = 0.5.</p>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># New TOSTER power functions allows power for expected non-zero effect.</span>
 <span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/power_t_TOST.html">power_t_TOST</a></span><span class="op">(</span>power <span class="op">=</span> <span class="fl">0.9</span>, delta <span class="op">=</span> <span class="fl">0.2</span>,
                      alpha <span class="op">=</span> <span class="fl">0.05</span>, type <span class="op">=</span> <span class="st">"two.sample"</span>,
@@ -177,7 +177,7 @@ Figure 9.2: The mean difference and its confidence interval plotted below the th
 ## NOTE: n is number in *each* group</code></pre>
 <p>It is better to specify the equivalence bounds in terms of raw effect sizes. Setting them in terms of Cohen's d leads to bias in the statistical test (as we have to use the observed standard deviation to translate Cohen's d into a raw effect size). This is in practice not too problematic in any single equivalence test, but as equivalence testing becomes more popular, and fields establish smallest effect sizes of interest, they should do so in raw effect size differences, not in terms of standardized effect size differences.</p>
 <p>There is no need to set an upper and lower bound for an equivalence test. Your question might be directional: Can I reject an effect larger than 0.5? In such a question, any effect smaller than 0.5, even an effect of -0.8, would reject effects you deem meaningful. An example of a situation where such a test is approrpiate is a replication study. If a previous study observed an effect of d = 0.48, and you perform a replication study, you might decide to consider any effect smaller than d = 0.2 a failure to replicate - including any effect in the opposite direction. Although most software for equivalence tests requires you to specify an upper and lower bound, you can mimick a one-sided test by setting the other equivalence bound to an extreme value for the research question you are asking. In the analysis below, the lower bound is set to d = -5. We see the data is very far removed from this bound, and of course the one-sided test against d = -5 will always be statistically significant, so it does not influence the final decision based on the TOST procedure.</p>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># New TOSTER function</span>
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/tsum_TOST.html">tsum_TOST</a></span><span class="op">(</span>m1 <span class="op">=</span> <span class="fl">4.55</span>, m2 <span class="op">=</span> <span class="fl">4.87</span>, sd1 <span class="op">=</span> <span class="fl">1.05</span>, sd2 <span class="op">=</span> <span class="fl">1.11</span>,
                   n1 <span class="op">=</span> <span class="fl">15</span>, n2 <span class="op">=</span> <span class="fl">15</span>, low_eqbound <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>, high_eqbound <span class="op">=</span> <span class="fl">0.5</span>,
@@ -205,15 +205,15 @@ Figure 9.2: The mean difference and its confidence interval plotted below the th
 ## Hedges' g(av) -0.2881401 0.3812249 -0.9301965 0.3193638        0.9
 ## 
 ## Note: SMD confidence intervals are an approximation. See vignette("SMD_calcs").</code></pre>
-<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="09-equivalencetest_files/figure-html/unnamed-chunk-7-1.png" width="100%" style="display: block; margin: auto;"></div>
-<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Old TOSTER power function do not take one-sided tests into account</span>
 <span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/powerTOSTtwo.html">powerTOSTtwo</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.05</span>, low_eqbound <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>, high_eqbound <span class="op">=</span> <span class="fl">0.5</span>, statistical_power <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span></code></pre></div>
 <pre><code>## The required sample size to achieve 90 % power with equivalence bounds of -5 and 0.5 is 87 per group, or 174 in total.</code></pre>
 <pre><code>## [1] 86.57739</code></pre>
-<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># New TOSTER power functions takes one-sided bounds into account</span>
 <span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/power_t_TOST.html">power_t_TOST</a></span><span class="op">(</span>power <span class="op">=</span> <span class="fl">0.9</span>, delta <span class="op">=</span> <span class="fl">0.0</span>,
                      alpha <span class="op">=</span> <span class="fl">0.05</span>, type <span class="op">=</span> <span class="st">"two.sample"</span>,
@@ -235,7 +235,7 @@ Figure 9.2: The mean difference and its confidence interval plotted below the th
 <h2>
 <span class="header-section-number">9.2</span> Equivalence tests for ANOVA<a class="anchor" aria-label="anchor" href="#equivalence-tests-for-anova"><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Get Data</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"InsectSprays"</span><span class="op">)</span>
 <span class="co"># Build ANOVA</span>
@@ -248,7 +248,7 @@ Figure 9.2: The mean difference and its confidence interval plotted below the th
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>We can use this summary to perform an equivalence test for an <em>F</em>-test:</p>
-<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/equ_ftest.html">equ_ftest</a></span><span class="op">(</span>Fstat <span class="op">=</span> <span class="fl">34.70228</span>,
           df1 <span class="op">=</span> <span class="fl">5</span>,
           df2 <span class="op">=</span> <span class="fl">66</span>,
@@ -262,17 +262,17 @@ Figure 9.2: The mean difference and its confidence interval plotted below the th
 ##  0.5806263 0.7804439
 ## sample estimates:
 ## [1] 0.724439</code></pre>
-<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/equ_anova.html">equ_anova</a></span><span class="op">(</span><span class="va">aovtest</span>,
           eqbound <span class="op">=</span> <span class="fl">0.35</span><span class="op">)</span></code></pre></div>
 <pre><code>##        effect df1 df2  F.value       p.null      pes eqbound     p.equ
 ## 1 spray         5  66 34.70228 3.182584e-17 0.724439    0.35 0.9999965</code></pre>
-<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/plot_pes.html">plot_pes</a></span><span class="op">(</span>Fstat <span class="op">=</span> <span class="fl">34.70228</span>,
          df1 <span class="op">=</span> <span class="fl">5</span>,
          df2 <span class="op">=</span> <span class="fl">66</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="09-equivalencetest_files/figure-html/unnamed-chunk-10-1.png" width="100%" style="display: block; margin: auto;"></div>
-<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/power_eq_f.html">power_eq_f</a></span><span class="op">(</span>df1 <span class="op">=</span> <span class="fl">2</span>, 
             df2 <span class="op">=</span> <span class="fl">60</span>,
             eqbound <span class="op">=</span> <span class="fl">.15</span><span class="op">)</span></code></pre></div>
@@ -284,6 +284,13 @@ Figure 9.2: The mean difference and its confidence interval plotted below the th
 ##         eqbound = 0.15
 ##       sig.level = 0.05
 ##           power = 0.8188512</code></pre>
+</div>
+<div id="reporting-equivalence-tests" class="section level2" number="9.3">
+<h2>
+<span class="header-section-number">9.3</span> Reporting equivalence tests<a class="anchor" aria-label="anchor" href="#reporting-equivalence-tests"><i class="fas fa-link"></i></a>
+</h2>
+<p>It is common practice to only report the test yielding the higher <em>p</em>-value of the two one-sided tests when reporting an equivalence test. Because both one-sided tests need to be statistically significant to reject the null hypothesis in an equivalence test (i.e., the presence of effects large enough to matter), when the larger of the two hypothesis tests rejects the equivalence bound, so does the other test. Unlike in null-hypothesis significance tests it is not common to report standardized effect sizes for equivalence tests, but there can be situations where researchers might want to discuss how far the effect is removed from the equivalence bounds on the raw scale. Prevent the erroneous interpretation to claim there is 'no effect', that an effect is 'absent', that the true effect size is 'zero', or vague verbal descriptions, such as that two groups yielded 'similar' or 'comparable' data. A significant equivalence test rejects effects more extreme that the equivalence bounds. Smaller true effects have not been rejected, and thus it remains possible that there is a true effect. Because a TOST procedure is a frequentist test based on a <em>p</em>-value, all other <a href="pvalue.html#misconceptions">misconceptions of <em>p</em>-values</a> should be prevented as well.</p>
+<p>When summarizing the main result of an equivalence test, for example in an abstract, always report the equivalence range that the data is tested against. Reading 'based on an equivalence test we concluded the absence of a meaningful effect' means something very different if the equivalence bounds were d = -0.9 to 0.9 than when the bounds were d = -0.2 to d = 0.2. So instead, write "based on an equivalence test with an equivalence range of d = -0.2 to 0.2, we conclude the absence of a meaningful effect. Even more neutral would be statement such as: 'based on an equivalence test, we rejected the presence of effects more extreme than -0.2 to 0.2, so we can act (with an error rate of alpha) as if the effect, is any, is less extreme than our equivalence range'. If both a null-hypothesis test and a significant test are non-significant, the findings is best described as 'inconclusive': There is not enough data to reject the null, or the smallest effect size of interest. If both the null-hypothesis test and the equivalence test are statistically significant, you can claim there is an effect, but at the same time it is too small to matter (given the justification for the equivalence range).</p>
 <pre><code>
 ## Absence of evidence is not evidence of absence.
 
@@ -388,31 +395,31 @@ TOSTER::t_TOST(x, y, low_eqbound = 0.4, high_eqbound = 0.4, eqbound_type = "raw"
 ## Hypothesis Tested: Equivalence
 ## Equivalence Bounds (raw):0.400 &amp; 0.400
 ## Alpha Level:0.05
-## The equivalence test was non-significant, t(197.86) = -0.207, p = 5.82e-01
-## The null hypothesis test was non-significant, t(197.86) = -0.00747, p = 9.94e-01
+## The equivalence test was non-significant, t(195.21) = 1.351, p = 9.11e-01
+## The null hypothesis test was non-significant, t(195.21) = 1.538, p = 1.26e-01
 ## NHST: don't reject null significance hypothesis that the effect is equal to zero 
 ##  TOST: don't reject null equivalence hypothesis
 ## 
 ## TOST Results 
-##                       t       SE       df   p.value
-## t-test     -0.007473825 2.002934 197.8611 0.9940443
-## TOST Lower -0.207180820 2.002934 197.8611 0.5819591
-## TOST Upper -0.207180820 2.002934 197.8611 0.4180409
+##                   t       SE       df    p.value
+## t-test     1.538201 2.135444 195.2069 0.12561889
+## TOST Lower 1.350886 2.135444 195.2069 0.08914785
+## TOST Upper 1.350886 2.135444 195.2069 0.91085215
 ## 
 ## Effect Sizes 
-##                   estimate        SE   lower.ci  upper.ci conf.level
-## Raw           -0.014969581 2.0029343 -3.3250013 3.2950622        0.9
-## Hedges' g(av) -0.001052946 0.1421416 -0.2347732 0.2326502        0.9
+##                estimate        SE    lower.ci upper.ci conf.level
+## Raw           3.2847409 2.1354436 -0.24450024 6.813982        0.9
+## Hedges' g(av) 0.2166974 0.1425821 -0.01594422 0.452918        0.9
 ## 
 ## Note: SMD confidence intervals are an approximation. See vignette("SMD_calcs").</code></pre>
-<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">effectsize</span><span class="fu">::</span><span class="fu"><a href="https://easystats.github.io/effectsize/reference/cohens_d.html">hedges_g</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></code></pre></div>
 <pre><code>## Hedges' g |        95% CI
 ## -------------------------
-## -1.05e-03 | [-0.28, 0.28]
+## 0.22      | [-0.06, 0.49]
 ## 
 ## - Estimated using pooled SD.</code></pre>
-<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Immediate equivalence test</span>
 <span class="fu">effectsize</span><span class="fu">::</span><span class="fu"><a href="https://easystats.github.io/bayestestR/reference/equivalence_test.html">equivalence_test</a></span><span class="op">(</span>
   <span class="fu">effectsize</span><span class="fu">::</span><span class="fu"><a href="https://easystats.github.io/effectsize/reference/cohens_d.html">cohens_d</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span>,
@@ -424,7 +431,7 @@ TOSTER::t_TOST(x, y, low_eqbound = 0.4, high_eqbound = 0.4, eqbound_type = "raw"
 ## 
 ## Cohen's d |        95% CI |        H0
 ## -------------------------------------
-## -1.06e-03 | [-0.28, 0.28] | Undecided</code></pre>
+## 0.22      | [-0.06, 0.50] | Undecided</code></pre>
 
 </div>
 </div>
@@ -437,6 +444,7 @@ TOSTER::t_TOST(x, y, low_eqbound = 0.4, high_eqbound = 0.4, eqbound_type = "raw"
 <li><a class="nav-link" href="#equivalencetest"><span class="header-section-number">9</span> Equivalence Testing</a></li>
 <li><a class="nav-link" href="#equivalence-tests"><span class="header-section-number">9.1</span> Equivalence tests</a></li>
 <li><a class="nav-link" href="#equivalence-tests-for-anova"><span class="header-section-number">9.2</span> Equivalence tests for ANOVA</a></li>
+<li><a class="nav-link" href="#reporting-equivalence-tests"><span class="header-section-number">9.3</span> Reporting equivalence tests</a></li>
 </ul>
 
       <div class="book-extra">
@@ -454,7 +462,7 @@ TOSTER::t_TOST(x, y, low_eqbound = 0.4, high_eqbound = 0.4, eqbound_type = "raw"
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Improving Your Statistical Inferences</strong>" was written by Daniel Lakens. It was last built on 2022-02-21.</p>
+    <p>"<strong>Improving Your Statistical Inferences</strong>" was written by Daniel Lakens. It was last built on 2022-02-23.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

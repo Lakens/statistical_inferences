@@ -310,6 +310,12 @@ TOSTER::power_eq_f(df1 = 2,
 ##       sig.level = 0.05
 ##           power = 0.8188512
 ```
+## Reporting equivalence tests 
+
+It is common practice to only report the test yielding the higher *p*-value of the two one-sided tests when reporting an equivalence test. Because both one-sided tests need to be statistically significant to reject the null hypothesis in an equivalence test (i.e., the presence of effects large enough to matter), when the larger of the two hypothesis tests rejects the equivalence bound, so does the other test. Unlike in null-hypothesis significance tests it is not common to report standardized effect sizes for equivalence tests, but there can be situations where researchers might want to discuss how far the effect is removed from the equivalence bounds on the raw scale. Prevent the erroneous interpretation to claim there is 'no effect', that an effect is 'absent', that the true effect size is 'zero', or vague verbal descriptions, such as that two groups yielded 'similar' or 'comparable' data. A significant equivalence test rejects effects more extreme that the equivalence bounds. Smaller true effects have not been rejected, and thus it remains possible that there is a true effect. Because a TOST procedure is a frequentist test based on a *p*-value, all other [misconceptions of *p*-values](#misconceptions) should be prevented as well. 
+
+When summarizing the main result of an equivalence test, for example in an abstract, always report the equivalence range that the data is tested against. Reading 'based on an equivalence test we concluded the absence of a meaningful effect' means something very different if the equivalence bounds were d = -0.9 to 0.9 than when the bounds were d = -0.2 to d = 0.2. So instead, write "based on an equivalence test with an equivalence range of d = -0.2 to 0.2, we conclude the absence of a meaningful effect. Even more neutral would be statement such as: 'based on an equivalence test, we rejected the presence of effects more extreme than -0.2 to 0.2, so we can act (with an error rate of alpha) as if the effect, is any, is less extreme than our equivalence range'. If both a null-hypothesis test and a significant test are non-significant, the findings is best described as 'inconclusive': There is not enough data to reject the null, or the smallest effect size of interest. If both the null-hypothesis test and the equivalence test are statistically significant, you can claim there is an effect, but at the same time it is too small to matter (given the justification for the equivalence range).  
+
 
 
 ```
@@ -420,21 +426,21 @@ TOSTER::t_TOST(x, y, low_eqbound = 0.4, high_eqbound = 0.4, eqbound_type = "raw"
 ## Hypothesis Tested: Equivalence
 ## Equivalence Bounds (raw):0.400 & 0.400
 ## Alpha Level:0.05
-## The equivalence test was non-significant, t(197.86) = -0.207, p = 5.82e-01
-## The null hypothesis test was non-significant, t(197.86) = -0.00747, p = 9.94e-01
+## The equivalence test was non-significant, t(195.21) = 1.351, p = 9.11e-01
+## The null hypothesis test was non-significant, t(195.21) = 1.538, p = 1.26e-01
 ## NHST: don't reject null significance hypothesis that the effect is equal to zero 
 ##  TOST: don't reject null equivalence hypothesis
 ## 
 ## TOST Results 
-##                       t       SE       df   p.value
-## t-test     -0.007473825 2.002934 197.8611 0.9940443
-## TOST Lower -0.207180820 2.002934 197.8611 0.5819591
-## TOST Upper -0.207180820 2.002934 197.8611 0.4180409
+##                   t       SE       df    p.value
+## t-test     1.538201 2.135444 195.2069 0.12561889
+## TOST Lower 1.350886 2.135444 195.2069 0.08914785
+## TOST Upper 1.350886 2.135444 195.2069 0.91085215
 ## 
 ## Effect Sizes 
-##                   estimate        SE   lower.ci  upper.ci conf.level
-## Raw           -0.014969581 2.0029343 -3.3250013 3.2950622        0.9
-## Hedges' g(av) -0.001052946 0.1421416 -0.2347732 0.2326502        0.9
+##                estimate        SE    lower.ci upper.ci conf.level
+## Raw           3.2847409 2.1354436 -0.24450024 6.813982        0.9
+## Hedges' g(av) 0.2166974 0.1425821 -0.01594422 0.452918        0.9
 ## 
 ## Note: SMD confidence intervals are an approximation. See vignette("SMD_calcs").
 ```
@@ -446,7 +452,7 @@ effectsize::hedges_g(x, y)
 ```
 ## Hedges' g |        95% CI
 ## -------------------------
-## -1.05e-03 | [-0.28, 0.28]
+## 0.22      | [-0.06, 0.49]
 ## 
 ## - Estimated using pooled SD.
 ```
@@ -466,6 +472,6 @@ effectsize::equivalence_test(
 ## 
 ## Cohen's d |        95% CI |        H0
 ## -------------------------------------
-## -1.06e-03 | [-0.28, 0.28] | Undecided
+## 0.22      | [-0.06, 0.50] | Undecided
 ```
 

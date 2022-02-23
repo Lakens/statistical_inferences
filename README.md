@@ -1,3 +1,4 @@
 To do: 
 
-Chapter 1: CLEAN UP t-distribution plot
+Chapter 1: explain mu - link to equivalence testing chapter
+Chapter Effect sizes: Expand effect size interpretation
