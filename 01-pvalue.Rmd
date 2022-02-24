@@ -281,9 +281,9 @@ A *p*-value is the probability of the observed data, or more extreme data, under
 
 It is useful to distinguish the null hypothesis (the prediction that the mean difference in the population is exactly 0) and the null model (a model of the data we should expect when we collect data when the null hypothesis is true). The null hypothesis is a point at 0, but the null model is a distribution. It is visualized in textbooks or power analysis software using pictures as you can see below, with *t*-values on the horizontal axis, and a critical *t*-value somewhere between 1.96 – 2.00 (depending on the sample size). This is done because the statistical test when comparing two groups is based on the *t*-distribution, and the *p*-value is statistically significant when the *t*-value is larger than a critical *t*-value.
   
-I personally find things become a lot clearer if you plot the null model as mean differences instead of *t*-values. So below, you can see a null model for the mean differences we can expect when compare two groups of 50 observations where the true difference between the two groups is 0, and the standard deviation is in each group is. Because the standard deviation is 1, you can also interpret the mean differences as a Cohen’s d effect size. So this is also the distribution you can expect for a Cohen's d of 0, when collecting 50 observations.
+I personally find things become a lot clearer if you plot the null model as mean differences instead of *t*-values. So below, you can see a null model for the mean differences we can expect when compare two groups of 50 observations where the true difference between the two groups is 0, and the standard deviation is in each group is. Because the standard deviation is 1, you can also interpret the mean differences as a Cohen’s d effect size. So this is also the distribution you can expect for a Cohen's d of 0, when collecting 50 observations per group in an independent *t*-test.
 
-```{r, fig.1.3.1, echo = FALSE}
+```{r, fig.1.3.1, echo = FALSE, fig.cap="Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test"}
 # Figure 1 & 2 (set to N <- 5000 for Figure 2)
 # Set x-axis upper and lower scale points
 low_x <- -1
@@ -335,7 +335,7 @@ Let’s assume that the null model in the Figure above is true, and that we obse
 
 One reason why I prefer to plot the null model in raw scores instead of *t*-values is that you can see how the null model changes when the sample size increases. When we collect 5000 instead of 50 observations, we see the null model is still centered on 0 – but in our null model we now expect most values will fall very close around 0. 
 
-```{r, fig.1.3.2, echo = FALSE}
+```{r, fig.1.3.2, echo = FALSE, fig.cap= "Distribution of observed Cohen's d effect sizes when collecting 5000 observations per group in an independent t-test when d = 0."}
 low_x <- -1
 high_x <- 1
 y_max <- 2
@@ -392,7 +392,7 @@ knitr::include_graphics("images/1.3.3.png")
 
 When we do a study, we rarely already know what the true mean difference is (if we already knew, why would we do the study?). But let’s assume there is an all-knowing entity. Following Paul Meehl, we will call this all-knowing entity ‘Omniscient Jones’. Before we collect our sample of 50 observations, Omniscient Jones already knows that the true mean difference in the population is 0.5. Again, we should expect some variation around 0.5 in this alternative model. The figure below shows the expected data pattern when the null hypothesis is true (now indicated by a grey line) and it shows an alternative model, assuming a true mean difference of 0.5 exists in the population (indicated by a black line).
 
-```{r fig.1.3.4, echo = FALSE}
+```{r fig.1.3.4, echo = FALSE, fig.cap="Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test when d = 0."}
 #Figure 3 & 4 (set d <- 1.5 and high_x <- 1.5 for figure 4)-----
 low_x <- -1
 high_x <- 3
@@ -438,7 +438,7 @@ polygon(c(y, crit_d, crit_d), c(z, 0, 0), col = rgb(1, 0, 0, 1))
 
 But Omniscient Jones could have said the true difference was much larger. Let’s assume we do another study, but now before we collect our 50 observations, Omniscient Jones tells us that the true mean difference is 1.5. The null model does not change, but the alternative model now moves over to the right. 
 
-```{r fig.1.3.5, echo = FALSE, include = FALSE}
+```{r fig.1.3.5, echo = FALSE, include = FALSE, fig.cap="Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test for d = 0 and d = 0.5."}
 low_x <- -1
 high_x <- 1.5
 y_max <- 2
@@ -502,7 +502,7 @@ Let’s take a concrete example that will illustrate why a non-significant resul
 
 Nevertheless, we see that observing a mean difference of 0.35 is not only quite likely given that the true mean difference is 0.5, but observing a mean difference of 0.35 is much more likely under the alternative model, than under the null model. You can see this by comparing the height of the density curve at a difference of 0.35 for the null model, which is approximately 0.5, and the height of the density curve for the alternative model, which is approximately 1.5. See the chapter on [likelihoods](#likettest) for further details.
 
-```{r fig.1.3.6, echo = FALSE}
+```{r fig.1.3.6, echo = FALSE, fig.cap = "Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test for d = 0 and d = 0.5 when observing d = 0.35."}
 low_x <- -1
 high_x <- 1.5
 y_max <- 2
@@ -567,7 +567,7 @@ rnorm(n = 50, mean = 0, sd = 1)
 
 This command generates 50 random observations from a distribution with a mean of 0 and a standard deviation of 1 (in the long run – the mean and standard deviation will vary in each sample that is generated). Imagine we run this command once, and we observe a mean of 0.5. The figure below visualizes this scenario. We can perform a one-sample *t*-test against 0, and this test tells us, with a *p* < .05, that the data we have observed is surprisingly different from 0, assuming the random number generator in R functions as it should and generates data with a true mean of 0. 
 
-```{r fig.1.3.7, echo = FALSE}
+```{r fig.1.3.7, echo = FALSE, fig.cap="Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test when d = 0 and observing d = 0.5."}
 # Set x-axis upper and lower scalepoint
 low_x <- -1
 high_x <- 1
@@ -631,14 +631,14 @@ Note that nothing about this is a problem with the interpretation of a *p*-value
 
 This misinterpretation is one possible explanation of the incorrect statement that a *p*-value is ‘the probability that the data are observed by chance.’ Assume we collect 20 observations, and Omniscient Jones tells us the null hypothesis is true (as in the example above where we generated random numbers in R). This means we are sampling from the distribution in the figure below.
 
-```{r fig.1.3.8, echo = FALSE}
+```{r fig.1.3.8, echo = FALSE, fig.cap="Distribution of observed Cohen's d effect sizes when collecting 20 observations per group in an independent t-test when d = 0."}
 # Set x-axis upper and lower scale points
 low_x <- -1
 high_x <- 1
 y_max <- 2.5
 
 # Set sample size per group and effect size d (assumes equal sample sizes per group)
-N <- 50 # sample size per group for indepndent t-test
+N <- 20 # sample size per group for independent t-test
 d <- 0.0 # please enter positive d only
 # Calculate non-centrality parameter - equals t-value from sample
 ncp <- d * sqrt(N / 2)
@@ -681,6 +681,8 @@ It is impossible to calculate the probability that an effect will replicate, bas
 What we can generally take away from this last misunderstanding is the fact that the probability of replication depends on the presence versus the absence of a true effect. In other words, as stated above, if a true effect exists then the level of statistical power informs us about how frequently we should yield a significant result (e.g., 80% power means we should observe significant result 80% of the time). On the other hand, if the effect is null (or non-existent) then significant results will be observed only 5% of the time in the long run (i.e. the Type 1 error rate given an alpha of 0.05). Therefore, either the statistical power or the alpha level equals the probability of replication, depending on if there is or isn’t a true effect. 
 
 ## Test Yourself
+
+### Questions about which *p*-values you can expect
 
 Copy the code below to R and run the code. 
 
@@ -744,20 +746,19 @@ Feel free to increase and decrease the sample size and see what happens if you r
 
 A) The *p*-value distribution is exactly the same as with 50% power
 B) The *p*-value distribution is much steeper than with 50% power
-C) The *p*-value distribution is basically completely flat (ignoring some minorvariation due to random noise in the simulation)
+C) The *p*-value distribution is basically completely flat (ignoring some minor variation due to random noise in the simulation)
 D) The *p*-value distribution is normally distributed
 
 The question below builds on the simulation above where there was no true difference between the groups.
 
-**Q5**: Look at the leftmost bar in the plot, and look at the frequency of *p*-values in this bar What is the formal name for this bar?
+**Q5**: Look at the leftmost bar in the plot produced for Q4, and look at the frequency of *p*-values in this bar What is the formal name for this bar?
 
 A) The power (or true positives)
 B) The true negatives
 C) The Type 1 error (or false positives)
 D) The Type 2 error (or false negatives)
 
-Let’s take a look at just the *p*-values below 0.05. Bear with me for the next few steps – it will be worth it. Find the variable that determines how many bars there are, in the statement bars \<- 20. Change it to bars \<- 100. We will now get 1 bar for *p*-values between 0 and 0.01, one bar for *p*-values between 0.01 and 0.02, and 100 bars in total. The red dotted line will now indicate the frequency of *p*-values when the null hypothesis is true, where every bar contains 1% of the total number of *p*-values. We only want to look at *p*-values below 0.05, and we will cut off the plot at 0.05. Change xlim = c(0, 1) to xlim = c(0, 0.05). Instead of seeing all *p*-values between 0 and 1, we will only see *p*-values between 0 and 0.05. Re-run the simulation (still with m \<- 100). We
-see the same uniform distribution, but now every bar contains 1% of the *p*-values, so the *p*-value distribution is very flat and almost impossible to see (we will zoom in on the y-axis later this assignment). The red line now clearly gives the frequency for each bar, assuming the null hypothesis is true.
+Let’s take a look at just the *p*-values below 0.05. Bear with me for the next few steps – it will be worth it. Find the variable that determines how many bars there are, in the statement bars \<- 20. Change it to bars \<- 100. We will now get 1 bar for *p*-values between 0 and 0.01, one bar for *p*-values between 0.01 and 0.02, and 100 bars in total. The red dotted line will now indicate the frequency of *p*-values when the null hypothesis is true, where every bar contains 1% of the total number of *p*-values. We only want to look at *p*-values below 0.05, and we will cut off the plot at 0.05. Change xlim = c(0, 1) to xlim = c(0, 0.05). Instead of seeing all *p*-values between 0 and 1, we will only see *p*-values between 0 and 0.05. Re-run the simulation (still with m \<- 100). We see the same uniform distribution, but now every bar contains 1% of the *p*-values, so the *p*-value distribution is very flat and almost impossible to see (we will zoom in on the y-axis later this assignment). The red line now clearly gives the frequency for each bar, assuming the null hypothesis is true.
 
 Change the mean in the simulation in line 9 to m \<- 107 (remember n is still 51). Re-run the simulation. It’s clear we have very high power. Most *p*-values are in the left-most bar, which contains all *p*-values between 0.00 and 0.01.
 
@@ -783,6 +784,87 @@ B) The effect is significant, but it is without any doubt a Type 1 error.
 C) With high power, you should use an alpha level that is smaller than 0.05, and therefore, this effect can not be considered significant. 
 D) The effect is significant, but the data are more likely under the null hypothesis than under the alternative hypothesis.
 
+**Q8**: Play around with the sample size (n) and the mean (m) by changing the numerical values or both (and thus, vary the statistical power in the simulated studies). Look at the simulation result for the bar that contains *p*-values between 0.04 and 0.05. The red line indicates how many *p*-values would be found in this bar if the null-hypothesis was true (and is always at 1%). At the very best, how much more likely is a *p*-value between 0.04 and 0.05 to come from a *p*-value distribution representing a true effect, than it is to come from a *p*-value distribution when there is no effect? You can answer this question by seeing how much higher the bar of *p*-values between 0.04 and 0.05 can become. If at best the bar in the simulation is five times as high at the red line (so the bar shows 5% of *p*-values end up between 0.04 and 0.05, while the red line remains at 1%), then at best *p*-values between 0.04 and 0.05 are five times as likely when there is a true effect than when there is no true effect. 
+
+A) At best, *p*-values between 0.04 and 0.05 are equally likely under the
+alternative hypothesis, and under the null hypothesis.
+B) At best, *p*-values between 0.04 and 0.05 are approximately 4 times more
+likely under the alternative hypothesis, than under the null hypothesis.
+C) At best, *p*-values between 0.04 and 0.05 are \~10 times more likely under the alternative hypothesis, than under the null hypothesis.
+D) At best, *p*-values between 0.04 and 0.05 are \~30 times more likely under the alternative hypothesis, than under the null hypothesis.
+
+For this reason, statisticians warn that *p*-values just below 0.05 (e.g.,
+between 0.04 and 0.05) are at the very best weak support for the alternative
+hypothesis. If you find *p*-values in this range, consider replicating the
+study, or if that’s not possible, interpret the result at least a bit
+cautiously.
+
+### Questions about *p*-value misconceptions
+
+**Q1**: When the sample size in each group of an independent *t*-test is 50
+observations (see Figure \@ref(fig:fig.1.3.1)), which statement is correct?
+
+A) The mean of the differences you will observe between the two groups is always 0.
+B) The mean of the differences you will observe between the two groups is always different from 0.
+C) Observing a mean difference of +0.5 or -0.5 is considered surprising, assuming the null hypothesis is true.
+D) Observing a mean difference of +0.1 or -0.1 is considered surprising, assuming the null hypothesis is true.
+
+**Q2:** In what sense are the null models in the figures (Figure \@ref(fig:fig.1.3.1) and \@ref(fig:fig.1.3.2)) similar, and in what sense are they different?
+
+A) In both cases, the distributions are centered on zero, and the critical
+*t*-value is between 1.96 and 2 (for a two-sided test, depending on the sample size). But the larger the sample size, the closer to 0 the mean differences fall that are considered ‘surprising’.
+B) In both cases, a *t*-value of 0 is the most likely outcome, but the critical *t*-value is around 0.4 for n = 50, and around 0.05 for n = 5000.
+C) In both cases, means will vary in exactly the same way around 0, but the Type 1 error rate is much smaller when n = 5000 than when n = 50.
+D) Because the standard error is much larger for n = 50 than for n = 5000, it is much more likely that the null hypothesis is true for n = 50.
+
+**Q3:** You can play around with the alternative and null models in this online app: <http://shiny.ieis.tue.nl/d_p_power/>. The app allows you to specify the sample size in each group of an independent *t*-test (from 2 to infinity), the mean difference (from 0 to 2), and the alpha level. In the plot, the red areas visualize Type 1 errors. The blue area visualizes the Type 2 error rate (which we will discuss below). The app also tells you the critical value: There is a vertical line (with n = 50 this line falls at a mean difference of 0.4) and a verbal label that says: “Effects larger than 0.4 will be statistically significant”. Note that the same is true for effects smaller than -0.4, even though there is no second label there, but the app shows the situation for a two-sided independent *t*-test.
+
+You can see that on the left of the vertical line that indicates the critical mean difference there is a blue area that is part of the alternative model. This is the Type 2 error rate (or 1 - the power of the study). If a study has 80% power, 80% of the mean differences we will observe should fall on the right of the critical value indicated by the line. If the alternative model is true, but we observe an effect smaller than the critical value, the observed *p*-value will be larger than 0.05, even when there is a true effect. You can check in the app that the larger the sample size, the further to the right the entire alternative distribution falls, and thus the higher the power. You can also see that the larger the sample size, the narrower the distribution, and the less of the distribution will fall below the critical value (as long as the true population mean is larger than the critical value). Finally, the larger the alpha level, the further to the left the critical mean difference moves, and the smaller the area of the alternative distribution that falls below the critical value.
+
+The app also plots 3 graphs that illustrate the power curves as a function of different alpha levels, sample sizes, or true mean differences. Play around in the app by changing the values. Get a feel for how each variable impacts the null- and alternative models, the mean difference that will be statistically significant, and the Type 1 and Type 2 error rates.
+
+Open the app, and make sure it is set to the default settings of a
+sample size of 50 and an alpha level of 0.05. Look at the distribution of the null model. Set the sample size to 2. Set the sample size to 5000. The app will not allow you to plot data for a ‘group’ size of 1, but with n = 2 you will get a pretty good idea of the range of values you can expect when the true effect is 0, and when you collect single observations (n = 1). Given your experiences with the app as you change different parameters, which statement is true? 
+
+A) When the null hypothesis is true and the standard deviation is 1, if you
+randomly take 1 observation from each group and calculate the difference score, the differences will fall between -0.4 and 0.4 for 95% of the pairs of observations you will draw.
+B) When the null hypothesis is true and the standard deviation is 1, with n = 50 per group, 95% of studies where data is collected will observe in the long run a mean difference between -0.4 and 0.4.
+C) In any study with n = 50 per group, even when the SD is unknown and it is not known if the null hypothesis is true, you should rarely observe a mean difference more extreme than -0.4 or 0.4.
+D) As the sample size increases, the expected distribution of means become narrower for the null model, but not for the alternative model.
+
+**Q4:** Open the app once more with the default settings. Set the slider for the alpha level to 0.01 (while keeping the mean difference at 0.5 and the sample size at 50). Compared to the critical value when alpha = 0.05, which statement is true?
+
+A) Compared to an alpha of 0.05, only *less* extreme values are considered surprising when an alpha of 0.01 is used, and only differences larger than 0.53 scale points (or smaller than -0.53) will now be statistically significant.
+B) Compared to an alpha of 0.05, only *less* extreme values are considered surprising when an alpha of 0.01 is used, and only differences larger than 0.33 scale points (or smaller than -0.33) will now be statistically significant.
+C) Compared to an alpha of 0.05, only *more* extreme values are considered surprising when an alpha of 0.01 is used, and only differences larger than 0.53 scale points (or smaller than -0.53) will be statistically significant.
+D) Compared to an alpha of 0.05, only *more* extreme values are considered surprising when an alpha of 0.01 is used, and only differences larger than 0.33 scale points (or smaller than -0.33) will now be statistically significant.
+
+**Q5:** Why can’t you conclude that the null hypothesis is true, when you observe a statistically non-significant *p*-value (*p* \> alpha)?
+
+A) When calculating *p*-values you always need to take the prior probability into account.
+B) You need to acknowledge the probability that you have observed a Type 1 error.
+C) The null hypothesis is never true.
+D) You need to acknowledge the probability that you have observed a Type 2 error.
+
+**Q6:** Why can’t you conclude that the alternative hypothesis is true, when you observe a statistically significant *p*-value (*p* \< alpha)?
+
+A) When calculating *p*-values you always need to take the prior probability into account.
+B) You need to acknowledge the probability that you have observed a Type 1 error.
+C) The alternative hypothesis is never true.
+D) You need to acknowledge the probability that you have observed a Type 2 error.
+
+**Q7:** A common concern when interpreting *p*-values is that ‘significant’ in normal language implies ‘important’, and thus a ‘significant’ effect is interpreted as an ‘important’ effect. However, **the question whether an effect is important is completely orthogonal to the question whether it is different from zero, or even how large the effect is**. Not all effects have practical impact. The smaller the effect, the less likely such effects will be noticed by individuals, but such effects might still have a large impact on a societal level. Therefore, the general take home message is that **statistical significance does not answer the question whether an effect matters in practice, or is ‘practically important’**. To answer the question whether an effect matters, you need to present a **cost-benefit analysis**.
+
+Go to the app: <http://shiny.ieis.tue.nl/d_p_power/>. Set the sample size to 50000, the mean difference to 0.5, and the alpha level to 0.05. Which effects will, when observed, be statistically different from 0?
+
+A) Effects more extreme than -0.01 and 0.01
+B) Effects more extreme than -0.04 and 0.04
+C) Effects more extreme than -0.05 and 0.05
+D) Effects more extreme than -0.12 and 0.12
+
+If we plot the null model for a very large sample size (e.g., n = 10000 per group) we see that even very small mean differences (differences more extreme than a mean difference of 0.04) will be considered ‘surprising’. This still means that if there really is no difference in the population, you will observe differences larger than 0.04 less than 5% of the time, in the long run, and 95% of the observed differences will be smaller than a mean difference of 0.04. But it becomes more difficult to argue for the practical significance of such effects. Imagine that a specific intervention is successful in changing people’s spending behavior, and when implementing some intervention people save 12 cents per year. It is difficult to argue how this effect will make any individual happier. However, if this money is combined, it will yield over 2 million, which could be used to treat diseases in developing countries, where it would have a real impact. The cost of the intervention might be considered too high if the goal is to make individuals happier, but it might be consider worthwhile if the goal is to raise 2 million for charity.
+
+Not all effects in psychology are additive (we can not combine or transfer an increase in happiness of 0.04 scale points), so it is often more difficult to argue for the importance of small effects in subjective feelings. A cost-benefit analysis might show small effects matter a lot, but whether or not this is the case can not be inferred from a *p*-value. Instead, you need to report and interpret the [effect size](#effectsize),
 
 **Q8:** Let’s assume that the random number generator in R works, and we use rnorm(n = 50, mean = 0, sd = 1) to generate 50 observations, and the mean of these observations is 0.5, which in a one-sample *t*-test yields a *p*-value of 0.03, which is smaller than the alpha level (which we have set to 0.05). What is the probability that we have observed a significant difference (*p* \< alpha) just by chance?
 
