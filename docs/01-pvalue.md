@@ -225,8 +225,8 @@ It is useful to distinguish the null hypothesis (the prediction that the mean di
 I personally find things become a lot clearer if you plot the null model as mean differences instead of *t*-values. So below, you can see a null model for the mean differences we can expect when compare two groups of 50 observations where the true difference between the two groups is 0, and the standard deviation is in each group is. Because the standard deviation is 1, you can also interpret the mean differences as a Cohen’s d effect size. So this is also the distribution you can expect for a Cohen's d of 0, when collecting 50 observations per group in an independent *t*-test.
 
 <div class="figure" style="text-align: center">
-<img src="01-pvalue_files/figure-html/fig.1.3.1-1.png" alt="Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test" width="100%" />
-<p class="caption">(\#fig:fig.1.3.1)Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test</p>
+<img src="01-pvalue_files/figure-html/fig131-1.png" alt="Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test" width="100%" />
+<p class="caption">(\#fig:fig131)Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test</p>
 </div>
 
 The first thing to notice is that we expect that the mean of the null model is 0. Looking at the x-axis, we see the plotted distribution is centered on 0. But even if the mean difference in the population is 0 that does not imply every sample we draw from the population will give a mean difference of exactly zero. There is variation around the population value, as a function of the standard deviation and the sample size.
@@ -238,8 +238,8 @@ Let’s assume that the null model in the Figure above is true, and that we obse
 One reason why I prefer to plot the null model in raw scores instead of *t*-values is that you can see how the null model changes when the sample size increases. When we collect 5000 instead of 50 observations, we see the null model is still centered on 0 – but in our null model we now expect most values will fall very close around 0. 
 
 <div class="figure" style="text-align: center">
-<img src="01-pvalue_files/figure-html/fig.1.3.2-1.png" alt="Distribution of observed Cohen's d effect sizes when collecting 5000 observations per group in an independent t-test when d = 0." width="100%" />
-<p class="caption">(\#fig:fig.1.3.2)Distribution of observed Cohen's d effect sizes when collecting 5000 observations per group in an independent t-test when d = 0.</p>
+<img src="01-pvalue_files/figure-html/fig132-1.png" alt="Distribution of observed Cohen's d effect sizes when collecting 5000 observations per group in an independent t-test when d = 0." width="100%" />
+<p class="caption">(\#fig:fig132)Distribution of observed Cohen's d effect sizes when collecting 5000 observations per group in an independent t-test when d = 0.</p>
 </div>
 
 The distribution is much narrower because the distribution of mean differences is based on the standard error of the difference between means. This value is calculated based on the standard deviation and the sample size, as follows:
@@ -262,8 +262,8 @@ If we collected n = 5000, and we would again observe a mean difference of 0.5, i
 When we do a study, we rarely already know what the true mean difference is (if we already knew, why would we do the study?). But let’s assume there is an all-knowing entity. Following Paul Meehl, we will call this all-knowing entity ‘Omniscient Jones’. Before we collect our sample of 50 observations, Omniscient Jones already knows that the true mean difference in the population is 0.5. Again, we should expect some variation around 0.5 in this alternative model. The figure below shows the expected data pattern when the null hypothesis is true (now indicated by a grey line) and it shows an alternative model, assuming a true mean difference of 0.5 exists in the population (indicated by a black line).
 
 <div class="figure" style="text-align: center">
-<img src="01-pvalue_files/figure-html/fig.1.3.4-1.png" alt="Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test when d = 0." width="100%" />
-<p class="caption">(\#fig:fig.1.3.4)Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test when d = 0.</p>
+<img src="01-pvalue_files/figure-html/fig134-1.png" alt="Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test when d = 0." width="100%" />
+<p class="caption">(\#fig:fig134)Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test when d = 0.</p>
 </div>
 
 But Omniscient Jones could have said the true difference was much larger. Let’s assume we do another study, but now before we collect our 50 observations, Omniscient Jones tells us that the true mean difference is 1.5. The null model does not change, but the alternative model now moves over to the right. 
@@ -293,8 +293,8 @@ Let’s take a concrete example that will illustrate why a non-significant resul
 Nevertheless, we see that observing a mean difference of 0.35 is not only quite likely given that the true mean difference is 0.5, but observing a mean difference of 0.35 is much more likely under the alternative model, than under the null model. You can see this by comparing the height of the density curve at a difference of 0.35 for the null model, which is approximately 0.5, and the height of the density curve for the alternative model, which is approximately 1.5. See the chapter on [likelihoods](#likettest) for further details.
 
 <div class="figure" style="text-align: center">
-<img src="01-pvalue_files/figure-html/fig.1.3.6-1.png" alt="Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test for d = 0 and d = 0.5 when observing d = 0.35." width="100%" />
-<p class="caption">(\#fig:fig.1.3.6)Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test for d = 0 and d = 0.5 when observing d = 0.35.</p>
+<img src="01-pvalue_files/figure-html/fig136-1.png" alt="Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test for d = 0 and d = 0.5 when observing d = 0.35." width="100%" />
+<p class="caption">(\#fig:fig136)Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test for d = 0 and d = 0.5 when observing d = 0.35.</p>
 </div>
 
 All the *p*-value tells us is that a mean difference of 0.35 is not extremely surprising, if we assume the null hypothesis is true. There can be many reasons for this. In the real world, where we have no Omniscient Jones to tell us about the true mean difference, it is possible that there is a true effect, as illustrated in the figure above. 
@@ -331,8 +331,8 @@ rnorm(n = 50, mean = 0, sd = 1)
 This command generates 50 random observations from a distribution with a mean of 0 and a standard deviation of 1 (in the long run – the mean and standard deviation will vary in each sample that is generated). Imagine we run this command once, and we observe a mean of 0.5. The figure below visualizes this scenario. We can perform a one-sample *t*-test against 0, and this test tells us, with a *p* < .05, that the data we have observed is surprisingly different from 0, assuming the random number generator in R functions as it should and generates data with a true mean of 0. 
 
 <div class="figure" style="text-align: center">
-<img src="01-pvalue_files/figure-html/fig.1.3.7-1.png" alt="Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test when d = 0 and observing d = 0.5." width="100%" />
-<p class="caption">(\#fig:fig.1.3.7)Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test when d = 0 and observing d = 0.5.</p>
+<img src="01-pvalue_files/figure-html/fig137-1.png" alt="Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test when d = 0 and observing d = 0.5." width="100%" />
+<p class="caption">(\#fig:fig137)Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test when d = 0 and observing d = 0.5.</p>
 </div>
 
 The significant *p*-value does not allow us to conclude that the null hypothesis (“the random number generator works”) is false. It is true that the mean of the 50 samples we generated was surprisingly extreme. But a low *p*-value simply tells us that an observation is surprising. We should observe such surprising observations with a low probability when the null hypothesis is true – but they still happen. Therefore, a significant result does not mean an alternative hypothesis is true – the result can also be a Type 1 error, and in the example above, Omniscient Jones knows that this is the case. 
@@ -360,8 +360,8 @@ Note that nothing about this is a problem with the interpretation of a *p*-value
 This misinterpretation is one possible explanation of the incorrect statement that a *p*-value is ‘the probability that the data are observed by chance.’ Assume we collect 20 observations, and Omniscient Jones tells us the null hypothesis is true (as in the example above where we generated random numbers in R). This means we are sampling from the distribution in the figure below.
 
 <div class="figure" style="text-align: center">
-<img src="01-pvalue_files/figure-html/fig.1.3.8-1.png" alt="Distribution of observed Cohen's d effect sizes when collecting 20 observations per group in an independent t-test when d = 0." width="100%" />
-<p class="caption">(\#fig:fig.1.3.8)Distribution of observed Cohen's d effect sizes when collecting 20 observations per group in an independent t-test when d = 0.</p>
+<img src="01-pvalue_files/figure-html/fig138-1.png" alt="Distribution of observed Cohen's d effect sizes when collecting 20 observations per group in an independent t-test when d = 0." width="100%" />
+<p class="caption">(\#fig:fig138)Distribution of observed Cohen's d effect sizes when collecting 20 observations per group in an independent t-test when d = 0.</p>
 </div>
 
 If this is our reality, it means that 100% of the time that we observe a significant result, it is a false positive (or Type I error). Thus, 100% of our significant results are Type 1 errors. 
@@ -496,14 +496,14 @@ cautiously.
 ### Questions about *p*-value misconceptions
 
 **Q1**: When the sample size in each group of an independent *t*-test is 50
-observations (see Figure \@ref(fig:fig.1.3.1)), which statement is correct?
+observations (see Figure \@ref(fig:fig131)), which statement is correct?
 
 A) The mean of the differences you will observe between the two groups is always 0.
 B) The mean of the differences you will observe between the two groups is always different from 0.
 C) Observing a mean difference of +0.5 or -0.5 is considered surprising, assuming the null hypothesis is true.
 D) Observing a mean difference of +0.1 or -0.1 is considered surprising, assuming the null hypothesis is true.
 
-**Q2:** In what sense are the null models in the figures (Figure \@ref(fig:fig.1.3.1) and \@ref(fig:fig.1.3.2)) similar, and in what sense are they different?
+**Q2:** In what sense are the null models in the figures (Figure \@ref(fig:fig131) and \@ref(fig:fig132)) similar, and in what sense are they different?
 
 A) In both cases, the distributions are centered on zero, and the critical
 *t*-value is between 1.96 and 2 (for a two-sided test, depending on the sample size). But the larger the sample size, the closer to 0 the mean differences fall that are considered ‘surprising’.

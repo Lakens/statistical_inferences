@@ -2,7 +2,7 @@
 
 # Sample size justification {#power}
 
-Scientists perform empirical studies to collect data that helps to answer a research question. The more data that is collected, the more informative the study will be with respect to its inferential goals. A sample size justification should consider how informative the data will be given an inferential goal, such as estimating an effect size, or testing a hypothesis. Even though a sample size justification is sometimes requested in manuscript submission guidelines, when submitting a grant to a funder, or submitting a proposal to an ethical review board, the number of observations is often simply *stated*, but not *justified*. This makes it difficult to evaluate how informative a study will be. To prevent such concerns from emerging when it is too late (e.g., after a non-significant hypothesis test has been observed), researchers should carefully justify their sample size before data is collected.
+Scientists perform empirical studies to collect data that helps to answer a research question. The more data that is collected, the more informative the study will be with respect to its inferential goals. A sample size justification should consider how informative the data will be given an inferential goal, such as estimating an effect size, or testing a hypothesis. Even though a sample size justification is sometimes requested in manuscript submission guidelines, when submitting a grant to a funder, or submitting a proposal to an ethical review board, the number of observations is often simply *stated*, but not *justified*. This makes it difficult to evaluate how informative a study will be. To prevent such concerns from emerging when it is too late (e.g., after a non-significant hypothesis test has been observed), researchers should carefully justify their sample size before data is collected. In this chapter, which is largely identical to @lakens_sample_2022, we will explore in detail how to justify your sample size. 
 
 <table>
 <caption>(\#tab:table-pow-just)Overview of possible justifications for the sample size in a study.</caption>
@@ -183,49 +183,6 @@ Although it is common to set the Type I error rate to 5% and aim for 80% power, 
 
 Figure \@ref(fig:power-3) visualizes two distributions. The left distribution (dashed line) is centered at 0. This is a model for the null hypothesis. If the null hypothesis is true a statistically significant result will be observed if the effect size is extreme enough (in a two-sided test either in the positive or negative direction), but any significant result would be a Type I error (the dark grey areas under the curve). If there is no true effect, formally statistical power for a null hypothesis significance test is undefined. Any significant effects observed if the null hypothesis is true are Type I errors, or false positives, which occur at the chosen alpha level. The right distribution (solid line) is centered on an effect of *d* = 0.5. This is the specified model for the alternative hypothesis in this study, illustrating the expectation of an effect of *d* = 0.5 if the alternative hypothesis is true. Even though there is a true effect, studies will not always find a statistically significant result. This happens when, due to random variation, the observed effect size is too close to 0 to be statistically significant. Such results are false negatives (the light grey area under the curve on the right). To increase power, we can collect a larger sample size. As the sample size increases, the distributions become more narrow, reducing the probability of a Type II error.^[These figures can be reproduced and adapted in an online shiny app: http://shiny.ieis.tue.nl/d_p_power/.]
 
-
-```r
-N <- 50
-d <- 0.5
-p_upper <- 0.05
-ncp <- (d * sqrt(N / 2)) # Calculate non-centrality parameter d
-crit_d <- abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
-low_x <- min(-1 - crit_d)
-high_x <- max(d + 1 + crit_d)
-# calc d-distribution
-x <- seq(low_x, high_x, length = 10000) # create x values
-# Set max Y for graph
-d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2) # calculate distribution of d based on t-distribution
-y_max <- max(d_dist) + 1
-# create plot
-par(bg = "white")
-d <- round(d, 2)
-plot(-10, xlim = c(low_x, high_x), ylim = c(0, y_max), xlab = substitute(paste("Cohen's d")), ylab = "Density", main = "", cex.lab = 1.3, cex.axis = 1.2)
-# abline(v = seq(low_x,high_x,0.1), h = seq(0,0.5,0.1), col = "lightgrey", lty = 1)
-#    axis(side = 1, at = seq(low_x,high_x,0.1), labels = FALSE)
-# Add Type I error rate right
-crit_d <- abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
-y <- seq(crit_d, 10, length = 10000)
-z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2) * sqrt(N / 2)) # determine upperbounds polygon
-polygon(c(crit_d, y, 10), c(0, z, 0), col = rgb(0.3, 0.3, 0.3), border = rgb(0.3, 0.3, 0.3))
-# Add Type I error rate left
-crit_d <- -abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
-y <- seq(-10, crit_d, length = 10000)
-z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2) * sqrt(N / 2)) # determine upperbounds polygon
-polygon(c(y, crit_d, crit_d), c(z, 0, 0), col = rgb(0.3, 0.3, 0.3), border = rgb(0.3, 0.3, 0.3))
-# Add Type II error rate
-crit_d <- abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
-y <- seq(-10, crit_d, length = 10000)
-z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2)) # determine upperbounds polygon
-polygon(c(y, crit_d, crit_d), c(0, z, 0), col = rgb(0.7, 0.7, 0.7), border = rgb(0.7, 0.7, 0.7))
-# add d = 0 line
-d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = 0) * sqrt(N / 2)
-lines(x, d_dist, col = "grey40", type = "l", lwd = 3, lty = 5)
-# add effect line
-d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2) # calculate distribution of d based on t-distribution
-lines(x, d_dist, col = "black", type = "l", lwd = 3)
-```
-
 <div class="figure" style="text-align: center">
 <img src="08-samplesizejustification_files/figure-html/power-3-1.png" alt="Null (*d* = 0, grey dashed line) and alternative (*d* = 0.5, solid black line) hypothesis, with $\alpha$ = 0.05 and n = 80 per group." width="100%" />
 <p class="caption">(\#fig:power-3)Null (*d* = 0, grey dashed line) and alternative (*d* = 0.5, solid black line) hypothesis, with $\alpha$ = 0.05 and n = 80 per group.</p>
@@ -236,13 +193,6 @@ It is important to highlight that the goal of an a-priori power analysis is *not
 
 
 
-```r
-pow_eq <- TOSTER::powerTOSTtwo(
-  alpha = 0.05, 
-  statistical_power = 0.9, 
-  low_eqbound_d = -0.4, 
-  high_eqbound_d = 0.4)
-```
 
 This point is perhaps best illustrated if we consider a study where an a-priori power analysis is performed both for a test of the *presence* of an effect, as for a test of the *absence* of an effect. When designing a study, it essential to consider the possibility that there is no effect (e.g., a mean difference of zero). An a-priori power analysis can be performed both for a null hypothesis significance test, as for a test of the absence of a meaningful effect, such as an equivalence test that can statistically provide support for the null hypothesis by rejecting the presence of effects that are large enough to matter [@meyners_equivalence_2012; @lakens_equivalence_2017; @rogers_using_1993]. When multiple primary tests will be performed based on the same sample, each analysis requires a dedicated sample size justification. If possible, a sample size is collected that guarantees that all tests are informative, which means that the collected sample size is based on the largest sample size returned by any of the a-priori power analyses. 
 
@@ -372,13 +322,8 @@ In Figure \@ref(fig:power-effect1) the distribution of Cohen’s *d* is plotted 
 
 G\*Power provides the critical test statistic (such as the critical *t* value) when performing a power analysis. For example, Figure \@ref(fig:gcrit2) shows that for a correlation based on a two-sided test, with $\alpha$ = 0.05, and *N* = 30, only effects larger than *r* = 0.361 or smaller than *r* = -0.361 can be statistically significant. This reveals that when the sample size is relatively small, the observed effect needs to be quite substantial to be statistically significant.
 
-
-```r
-knitr::include_graphics("images/gpowcrit2.png")
-```
-
 <div class="figure" style="text-align: center">
-<img src="images/gpowcrit2.png" alt="The critical correlation of a test based on a total sample size of 30 and $\alpha$ = 0.05 calculated in G*Power." width="240" />
+<img src="images/gpowcrit2.png" alt="The critical correlation of a test based on a total sample size of 30 and $\alpha$ = 0.05 calculated in G*Power." width="100%" />
 <p class="caption">(\#fig:gcrit2)The critical correlation of a test based on a total sample size of 30 and $\alpha$ = 0.05 calculated in G*Power.</p>
 </div>
 
@@ -458,27 +403,6 @@ But even if we had access to all effect sizes (e.g., from pilot studies you have
 </div>
 
 
-```r
-# convert eta of 0.176 to f of 0.4621604
-pwr_res <- pwr.anova.test(k = 3,  
-               f = 0.4621604, 
-               sig.level = 0.05, 
-               power = 0.8)$n
-
-
-
-BUCSS_res <- ss.power.ba(
-  F.observed = 4.5,
-  N = 45,
-  levels.A = 3,
-  effect = c("factor.A"),
-  alpha.prior = 0.05,
-  alpha.planned = 0.05,
-  assurance = 0.5,
-  power = 0.8,
-  step = 0.001
-)
-```
 
 In essence, the problem with using small studies to estimate the effect size that will be entered into an a-priori power analysis is that due to publication bias or follow-up bias the effect sizes researchers end up using for their power analysis do not come from a full *F* distribution, but from what is known as a *truncated* *F* distribution [@taylor_bias_1996]. For example, imagine if there is extreme publication bias in the situation illustrated in Figure \@ref(fig:follow-up-bias). The only studies that would be accessible to researchers would come from the part of the distribution where $\eta_p^2$ > 0.08, and the test result would be statistically significant. It is possible to compute an effect size estimate that, based on certain assumptions, corrects for bias. For example, imagine we observe a result in the literature for a One-Way ANOVA with 3 conditions, reported as *F*(2, 42) = 0.017, $\eta_p^2$ = 0.176. If we would take this effect size at face value and enter it as our effect size estimate in an a-priori power analysis, the suggested sample size to achieve  would suggest we need to collect 17 observations in each condition. 
 
@@ -535,9 +459,6 @@ If a researcher can estimate the standard deviation of the observations that wil
 If we compute the 95% CI for an effect size of *d* = 0 based on the *t* statistic and sample size [@smithson_confidence_2003], we see that with 15 observations in each condition of an independent *t* test the 95% CI ranges from *d* = -0.7156777 to *d* = 0.7156777^[Confidence intervals around effect sizes can be computed using the MOTE Shiny app: https://www.aggieerin.com/shiny-server/]. The margin of error is half the width of the 95% CI, 0.7156777. A Bayesian estimator who uses an uninformative prior would compute a credible interval with the same (or a very similar) upper and lower bound [@albers_credible_2018; @kruschke_bayesian_2011], and might conclude that after collecting the data they would be left with a range of plausible values for the population effect that is too large to be informative. Regardless of the statistical philosophy you plan to rely on when analyzing the data, the evaluation of what we can conclude based on the width of our interval tells us that with 15 observation per group we will not learn a lot. 
 
 
-```r
-power_tost <- TOSTER::powerTOSTtwo(alpha = 0.05, N = 50, low_eqbound_d = -0.6, high_eqbound_d = 0.6)
-```
 
 One useful way of interpreting the width of the confidence interval is based on the effects you would be able to reject if the true effect size is 0. In other words, if there is no effect, which effects would you have been able to reject given the collected data, and which effect sizes would not be rejected, if there was no effect? Effect sizes in the range of *d* = 0.7 are findings such as "People become aggressive when they are provoked", "People prefer their own group to other groups", and "Romantic partners resemble one another in physical attractiveness" [@richard_one_2003]. The width of the confidence interval tells you that you can only reject the presence of effects that are so large, if they existed, you would probably already have noticed them. If it is true that most effects that you study are realistically much smaller than *d* = 0.7, there is a good possibility that we do not learn anything we didn't already know by performing a study with n = 15. Even without data, in most research lines we would not consider certain large effects plausible (although the effect sizes that are plausible differ between fields, as discussed below). On the other hand, in large samples where researchers can for example reject the presence of effects larger than *d* = 0.2, if the null hypothesis was true, this analysis of the width of the confidence interval would suggest that peers in many research lines would likely consider the study to be informative. 
 
@@ -551,27 +472,14 @@ We see that the margin of error is almost, but not exactly, the same as the mini
 ## Plot a Sensitivity Power Analysis
 
 
-```r
-pow_es <- pwr::pwr.t.test(
-  sig.level = 0.05,
-  n = 15,
-  power = 0.9,
-  type = "two.sample",
-  alternative = "two.sided")$d
-```
 
 
 A sensitivity power analysis fixes the sample size, desired power, and alpha level, and answers the question which effect size a study could detect with a desired power. A sensitivity power analysis is therefore performed when the sample size is already known. Sometimes data has already been collected to answer a different research question, or the data is retrieved from an existing database, and you want to perform a sensitivity power analysis for a new statistical analysis. Other times, you might not have carefully considered the sample size when you initially collected the data, and want to reflect on the statistical power of the study for (ranges of) effect sizes of interest when analyzing the results. Finally, it is possible that the sample size will be collected in the future, but you know that due to resource constraints the maximum sample size you can collect is limited, and you want to reflect on whether the study has sufficient power for effects that you consider plausible and interesting (such as the smallest effect size of interest, or the effect size that is expected). 
 
 Assume a researcher plans to perform a study where 30 observations will be collected in total, 15 in each between participant condition. Figure \@ref(fig:gsens0) shows how to perform a sensitivity power analysis in G\*Power for a study where we have decided to use an alpha level of 5%, and desire 90% power. The sensitivity power analysis reveals the designed study has 90% power to detect effects of at least *d* = 1.23. Perhaps a researcher believes that a desired power of 90% is quite high, and is of the opinion that it would still be interesting to perform a study if the statistical power was lower. It can then be useful to plot a sensitivity curve across a range of smaller effect sizes.
 
-
-```r
-knitr::include_graphics("images/gpow_sensitivity_1.png")
-```
-
 <div class="figure" style="text-align: center">
-<img src="images/gpow_sensitivity_1.png" alt="Sensitivity power analysis in G*Power software." width="240" />
+<img src="images/gpow_sensitivity_1.png" alt="Sensitivity power analysis in G*Power software." width="100%" />
 <p class="caption">(\#fig:gsens0)Sensitivity power analysis in G*Power software.</p>
 </div>
 
@@ -625,7 +533,7 @@ Although the original idea of designing studies that control Type I and Type II 
 We see that conventions are built on conventions: the norm to aim for 80% power is built on the norm to set the alpha level at 5%. What we should take away from Cohen is not that we should aim for 80% power, but that we should justify our error rates based on the relative seriousness of each error. This is where compromise power analysis comes in. If you share Cohen's belief that a Type I error is 4 times as serious as a Type II error, and building on our earlier study on 2000 employees, it makes sense to adjust the Type I error rate when the Type II error rate is low for all effect sizes of interest [@cascio_open_1983]. Indeed, @erdfelder_gpower_1996 created the G\*Power software in part to give researchers a tool to perform compromise power analysis. 
 
 <div class="figure" style="text-align: center">
-<img src="images/compromise1.png" alt="Compromise power analysis in G*Power." width="240" />
+<img src="images/compromise1.png" alt="Compromise power analysis in G*Power." width="100%" />
 <p class="caption">(\#fig:gpowcompromise)Compromise power analysis in G*Power.</p>
 </div>
 
@@ -1054,7 +962,7 @@ Some grant organizations distribute funds to be awarded as a function of how muc
 
 ### Improve management
 
-If the implicit or explicit goals that you should meet are still the same now as they were 10 years ago, and you did not receive a miraculous increase in money and time to do research, then an update of the evaluation criteria is long overdue. I sincerely hope your manager is capable of this, but some ‘upward management’ might be needed. In the coda of Lakens & Evers (2014) we wrote:
+If the implicit or explicit goals that you should meet are still the same now as they were 10 years ago, and you did not receive a miraculous increase in money and time to do research, then an update of the evaluation criteria is long overdue. I sincerely hope your manager is capable of this, but some ‘upward management’ might be needed. In the coda of Lakens and Evers [-@lakens_sailing_2014] we wrote:
 
 >All else being equal, a researcher running properly powered studies will clearly contribute more to cumulative science than a researcher running underpowered studies, and if researchers take their science seriously, it should be the former who is rewarded in tenure systems and reward procedures, not the latter.
 
