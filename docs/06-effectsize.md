@@ -54,83 +54,100 @@ minute differences will turn out to be statistically significant (we will look a
 <p class="caption">(\#fig:hungryjudges)Proportion of rulings in favor of the prisoners by ordinal position. Circled points indicate the first decision in each of the three decision sessions; tick marks on x axis denote every third case; dotted line denotes food break. From Danziger, S., Levav, J., & Avnaim-Pesso, L. (2011). Extraneous factors in judicial decisions. Proceedings of the National Academy of Sciences, 108(17), 6889–6892. https://doi.org/10.1073/PNAS.1018033108</p>
 </div>
 
+We see a graphical representation of the proportion of favorable parole decisions that real-life judges are making as a function of the number of cases they process across the day in Figure \ref{fig:hungryjudges}). This study is mentioned in many popular science books as an example of a finding that shows that people do not always make rational decisions, but that "judicial rulings can be swayed by extraneous variables that should have no bearing on legal decisions" [@danziger_extraneous_2011]. We see that early on in the day, judges start by giving about 65% of people parole, which basically means, "All right, you can go back into society." But then very quickly, the number of favorable decisions decreases to basically zero. After a quick break which, as the authors say, "may replenish mental resources by providing rest, improving mood, or by increasing glucose levels in the body" the parole decisions are back up at 65%, and then again quickly drop down to basically zero. They take another break, the percentage of positive decisions is back up to 65%, only to drop again over the course of the day.
 
+If we calculate the effect size for the drop after a break, and before the next break [@glockner_irrational_2016], the effect represents a Cohen's d of approximately two, which is incredibly large. There are hardly any effects in psychology this large, let along effects of mood or rest on decision making. And this surprisingly large effect occurs not just once, but three times over the course of the day. If mental depletion actually has such a huge real-life impact, society would basically fall into complete chaos just before lunch break every day. Or at the very least, our society would have organized itself around this incredibly strong effect of mental depletion. Just like manufacturers take size differences between men and women into account when producing items such as golf clubs or watches, we would stop teaching in the time before lunch, doctors would not schedule surgery, and driving before lunch would be illegal. If a psychological effect is this big, we don’t need to discover it and publish it in a scientific journal - you would already know it exists. 
 
-Now that we realize why effect sizes are important, let us look more closely at the most commonly used effect sizes, and how these are calculated.
+We can look at a meta-meta-analysis (a paper that meta-analyzes a large number of meta-analyses in the literature) by Richard, Bond, & Stokes-Zoota [-@richard_one_2003] to see which effect sizes in law psychology are close to a Cohen’s d of 2. They report two meta-analyzed effects that are slightly smaller. The first is the effect that a jury’s final verdict is likely to be the verdict a majority initially favored, which 13 studies show has an effect size of r = 0.63, or d = 1.62. The second is that when a jury is initially split on a verdict, its final verdict is likely to be lenient, which 13 studies show to have an effect size of r = .63 as well. In their entire database, some effect sizes that come close to d = 2 are the finding that personality traits are stable over time (r = 0.66, d = 1.76), people who deviate from a group are rejected from that group (r = .6, d = 1.5), or that leaders have charisma (r = .62, d = 1.58). You might notice the almost tautological nature of these effects. And that is, supposedly, the effect size that the passing of time (and subsequently eating lunch) has on parole hearing sentencings. 
 
-Effect sizes can be grouped into two families [@rosenthal_contrasts_2000]: The **d family** (based on standardized mean differences) and the **r family** (based on measures of strength of association). Conceptually, the *d* family effect sizes are based on a comparison between the difference between the observations, divided by the standard deviation of these observations. This means that a Cohen’s *d* = 1 means the standardized difference between two groups equals one standard deviation. The *r* family effect sizes are based on the proportion of variance that is explained by group membership (e.g., a correlation of *r* = 0.5 indicates 25% (*r*2) of the variance is explained by the difference between groups). Don’t worry if you do not exactly get what this means at this point. The crucial issue is that we need to understand how to interpret the size of an effect, and that there are different ways to express the size of this effect.
+We see how examining the size of an effect can lead us to identify findings that can not be caused by their proposed mechanisms. The effect reported in the hungry judges study must thefore be due to a confound. Indeed, such confounds have been identified, as it turns out the ordering of the cases is not random, and it is likely the cases that deserve parole are handled first, and the cases that do not deserve parole are handled later [@weinshall-margel_overlooked_2011; @chatziathanasiou_beware_2022]. A additional use of effect sizes is to identify effect sizes that are too large to be plausible. Hilgard [-@hilgard_maximal_2021] proposes to build in 'maximum positive controls', experimental conditions that show the largest possible effect that provides an upper limit on plausible effect size measures. 
 
-## Cohen’s *d* {#cohend}
+## Standardised Mean Differences {#cohend}
 
-The size of the effect in the Facebook study is given by the statistic Cohen’s *d* (which we will discuss in more detail below). Cohen’s *d* (the *d* is italicized) is used to describe the standardized mean difference of an effect. This value can be used to compare effects across studies, even when the dependent variables are measured in different ways, for example when one study uses 7-point scales to measure dependent variables, while the other study uses 9-point scales, or even when completely different measures are used, such as when one study uses self-report measures, and another study used physiological measurements.
+Effect sizes can be grouped into two families [@rosenthal_contrasts_2000]: The **d family** (based on standardized mean differences) and the **r family** (based on measures of strength of association). Conceptually, the *d* family effect sizes are based on a comparison between the difference between the observations, divided by the standard deviation of these observations. This means that a Cohen’s *d* = 1 means the standardized difference between two groups equals one standard deviation. The size of the effect in the Facebook study above was quantified with Cohen’s *d*. Cohen’s *d* (the *d* is [italicized](https://blog.apastyle.org/apastyle/2011/08/the-grammar-of-mathematics-writing-about-variables.html)) is used to describe the standardized mean difference of an effect. This value can be used to compare effects across studies, even when the dependent variables are measured with different scales, for example when one study uses 7-point scales to measure dependent variables, while the other study uses 9-point scales. We can even compare effect sizes across completely different measures of the same construct, one study uses a self-report measure, and another study uses a physiological measure. Although we can compare effect sizes across different measurements, this does not mean they are comparable, as we will discuss in more detail in the section on [heterogeneity](#heterogeneity) in the chapter on meta-analysis.
 
-Cohen’s *d* ranges from 0 to infinity. Before we get into the statistical details, let’s first visualize what a Cohen’s d of 0.001 (as was found in the Facebook study) means.
-
-We will use a vizualization from <http://rpsychologist.com/d3/cohend/>, a website made by Kristoffer Magnusson, that allows you to visualize the differences between two measurements (such as the increase in negative words used by the Facebook user when the number of positive words on the timeline was reduced). 
+Cohen’s *d* ranges from 0 to infinity. Cohen [-@cohen_statistical_1988] uses subscripts to distinguish different versions of Cohen’s *d*, a practice I will follow because it prevents confusion (without any specification, Cohen’s *d* denotes the entire family of effect sizes). Cohen refers to the standardized mean difference between two groups of independent observations for the *sample* as $d_s$. Before we get into the statistical details, let’s first visualize what a Cohen’s d of 0.001 (as was found in the Facebook study) means. We will use a vizualization from <http://rpsychologist.com/d3/cohend/>, a website made by Kristoffer Magnusson, that allows you to visualize the differences between two measurements (such as the increase in negative words used by the Facebook user when the number of positive words on the timeline was reduced). The vizualization actually shows two distributions, one dark blue and one light blue, but they overlap so much that the tiny difference in distributions is not visible (click the settings button to change the slider settings, and set the step size to 0.001 to reproduce the figure below in the online app). 
 
 <div class="figure" style="text-align: center">
 <img src="images/rpsychd1.png" alt="A vizualization of 2 groups (although the difference is hardly visible) representing d = 0.001." width="100%" />
 <p class="caption">(\#fig:rpsychd1)A vizualization of 2 groups (although the difference is hardly visible) representing d = 0.001.</p>
 </div>
 
-Below the vizualization on the website, you can read some ways to interpret Cohen’s d in non-mathematical terms (the summary is provided about a number of people, but in the Facebook study, we are examining numbers of words). It says "Moreover, in order to have one more favorable outcome in the treatment group compared to the control group, we need to treat 3570.4 people on average." This means in the Facebook study a person needs to type 3570 words before 1 word will be more negative instead of positive. I don't know how often you type this amount of words on Facebook, but I think we can agree this effect is not noticeable on an individual level.
+The four numbers below the distribution express the effect size in different ways to facilitate the interpretation. For example, the probability of superiority expresses the probability that a randomly picked observation from one group will have a larger score than a randomly picked observation from the other group. Because the effect is so small, this probability is 50.03% - which means that people in the experimental write almost the same number of positive or negative words as people in the control condition. The *number needed to treat* index illustrates that in the Facebook study a person needs to type 3570 words before we will observe one additional negative word, compared to the control condition. I don't know how often you type this many words on Facebook, but I think we can agree this effect is not noticeable on an individual level. 
 
-This illustrates the difference between a statistical difference and practical significance (or substantial interest). The effect is so small that it is unlikely to be noticeable for a single individual. Hence, in this case, and without further evidence, we would not worry too much about the extra suicides the research could have caused. Nevertheless, even such small effects can matter in other kinds of research. If an intervention makes people spend more money with a *d* = 0.001, and you have millions of transactions a year, a very small effect might very well make you a lot of money.
+To understand how Cohen’s *d* for two independent groups is calculated, let’s first look at the formula for the *t*-statistic:
 
-A large meta-analytic effort by Richard, Bond, and Stookes-Zoota (2003) estimated the median effect size in psychological studies to have a Cohen’s d = 0.43. Let’s use the vizualization to get a feeling for this effect size.
+$$
+t = \frac{{\overline{M}}_{1}{- \overline{M}}_{2}}{\text{SD}_{\text{pooled}} \times \sqrt{\frac{1}{n_{1}} + \frac{1}{n_{2}}}}
+$$
+
+Here ${\overline{M}}_{1}{- \overline{M}}_{2}$ is the difference between the means, and $\text{SD}_{\text{pooled}}$ is the pooled standard deviation [@lakens_calculating_2013], and n1 and n2 are the sample sizes of the two groups that are being compared. The *t*-value is used to determine whether the difference between two groups in a *t*-test is statistically significant (as eexplained in the chapter on [*p*-values](#pvalue). The formula for Cohen’s *d*_ is very similar:
+
+$$d_s = \frac{{\overline{M}}_{1}{-\overline{M}}_{2}}{\text{SD}_{\text{pooled}}}$$
+
+As you can see, the sample size in each group (n1 and n2) is part of the formula for a *t*-value, but it is not part of the formula for Cohen’s *d* (the pooled standard deviation is computed by weighing the standard deviation in each group by the sample size, but it cancels out if groups are of equal size). This distinction is useful to know, because in practice it means that the *t*-value (and consequently, the *p*-value) is a function of the sample size, but Cohen's *d* is independent of the sample size. If there is a true effect (e.g., a non-zero effect size in the population) the *t*-value for a null-hypothesis test against an effect of zero will on average become larger (and the *p*-value will become smaller) as the sample size increases. The effect size, however, will not increase or decrease, but will become more accurate, as the standard error decreases as the sample size increases. This is also the reason why *p*-values can not be used to make a statement about whether an effect is *practically significant*, and effect size estimates are often such an important complement to *p*-values when making statistical inferences. 
+
+You can calculate Cohen’s *d* for independent groups from the independent samples *t*-value (which can often be convenient when the result section of the paper you are reading does not report effect sizes) through:
+
+$$d_s = t ⨯ \sqrt{\frac{1}{n_{1}} + \frac{1}{n_{2}}}$$
+
+A d = 001 is an extremely tiny effect, so let's explore an effect size that is a bit more representative of what you would read in the literature. In the meta-meta-analysis mentioned earlier, the median effect size in published studies included in meta-analyses in the psychological literature is *d* = 0.43 [@richard_one_2003]. To get a feeling for this effect size, let's use the online app and set the effect size to d = 0.43.
 
 <div class="figure" style="text-align: center">
 <img src="images/rpsychd2.png" alt="A vizualization of 2 groups representing d = 0.43." width="100%" />
 <p class="caption">(\#fig:rpsychd2)A vizualization of 2 groups representing d = 0.43.</p>
 </div>
 
-Assume we know that people are more likely to comply with a large request after an initial smaller request, than when you ask the large request directly (this is known as the foot-in-the-door effect), and that in a specific context this effect size is 0.43. Given this effect size, how likely is it that a random person drawn from the ‘small initial request condition’ will be more likely to agree with your larger request, compared to a person in the ‘no initial small request’ condition? We see in Figure \@ref(fig:rpsychd2) that this *probability of superiority* is 61.9%.
+One example of a meta-analytic effect size in the meta-meta-analysis that is exactly $d_s$ = 0.43 is the finding that people in a group work less hard to achieve a goal than people who work individually, called *social loafing*. This is an effect that is large enough that we notice it in daily life. Yet, if we look at the overlap in the two distributions, we see that the amount of effort people put in overlaps considerably between the two conditions (in the case of social loafing, working individually versus working in a group). We see in Figure \@ref(fig:rpsychd2) that the **probability of superiority**, or the probability that if we randomly draw one person from the group condition and one person from the individual condition, the person working in a group puts in less effort, is only 61.9%. This interpretation of differences between groups is also called the **common language effect size** [@mcgraw_common_1992].
 
 <div class="figure" style="text-align: center">
 <img src="images/rpsychd3.png" alt="A vizualization of 2 groups representing d = 2." width="100%" />
 <p class="caption">(\#fig:rpsychd3)A vizualization of 2 groups representing d = 2.</p>
 </div>
 
-Based on [this data](http://www.nature.com/pr/journal/v73/n3/full/pr2012189a.html), the difference between the height of 21-year old men and women in The Netherlands is approximately 13 centimeters (in an unstandardized effect size), or a standardized effect size of *d* = 2. If I pick a random man and a random woman walking down the street in my hometown of Rotterdam, how likely is it that the man will be taller than the woman? We see this is quite (92.1%) likely. But even with a huge effect size, which is much larger than most effects researchers study, there is still considerable overlap in the two distributions. If we conclude the length of people in one group is larger than the length of people in another group, this does not mean everyone in one group is larger than everyone in the other group! 
+Based on [this data](http://www.nature.com/pr/journal/v73/n3/full/pr2012189a.html), the difference between the height of 21-year old men and women in The Netherlands is approximately 13 centimeters (in an unstandardized effect size), or a standardized effect size of $d_s$ = 2. If I pick a random man and a random woman walking down the street in my hometown of Rotterdam, how likely is it that the man will be taller than the woman? We see this is quite likely, with a probability of superiority of 92.1%. But even with such a huge effect, there is still considerable overlap in the two distributions. If we conclude the length of people in one group is larger than the length of people in another group, this does not mean everyone in one group is larger than everyone in the other group. 
 
-To understand Cohen’s *d*, let’s first look at the formula for the
-*t*-statistic:
+Sometimes when you try to explain scientific findings at a birthday party, a skeptical aunt or uncle might remark 'well I don't believe that is true because *I* never experience this'. With probabilistic observations, there is a distribution of observed effects. In the example about social loafing, on average people put in less effort to achieve a goal when working in a group than working by themselves. For any individual in the population, the effect might be larger, smaller, absent, or even in the opposite direction. If your skeptical aunt or uncle never experience a finding, that does not contradict that the effect is real on average in the population. Indeed, it is even expected that there is no effect for some people in the population, at least some of the time. Although there might be some exceptions (e.g., almost every individual will experience the Stroop effect, where they are slower naming the ink color of color words when the color word is incongruent with the ink it is written in, than when it is congruent with the ink it is written in), but many effects are smaller, or have sufficient variation, that the effect is not present for everyone in the population. 
 
-$$
-t = \frac{{\overline{M}}_{1}{- \overline{M}}_{2}}{\text{SD}_{\text{pooled}} \times \sqrt{\frac{1}{n_{1}} + \frac{1}{n_{2}}}}
-$$
+Conceptually, calculating Cohen’s *d* for within-subjects comparisons is based on the same idea as for independent groups, where the differences between two observations are divided by the standard deviation within the groups of observations. However, in the case of correlated samples the most common standardizer is the standard deviation of the difference scores. Testing whether two correlated means are significantly different from each other with a paired samples *t*-test is the same as testing whether the difference scores of the correlated means is signicantly different from 0 in a one-sample *t*-test. Similarly, calculating the effect size for the difference between two correlated means is similar to the effect size that is calculated for a one sample *t*-test. The standardized mean difference effect size for within-subjects designs is referred to as Cohen’s $d_z$, where the *z* alludes to the fact that the unit of analysis is no longer *x* or *y*, but their difference, *z*, and can be calculated with:
 
-Here $${\overline{M}}_{1}{- \overline{M}}_{2}$$ is the difference between the means, and $$\text{SD}_{\text{pooled}}$$ is the pooled standard deviation (see Lakens, 2013), and n1 and n2 are the sample sizes of the two groups you are comparing. The *t*-value (because it follows a known distribution) is used to determine whether the difference between two groups in a *t*-test is statistically significant. The formula for Cohen’s *d* is very similar:
+$$d_z = \frac{M_{dif}}{\sqrt{\frac{\sum{({X_{dif}-M_{dif})}}^2}{N-1}}}$$
+The effect size estimate Cohen’s dz can also be calculated directly from the t-value and the number of participants using the formula:
 
-Cohen’s *d* = $$\frac{{\overline{M}}_{1}{-\overline{M}}_{2}}{\text{SD}_{\text{pooled}}}$$
+$$d_z = \frac{t}{\sqrt{n}}$$
 
-You can calculate Cohen’s *d* by hand from the independent samples *t*-value (which can often be convenient when the result section of the paper you are reading does not report effect sizes) through:
+Given the direct relationship between the *t*-value of a paired-samples *t*-test and Cohen’s $d_z$, it will not be surprising that software that performs power analyses for within-subjects designs (e.g., G*Power) relies on Cohen’s $d_z$ as input. 
 
-$$d = t ⨯ \sqrt{\frac{1}{n_{1}} + \frac{1}{n_{2}}}$$
+Maxwell & Delaney [-@maxwell_designing_2004] remark: ‘a major goal of developing effect size measures is to provide a standard metric that meta-analysts and others can interpret across studies that vary in their dependent variables as well as types of designs.’ BEcause Cohen's $d_z$ takes the correlation between the dependent measures into account, it can not be directly compared with Cohen's $d_s$. Some researchers prefer to use the average standard deviation of both groups of observations as a standardizer (which ignores the correlation between the observations), because this allows for a more direct comparison with Cohen’s $d_s$. This effect size is referred to as Cohen’s $d_av$ [@cumming_understanding_2013], and is simply:
 
-As you can see, the sample size is part of the formula for a *t*-value, but it is not part of the formula for Cohen’s *d*. Let’s assume the difference between two means we observe is 1, and the pooled standard deviation is also 1. What, on average, happens to the *t*-value and Cohen’s *d*, as we would simulate studies, as a function of the sample size in these simulations? Given the mean difference and standard deviation, as the sample size becomes
-bigger, the *t*-value become larger, and Cohen’s *d* gets closer to the true
-value. That is, whereas the *t*-value (and the corresponding *p*-value) increase as a function of the sample size, Cohen's d only becomes more accurate. This makes *p*-values a function of the sample size, when there is a true effect, and this means *p*-values can not be used to make a statement about whether an effect is *practically significant*. Reporting and interpreting the effect size will inform you about the practical significance of an effect, and therefore it is almost always beneficial to report effect sizes alongside any statistical test.
+$$d_{av} = \frac{M_{dif}}{\frac{SD_1+SD_2}{2}}$$
 
-### Correcting for Bias
+## Interpreting effect sizes
 
-Population effect sizes are almost always estimated on the basis of samples, and as a measure of the population effect size estimate based on sample averages, Cohen’s *d* overestimates the true population effect (when Cohen’s *d* refers to the population, the Greek letter δ is often used). Therefore, corrections for bias are used (even though these corrections do not always lead to a completely unbiased effect size estimate). In the *d* family of effect sizes, the correction for bias in the population effect size estimate of Cohen’s δ is known as Hedges’ *g* (although different people use different names – *d_unbiased* is also used). This correction for bias is only really noticeable in small sample sizes, but since we often use software to calculate effect sizes anyway, it makes sense to always report Hedge’s *g* instead of Cohen’s *d*.
+A commonly used interpretation of Cohen’s *d* is to refer to effect sizes as small (*d* = 0.2), medium (*d* = 0.5), and large (*d* = 0.8) based on benchmarks suggested by Cohen (1988). However, these values are arbitrary and should not be used. In practice, you will only see them used in a form of circular reasoning: The effect is small, because it is *d* = 0.2, and *d* = 0.2 is small. We see that using the benchmarks adds nothing, beyond covering up the fact that we did not actually interpret the size of the effect. Furthermore, benchmarks for what is a 'medium' and 'large' effect do not even correspond between Cohen's d and r (as explained by @mcgrath_when_2006,bsee the 'Test Yourself' Q12). Any verbal classification based on benchmarks ignores the fact that any effect can be practically meaningful, such as an intervention that leads to a reliable reduction in suicide rates with an effect size of *d* = 0.1. In other cases, an effect size of *d* = 0.1 might have no consequence at all, for example because such an effect is smaller than the just noticeable difference, and is therefore too small to be noticed by individuals in the real world.
 
-A commonly used interpretation of Cohen’s *d* is to refer to effect sizes as small (*d* = 0.2), medium (*d* = 0.5), and large (*d* = 0.8) based on benchmarks suggested by Cohen (1988) – note, in the video I talk about d = 0.3 being a small effect size, but 0.2 is the benchmark for a small effect as specified by Cohen). However, these values are arbitrary and should not be interpreted too rigidly. Furthermore, small effect sizes can have large consequences, such as an intervention that leads to a reliable reduction in suicide rates with an effect size of *d* = 0.1. On the other hand, you have to start somewhere in getting a feeling for effect sizes, and these benchmarks are a good starting point.
+## Correlations and Variance Explained 
 
-An interesting, though not often used, interpretation of differences between groups can be provided by the common language effect size [@mcgraw_common_1992], also known as the probability of superiority. It expresses the probability that a randomly sampled person from one group will have a higher observed measurement than a randomly sampled person from the other group (for between designs) or the other measurement (for within-designs) the probability that an individual has a higher value on one measurement than the other. We used it earlier and it is provided by the website that visualizes Cohen’s d.
+The *r* family effect sizes are based on the proportion of variance that is explained by group membership (e.g., a correlation of *r* = 0.5 indicates 25% (*r*2) of the variance is explained by the difference between groups). You might remember that *r* is used to refer to a correlation. The correlation of two continuous variables can range from 0 (completely unrelated) to 1 (perfect positive relationship) or -1 (perfect negative relationship). To get a better feel correlations, play the game [guess the correlation](http://guessthecorrelation.com/) where you will see a scatterplot, and have to guess the correlation between the variables (see figure \@ref(fig:guesscorrelation). 
 
-## *r* (correlations) 
+<div class="figure" style="text-align: center">
+<img src="images/guesscorrelation.png" alt="Screenshot from Guess the Correlation game (the correct answer is r = 0.24)." width="100%" />
+<p class="caption">(\#fig:guesscorrelation)Screenshot from Guess the Correlation game (the correct answer is r = 0.24).</p>
+</div>
 
-The second effect size that is widely used is *r*. You might remember that *r* is used to refer to a correlation. The correlation of two continuous variables can range from 0 (completely unrelated) to 1 (perfect positive relationship) or -1 (perfect negative relationship). Obviously, given the flexibility of human behavior (free will has a lot to do with it) correlations between psychological variables are rarely 1. The median effect size *r* in psychology is (for what such an estimate is worth) .21 [@richard_one_2003]. As mentioned earlier, the *r* family effect sizes describe the proportion of variance that is explained by the independent variable, or $r^2$.
+The *r* family effect sizes are calculated from the sum of squares (the difference between individual observations and the mean for the group, squared, and summed) for the effect divided by the sums of squares for other factors in the design. Earlier, I mentioned the median effect size in psychology is $d_s$ = 0.43. However, the authors actually report their results as a correlation, r = 0.21. We can convert Cohen's d into r (but take care that this only applies to $d_s$, not $d_z$):
 
-Earlier, I mentioned the average effect size in psychology is *d* = 0.43. You might, therefore, think a *d* = 0.43 and an *r* = .21 should be related somehow, and they are:
+$$r = \frac{d_s}{\sqrt{{d_s^{2}}^{+}\frac{N^{2} - 2N}{n_{1} \times n_{2}}}}$$
 
-$r = \frac{d_s}{\sqrt{{d_s^{2}}^{+}\frac{N^{2} - 2N}{n_{1} \times n_{2}}}}$
+*N* is the total sample size of both groups, whereas n1 and n2 are the sample sizes of the individual groups you are comparing (it is common to use capital N for the total sample size, and lowercase n for sample sizes per group). You can go to <http://rpsychologist.com/d3/correlation/> to look at a good visualization of the proportion of variance that is explained by group membership, and the relationship between *r* and *r*2. The amount of variance explained is often quite a small number, and we see in Figure \@ref(fig:sharedvariance) that a correlation of 0.21 (the median from the meta-meta-analysis by Richard and colleagues) we see the proportion of variance explained is only 4.4%. Funder and Ozer [-@funder_evaluating_2019] warn against misinterpreting small values for the variance explained as an indication that the effect is not meaningful (and they even consider the practice of squaring the correlation "actively misleading"). 
 
-The subscript s underneath Cohen’s *d* is used to specify this Cohen’s *d* is calculated based on the sample, not based on the population. This is almost always the case (except in simulation studies, where you can set the effect size in the population), and *N* is the total sample size of both groups, whereas n1 and n2 are the sample sizes of the two groups you are comparing. You can go to <http://rpsychologist.com/d3/correlation/> to look at a good visualization of the proportion of variance that is explained by group membership, and the relationship between *r* and *r*2. 
 
-Effect sizes can be implausibly large. Let’s take a look at a study that actually examines the number of suicides – as a function of the amount of country music played on the radio. You can find the paper [here](http://sf.oxfordjournals.org/content/71/1/211.short) (for [a free PDF version, click here](http://www.fourcornersdailypost.com/UserFiles/File/2011/CountryMusicSuicide.pdf)). It won an [Ig Nobel prize for studies that first make you laugh, and then think](http://www.abc.net.au/science/articles/2004/10/01/1211441.htm). I guess in this case the study should make you think about the importance of interpreting effect sizes.
+<div class="figure" style="text-align: center">
+<img src="images/sharedvariance.png" alt="Screenshot from correation effect size vizualization by Kristoffer Magnusson for r - 0.21." width="100%" />
+<p class="caption">(\#fig:sharedvariance)Screenshot from correation effect size vizualization by Kristoffer Magnusson for r - 0.21.</p>
+</div>
+
+As we have seen before, it can be useful to interpret effect sizes to identify effects that are practically insignificant, or effects that are implausibly large. Let’s take a look at a study that examines the number of suicides as a function of the amount of country music played on the radio. You can find the paper [here](https://heinonline.org/HOL/P?h=hein.journals/josf71&i=227) It won an [Ig Nobel prize for studies that first make you laugh, and then think](http://www.abc.net.au/science/articles/2004/10/01/1211441.htm), although in this case, the the study should not make you think about country music, but about the importance of interpreting effect sizes.
 
 The authors predicted the following:
 
@@ -144,24 +161,20 @@ And they concluded:
 
 >A significant zero-order correlation was found between white suicide rates and country music (r = .54, p \< .05). The greater the airtime given to country music, the greater the white suicide rate.
 
-Cohen (1988) has provided benchmarks to define small (*r* = 0.1), medium (*r* = 0.3), and large (*r* = 0.5) effects. This means the effect of listening to country music on suicide rates is large. Remember that it is preferable to relate the effect size to other effects in the literature instead of to these benchmarks. What do you think of the likelihood that listening to country music is strongly associated with higher suicide rates? Is country music really that bad? Probably not - which demonstrates the importance of not just reporting, but also interpreting, the effect size. 
+We can again compare the size of this effects with other known effects in psychology. In the database by Richard and colleagues, there are very few effects this large, but some examples are that leaders are most effective if they have charisma (r = 0.54), good leader–subordinate relations promote subordinate satisfaction (r = 0.53), and people can recognize emotions across cultures (r = 0.53). These effects are all large and obvious, which should raise some doubts about whether the relationship between listening to country music and suicides can be of the same size. Is country music really that bad? If we search the literature, we find that [other researchers were not able to reproduce the analysis of the original authors](http://sf.oxfordjournals.org/content/74/1/327.short). It is likely that the results are spurious, or a Type 1 error.
 
-If you were doubtful about the possibility that this effect was real, you might not be surprised by the fact that [other researchers were not able to reproduce the analysis of the original authors](http://sf.oxfordjournals.org/content/74/1/327.short). It is likely that the results are spurious, or a Type 1 error.
+Eta squared $\eta^2$ (part of the *r* family of effect sizes, and an extension of r that can be used for more than two sets of observations) measures the proportion of the variation in Y that is associated with membership of the different groups deﬁned by X, or the sum of squares of the effect divided by the total sum of squares:
 
-Eta squared η² (part of the *r* family of effect sizes, and an extension of r that can be used for more than two sets of observations) measures the proportion of the variation in Y that is associated with membership of the different groups deﬁned by X, or the sum of squares of the effect divided by the total sum of squares:
+$$\eta^{2}$ = $\frac{\text{SS}_{\text{effect}}}{\text{SS}_{\text{total}}}$$
 
-$\eta^{2}$ = $\frac{\text{SS}_{\text{effect}}}{\text{SS}_{\text{total}}}$
-
-An η² of .13 means that 13% of the total variance can be accounted for by group membership. Although η² is an efficient way to compare the sizes of effects within a study (given that every effect is interpreted in relation to the total variance, all η² from a single study sum to 100%), eta squared cannot easily be compared between studies, because the total variability in a study (SStotal) depends on the design of a study, and increases when additional variables are manipulated (e.g., when independent variables are added). Keppel (1991) has recommended partial eta squared ($\eta_{p}^{2}$) to improve the comparability
+An $\eta^2$ of .13 means that 13% of the total variance can be accounted for by group membership. Although $\eta^2$ is an efficient way to compare the sizes of effects within a study (given that every effect is interpreted in relation to the total variance, all $\eta^2$ from a single study sum to 100%), eta squared cannot easily be compared between studies, because the total variability in a study ($SS_total$) depends on the design of a study, and increases when additional variables are manipulated (e.g., when independent variables are added). Keppel (1991) has recommended partial eta squared ($\eta_{p}^{2}$) to improve the comparability
 of effect sizes between studies, which expresses the sum of squares of the effect in relation to the sum of squares of the effect and the sum of squares of the error associated with the effect. Partial eta squared is calculated as:
 
-$\eta_{p}^{2}$ = $\frac{\text{SS}_{\text{effect}}}{\text{SS}_{\text{effect}}
-+ \text{SS}_{\text{error}}}$
+$$\eta_{p}^{2} = \frac{\text{SS}_{\text{effect}}}{\text{SS}_{\text{effect}} + \text{SS}_{\text{error}}}$$
 
 For designs with fixed factors (manipulated factors, or factors that exhaust all levels of the independent variable, such as alive vs. dead), but not for designs with measured factors or covariates, partial eta squared can be computed from the *F*-value and its degrees of freedom [@cohen_statistical_1988]:   
 
-$\eta_{p}^{2}$ =$\frac{F \times \text{df}_{\text{effect}}}{{F \times
-\text{df}}_{\text{effect}} + \text{df}_{\text{error}}}$
+$$\eta_{p}^{2} = \frac{F \times \text{df}_{\text{effect}}}{{F \times \text{df}}_{\text{effect}} + \text{df}_{\text{error}}}$$
 
 For example, for an *F*(1, 38) = 7.21, $\eta_{p}^{2}$ = 7.21 ⨯ 1/(7.21 ⨯ 1 +
 38) = 0.16.
@@ -170,12 +183,11 @@ Eta squared can be transformed into Cohen’s *d*:
 
 *d* = 2$\times f$ where $f^{2} = \eta^{2}/(1 - \eta^{2})$
 
-As with Cohen’s *d*, η² is a biased estimate of the true effect size in the
-population. Two less biased effect size estimates have been proposed, epsilon
-squared $\varepsilon^{2}$ and omega squared $\omega^{2}$. Because these
-effect sizes are less biased, it is always better to use them. Partial epsilon
-squared and partial omega squared can be calculated based on the *F*-value and
-degrees of freedom.
+## Correcting for Bias
+
+Population effect sizes are almost always estimated on the basis of samples, and as a measure of the population effect size estimate based on sample averages, Cohen’s *d* slighlty overestimates the true population effect. When Cohen’s *d* refers to the population, the Greek letter δ is typically used. Therefore, corrections for bias are used (even though these corrections do not always lead to a completely unbiased effect size estimate). In the *d* family of effect sizes, the correction for bias in the population effect size estimate of Cohen’s δ is known as Hedges’ *g* (although different people use different names – *d_unbiased* is also used). This correction for bias is only noticeable in small sample sizes, but since we often use software to calculate effect sizes anyway, it makes sense to always report Hedge’s *g* instead of Cohen’s *d*  [@thompson_effect_2007].
+
+As with Cohen’s *d*, $\eta^2$ is a biased estimate of the true effect size in the population. Two less biased effect size estimates have been proposed, epsilon squared $\varepsilon^{2}$ and omega squared $\omega^{2}$. For all practical purposes, these two effect sizes correct for bias equally well [@okada_is_2013; @albers_when_2018], and should be preferred above $\eta^2$. Partial epsilon squared ($\varepsilon_{p}^{2}$) and partial omega squared ($\omega_{p}^{2}$) can be calculated based on the *F*-value and degrees of freedom.
 
 $$
 \omega_{p}^{2} = \frac{F - 1}{F + \ \frac{\text{df}_{\text{error}} + 1}{\text{df}_{\text{effect}}}}
@@ -184,125 +196,51 @@ $$
 $$
 \varepsilon_{p}^{2} = \frac{F - 1}{F + \ \frac{\text{df}_{\text{error}}}{\text{df}_{\text{effect}}}}
 $$
+Partial effect sizes $\eta_{p}^{2}$, $\varepsilon_{p}^{2}$) and $\omega_{p}^{2}$ can not be generalized across different designs. For this reason, generalized eta-squared ($\eta_{G}^{2}$) and generalized omega-squared ($\omega_{G}^{2}$) have been proposed [@olejnik_generalized_2003], although they are not very popular. In part, this might be because summarizing the effect size in an ANOVA design with a single index has limitations, and perhaps it makes more sense to describe the pattern of results, as we will see in the section below. 
 
-For further reading about effect size estimates, see [this practical primer](http://journal.frontiersin.org/article/10.3389/fpsyg.2013.00863/full) I
-have written [@lakens_calculating_2013].
+## Effect Sizes for Interactions
 
-## Effect Sizes and Statistical Power
+The effect size used for power analyses for ANOVA designs is Cohen's *f*. For two independent groups, Cohen's $f$ = 0.5 * Cohen's *d*. For more than two groups, Cohen's f can be converted into eta-squared and back with $f = \frac{\eta^2}{(1 - \eta^2)}$ or $\eta^2 = \frac{f^2}{(1 + f^2)}$. When predicting interaction effects in ANOVA designs, planning the study based on an expected effect size such as $\eta_{p}^{2}$ or Cohen's *f* might not be the most intuitive approach. 
 
-
-Based on our recent [preprint](https://psyarxiv.com/baxsf/) explaining power analysis for ANOVA designs, in this post I want provide a step-by-step mathematical overview of power analysis for interactions. These details often do not make it into tutorial papers because of word limitations, and few good free resources are available (for a paid resource worth your money, see [Maxwell, Delaney, & Kelley, 2018](https://designingexperiments.com/)). This post is a bit technical, but nothing in this post requires more knowledge than multiplying and dividing numbers, and I believe that for anyone willing to really understand effect sizes and power in ANOVA designs digging in to these details will be quite beneficial. There are three take-home messages in this post. 
-
-1) In power analyses for ANOVA designs, you should always think of the predicted pattern of means. 
-2) Understanding how patterns of means relate to the effect you predict is essential to design an informative study.
-3) Always perform a power analysis if your want to test a predicted interaction effect, and always calculate the effect size based on means, sd's, and correlations, instead of plugging in a 'medium' partial eta squared. 
-4) Crossover interaction effects have large effects and can thus be studies with high power in smaller samples, and if your theory can predict crossover interactions, such experiments might be worthwhile to design.
-5) There are some additional benefits of examining interactions (risky predictions, generalizability, efficiently examining multiple main effects) and it would be a shame if the field is turned away from examining interactions because they sometimes require large samples.
-
-### Getting started: Comparing two groups
-
-We are planning a two independent group experiment. We are using a validated measure, and we know the standard deviation of our measure is approximately 2. We are interested in observing a mean difference of 1 or more, because smaller effects would not be practically meaningful. We expect the mean in the conrol condition to be 0, and therefore want the mean in the intervention group to be 1 or higher.
-
-This means the standardized effect size is the mean difference, divided by the standard deviation, or 1/2 = 0.5. This is the Cohen's d we want to be able to detect in our study:
-
-\begin{equation}
-d = \frac{m_1-m_2}{\sigma} =  \frac{1-0}{2} = 0.5.
-\end{equation}
-
-An independent *t*-test is mathematically identical to an *F*-test with two groups. For an *F*-test, the effect size used for power analyses is Cohen's *f*, which is a generalization
-of Cohen’s d to more than two groups (Cohen, 1988). It is calculated based on the standard deviation of the population means divided by the population standard deviation which we know for our measure is 2), or: 
+Let's start with the effect size for a simple two group comparison, and ex effect size to an interaction effect in an ANOVA. Let's assume we predict a mean difference of 1, and know the standard deviation of the measure is 2. This means the standardized effect size is *d* = 0.5. An independent *t*-test is mathematically identical to an *F*-test with two groups. For an *F*-test, the effect size used for power analyses is Cohen's *f*, which is calculated based on the standard deviation of the population means divided by the population standard deviation (which we know for our measure is 2), or: 
 
 \begin{equation}
 f = \frac{\sigma _{ m }}{\sigma}
 \end{equation}
-where for equal sample sizes,
+where for equal sample sizes
 \begin{equation}
 \sigma _{ m } = \sqrt { \frac { \sum_ { i = 1 } ^ { k } ( m _ { i } - m ) ^ { 2 } } { k } }.
 \end{equation}
 
 In this formula *m* is the grand mean, k is the number of means, and m_i is the mean in each group. The formula above might look a bit daunting, but calculating Cohen's f is not that difficult for two groups. 
 
-If we take the expected means of 0 and 1, and a standard deviation of 2, the grand mean (the *m* in the formula above) is (0 + 1)/2 = 0.5. The formula says we should subtract this grand mean from the mean of each group, square this value, and sum them. So we have (0-0.5)^2 and (1-0.5)^2, which are both 0.25. We sum these values (0.25 + 0.25 = 0.5), divide them by the number of groups (0.5/2 = 0.25) and take the square root, we find that $\sigma_{ m }$ = 0.5. We can now calculate Cohen's f (remember than we know $\sigma$ = 2 for our measure): 
+If we take the expected means of 0 and 1, and a standard deviation of 2, the grand mean (the *m* in the formula above) is (0 + 1)/2 = 0.5. The formula says we should subtract this grand mean from the mean of each group, square this value, and sum them. So we have (0-0.5)^2 and (1-0.5)^2, which are both 0.25. We sum these values (0.25 + 0.25 = 0.5), divide them by the number of groups (0.5/2 = 0.25) and take the square root, we find that $\sigma_{ m }$ = 0.5. We can now calculate Cohen's *f* (using $\sigma$ = 2 for our measure): 
 
 \begin{equation}
 f = \frac{\sigma _{ m }}{\sigma} = \frac{0.5}{2} = 0.25
 \end{equation}
 
-We see that for two groups Cohen's f is half as large as Cohen's d, or $f = \frac{1}{2}d$, which always holds for an *F-test with two independent groups. 
+We confirm that for two groups Cohen's *f* is half as large as Cohen's *d*. 
 
-Although calculating effect sizes by hand is obviously an incredibly enjoyable thing to do, you might prefer using software that performs these calculations for you. Here, I will use our Superpower power analysis package (developed by Aaron Caldwell and me). The code below uses a function from the package that computes power analytically for a one-way ANOVA where all conditions are manipulated between participants. In addition to the effect size, the function will compute power for any sample size per condition you enter. Let's assume you have a friend who told you that they heard from someone else that you now need to use 50 observations in each condition (n = 50), so you plan to follow this trustworthy advice. We see the code below returns a Cohen's *f* of 0.25, and also tells us we would have 61.78% power if we use a preregistered alpha level of 0.03.
+Now we have the basis to look at interaction effects. Different patterns of means in an ANOVA can have the same Cohen's *f*. There are two types of interactions, as visualized below in Figure \@ref(fig:interactions). In an **ordinal interaction**, the mean of one group ("B1") is always higher than the mean for the other group ("B2"). **Disordinal interactions** are also known as 'cross-over' interactions, and occur when the group with the larger mean switches over. The difference is important, since the disordinal interaction in Figure \@ref(fig:interactions) has a larger effect size than the ordinal interaction.
 
+<div class="figure" style="text-align: center">
+<img src="06-effectsize_files/figure-html/interactions-1.png" alt="Schematic illustration of a disordinal (or cross-over) and ordinal interaction" width="100%" />
+<p class="caption">(\#fig:interactions)Schematic illustration of a disordinal (or cross-over) and ordinal interaction</p>
+</div>
 
-```r
-design <- Superpower::ANOVA_design(
-  design = "2b", 
-  n = 50, 
-  mu = c(1, 0), 
-  sd = 2)
-```
+Mathematically the interaction effect is computed as the cell mean minus the sum of the grand mean, the marginal mean in each condition of one factor minus the grand mean, and the marginal mean in each condition for the other factor minus grand mean [@maxwell_designing_2004].
 
-<img src="06-effectsize_files/figure-html/unnamed-chunk-2-1.png" width="100%" style="display: block; margin: auto;" />
+Let's consider two cases, one where we have a perfect disordinal interaction (the means of 0 and 1 flip around in the other condition, and are 1 and 0) or an ordinal interaction (the effect is present in one condition, with means 0 and 1, but disappears in the other condition, with means 0 and 0, see Figure \@ref(fig:interactionplots)).
 
-```r
-Superpower::power_oneway_between(design, alpha_level = 0.03)$Cohen_f
-```
+<div class="figure" style="text-align: center">
+<img src="06-effectsize_files/figure-html/interactionplots-1.png" alt="Disordinal (or cross-over) and ordinal interaction with means of 0 and 1, n = 50 per group, and an sd of 2." width="100%" />
+<p class="caption">(\#fig:interactionplots)Disordinal (or cross-over) and ordinal interaction with means of 0 and 1, n = 50 per group, and an sd of 2.</p>
+</div>
 
-```
-## [1] 0.25
-```
+We can calculate the interaction effect as follows (we will go through the steps in some detail). First, let's look at the disordinal interaction. The grand mean is (1 + 0 + 0 + 1) / 4 = 0.5.
 
-```r
-Superpower::power_oneway_between(design, alpha_level = 0.03)$power
-```
-
-```
-## [1] 61.78474
-```
-
-We therefore might want to increase our sample size for our planned study. Using the `plot_power` function, we can see we would pass 90% power with 100 observations per condition.
-
-
-```r
-Superpower::plot_power(design, alpha_level = 0.03, min_n = 45, max_n = 150)$plot_ANOVA
-```
-
-<img src="06-effectsize_files/figure-html/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;" />
-
-```
-## Achieved Power and Sample Size for ANOVA-level effects
-##   variable                  label  n achieved_power desired_power
-## 1        a Desired Power Achieved 97          90.16            90
-```
-
-<img src="06-effectsize_files/figure-html/unnamed-chunk-3-2.png" width="100%" style="display: block; margin: auto;" />
-
-### Interaction Effects
-
-So far we have explained the basics for effect size calculations (and we have looked at statistical power) for 2 group ANOVA designs. Now we have the basis to look at interaction effects.
-
-One of the main points in this blog post is that it is better to talk about interactions in ANOVAs in terms of the pattern of means, standard deviations, and correlations, than in terms of a standarized effect size. The reason for this is that, while for two groups a difference between means directly relates to a Cohen's d, widely different patterns of means in an ANOVA will have the same Cohen's *f*. In my experience helping colleagues out their with power analyses for ANOVA designs, talking about effects in terms of a Cohen's *f* is rarely a good place to start when thinking about what your hypothesis predicts. Instead, you need to specify the predicted pattern of means, have some knowledge about the standard deviation of your measure, and then calculate your predicted effect size. 
-
-There are two types of interactions, as visualized below. In an ordinal interaction, the mean of one group ("B1") is always higher than the mean for the other group ("B2"). Disordinal interactions are also known as 'cross-over' interactions, and occur when the group with the larger mean switches over. The difference is important, since another main takeaway of this blog post is that, in two studies where the largest simple comparison has the same effect size, a study with a disordinal interaction has much higher power than a study with an ordinal interaction. Thus, if possible, you will want to design experiments where an effect in one condition flips around in the other condition, instead of an experiment where the effect in the other condition just disappears. I personally never realized this before I learned how to compute power for interactions, and never took this simple but important fact into account. Let's see why it is important.
-
-### Calculating effect sizes for interactions
-
-<img src="06-effectsize_files/figure-html/unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;" />
-
-Mathematically the interaction effect is computed as the cell mean minus the sum of the grand mean, the marginal mean in each condition of one factor minus the grand mean, and the marginal mean in each condition for the other factor minus grand mean (see Maxwell et al., 2017).
-
-Let's consider two cases, one where we have a perfect disordinal interaction (the means of 0 and 1 flip around in the other condition, and are 1 and 0) or an ordinal interaction (the effect is present in one condtion, 0 and 1, but disappears in the other condition, with means 0 and 0). We can calcuate the interaction effect as follows. First, let's look at the interaction in a 2x2 matrix:
-
-<img src="06-effectsize_files/figure-html/unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;" />
-
-```
-##    a1 a2
-## b1  1  0
-## b2  0  1
-```
-
-The grand mean is (1 + 0 + 0 + 1) / 4 = 0.5.
-
-We can compute the marginal means for A1, A2, B1, and B2, which is simply averaging per row and column, which gets us for the A1 row (1+0)/2=0.5. For this perfect disordinal interaction, all marginal means are 0.5. This means there are no mean effects. There is no main effect of factor A (because the marginal means for A1 and A2 are both exactly 0.5), nor is there a main effect of B.
+We can compute the marginal means for A1, A2, B1, and B2, which is simply averaging per row and column, which gets us for the A1 row (1+0)/2=0.5. For this perfect disordinal interaction, all marginal means are 0.5. This means there are no main effects. There is no main effect of factor A (because the marginal means for A1 and A2 are both exactly 0.5), nor is there a main effect of B.
 
 We can also calculate the interaction effect. For each cell we take the value in the cell (e.g., for a1b1 this is 1) and compute the difference between the cell mean and the additive effect of the two factors as:
 
@@ -318,8 +256,6 @@ a2b2: 1 - (0.5 + (0.5 -0.5) + (0.5 -0.5)) = 0.5
 
 Cohen's $f$ is then $f = \frac { \sqrt { \frac { 0.5^2 +-0.5^2 + -0.5^2 + 0.5^2 } { 4 } }}{ 2 } = 0.25$
 
-or in R code: `sqrt(((0.5)^2 +(-0.5)^2 + (-0.5)^2 + (0.5)^2)/4)/2 = 0.25`.
-
 For the ordinal interaction the grand mean is (1 + 0 + 0 + 0) / 4, or 0.25. The marginal means are a1: 0.5, a2: 0, b1: 0.5, and b2: 0.
 
 Completing the calculation for all four cells for the ordinal interaction gives:
@@ -334,127 +270,97 @@ a2b2: 0 - (0.25 + (0.0 -0.25) + (0.0 -0.25)) = 0.25
 
 Cohen's $f$ is then $f = \frac { \sqrt { \frac { 0.25^2 +-0.25^2 + -0.25^2 + 0.25^2 } { 4 } }}{ 2 } = 0.125$.
 
-or in R code: `sqrt(((0.25)^2 +(-0.25)^2 + (-0.25)^2 + (0.25)^2)/4)/2 = 0.125`.
+We see the effect size of the cross-over interaction (*f* = 0.25) is twice as large as the effect size of the ordinal interaction (*f* = 0.125). This should make sense if we think about the interaction as a test of contrasts. In the disordinal interaction we are comparing cells a1b1 and a2b2 against a1b2 and a2b1, or (1+1)/2 vs. (0+0)/2. Thus, if we see this as a *t*-test for a contrast, we see the mean difference is 1. For the ordinal interaction, we have (1+0)/2 vs. (0+0)/2, so the mean difference is halved, namely 0.5. This obviously matters for the statistical power we will have when we examine interaction effects in our experiments. 
+
+Just stating that you expect a 'medium' Cohen's *f* effect size for an interaction effect in your power analysis is not the best approach. Instead, start by thinking about the pattern of means and standard deviations (and for within factors, the correlation between dependent variables) and then compute the effect size from the data pattern. If you prefer not to do so by hand, you can use [Superpower](https://aaroncaldwell.us/SuperpowerBook/) [@lakens_simulation-based_2021]. This also holds for more complex designs, such as multilevel models. In these cases, it is often the case that power analyses are easier based on simulation-based approaches, than based on plugging in a single effect size in power analysis software [@debruine_understanding_2021].
+
+## Test Yourself
+
+**Q1**: One of the largest effect sizes in the meta-meta analysis by Richard and colleagues from 2003 is that people are likely to perform an action if they feel positively about the action and believe it is common. Such an effect is (with all respect to all researchers who contributed research to this meta-analysis) somewhat trivial. Even so, the correlation was *r* = .66, which equals a Cohen’s *d* of 1.76. What is according to the online app at <https://rpsychologist.com/cohend/> the probability of superiority for an effect of this size? 
+
+70.45%
+88.12%
+89.33%
+92.14%
+
+**Q2**: Cohen’s *d* is to ______ as eta-squared is to ________
+
+r; epsilon-squared
+Hedges’ g; omega-squared
+Cohen’s d_s; generalized eta-squared
 
 
-We see the effect size of the cross-over interaction (*f* = 0.25) is twice as large as the effect size of the ordinal interaction (*f* = 0.125). 
+**Q3**: A correlation of *r* = 1.2 is:
 
-If the math so far was a bit too much to follow, there is an easier way to think of why the effect sizes are halved. In the disordinal interaction we are comparing cells a1b1 and a2b2 against a1b2 and a2b1, or (1+1)/2 vs. (0+0)/2. Thus, if we see this as a *t*-test for a contrast, it is clear the mean difference is 1, as it was in the simple effect we started with. For the ordinal interaction, we have (1+0)/2 vs. (0+0)/2, so the mean difference is halved, namely 0.5. 
-
-### Power for interactions
-
-All of the above obviously matters for the statistical power we will have when we examine interaction effects in our experiments. Let's use Superpower to perform power analyses for the disordinal interaction first, if we would collect 50 participants in each condition. 
+Impossible
+Implausibly large for an effect size in the social sciences
+In line with the median effect size in psychology
 
 
-```r
-design <- Superpower::ANOVA_design(
-  design = "2b*2b", 
-  n = 50, 
-  mu = c(1, 0, 0, 1), 
-  sd = 2)
-```
+**Q4**: Let’s assume the difference between two means we observe is 1, and the pooled standard deviation is also 1. What, on average, happens to the *t*-value and Cohen’s *d*, as we would simulate studies, as a function of the sample size in these simulations?
 
-<img src="06-effectsize_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;" />
+A) Given the mean difference and standard deviation, as the sample size becomes bigger, the *t*-value become larger, and Cohen’s *d* becomes larger.
+B) Given the mean difference and standard deviation, as the sample size becomes bigger, the *t*-value gets closer to the true value, and Cohen’s *d* becomes larger.
+C) Given the mean difference and standard deviation, as the sample size becomes bigger, the *t*-value become larger, and Cohen’s *d* gets closer to the true value.
+D) Given the mean difference and standard deviation, as the sample size becomes bigger, the *t*-value gets closer to the true value, and Cohen’s *d* gets closer to the true value.
 
-```r
-Superpower::ANOVA_exact(design, alpha_level = 0.03)
-```
+**Q5**: Go to <http://rpsychologist.com/d3/correlation/> to look at a good visualization of the proportion of variance that is explained by group membership, and the relationship between *r* and *r*2. Look at the scatterplot and the shared variance for an effect size of *r* = .21 (Richard, Bond, & Stookes-Zoota, 2003).Given that *r* = 0.21 was the average effect size in psychological research, how much variance in the data do we on average explain?
 
-```
-## Power and Effect sizes for ANOVA tests
-##      power partial_eta_squared cohen_f non_centrality
-## a    3.000                0.00  0.0000            0.0
-## b    3.000                0.00  0.0000            0.0
-## a:b 91.055                0.06  0.2525           12.5
-## 
-## Power and Effect sizes for pairwise comparisons (t-tests)
-##                       power effect_size
-## p_a_a1_b_b1_a_a1_b_b2 61.78        -0.5
-## p_a_a1_b_b1_a_a2_b_b1 61.78        -0.5
-## p_a_a1_b_b1_a_a2_b_b2  3.00         0.0
-## p_a_a1_b_b2_a_a2_b_b1  3.00         0.0
-## p_a_a1_b_b2_a_a2_b_b2 61.78         0.5
-## p_a_a2_b_b1_a_a2_b_b2 61.78         0.5
-```
+A) 2.1%
+B) 21%
+C) 4.4%
+D) 44%
 
-```
-## Power and Effect sizes for ANOVA tests
-##      power partial_eta_squared cohen_f non_centrality
-## a    3.000                0.00  0.0000            0.0
-## b    3.000                0.00  0.0000            0.0
-## a:b 91.055                0.06  0.2525           12.5
-## 
-## Power and Effect sizes for pairwise comparisons (t-tests)
-##                       power effect_size
-## p_a_a1_b_b1_a_a1_b_b2 61.78        -0.5
-## p_a_a1_b_b1_a_a2_b_b1 61.78        -0.5
-## p_a_a1_b_b1_a_a2_b_b2  3.00         0.0
-## p_a_a1_b_b2_a_a2_b_b1  3.00         0.0
-## p_a_a1_b_b2_a_a2_b_b2 61.78         0.5
-## p_a_a2_b_b1_a_a2_b_b2 61.78         0.5
-```
+**Q6**: By default, the sample size for the online correlation visualization linked to above is 50. Click on the cogwheel to access the settings, and change it to 500. What happens?
 
-First let's look at the Power and Effect size for the pairwise comparisons. Not surprisingly, these are just the same as our original t-test, given that we have 50 observations per condition, and our mean difference is either 1, or a Cohen's d of 0.5 (in which case we have 61.78% power) or the mean difference is 0, and we have no power (because there is no true effect) but we wil observe significant results 3% of the time because we set our apha level to 0.03.
+A) The proportion of explained variance is 5 times as large.
+B) The proportion of explained variance is 5 times as small.
+C) The proportion of explained variance is 52 times as large.
+D) The proportion of explained variance stays the same.
 
-Then, let's look at the results for the ANOVA. Since there are no main effects in a perfect crossover interaction, we have a 3% Type 1 error rate. We see the power for the crossover interaction between factor a and b is 91.06%. This is much larger than the power for the simple effects. The reason is that the contrast that is equal to the test of the interaction is based on all 200 observations. Unlike the pairwise comparisons with 50 vs 50 observations, the contrast for the interaction has 100 vs 100 observations. Given that the effect size is the same (*f* = 0.25) we end up with much higher power. 
+**Q7**: In an old paper you find a statistical result reported as *t*(36) = 2.14 *p* < 0.05 for an independent *t*-test without a reported effect size. Using the online MOTE app <https://doomlab.shinyapps.io/mote/> (choose Independent t -t from the Mean Differences dropdown menu) or the MOTE R function d.ind.t.t, what is the effect size Cohen’s *d* for this effect, given 38 participants (e.g., 18 in each group, leading to N – 2 = 36 degrees of freedom) and an alpha level of 0.05?
 
-If you have heard that it is impossible to find a statistically significant interaction without huge sample size, you clearly see this is wrong. Power *can* be higher than for the simpe effect - but this depends on the pattern of means underlying the interaction. If possible, design studies where your theory predicts a perfect crossover interaction.
+A) d = 0.38
+B) d = 0.41
+C) d = 0.71
+D) d = 0.75
 
+**Q8**: In an old paper you find a statistical result from a 2x3 between subjects ANOVA reported as *F*(2, 122) = 4.13, *p* < 0.05, without a reported effect size. Using the online MOTE app <https://doomlab.shinyapps.io/mote/> (choose Eta – F from the Variance Overlap dropdown menu) or the MOTE R function eta.F, what is the effect size in partial eta-squared?
 
-For the ordinal interaction, our statistical power does not look that good based on an a-priori power analysis. SUperpower tells us we have 33.99% power for the main effects and interaction (yes, we have exactly the same power for all three - if you think about the three contrasts that are tested, these have the same effect size). 
+A) $\eta_p^2$ = 0.063
+B) $\eta_p^2$  = 0.996
+C) $\eta_p^2$  = 0.032
+D) $\eta_p^2$  = 0.049
 
+**Q9**: You realize that computing omega-squared corrects for some of the bias in eta-squared.  For the old paper with *F*(2, 122) = 4.13, *p* < 0.05, and using the online MOTE app <https://doomlab.shinyapps.io/mote/> (choose Omega – F from the Variance Overlap dropdown menu) or the MOTE R function omega.F, what is the effect size in partial omega-squared? HINT: The total sample size is the df error + k, where k is the number of groups (which is 6 for the 2x3 ANOVA). 
 
-```r
-design <- Superpower::ANOVA_design(
-  design = "2b*2b", 
-  n = 50, 
-  mu = c(1, 0, 0, 0), 
-  sd = 2)
-```
+A) $\eta_p^2$ = 0.047
+B) $\eta_p^2$ = 0.749
+C) $\eta_p^2$ = 0.032
+D) $\eta_p^2$ = 0.024
 
-<img src="06-effectsize_files/figure-html/unnamed-chunk-7-1.png" width="100%" style="display: block; margin: auto;" />
+**Q10**: Several times in this chapter the effect size Cohen’s d was converted to r, or vice versa. We can use the `effectsize`  R package (that can also be used to compute effect sizes when you analyze your data in R) to convert the median r = 0.21 observed in Richard and colleagues’ meta-meta-analysis to d: effectsize::r_to_d(0.21) which yields d = 0.43 (the conversion assumes equal sample sizes in each group). Which Cohen’s *d* corresponds to a *r* = 0.1?
 
-```r
-Superpower::ANOVA_exact(design, alpha_level = 0.03)
-```
+A) d = 0.05
+B) d = 0.10
+C) d = 0.2
+D) d = 0.3
 
-```
-## Power and Effect sizes for ANOVA tests
-##       power partial_eta_squared cohen_f non_centrality
-## a   33.9869              0.0157  0.1263          3.125
-## b   33.9869              0.0157  0.1263          3.125
-## a:b 33.9869              0.0157  0.1263          3.125
-## 
-## Power and Effect sizes for pairwise comparisons (t-tests)
-##                       power effect_size
-## p_a_a1_b_b1_a_a1_b_b2 61.78        -0.5
-## p_a_a1_b_b1_a_a2_b_b1 61.78        -0.5
-## p_a_a1_b_b1_a_a2_b_b2 61.78        -0.5
-## p_a_a1_b_b2_a_a2_b_b1  3.00         0.0
-## p_a_a1_b_b2_a_a2_b_b2  3.00         0.0
-## p_a_a2_b_b1_a_a2_b_b2  3.00         0.0
-```
+**Q11**: It can be useful to convert effect sizes to r when performing a meta-analysis where not all effect sizes that are included are based on mean differences. Using the d_to_r function in the `effectsize` package, what does a *d* = 0.8 correspond to? 
 
-```
-## Power and Effect sizes for ANOVA tests
-##       power partial_eta_squared cohen_f non_centrality
-## a   33.9869              0.0157  0.1263          3.125
-## b   33.9869              0.0157  0.1263          3.125
-## a:b 33.9869              0.0157  0.1263          3.125
-## 
-## Power and Effect sizes for pairwise comparisons (t-tests)
-##                       power effect_size
-## p_a_a1_b_b1_a_a1_b_b2 61.78        -0.5
-## p_a_a1_b_b1_a_a2_b_b1 61.78        -0.5
-## p_a_a1_b_b1_a_a2_b_b2 61.78        -0.5
-## p_a_a1_b_b2_a_a2_b_b1  3.00         0.0
-## p_a_a1_b_b2_a_a2_b_b2  3.00         0.0
-## p_a_a2_b_b1_a_a2_b_b2  3.00         0.0
-```
+A) r = 0.30
+B) r = 0.37
+C) r = 0.50
+D) r = 0.57
 
-If you have heard people say you should be careful when designing studies predicting interaction patterns because you might have very low power, this is the type of pattern of means they are warning about. Maxwell, Delaney, and Kelley (2018) discuss why power for interactions is often smaller, and note interactions effects are often smaller in the real world, and we often examine ordinal interactions. This might be true. But in experimental psychology it might be possile to think about hypotheses that predict disordinal interactions. In addition to the fact that such predictions are often theoretically riskier and more impressive (after all, many things can make an effect go away, but without your theory it might be difficult to explain why an effect flips around) they also have larger effects and are easier to test with high power.
+**Q12**: From questions 10 and 11 you might have noticed something peculiar. The benchmarks typically used for ‘small’, ‘medium’, and ‘large’ effects for Cohen’s d are *d* = 0.2, *d* = 0.5, and *d* = 0.8, and for a correlation are *r* = 0.1, *r* = 0.3, and *r* = 0.5. Using the d_to_r function in the `effectsize` package, check to see whether the benchmark for a ‘large’ effect size correspond between *d* and *r*.
 
-Some years ago other blog posts by [Uri Simonsohn](http://datacolada.org/17) and [Roger Giner-Sorolla](https://approachingblog.wordpress.com/2018/01/24/powering-your-interaction-2/) did a great job in warning researchers they need large sample sizes for ordinal interactions, and my post repeats this warning. But it would be a shame if researchers would stop examining interaction effects. There are some nice benefits studying interactions, such as 1) making riskier theoretical predictions, 2) greater generalizability (if there is no interaction effect, you might show a main effect operates across different conditions of a second factor) and 3) if you want to study two main effects it is more efficient to do this in a 2x2 design than in two seperate designs (Maxwell, Delaney, & Kelley, 2018). So maybe this blog post has been able to highlight some scenarios where examining interaction effects is still beneficial.
+As @mcgrath_when_2006 write: “Many users of Cohen’s (1988) benchmarks seem unaware that those for the correlation coefficient and d are not strictly equivalent, because Cohen’s generally cited benchmarks for the correlation were intended for the infrequently used biserial correlation rather than for the point biserial.” 
 
+Download the paper by McGrath and Meyer, 2006 (you can find links to the pdf [here](https://scholar.google.com/scholar?cluster=18022919125620514097&as_sdt=0%2C5&inst=1903264034810781805)), and on page 390, right column, read which solution the authors prefer. 
 
+A) Just stop using these silly benchmarks.
+B) No, honestly, just really stop using these silly benchmarks.
+C) The benchmarks for *d* would need to be changed to 0.20, 0.67, and 1.15
+D) The benchmarks for correlations would need to be changed to .10, .24, and .37
 

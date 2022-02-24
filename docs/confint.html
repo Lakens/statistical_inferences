@@ -53,7 +53,7 @@
 </ul>
 
         <div class="book-extra">
-          <p><a id="book-repo" href="https://github.com/rstudio/bookdown-demo">View book source <i class="fab fa-github"></i></a></p>
+          <p><a id="book-repo" href="https://github.com/Lakens/statistical_inferences">View book source <i class="fab fa-github"></i></a></p>
         </div>
       </nav>
 </div>
@@ -88,14 +88,15 @@ where <em>N</em> is the size of the population, and <em>n</em> is the size of th
 Figure 7.2: Series of simulated point estimates and confidence intervals
 </p>
 </div>
-<p>We can now see what is meant by the sentence “Confidence intervals are a statement about the percentage of confidence intervals that contain the true parameter value“. In the long run, for 95% of the samples, the red line (the population parameter) is contained within the 95% confidence interval around the sample mean, and in 5% of the confidence intervals this is not true. As we will see when we turn to the formula for confidence intervals, the width of a confidence interval depends on the sample size and the standard deviation. The larger the sample size, the smaller the confidence intervals. Cohen [-@] reflected on the reason confidence intervals were rarely reporting in 1994: "I suspect that the main reason they are not reported is that they are so embarrassingly large!" This might be, but another reason might have been that statistical software rarely provided confidence intervals around effect sizes in the time when Cohen wrote his article. With the increasing availability of free software packages, for example in R, it has become much easier to compute confidence intervals. The <a href="https://apastyle.apa.org/jars/quantitative">Journal Article Reporting Standards</a> now recommend to report "effect-size estimates and confidence intervals on estimates that correspond to each inferential test conducted, when possible".</p>
+<p>We can now see what is meant by the sentence “Confidence intervals are a statement about the percentage of confidence intervals that contain the true parameter value“. In the long run, for 95% of the samples, the red line (the population parameter) is contained within the 95% confidence interval around the sample mean, and in 5% of the confidence intervals this is not true. As we will see when we turn to the formula for confidence intervals, the width of a confidence interval depends on the sample size and the standard deviation. The larger the sample size, the smaller the confidence intervals.</p>
 </div>
 <div id="relatCIp" class="section level2" number="7.3">
 <h2>
 <span class="header-section-number">7.3</span> The relation between confidence intervals and <em>p</em>-values<a class="anchor" aria-label="anchor" href="#relatCIp"><i class="fas fa-link"></i></a>
 </h2>
 <p>There is a direct relationship between the CI around an effect size and statistical significance of a null-hypothesis significance test. For example, if an effect is statistically significant (<em>p</em> &lt; 0.05) in a two-sided independent <em>t</em>-test with an alpha of .05, the 95% CI for the mean difference between the two groups will not include zero. Confidence intervals are sometimes said to be more informative than <em>p</em>-values, because they do not only provide information about whether an effect is statistically significant (i.e., when the confidence interval does not overlap with the value representing the null hypothesis), but also communicate the precision of the effect size estimate. This is true, but as mentioned in the chapter on <a href="pvalue"><em>p</em>-values</a> it is still recommended to add exact <em>p</em>-values, which facilitates the re-use of results for secondary analyses <span class="citation">(<a href="references.html#ref-appelbaum_journal_2018" role="doc-biblioref">Appelbaum et al., 2018</a>)</span>, and allows other researchers to compare the <em>p</em>-value to an alpha level they would have preferred to use <span class="citation">(<a href="references.html#ref-lehmann_testing_2005" role="doc-biblioref">Lehmann &amp; Romano, 2005</a>)</span>.</p>
-<p>In order to maintain the direct relationship between a confidence interval and a <em>p</em>-value it is necessary to adjust the confidence interval level whenever the alpha level is adjusted. For example, if an alpha level of 5% is corrected for three comparisons to 0.05/3 - 0.0167, the corresponding confidence interval would be a 1 - 0.0167 = 0.9833 confidence interval. Similarly, if a <em>p</em>-value is computed for a one-sided test, there is only an upper or lower limit of the interval, and the other end of the interval ranges to −∞ or ∞.</p>
+<p>In order to maintain the direct relationship between a confidence interval and a <em>p</em>-value it is necessary to adjust the confidence interval level whenever the alpha level is adjusted. For example, if an alpha level of 5% is corrected for three comparisons to 0.05/3 - 0.0167, the corresponding confidence interval would be a 1 - 0.0167 = 0.9833 confidence interval. Similarly, if a <em>p</em>-value is computed for a one-sided <em>t</em>-test, there is only an upper or lower limit of the interval, and the other end of the interval ranges to −∞ or ∞.</p>
+<p>To maintain a direct relationship between an <em>F</em>-test and its confidence interval, a 90% CI for effect sizes from an <em>F</em>-test should be provided. The reason for this is explained by <a href="http://core.ecu.edu/psyc/wuenschk/docs30/CI-Eta2-Alpha.doc">Karl Wuensch</a>. Where Cohen’s d can take both positive and negative values, r² or η² are squared, and can therefore only take positive values. This is related to the fact that <em>F</em>-tests (as commonly used in ANOVA) are one-sided. If you calculate a 95% CI, you can get situations where the confidence interval includes 0, but the test reveals a statistical difference with a <em>p</em> &lt; .05 (for a more mathematical explanation, see <span class="citation">Steiger (<a href="references.html#ref-steiger_beyond_2004" role="doc-biblioref">2004</a>)</span>). This means that a 95% CI around Cohen's d in an independent <em>t</em>test equals a 90% CI around η² for exactly the same test performed as an ANOVA. As a final detail, because eta-squared cannot be smaller than zero, the lower bound for the confidence interval can not be smaller than 0. This means that a confidence interval for an effect that is not statistically different from 0 has to start at 0. You report such a CI as 90% CI [.00; .XX] where the XX is the upper limit of the CI.</p>
 <p>Confidence intervals are often used in forest plots that communicate the results from a meta-analysis. In the plot below, we see 4 rows. Each row shows the effect size estimate from one study (in Hedges’ g). For example, study 1 yielded an effect size estimate of 0.44, with a confidence interval around the effect size from 0.08 to 0.8. The horizontal black line, similarly to the visualization we played around with before, is the width of the confidence interval. When it does not touch the effect size 0 (indicated by a black vertical line) the effect is statistically significant.</p>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:meta"></span>
@@ -104,6 +105,7 @@ Figure 7.3: Meta-analysis of 4 studies
 </p>
 </div>
 <p>We can see, based on the fact that the confidence intervals do not overlap with 0, that studies 1 and 3 were statistically significant. The diamond shape next the FE model (Fixed Effect model) is the meta-analytic effect size. Instead of using a black horizontal line, the upper limit and lower limit of the confidence interval are indicated by the left and right points of the diamond, and the center of the diamond is the meta-analytic effect size estimate. A meta-analysis calculates the effect size by combining and weighing all studies. The confidence interval for a meta-analytic effect size estimate is always narrower than that for a single study, because of the combined sample size of all studies included in the meta-analysis.</p>
+<p>In the preceding section, we focused on examining whether the confidence interval overlapped with 0. This is a confidence interval approach to a null-hypothesis significance test. Even though we are not computing a <em>p</em>-value, we can directly see from the confidence interval whether <em>p</em> &lt; <span class="math inline">\(\alpha\)</span>. The confidence interval approach to hypothesis testing makes it quite intuitive to think about performing tests against non-zero null hypotheses <span class="citation">(<a href="references.html#ref-bauer_unifying_1996" role="doc-biblioref">Bauer &amp; Kieser, 1996</a>)</span>. For example, we could test whether we can reject an effect of 0.5 by examining if the 95% confidence interval does not overlap with 0.5. We can test whether an effect is <em>smaller</em> that 0.5 by examining if the 95% confidence interval falls completely <em>below</em> 0.5. We will see that this is leads to a logical extension of null-hypothesis testing where, instead of testing to reject an effect of 0, we can test whether we can reject other effects of interest in <strong>range predictions</strong> and <a href="#equivalencetest"><strong>equivalence tests</strong></a>.</p>
 </div>
 <div id="the-standard-error-and-95-confidence-intervals" class="section level2" number="7.4">
 <h2>
@@ -119,8 +121,7 @@ Standard \ Error \ (SE) = \sigma/\sqrt n
 <p><span class="math display">\[
 \mu \pm t_{df, 1-(\alpha/2)} SE
 \]</span></p>
-<p>With a 95% confidence interval, the α = 0.05, and thus the critical <em>t</em>-value for the degrees of freedom for 1- α /2, or the 0.975th quantile is calculated. Remember that a <em>t</em>-distribution has slightly thicker tails than a Z-distribution. Where the 0.975th quantile for a Z-distribution is 1.96, the value for a <em>t</em>-distribution with for example df = 19 is 2.093. This value is multiplied by the standard error, and added (for the upper limit of the confidence interval) or subtracted (for the lower limit of the confidence
-interval) from the mean.</p>
+<p>With a 95% confidence interval, the α = 0.05, and thus the critical <em>t</em>-value for the degrees of freedom for 1- α /2, or the 0.975th quantile is calculated. Remember that a <em>t</em>-distribution has slightly thicker tails than a Z-distribution. Where the 0.975th quantile for a Z-distribution is 1.96, the value for a <em>t</em>-distribution with for example df = 19 is 2.093. This value is multiplied by the standard error, and added (for the upper limit of the confidence interval) or subtracted (for the lower limit of the confidence interval) from the mean.</p>
 </div>
 <div id="overlapping-confidence-intervals" class="section level2" number="7.5">
 <h2>
@@ -141,37 +142,6 @@ Figure 7.4: Means and 95% confidence intervals of two independent groups and the
 </h2>
 <p>Even though 95% of future confidence intervals will contain the true parameter, a 95% confidence interval will not contain 95% of future individual observations. Sometimes, researchers want to predict the interval within which a single value will fall. This is called the prediction interval. It is always much wider than a confidence interval. The reason is that individual observations can vary substantially, but means of future samples (which fall within a normal confidence interval 95% of the time) will vary much less.</p>
 <p>In Figure <a href="confint.html#fig:predictioninterval">7.5</a> the orange background illustrates the 95% confidence interval around the mean, and the lighter yellow background illustrates the 95% prediction interval (PI).</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1009</span><span class="op">)</span>
-<span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">20</span> <span class="co"># set sample size</span>
-<span class="va">nsims</span> <span class="op">&lt;-</span> <span class="fl">100000</span> <span class="co"># set number of simulations</span>
-
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">n</span>, mean <span class="op">=</span> <span class="fl">100</span>, sd <span class="op">=</span> <span class="fl">15</span><span class="op">)</span> <span class="co"># create sample from normal distribution</span>
-
-<span class="co"># 95% Confidence Interval</span>
-<span class="va">ciu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span><span class="fl">0.975</span>, df <span class="op">=</span> <span class="va">n</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="va">n</span><span class="op">)</span>
-<span class="va">cil</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span><span class="fl">0.975</span>, df <span class="op">=</span> <span class="va">n</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="va">n</span><span class="op">)</span>
-
-<span class="co"># 95% Prediction Interval</span>
-<span class="va">piu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span><span class="fl">0.975</span>, df <span class="op">=</span> <span class="va">n</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">/</span> <span class="va">n</span><span class="op">)</span>
-<span class="va">pil</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span><span class="fl">0.975</span>, df <span class="op">=</span> <span class="va">n</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">/</span> <span class="va">n</span><span class="op">)</span>
-
-<span class="fu">ggplot</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="co"># plot data</span>
-  <span class="fu">geom_rect</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>xmin <span class="op">=</span> <span class="va">pil</span>, xmax <span class="op">=</span> <span class="va">piu</span>, ymin <span class="op">=</span> <span class="fl">0</span>, ymax <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span>,
-            fill <span class="op">=</span> <span class="st">"gold"</span><span class="op">)</span> <span class="op">+</span> <span class="co"># draw yellow PI area</span>
-  <span class="fu">geom_rect</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>xmin <span class="op">=</span> <span class="va">cil</span>, xmax <span class="op">=</span> <span class="va">ciu</span>, ymin <span class="op">=</span> <span class="fl">0</span>, ymax <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span>,
-            fill <span class="op">=</span> <span class="st">"#E69F00"</span><span class="op">)</span> <span class="op">+</span> <span class="co"># draw orange CI area</span>
-  <span class="fu">geom_histogram</span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"black"</span>, fill <span class="op">=</span> <span class="st">"grey"</span>, <span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">..density..</span><span class="op">)</span>,
-                 bins <span class="op">=</span> <span class="fl">20</span><span class="op">)</span> <span class="op">+</span>  <span class="fu">xlab</span><span class="op">(</span><span class="st">"Score"</span><span class="op">)</span> <span class="op">+</span>  <span class="fu">ylab</span><span class="op">(</span><span class="st">"frequency"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">theme_bw</span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">20</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">theme</span><span class="op">(</span>panel.grid.major.x <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>, axis.text.y <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>,
-        panel.grid.minor.x <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">geom_vline</span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">coord_cartesian</span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">150</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">scale_x_continuous</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">150</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">annotate</span><span class="op">(</span><span class="st">"text"</span>, x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, y <span class="op">=</span> <span class="fl">0.02</span>, label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span>
-    <span class="st">"Mean = "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>, <span class="st">"\n"</span>,
-    <span class="st">"SD = "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">6.5</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:predictioninterval"></span>
 <img src="07-CI_files/figure-html/predictioninterval-1.png" alt="A comparison of a 95% confidence interval (gold) and 95% prediction interval (yellow)." width="100%"><p class="caption">
@@ -182,407 +152,136 @@ Figure 7.5: A comparison of a 95% confidence interval (gold) and 95% prediction 
 <p><span class="math display">\[
 Standard \ Error \ (SE) = \sigma/\sqrt(1+1/n)
 \]</span></p>
-<p>When we rewrite the formula used for the confidence interval to <span class="math display">\[\sigma/\sqrt(1/N)\]</span>, we see the difference between a confidence interval and the prediction interval is in the “1+” which always leads to wider intervals. Prediction intervals are <strong>wider</strong>, because they are constructed so that they will contain <strong>a single future value</strong> 95% of the time, instead of the <strong>mean</strong>. The fact that prediction intervals are wide is a good reminder that it is difficult te predict what will happen for any single individual.</p>
+<p>When we rewrite the formula used for the confidence interval to <span class="math inline">\(\sigma/\sqrt(1/N)\)</span>, we see the difference between a confidence interval and the prediction interval is in the “1+” which always leads to wider intervals. Prediction intervals are <strong>wider</strong>, because they are constructed so that they will contain <strong>a single future value</strong> 95% of the time, instead of the <strong>mean</strong>. The fact that prediction intervals are wide is a good reminder that it is difficult te predict what will happen for any single individual.</p>
 </div>
 <div id="capture-percentages" class="section level2" number="7.7">
 <h2>
 <span class="header-section-number">7.7</span> Capture Percentages<a class="anchor" aria-label="anchor" href="#capture-percentages"><i class="fas fa-link"></i></a>
 </h2>
-<p>It can be difficult to understand why a 95% confidence interval does not provide us with the interval where 95% of future means will fall. The percentage of means that falls within a single confidence interval is called the <strong>capture percentage</strong>. A 95% confidence interval is only a 95% capture percentage when the statistic (such as an effect size) you observe in a single sample happens to be exactly the same as the true parameter. This situation is illustrated in the picture below. The observed effect size (dot) falls exactly on the true effect size (vertical dotted line). In this case, and <em>only in this case</em>, 95% of future means will fall within this 95% confidence interval.</p>
-<div class="inline-figure"><img src="images/capture1.jpg"></div>
-<p>However, you can’t know whether your observed effect size happens to be exactly the same as the population effect size. When this is not the case (and it is almost never exactly the case) less than 95% of future effect sizes will fall within the CI from your current sample. The right side of the figure illustrates this. Let’s assume we observed an effect size much lower to the true effect size. We know that effect sizes from the sample are randomly distributed around the true effect size. Very often, we should find effect size estimates in our sample that fall outside the 95% confidence interval of the single sample we happen to have observed. So, the percentage of future means that fall within a single confidence interval depends upon which single confidence interval you happened to observe! In the long run, a 95% CI has an 83.4% capture probability <span class="citation">(<a href="references.html#ref-cumming_confidence_2006" role="doc-biblioref">Cumming &amp; Maillardet, 2006</a>)</span>.</p>
-<p>Let’s experience this through simulation. The simulation in the R script generates a large number of additional samples, after the initial one that was plotted. The simulation returns the number of CI that contains the mean (which should be 95% in the long run). The simulation also returns the % of means from future studies that fall within the 95% of the original study, or the capture percentage. It differs from (and is often lower, but sometimes higher, than) the confidence interval.</p>
-<p>Q8: Run the simulations multiple times. Look at the output you will get in the R console. For example: “95.077 % of the 95% confidence intervals contained the true mean” and “The capture percentage for the plotted study, or the % of values within the observed confidence interval from 88.17208 to 103.1506 is: 82.377 %”. While running the simulations multiple times, look at the confidence interval around the sample mean, and relate this to the capture percentage. Which statement is true?</p>
-<ol style="list-style-type: upper-alpha">
-<li><p>The farther the sample mean is from the true population mean, the lower the capture percentage.</p></li>
-<li><p>The farther the sample mean is from the true population mean, the higher the capture percentage.</p></li>
-</ol>
-<p>Q9: Simulations in R are randomly generated, but you can make a specific
-simulation reproducible by setting the seed of the random generation process. Copy-paste “set.seed(1000)” to the first line of the R script, and run the simulation. The sample mean should be 94. What is the capture percentage? (Don’t forget to remove the set.seed command if you want to generate more random simulations!).</p>
-<ol style="list-style-type: upper-alpha">
-<li>95%</li>
-<li>42.1%</li>
-<li>84.3%</li>
-<li>89.2%</li>
-</ol>
-<p>Capture percentages are rarely directly used to make statistical inferences. The main reason we discuss them here is really to prevent the common misunderstanding that 95% of future means fall within a single confidence interval: Capture percentages clearly show that is not true. Prediction intervals are also rarely used in psychology, but are more common in data science.</p>
-<p>In this assignment you have learned why it is important to provide a measure of the uncertainty of your estimates. We have discussed the correct interpretation of confidence intervals, the meaning of prediction intervals, and the difference between a confidence interval and a capture percentage.</p>
+<p>It can be difficult to understand why a 95% confidence interval does not provide us with the interval where 95% of future means will fall. The percentage of means that falls within a single confidence interval is called the <strong>capture percentage</strong>. In Figure <a href="confint.html#fig:metaci">7.6</a> we see two randomly simulated studies with the same sample size from the same population. The true effect size in both studies is 0, and we see that the 95% confidence intervals for both studies contain the true population value of 0. However, the two confidence intervals cover quite different ranges of effect sizes, with the confidence interval in Study 1 ranging from -0.07 to 0.48, and the confidence interval in Study 2 ranging from -0.50 to 0.06. It can not be true that in the future, 95% of the effect sizes we should expect will fall between -0.07 to 0.048, <strong>and</strong> 95% of the effect sizes we should expect will fall between -0.50 to 0.06.</p>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:metaci"></span>
+<img src="07-CI_files/figure-html/metaci-1.png" alt="Meta-analysis of 2 simulated studies from the same population." width="100%"><p class="caption">
+Figure 7.6: Meta-analysis of 2 simulated studies from the same population.
+</p>
 </div>
-<div id="using-ci-for-equivalence-tests" class="section level2" number="7.8">
+<p>The only situation in which a 95% confidence interval happens to also be a 95% capture percentage is when the observed effect size in a sample happens to be exactly the same as the true population parameter. In Figure <a href="confint.html#fig:metaci">7.6</a> that means we would need to observe an effect of exactly 0. However, you can’t know whether your observed effect size happens to be exactly the same as the population effect size. When a sample estimate is not identical to the true population value (which is alsmost always the case) less than 95% of future effect sizes will fall within the CI from your current sample. As we have observed two studies with observed effect sizes a bit removed from the true effect size, we will find effect size estimates in future studies that fall outside the observed 95% confidence interval quite often. So, the percentage of future means that fall within a single confidence interval depends upon which single confidence interval you happened to observe. Based on simulation studies it is possible to show that on average, in the long run, a 95% CI has an 83.4% capture probability <span class="citation">(<a href="references.html#ref-cumming_confidence_2006" role="doc-biblioref">Cumming &amp; Maillardet, 2006</a>)</span>.</p>
+</div>
+<div id="calculating-confidence-intervals-around-standard-deviations." class="section level2" number="7.8">
 <h2>
-<span class="header-section-number">7.8</span> Using CI for equivalence tests<a class="anchor" aria-label="anchor" href="#using-ci-for-equivalence-tests"><i class="fas fa-link"></i></a>
+<span class="header-section-number">7.8</span> Calculating Confidence Intervals around Standard Deviations.<a class="anchor" aria-label="anchor" href="#calculating-confidence-intervals-around-standard-deviations."><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">n</span> <span class="op">=</span> <span class="fl">100</span> <span class="co">#set sample size</span>
-<span class="va">x</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">n</span>, mean <span class="op">=</span> <span class="fl">100</span>, sd <span class="op">=</span> <span class="fl">15</span><span class="op">)</span> <span class="co">#create sample from normal distribution</span>
-<span class="va">y</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">n</span>, mean <span class="op">=</span> <span class="fl">106</span>, sd <span class="op">=</span> <span class="fl">15</span><span class="op">)</span> <span class="co">#create sample from normal distribution</span>
-
-<span class="fu">effectsize</span><span class="fu">::</span><span class="fu"><a href="https://easystats.github.io/effectsize/reference/cohens_d.html">cohens_d</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></code></pre></div>
-<pre><code>## Cohen's d |         95% CI
-## --------------------------
-## -0.42     | [-0.70, -0.14]
-## 
-## - Estimated using pooled SD.</code></pre>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Immediate equivalence test</span>
-<span class="fu">effectsize</span><span class="fu">::</span><span class="fu"><a href="https://easystats.github.io/bayestestR/reference/equivalence_test.html">equivalence_test</a></span><span class="op">(</span>
-  <span class="fu">effectsize</span><span class="fu">::</span><span class="fu"><a href="https://easystats.github.io/effectsize/reference/cohens_d.html">cohens_d</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span>,
-  range <span class="op">=</span> <span class="st">"default"</span>,
-  rule <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"classic"</span><span class="op">)</span>,
-<span class="op">)</span></code></pre></div>
-<pre><code>## # Test for Practical Equivalence
-##      ROPE: [-0.10 0.10]
-## 
-## Cohen's d |         95% CI |       H0
-## -------------------------------------
-## -0.42     | [-0.70, -0.14] | Rejected</code></pre>
+<p>If we calculate a standard deviation (SD) from a sample, this value is an
+estimate of the true value in the population. In small samples, our estimate can be quite far off. But due to the law of large numbers, as our sample size increases, we will be measuring the standard deviation more accurately. Since the sample standard deviation is an estimate with uncertainty, we can calculate a 95% confidence interval around it.</p>
+<p>Keeping the uncertainty in our estimate of the standard deviation in mind can be important. When researchers perform an a-priori power analysis based on an effect size of interest expressed on a raw scale, they need accurate estimates of the standard deviation when performing the power analysis. Sometimes researchers will use pilot data to get an estimate of the standard deviation. Since the estimate of the population standard deviation based on a pilot study has some uncertainty, the sample size from the a-priori power analysis contains uncertainty (see the 'Test Yourself' questions below). Use validated or existing measures for which accurate estimates of the standard deviation in your population of interest are available. And keep in mind that all estimates from a sample have uncertainty.</p>
 </div>
 <div id="computing-confidence-intervals-around-effect-sizes" class="section level2" number="7.9">
 <h2>
 <span class="header-section-number">7.9</span> Computing Confidence Intervals around Effect Sizes<a class="anchor" aria-label="anchor" href="#computing-confidence-intervals-around-effect-sizes"><i class="fas fa-link"></i></a>
 </h2>
-<div id="mote" class="section level3" number="7.9.1">
-<h3>
-<span class="header-section-number">7.9.1</span> MOTE<a class="anchor" aria-label="anchor" href="#mote"><i class="fas fa-link"></i></a>
-</h3>
-<p>Currently the easiest and most complete solution to calculating effect sizes and confidence intervals is <a href="https://www.aggieerin.com/shiny-server/">MOTE</a> made by Dr. Erin Buchanan and her lab. The website comes with a full collections of tutorials, comparisons with other software packages, and demonstration videos giving incredible accessible overviews of how to compute effect sizes for a wide range of tests. For example, the video below gives an overview for an independent <em>t</em>-test</p>
+<p>Cohen <span class="citation">(<a href="references.html#ref-cohen_earth_1994" role="doc-biblioref">1994</a>)</span> reflected on the reason confidence intervals were rarely reporting in 1994: "I suspect that the main reason they are not reported is that they are so embarrassingly large!" This might be, but another reason might have been that statistical software rarely provided confidence intervals around effect sizes in the time when Cohen wrote his article. It has become increasingly easy to report confidence intervals with the popularity of free software packages in R, even though these packages might not provide solutions for all statistical tests yet. The <a href="https://apastyle.apa.org/jars/quantitative">Journal Article Reporting Standards</a> recommend to report "effect-size estimates and confidence intervals on estimates that correspond to each inferential test conducted, when possible".</p>
+<p>One easy solution to calculating effect sizes and confidence intervals is <a href="https://www.aggieerin.com/shiny-server/">MOTE</a> made by Dr. Erin Buchanan and her lab. The website comes with a full collections of tutorials, comparisons with other software packages, and demonstration videos giving accessible overviews of how to compute effect sizes and confidence intervals for a wide range of tests based on summary statistics. This means that whichever software you use to perform statistical tests, you can enter sample sizes and means, standard deviations, or test statistics to compute effect sizes and their confidence intervals. For example, the video below gives an overview of how to compute a confidence interval around Cohen's d for an independent <em>t</em>-test.</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/kH3UOoFh9Ng?start=9" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
 </iframe>
-<p>MOTE is also available as an R package <span class="citation">(<a href="references.html#ref-buchanan_mote_2017" role="doc-biblioref">Buchanan et al., 2017</a>)</span>. It contains many useful functions, such as ways to compute effect sizes from summary statistics, which provide output that can conveniently be embedded in an R Markdown document:</p>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">MOTE</span><span class="op">)</span>
-
-<span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MOTE/man/d.ind.t.html">d.ind.t</a></span><span class="op">(</span>m1 <span class="op">=</span> <span class="fl">1.7</span>, m2 <span class="op">=</span> <span class="fl">2.1</span>, sd1 <span class="op">=</span> <span class="fl">1.01</span>, sd2 <span class="op">=</span> <span class="fl">0.96</span>, n1 <span class="op">=</span> <span class="fl">77</span>, n2 <span class="op">=</span> <span class="fl">78</span>, a <span class="op">=</span> <span class="fl">.05</span><span class="op">)</span>
-<span class="va">res</span><span class="op">$</span><span class="va">statistic</span></code></pre></div>
-<pre><code>## [1] "$t$(153) = -2.53, $p$ = .013"</code></pre>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">res</span><span class="op">$</span><span class="va">estimate</span></code></pre></div>
+<p>MOTE is also available as an R package <span class="citation">(<a href="references.html#ref-buchanan_mote_2017" role="doc-biblioref">Buchanan et al., 2017</a>)</span>. Although many solutions exists to compute Cohen's d, MOTE sets itself apart by allowing researchers to compute effect sizes and confidence intervals for many additional effect sizes, such as (partial) omega squared for between subjects ANOVA (<span class="math inline">\(\omega^{2}\)</span> and <span class="math inline">\(\omega^{2}_p\)</span>), generalized omega squared for ANOVA (<span class="math inline">\(\omega^{2}_G\)</span>), epsilon squared for ANOVA (<span class="math inline">\(\varepsilon^{2}\)</span>) and (partial) generalized eta squared for ANOVA (<span class="math inline">\(\eta^{2}_G\)</span>).</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">MOTE</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MOTE/man/d.ind.t.html">d.ind.t</a></span><span class="op">(</span>m1 <span class="op">=</span> <span class="fl">1.7</span>, m2 <span class="op">=</span> <span class="fl">2.1</span>, sd1 <span class="op">=</span> <span class="fl">1.01</span>, sd2 <span class="op">=</span> <span class="fl">0.96</span>, n1 <span class="op">=</span> <span class="fl">77</span>, n2 <span class="op">=</span> <span class="fl">78</span>, a <span class="op">=</span> <span class="fl">.05</span><span class="op">)</span><span class="op">$</span><span class="va">estimate</span></code></pre></div>
 <pre><code>## [1] "$d_s$ = -0.41, 95\\% CI [-0.72, -0.09]"</code></pre>
-<p>Although many solutions exists to compute Cohen's d, MOTE sets itself apart by allowing researchers to compute effect sizes and confidence intervals for many additional effect sizes, such as (partial) omega squared for between subjects ANOVA (<span class="math inline">\(\omega^{2}\)</span> and <span class="math inline">\(\omega^{2}_p\)</span>), generalized omega squared for ANOVA (<span class="math inline">\(\omega^{2}_G\)</span>), Epsilon squared for ANOVA (<span class="math inline">\(\varepsilon^{2}\)</span>) and (partial) generalized eta squared for ANOVA (<span class="math inline">\(\eta^{2}_G\)</span>), as well as Hedges' g (bias corrected Cohen's d). If you are want to compute effect sizes and their confidence intervals, this is the first resource you should try.</p>
+<p>MBESS is another R package that has a range of options to compute effect sizes and their confidence intervals <span class="citation">(<a href="references.html#ref-kelley_confidence_2007" role="doc-biblioref">Kelley, 2007</a>)</span>. The code below reproduces the example for MOTE above.</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">MBESS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MBESS/man/smd.html">smd</a></span><span class="op">(</span>Mean.1 <span class="op">=</span> <span class="fl">1.7</span>, Mean.2 <span class="op">=</span> <span class="fl">2.1</span>, s.1 <span class="op">=</span> <span class="fl">1.01</span>, s.2 <span class="op">=</span> <span class="fl">0.96</span>, n.1 <span class="op">=</span> <span class="fl">77</span>, n.2 <span class="op">=</span> <span class="fl">78</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] -0.406028</code></pre>
+<p>If you feel comfortable analyzing your data in R, the <code>effectsize</code> package offers a complete set of convenient solutions to compute effect sizes and confidence intervals <span class="citation">(<a href="references.html#ref-ben-shachar_effectsize_2020" role="doc-biblioref">Ben-Shachar et al., 2020</a>)</span>.</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">33</span><span class="op">)</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">20</span>, mean <span class="op">=</span> <span class="fl">0</span>, sd <span class="op">=</span> <span class="fl">2.5</span><span class="op">)</span> <span class="co">#create sample from normal distribution</span>
+<span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">200</span>, mean <span class="op">=</span> <span class="fl">1.5</span>, sd <span class="op">=</span> <span class="fl">3.5</span><span class="op">)</span> <span class="co">#create sample from normal distribution</span>
+
+<span class="fu">effectsize</span><span class="fu">::</span><span class="fu"><a href="https://easystats.github.io/effectsize/reference/cohens_d.html">cohens_d</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span><span class="op">)</span></code></pre></div>
+<pre><code>## Cohen's d |        95% CI
+## -------------------------
+## -0.44     | [-0.91, 0.02]
+## 
+## - Estimated using pooled SD.</code></pre>
+<p>I am personally impressed by the way the <code>effectsize</code> package incorporates the state of the art (although I might be a bit biased). For example, after our recommendation to by default use Welch's <em>t</em>-test instead of students <em>t</em>-test <span class="citation">(<a href="references.html#ref-delacre_why_2017" role="doc-biblioref">Delacre et al., 2017</a>)</span>, and based on a recent simulation study recommended to report Hedges’ <span class="math inline">\(g_s^*\)</span> as the effect size for Welch's <em>t</em>-test <span class="citation">(<a href="references.html#ref-delacre_why_2021" role="doc-biblioref">Delacre et al., 2021</a>)</span>, the <code>effectsize</code> package was the first to incorporate it.</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">effectsize</span><span class="fu">::</span><span class="fu"><a href="https://easystats.github.io/effectsize/reference/cohens_d.html">cohens_d</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span>, pooled_sd <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<pre><code>## Cohen's d |         95% CI
+## --------------------------
+## -0.53     | [-0.90, -0.16]
+## 
+## - Estimated using un-pooled SD.</code></pre>
+<p>Free statistical software <a href="https://www.jamovi.org/">jamovi</a> and <a href="https://jasp-stats.org/">JAPS</a> are strong alternatives to SPSS that (unlike SPSS) allows users to compute Cohen's d and the confidence interval for both independent and dependent <em>t</em>tests.</p>
+<p>For jamovi, the ESCI module allows users to compute effect sizes and confidence intervals, and accompanies educational material that focusses more on estimation and less on testing <span class="citation">(<a href="references.html#ref-cumming_introduction_2016" role="doc-biblioref">Cumming &amp; Calin-Jageman, 2016</a>)</span>.</p>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:escijamovi"></span>
+<img src="images/escijamovi.png" alt="Output from ESCI module in jamovi." width="100%"><p class="caption">
+Figure 7.7: Output from ESCI module in jamovi.
+</p>
 </div>
-<div id="jasp" class="section level3" number="7.9.2">
-<h3>
-<span class="header-section-number">7.9.2</span> JASP<a class="anchor" aria-label="anchor" href="#jasp"><i class="fas fa-link"></i></a>
-</h3>
-<p>Free statistical software <a href="https://jasp-stats.org/">JAPS</a> is a strong alternative to SPSS that (unlike SPSS) allows users to compute Cohen's d and the confidence interval for both independent and dependent <em>t</em>tests.</p>
+<p>JASP offers a wide range of frequentist and Bayesian analyses, and in addition to Cohen's d also allows users to compute omega squared <span class="math inline">\(\omega^{2}\)</span>, the less biased version of <span class="math inline">\(\eta^{2}\)</span> <span class="citation">(<a href="references.html#ref-albers_when_2018" role="doc-biblioref">Albers &amp; Lakens, 2018</a>; <a href="references.html#ref-okada_is_2013" role="doc-biblioref">Okada, 2013</a>)</span>.</p>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:jasp1"></span>
 <img src="images/jaspeffectci1.png" alt="JASP menu option allows you to select Cohen's d and a CI around it." width="100%"><p class="caption">
-Figure 7.6: JASP menu option allows you to select Cohen's d and a CI around it.
+Figure 7.8: JASP menu option allows you to select Cohen's d and a CI around it.
 </p>
 </div>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:jasp2"></span>
 <img src="images/jaspeffectci2.png" alt="JASP output returns Cohen's d and the confidence interval around it." width="100%"><p class="caption">
-Figure 7.7: JASP output returns Cohen's d and the confidence interval around it.
+Figure 7.9: JASP output returns Cohen's d and the confidence interval around it.
 </p>
 </div>
-<p>JASP also allows you to compute omega squared <span class="math inline">\(\omega^{2}\)</span>, the less biased version of <span class="math inline">\(\varepsilon^{2}\)</span> and</p>
 </div>
-<div id="esci-software" class="section level3" number="7.9.3">
-<h3>
-<span class="header-section-number">7.9.3</span> ESCI software<a class="anchor" aria-label="anchor" href="#esci-software"><i class="fas fa-link"></i></a>
-</h3>
-<p>For people who prefer to use <a href="https://thenewstatistics.com/itns/esci/">ESCI software</a> by Geoff Cumming, ESCI also has an option to provide 95% CI around Cohen's d, both for independent as for dependent <em>t</em>-tests. However, the option is slightly hidden - you need to scroll to the right, where you can check a box which is placed out of view.</p>
+<div id="test-yourself-5" class="section level2" number="7.10">
+<h2>
+<span class="header-section-number">7.10</span> Test Yourself<a class="anchor" aria-label="anchor" href="#test-yourself-5"><i class="fas fa-link"></i></a>
+</h2>
+<p><strong>Q1</strong>: Go to the online app by Kristoffer Magnusson:
+<a href="http://rpsychologist.com/d3/CI/" class="uri">http://rpsychologist.com/d3/CI/</a>. You might want more confidence intervals to contain the true population parameter than 95%. Drag the ‘Slide me’ button to the far right, and you will see the simulation for 99% confidence intervals. Which statement is true?</p>
+<ol style="list-style-type: upper-alpha">
+<li>The confidence intervals are larger, and the sample means fall closer to the true mean.</li>
+<li>The confidence intervals are smaller, and the sample means fall closer to the true mean.</li>
+<li>The confidence intervals are larger, and the sample means fall as close to the true mean as for a 95% confidence interval.</li>
+<li>The confidence intervals are smaller, and the sample means fall as close to the true mean as for a 95% confidence interval.</li>
+</ol>
+<p><strong>Q2</strong>: As we could see from the formulas for confidence intervals, sample means and their confidence intervals depend on the sample size. We can change the sample size in the simulation. By default, the sample size is set to 5. Change the sample size to 50 (you can type it in). Which statement is true?</p>
+<ol style="list-style-type: upper-alpha">
+<li>The larger the sample size, the larger the confidence intervals. The sample size does not influence how the sample means vary around the true population mean.</li>
+<li>The larger the sample size, the smaller the confidence intervals. The sample size does not influence how the sample means vary around the true population mean.</li>
+<li>The larger the sample size, the larger the confidence intervals, and the closer the sample means are to the true population mean.</li>
+<li>The larger the sample size, the smaller the confidence intervals, and the closer the sample means are to the true population mean.</li>
+</ol>
+<p><strong>Q3</strong>: Which of the studies 1 to 4 in the forest plot below were statistically significant?</p>
 <div class="figure" style="text-align: center">
-<span style="display:block;" id="fig:esci"></span>
-<img src="images/esci1.PNG" alt="ESCI software has a somewhat hidden option to compute 95% CI around Cohen's d for within and between *t*-tests." width="100%"><p class="caption">
-Figure 7.8: ESCI software has a somewhat hidden option to compute 95% CI around Cohen's d for within and between <em>t</em>-tests.
+<span style="display:block;" id="fig:metaQ"></span>
+<img src="07-CI_files/figure-html/metaQ-1.png" alt="Meta-analysis of 4 studies" width="100%"><p class="caption">
+Figure 7.10: Meta-analysis of 4 studies
 </p>
 </div>
-</div>
-<div id="mbess" class="section level3" number="7.9.4">
-<h3>
-<span class="header-section-number">7.9.4</span> MBESS<a class="anchor" aria-label="anchor" href="#mbess"><i class="fas fa-link"></i></a>
-</h3>
-<p>MBESS is another R package that has a range of options to compute effect sizes and their confidence intervals <span class="citation">(<a href="references.html#ref-kelley_confidence_2007" role="doc-biblioref">Kelley, 2007</a>)</span>. The code below reproduces the example for MOTE above.</p>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www3.nd.edu/~kkelley/site/MBESS.html">MBESS</a></span><span class="op">)</span>
-
-<span class="co"># Cohen's d</span>
-<span class="fu"><a href="https://rdrr.io/pkg/MBESS/man/smd.html">smd</a></span><span class="op">(</span>Mean.1 <span class="op">=</span> <span class="fl">1.7</span>, 
-    Mean.2 <span class="op">=</span> <span class="fl">2.1</span>, 
-    s.1 <span class="op">=</span> <span class="fl">1.01</span>, 
-    s.2 <span class="op">=</span> <span class="fl">0.96</span>, 
-    n.1 <span class="op">=</span> <span class="fl">77</span>, 
-    n.2 <span class="op">=</span> <span class="fl">78</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] -0.406028</code></pre>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Hedges' g</span>
-<span class="fu"><a href="https://rdrr.io/pkg/MBESS/man/smd.html">smd</a></span><span class="op">(</span>Mean.1 <span class="op">=</span> <span class="fl">1.7</span>, 
-    Mean.2 <span class="op">=</span> <span class="fl">2.1</span>, 
-    s.1 <span class="op">=</span> <span class="fl">1.01</span>, 
-    s.2 <span class="op">=</span> <span class="fl">0.96</span>, 
-    n.1 <span class="op">=</span> <span class="fl">77</span>, 
-    n.2 <span class="op">=</span> <span class="fl">78</span>, 
-    Unbiased <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] -0.4040338</code></pre>
-<p>To get the confidence interval for the proportion of variance (r², or η², or partial η²) in a fixed factor analysis of variance we need the ci.pvaf function. We need to specify the F-value, degrees of freedom, the sample size, and the confidence level.</p>
-<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/MBESS/man/ci.pvaf.html">ci.pvaf</a></span><span class="op">(</span>F.value<span class="op">=</span><span class="fl">5.72</span>, df.1<span class="op">=</span><span class="fl">1</span>, df.2<span class="op">=</span><span class="fl">198</span>, N<span class="op">=</span><span class="fl">200</span>, conf.level<span class="op">=</span><span class="fl">.90</span><span class="op">)</span></code></pre></div>
-<pre><code>## $Lower.Limit.Proportion.of.Variance.Accounted.for
-## [1] 0.002600261
-## 
-## $Probability.Less.Lower.Limit
-## [1] 0.05
-## 
-## $Upper.Limit.Proportion.of.Variance.Accounted.for
-## [1] 0.07563493
-## 
-## $Probability.Greater.Upper.Limit
-## [1] 0.05
-## 
-## $Actual.Coverage
-## [1] 0.9</code></pre>
-<p>For within designs, the MBESS package returns an error. For example:</p>
-<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/MBESS/man/ci.pvaf.html">ci.pvaf</a></span><span class="op">(</span>F.value <span class="op">=</span> <span class="fl">25.73</span>, df.1 <span class="op">=</span> <span class="fl">2</span>, df.2 <span class="op">=</span> <span class="fl">28</span>, N <span class="op">=</span> <span class="fl">18</span>, conf.level <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span></code></pre></div>
-<pre><code>## Error in ci.pvaf(F.value = 25.73, df.1 = 2, df.2 = 28, N = 18, conf.level = 0.9): N must be larger than df.1+df.2</code></pre>
-<p>This error is correct in between-subjects designs (where the sample size is larger than the degrees of freedom) but this is not true in within-designs (where the sample size is smaller than the degrees of freedom for many of the tests). Thankfully, Ken Kelley (who made the MBESS package) helped me out in an e-mail by pointing out you could just use the R Code within the ci.pvaf function and adapt it. Just change the F-value, confidence level, and the df.1 and df.2.</p>
-<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">Lims</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MBESS/man/conf.limits.ncf.html">conf.limits.ncf</a></span><span class="op">(</span>F.value <span class="op">=</span> <span class="fl">7</span>, conf.level <span class="op">=</span> <span class="fl">0.90</span>, <span class="va">df.1</span> <span class="op">&lt;-</span> <span class="fl">4</span>, <span class="va">df.2</span> <span class="op">&lt;-</span> <span class="fl">50</span><span class="op">)</span>
-<span class="va">Lower.lim</span> <span class="op">&lt;-</span> <span class="va">Lims</span><span class="op">$</span><span class="va">Lower.Limit</span><span class="op">/</span><span class="op">(</span><span class="va">Lims</span><span class="op">$</span><span class="va">Lower.Limit</span> <span class="op">+</span> <span class="va">df.1</span> <span class="op">+</span> <span class="va">df.2</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>
-<span class="va">Upper.lim</span> <span class="op">&lt;-</span> <span class="va">Lims</span><span class="op">$</span><span class="va">Upper.Limit</span><span class="op">/</span><span class="op">(</span><span class="va">Lims</span><span class="op">$</span><span class="va">Upper.Limit</span> <span class="op">+</span> <span class="va">df.1</span> <span class="op">+</span> <span class="va">df.2</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>
-<span class="va">Lower.lim</span></code></pre></div>
-<pre><code>## [1] 0.1418798</code></pre>
-<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">Upper.lim</span></code></pre></div>
-<pre><code>## [1] 0.4630716</code></pre>
-</div>
-<div id="why-should-you-report-90-ci-for-eta-squared" class="section level3" number="7.9.5">
-<h3>
-<span class="header-section-number">7.9.5</span> Why should you report 90% CI for eta-squared?<a class="anchor" aria-label="anchor" href="#why-should-you-report-90-ci-for-eta-squared"><i class="fas fa-link"></i></a>
-</h3>
-<p>You will see that in the code above I used a 90% CI for effect sizes calculated for an <em>F</em>-test. The reason for this is explained by <a href="http://core.ecu.edu/psyc/wuenschk/StatHelp/StatHelp.htm">Karl Wuensch</a>, a leader in the field of applied statistics education, who has gone out of his way to explain this in a very clear document, including examples, <a href="http://core.ecu.edu/psyc/wuenschk/docs30/CI-Eta2-Alpha.doc">which you can find here</a>. If you don’t want to read it, you should know that while Cohen’s d can be both positive and negative, r² or η² are squared, and can therefore only be positive. This is related to the fact that <em>F</em>-tests (as commonly used in ANOVA) are one-sided. If you calculate a 95% CI, you can get situations where the confidence interval includes 0, but the test reveals a statistical difference with a <em>p</em> &lt; .05 (for a more mathematical explanation, see <span class="citation">Steiger (<a href="references.html#ref-steiger_beyond_2004" role="doc-biblioref">2004</a>)</span>. This means that a 95% CI around Cohen's d equals a 90% CI around η² for exactly the same test.</p>
-<p>As a final detail, because eta-squared cannot be smaller than zero, the lower bound for the confidence interval can not be smaller than 0. This means that a confidence interval for an effect that is not statistically different from 0 has to start at 0. You report such a CI as 90% CI [.00; .XX] where the XX is the upper limit of the CI.</p>
-</div>
-</div>
-<div id="calculating-confidence-intervals-around-standard-deviations." class="section level2" number="7.10">
-<h2>
-<span class="header-section-number">7.10</span> Calculating Confidence Intervals around Standard Deviations.<a class="anchor" aria-label="anchor" href="#calculating-confidence-intervals-around-standard-deviations."><i class="fas fa-link"></i></a>
-</h2>
-<p>If we calculate a standard deviation (SD) from a sample, this value is an
-estimate of the true value in the population. In small samples, our estimate can
-be quite far off. But due to the law of large numbers, as our sample size
-increases, we will be measuring the standard deviation more accurately. Since
-the sample standard deviation is an estimate with uncertainty, we can calculate
-a 95% confidence interval around it.</p>
-<p>Expressing the uncertainty in our estimate of the standard deviation can be
-useful. When researchers plan to simulate data, or perform an a-priori power
-analysis, they need accurate estimates of the standard deviation. For
-simulations, the standard deviation needs to be accurate because we want to
-generate data that will look like the real data we will eventually collect. For
-power analyses, we often want to think about the smallest effect size of
-interest (SESOI), which can be specified as the difference in means which you
-care about. To perform a power analysis, we also need to specify the expected
-standard deviation of the data. Sometimes researchers will use pilot data to get
-an estimate of the standard deviation. Since the estimate of the population
-standard deviation based on a pilot study has some uncertainty, confidence
-intervals might be a useful way to quantify the amount of uncertainty.</p>
-<p><strong>Open the R code Confidence_Intervals_for_Standard_Deviations.R</strong> to calculate
-the confidence interval around a standard deviation from a sample. You can also
-use <a href="https://www.graphpad.com/quickcalcs/CISD1.cfm">this free GraphPad
-calculator</a> to calculate
-confidence intervals for standard deviations. Run lines 1 to 3 to load the pwr
-package. Lines 5 to 8 specify the alpha level (and thus the 1-α confidence
-interval), the number of observations (n), the population standard deviations
-(st_dev), and the smallest effect size a researcher is interested in (SESOI).
-The code calculates the critical values for the upper and lower confidence
-interval (lines 11 and 12), and then calculates the confidence interval for the
-standard deviation (lines 15 and 16).</p>
-<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#Install pwr package if needed</span>
-<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/heliosdrm/pwr">pwr</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">'pwr'</span><span class="op">)</span><span class="op">}</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/heliosdrm/pwr">pwr</a></span><span class="op">)</span>
-
-<span class="va">alpha_level</span> <span class="op">&lt;-</span> <span class="fl">0.05</span> <span class="co">#set alpha level</span>
-<span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">100</span> <span class="co">#set number of observations</span>
-<span class="va">st_dev</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="co">#set true standard deviation</span>
-<span class="va">SESOI</span> <span class="op">&lt;-</span> <span class="fl">0.5</span> <span class="co">#set smallest effect size of interest (raw mean difference)</span>
-
-<span class="co"># calculate lower and upper critical values c_l and c_u</span>
-<span class="va">c_l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="op">(</span><span class="va">n</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html">qchisq</a></span><span class="op">(</span><span class="va">alpha_level</span><span class="op">/</span><span class="fl">2</span>, <span class="va">n</span> <span class="op">-</span> <span class="fl">1</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>
-<span class="va">c_u</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="op">(</span><span class="va">n</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html">qchisq</a></span><span class="op">(</span><span class="va">alpha_level</span><span class="op">/</span><span class="fl">2</span>, <span class="va">n</span> <span class="op">-</span> <span class="fl">1</span>, lower.tail <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># calculate lower and upper confidence interval for sd</span>
-<span class="va">st_dev</span> <span class="op">*</span> <span class="va">c_l</span></code></pre></div>
-<pre><code>## [1] 0.8780068</code></pre>
-<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">st_dev</span> <span class="op">*</span> <span class="va">c_u</span></code></pre></div>
-<pre><code>## [1] 1.161675</code></pre>
-<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># d based on lower bound of the 95CI around the SD</span>
-<span class="va">SESOI</span><span class="op">/</span><span class="op">(</span><span class="va">st_dev</span> <span class="op">*</span> <span class="va">c_l</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 0.5694716</code></pre>
-<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># d based on upper bound of the 95CI around the SD</span>
-<span class="va">SESOI</span><span class="op">/</span><span class="op">(</span><span class="va">st_dev</span> <span class="op">*</span> <span class="va">c_u</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 0.4304129</code></pre>
-<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.t.test.html">pwr.t.test</a></span><span class="op">(</span>d <span class="op">=</span> <span class="va">SESOI</span><span class="op">/</span><span class="op">(</span><span class="va">st_dev</span> <span class="op">*</span> <span class="va">c_l</span><span class="op">)</span>, power <span class="op">=</span> <span class="fl">0.9</span>, sig.level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-##      Two-sample t test power calculation 
-## 
-##               n = 65.7764
-##               d = 0.5694716
-##       sig.level = 0.05
-##           power = 0.9
-##     alternative = two.sided
-## 
-## NOTE: n is number in *each* group</code></pre>
-<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.t.test.html">pwr.t.test</a></span><span class="op">(</span>d <span class="op">=</span> <span class="va">SESOI</span><span class="op">/</span><span class="op">(</span><span class="va">st_dev</span> <span class="op">*</span> <span class="va">c_u</span><span class="op">)</span>, power <span class="op">=</span> <span class="fl">0.9</span>, sig.level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-##      Two-sample t test power calculation 
-## 
-##               n = 114.4061
-##               d = 0.4304129
-##       sig.level = 0.05
-##           power = 0.9
-##     alternative = two.sided
-## 
-## NOTE: n is number in *each* group</code></pre>
-<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Power analysis for true standard deviation for comparison</span>
-<span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.t.test.html">pwr.t.test</a></span><span class="op">(</span>d <span class="op">=</span> <span class="va">SESOI</span><span class="op">/</span><span class="va">st_dev</span>, power <span class="op">=</span> <span class="fl">0.9</span>, sig.level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-##      Two-sample t test power calculation 
-## 
-##               n = 85.03128
-##               d = 0.5
-##       sig.level = 0.05
-##           power = 0.9
-##     alternative = two.sided
-## 
-## NOTE: n is number in *each* group</code></pre>
-<p><strong>Q1</strong>: If you run lines 5 to 16 you will see that with an alpha level of 0.05,
-100 observations, and a true standard deviation of 1, the 95% CI is [0.88;
-1.16]. <strong>Change the assumed population standard deviation from 1 to 2</strong> in line
-7. Keep all other settings the same. What is the 95% CI around the standard
-deviation of 2 with 100 observations (run lines 5 to 16)?</p>
 <ol style="list-style-type: upper-alpha">
-<li><p>95% CI [1.38; 3.65]</p></li>
-<li><p>95% CI [1.76; 2.32]</p></li>
-<li><p>95% CI [1.82; 2.22]</p></li>
-<li><p>95% CI [1.84; 2.20]</p></li>
+<li>Studies 1, 2, 3, and 4</li>
+<li>Only study 3</li>
+<li>None of the four studies</li>
+<li>Studies 1, 2 and 4</li>
 </ol>
-<p><strong>Q2</strong>: <strong>Change the assumed population standard deviation back from 2 to 1</strong> in
-line 7. <strong>Lower the sample size from 100 to 20</strong> in line 6. This will inform us
-about the width of the confidence interval for a standard deviation when we run
-a pilot study with 20 observations. Keep all other settings the same. What is
-the 95% CI around the standard deviation of 1 with 20 observations (run lines 5
-to 16)?</p>
+<p><strong>Q4</strong>: The light black diamond in the bottom row is the fixed effects meta-analytic effect size estimate. Instead of using a black horizontal line, the upper limit and lower limit of the confidence interval are indicated by the left and right points of the diamond. The center
+of the diamond is the meta-analytic effect size estimate. A meta-analysis calculates the effect size by combining and weighing all studies. Which statement is true?</p>
 <ol style="list-style-type: upper-alpha">
-<li><p>95% CI [0.91; 1.11]</p></li>
-<li><p>95% CI [0.82; 1.28]</p></li>
-<li><p>95% CI [0.76; 1.46]</p></li>
-<li><p>95% CI [1.52; 2.92]</p></li>
+<li>The confidence interval for a meta-analytic effect size estimate is always wider than that for a single study, because of the additional variation between studies.</li>
+<li>The confidence interval for a meta-analytic effect size estimate is always more narrow than that for a single study, because of the combined sample size of all studies included in the meta-analysis.</li>
+<li>The confidence interval for a meta-analytic effect size estimate does not become wider or more narrow compared to the confidence interval of a single study, it just becomes closer to the true population parameter.</li>
 </ol>
-<p><strong>Q3</strong>: If we want the 95% CI around the standard deviation of 1 to be at most
-0.05 away from the assumed population standard deviation, how large should our
-number of observations be? Note that this means we want the 95% CI to fall
-within 0.95 and 1.05. But notice from the calculations above that the
-distribution of the sample standard deviations is not symmetrical. Standard
-deviations can’t be smaller than 0 (because they are the square rooted
-variance). So in practice the question is: What is the smallest number of
-observations for the upper 95% CI to be smaller than 1.05? Replace n on line 6
-with each of these values.</p>
-<ol style="list-style-type: upper-alpha">
-<li><p>n = 489</p></li>
-<li><p>n = 498</p></li>
-<li><p>n = 849</p></li>
-<li><p>n = 948</p></li>
-</ol>
-<p>Let’s explore what the consequences of an inaccurate estimate of the population
-standard deviation are on a-priori power analyses. Let’s imagine we want to
-perform an a-priori power analysis for a smallest effect size of interest of
-half a scale point (on a scale from 1-5) on a measure that has an (unknown) true
-population standard deviation of 1.2.</p>
-<p><strong>Q4</strong>: <strong>Change the number of observations in line 6 to 50</strong>. <strong>Change the
-assumed population standard deviation in line 7 to 1.2</strong>. Keep the SESOI in line
-8 to 0.5. The 95% confidence interval for the standard deviation based on a
-sample of 50 observation ranges from 1.002 to 1.495 (run lines 5 to 16 to
-confirm). To perform an a-priori power analysis we need to calculate Cohen’s d,
-which is the difference divided by the standard deviation. In our example, we
-want to at least observe a difference of 0.5. What is Cohen’s d (SESOI/SD) for
-the lower bound of the 95% confidence interval (where SD = 1.002) or the upper
-bound (where SD = 1.495)? <strong>You can perform these calculations by running lines
-19 and 21</strong>.</p>
-<ol style="list-style-type: upper-alpha">
-<li><p>d = 0.33 and d = 0.50</p></li>
-<li><p>d = 0.40 and d = 0.60</p></li>
-<li><p>d = 0.43 and d = 0.57</p></li>
-<li><p>d = 0.29 and d = 0.55</p></li>
-</ol>
-<p>If we draw a sample of 50 observations we can happen to observe a value that,
-due to random variation, is much smaller or much larger than the true population
-value. We can examine the effect this has on the number of observations that we
-think will be required when we perform an a-priori power analysis.</p>
-<p><strong>Q5</strong>: An a-priori power analysis is performed that uses the estimate of
-Cohen’s d based on the lower 95% CI of the standard deviation. Which statement
-is true?</p>
-<ol style="list-style-type: upper-alpha">
-<li><p>Because the lower bound of the 95% CI is <strong>smaller</strong> than the true population
-SD, Cohen’s d is <strong>smaller</strong>, and the a-priori power analysis will yield a
-sample size that is <strong>smaller</strong> than the sample size we really need.</p></li>
-<li><p>Because the lower bound of the 95% CI is <strong>smaller</strong> than the true population
-SD, Cohen’s d is <strong>larger</strong>, and the a-priori power analysis will yield a sample
-size that is <strong>larger</strong> than the sample size we really need.</p></li>
-<li><p>Because the lower bound of the 95% CI is <strong>smaller</strong> than the true population
-SD, Cohen’s d is <strong>smaller</strong>, and the a-priori power analysis will yield a
-sample size that is <strong>larger</strong> than the sample size we really need.</p></li>
-<li><p>Because the lower bound of the 95% CI is <strong>smaller</strong> than the true population
-SD, Cohen’s d is <strong>larger</strong>, and the a-priori power analysis will yield a sample
-size that is <strong>smaller</strong> than the sample size we really need.</p></li>
-</ol>
-<p><strong>Q6</strong>: Let’s check if our answer on the previous question was correct. We still
-have an alpha level of 0.05, n = 50, a standard deviation of 1.2, and a SESOI of
-0.5. Run lines 23 and 24. The first power analysis uses Cohen’s d based on the
-lower bound of the 95% confidence interval. The second power analysis uses the
-upper bound of the 95% confidence interval. (There is also a third power
-analysis based on the (in real-life situations unknown) true standard deviation,
-just for comparison, on line 27). Which statement is true?</p>
-<ol style="list-style-type: upper-alpha">
-<li><p>The sample size per group is 68 when calculating the effect size based on the
-lower bound on the 95% CI around the standard deviation, and 86 when using the
-upper bound of the 95% CI around the standard deviation.</p></li>
-<li><p>The sample size per group is 68 when calculating the effect size based on the
-lower bound on the 95% CI around the standard deviation, and 123 when using the
-upper bound of the 95% CI around the standard deviation.</p></li>
-<li><p>The sample size per group is 86 when calculating the effect size based on the
-lower bound on the 95% CI around the standard deviation, and 123 when using the
-upper bound of the 95% CI around the standard deviation.</p></li>
-<li><p>The sample size per group is 86 when calculating the effect size based on the
-lower bound on the 95% CI around the standard deviation, and 189 when using the
-upper bound of the 95% CI around the standard deviation.</p></li>
-</ol>
-<p>It is clear sample sizes from a-priori power analyses depend strongly on an
-accurate estimate of the standard deviation. Keep into account that <strong>estimates
-of the standard deviation have uncertainty</strong>. Use <strong>validated or existing
-measures for which accurate estimates of the standard deviation in your
-population of interest are available</strong>, so that you can rely on a better
-estimate of the standard deviation in power analyses.</p>
-<p>Some people argue that <strong>if you have such a limited understanding of the
-measures you are using that you do not even know the standard deviation of the
-measure in your population of interest, you are not ready to use that measure to
-test a hypothesis.</strong> Think back to the lecture on whether you really wanted to
-test a hypothesis. If you are doing a power analysis but realize you have no
-idea what the standard deviation is, maybe you first need to spend more time
-validating the measures you are using.</p>
-<p>When performing simulations or power analyses the same cautionary note can be
-made for estimates of correlations between dependent variables. When you are
-estimating these values from a sample, and want to perform simulations and/or
-power analyses, be aware that all estimates have some uncertainty. Try to get
-estimates which are as accurate as possible from pre-existing data. If possible,
-be a bit more conservative in sample size calculations based on estimated
-parameters, just to be sure.</p>
-</div>
-<div id="test-yourself-4" class="section level2" number="7.11">
-<h2>
-<span class="header-section-number">7.11</span> Test Yourself<a class="anchor" aria-label="anchor" href="#test-yourself-4"><i class="fas fa-link"></i></a>
-</h2>
+<p><strong>Q5</strong>: Let’s assume a researcher calculates a mean of 7.5, and a standard deviation of 6.3, in a sample of 20 people. The critical value for a <em>t</em>-distribution with df = 19 is 2.093. Calculate the upper limit of the confidence interval around the mean using the formula below. Is it:
+<span class="math display">\[
+\mu \pm t_{df, 1-(\alpha/2)} SE
+\]</span>
+A) 1.40
+B) 2.95
+C) 8.91
+D) 10.45</p>
 <p>Copy the code below into R and run the code. It will generate plots like the one in Figure <a href="confint.html#fig:cioverlap">7.4</a>. Run the entire script as often as you want (notice the variability in the <em>p</em>-values due to the relatively low power in the test!), to answer the following question. The <em>p</em>-value in the plot will tell you if the difference is statistically significant, and what the <em>p</em>-value is.</p>
-<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">50</span>, mean <span class="op">=</span> <span class="fl">3</span>, sd <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="co"># get sample group 1</span>
 <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">50</span>, mean <span class="op">=</span> <span class="fl">5</span>, sd <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="co"># get sample group 2</span>
 
@@ -607,17 +306,197 @@ parameters, just to be sure.</p>
 <span class="fu"><a href="https://rdrr.io/r/graphics/segments.html">segments</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">1</span>, <span class="va">d</span><span class="op">$</span><span class="va">upper</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">1</span><span class="op">]</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="va">d</span><span class="op">$</span><span class="va">upper</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">1</span><span class="op">]</span>, lty <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/segments.html">segments</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">1</span>, <span class="va">d</span><span class="op">$</span><span class="va">lower</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="va">d</span><span class="op">$</span><span class="va">lower</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, lty <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"P-value"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">$</span><span class="va">p.value</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="07-CI_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></div>
-<p>Q6: How much do two 95% confidence intervals around individual means from independent groups overlap when the effect is only just statistically significant (<em>p</em> ≈ 0.05) at an alpha of 0.05?</p>
+<div class="inline-figure"><img src="07-CI_files/figure-html/unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;"></div>
+<p><strong>Q6</strong>: How much do two 95% confidence intervals around individual means from independent groups overlap when the effect is only just statistically significant (<em>p</em> ≈ 0.05) at an alpha of 0.05?</p>
 <ol style="list-style-type: upper-alpha">
-<li><p>When the 95% confidence interval around one mean does not contain the mean of the other group, the groups differ significantly from each other.</p></li>
-<li><p>When the 95% confidence interval around one mean does not overlap with the 95% confidence interval of the mean of the other group, the groups differ
-significantly from each other.</p></li>
-<li><p>When the overlap between two confidence intervals is approximately half of one side of the confidence interval, the groups differ significantly from each other.</p></li>
-<li><p>There is no relationship between the overlap of the 95% confidence intervals around two independent means, and the <em>p</em>-value for the difference between these groups.</p></li>
+<li>When the 95% confidence interval around one mean does not contain the mean of the other group, the groups differ significantly from each other.</li>
+<li>When the 95% confidence interval around one mean does not overlap with the 95% confidence interval of the mean of the other group, the groups differ significantly from each other.</li>
+<li>When the overlap between two confidence intervals is approximately half of one side of the confidence interval, the groups differ significantly from each other.</li>
+<li>There is no relationship between the overlap of the 95% confidence intervals around two independent means, and the <em>p</em>-value for the difference between these groups.</li>
 </ol>
 <p>Note that this visual overlap rule can only be used when the comparison is made between independent groups, not between dependent groups! The 95% confidence interval around effect sizes is therefore typically more easily interpretable in relation to the significance of a test.</p>
+<p>Let’s experience this through simulation. The simulation in the R script below generates a large number of additional samples, after the initial one that was plotted. The simulation returns the number of CI that contains the mean (which should be 95% in the long run). The simulation also returns the % of means from future studies that fall within the 95% of the original study, or the capture percentage. It differs from (and is often lower, but sometimes higher, than) the confidence interval.</p>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
 
+<span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">20</span> <span class="co"># set sample size</span>
+<span class="va">nsims</span> <span class="op">&lt;-</span> <span class="fl">100000</span> <span class="co"># set number of simulations</span>
+
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">n</span>, mean <span class="op">=</span> <span class="fl">100</span>, sd <span class="op">=</span> <span class="fl">15</span><span class="op">)</span> <span class="co"># create sample from normal distribution</span>
+
+<span class="co"># 95% Confidence Interval</span>
+<span class="va">ciu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span><span class="fl">0.975</span>, df <span class="op">=</span> <span class="va">n</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="va">n</span><span class="op">)</span>
+<span class="va">cil</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span><span class="fl">0.975</span>, df <span class="op">=</span> <span class="va">n</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="va">n</span><span class="op">)</span>
+
+<span class="co"># 95% Prediction Interval</span>
+<span class="va">piu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span><span class="fl">0.975</span>, df <span class="op">=</span> <span class="va">n</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">/</span> <span class="va">n</span><span class="op">)</span>
+<span class="va">pil</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span><span class="fl">0.975</span>, df <span class="op">=</span> <span class="va">n</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">/</span> <span class="va">n</span><span class="op">)</span>
+
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="co"># plot data</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_rect</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>xmin <span class="op">=</span> <span class="va">pil</span>, xmax <span class="op">=</span> <span class="va">piu</span>, ymin <span class="op">=</span> <span class="fl">0</span>, ymax <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span>,
+            fill <span class="op">=</span> <span class="st">"gold"</span><span class="op">)</span> <span class="op">+</span> <span class="co"># draw yellow PI area</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_rect</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>xmin <span class="op">=</span> <span class="va">cil</span>, xmax <span class="op">=</span> <span class="va">ciu</span>, ymin <span class="op">=</span> <span class="fl">0</span>, ymax <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span>,
+            fill <span class="op">=</span> <span class="st">"#E69F00"</span><span class="op">)</span> <span class="op">+</span> <span class="co"># draw orange CI area</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"black"</span>, fill <span class="op">=</span> <span class="st">"grey"</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">..density..</span><span class="op">)</span>, bins <span class="op">=</span> <span class="fl">20</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"Score"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="st">"frequency"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">20</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>panel.grid.major.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>, axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,
+        panel.grid.minor.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html">coord_cartesian</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">150</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">150</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html">annotate</a></span><span class="op">(</span><span class="st">"text"</span>, x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, y <span class="op">=</span> <span class="fl">0.02</span>, label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span>
+    <span class="st">"Mean = "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>, <span class="st">"\n"</span>,
+    <span class="st">"SD = "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">6.5</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="07-CI_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></div>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Simulate Confidence Intervals</span>
+<span class="va">ciu_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="va">nsims</span><span class="op">)</span>
+<span class="va">cil_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="va">nsims</span><span class="op">)</span>
+<span class="va">mean_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="va">nsims</span><span class="op">)</span>
+
+<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">nsims</span><span class="op">)</span> <span class="op">{</span> <span class="co"># for each simulated experiment</span>
+  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">n</span>, mean <span class="op">=</span> <span class="fl">100</span>, sd <span class="op">=</span> <span class="fl">15</span><span class="op">)</span> <span class="co"># create sample from normal distribution</span>
+  <span class="va">ciu_sim</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span><span class="fl">0.975</span>, df <span class="op">=</span> <span class="va">n</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="va">n</span><span class="op">)</span>
+  <span class="va">cil_sim</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span><span class="fl">0.975</span>, df <span class="op">=</span> <span class="va">n</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="va">n</span><span class="op">)</span>
+  <span class="va">mean_sim</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># store means of each sample</span>
+<span class="op">}</span>
+
+<span class="co"># Save only those simulations where the true value was inside the 95% CI</span>
+<span class="va">ciu_sim</span> <span class="op">&lt;-</span> <span class="va">ciu_sim</span><span class="op">[</span><span class="va">ciu_sim</span> <span class="op">&lt;</span> <span class="fl">100</span><span class="op">]</span>
+<span class="va">cil_sim</span> <span class="op">&lt;-</span> <span class="va">cil_sim</span><span class="op">[</span><span class="va">cil_sim</span> <span class="op">&gt;</span> <span class="fl">100</span><span class="op">]</span>
+
+<span class="co"># Calculate how many times the observed mean fell within the 95% CI of the original study</span>
+<span class="va">mean_sim</span> <span class="op">&lt;-</span> <span class="va">mean_sim</span><span class="op">[</span><span class="va">mean_sim</span> <span class="op">&gt;</span> <span class="va">cil</span> <span class="op">&amp;</span> <span class="va">mean_sim</span> <span class="op">&lt;</span> <span class="va">ciu</span><span class="op">]</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">ciu_sim</span><span class="op">)</span> <span class="op">/</span> <span class="va">nsims</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">cil_sim</span><span class="op">)</span> <span class="op">/</span> <span class="va">nsims</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,
+    <span class="st">"% of the 95% confidence intervals contained the true mean"</span><span class="op">)</span></code></pre></div>
+<pre><code>## 95.047 % of the 95% confidence intervals contained the true mean</code></pre>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="st">"The capture percentage for the plotted study, or the % of values within
+    the observed confidence interval from"</span>, <span class="va">cil</span>, <span class="st">"to"</span>, <span class="va">ciu</span>,
+    <span class="st">"is:"</span>, <span class="fl">100</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">mean_sim</span><span class="op">)</span> <span class="op">/</span> <span class="va">nsims</span>, <span class="st">"%"</span><span class="op">)</span></code></pre></div>
+<pre><code>## The capture percentage for the plotted study, or the % of values within
+##     the observed confidence interval from 97.82077 to 113.6991 is: 74.155 %</code></pre>
+<p><strong>Q8</strong>: Run the simulations multiple times. Look at the output you will get in the R console. For example: “95.077 % of the 95% confidence intervals contained the true mean” and “The capture percentage for the plotted study, or the % of values within the observed confidence interval from 88.17208 to 103.1506 is: 82.377 %”. While running the simulations multiple times, look at the confidence interval around the sample mean, and relate this to the capture percentage. Which statement is true?</p>
+<ol style="list-style-type: upper-alpha">
+<li>The farther the sample mean is from the true population mean, the lower the capture percentage.</li>
+<li>The farther the sample mean is from the true population mean, the higher the capture percentage.</li>
+</ol>
+<p><strong>Q9</strong>: Simulations in R are randomly generated, but you can make a specific simulation reproducible by setting the seed of the random generation process. Copy-paste “set.seed(1000)” to the first line of the R script, and run the simulation. The sample mean should be 94. What is the capture percentage? (Don’t forget to remove the set.seed command if you want to generate more random simulations!).</p>
+<ol style="list-style-type: upper-alpha">
+<li>95%</li>
+<li>42.1%</li>
+<li>84.3%</li>
+<li>89.2%</li>
+</ol>
+<p>Capture percentages are rarely directly used to make statistical inferences. The main reason we discuss them here is really to prevent the common misunderstanding that 95% of future means fall within a single confidence interval: Capture percentages clearly show that is not true. Prediction intervals are also rarely used in psychology, but are more common in data science.</p>
+<p><strong>Q10</strong>: If you run lines the first lines of the code below, you will see that with an alpha level of 0.05, 100 observations, and a true standard deviation of 1, the 95% CI is [0.88; 1.16]. Change the assumed population standard deviation from 1 to 2 (st_dev &lt;- 2). Keep all other settings the same. What is the 95% CI around the standard deviation of 2 with 100 observations?</p>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">alpha_level</span> <span class="op">&lt;-</span> <span class="fl">0.05</span> <span class="co">#set alpha level</span>
+<span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">100</span> <span class="co">#set number of observations</span>
+<span class="va">st_dev</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="co">#set true standard deviation</span>
+<span class="va">effect</span> <span class="op">&lt;-</span> <span class="fl">0.5</span> <span class="co">#set effect size (raw mean difference)</span>
+
+<span class="co"># calculate lower and upper critical values c_l and c_u</span>
+<span class="va">c_l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="op">(</span><span class="va">n</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html">qchisq</a></span><span class="op">(</span><span class="va">alpha_level</span><span class="op">/</span><span class="fl">2</span>, <span class="va">n</span> <span class="op">-</span> <span class="fl">1</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>
+<span class="va">c_u</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="op">(</span><span class="va">n</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html">qchisq</a></span><span class="op">(</span><span class="va">alpha_level</span><span class="op">/</span><span class="fl">2</span>, <span class="va">n</span> <span class="op">-</span> <span class="fl">1</span>, lower.tail <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
+
+<span class="co"># calculate lower and upper confidence interval for sd</span>
+<span class="va">st_dev</span> <span class="op">*</span> <span class="va">c_l</span>
+<span class="va">st_dev</span> <span class="op">*</span> <span class="va">c_u</span>
+
+<span class="co"># d based on lower bound of the 95CI around the SD</span>
+<span class="va">effect</span><span class="op">/</span><span class="op">(</span><span class="va">st_dev</span> <span class="op">*</span> <span class="va">c_l</span><span class="op">)</span>
+<span class="co"># d based on upper bound of the 95CI around the SD</span>
+<span class="va">effect</span><span class="op">/</span><span class="op">(</span><span class="va">st_dev</span> <span class="op">*</span> <span class="va">c_u</span><span class="op">)</span>
+
+<span class="fu">pwr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.t.test.html">pwr.t.test</a></span><span class="op">(</span>d <span class="op">=</span> <span class="va">effect</span><span class="op">/</span><span class="op">(</span><span class="va">st_dev</span> <span class="op">*</span> <span class="va">c_l</span><span class="op">)</span>, power <span class="op">=</span> <span class="fl">0.9</span>, sig.level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span>
+<span class="fu">pwr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.t.test.html">pwr.t.test</a></span><span class="op">(</span>d <span class="op">=</span> <span class="va">effect</span><span class="op">/</span><span class="op">(</span><span class="va">st_dev</span> <span class="op">*</span> <span class="va">c_u</span><span class="op">)</span>, power <span class="op">=</span> <span class="fl">0.9</span>, sig.level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span>
+
+<span class="co"># Power analysis for true standard deviation for comparison</span>
+<span class="fu">pwr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.t.test.html">pwr.t.test</a></span><span class="op">(</span>d <span class="op">=</span> <span class="va">effect</span><span class="op">/</span><span class="va">st_dev</span>, power <span class="op">=</span> <span class="fl">0.9</span>, sig.level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></code></pre></div>
+<ol style="list-style-type: upper-alpha">
+<li>95% CI [1.38; 3.65]</li>
+<li>95% CI [1.76; 2.32]</li>
+<li>95% CI [1.82; 2.22]</li>
+<li>95% CI [1.84; 2.20]</li>
+</ol>
+<p><strong>Q11</strong>: Change the assumed population standard deviation back from 2 to 1. Lower the sample size from 100 to 20 (n &lt;- 20). This will inform us about the width of the confidence interval for a standard deviation when we run a pilot study with 20 observations. Keep all other settings the same. What is the 95% CI around the standard deviation of 1 with 20 observations?</p>
+<ol style="list-style-type: upper-alpha">
+<li>95% CI [0.91; 1.11]</li>
+<li>95% CI [0.82; 1.28]</li>
+<li>95% CI [0.76; 1.46]</li>
+<li>95% CI [1.52; 2.92]</li>
+</ol>
+<p><strong>Q12</strong>: If we want the 95% CI around the standard deviation of 1 to be at most
+0.05 away from the assumed population standard deviation, how large should our
+number of observations be? Note that this means we want the 95% CI to fall
+within 0.95 and 1.05. But notice from the calculations above that the
+distribution of the sample standard deviations is not symmetrical. Standard
+deviations can’t be smaller than 0 (because they are the square rooted
+variance). So in practice the question is: What is the smallest number of
+observations for the upper 95% CI to be smaller than 1.05? Replace n with each of the values in the answer options.</p>
+<ol style="list-style-type: upper-alpha">
+<li>n = 489</li>
+<li>n = 498</li>
+<li>n = 849</li>
+<li>n = 948</li>
+</ol>
+<p>Let’s explore what the consequences of an inaccurate estimate of the population
+standard deviation are on a-priori power analyses. Let’s imagine we want to
+perform an a-priori power analysis for a smallest effect size of interest of
+half a scale point (on a scale from 1-5) on a measure that has an (unknown) true
+population standard deviation of 1.2.</p>
+<p><strong>Q13</strong>: Change the number of observations 50. Change the assumed population standard deviation in to 1.2. Keep the effect as 0.5. The 95% confidence interval for the standard deviation based on a sample of 50 observation ranges from 1.002 to 1.495. To perform an a-priori power analysis we need to calculate Cohen’s d,
+which is the difference divided by the standard deviation. In our example, we
+want to at least observe a difference of 0.5. What is Cohen’s d (effect/SD) for
+the lower bound of the 95% confidence interval (where SD = 1.002) or the upper
+bound (where SD = 1.495)?</p>
+<ol style="list-style-type: upper-alpha">
+<li>d = 0.33 and d = 0.50</li>
+<li>d = 0.40 and d = 0.60</li>
+<li>d = 0.43 and d = 0.57</li>
+<li>d = 0.29 and d = 0.55</li>
+</ol>
+<p>If we draw a sample of 50 observations we can happen to observe a value that,
+due to random variation, is much smaller or much larger than the true population
+value. We can examine the effect this has on the number of observations that we
+think will be required when we perform an a-priori power analysis.</p>
+<p><strong>Q14</strong>: An a-priori power analysis is performed that uses the estimate of
+Cohen’s d based on the lower 95% CI of the standard deviation. Which statement
+is true?</p>
+<ol style="list-style-type: upper-alpha">
+<li>Because the lower bound of the 95% CI is <strong>smaller</strong> than the true population
+SD, Cohen’s d is <strong>smaller</strong>, and the a-priori power analysis will yield a
+sample size that is <strong>smaller</strong> than the sample size we really need.</li>
+<li>Because the lower bound of the 95% CI is <strong>smaller</strong> than the true population
+SD, Cohen’s d is <strong>larger</strong>, and the a-priori power analysis will yield a sample
+size that is <strong>larger</strong> than the sample size we really need.</li>
+<li>Because the lower bound of the 95% CI is <strong>smaller</strong> than the true population
+SD, Cohen’s d is <strong>smaller</strong>, and the a-priori power analysis will yield a
+sample size that is <strong>larger</strong> than the sample size we really need.</li>
+<li>Because the lower bound of the 95% CI is <strong>smaller</strong> than the true population
+SD, Cohen’s d is <strong>larger</strong>, and the a-priori power analysis will yield a sample
+size that is <strong>smaller</strong> than the sample size we really need.</li>
+</ol>
+<p><strong>Q15</strong>: Let’s check if our answer on the previous question was correct. We still
+have an alpha level of 0.05, n = 50, a standard deviation of 1.2, and an effect of interest of Run the power analyses using the <code>pwr</code> package. The first power analysis uses Cohen’s d based on the lower bound of the 95% confidence interval. The second power analysis uses the upper bound of the 95% confidence interval. (There is also a third power analysis based on the (in real-life situations unknown) true standard deviation, just for comparison). Which statement is true?</p>
+<ol style="list-style-type: upper-alpha">
+<li>The sample size per group is 68 when calculating the effect size based on the
+lower bound on the 95% CI around the standard deviation, and 86 when using the
+upper bound of the 95% CI around the standard deviation.</li>
+<li>The sample size per group is 68 when calculating the effect size based on the
+lower bound on the 95% CI around the standard deviation, and 123 when using the
+upper bound of the 95% CI around the standard deviation.</li>
+<li>The sample size per group is 86 when calculating the effect size based on the
+lower bound on the 95% CI around the standard deviation, and 123 when using the
+upper bound of the 95% CI around the standard deviation.</li>
+<li>The sample size per group is 86 when calculating the effect size based on the
+lower bound on the 95% CI around the standard deviation, and 189 when using the
+upper bound of the 95% CI around the standard deviation.</li>
+</ol>
 </div>
 </div>
   <div class="chapter-nav">
@@ -634,24 +513,15 @@ significantly from each other.</p></li>
 <li><a class="nav-link" href="#overlapping-confidence-intervals"><span class="header-section-number">7.5</span> Overlapping Confidence Intervals</a></li>
 <li><a class="nav-link" href="#prediction-intervals"><span class="header-section-number">7.6</span> Prediction Intervals</a></li>
 <li><a class="nav-link" href="#capture-percentages"><span class="header-section-number">7.7</span> Capture Percentages</a></li>
-<li><a class="nav-link" href="#using-ci-for-equivalence-tests"><span class="header-section-number">7.8</span> Using CI for equivalence tests</a></li>
-<li>
-<a class="nav-link" href="#computing-confidence-intervals-around-effect-sizes"><span class="header-section-number">7.9</span> Computing Confidence Intervals around Effect Sizes</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#mote"><span class="header-section-number">7.9.1</span> MOTE</a></li>
-<li><a class="nav-link" href="#jasp"><span class="header-section-number">7.9.2</span> JASP</a></li>
-<li><a class="nav-link" href="#esci-software"><span class="header-section-number">7.9.3</span> ESCI software</a></li>
-<li><a class="nav-link" href="#mbess"><span class="header-section-number">7.9.4</span> MBESS</a></li>
-<li><a class="nav-link" href="#why-should-you-report-90-ci-for-eta-squared"><span class="header-section-number">7.9.5</span> Why should you report 90% CI for eta-squared?</a></li>
-</ul>
-</li>
-<li><a class="nav-link" href="#calculating-confidence-intervals-around-standard-deviations."><span class="header-section-number">7.10</span> Calculating Confidence Intervals around Standard Deviations.</a></li>
-<li><a class="nav-link" href="#test-yourself-4"><span class="header-section-number">7.11</span> Test Yourself</a></li>
+<li><a class="nav-link" href="#calculating-confidence-intervals-around-standard-deviations."><span class="header-section-number">7.8</span> Calculating Confidence Intervals around Standard Deviations.</a></li>
+<li><a class="nav-link" href="#computing-confidence-intervals-around-effect-sizes"><span class="header-section-number">7.9</span> Computing Confidence Intervals around Effect Sizes</a></li>
+<li><a class="nav-link" href="#test-yourself-5"><span class="header-section-number">7.10</span> Test Yourself</a></li>
 </ul>
 
       <div class="book-extra">
         <ul class="list-unstyled">
-<li><a id="book-source" href="https://github.com/rstudio/bookdown-demo/blob/master/07-CI.Rmd">View source <i class="fab fa-github"></i></a></li>
-          <li><a id="book-edit" href="https://github.com/rstudio/bookdown-demo/edit/master/07-CI.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+<li><a id="book-source" href="https://github.com/Lakens/statistical_inferences/blob/master/07-CI.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/Lakens/statistical_inferences/edit/master/07-CI.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
         </ul>
 </div>
     </nav>
@@ -663,7 +533,7 @@ significantly from each other.</p></li>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Improving Your Statistical Inferences</strong>" was written by Daniel Lakens. It was last built on 2022-02-12.</p>
+    <p>"<strong>Improving Your Statistical Inferences</strong>" was written by Daniel Lakens. It was last built on 2022-02-24.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
