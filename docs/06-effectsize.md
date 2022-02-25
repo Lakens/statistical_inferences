@@ -278,23 +278,23 @@ Just stating that you expect a 'medium' Cohen's *f* effect size for an interacti
 
 **Q1**: One of the largest effect sizes in the meta-meta analysis by Richard and colleagues from 2003 is that people are likely to perform an action if they feel positively about the action and believe it is common. Such an effect is (with all respect to all researchers who contributed research to this meta-analysis) somewhat trivial. Even so, the correlation was *r* = .66, which equals a Cohen’s *d* of 1.76. What is according to the online app at <https://rpsychologist.com/cohend/> the probability of superiority for an effect of this size? 
 
-70.45%
-88.12%
-89.33%
-92.14%
+A) 70.45%
+B) 88.12%
+C) 89.33%
+D) 92.14%
 
 **Q2**: Cohen’s *d* is to ______ as eta-squared is to ________
 
-r; epsilon-squared
-Hedges’ g; omega-squared
-Cohen’s d_s; generalized eta-squared
+A) r; epsilon-squared
+B) Hedges’ g; omega-squared
+C) Cohen’s d_s; generalized eta-squared
 
 
 **Q3**: A correlation of *r* = 1.2 is:
 
-Impossible
-Implausibly large for an effect size in the social sciences
-In line with the median effect size in psychology
+A) Impossible
+B) Implausibly large for an effect size in the social sciences
+C) In line with the median effect size in psychology
 
 
 **Q4**: Let’s assume the difference between two means we observe is 1, and the pooled standard deviation is also 1. What, on average, happens to the *t*-value and Cohen’s *d*, as we would simulate studies, as a function of the sample size in these simulations?
@@ -343,8 +343,8 @@ D) $\eta_p^2$ = 0.024
 
 A) d = 0.05
 B) d = 0.10
-C) d = 0.2
-D) d = 0.3
+C) d = 0.20
+D) d = 0.30
 
 **Q11**: It can be useful to convert effect sizes to r when performing a meta-analysis where not all effect sizes that are included are based on mean differences. Using the d_to_r function in the `effectsize` package, what does a *d* = 0.8 correspond to? 
 
