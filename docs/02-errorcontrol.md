@@ -168,7 +168,11 @@ looks <- 5 # set number of looks at the data
 nsims <- 50000 # number of simulated studies
 alphalevel <- 0.05 # set alphalevel
 
-look_at_n <- ceiling(seq(N / looks, N, (N - (N / looks)) / (looks-1))) # looks
+if(looks > 1){
+  look_at_n <- ceiling(seq(N / looks, N, (N - (N / looks)) / (looks-1)))
+}  else {
+    look_at_n <- N
+}
 look_at_n<-look_at_n[look_at_n > 2] #Remove looks at N of 1 or 2
 looks<-length(look_at_n) #if looks are removed, update number of looks
 
