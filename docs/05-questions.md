@@ -102,61 +102,22 @@ First, it is clear that a directional test provides a clear advantage in statist
 
 Because in a directional test the alpha level is used for only one tail in the distribution
 
-Note that there is a subtle distinction between a directional and a one-sided test [@baguley_serious_2012]. Although the two terms overlap when performing a *t*-test, they do not overlap for an *F*-test.  The *F*-value and the *t*-value are related: $t^2 = F$. This holds as long as the df1 = 1 (e.g., F(1, 100), or in other words as long as only two groups are compared. The critical *t*-value, squared, of a non-directional *t*-test with a 5% error rate equals the critical *F*-value for an *F*-test, which is always one-sided, with a 5% error rate. Because an *F*-test is always non-directional, and based on a one-sided test, you can not halve the *p*-value in an *F*-test to perform a 'one-sided' test. It already was a one-sided *F*-test with a 5% error rate.
+Note that despite the title of this section, there is a subtle distinction between a directional and a one-sided test [@baguley_serious_2012]. Although the two terms overlap when performing a *t*-test, they do not overlap for an *F*-test.  The *F*-value and the *t*-value are related: $t^2 = F$. This holds as long as the df1 = 1 (e.g., F(1, 100), or in other words as long as only two groups are compared. The critical *t*-value, squared, of a non-directional *t*-test with a 5% error rate equals the critical *F*-value for an *F*-test, which is always one-sided, with a 5% error rate. Because an *F*-test is always non-directional, and based on a one-sided test, you can not halve the *p*-value in an *F*-test to perform a 'one-sided' test. It already was a one-sided *F*-test with a 5% error rate.
 
-
-```r
-df1 <- 1
-df2 <- 100
-critF <- qf(.95, df1 = df1, df2 = df2) # determine critical F-value
-critT <- qt(.975, df2) # determine critical F-value
-critF # critical F-value
-```
 
 ```
 ## [1] 3.936143
 ```
 
-```r
-critT^2 # Critical t squared is the same as critical F-value
-```
-
 ```
 ## [1] 3.936143
-```
-
-```r
-critT # critical t-value
 ```
 
 ```
 ## [1] 1.983972
 ```
 
-```r
-x <- seq(0, 10, length = 10000)
-maxy <- ifelse(max(df(x, df1, df2)) == Inf, 1, max(df(x, df1, df2))) # set maximum y axis
-
-plot(x, df(x, df1, df2), col = "black", type = "l", lwd = 2, xlim = c(-5, 8), ylim = c(0, maxy), xlab = "F- or t-value", ylab = "Density", main = paste("F-distribution, df1 = ", df1, ", df2 = ", df2), xaxt = "n", yaxt = "n")
-x <- seq(critF, 10, length = 10000)
-z <- (df(x, df1, df2)) # determine upperbounds polygon
-polygon(c(critF, x, 10), c(0, z, 0), col = "skyblue") # draw polygon
-x <- seq(-5, 8, length = 10000)
-lines(x, dt(x, df = df2), col = "palegreen4", type = "l", lwd = 2)
-x <- seq(critT, 10, length = 10000)
-z <- (dt(x, df = df2)) # determine upperbounds polygon
-polygon(c(critT, x, 10), c(0, z, 0), col = "palegreen2")
-x <- seq(-10, -critT, length = 10000)
-z <- (dt(x, df = df2)) # determine upperbounds polygon
-polygon(c(x, -critT, -critT), c(z, 0, 0), col = "palegreen2")
-
-
-
-axis(1, at = seq(-5, 8, by = 1))
-```
-
 <img src="05-questions_files/figure-html/unnamed-chunk-2-1.png" width="100%" style="display: block; margin: auto;" />
-the concept of a directional 
 
 <!-- ## Statistical Decision Theory -->
 

@@ -77,6 +77,8 @@ In Figure \@ref(fig:like4) we see likelihood curves for 10, 100, and 1000 coin f
 <p class="caption">(\#fig:like4)Likelihood function for 5/10, 50/100 and 500/1000 heads in coin flips.</p>
 </div>
 
+## Likelihood ratios
+
 We can use the likelihood function to compare possible values of θ. For example, we might believe the coin we flipped was fair, even though we flipped eight out of ten heads. A fair coin will have *p* = 0.5, while we observed *p* = 0.8. The likelihood function allows us to compute the relative likelihood for different possible parameters. How much more likely is our observed data under the hypothesis that this is an unfair coin that will on average turn up heads 80% of the time, compared to the alternative theory that this is a fair coin which should turn up heads 50% of the time?
 
 We can calculate the likelihood ratio:
