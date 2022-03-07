@@ -4,15 +4,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Chapter 9 Interval Hypotheses and Equivalence Testing | Improving Your Statistical Inferences</title>
+<title>Chapter 9 Equivalence Testing and Interval Hypotheses | Improving Your Statistical Inferences</title>
 <meta name="author" content="Daniel Lakens">
 <meta name="description" content="Most scientific studies are designed to test the prediction that an effect or a difference exists. Does a new intervention work? Is there a relationship between two variables? These studies are...">
 <meta name="generator" content="bookdown 0.24 with bs4_book()">
-<meta property="og:title" content="Chapter 9 Interval Hypotheses and Equivalence Testing | Improving Your Statistical Inferences">
+<meta property="og:title" content="Chapter 9 Equivalence Testing and Interval Hypotheses | Improving Your Statistical Inferences">
 <meta property="og:type" content="book">
 <meta property="og:description" content="Most scientific studies are designed to test the prediction that an effect or a difference exists. Does a new intervention work? Is there a relationship between two variables? These studies are...">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Chapter 9 Interval Hypotheses and Equivalence Testing | Improving Your Statistical Inferences">
+<meta name="twitter:title" content="Chapter 9 Equivalence Testing and Interval Hypotheses | Improving Your Statistical Inferences">
 <meta name="twitter:description" content="Most scientific studies are designed to test the prediction that an effect or a difference exists. Does a new intervention work? Is there a relationship between two variables? These studies are...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.11/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
@@ -49,7 +49,7 @@
 <li><a class="" href="effectsize.html"><span class="header-section-number">6</span> Effect Sizes</a></li>
 <li><a class="" href="confint.html"><span class="header-section-number">7</span> Confidence Intervals</a></li>
 <li><a class="" href="power.html"><span class="header-section-number">8</span> Sample size justification</a></li>
-<li><a class="active" href="equivalencetest.html"><span class="header-section-number">9</span> Interval Hypotheses and Equivalence Testing</a></li>
+<li><a class="active" href="equivalencetest.html"><span class="header-section-number">9</span> Equivalence Testing and Interval Hypotheses</a></li>
 <li><a class="" href="references.html"><span class="header-section-number">10</span> References</a></li>
 </ul>
 
@@ -60,7 +60,7 @@
 </div>
   </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="equivalencetest" class="section level1" number="9">
 <h1>
-<span class="header-section-number">9</span> Interval Hypotheses and Equivalence Testing<a class="anchor" aria-label="anchor" href="#equivalencetest"><i class="fas fa-link"></i></a>
+<span class="header-section-number">9</span> Equivalence Testing and Interval Hypotheses<a class="anchor" aria-label="anchor" href="#equivalencetest"><i class="fas fa-link"></i></a>
 </h1>
 <p>Most scientific studies are designed to test the prediction that an effect or a difference exists. Does a new intervention work? Is there a relationship between two variables? These studies are analyzed with a commonly analyzed with a null-hypothesis significance test. When a statistically significant <em>p</em>-value is observed, the null-hypothesis can be rejected, and researchers claim that the intervention works, or that there is a relationship between two variables. But if the <em>p</em>-value is not statistically significant, researcher very often draw a logically incorrect conclusion: They conclude there is no effect based on <em>p</em> &gt; 0.05.</p>
 <p>Open a result section of an article you are writing, or the result section of articles you have recently read. Search for <em>p</em> &gt; 0.05, and look carefully what you or the scientists concluded. If you see the conclusion that there was 'no effect' or there was 'no association between variables', you have found an example of forgetting that <em>absence of evidence is not evidence of absence</em> <span class="citation">(<a href="references.html#ref-altman_statistics_1995" role="doc-biblioref">Altman &amp; Bland, 1995</a>)</span>. A non-significant result in itself only tells us that we can not reject the null hypothesis. It is tempting to ask after <em>p</em> &gt; 0.05 'so, is the true effect zero'? But the <em>p</em>-value from a null-hypothesis significance test can not answer that question. It might be useful to think of the answer to the question whether an effect is absent after observing <em>p</em> &gt; 0.05 as 無 (<a href="https://en.wikipedia.org/wiki/Mu_(negative)#Non-dualistic_meaning">mu</a>), used as a non-dualistic answer, neither yes nor no, or 'unasking the question', because it is not possible to answer the question whether an effect is absent based on <em>p</em> &gt; 0.05.</p>
@@ -85,7 +85,21 @@ Figure 9.1: Two-sided null hypothesis test (A), interval hypothesis test (B), eq
 <h2>
 <span class="header-section-number">9.1</span> Equivalence tests<a class="anchor" aria-label="anchor" href="#equivalence-tests"><i class="fas fa-link"></i></a>
 </h2>
-<p>Equivalence tests were first developed in pharmaceutical sciences <span class="citation">(<a href="references.html#ref-hauck_new_1984" role="doc-biblioref">Hauck &amp; Anderson, 1984</a>; <a href="references.html#ref-westlake_use_1972" role="doc-biblioref">Westlake, 1972</a>)</span> and later formalized as the <strong>two one-sided tests (TOST)</strong> approach to equivalence testing <span class="citation">(<a href="references.html#ref-schuirmann_comparison_1987" role="doc-biblioref">Schuirmann, 1987</a>; <a href="references.html#ref-seaman_equivalence_1998" role="doc-biblioref">Seaman &amp; Serlin, 1998</a>; <a href="references.html#ref-wellek_testing_2010" role="doc-biblioref">Wellek, 2010</a>)</span>. In the TOST procedure one performs two one-sided tests, one examining if we can reject effects smaller than the lower bound of the equivalence range, and one examining if we can reject effect larger than the upper bound of the equivalence range. If both one-sided tests are significant, we can reject the presence of effects large enough to be meaningful. To perform an equivalence test, you don't need to learn any new statistical tests, as it is just the well-known <em>t</em>-test against a different value than 0. It is somewhat surprising that the use of <em>t</em>tests to perform equivalence tests is not taught alongside their use in null-hypothesis significance tests, as there is some indication that this could prevent common misunderstandings of <em>p</em>-values <span class="citation">(<a href="references.html#ref-parkhurst_statistical_2001" role="doc-biblioref">Parkhurst, 2001</a>)</span>. Let's look at an example of an equivalence test using the TOST procedure.</p>
+<p>Equivalence tests were first developed in pharmaceutical sciences <span class="citation">(<a href="references.html#ref-hauck_new_1984" role="doc-biblioref">Hauck &amp; Anderson, 1984</a>; <a href="references.html#ref-westlake_use_1972" role="doc-biblioref">Westlake, 1972</a>)</span> and later formalized as the <strong>two one-sided tests (TOST)</strong> approach to equivalence testing <span class="citation">(<a href="references.html#ref-schuirmann_comparison_1987" role="doc-biblioref">Schuirmann, 1987</a>; <a href="references.html#ref-seaman_equivalence_1998" role="doc-biblioref">Seaman &amp; Serlin, 1998</a>; <a href="references.html#ref-wellek_testing_2010" role="doc-biblioref">Wellek, 2010</a>)</span>. The TOST procedure entails performing two one-sided tests to examine whether the observed data is surprisingly larger than a lower equivalence boundary (<span class="math inline">\(\Delta_{L}\)</span>), or surprisingly smaller than an upper equivalence boundary (<span class="math inline">\(\Delta_{U}\)</span>):</p>
+<p><span class="math display">\[
+t_{L} = \frac{{\overline{M}}_{1} - {\overline{M}}_{2} - \Delta_{L}}{\sigma\sqrt{\frac{1}{n_{1}} + \frac{1}{n_{2}}}}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+t_{U} = \frac{{\overline{M}}_{1} - {\overline{M}}_{2}{- \Delta}_{U}}{\sigma\sqrt{\frac{1}{n_{1}} + \frac{1}{n_{2}}}}
+\]</span></p>
+<p>where <em>M</em> indicates the means of each sample, <em>n</em> is the sample size, and σ is
+the pooled standard deviation:</p>
+<p><span class="math display">\[
+\sigma = \sqrt{\frac{\left( n_{1} - 1 \right)\text{sd}_{1}^{2} + \left( n_{2} - 1 \right)\text{sd}_{2}^{2}}{n_{1} + \ n_{2} - 2}}
+\]</span></p>
+<p>If both one-sided tests are significant, we can reject the presence of effects large enough to be meaningful. The formulas are highly similar to the normal formula for the <em>t</em>-statistic. The difference between a NHST <em>t</em>-test and the TOST procedure is that the lower equivalence boundary <span class="math inline">\(\Delta_{L}\)</span> and the upper equivalence boundary <span class="math inline">\(\Delta_{U}\)</span> are subtracted from the mean difference between groups (in a normal <em>t</em>-test, we compare the mean difference against 0, and thus the delta drops out of the formula because it is 0).</p>
+<p>To perform an equivalence test, you don't need to learn any new statistical tests, as it is just the well-known <em>t</em>-test against a different value than 0. It is somewhat surprising that the use of <em>t</em>tests to perform equivalence tests is not taught alongside their use in null-hypothesis significance tests, as there is some indication that this could prevent common misunderstandings of <em>p</em>-values <span class="citation">(<a href="references.html#ref-parkhurst_statistical_2001" role="doc-biblioref">Parkhurst, 2001</a>)</span>. Let's look at an example of an equivalence test using the TOST procedure.</p>
 <p>In a study where researchers are manipulating fatigue by asking participants to carry heavy boxes around, the researchers want to ensure the manipulation does not inadvertently alter participants’ moods. The researchers assess positive and negative emotions in both ocnditions, and want to claim there are no differences in positive mood. Let’s assume that positive mood in the experimental fatigue condition (m1 = 4.55, sd1 = 1.05, n1 = 15) did not differ from the mood in the the control condition (m2 = 4.87, sd2 = 1.11, n2 = 15). The researchers conclude: “Mood did not differ between conditions, <em>t</em> = -0.81, <em>p</em> = .42”. Of course, mood did differ between conditions, as 4.55 - 4.87 = -0.32. The claim is that there was no <em>meaningful</em> difference in mood, but to make such a claim in a correct manner, we first need to specify which difference in mood is large enough to be meaningful. For now, let's assume the researcher consider any effect less extreme half a scale point too small to be meaningful. We test now test if the observed mean difference of -0.32 is small enough such that we can reject the presence of effects that are large enough to matter.</p>
 <p>The TOSTER package (originally created by myself but recently redesigned by Aaron Caldwell) can be used to plot two <em>t</em>-distributions and their critical regions indicating when we can reject the presence of effects smaller than -0.5 and larger than 0.5. It can take some time to get used to the idea that we are rejecting values more extreme than the equivalence bounds. Try to consistently ask in any hypothesis test: Which values can the test reject? In a nil null hypothesis test, we can reject an effect of 0, and in the equivalence test in the Figure below, we can reject values lower than -0.5 and higher than 0.5. In Figure <a href="equivalencetest.html#fig:tdistequivalence">9.2</a> we see two <em>t</em>-distributions centered on the upper and lower bound of the specified equivalence range (-0.5 and 0.5).</p>
 <div class="figure" style="text-align: center">
@@ -94,8 +108,8 @@ Figure 9.1: Two-sided null hypothesis test (A), interval hypothesis test (B), eq
 Figure 9.2: The mean difference and its confidence interval plotted below the <em>t</em>-distributions used to perform the two-one-sided tests against -0.5 and 0.5.
 </p>
 </div>
-<p>Let's first look at the left curve. We see the green highlighted area in the tails that highlights which observed mean differences would be extreme enough to statistically reject an effect of -0.5. Our observed mean difference of -0.32 lies very close to 0.5, and if we look at the left distribution, the mean is not far enough away from 0.5 to fall in the green area that indicates when observed differences would be statistically significant. We can also perform the equivalence test using the TOSTER package, and look at the results.</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<p>Below the two curves we see a line that represents the confidence interval ranging from -0.99 to 0.35, and a dot on the line that indicates the observed mean difference of -0.32. Let's first look at the left curve. We see the green highlighted area in the tails that highlights which observed mean differences would be extreme enough to statistically reject an effect of -0.5. Our observed mean difference of -0.32 lies very close to 0.5, and if we look at the left distribution, the mean is not far enough away from 0.5 to fall in the green area that indicates when observed differences would be statistically significant. We can also perform the equivalence test using the TOSTER package, and look at the results.</p>
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/tsum_TOST.html">tsum_TOST</a></span><span class="op">(</span>m1 <span class="op">=</span> <span class="fl">4.55</span>, m2 <span class="op">=</span> <span class="fl">4.87</span>, sd1 <span class="op">=</span> <span class="fl">1.05</span>, sd2 <span class="op">=</span> <span class="fl">1.11</span>,
                   n1 <span class="op">=</span> <span class="fl">15</span>, n2 <span class="op">=</span> <span class="fl">15</span>, low_eqbound <span class="op">=</span> <span class="op">-</span><span class="fl">0.5</span>, high_eqbound <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
@@ -120,34 +134,19 @@ Figure 9.2: The mean difference and its confidence interval plotted below the <e
 ## Hedges' g(av) -0.2881401 0.3812249 -0.9301965 0.3193638        0.9
 ## 
 ## Note: SMD confidence intervals are an approximation. See vignette("SMD_calcs").</code></pre>
-<p>In the line 't-test' the output shows the traditional nil null hypothesis significance test (which we already knew was not statistically significant: <em>t</em> = -0.81, <em>p</em> = 0.42). We also see a test indicated by TOST Lower. This is the first one-sided test examining if we can reject effects lower than -0.5. From the test result, we see this is not the case: <em>t</em> = 0.46, <em>p</em> = 0.36. This is an ordinary <em>t</em>-test, just against an effect of -0.5. Because we can not reject differences more extreme than -0.5, it is possible that a different we consider meaningful (e.g., a difference of -0.60) is present. When we look at the one-sided test against the upper bound of the equivalence range (0.5) we see that we can statistically reject the presence of mood effects larger than 0.5, as in the line TOST Upper we see <em>t</em> = -2.08, <em>p</em> = 0.02. Our final conclusion is therefore that, even thought we can reject effects more extreme than 0.5 based on the observed mean difference of -0.32, we can not reject effects more extreme than -0.5. Therefore, we can not completely reject the presence of meaningful mood effects. As the data does not allow us to claim the effect is different from 0, nor that the effect is, if anything, too small to matter (based on an equivalence range from -0.5 to 0.5), the data are <strong>inconclusive</strong>. We can not distinguish between a Type 2 error (there is an effect, but in this study we just did not detect it) or a true negative (there really is no effect large enough to matter).</p>
-<p>One way to reduce the probability of an inconclusive effect is to collect sufficient data. Let's imagine the researchers had not collected 15 participants in each condition, but 200 participants. They otherwise observe exactly the same data. As explained in the chapter on <a href="confint.html#confint">confidence intervals</a>, as the sample size increases, the confidence interval becomes more narrow. For a TOST equivalence test to be able to reject both the upper and lower bound of the equivalence range, the confidence interval needs to fall completely within the equivalence range. In Figure <a href="equivalencetest.html#fig:ciequivalence">9.3</a> we see the observed mean difference (the black dot) and it's confidence interval (the horizontal black line) for a sample size of 200 per group. The coloourful plot on top of the mean difference and confidence interval is a confidence density plot <span class="citation">(<a href="references.html#ref-schweder_confidence_2016" role="doc-biblioref">Schweder &amp; Hjort, 2016</a>)</span>, which is a graphical summary of the distribution of confidence. NUMBER BELOW DO NOT MATCH TEXT YET</p>
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">res</span><span class="op">$</span><span class="va">TOST</span><span class="op">$</span><span class="va">p</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></code></pre></div>
+<pre><code>## [1] 0.4241547</code></pre>
+<p>In the line 't-test' the output shows the traditional nil null hypothesis significance test (which we already knew was not statistically significant: <em>t</em> = 0.46, <em>p</em> = 0.42. Just like the default <em>t</em>-test in R, the tsum_TOST function will by default calculate Welch’s <em>t</em>-test (instead of Student’s <em>t</em>-test), which is a better default <span class="citation">(<a href="references.html#ref-delacre_why_2017" role="doc-biblioref">Delacre et al., 2017</a>)</span>, but you can request Student’s <em>t</em>-test by adding <code>var.equal = TRUE</code> as an argument to the function.</p>
+<p>We also see a test indicated by TOST Lower. This is the first one-sided test examining if we can reject effects lower than -0.5. From the test result, we see this is not the case: <em>t</em> = 0.46, <em>p</em> = 0.33. This is an ordinary <em>t</em>-test, just against an effect of -0.5. Because we can not reject differences more extreme than -0.5, it is possible that a different we consider meaningful (e.g., a difference of -0.60) is present. When we look at the one-sided test against the upper bound of the equivalence range (0.5) we see that we can statistically reject the presence of mood effects larger than 0.5, as in the line TOST Upper we see <em>t</em> = -2.08, <em>p</em> = 0.02. Our final conclusion is therefore that, even thought we can reject effects more extreme than 0.5 based on the observed mean difference of -0.32, we can not reject effects more extreme than -0.5. Therefore, we can not completely reject the presence of meaningful mood effects. As the data does not allow us to claim the effect is different from 0, nor that the effect is, if anything, too small to matter (based on an equivalence range from -0.5 to 0.5), the data are <strong>inconclusive</strong>. We can not distinguish between a Type 2 error (there is an effect, but in this study we just did not detect it) or a true negative (there really is no effect large enough to matter).</p>
+<p>Note that because we fail to reject the one-sided test against the lower equivalence bound, the possibility remains that there is a true effect size that is large enough to be considered meaningful. This statement is true, even when the effect size we have observed (-0.32) is closer to zero than the equivalence bound of -0.5. One might think the observed effect size needs to be more extreme (i.e., further away from 0) than the equivalence bound to maintain the possibility that there is an effect that is large enough to be considered meaningful. But that is not required. The 90% CI indicates that some values below -0.5 can not be rejected. As we can expect that 90% of confidence intervals in the long run capture the true population parameter, it is perfectly possible that the true effect size is more extreme than -0.5. And, the effect might even be more extreme than the values captured by this confidence interval, as 10% of the time, the computed confidence interval is expected to not contain the true effect size. Therefore, when we fail to reject the smallest effect size of interest, we retain the possibility that an effect of interest exists. If we can reject the nil null hypothesis, but fail to reject values more extreme than the equivalence bounds, then we can claim there is an effect, and it might be large enough to be meaningful.</p>
+<p>One way to reduce the probability of an inconclusive effect is to collect sufficient data. Let's imagine the researchers had not collected 15 participants in each condition, but 200 participants. They otherwise observe exactly the same data. As explained in the chapter on <a href="confint.html#confint">confidence intervals</a>, as the sample size increases, the confidence interval becomes more narrow. For a TOST equivalence test to be able to reject both the upper and lower bound of the equivalence range, the confidence interval needs to fall completely within the equivalence range. In Figure <a href="equivalencetest.html#fig:ciequivalence">9.3</a> we see the observed mean difference (the black dot) and it's confidence interval (the horizontal black line) for a sample size of 200 per group. The colourful plot on top of the mean difference and confidence interval is a confidence density plot <span class="citation">(<a href="references.html#ref-schweder_confidence_2016" role="doc-biblioref">Schweder &amp; Hjort, 2016</a>)</span>, which is a graphical summary of the distribution of confidence.</p>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:ciequivalence"></span>
 <img src="09-equivalencetest_files/figure-html/ciequivalence-1.png" alt="The mean difference and its confidence interval for an equivalence test with an equivalence range of -0.5 and 0.5." width="100%"><p class="caption">
 Figure 9.3: The mean difference and its confidence interval for an equivalence test with an equivalence range of -0.5 and 0.5.
 </p>
 </div>
-<p>If we wanted to have sufficient power to detect an effect of 0, which sample size would we need to collect?</p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/power_t_TOST.html">power_t_TOST</a></span><span class="op">(</span>power <span class="op">=</span> <span class="fl">0.9</span>, delta <span class="op">=</span> <span class="fl">0</span>,
-                     alpha <span class="op">=</span> <span class="fl">0.05</span>, type <span class="op">=</span> <span class="st">"two.sample"</span>,
-                     low_eqbound <span class="op">=</span> <span class="op">-</span><span class="fl">0.5</span>, high_eqbound <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-##      Two-sample TOST power calculation 
-## 
-##           power = 0.9
-##            beta = 0.1
-##           alpha = 0.05
-##               n = 87.26261
-##           delta = 0
-##              sd = 1
-##          bounds = -0.5, 0.5
-## 
-## NOTE: n is number in *each* group</code></pre>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/tsum_TOST.html">tsum_TOST</a></span><span class="op">(</span>m1 <span class="op">=</span> <span class="fl">4.55</span>, m2 <span class="op">=</span> <span class="fl">4.87</span>, sd1 <span class="op">=</span> <span class="fl">1.05</span>, sd2 <span class="op">=</span> <span class="fl">1.11</span>,
-                  n1 <span class="op">=</span> <span class="fl">200</span>, n2 <span class="op">=</span> <span class="fl">200</span>, low_eqbound <span class="op">=</span> <span class="op">-</span><span class="fl">0.5</span>, high_eqbound <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ## Welch Modified Two-Sample t-Test
 ## Hypothesis Tested: Equivalence
@@ -170,10 +169,61 @@ Figure 9.3: The mean difference and its confidence interval for an equivalence t
 ## Hedges' g(av) -0.2956218 0.1008059 -0.4625958 -0.1310411        0.9
 ## 
 ## Note: SMD confidence intervals are an approximation. See vignette("SMD_calcs").</code></pre>
-<p>You might not expect a true difference of exactly zero of the mood manipulation. For example, you might deem it reasonable to expect a true effect of d = 0.2. You are still interested in showing this effect is too small too matter, which you defined as a difference of 0.5. If the true effect size is indeed d = 0.2, we should expect to observe effects much closer to the equivalence bound 0.5. To be able to reliable exclude effects larger than 0.5, we will need a larger sample size, similar to how we need a larger sample size for a null-hypothesis test powered to detect a d = 0.3, than a null-hypothesis test powered to detect a d = 0.5.</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># New TOSTER power functions allows power for expected non-zero effect.</span>
-<span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/power_t_TOST.html">power_t_TOST</a></span><span class="op">(</span>power <span class="op">=</span> <span class="fl">0.9</span>, delta <span class="op">=</span> <span class="fl">0.2</span>,
+<p>Because of the larger sample size, the confidence is more narrow, and we see it excludes both the upper and lower equivalence bound, which means we can reject effects outside of the equivalence range (even though with a <em>p</em> = 0.048 the one-sided test against the lower equivalence bound is only just statistically significant). If we look at the traditional nil null hypothesis test we see we can also reject an effect of 0. In other words, both the null hypothesis test as the equivalence test have yielded significant results. This means we can claim that the observed effect is statistically different from zero, and that the effect is statistically smaller than effects we deemed large enough to matter when we specified the equivalence range from -0.5 to 0.5. This illustrates how combining equivalence tests and nil null hypothesis tests can prevent us from mistaking statistically significant effects for practically significant effects. Yes, we can reject an effect of 0, but no, the effect is not large enough to be meaningful.</p>
+</div>
+<div id="reporting-equivalence-tests" class="section level2" number="9.2">
+<h2>
+<span class="header-section-number">9.2</span> Reporting Equivalence Tests<a class="anchor" aria-label="anchor" href="#reporting-equivalence-tests"><i class="fas fa-link"></i></a>
+</h2>
+<p>It is common practice to only report the test yielding the higher <em>p</em>-value of the two one-sided tests when reporting an equivalence test. Because both one-sided tests need to be statistically significant to reject the null hypothesis in an equivalence test (i.e., the presence of effects large enough to matter), when the larger of the two hypothesis tests rejects the equivalence bound, so does the other test. Unlike in null-hypothesis significance tests it is not common to report standardized effect sizes for equivalence tests, but there can be situations where researchers might want to discuss how far the effect is removed from the equivalence bounds on the raw scale. Prevent the erroneous interpretation to claim there is 'no effect', that an effect is 'absent', that the true effect size is 'zero', or vague verbal descriptions, such as that two groups yielded 'similar' or 'comparable' data. A significant equivalence test rejects effects more extreme that the equivalence bounds. Smaller true effects have not been rejected, and thus it remains possible that there is a true effect. Because a TOST procedure is a frequentist test based on a <em>p</em>-value, all other <a href="pvalue.html#misconceptions">misconceptions of <em>p</em>-values</a> should be prevented as well.</p>
+<p>When summarizing the main result of an equivalence test, for example in an abstract, always report the equivalence range that the data is tested against. Reading 'based on an equivalence test we concluded the absence of a meaningful effect' means something very different if the equivalence bounds were d = -0.9 to 0.9 than when the bounds were d = -0.2 to d = 0.2. So instead, write "based on an equivalence test with an equivalence range of d = -0.2 to 0.2, we conclude the absence of a meaningful effect. Of course, whether peers agree you have correctly concluded the absence of a meaningful effect depends on whether they agree with your justification for a smallest effect of interest! A more neutral conclusion would be a statement such as: 'based on an equivalence test, we rejected the presence of effects more extreme than -0.2 to 0.2, so we can act (with an error rate of alpha) as if the effect, is any, is less extreme than our equivalence range'. Here, you do not use value-laden terms such as 'meaningful'. If both a null-hypothesis test and a significant test are non-significant, the findings is best described as 'inconclusive': There is not enough data to reject the null, or the smallest effect size of interest. If both the null-hypothesis test and the equivalence test are statistically significant, you can claim there is an effect, but at the same time claim the effect is too small to be of interest (given your justification for the equivalence range).</p>
+<p>Equivalence bounds can be specified in raw effect sizes, or in standardized mean differences. It is better to specify the equivalence bounds in terms of raw effect sizes. Setting them in terms of Cohen's <em>d</em> leads to bias in the statistical test, as the observed standard deviation has to be used to translate the specified Cohen's <em>d</em> into a raw effect size for the equivalence test (and when you set equivalence bounds in standardized mean differences, TOSTER will warn: "Warning: setting bound type to SMD produces biased results!"). The bias is in practice not too problematic in any single equivalence test, and being able to specify the equivalence bounds in standardized mean differences lowers the threshold to perform an equivalence test when they do not know the standard deviation of their measure. But as equivalence testing becomes more popular, and fields establish smallest effect sizes of interest, they should do so in raw effect size differences, not in standardized effect size differences.</p>
+</div>
+<div id="minimum-effect-tests" class="section level2" number="9.3">
+<h2>
+<span class="header-section-number">9.3</span> Minimum Effect Tests<a class="anchor" aria-label="anchor" href="#minimum-effect-tests"><i class="fas fa-link"></i></a>
+</h2>
+<p>If a researcher has specified a smallest effect size of interest, and is interested in testing whether the effect in the population is larger than this smallest effect of interest, a minimum effect test can be performed. As with any hypothesis test, we can reject the smallest effect of interest whenever the confidence interval around the observed effect does not overlap with it. In the case of a minimum effect test, however, the confidence interval should be fall completely beyond the smallest effect size of interest. For example, let's assume a researcher performs a minimum effect test with 200 observations per condition against a smallest effect size of interest of a mean difference of 0.5.</p>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:tmet"></span>
+<img src="09-equivalencetest_files/figure-html/tmet-1.png" alt="The mean difference and its confidence interval plotted below the *t*-distributions used to perform the two-one-sided tests against -0.5 and 0.5 when performing a minimum effect test." width="100%"><p class="caption">
+Figure 9.4: The mean difference and its confidence interval plotted below the <em>t</em>-distributions used to perform the two-one-sided tests against -0.5 and 0.5 when performing a minimum effect test.
+</p>
+</div>
+<pre><code>## 
+## Welch Modified Two-Sample t-Test
+## Hypothesis Tested: Minimal Effect
+## Equivalence Bounds (raw):-0.500 &amp; 0.500
+## Alpha Level:0.05
+## The minimal effect test was significant, t(396.78) = 12.588, p = 4.71e-04
+## The null hypothesis test was significant, t(396.78) = 7.960, p = 1.83e-14
+## NHST: reject null significance hypothesis that the effect is equal to zero 
+## TOST: reject null MET hypothesis
+## 
+## TOST Results 
+##                    t        SE       df      p.value
+## t-test      7.959893 0.1080417 396.7773 1.827800e-14
+## TOST Lower 12.587737 0.1080417 396.7773 1.000000e+00
+## TOST Upper  3.332048 0.1080417 396.7773 4.714941e-04
+## 
+## Effect Sizes 
+##                estimate        SE  lower.ci  upper.ci conf.level
+## Raw           0.8600000 0.1080417 0.6818714 1.0381286        0.9
+## Hedges' g(av) 0.7944836 0.1041808 0.6263676 0.9689959        0.9
+## 
+## Note: SMD confidence intervals are an approximation. See vignette("SMD_calcs").</code></pre>
+<p>Below the two curves we again see a line that represents the confidence interval ranging from 0.68 to 1.04, and a dot on the line that indicates the observed mean difference of 0.86. The entire confidence interval lies well above the minimum effect of 0.5, and we can therefore not just reject the nil null hypothesis, but also effects smaller than the minimum effect of interest. Therefore, we can claim that the effect is large enough to be not just statistically significant, but also practically significant (as long as we have justified our smallest effect size of interest well). Because we have performed a two-sided minimum effect test, the minimum effect test would also have been significant if the confidence interval had been completely on the opposite side of -0.5.</p>
+<p>Earlier we discussed how combining traditional NHST and an equivalence test lead to more informative results, and it is also possible to combine a minimum effect test and an equivalence test. One might even say that such a combination is most informative test of a prediction whenever a smallest effect size of interest can be specified. In principle, this is true. As long as we are able to collect enough data, we will always get an informative and straightforward answer when we combine a minimum effect test with an equivalence test: Either we can reject all effects that are too small to be of interest, or we can reject all effects that are large enough to be of interest. As we will see below in the section on power analysis for interval hypotheses, whenever the true effect size is close to the smallest effect size of interest, a large amount of observations will need to be collected. And if the true effect size happens to be identical to the smallest effect size of interest, neither the minimum effect test nor the equivalence test can be correctly rejected (and any significant test would be a Type 1 error). If a researcher can collect sufficient data (so that the test has high statistical power), and is relatively confident that the true effect size will be larger or smaller than the smallest effect of interest, then the combination of a minimum effect test and an equivalence test can be attractive as such a hypothesis test is likely yield a clear answer to the research question.</p>
+</div>
+<div id="power-analysis-for-interval-hypothesis-tests" class="section level2" number="9.4">
+<h2>
+<span class="header-section-number">9.4</span> Power Analysis for Interval Hypothesis Tests<a class="anchor" aria-label="anchor" href="#power-analysis-for-interval-hypothesis-tests"><i class="fas fa-link"></i></a>
+</h2>
+<p>When designing a study it is a sensible strategy to always plan for both the presence, as the absence, of an effect. Several scientific journals require a sample size justification for Registered Reports where the statistical power to reject the null hypothesis is high, but where the study is also capable of demonstrating the absence of an effect, for example by also performing a power analysis for an equivalence test. As we saw in the chapter on <a href="errorcontrol.html#errorcontrol">error control</a> and <a href="likelihoods.html#likelihoods">likelihoods</a> null results are to be expected, and if you only think about the possibility of observing a null effect when the data has been collected, it is often too late.</p>
+<p>The statistical power for interval hypotheses depend on the alpha level, the sample size, the smallest effect of interest you decide to test against, and the true effect size. For an equivalence test, it is common to perform a power analysis assuming the true effect size is 0, but this might not always be realistic. The closer the expected effect size is to the smallest effect size of interest, the larger the sample size needed to reach a desired power. Don't be tempted to assume a true effect size of 0, if you have good reason to expect a small but non-zero true effect size. The sample size that the power analysis indicates you need to collect might be smaller, but in reality you also have a higher probability of an inconclusive result. Earlier versions of TOSTER only enabled researchers to perform power analyses for equivalence tests assuming a true effect size of 0, but a new power function by Aaron Caldwell allows users to specify <code>delta</code>, the expected effect size.</p>
+<p>Assume a researchers desired to achieve 90% power for an equivalence test with an equivalence range from -0.5 to 0.5, with an alpha level of 0.05, and assuming a population effect size of 0. A power analysis for an equivalence test can be performed to examine the required sample size.</p>
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/power_t_TOST.html">power_t_TOST</a></span><span class="op">(</span>power <span class="op">=</span> <span class="fl">0.9</span>, delta <span class="op">=</span> <span class="fl">0</span>,
                      alpha <span class="op">=</span> <span class="fl">0.05</span>, type <span class="op">=</span> <span class="st">"two.sample"</span>,
                      low_eqbound <span class="op">=</span> <span class="op">-</span><span class="fl">0.5</span>, high_eqbound <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
@@ -182,53 +232,34 @@ Figure 9.3: The mean difference and its confidence interval for an equivalence t
 ##           power = 0.9
 ##            beta = 0.1
 ##           alpha = 0.05
-##               n = 190.988
-##           delta = 0.2
+##               n = 87.26261
+##           delta = 0
 ##              sd = 1
 ##          bounds = -0.5, 0.5
 ## 
 ## NOTE: n is number in *each* group</code></pre>
-<p>It is better to specify the equivalence bounds in terms of raw effect sizes. Setting them in terms of Cohen's d leads to bias in the statistical test (as we have to use the observed standard deviation to translate Cohen's d into a raw effect size). This is in practice not too problematic in any single equivalence test, but as equivalence testing becomes more popular, and fields establish smallest effect sizes of interest, they should do so in raw effect size differences, not in terms of standardized effect size differences.</p>
-<p>There is no need to set an upper and lower bound for an equivalence test. Your question might be directional: Can I reject an effect larger than 0.5? In such a question, any effect smaller than 0.5, even an effect of -0.8, would reject effects you deem meaningful. An example of a situation where such a test is approrpiate is a replication study. If a previous study observed an effect of d = 0.48, and you perform a replication study, you might decide to consider any effect smaller than d = 0.2 a failure to replicate - including any effect in the opposite direction. Although most software for equivalence tests requires you to specify an upper and lower bound, you can mimick a one-sided test by setting the other equivalence bound to an extreme value for the research question you are asking. In the analysis below, the lower bound is set to d = -5. We see the data is very far removed from this bound, and of course the one-sided test against d = -5 will always be statistically significant, so it does not influence the final decision based on the TOST procedure.</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># New TOSTER function</span>
-<span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/tsum_TOST.html">tsum_TOST</a></span><span class="op">(</span>m1 <span class="op">=</span> <span class="fl">4.55</span>, m2 <span class="op">=</span> <span class="fl">4.87</span>, sd1 <span class="op">=</span> <span class="fl">1.05</span>, sd2 <span class="op">=</span> <span class="fl">1.11</span>,
-                  n1 <span class="op">=</span> <span class="fl">15</span>, n2 <span class="op">=</span> <span class="fl">15</span>, low_eqbound <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>, high_eqbound <span class="op">=</span> <span class="fl">0.5</span>,
-                  eqbound_type <span class="op">=</span> <span class="st">"SMD"</span>, bias_correction <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="va">res</span></code></pre></div>
+<p>We see that the required sample size is 88 participants in each condition for the independent <em>t</em>-test, Let's compare this power analysis to a situation where the researcher expects a true effect of d = 0.1, instead of a true effect of 0. To be able to reliable reject effects larger than 0.5, we will need a larger sample size, just as how we need a larger sample size for a null-hypothesis test powered to detect a d = 0.4 than a null-hypothesis test powered to detect a d = 0.5.</p>
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/power_t_TOST.html">power_t_TOST</a></span><span class="op">(</span>power <span class="op">=</span> <span class="fl">0.9</span>, delta <span class="op">=</span> <span class="fl">0.1</span>,
+                     alpha <span class="op">=</span> <span class="fl">0.05</span>, type <span class="op">=</span> <span class="st">"two.sample"</span>,
+                     low_eqbound <span class="op">=</span> <span class="op">-</span><span class="fl">0.5</span>, high_eqbound <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
-## Welch Modified Two-Sample t-Test
-## Hypothesis Tested: Equivalence
-## Equivalence Bounds (raw):-5.402 &amp; 0.540
-## Alpha Level:0.05
-## The equivalence test was significant, t(27.91) = -2.180, p = 1.89e-02
-## The null hypothesis test was non-significant, t(27.91) = -0.811, p = 4.24e-01
-## NHST: don't reject null significance hypothesis that the effect is equal to zero 
-## TOST: reject null equivalence hypothesis
+##      Two-sample TOST power calculation 
 ## 
-## TOST Results 
-##                    t        SE       df      p.value
-## t-test     -0.811128 0.3945124 27.91398 4.241547e-01
-## TOST Lower 12.881936 0.3945124 27.91398 1.439959e-13
-## TOST Upper -2.180434 0.3945124 27.91398 1.890746e-02
+##           power = 0.9
+##            beta = 0.1
+##           alpha = 0.05
+##               n = 108.9187
+##           delta = 0.1
+##              sd = 1
+##          bounds = -0.5, 0.5
 ## 
-## Effect Sizes 
-##                 estimate        SE   lower.ci  upper.ci conf.level
-## Raw           -0.3200000 0.3945124 -0.9911879 0.3511879        0.9
-## Hedges' g(av) -0.2881401 0.3812249 -0.9301965 0.3193638        0.9
-## 
-## Note: SMD confidence intervals are an approximation. See vignette("SMD_calcs").</code></pre>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="09-equivalencetest_files/figure-html/unnamed-chunk-7-1.png" width="100%" style="display: block; margin: auto;"></div>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Old TOSTER power function do not take one-sided tests into account</span>
-<span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/powerTOSTtwo.html">powerTOSTtwo</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.05</span>, low_eqbound <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>, high_eqbound <span class="op">=</span> <span class="fl">0.5</span>, statistical_power <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span></code></pre></div>
-<pre><code>## The required sample size to achieve 90 % power with equivalence bounds of -5 and 0.5 is 87 per group, or 174 in total.</code></pre>
-<pre><code>## [1] 86.57739</code></pre>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># New TOSTER power functions takes one-sided bounds into account</span>
-<span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/power_t_TOST.html">power_t_TOST</a></span><span class="op">(</span>power <span class="op">=</span> <span class="fl">0.9</span>, delta <span class="op">=</span> <span class="fl">0.0</span>,
+## NOTE: n is number in *each* group</code></pre>
+<p>We see the sample size has now increased to 109 participants in each condition. As mentioned before, it is not necessary to perform a two-sided equivalence test. It is also possible to perform a one-sided equivalence test. An example of a situation where such a directional test is appropriate is a replication study. If a previous study observed an effect of d = 0.48, and you perform a replication study, you might decide to consider any effect smaller than d = 0.2 a failure to replicate - including any effect in the opposite direction, such as an effect of d = -0.3. Although most software for equivalence tests requires you to specify an upper and lower bound for an equivalence range, you can mimic a one-sided test by setting the equivalence bound in the direction you want to ignore to a low value so that the one-sided test against this value will always be statistically significant. This can also be used to perform a power analysis for a minimum effect test, where one bound is the minimum effect of interest, and the other bound is set to an extreme value on the other side of the expected effect size.</p>
+<p>In the power analysis for an equivalence test example below, the lower bound is set to -5 (it should be set low enough such that lowering it even further has no noticeable effect). We see that the new power function in the TOSTER package takes the directional prediction into account, and just as with directional predictions in a nil null hypothesis test, a directional prediction in an equivalence test is more efficient, and only 70 observations are needed to achieve 90% power.</p>
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># New TOSTER power functions allows power for expected non-zero effect.</span>
+<span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/power_t_TOST.html">power_t_TOST</a></span><span class="op">(</span>power <span class="op">=</span> <span class="fl">0.9</span>, delta <span class="op">=</span> <span class="fl">0</span>,
                      alpha <span class="op">=</span> <span class="fl">0.05</span>, type <span class="op">=</span> <span class="st">"two.sample"</span>,
                      low_eqbound <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>, high_eqbound <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
@@ -243,157 +274,36 @@ Figure 9.3: The mean difference and its confidence interval for an equivalence t
 ##          bounds = -5.0, 0.5
 ## 
 ## NOTE: n is number in *each* group</code></pre>
+<p>Statistical software offers options for power analyses for some statistical tests, but not for all tests. Just as with power analysis for a nil null hypothesis test, it can be necessary to use a simulation-based approach to power analysis.</p>
 </div>
-<div id="equivalence-tests-for-anova" class="section level2" number="9.2">
+<div id="ROPE" class="section level2" number="9.5">
 <h2>
-<span class="header-section-number">9.2</span> Equivalence tests for ANOVA<a class="anchor" aria-label="anchor" href="#equivalence-tests-for-anova"><i class="fas fa-link"></i></a>
+<span class="header-section-number">9.5</span> The Bayesian ROPE procedure<a class="anchor" aria-label="anchor" href="#ROPE"><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Get Data</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"InsectSprays"</span><span class="op">)</span>
-<span class="co"># Build ANOVA</span>
-<span class="va">aovtest</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">count</span> <span class="op">~</span> <span class="va">spray</span>,
-              data <span class="op">=</span> <span class="va">InsectSprays</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">aovtest</span><span class="op">)</span></code></pre></div>
-<pre><code>##             Df Sum Sq Mean Sq F value Pr(&gt;F)    
-## spray        5   2669   533.8    34.7 &lt;2e-16 ***
-## Residuals   66   1015    15.4                   
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
-<p>We can use this summary to perform an equivalence test for an <em>F</em>-test:</p>
-<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/equ_ftest.html">equ_ftest</a></span><span class="op">(</span>Fstat <span class="op">=</span> <span class="fl">34.70228</span>,
-          df1 <span class="op">=</span> <span class="fl">5</span>,
-          df2 <span class="op">=</span> <span class="fl">66</span>,
-          eqbound <span class="op">=</span> <span class="fl">0.35</span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-##  Equivalence Test from F-test
-## 
-## data:  Summary Statistics
-## F = 34.702, df1 = 5, df2 = 66, p-value = 1
-## 95 percent confidence interval:
-##  0.5806263 0.7804439
-## sample estimates:
-## [1] 0.724439</code></pre>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/equ_anova.html">equ_anova</a></span><span class="op">(</span><span class="va">aovtest</span>,
-          eqbound <span class="op">=</span> <span class="fl">0.35</span><span class="op">)</span></code></pre></div>
-<pre><code>##        effect df1 df2  F.value       p.null      pes eqbound     p.equ
-## 1 spray         5  66 34.70228 3.182584e-17 0.724439    0.35 0.9999965</code></pre>
-<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/plot_pes.html">plot_pes</a></span><span class="op">(</span>Fstat <span class="op">=</span> <span class="fl">34.70228</span>,
-         df1 <span class="op">=</span> <span class="fl">5</span>,
-         df2 <span class="op">=</span> <span class="fl">66</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="09-equivalencetest_files/figure-html/unnamed-chunk-10-1.png" width="100%" style="display: block; margin: auto;"></div>
-<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/power_eq_f.html">power_eq_f</a></span><span class="op">(</span>df1 <span class="op">=</span> <span class="fl">2</span>, 
-            df2 <span class="op">=</span> <span class="fl">60</span>,
-            eqbound <span class="op">=</span> <span class="fl">.15</span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-##      Power for Non-Inferiority F-test 
-## 
-##             df1 = 2
-##             df2 = 60
-##         eqbound = 0.15
-##       sig.level = 0.05
-##           power = 0.8188512</code></pre>
+<p>In Bayesian estimation, one way to argue for the absence of a meaningful effect is the <strong>region of practical equivalence</strong> (ROPE) procedure (<span class="citation">Kruschke (<a href="references.html#ref-kruschke_bayesian_2013" role="doc-biblioref">2013</a>)</span>), which is “somewhat analogous to frequentist equivalence testing” (<span class="citation">Kruschke &amp; Liddell (<a href="references.html#ref-kruschke_bayesian_2017" role="doc-biblioref">2017</a>)</span>). In the ROPE procedure, an equivalence range is specified, just as in equivalence testing, but the Bayesian highest density interval based on a posterior distribution (as explained in the chapter on <a href="bayes.html#bayes">Bayesian statistics</a>) is used instead of the confidence interval.</p>
+<p>If the prior used by Kruschke was perfectly uniform, and the ROPE procedure and an equivalence test used the same confidence interval (e.g., 90%), the two tests would yield identical results. There would only be philosophical differences in how the numbers are interpreted. The BEST package in R that can be used to perform the ROPE procedure by default uses a ‘broad’ prior, and therefore results of the ROPE procedure and an equivalence test are not exactly the same, but they are very close. One might even argue the two tests are 'practically equivalent'. In the R code below random normally distributed data for two conditions is generated (with means of 0 and a standard deviation of 1) and the ROPE procedure and a TOST equivalence test are performed.</p>
+<p><img src="09-equivalencetest_files/figure-html/unnamed-chunk-7-1.png" width="100%" style="display: block; margin: auto;"><img src="09-equivalencetest_files/figure-html/unnamed-chunk-7-2.png" width="100%" style="display: block; margin: auto;">
+The 90% HDI ranges from -0.06 to 0.39, with an estimated mean based on the prior and the data of 0.164. The HDI falls completely between the upper and the lower bound of the equivalence range, and therefore values more extreme than -0.5 or 0.5 are deemed implausible. The 95% CI ranges from -0.07 to 0.36 with an observed mean difference of 0.15. We see that the numbers are not identical, because in Bayesian estimation the observed values are combined with a prior, and the mean estimate is not purely based on the data. But the results are very similar, and will in most cases lead to similar inferences. The BEST R package also enables researchers to perform simulation based power analyses, which take a long time but, when using a broad prior, yield a result that is basically identical to the sample size from a power analysis for an equivalence test. The biggest benefit of ROPE over TOST is that it allows you to incorporate prior information. If you have reliable prior information, ROPE can use this information, which is especially useful if you don’t have a lot of data. If you use informed priors, check the robustness of the posterior against reasonable changes in the prior in sensitivity analyses.</p>
 </div>
-<div id="reporting-equivalence-tests" class="section level2" number="9.3">
+<div id="which-interval-width-should-be-used" class="section level2" number="9.6">
 <h2>
-<span class="header-section-number">9.3</span> Reporting equivalence tests<a class="anchor" aria-label="anchor" href="#reporting-equivalence-tests"><i class="fas fa-link"></i></a>
+<span class="header-section-number">9.6</span> Which interval width should be used?<a class="anchor" aria-label="anchor" href="#which-interval-width-should-be-used"><i class="fas fa-link"></i></a>
 </h2>
-<p>It is common practice to only report the test yielding the higher <em>p</em>-value of the two one-sided tests when reporting an equivalence test. Because both one-sided tests need to be statistically significant to reject the null hypothesis in an equivalence test (i.e., the presence of effects large enough to matter), when the larger of the two hypothesis tests rejects the equivalence bound, so does the other test. Unlike in null-hypothesis significance tests it is not common to report standardized effect sizes for equivalence tests, but there can be situations where researchers might want to discuss how far the effect is removed from the equivalence bounds on the raw scale. Prevent the erroneous interpretation to claim there is 'no effect', that an effect is 'absent', that the true effect size is 'zero', or vague verbal descriptions, such as that two groups yielded 'similar' or 'comparable' data. A significant equivalence test rejects effects more extreme that the equivalence bounds. Smaller true effects have not been rejected, and thus it remains possible that there is a true effect. Because a TOST procedure is a frequentist test based on a <em>p</em>-value, all other <a href="pvalue.html#misconceptions">misconceptions of <em>p</em>-values</a> should be prevented as well.</p>
-<p>When summarizing the main result of an equivalence test, for example in an abstract, always report the equivalence range that the data is tested against. Reading 'based on an equivalence test we concluded the absence of a meaningful effect' means something very different if the equivalence bounds were d = -0.9 to 0.9 than when the bounds were d = -0.2 to d = 0.2. So instead, write "based on an equivalence test with an equivalence range of d = -0.2 to 0.2, we conclude the absence of a meaningful effect. Even more neutral would be statement such as: 'based on an equivalence test, we rejected the presence of effects more extreme than -0.2 to 0.2, so we can act (with an error rate of alpha) as if the effect, is any, is less extreme than our equivalence range'. If both a null-hypothesis test and a significant test are non-significant, the findings is best described as 'inconclusive': There is not enough data to reject the null, or the smallest effect size of interest. If both the null-hypothesis test and the equivalence test are statistically significant, you can claim there is an effect, but at the same time it is too small to matter (given the justification for the equivalence range).</p>
+<p>Because the TOST procedure is based on two one-sided tests, a 90% confidence interval is used when the one-sided tests are performed at an alpha level of 5%. Because both the test against the upper bound and the test against the lower bound needs to be statistically significant to declare equivalence (which as explained in the chapter on <a href="errorcontrol.html#multiplecomparisons">error control</a> is an intersection-union approach to multiple testing) it is not necessary to correct for the fact that two tests are performed. If the alpha level is adjusted for multiple comparisons, or if the alpha level is justified instead of relying on the default 5% level (or both), the corresponding confidence interval should be used, where CI = 100 - (2 * <span class="math inline">\(\alpha\)</span>). Thus, the width of the confidence interval is directly related to the choice for the alpha level, as we are making decisions to reject the smallest effect size of interest, or not, based on whether the confidence interval excluded the effect that is tested against.</p>
+<p>When using a Highest Density Interval from a Bayesian perspective, such as the ROPE procedure, the choice for a width of a confidence interval does not follow logically from a desired error rate, or any other principle. Kruschke (2014, Chapter 5) writes: “How should we define 'reasonably credible'? One way is by saying that any points within the 95% HDI are reasonably credible.” McElreath has recommended the use of 67%, 89%, and 97%, because "No reason. They are prime numbers, which makes them easy to remember.". There are only two principled solutions. First, if a highest density interval width is used to make claims, these claims will be made with certain error rates, and researchers should quantify the risk of erroneous claim by computing frequentist error rates. This would make the ROPE procedure a Bayesian/Frequentist compromise procedure, where the computation of a posterior distribution allows for Bayesian interpretations of which parameters values are believed to be most probable, while decisions based on whether or not the HDI falls within an equivalence range have a formally controlled error rate. Note that when using an informative prior, a HDI does not match a CI, and the error rate when using a HDI can only be derived through simulations. The second solution is to not make any claims, present the full posterior distribution, and let readers draw their own conclusions.</p>
 </div>
-<div id="ROPE" class="section level2" number="9.4">
+<div id="test-yourself-6" class="section level2" number="9.7">
 <h2>
-<span class="header-section-number">9.4</span> The Bayesian ROPE procedure<a class="anchor" aria-label="anchor" href="#ROPE"><i class="fas fa-link"></i></a>
+<span class="header-section-number">9.7</span> Test Yourself<a class="anchor" aria-label="anchor" href="#test-yourself-6"><i class="fas fa-link"></i></a>
 </h2>
-<p>In Bayesian estimation, one way to argue for the absence of a meaningful effect is the region of practical equivalence (ROPE) procedure (Kruschke, 2014, chapter 12), which is “somewhat analogous to frequentist equivalence testing” (Kruschke &amp; Liddell, 2017). In the ROPE procedure, an equivalence range is specified, just as in equivalence testing, but the Bayesian highest density interval based on a posterior distribution (as explained in the chapter on <a href="bayes.html#bayes">Bayesian statistics</a>) is used to make decisions. Kruschke suggests that: “if the 95 % HDI falls entirely inside the ROPE then we decide to accept the ROPE’d value for practical purposes”.</p>
-<p>If the prior used by Kruschke was perfectly uniform, ROPE and equivalence testing would identical (if the same confidence interval width was used, e.g., 90%), barring philosophical differences in how the numbers should be interpreted. The BEST package by default uses a ‘broad’ prior, and therefore the 95% CI and 95% HDI are not exactly the same, but they are very close, and one might even argue they are 'practically equivalent'.</p>
-<p>In the code below, I randomly generate random normally distributed data (with means of 0 and a sd of 1) and perform the ROPE procedure and the TOST. The 95% HDI is from -0.10 to 0.42, and the 95% CI is from -0.11 to 0.41, with mean differences of 0.17 or 0.15.</p>
-<div id="which-interval-width-should-be-used" class="section level3" number="9.4.1">
-<h3>
-<span class="header-section-number">9.4.1</span> Which interval width should be used?<a class="anchor" aria-label="anchor" href="#which-interval-width-should-be-used"><i class="fas fa-link"></i></a>
-</h3>
-<p>Because the TOST procedure is based on two one-sided tests, a 90% confidence interval is used when the one-sided tests are performed at an alpha level of 5%. Because both the test against the upper bound and the test against the lower bound needs to be statistically significant to declare equivalence (which as explained in the chapter on <a href="errorcontrol.html#multiplecomparisons">error control</a> is an intersection-union approach to multiple testing) it is not necessary to correct for the fact that two tests are performed. If the alpha level is adjusted for multiple comparisons, or if the alpha level is justified instead of relying on the default 5% level (or both), the corresponding confidence interval should be used, where CI = 100 - (2 * <span class="math inline">\(\alpha\)</span>). Thus, the width of the confidence interval is directly related to the choice for the alpha level, as we are making decisions based on whether we can reject the effect size of interest or not, with a desired maximum Type 1 error rate.</p>
-<p>When using a Highest Density Interval from a Bayesian perspective, such as the ROPE procedure, the choice for a width of a confidence interval does not follow logically from a desired error rate, or any other principle. Kruschke (2014, Chapter 5) writes: “How should we define 'reasonably credible'? One way is by saying that any points within the 95% HDI are reasonably credible.” McElreath has recommended the use of 67%, 89%, and 97%, because "No reason. They are prime numbers, which makes them easy to remember.". There are only two principled solutions. First, if a highest density interval width is used to make claims, these claims will be made with certain error rates, and researchers should quantify the risk of erroneous claim by incorporating frequentist error control. This would make the ROPE procedure a Bayesian/Frequentist compromise procedure, where the computation of a posterior distribution allows for Bayesian interpretations of which parameters values are believed to be most probable, while decisions based on whether or not the HDI falls within an equivalence range have a formally controlled error rate. Not that when using an informative prior, a HDI does not match a CI, and the error rate when using a HDI can only be derived through simulations. The second solution is to not make any claims, present the full posterior distribution, and let readers draw their own conclusions.</p>
-</div>
-<div id="powerequiv" class="section level3" number="9.4.2">
-<h3>
-<span class="header-section-number">9.4.2</span> Power analysis for Equivalence Tests<a class="anchor" aria-label="anchor" href="#powerequiv"><i class="fas fa-link"></i></a>
-</h3>
-<p>For an equivalence test, power analysis can be performed based on closed functions, and the calculations take just a fraction of a second. I find that useful, for example in my role in our ethics board, where we evaluate proposals that have to justify their sample size, and we often check power calculations. Kruschke has an excellent R package (BEST) that can do power analyses for the ROPE procedure. This is great work – but the simulations take a while (a little bit over an hour for 1000 simulations).</p>
-<p>Because the BESTpower function relies on simulations, you need to specify the sample size, and it will calculate the power. That’s actually the reverse of what you typically want in a power analysis (you want to input the desired power, and see which sample size you need). This means you most likely need to run multiple simulations in BESTpower, before you have determined the sample size that will yield good power. Furthermore, the software requires your to specify the expected means and standard deviations, instead of simply an expected effect size. Instead of Frequentist power analysis, where the hypothesized effect size is a point value (e.g., d = 0.4), Bayesian power analysis models the alternative as a distribution, acknowledging there is uncertainty.</p>
-<p>In the end, however, the result of a power analysis for ROPE and for TOST is actually remarkably similar. Using the code below to perform the power analysis for ROPE, we see that 100 participants in each group give us approximately 88.4% power (with 2000 simulations, this estimate is still a bit uncertain) to get a 95% HDI that falls within our ROPE of -0.5 to 0.5, assuming standard deviations of 1.</p>
-<p>We can use the powerTOSTtwo.raw function in the TOSTER package (using an alpha of 0.025 instead of 0.05, to mirror to 95% HDI) to calculate the sample size we would need to achieve 88.4% power for independent t-test (using equivalence bounds of -0.5 and 0.5, and standard deviations of 1):</p>
-<p>powerTOSTtwo.raw(alpha=0.025,statistical_power=0.875,low_eqbound=-0.5,high_eqbound=0.5,sdpooled=1)</p>
-<p>The outcome is 100 as well. So if you use a broad prior, it seems you can save yourself some time by using the power analysis for equivalence tests, without severe consequences.</p>
-</div>
-<div id="use-of-prior-information" class="section level3" number="9.4.3">
-<h3>
-<span class="header-section-number">9.4.3</span> Use of prior information<a class="anchor" aria-label="anchor" href="#use-of-prior-information"><i class="fas fa-link"></i></a>
-</h3>
-<p>The biggest benefit of ROPE over TOST is that is allows you to incorporate prior information in your data analysis. If you have reliable prior information, ROPE can use this information, which is especially useful if you don’t have a lot of data. If you use priors, it is typically advised to check the robustness of the posterior against reasonable changes in the prior (Kruschke, 2013).</p>
-</div>
-<div id="conclusion" class="section level3" number="9.4.4">
-<h3>
-<span class="header-section-number">9.4.4</span> Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"><i class="fas fa-link"></i></a>
-</h3>
-<p>Using the ROPE procedure or the TOST procedure will most likely lead to very similar inferences. For all practical purposes, the differences are small. It’s quite a lot easier to perform a power analysis for TOST, and by default, TOST has greater statistical power because it uses 90% CI. But power analysis is possible for ROPE (which is a rare pleasure to see for Bayesian analyses), and you could choose to use a 90% HDI, or any other value that matches your goals. TOST will be easier and more familiar because it is just a twist on the classic t-test, but ROPE might be a great way to dip your toes in Bayesian waters and explore the many more things you can do with Bayesian posterior distributions.</p>
-<!-- ```{r} -->
-<!-- # Data is loaded because BEST analysis takes so very long -->
-<!-- load("data/BESTout.Rdata") -->
-<!-- plot(BESTout) -->
-<!-- #TOST test -->
-<!-- TOSTtwo.raw(m1=mean(x),m2=mean(y),sd1=sd(x),sd2=sd(y),n1=length(x),n2=length(y),low_eqbound=-0.5,high_eqbound=0.5, alpha=0.025) -->
-<!-- powerPro -->
-<!-- #TOST power analysis -->
-<!-- powerTOSTtwo.raw(alpha=0.025,statistical_power=0.875,low_eqbound=-0.5,high_eqbound=0.5,sdpooled=1) -->
+<!-- **Q1**: What is the correct interpretation of the following result if a researchers has performed a nil null hypothesis and an equivalence test (the equivalence bounds are indicated by the vertical dashed lines)?  -->
+<!-- ```{r, eq_q_1, echo = FALSE} -->
+<!-- res <- TOSTER::tsum_TOST(m1 = 0, m2 = 0.2, sd1 = 1, sd2 = 1, -->
+<!--                   n1 = 100, n2 = 100, low_eqbound = -0.34, high_eqbound = 0.34) -->
+<!-- plot(res, type = "tnull") -->
 <!-- ``` -->
-<p>```</p>
-</div>
-</div>
-<div id="absence-of-evidence-is-not-evidence-of-absence." class="section level2" number="9.5">
-<h2>
-<span class="header-section-number">9.5</span> Absence of evidence is not evidence of absence.<a class="anchor" aria-label="anchor" href="#absence-of-evidence-is-not-evidence-of-absence."><i class="fas fa-link"></i></a>
-</h2>
-<p>Take a look at the last paper you have written. Search for a <em>p</em>-value larger than 0.05. How did you interpret this result?
-It is common that researchers interpret a <em>p</em>-value larger than 0.05 as the absence of an effect. However, this is a misinterpretation of <em>p</em>-values.</p>
-<p>When you find <em>p</em> &gt; 0.05, you did not observe surprising data, assuming there is no true effect. You can often read in the literature how <em>p</em> &gt; 0.05 is interpreted as ‘no effect’ but due to a lack of power the data might not be surprising if there was an effect. In this blog I’ll explain how to test for equivalence, or the lack of a meaningful effect, using equivalence hypothesis testing. I’ve created easy to use R functions that allow you to perform equivalence hypothesis tests. Warning: If you read beyond this paragraph, you will never again be able to write “as predicted, the interaction revealed there was an effect for participants in the experimental condition (p &lt; 0.05) but there was no effect in the control condition (F &lt; 1).” If you prefer the veil of ignorance, here’s a nice site with cute baby animals to spend the next 9 minutes on instead.</p>
-<p>Any science that wants to be taken seriously needs to be able to provide support for the null-hypothesis. I often see people switching over from Frequentist statistics when effects are significant, to the use of Bayes Factors to be able to provide support for the null hypothesis. But it is possible to test if there is a lack of an effect using p-values (why no one ever told me this in the 11 years I worked in science is beyond me). It’s as easy as doing a t-test, or more precisely, as doing two t-tests.</p>
-<p>The practice of Equivalence Hypothesis Testing (EHT) is used in medicine, for example to test whether a new cheaper drug isn’t worse (or better) than the existing more expensive option. A very simple EHT approach is the ‘two-one-sided t-tests’ (TOST) procedure (Schuirmann, 1987). Its simplicity makes it wonderfully easy to use.</p>
-<p>The basic idea of the test is to flip things around: In Equivalence Hypothesis Testing the null hypothesis is that there is a true effect larger than a Smallest Effect Size of Interest (SESOI; Lakens, 2014). That’s right – the null-hypothesis is now that there IS an effect, and we are going to try to reject it (with a p &lt; 0.05). The alternative hypothesis is that the effect is smaller than a SESOI, anywhere in the equivalence range - any effect you think is too small to matter, or too small to feasibly examine. For example, a Cohen’s d of 0.5 is a medium effect, so you might set d = 0.5 as your SESOI, and the equivalence range goes from d = -0.5 to d = 0.5 In the TOST procedure, you first decide upon your SESOI: anything smaller than your smallest effect size of interest is considered smaller than small, and will allow you to reject the null-hypothesis that there is a true effect. You perform two t-tests, one testing if the effect is smaller than the upper bound of the equivalence range, and one testing whether the effect is larger than the lower bound of the equivalence range. Yes, it’s that simple.</p>
-<p>Let’s visualize this. Below on the left axis is a scale for the effect size measure Cohen’s d. On the left is a single 90% confidence interval (the crossed circles indicate the endpoints of the 95% confidence interval) with an effect size of d = 0.13. On the right is the equivalence range. It is centered on 0, and ranges from d = -0.5 to d = 0.5.</p>
-<p>We see from the 95% confidence interval around d = 0.13 (again, the endpoints of which are indicated by the crossed circles) that the lower bound overlaps with 0. This means the effect (d = 0.13, from an independent t-test with two conditions of 90 participants each) is not statistically different from 0 at an alpha of 5%, and the p-value of the normal NHST is 0.384 (the title provides the exact numbers for the 95% CI around the effect size). But is this effect statistically smaller than my smallest effect size of interest?</p>
-</div>
-<div id="justifysesoi" class="section level2" number="9.6">
-<h2>
-<span class="header-section-number">9.6</span> JUstifying a smallest effect size of interest<a class="anchor" aria-label="anchor" href="#justifysesoi"><i class="fas fa-link"></i></a>
-</h2>
-<div id="rejecting-the-presence-of-a-meaningful-effect" class="section level3" number="9.6.1">
-<h3>
-<span class="header-section-number">9.6.1</span> Rejecting the presence of a meaningful effect<a class="anchor" aria-label="anchor" href="#rejecting-the-presence-of-a-meaningful-effect"><i class="fas fa-link"></i></a>
-</h3>
-<p>There are two ways to test the lack of a meaningful effect that yield the same result. The first is to perform two one sided t-tests, testing the observed effect size against the ‘null’ of your SESOI (0.5 and -0.5). These t-tests show the d = 0.13 is significantly larger than d = -0.5, and significantly smaller than d = 0.5. The highest of these two p-values is p = 0.007. We can conclude that there is support for the lack of a meaningful effect (where meaningful is defined by your choice of the SESOI). The second approach (which is easier to visualize) is to calculate a 90% CI around the effect (indicated by the vertical line in the figure), and check whether this 90% CI falls completely within the equivalence range. You can see a line from the upper and lower limit of the 90% CI around d = 0.13 on the left to the equivalence range on the right, and the 90% CI is completely contained within the equivalence range. This means we can reject the null of an effect that is larger than d = 0.5 or smaller than d = -0.5 and conclude this effect is smaller than what we find meaningful (and you’ll be right 95% of the time, in the long run).</p>
-<p>[Technical note: The reason we are using a 90% confidence interval, and not a 95% confidence interval, is because the two one-sided tests are completely dependent. You could actually just perform one test, if the effect size is positive against the upper bound of the equivalence range, and if the effect size is negative against the lower bound of the equivalence range. If this one test is significant, so is the other. Therefore, we can use a 90% confidence interval, even though we perform two one-sided tests. This is also why the crossed circles are used to mark the 95% CI.].</p>
-<p>So why were we not using these tests in the psychological literature? It’s the same old, same old. Your statistics teacher didn’t tell you about them. SPSS doesn’t allow you to do an equivalence test. Your editors and reviewers were always OK with your statements such as “as predicted, the interaction revealed there was an effect for participants in the experimental condition (p &lt; 0.05) but there was no effect in the control condition (F &lt; 1).” Well, I just ruined that for you. Absence of evidence is not evidence of absence!</p>
-<p>We can’t use p &gt; 0.05 as evidence of a lack of an effect. You can switch to Bayesian statistics if you want to support the null, but the default priors are only useful of in research areas where very large effects are examined (e.g., some areas of cognitive psychology), and are not appropriate for most other areas in psychology, so you will have to be able to quantify your prior belief yourself. You can teach yourself how, but there might be researchers who prefer to provide support for the lack of an effect within a Frequentist framework. Given that most people think about the effect size they expect when designing their study, defining the SESOI at this moment is straightforward. After choosing the SESOI, you can even design your study to have sufficient power to reject the presence of a meaningful effect. Controlling your error rates is thus straightforward in equivalence hypothesis tests, while it is not that easy in Bayesian statistics (although it can be done through simulations).</p>
-<p>One thing I noticed while reading this literature is that TOST procedures, and power analyses for TOST, are not created to match the way psychologists design studies and think about meaningful effects. In medicine, equivalence is based on the raw data (a decrease of 10% compared to the default medicine), while we are more used to think in terms of standardized effect sizes (correlations or Cohen’s d). Biostatisticians are fine with estimating the pooled standard deviation for a future study when performing power analysis for TOST, but psychologists use standardized effect sizes to perform power analyses. Finally, the packages that exist in R (e.g., equivalence) or the software that does equivalence hypothesis tests (e.g., Minitab, which has TOST for t-tests, but not correlations) requires that you use the raw data. In my experience (Lakens, 2013) researchers find it easier to use their own preferred software to handle their data, and then calculate additional statistics not provided by the software they use by typing in summary statistics in a spreadsheet (means, standard deviations, and sample sizes per condition). So my functions don’t require access to the raw data (which is good for reviewers as well). Finally, the functions make a nice picture such as the one above so you can see what you are doing.</p>
-<!-- ## Using CI for equivalence tests -->
-<!-- ```{r} -->
-<!-- set.seed(1) -->
-<!-- x<-rnorm(100) #Generate 100 random normally distributed observations -->
-<!-- y<-rnorm(100) #Generate 100 random normally distributed observations -->
-<!-- #ROPE test -->
-<!-- BESTout<-BESTmcmc(x,y) -->
-<!-- plot(BESTout, ROPE = c(-0.5, 0.5), showCurve = TRUE, xlim = c(-1,1)) -->
-<!-- #TOST test -->
-<!-- TOSTout <- TOSTER::t_TOST(x = x, y = y, low_eqbound = -0.5, high_eqbound = 0.5, alpha = 0.05) -->
-<!-- plot(TOSTout, estimates = "raw") -->
-<!-- ``` -->
+<!-- A) We can reject an effect of 0, and we fail to reject the smallest effect size of interest. Therefore we can claim there is an effect  -->
 
-</div>
 </div>
 </div>
   <div class="chapter-nav">
@@ -402,22 +312,14 @@ It is common that researchers interpret a <em>p</em>-value larger than 0.05 as t
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
       <ul class="nav navbar-nav">
-<li><a class="nav-link" href="#equivalencetest"><span class="header-section-number">9</span> Interval Hypotheses and Equivalence Testing</a></li>
+<li><a class="nav-link" href="#equivalencetest"><span class="header-section-number">9</span> Equivalence Testing and Interval Hypotheses</a></li>
 <li><a class="nav-link" href="#equivalence-tests"><span class="header-section-number">9.1</span> Equivalence tests</a></li>
-<li><a class="nav-link" href="#equivalence-tests-for-anova"><span class="header-section-number">9.2</span> Equivalence tests for ANOVA</a></li>
-<li><a class="nav-link" href="#reporting-equivalence-tests"><span class="header-section-number">9.3</span> Reporting equivalence tests</a></li>
-<li>
-<a class="nav-link" href="#ROPE"><span class="header-section-number">9.4</span> The Bayesian ROPE procedure</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#which-interval-width-should-be-used"><span class="header-section-number">9.4.1</span> Which interval width should be used?</a></li>
-<li><a class="nav-link" href="#powerequiv"><span class="header-section-number">9.4.2</span> Power analysis for Equivalence Tests</a></li>
-<li><a class="nav-link" href="#use-of-prior-information"><span class="header-section-number">9.4.3</span> Use of prior information</a></li>
-<li><a class="nav-link" href="#conclusion"><span class="header-section-number">9.4.4</span> Conclusion</a></li>
-</ul>
-</li>
-<li><a class="nav-link" href="#absence-of-evidence-is-not-evidence-of-absence."><span class="header-section-number">9.5</span> Absence of evidence is not evidence of absence.</a></li>
-<li>
-<a class="nav-link" href="#justifysesoi"><span class="header-section-number">9.6</span> JUstifying a smallest effect size of interest</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#rejecting-the-presence-of-a-meaningful-effect"><span class="header-section-number">9.6.1</span> Rejecting the presence of a meaningful effect</a></li></ul>
-</li>
+<li><a class="nav-link" href="#reporting-equivalence-tests"><span class="header-section-number">9.2</span> Reporting Equivalence Tests</a></li>
+<li><a class="nav-link" href="#minimum-effect-tests"><span class="header-section-number">9.3</span> Minimum Effect Tests</a></li>
+<li><a class="nav-link" href="#power-analysis-for-interval-hypothesis-tests"><span class="header-section-number">9.4</span> Power Analysis for Interval Hypothesis Tests</a></li>
+<li><a class="nav-link" href="#ROPE"><span class="header-section-number">9.5</span> The Bayesian ROPE procedure</a></li>
+<li><a class="nav-link" href="#which-interval-width-should-be-used"><span class="header-section-number">9.6</span> Which interval width should be used?</a></li>
+<li><a class="nav-link" href="#test-yourself-6"><span class="header-section-number">9.7</span> Test Yourself</a></li>
 </ul>
 
       <div class="book-extra">
@@ -435,7 +337,7 @@ It is common that researchers interpret a <em>p</em>-value larger than 0.05 as t
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Improving Your Statistical Inferences</strong>" was written by Daniel Lakens. It was last built on 2022-03-05.</p>
+    <p>"<strong>Improving Your Statistical Inferences</strong>" was written by Daniel Lakens. It was last built on 2022-03-07.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

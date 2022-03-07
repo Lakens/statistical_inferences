@@ -1,5 +1,12 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 ```{r, include = FALSE}
 knitr::opts_chunk$set(error = FALSE, warning = FALSE, message = FALSE, out.width  = '100%', fig.width  = 8, fig.height = 5, fig.align  = 'center')
+library(pwr)
+library(ggplot2)
 ```
 
 # Asking Statistical Questions {#questions}
@@ -83,6 +90,143 @@ Second, for a hypothesis test to be interesting you need to have designed an inf
 
 By now it is hopefully clear that a hypothesis tests are a very specific tool, that answer a very specific question: After applying a methodological rule to observed data, which decision should I make if I do not want to make incorrect decisions too often? If you have no desire to use a methodological procedure to decide between competing theories, there is no real reason to report the results of a hypothesis test. Even though it might feel like you should test a hypothesis when doing research, carefully thinking about the statistical question you want to ask might reveal that alternative statistical approaches, such as describing the data you have observed, quantifying your personal beliefs about hypotheses, or reporting the relative likelihood of data under different hypotheses might be the approach that answers the question you really want to know. 
 
+## Directional (One-Sided) versus Non-Directional (Two-Sided) Tests
+
+Interestingly, there is quite some disagreement about whether the statistical question you ask in a study should be **directional** (meaning that only effects in a predicted direction will lead to rejection of the null hypothesis) or **non-directional** (meaning that effects in either direction will lead to the rejection of the null-hypothesis). For example, @baguley_serious_2012 writes "one-sided tests should typically be avoided" because researchers are rarely willing to claim an effect in the non-predicted direction is non-significant, regardless of how large it is. At the same time, @jones_test_1952 has stated: “Since the test of the null hypothesis against a one-sided alternative is the most powerful test for all directional hypotheses, it is strongly recommended that the one-tailed model be adopted wherever its use is appropriate”, and @cho_is_2013 complain about the "widespread overuse of two-tailed testing for directional research hypotheses tests". Let's reflect on some arguments for or against the choice to perform a one-sided test. 
+
+First, it is clear that a directional test provides a clear advantage in statistical power. As Figure \@ref(fig:onesidedtwosidedratio) shows, the ratio of the sample for a non-directional versus a directional test means that approximately 80% of the sample size of a non-directional test is required to achieve the same power in a directional test (the exact benefit depends on the power and effect size, as seen in the figure below).
+
+```{r, onesidedtwosidedratio, echo = FALSE, fig.cap="Ratio of the required sample size for a one-sample *t*-test for a non-directional/direactional test to achieve 50%, 80% or 95% power."}
+# Code by Chelsea Parlett-Pelleriti and Daniel Lakens
+
+# set up vector of effect sizes
+es <- seq(0.1, 3, length = 1000)
+# specify power for test
+
+# calculate ns (sample size for xx% power in two-sided test)
+n2_50 <- sapply(es, function(x) {
+  pwr.t.test(
+    d = x,
+    power = 0.5,
+    sig.level = 0.05,
+    type = "one.sample",
+    alternative = "two.sided"
+  )$n
+})
+
+# calculate ns (sample size for xx% power in one-sided test)
+n1_50 <- sapply(es, function(x) {
+  pwr.t.test(
+    d = x,
+    power = 0.5,
+    sig.level = 0.05,
+    type = "one.sample",
+    alternative = "greater"
+  )$n
+})
+
+# calculate ns (sample size for xx% power in two-sided test)
+n2_80 <- sapply(es, function(x) {
+  pwr.t.test(
+    d = x,
+    power = 0.8,
+    sig.level = 0.05,
+    type = "one.sample",
+    alternative = "two.sided"
+  )$n
+})
+
+# calculate ns (sample size for xx% power in one-sided test)
+n1_80 <- sapply(es, function(x) {
+  pwr.t.test(
+    d = x,
+    power = 0.8,
+    sig.level = 0.05,
+    type = "one.sample",
+    alternative = "greater"
+  )$n
+})
+
+# calculate ns (sample size for xx% power in two-sided test)
+n2_95 <- sapply(es, function(x) {
+  pwr.t.test(
+    d = x,
+    power = 0.95,
+    sig.level = 0.05,
+    type = "one.sample",
+    alternative = "two.sided"
+  )$n
+})
+
+# calculate ns (sample size for xx% power in one-sided test)
+n1_95 <- sapply(es, function(x) {
+  pwr.t.test(
+    d = x,
+    power = 0.95,
+    sig.level = 0.05,
+    type = "one.sample",
+    alternative = "greater"
+  )$n
+})
+
+ratio <- c(n1_50 / n2_50, n1_80 / n2_80, n1_95 / n2_95)
+
+df_1_vs_2 <- data.frame(
+  effect_size = c(es, es, es),
+  ratio = ratio,
+  power = c(rep("50", 1000), rep("80", 1000), rep("95", 1000))
+)
+
+ggplot(df_1_vs_2, aes(x = effect_size, y = ratio, color = power)) +
+  geom_line(size = 1.5) +
+  labs(x = "Effect size (d)", y = "Ratio One-sided/Two-sided Sample Size") +
+  theme(
+    legend.position = "bottom", legend.direction = "horizontal",
+    legend.title = element_blank()
+  ) +
+  theme_bw() +
+  scale_color_manual(values = c("#E69F00", "#56B4E9", "#009E73"))
+
+```
+
+Because in a directional test the alpha level is used for only one tail in the distribution
+
+Note that there is a subtle distinction between a directional and a one-sided test [@baguley_serious_2012]. Although the two terms overlap when performing a *t*-test, they do not overlap for an *F*-test.  The *F*-value and the *t*-value are related: $t^2 = F$. This holds as long as the df1 = 1 (e.g., F(1, 100), or in other words as long as only two groups are compared. The critical *t*-value, squared, of a non-directional *t*-test with a 5% error rate equals the critical *F*-value for an *F*-test, which is always one-sided, with a 5% error rate. Because an *F*-test is always non-directional, and based on a one-sided test, you can not halve the *p*-value in an *F*-test to perform a 'one-sided' test. It already was a one-sided *F*-test with a 5% error rate.
+
+```{r}
+df1 <- 1
+df2 <- 100
+critF <- qf(.95, df1 = df1, df2 = df2) # determine critical F-value
+critT <- qt(.975, df2) # determine critical F-value
+critF # critical F-value
+critT^2 # Critical t squared is the same as critical F-value
+critT # critical t-value
+
+x <- seq(0, 10, length = 10000)
+maxy <- ifelse(max(df(x, df1, df2)) == Inf, 1, max(df(x, df1, df2))) # set maximum y axis
+
+plot(x, df(x, df1, df2), col = "black", type = "l", lwd = 2, xlim = c(-5, 8), ylim = c(0, maxy), xlab = "F- or t-value", ylab = "Density", main = paste("F-distribution, df1 = ", df1, ", df2 = ", df2), xaxt = "n", yaxt = "n")
+x <- seq(critF, 10, length = 10000)
+z <- (df(x, df1, df2)) # determine upperbounds polygon
+polygon(c(critF, x, 10), c(0, z, 0), col = "skyblue") # draw polygon
+x <- seq(-5, 8, length = 10000)
+lines(x, dt(x, df = df2), col = "palegreen4", type = "l", lwd = 2)
+x <- seq(critT, 10, length = 10000)
+z <- (dt(x, df = df2)) # determine upperbounds polygon
+polygon(c(critT, x, 10), c(0, z, 0), col = "palegreen2")
+x <- seq(-10, -critT, length = 10000)
+z <- (dt(x, df = df2)) # determine upperbounds polygon
+polygon(c(x, -critT, -critT), c(z, 0, 0), col = "palegreen2")
+
+
+
+axis(1, at = seq(-5, 8, by = 1))
+
+
+```
+the concept of a directional 
+
 <!-- ## Statistical Decision Theory -->
+
 
 

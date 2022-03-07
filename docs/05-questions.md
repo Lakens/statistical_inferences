@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 
 
 # Asking Statistical Questions {#questions}
@@ -84,6 +89,76 @@ Second, for a hypothesis test to be interesting you need to have designed an inf
 
 By now it is hopefully clear that a hypothesis tests are a very specific tool, that answer a very specific question: After applying a methodological rule to observed data, which decision should I make if I do not want to make incorrect decisions too often? If you have no desire to use a methodological procedure to decide between competing theories, there is no real reason to report the results of a hypothesis test. Even though it might feel like you should test a hypothesis when doing research, carefully thinking about the statistical question you want to ask might reveal that alternative statistical approaches, such as describing the data you have observed, quantifying your personal beliefs about hypotheses, or reporting the relative likelihood of data under different hypotheses might be the approach that answers the question you really want to know. 
 
+## Directional (One-Sided) versus Non-Directional (Two-Sided) Tests
+
+Interestingly, there is quite some disagreement about whether the statistical question you ask in a study should be **directional** (meaning that only effects in a predicted direction will lead to rejection of the null hypothesis) or **non-directional** (meaning that effects in either direction will lead to the rejection of the null-hypothesis). For example, @baguley_serious_2012 writes "one-sided tests should typically be avoided" because researchers are rarely willing to claim an effect in the non-predicted direction is non-significant, regardless of how large it is. At the same time, @jones_test_1952 has stated: “Since the test of the null hypothesis against a one-sided alternative is the most powerful test for all directional hypotheses, it is strongly recommended that the one-tailed model be adopted wherever its use is appropriate”, and @cho_is_2013 complain about the "widespread overuse of two-tailed testing for directional research hypotheses tests". Let's reflect on some arguments for or against the choice to perform a one-sided test. 
+
+First, it is clear that a directional test provides a clear advantage in statistical power. As Figure \@ref(fig:onesidedtwosidedratio) shows, the ratio of the sample for a non-directional versus a directional test means that approximately 80% of the sample size of a non-directional test is required to achieve the same power in a directional test (the exact benefit depends on the power and effect size, as seen in the figure below).
+
+<div class="figure" style="text-align: center">
+<img src="05-questions_files/figure-html/onesidedtwosidedratio-1.png" alt="Ratio of the required sample size for a one-sample *t*-test for a non-directional/direactional test to achieve 50%, 80% or 95% power." width="100%" />
+<p class="caption">(\#fig:onesidedtwosidedratio)Ratio of the required sample size for a one-sample *t*-test for a non-directional/direactional test to achieve 50%, 80% or 95% power.</p>
+</div>
+
+Because in a directional test the alpha level is used for only one tail in the distribution
+
+Note that there is a subtle distinction between a directional and a one-sided test [@baguley_serious_2012]. Although the two terms overlap when performing a *t*-test, they do not overlap for an *F*-test.  The *F*-value and the *t*-value are related: $t^2 = F$. This holds as long as the df1 = 1 (e.g., F(1, 100), or in other words as long as only two groups are compared. The critical *t*-value, squared, of a non-directional *t*-test with a 5% error rate equals the critical *F*-value for an *F*-test, which is always one-sided, with a 5% error rate. Because an *F*-test is always non-directional, and based on a one-sided test, you can not halve the *p*-value in an *F*-test to perform a 'one-sided' test. It already was a one-sided *F*-test with a 5% error rate.
+
+
+```r
+df1 <- 1
+df2 <- 100
+critF <- qf(.95, df1 = df1, df2 = df2) # determine critical F-value
+critT <- qt(.975, df2) # determine critical F-value
+critF # critical F-value
+```
+
+```
+## [1] 3.936143
+```
+
+```r
+critT^2 # Critical t squared is the same as critical F-value
+```
+
+```
+## [1] 3.936143
+```
+
+```r
+critT # critical t-value
+```
+
+```
+## [1] 1.983972
+```
+
+```r
+x <- seq(0, 10, length = 10000)
+maxy <- ifelse(max(df(x, df1, df2)) == Inf, 1, max(df(x, df1, df2))) # set maximum y axis
+
+plot(x, df(x, df1, df2), col = "black", type = "l", lwd = 2, xlim = c(-5, 8), ylim = c(0, maxy), xlab = "F- or t-value", ylab = "Density", main = paste("F-distribution, df1 = ", df1, ", df2 = ", df2), xaxt = "n", yaxt = "n")
+x <- seq(critF, 10, length = 10000)
+z <- (df(x, df1, df2)) # determine upperbounds polygon
+polygon(c(critF, x, 10), c(0, z, 0), col = "skyblue") # draw polygon
+x <- seq(-5, 8, length = 10000)
+lines(x, dt(x, df = df2), col = "palegreen4", type = "l", lwd = 2)
+x <- seq(critT, 10, length = 10000)
+z <- (dt(x, df = df2)) # determine upperbounds polygon
+polygon(c(critT, x, 10), c(0, z, 0), col = "palegreen2")
+x <- seq(-10, -critT, length = 10000)
+z <- (dt(x, df = df2)) # determine upperbounds polygon
+polygon(c(x, -critT, -critT), c(z, 0, 0), col = "palegreen2")
+
+
+
+axis(1, at = seq(-5, 8, by = 1))
+```
+
+<img src="05-questions_files/figure-html/unnamed-chunk-2-1.png" width="100%" style="display: block; margin: auto;" />
+the concept of a directional 
+
 <!-- ## Statistical Decision Theory -->
+
 
 
