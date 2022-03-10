@@ -1,5 +1,8 @@
 
 
+<!-- UPDATE TIER PROTOCOL -->
+<!-- ADD INFO TO PREREG SO PEOPLE CAN BE FOUND -->
+
 # Preregistration and Transparency {#prereg}
 
 For as long as data has been used to support scientific claims people have tried to selectively present data in line with what they wish to be true. In his treatise ‘On the Decline of Science in England: And on Some of its Cases’ Babbage @babbage_reflections_1830 discusses what he calls cooking: 
@@ -62,6 +65,8 @@ The more detail a preregistration document has, the easier it is for others to t
 Personally, I think that the 2018 update of the Journal Article Reporting Standards (JARS) [@appelbaum_journal_2018] should be used more widely. The reporting guidelines encompass more suggestions than needed for a preregistration document, but I would recommend using JARS both for your preregistration document, as when writing up the final report, as it is a very well-thought through set of recommendations. Taking JARS into account when planning or reporting your research is likely to improve your research.
 
 The Journal Article Reporting Standards inform you about information that needs to be present on the title page, the abstract of your paper, the introduction, the method, the results section, and the discussion. For example, JARS states that you should add an Author Note on the title page that includes "Registration information if the study has been registered". The method and result sections receive a lot of attention in JARS, and these two sections are also the most important in a preregistration if we want to allow others to evaluate the severity with which we tested hypotheses. Remember that a severe test has a high probability of finding a predicted effect if the prediction is correct, and a high probability of not finding a predicted effect if the prediction is incorrect. Practices that inflate the Type 1 error rate increase the possibility of finding a predicted effect if a prediction is actually wrong. Low power, unreliable measures, a flawed procedure, or a bad design increase the possibility of not finding an effect when the prediction was actually correct. Incorrect analyses risk answering a question that is unrelated to the prediction researchers set out to test (sometimes referred to as a [Type 3 error](https://en.wikipedia.org/wiki/Type_III_error#Kimball)). As we see, JARS aims to address these threats to the severity of a test by asking authors to provide detailed information in their methods and results sections. 
+
+## Journal Article Reporting Standards
 
 I will highlight those aspects that should be included in a preregistration document. However, I want to recommend reading through all information that is recommended to include in manuscripts. As you will see, the requirements to report validity evidence for instruments (or admit that you are using an ad-hoc measure with unknown validity), awareness about the conditions participants were assigned to, and the reliability of measures might all be easier if you have already collected information about this previously (or if this information is available in the literature). I will focus on quantitative experimental studies with random assignment to conditions below (you can download the JARS table [here](https://apastyle.apa.org/jars/quant-table-1.pdf)), but JARS includes tables for [experiments without randomization](https://apastyle.apa.org/jars/quant-table-2b.pdf), [clinical trials](https://apastyle.apa.org/jars/quant-table-2c.pdf), [longitudinal designs](https://apastyle.apa.org/jars/quant-table-4.pdf), [meta-analyses](https://apastyle.apa.org/jars/quant-table-9.pdf), and [replication studies](https://apastyle.apa.org/jars/quant-table-6.pdf)Journal Article R.
 
@@ -136,7 +141,7 @@ Let’s start by defining a **theoretical hypothesis**. My favorite movie of all
 To be able to test a theoretical hypothesis, we will need to operationalize how we will measure how good or bad a movie is. IMDB provides both the IMDB rating, and the metascore (provided by metacritic.com).
 
 <div class="figure" style="text-align: center">
-<img src="images/imdbrating.png" alt="Screenshot of a IMDB and metacritic rating." width="100%" />
+<img src="images/imdbrating.png" alt="Screenshot of a IMDB and metacritic rating." width="40%" />
 <p class="caption">(\#fig:imdbrating)Screenshot of a IMDB and metacritic rating.</p>
 </div>
 
@@ -161,3 +166,269 @@ We now need to translate our theoretical hypothesis into a statistical hypothesi
 **Q4**: Specify the statistical test you will conduct. Be as specific as possible - write down the analysis code if you can. Specify relevant parameters (such as the alpha level you will use, or the *r* scale for the Bayes Factor, etc.). You will most likely only have a primary hypothesis, but if you have secondary hypotheses, specify these as well. Look through the JARS recommendations above, and the checklist by @wicherts_degrees_2016, to make sure you did not miss any details.
 
 Congratulations! By answering questions Q1 to Q4 you have completed the minimal requirements for a pre-registration of your study.
+
+**Pre-registering your research**
+
+There are different ways to preregister your research using the AsPredicted template. If you have a university (e.g., .edu) e-mail account, you can use the AsPredicted site. If you only have a Gmail account, or if you prefer to use the same platform for preregistering your study, as we will use to share the results and the data, scroll down for an explanation how to fill out the AsPredicted template through the **Open Science Framework**. Please note, we will complete the pre-registration template and upload it to the OSF, but we will not
+formally pre-register on the OSF, as explained below.
+
+## Pre-registering on AsPredicted
+
+Go to <https://aspredicted.org/> and create a new AsPredicted pre-registration:
+
+<img src="images/9fafdf4597839aeb44b3882aace1133e.png" width="100%" style="display: block; margin: auto;" />
+
+Click the ‘create’ button. Fill in your name, e-mail, and institution.
+
+<img src="images/1308ce9af6a5ebe700b8ff58542bdab2.png" width="100%" style="display: block; margin: auto;" />
+
+Scroll down, and answer questions 1 to 9. At 2) paste your answer to Q1, at 3)
+paste your answer to Q2, at 4) explain how many groups you will compare (e.g.,
+2, Edward Norton vs. Brad Pitt), at 5) enter the answer at Q4, and at 7) enter
+the answer from Q3. Answer the remaining questions. Please indicate you are
+using AsPredicted for a ‘Class project or assignment’.
+
+<img src="images/aedb89e7e45561843864302129f6cbd6.jpg" width="100%" style="display: block; margin: auto;" />
+
+Preview your pre-registration:
+
+<img src="images/4fbbec922f482e27aef0dd7f0714afad.png" width="20%" style="display: block; margin: auto;" />
+
+hit ‘pre-register’. If everything looks OK, hit the ‘SUBMIT’ button.
+
+<img src="images/7aa826d5b815c5aa18b66cfb6bcd30fe.png" width="100%" style="display: block; margin: auto;" />
+
+Then, you need to approve the submission (and if you had co-authors, they would
+also need to approve the submission). Click the link:
+
+<img src="images/c7691954684e51c29afa2aead98414c5.png" width="100%" style="display: block; margin: auto;" />
+
+Click the button to see your new pre-registration:
+
+<img src="images/5623f5d1b8144f8cdc09d955eaf4a3b7.png" width="20%" style="display: block; margin: auto;" />
+
+And click APPROVE
+
+<img src="images/6c3b919ae37f5dfed14761209592f337.png" width="100%" style="display: block; margin: auto;" />
+
+And click OK for the pop-up indicating this can not be undone. We will make the
+pre-registration public. If you do research, you don’t have to make your
+pre-registrations public immediately, but in this assignment, we will do so.
+Once again, click:
+
+<img src="images/5623f5d1b8144f8cdc09d955eaf4a3b7.png" width="20%" style="display: block; margin: auto;" />
+
+Scroll down, and click:
+
+<img src="images/94a843f900ec4dcbb75f60686edac510.png" width="20%" style="display: block; margin: auto;" />
+
+Click OK on the pop-up warning you that this can not be undone.
+
+Now you can download the .pdf file with your pre-registration:
+
+<img src="images/87e9befad90809fbccf7be6898f5d183.png" width="100%" style="display: block; margin: auto;" />
+
+**Download the pdf file and save it** – you have to share it as part of this
+assignment.
+
+## Pre-registering on the Open Science Framework
+
+If you could not use AsPredicted, or if you prefer to use the same platform for preregistering your study, as we will use to share the results and the data, go to [www.osf.io](http://www.osf.io) and create an account:
+
+<img src="images/7d6b26f83fee88df8bd46f30f4441844.png" width="100%" style="display: block; margin: auto;" />
+
+Then create a new project:
+
+<img src="images/2319f53e025e2b9c707f1062f478dc1a.png" width="100%" style="display: block; margin: auto;" />
+
+As a title, enter anything you will remember, for example Assignment 7.1 Open
+Science. Click ‘create’ and then ‘Go to new project’.
+
+<img src="images/34c3f0068911af6749513b1584c4cac7.png" width="100%" style="display: block; margin: auto;" />
+
+After you have created your new project, make your project public. To do so,
+click the **Make public** button in the top right of the project.
+
+Then, go to this page on the OSF: <https://osf.io/zab38/wiki/home/>. This page
+lists all of the registration forms as templates that you can view and download
+onto your computer.
+
+Open the AsPredicted Registration template as a Word Doc, and the file will
+appear in a file viewer.
+
+<img src="images/895c7caf7508910ae52cc2d09e06f31c.png" width="100%" style="display: block; margin: auto;" />
+
+On this page, click the **Download** button in the top right. Then open the
+AsPredicted template on your computer.
+
+Fill out the form on your computer, save, and name it: “prereg_assignment7.”
+When you’re finished filling out the form, upload it to the OSF Storage on your
+OSF project. For instructions on how to upload a file to a project, see this
+help guide: <https://help.osf.io/hc/en-us/articles/360019930613-Upload-files>.
+
+**In this assignment we will not go through the formal pre-registration process on the OSF. The reason for this is that the OSF registries website is intended to be a searchable database of all official scientific registrations and preregistrations. When you complete a registration, it will remain in [OSF Registries](https://osf.io/registries/) for ever, and there is no way to remove it. Only register formal scientific studies. If you want to complete a formal registration for a scientific study you will do in the future, you can check out the How-To** [here](http://help.osf.io/m/registrations/l/524205-register-your-project).**
+
+Double click on your preregistration file to render it in the file viewer (as
+the previous screenshot depicted). Copy the URL on this page, paste it in a word
+document, and save it as ‘Pre-registration’. We will upload this later, so that
+fellow students know where to find your pre-registration.
+
+Go back to the main view of your project by clicking the project name in the top
+left of the page.
+
+## Collecting Data
+
+Now that we have pre-registered our hypothesis let’s collect some data. Use the
+normal IMDB search to find the movies you want, or the [advanced search
+functions](http://www.imdb.com/search/).
+
+I searched for [movies starring Brad Pitt as an actor, order based on release
+data](http://www.imdb.com/filmosearch?role=nm0000093&explore=title_type&mode=detail&page=1&title_type=movie&ref_=filmo_ref_job_typ&sort=release_date,desc&job_type=actor),
+and [the same for Edward
+Norton](http://www.imdb.com/filmosearch?role=nm0001570&explore=title_type&mode=detail&page=1&title_type=movie&ref_=filmo_ref_job_typ&sort=release_date,desc&job_type=actor).
+
+You can type in your data in any software you want to use – a spreadsheet, a
+statistical software package, or even just in a text file. This will be your
+**original data file**. I used a spreadsheet file.
+
+It turns out that Edward Norton has acted in 32 movies, so we are 2 movies short
+of our planned sample size of 34 movies. That happens, there is nothing we can
+do about it, so we will just describe this in the research report.
+
+We will use the [TIER documentation
+protocol](https://www.haverford.edu/project-tier/protocol-v2) to keep our files
+organized, and store the data in a way that will allow me to understand our own
+data in the future, or allow other people to reproduce the data analysis. We
+will then share this data on the [Open Science Framework](http://www.osf.io), a
+website that allows you to store your research data, and whenever you are ready
+to do so, make this data public and accessible for other researchers. You can
+check my example of this assignment on the Open Science Framework
+[here](https://osf.io/r4hab/).
+
+You can [download the folder
+structure](https://www.haverford.edu/sites/default/files/Replication-Documentation.zip)
+you need in a zip file, and unzip the folder structure to your working directory
+for this research project. It should look like this:
+
+<img src="images/e38666209317c736716c885fd58f8a2a.png" width="50%" style="display: block; margin: auto;" />
+
+Place your original data in the ‘Original Data’ folder. It will remain here,
+unchanged, so we always have a version of the original dataset. In the meta-data
+folder, include a document that contains information about
+
+1.  A citation to the website from which you downloaded the data.
+
+2.  The data you downloaded, and a description of how others can access this
+    data (e.g., the search terms you used).
+
+3.  Some information that will allow readers to understand the original data.
+    This information should be similar to a ‘codebook’. In our simple datafile,
+    this will be straightforward, but in larger datasets, this requires careful
+    work.
+
+4.  If you use existing datasets, a DOI (Digital Object Identifier) assigned to
+    the dataset, if available. This is not needed for our project.
+
+In the ‘Importable Data’ folder, **store a copy of your data that can be used by
+the statistical software you are using**. For example, it is often easiest to
+import a comma separated value document into a statistics program. If you have
+entered the data in a spreadsheet, you might want to store that data in a .csv
+file, and place the .csv file in the ‘Importable Data’ folder. Maybe you
+directly typed in the data in your statistical software. In this case, the
+importable data file is a copy of the original data.
+
+## Analyzing the data
+
+The next step is to analyze your data. Try to follow your pre-registered
+analysis plan. If you realize you need to make change to your original plan,
+note these changes while writing up the results. You can do Frequentists tests,
+Bayesian tests, or both. The most important thing here is to create an analysis
+script, that can be directly run on the importable data file, and that will
+exactly reproduce the analyses you will report in the Research Report. For
+example, do not just point and click in SPSS, but paste the syntax for each
+analysis you perform. Make sure it is annotated (i.e., you add an explanation of
+what the code does) so that other could in principle understand which analysis
+in the analysis script is linked to which result in your research report. Save
+your **analysis file** in the ‘Command File’ folder.
+
+**Q5**: Write down the **relevant statistics in a result section**, and **don’t
+forget to interpret the results**. There are no requirements – peer reviewers
+will not grade how well you did your analysis, only that you analyzed your data.
+Introduce the data analysis with a short explanation of your hypothesis (you can
+take this from your pre-registration). End the data analysis with a short,
+one-sentence **conclusion**. Save this document as the ‘**Research Report**’ and
+place it in the top level of the ‘Replication Documentation’ folder.
+
+## Sharing the report, data, and code
+
+Now you have completed your research project, let’s share the results and the
+data! We will upload the **pre-registration, data, report, and analysis files**
+to the Open Science Framework (OSF). The Open Science Framework allows you to
+store data, materials, and analysis scripts for free, and make these files
+publically available whenever you are ready.
+
+Create a (free) account on the Open Science Framework (if you did not already do
+so).
+
+<img src="images/7d6b26f83fee88df8bd46f30f4441844.png" width="100%" style="display: block; margin: auto;" />
+
+Then create a new project (if you did not yet do so to pre-register on the OSF directly):
+
+<img src="images/2319f53e025e2b9c707f1062f478dc1a.png" width="100%" style="display: block; margin: auto;" />
+
+As a title, enter anything you will remember, for example "Course Assignment Open
+Science". Click ‘create’ and then ‘Go to new project’.
+
+<img src="images/34c3f0068911af6749513b1584c4cac7.png" width="100%" style="display: block; margin: auto;" />
+
+You will see your new project page:
+
+<img src="images/661cad8c112cd6c52562bed3cf6a5cd5.png" width="100%" style="display: block; margin: auto;" />
+
+Click on the ‘Files’ tab. You can upload files to the OSF. There are two
+options. You can either zip the Replication Document folder, and upload a single
+.zip file, or you can recreate the folder structure on the OSF. That’s what I’ll
+do, even though it is a bit more work, but it will allow people to preview all
+the files on the OSF. To upload the zip file, just drag the zipped folder from
+your computer to the browser, and drop it onto the OSF Storage line, as shown in
+the picture below.
+
+<img src="images/8b43efb2aa9c69d3e8786473113660ba.png" width="100%" style="display: block; margin: auto;" />
+
+Alternatively, you can recreate the folder structure. Click on the ‘OSF Storage’
+line. Buttons will appear that allow you to +Create Folder. See below.
+
+<img src="images/380c79d73f62591732aafcd0a045ea2b.png" width="100%" style="display: block; margin: auto;" />
+
+Upload the **original data, the importable data, the analysis files, the
+research report, and the pre-registration file**. You can, but don’t have to,
+upload a meta-data document and a codebook. Uploading these in real research is
+important, but they are not the most important learning objective in this
+assignment.
+
+The final result should look like the screenshot below:
+
+<img src="images/dec08b890995634acf624123962ed970.png" width="100%" style="display: block; margin: auto;" />
+
+Go back to the main page of your OSF project by clicking on the name of your
+project in the top left of the screen. **The final thing that we need to do is
+make it possible for others to access our files by making the project page
+public**. By default, the project is private, and you can use the OSF to
+privately store your research data. But you can also make the page public,
+whenever you are ready. **If the page is not public, fellow students can’t peer
+review it!**
+
+Click the ‘Make Public’ button (highlighted by the red square in the picture
+below)
+
+<img src="images/791bc1160787ae06a961761fb260b687.png" width="100%" style="display: block; margin: auto;" />
+
+You will get a warning that you need to make sure there is no confidential
+information that is being shared, and that making data public can’t be undone.
+
+<img src="images/ae3d492ab7249bafc5969ba8345d58ca.png" width="100%" style="display: block; margin: auto;" />
+
+Click ‘Confirm’. Your research project is now publicly available. My example for
+this assignment is available here: <https://osf.io/r4hab/>.
+
+**Q6**: As an answer to this assignment, share the link to your publicly accessible project page on the Open Science Framework. The files on the Open Science Framework page will be peer-reviewed by fellow students.
