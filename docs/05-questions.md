@@ -100,24 +100,17 @@ First, it is clear that a directional test provides a clear advantage in statist
 <p class="caption">(\#fig:onesidedtwosidedratio)Ratio of the required sample size for a one-sample *t*-test for a non-directional/direactional test to achieve 50%, 80% or 95% power.</p>
 </div>
 
-Because in a directional test the alpha level is used for only one tail in the distribution
+Because in a directional test the alpha level is used for only one tail of the distribution, the critical test value is lower, and all else equal, power is higher. This reduction of the critical value required to declare a statistically significant effect has been criticized because it leads to weaker evidence. For example, @schulz_sample_2005 write: "Using a one-sided test in sample size calculations to reduce required sample sizes stretches credulity.". This is trivially true: Any change to the design of a study that requires a smaller sample size reduces the strength of the evidence you collect, since the strength of evidence is inherently tied to the total number of observations. However, it conflates two types of statistical philosophies, namely a likelihoodist approach, which aims to quantify relative evidence, and a frequentist approach, which aims to provide a procedure to make claims with a maximum error rate. There is a difference between designing a study that yields a certain level of evidence, and a study that adequately controls the error rates when performing a hypothesis test. If you desire a specific level of evidence, design a study that provides this desired level of evidence. If you desire to control the error rate of claims, then that error rate is at most 5% as long as the alpha level is 5%, regardless of whether a one-sided or two-sided test is performed.
 
-Note that despite the title of this section, there is a subtle distinction between a directional and a one-sided test [@baguley_serious_2012]. Although the two terms overlap when performing a *t*-test, they do not overlap for an *F*-test.  The *F*-value and the *t*-value are related: $t^2 = F$. This holds as long as the df1 = 1 (e.g., F(1, 100), or in other words as long as only two groups are compared. The critical *t*-value, squared, of a non-directional *t*-test with a 5% error rate equals the critical *F*-value for an *F*-test, which is always one-sided, with a 5% error rate. Because an *F*-test is always non-directional, and based on a one-sided test, you can not halve the *p*-value in an *F*-test to perform a 'one-sided' test. It already was a one-sided *F*-test with a 5% error rate.
+Note that there is a subtle distinction between a directional and a one-sided test [@baguley_serious_2012]. Although the two terms overlap when performing a *t*-test, they do not overlap for an *F*-test.  The *F*-value and the *t*-value are related: $t^2 = F$. This holds as long as the df1 = 1 (e.g., F(1, 100), or in other words as long as only two groups are compared. We can see in Figure \@ref(fig:fandt) that the two distributions touch at t = 1 (as 1^2 = 1), and that the *F*-test has no negative values due to the squared nature of the distribution. The critical *t*-value, squared, of a non-directional *t*-test with a 5% error rate equals the critical *F*-value for an *F*-test, which is always one-sided, with a 5% error rate. Due to the 'squared' nature of an *F*-test, an *F*-test is always non-directional. You can logically not halve the *p*-value in an *F*-test to perform a 'one-sided' test, because you can't have a directional *F*-test. When comparing two groups, you can use a *t*-test instead of an *F*-test, which can be directional.
 
+<div class="figure" style="text-align: center">
+<img src="05-questions_files/figure-html/fandt-1.png" alt="Distribution and rejection areas for a two-sided t-test and the corresponding F-test with df1 = 1 and df2 = 100." width="100%" />
+<p class="caption">(\#fig:fandt)Distribution and rejection areas for a two-sided t-test and the corresponding F-test with df1 = 1 and df2 = 100.</p>
+</div>
 
-```
-## [1] 3.936143
-```
-
-```
-## [1] 3.936143
-```
-
-```
-## [1] 1.983972
-```
-
-<img src="05-questions_files/figure-html/unnamed-chunk-2-1.png" width="100%" style="display: block; margin: auto;" />
+A final concern raised against one-sided tests is that surprising findings in the opposite direction might be meaningful, and should not be ignored. I agree, but this is not an argument against one-sided testing. The goal in hypothesis testing is, not surprisingly, to test a hypothesis. If you have a directional hypothesis, a result in the opposite direction can never confirm your hypothesis. It can lead one to create a new hypothesis, but this new hypothesis should be tested on a new dataset [@de_groot_methodology_1969]. 
+It makes sense to *describe* an unexpected effect in the opposite direction of your prediction, but there is a difference between describing data, and testing a hypothesis. A one-sided hypothesis test does not prohibit researchers from describing unexpected data patterns. And if you really want to test if there is an effect in either direction, simply preregister a two-sided test. 
 
 <!-- ## Statistical Decision Theory -->
 
