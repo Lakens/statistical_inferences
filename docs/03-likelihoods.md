@@ -148,14 +148,86 @@ So far we have computed likelihoods for binomial probabilities, but likelihoods 
 
 ## Test Yourself
 
-**Q1:** Which statement is correct when you perform 3 studies?
+### Questions about likelihoods
+
+**Q1**: Let’s assume you expect this is a fair coin. What is the binomial probability of observing 8 heads out of 10 coin flips, when θ = 0.5? (You can use the functions in the chapter, or compute it by hand).
+
+A) 0.044
+B) 0.05
+C) 0.5
+D) 0.8
+
+**Q2**: The likelihood curve rises up and falls down, except at the extremes, when 0 heads or only heads are observed. Copy the code below, and plot the likelihood curves for 0 heads (x <- 0) out of 10 flips (n <- 10) by running the script. What does the likelihood curve look like?
+
+
+```r
+n <- 10 # set total trials
+x <- 5 # set successes
+H0 <- 0.5 # specify one hypothesis you want to compare
+H1 <- 0.4 # specify another hypothesis you want to compare
+dbinom(x, n, H0) / dbinom(x, n, H1) # Returns the H0/H1 likelihood ratio
+```
+
+```
+## [1] 1.226433
+```
+
+```r
+dbinom(x, n, H1) / dbinom(x, n, H0) # Returns the H1/H0 likelihood ratio
+```
+
+```
+## [1] 0.8153727
+```
+
+```r
+theta <- seq(0, 1, len = 100) # create probability variable from 0 to 1
+like <- dbinom(x, n, theta)
+
+plot(theta, like, type = "l", xlab = "p", ylab = "Likelihood", lwd = 2)
+points(H0, dbinom(x, n, H0))
+points(H1, dbinom(x, n, H1))
+segments(H0, dbinom(x, n, H0), x / n, dbinom(x, n, H0), lty = 2, lwd = 2)
+segments(H1, dbinom(x, n, H1), x / n, dbinom(x, n, H1), lty = 2, lwd = 2)
+segments(x / n, dbinom(x, n, H0), x / n, dbinom(x, n, H1), lwd = 2)
+title(paste("Likelihood Ratio H0/H1:", round(dbinom(x, n, H0) / dbinom(x, n, H1), digits = 2), " Likelihood Ratio H1/H0:", round(dbinom(x, n, H1) / dbinom(x, n, H0), digits = 2)))
+```
+
+<img src="03-likelihoods_files/figure-html/unnamed-chunk-2-1.png" width="100%" style="display: block; margin: auto;" />
+
+A) The likelihood curve is a horizontal line.
+B) The script returns and error message: it is not possible to plot the likelihood curve for 0 heads.
+C) The curve starts at its highest point at θ = 0, and then the likelihood decreases as θ increases.
+D) The curve starts at its lowest point at θ = 0, and then the likelihood increases as θ increases.
+
+**Q3**: Get a coin out of your wallet. Flip it 13 times, and count the number of heads. Using the code above, calculate the likelihood of your observed results under the hypothesis that your coin is fair, compared to the hypothesis that the coin is not fair. Set the number of successes (x) to the number of heads you observed. Change H1 to the number of heads you have observed (or leave it to 0 if you didn’t observe any heads at all!). You can just use 4/13, or enter 0.3038. Leave H0 at 0.5. Run the script to calculate the likelihood ratio. What is the likelihood ratio of a fair compared to a non-fair coin (or H0/H1) that flips heads as often as you have observed, based on the observed data? Round your answer to 2 digits after the decimal.
+
+Earlier we mentioned that with increasing sample sizes, we had collected stronger relative evidence. Let’s say we would want to compare L(p = 0.4) with L(p = 0.5). 
+
+**Q4**: What is the likelihood ratio if H1 is 0.4, H1 is 0.5, and you flip 5 heads in 10 trials? From the two possible ways to calculate the likelihood ratio (H1/H0 and H0/H1), report the likelihood that is ≥ 1, and round to 2 digits after the decimal point.
+
+**Q5**: What is the likelihood ratio if H1 is 0.4, H1 is 0.5, and you flip 50 heads in 100 trials? From the two possible ways to calculate the likelihood ratio (H1/H0 and H0/H1), report the likelihood that is ≥ 1, and round to 2 digits after the decimal point.
+
+**Q6**: What is the likelihood ratio if H1 is 0.4, H1 is 0.5, and you flip 500 heads in 1000 trials? From the two possible ways to calculate the likelihood ratio (H1/H0 and H0/H1), report the likelihood that is ≥ 1, and round to 2 digits after the decimal point.
+
+**Q7**: When comparing two hypotheses (θ = X vs θ = Y), a likelihood ratio of: 
+
+A) 0.02 means that there is not enough evidence in the data for either of the two hypotheses. 
+B) 5493 means that hypothesis p = X is most supported by the data.
+C) 5493 means that hypothesis p = X is much more supported by the data than θ = Y.
+D) 0.02 means that the hypothesis that the data are 2% more likely under the hypothesis that θ = X than under the hypothesis that p = Y. 
+
+
+### Questions about mixed results
+
+**Q8:** Which statement is correct when you perform 3 studies?
 
 A) When H1 is true, alpha = 0.05, and power = 0.80, it is almost as likely to observe one or more non-significant results (48.8%) as it is to observe only significant results (51.2%).
 B) When alpha = 0.05 and power = 0.80, it is extremely rare that you will find 3 significant results (0.0125%), regardless of whether H0 is true or H1 is true.
 C) When alpha = 0.05 and power = 0.80, 2 out of 3 statistically significant results is the most likely outcome overall (38.4%) when H1 is true. 
 D) When alpha = 0.05 and power = 0.80, the probability of finding at least one false positive (a significant result when H0 is true) in three studies is 5%.
 
-**Q2:** Sometimes in lines of three studies, you’ll find a significant effect in one study, but there is no effect in the other two related studies. Assume the two related studies were not exactly the same in every way (e.g., you have changed the manipulation, or the procedure, or some of the questions). It could be that the two other studies did not work because of minor differences that had some effect you do not fully understand yet. Or it could be that the single significant result was a Type 1 error, and H0 was true in all three studies. Which statement below is correct, assuming a 5% Type 1 error rate and 80% power?
+**Q9:** Sometimes in lines of three studies, you’ll find a significant effect in one study, but there is no effect in the other two related studies. Assume the two related studies were not exactly the same in every way (e.g., you have changed the manipulation, or the procedure, or some of the questions). It could be that the two other studies did not work because of minor differences that had some effect you do not fully understand yet. Or it could be that the single significant result was a Type 1 error, and H0 was true in all three studies. Which statement below is correct, assuming a 5% Type 1 error rate and 80% power?
 
 A) All else being equal, the probability of a Type 1 error in one of three studies is 5% when there is no true effect in all three studies, and the probability of finding exactly 1 in three significant effects, assuming 80% power in all three studies, is 80%, which is substantially more likely.
 B) All else being equal, the probability of a Type 1 error in one of three studies is 13.5% when there is no true effect in all three studies, and the probability of finding exactly 1 in three significant effects, assuming 80% power in all three studies (and thus a true effect), is 9.6%, which is slightly, but not substantially less likely.
@@ -164,7 +236,7 @@ D) It is not possible to know the probability you will observe a Type 1 error if
 
 The idea that most studies have 80% power is slightly optimistic. **Examine the correct answer to the previous question across a range of power values** (e.g., 50% power, and 30% power).
 
-**Q3:** Several papers suggest it is a reasonable assumption that the power in the psychological literature might be around 50%. Set the number of studies to 4, the number of successes also to 4, and the assumed power slider to 50%, and look at the table at the bottom of the app. How likely is it to observe 4 significant results in 4 studies, assuming there is a true effect? 
+**Q10:** Several papers suggest it is a reasonable assumption that the power in the psychological literature might be around 50%. Set the number of studies to 4, the number of successes also to 4, and the assumed power slider to 50%, and look at the table at the bottom of the app. How likely is it to observe 4 significant results in 4 studies, assuming there is a true effect? 
 
 A) 6.25%
 B) 12.5%
@@ -179,7 +251,7 @@ Imagine you perform 4 studies, and 3 show a significant result. **Change these n
 
 These calculations show that, assuming you have observed three significant results out of four studies, and assuming each study had 50% power, it is 526 times more likely to have observed these data when the alternative hypothesis is true, than when the null hypothesis is true. In other words, it is 526 times more likely to find a significant effect in three studies when you have 50% power, than to find three Type 1 errors in a set of four studies.
 
-**Q4**: Maybe you don’t think 50% power is a reasonable assumption. How low can the power be (rounded to 2 digits), for the likelihood to remain higher than 32 in favor of H1 when observing 3 out of 4 significant results? 
+**Q11**: Maybe you don’t think 50% power is a reasonable assumption. How low can the power be (rounded to 2 digits), for the likelihood to remain higher than 32 in favor of H1 when observing 3 out of 4 significant results? 
 
 A) 5% power
 B) 17% power
@@ -190,7 +262,7 @@ The main take home message of these calculations is to understand that 1) mixed 
 
 The above calculations make a very important assumption: The Type 1 error rate is controlled at 5%. If you try out many different tests in each study, and only report the result that yielded a p \< 0.05, these calculations no longer hold.
 
-**Q5**: Go back to the default settings of 2 out of 3 significant results, but now set the Type 1 error rate to 20%, to reflect a modest amount of p-hacking. Under these circumstances, what is the **highest** likelihood in favor of H1 you can get if you explore all possible values for the true power?
+**Q12**: Go back to the default settings of 2 out of 3 significant results, but now set the Type 1 error rate to 20%, to reflect a modest amount of p-hacking. Under these circumstances, what is the **highest** likelihood in favor of H1 you can get if you explore all possible values for the true power?
 
 A) Approximately 1
 B) Approximately 4.63
@@ -200,7 +272,7 @@ D) Approximately 62.37
 As the scenario above shows, *p*-hacking makes studies extremely uninformative.
 **If you inflate the error rate, you quickly destroy the evidence in the data.** You can no longer determine whether the data is more likely when there is no effect, than when there is an effect. Sometimes researchers complain that people who worry about *p*-hacking and try to promote better Type 1 error control are missing the point, and that other things (better measurement, better theory, etc.) are more important. I fully agree that these aspects of scientific research are at least as important as better error control. But better measures and theories will require decades of work. Better error control can be accomplished today, if researchers would stop inflating their error rates by flexibly analyzing their data. And as this assignment shows, inflated rates of false positives very quickly make it difficult to learn what is true from the data we collect. Because of the relative ease with which this part of scientific research can be improved, and because we can achieve this today (and not in a decade) I think it is worth stressing the importance of error control, and publish more realistic looking sets of studies.
 
-**Q6**: Some ‘prestigious’ journals (which, when examined in terms of scientific quality such as reproducibility, reporting standards, and policies concerning data and material sharing, are quite low quality despite their prestige) only publish manuscripts with a large number of studies, which should all be statistically significant. If we assume an average power in psychology of 50%, only 3.125% of 5 study articles should contain exclusively significant results. If you pick up a random issue from such a prestigious journal, and see 10 articles, each reporting 5 studies, and all manuscripts have exclusively significant results, would you trust the reported findings more, or less, than when all these articles had reported mixed results? Why?
+**Q13**: Some ‘prestigious’ journals (which, when examined in terms of scientific quality such as reproducibility, reporting standards, and policies concerning data and material sharing, are quite low quality despite their prestige) only publish manuscripts with a large number of studies, which should all be statistically significant. If we assume an average power in psychology of 50%, only 3.125% of 5 study articles should contain exclusively significant results. If you pick up a random issue from such a prestigious journal, and see 10 articles, each reporting 5 studies, and all manuscripts have exclusively significant results, would you trust the reported findings more, or less, than when all these articles had reported mixed results? Why?
 
-**Q7**: Unless you will power all your studies at 99.99% for the rest of your career (which would be slightly inefficient, but great if you don’t like insecurity), you will observe mixed results in lines of research. How do you plan to deal with mixed results in lines of research?
+**Q14**: Unless you will power all your studies at 99.99% for the rest of your career (which would be slightly inefficient, but great if you don’t like insecurity), you will observe mixed results in lines of research. How do you plan to deal with mixed results in lines of research?
 

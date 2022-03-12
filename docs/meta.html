@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 11 Meta-analysis | Improving Your Statistical Inferences</title>
+<meta name="author" content="Daniel Lakens">
+<meta name="description" content="Every single study is just a data-point in a future meta-analysis. If you draw small samples from a population, the mean and standard deviation in the sample can differ considerably from the mean...">
+<meta name="generator" content="bookdown 0.24 with bs4_book()">
+<meta property="og:title" content="Chapter 11 Meta-analysis | Improving Your Statistical Inferences">
+<meta property="og:type" content="book">
+<meta property="og:description" content="Every single study is just a data-point in a future meta-analysis. If you draw small samples from a population, the mean and standard deviation in the sample can differ considerably from the mean...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 11 Meta-analysis | Improving Your Statistical Inferences">
+<meta name="twitter:description" content="Every single study is just a data-point in a future meta-analysis. If you draw small samples from a population, the mean and standard deviation in the sample can differ considerably from the mean...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.11/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/kePrint-0.0.1/kePrint.js"></script><link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="bs4_style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Improving Your Statistical Inferences</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Welcome</a></li>
+<li><a class="" href="pvalue.html"><span class="header-section-number">1</span> Using p-values to test a hypothesis</a></li>
+<li><a class="" href="errorcontrol.html"><span class="header-section-number">2</span> Error control</a></li>
+<li><a class="" href="likelihoods.html"><span class="header-section-number">3</span> Likelihoods</a></li>
+<li><a class="" href="bayes.html"><span class="header-section-number">4</span> Bayesian statistics</a></li>
+<li><a class="" href="questions.html"><span class="header-section-number">5</span> Asking Statistical Questions</a></li>
+<li><a class="" href="effectsize.html"><span class="header-section-number">6</span> Effect Sizes</a></li>
+<li><a class="" href="confint.html"><span class="header-section-number">7</span> Confidence Intervals</a></li>
+<li><a class="" href="power.html"><span class="header-section-number">8</span> Sample size justification</a></li>
+<li><a class="" href="equivalencetest.html"><span class="header-section-number">9</span> Equivalence Testing and Interval Hypotheses</a></li>
+<li><a class="" href="prereg.html"><span class="header-section-number">10</span> Preregistration and Transparency</a></li>
+<li><a class="active" href="meta.html"><span class="header-section-number">11</span> Meta-analysis</a></li>
+<li><a class="" href="references.html"><span class="header-section-number">12</span> References</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/Lakens/statistical_inferences">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="meta" class="section level1" number="11">
+<h1>
+<span class="header-section-number">11</span> Meta-analysis<a class="anchor" aria-label="anchor" href="#meta"><i class="fas fa-link"></i></a>
+</h1>
+<p>Every single study is just a data-point in a future meta-analysis. If you draw small samples from a population, the mean and standard deviation in the sample can differ considerably from the mean and standard deviation in the population. There is great variability in small samples. Parameter estimates from small samples are very imprecise, and therefore the 95% confidence intervals around effect sizes are very wide. Indeed, this led Cohen (1994) to write “I suspect that the main reason <a href="confint.html#confint">confidence intervals</a> are not reported is that they are so embarrassingly large!” If we want a more precise estimate of our parameter of interest, such as the mean difference or correlation in the population, we need either run extremely large single studies, or alternatively, combine data from several studies by performing a meta-analysis. The most common approach to combine studies is to perform a meta-analysis of effect size estimates.</p>
+<p>You can perform a meta-analysis for a set of studies in a single article you plan to publish (often called an internal meta-analysis), or you can search the literature for multiple studies reported in as many different articles as possible, and perform a meta-analysis on all studies others have published. An excellent introduction to meta-analyses is provided in the book by <span class="citation">Borenstein (<a href="references.html#ref-borenstein_introduction_2009" role="doc-biblioref">2009</a>)</span>. There is commercial software you can use to perform meta-analyses, but I highly recommend against using such software. Almost all commercial software packages lack transparency, and do not allow you to share your analysis code and data with other researchers. In this assignment, we will be using R to perform a meta-analysis of effect sizes, using the <code>metafor</code> package by <span class="citation">Viechtbauer (<a href="references.html#ref-viechtbauer_conducting_2010" role="doc-biblioref">2010</a>)</span>. An important benefit of using <code>metafor</code> is that your meta-analysis can be made completely reproducible. If you plan to perform a narrative review, it is relatively little additional effort to also code the effect sizes and sample size, and perform an effect size meta-analysis, and to code the statistical test and <em>p</em>-value, to perform a <em>p</em>-curve or <em>z</em>-curve analysis.</p>
+<div id="random-variation" class="section level2" number="11.1">
+<h2>
+<span class="header-section-number">11.1</span> Random Variation<a class="anchor" aria-label="anchor" href="#random-variation"><i class="fas fa-link"></i></a>
+</h2>
+<p>People find it difficult to think about random variation. Our mind is more
+strongly geared towards recognizing patterns than randomness. In this
+assignment, we will learn what random variation looks like, and how to reduce
+variation by running well-powered studies.</p>
+</div>
+<div id="variation-in-single-samples" class="section level2" number="11.2">
+<h2>
+<span class="header-section-number">11.2</span> Variation in single samples<a class="anchor" aria-label="anchor" href="#variation-in-single-samples"><i class="fas fa-link"></i></a>
+</h2>
+<p>Intelligence tests have been designed such that the mean Intelligence Quotient of the entire population of adults is 100, with a standard deviation of 15. This will not be true for every sample we draw from the population. Let’s get a feel for what the IQ scores from a sample look like. Which IQ scores will people in our sample have?</p>
+<p>We will start by manually calculating the mean and standard deviation of a random sample of 10 individuals. Their IQ scores are: 91.15, 86.52, 75.64, 115.72, 95.83, 105.44, 87.10, 100.81, 82.63, and 106.22. If we sum these 10 scores and divide them by 10, we get the mean of our sample: 94.71. We can also calculate the standard deviation from our sample. First, we subtract the overall mean (94.71) from each individual IQ score. Then, we square these differences and then sum these squared differences (giving 1374.79). We divide this sum of
+the squared difference by the sample size minus 1 (10-1=9), and finally take the
+square root of this value, which gives the standard deviation: 12.36. Open Simulate One Group.R, select all the code, and run it, to randomly simulate 10 IQ scores, and plot them.</p>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:plot-hist-iq-1"></span>
+<img src="12-meta_files/figure-html/plot-hist-iq-1-1.png" alt="10 random datapoints with mean = 100 and sd = 15 in the population." width="100%"><p class="caption">
+Figure 11.1: 10 random datapoints with mean = 100 and sd = 15 in the population.
+</p>
+</div>
+<p>Above is one example of a randomly simulated dataset of 10 points. The grey bars indicate the frequency with which each IQ score was observed. The red dotted line illustrates the normal distribution based on the mean and sd of the population. Both the observed mean (97), as well as the observed standard deviation (14), differ from the true population values. If we simulate 4 additional datasets, we see both the mean and the standard deviation vary.</p>
+<div class="inline-figure"><img src="12-meta_files/figure-html/sim-4-iq-1.png" width="100%" style="display: block; margin: auto;"></div>
+<p>Imagine we did not yet know what the mean IQ was in our population (where M = 100), or the standard deviation (where SD = 15), and that we would only have access to one dataset. Our estimate might be rather far off. This type of variation is perfectly normal in small samples of 10 participants, given the current standard deviation. The variability in the means is determined by the standard deviation of the measurement. In real life, the standard deviation can be reduced by for example using multiple and reliable measurements (which is why an IQ test has not just one question, but many different questions). But we can make sure our sample mean is closer to the population mean by increasing the sample size.</p>
+<p>A new simulated sample with 100 participants is plotted below. We are slowly seeing what is known as the <strong>normal distribution</strong> (and the frequency scores start to resemble the red dotted line illustrating the normal distribution of the population). This is the well-known
+bell shaped curve that represents the distribution of many variables in scientific research (although some other types of distributions are quite common as well). The mean and standard deviation are much closer to the true mean and standard deviation, and this is true for most of the simulated samples.</p>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:plot-hist-iq-2"></span>
+<img src="12-meta_files/figure-html/plot-hist-iq-2-1.png" alt="100 random datapoints with mean = 100 and sd = 15 in the population." width="100%"><p class="caption">
+Figure 11.2: 100 random datapoints with mean = 100 and sd = 15 in the population.
+</p>
+</div>
+<p>For a final example, let’s simulate a really large sample of 1000 observation. Not every simulated study of 1000 people will yield the true mean and standard deviation, but it will happen quite often. And although the distribution is very close to a normal distribution, even with 1000 people it is not perfect.</p>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:plot-hist-iq-3"></span>
+<img src="12-meta_files/figure-html/plot-hist-iq-3-1.png" alt="1000 random datapoints with mean = 100 and sd = 15 in the population." width="100%"><p class="caption">
+Figure 11.3: 1000 random datapoints with mean = 100 and sd = 15 in the population.
+</p>
+</div>
+</div>
+<div id="variance-in-two-groups-and-their-difference." class="section level2" number="11.3">
+<h2>
+<span class="header-section-number">11.3</span> Variance in two groups, and their difference.<a class="anchor" aria-label="anchor" href="#variance-in-two-groups-and-their-difference."><i class="fas fa-link"></i></a>
+</h2>
+<p>Now, assume we have a new IQ training program that will increase peoples IQ score with 6 points. People in condition 1 are in the control condition – they do not get IQ training. People in condition 2 get IQ training. Let’s simulate 10 people in each group, assuming the IQ in the control condition is 100, and in the experimental group is 106 (the SD is still 15 in each group).</p>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:plot-group1"></span>
+<img src="12-meta_files/figure-html/plot-group1-1.png" alt="Simulated sample of independent groups." width="100%"><p class="caption">
+Figure 11.4: Simulated sample of independent groups.
+</p>
+</div>
+<p>The two groups differ in how close they are to their true means, and as a consequence, the difference between groups varies as well. Note that this difference is the main variable in statistical analyses when comparing two groups in for example a <em>t</em>-test. In this specific simulation, we got quite extreme results, with a score of 96 (when the population mean is 100) and a score of 111 (when the population mean is 106). So in this sample, due to random variation, we would get an overestimate of the true effect. Let's simulate 4 additional datasets to see the variation.</p>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:plot-group2"></span>
+<img src="12-meta_files/figure-html/plot-group2-1.png" alt="Four simulated samples of independent groups." width="100%"><p class="caption">
+Figure 11.5: Four simulated samples of independent groups.
+</p>
+</div>
+<p>We see that there is quite some variation, up to the point that in one simulation the sample means are in the opposite direction of the population means. Again, increasing the sample size will mean that, in the long run, the sample means will get closer to the population means, and that we are more accurately estimation the difference between conditions. With 250 observations in each group, a randomly simulated set of observations for the two groups might look like Figure <a href="meta.html#fig:plotgroup3">11.6</a>. Note that this difference might not look impressive, but when you perform an independent <em>t</em>-test, the difference would pass a significance test with a very low alpha level. It is always recommended to plot your raw data.</p>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:plotgroup3"></span>
+<img src="12-meta_files/figure-html/plotgroup3-1.png" alt="Simulated sample of 250 independent observations" width="100%"><p class="caption">
+Figure 11.6: Simulated sample of 250 independent observations
+</p>
+</div>
+</div>
+<div id="correlations-between-two-groups" class="section level2" number="11.4">
+<h2>
+<span class="header-section-number">11.4</span> Correlations between two groups<a class="anchor" aria-label="anchor" href="#correlations-between-two-groups"><i class="fas fa-link"></i></a>
+</h2>
+<p>Now let’s simulate a correlation between two variables. We will continue with our example of IQ scores, but now we search for fraternal (so not identical) twins, and measure their IQ. From the literature, we know the true correlation of IQ scores between fraternal twins is around r = 0.55. We find 30 fraternal twins, measure their IQ’s, and plot the relation between the IQ of both individuals. In this simulation, we assume all twins have a mean IQ of 100 with a standard deviation of 15.</p>
+<p>The correlation is calculated based on the IQ scores of one fraternal twin (x) and the IQ scores of the other fraternal twin (y) for each pair of twins, and the total number of pairs (N). In the numerator of the formula, the number of pairs is multiplied by the sum of the product of x and y, and from this value the sum of x multiplied by the sum of y is subtracted. In the denominator, the square root is taken from the number of pairs multiplied by the sum of x squared, from which the sum of x, which is then squared, is subtracted, and multiplied by the same calculation but now for y.</p>
+<p><span class="math display">\[r=\frac{n \Sigma x y-(\Sigma x )(\Sigma y)}{\sqrt{[n \Sigma x^{2}-(\Sigma x)^{2}][n \Sigma y^{2}-(\Sigma y)^{2}]}}\]</span>
+When we randomly simulate observations for 30 twins, we get the following result.</p>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:plot-cor1"></span>
+<img src="12-meta_files/figure-html/plot-cor1-1.png" alt="Correlation based on 30 pairs." width="100%"><p class="caption">
+Figure 11.7: Correlation based on 30 pairs.
+</p>
+</div>
+<p>On the x-axis, we see the IQ score of one twin, and one the y-axis we see the IQ score of the second twin. The black dotted diagonal line illustrates the true correlation (0.55), while the yellow line shows the observed correlation (in this case, r = 0.43). The slope of the yellow line is determined by the observed correlation, but the position of the line is influenced by the mean IQ scores in both groups (in this simulation, the mean on the y-axis is 105, somewhat below 100, and the mean on the x-axis is 102, also slightly above 100. The blue area is the 95% confidence interval around the observed correlation. As we saw in the section on <a href="confint.html#confint">confidence intervals</a>, 95% of the time (in the long run) the blue area will contain the true correlation (the dotted black line). Increasing the sample size to 300 narrows the confidence interval considerably, and will guarantee that the sample correlation is much closer to the true correlation.</p>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:plot-cor2"></span>
+<img src="12-meta_files/figure-html/plot-cor2-1.png" alt="Correlation based on 30 pairs." width="100%"><p class="caption">
+Figure 11.8: Correlation based on 30 pairs.
+</p>
+</div>
+</div>
+<div id="mixed" class="section level2" number="11.5">
+<h2>
+<span class="header-section-number">11.5</span> Mixed Results<a class="anchor" aria-label="anchor" href="#mixed"><i class="fas fa-link"></i></a>
+</h2>
+<p>Science is a cumulative process, and we should evaluate lines of research, not single studies. Researchers are advised to design studies that will provide informative data, but sometimes you need to look at sets of studies before patterns become clear. A commonly used lower limit for statistical power is 80%, which means you will find a non-significant result in one out of five studies, when there is a true effect. Whenever you perform studies where power is not 99.99%, you should expect to find mixed results when examining true effects. Indeed, some researchers have pointed out that <em>not</em> finding mixed results can be very unlikely (or ‘too good to be true’) in a set of studies <span class="citation">(<a href="references.html#ref-francis_frequency_2014" role="doc-biblioref">Francis, 2014</a>; <a href="references.html#ref-schimmack_ironic_2012" role="doc-biblioref">Schimmack, 2012</a>)</span>. We don’t have a very good feeling for what real patterns of studies look like, because we are continuously exposed to a scientific literature that does not reflect reality. Almost all multiple study papers in the scientific literature present only statistically significant results, even though this is unlikely.</p>
+<p>In the chapter on <a href="likelihoods.html#likelihoods">likelihoods</a> we saw how mixed results are to be expected, and can be strong evidence for the alternative hypothesis. It is not only the case that mixed results should be expected, but exclusively observing statistically significant results, especially when the statistical power is low, is very surprising. The <a href="http://shiny.ieis.tue.nl/mixed_results_likelihood/">online Shiny app we used to compute binomial likelihoods</a> displays, if you scroll to the bottom of the page, binomial probabilities to find multiple significant findings given a specific assumption about the power of the tests. Francis <span class="citation">(<a href="references.html#ref-francis_frequency_2014" role="doc-biblioref">Francis, 2014</a>)</span> used these binomial likelihoods to calculate the test of excessive significance <span class="citation">(<a href="references.html#ref-ioannidis_exploratory_2007" role="doc-biblioref">Ioannidis &amp; Trikalinos, 2007</a>)</span> for 44 articles published in the journal Psychological Science between 2009 and 2012 that contained four studies or more. He found that for 36 of these articles, the likelihood of observing four significant results, given the average power computed based on the observed effect sizes, was less than 10%. Given his choice of an alpha of 0.10, this binomial probability is a hypothesis test, and allows the claims (at a 10% alpha level) that whenever the binomial probability of the number of statistically significant results is lower than 10%, the data is surprising, and we can reject the hypothesis that this is an unbiased set of studies. In other words, it is unlikely that this many significant results would be observed, suggesting that publication bias or other selection effects have played a role in these articles.</p>
+<p>One of these 44 articles had been co-authored by myself <span class="citation">(<a href="references.html#ref-jostmann_weight_2009" role="doc-biblioref">Jostmann et al., 2009</a>)</span>. At this time, I knew little about statistical power and publication bias, and beyond accused of improper scientific conduct was stressful. And yet, the accusations were correct - we had selectively reported results, and selectively reported analyses that worked. Having received virtually no training on this topic, we educated ourselves, and uploaded an unpublished study to the website psychfiledrawer.org (which no longer exists) to share our filedrawer. Some years later, we assisted when Many Labs 3 included one of the studies we had published in the set of studies they were replicating <span class="citation">(<a href="references.html#ref-ebersole_many_2016" role="doc-biblioref">Ebersole et al., 2016</a>)</span>, and when a null result was observed, we wrote "We have had to conclude that there is actually no reliable evidence for the effect" <span class="citation">(<a href="references.html#ref-jostmann_short_2016" role="doc-biblioref">Jostmann et al., 2016</a>)</span>. I hope this educational materials prevents others from making a fool of themselves like we did.</p>
+<p>A more powerful test than the Test for Excessive Significance is the Test of Insufficient Variance proposed by Uli Schimmack (published on a <a href="https://replicationindex.wordpress.com/2014/12/30/the-test-of-insufficient-variance-tiva-a-new-tool-for-the-detection-of-questionable-research-practices/">blog</a> instead of in a scientific journal). It also uses <em>p</em>-values from reported tests, and builds on the relationship between <em>p</em>-values and <em>Z</em>-values. If all studies examine the same fixed effect, the Z-scores related to p-values should follow a normal distribution, and individual studies vary as a function of sampling variability. The variance of an unbiased set of Z-scores is not smaller than 1. The variance can be larger than 1, for example when the studies have different true effects. In biased sets of studies, for example when significant results are selectively reported, the variance of the <em>Z</em>-scores can be smaller than 1. When non-significant studies are not published, the variance decreases. Another reason for low variance is the use of flexibility during the data-analysis, such as analyzing the data in multiple ways, ad only reporting tests that yield a significant result. TIVA tests whether the variance that is observed is surprising, assuming the dataset is unbiased. A significant p-value for the TIVA test allows you to reject the hypothesis that the studies are unbiased. Uli Schimack shows how the studies reported by <span class="citation">Bem (<a href="references.html#ref-bem_feeling_2011" role="doc-biblioref">2011</a>)</span> in his article on pre-cognition are biased. The online <a href="https://shinyapps.org/apps/p-checker">p-checker Shiny app</a> by Felix Schönbrodt allows you to perform the test of excessive significance, TIVA, and a related bias test, the R-Index.</p>
+<p>Understanding what realistic patterns of results in research lines should look like is hopefully a first step in making you realize you should think meta-analytically. Unless researchers will power all their studies at 99.99% for the rest of their career, they should observe mixed results in lines of research. Not sharing non-significant results is a violation of the code of research integrity, and due to technological advances, there are many ways to share non-significant results. At the very least, you can publicly share the data and results in an online repository (such as the Open Science Framework). Another way to share mixed results, especially when performing multiple similar studies, is by performing a meta-analysis.</p>
+</div>
+<div id="introduction-to-meta-analysis" class="section level2" number="11.6">
+<h2>
+<span class="header-section-number">11.6</span> Introduction to Meta-Analysis<a class="anchor" aria-label="anchor" href="#introduction-to-meta-analysis"><i class="fas fa-link"></i></a>
+</h2>
+<p>Every single study is just a data-point in a future meta-analysis. If you draw small samples from a population, the mean and standard deviation in the sample can differ considerably from the mean and standard deviation in the population. There is great variability in small samples. Parameter estimates from small samples are very imprecise, and therefore the 95% confidence intervals around effect sizes are very wide. Indeed, this led Cohen (1994) to write “I suspect that the main reason <a href="confint.html#confint">confidence intervals</a> are not reported is that they are so embarrassingly large!” If we want a more precise estimate of our parameter of interest, such as the mean difference or correlation in the population, we need either run extremely large single studies, or alternatively, combine data from several studies by performing a <strong>meta-analysis</strong>. The most common approach to combine studies is to perform a meta-analysis of effect size estimates.</p>
+<p>You can perform a meta-analysis for a set of studies in a single article you plan to publish (often called an <strong>internal meta-analysis</strong>), or you can search the literature for multiple studies reported in as many different articles as possible, and perform a meta-analysis on all studies others have published. An excellent introduction to meta-analyses is provided in the book by Borenstein, Hedges, Higgins, and Rothstein <span class="citation">Borenstein (<a href="references.html#ref-borenstein_introduction_2009" role="doc-biblioref">2009</a>)</span>. There is commercial software you can use to perform meta-analyses, but I highly recommend <em>against</em> using such software. Almost all commercial software packages lack transparency, and do not allow you to share your analysis code and data with other researchers. In this assignment, we will be using R to perform a meta-analysis of effect sizes, using the <strong>metafor</strong> package by Viechtbauer <span class="citation">Viechtbauer (<a href="references.html#ref-viechtbauer_conducting_2010" role="doc-biblioref">2010</a>)</span>. An important benefit of using metafor is that your meta-analysis can be made completely reproducible.</p>
+</div>
+<div id="a-single-study-meta-analysis" class="section level2" number="11.7">
+<h2>
+<span class="header-section-number">11.7</span> A single study meta-analysis<a class="anchor" aria-label="anchor" href="#a-single-study-meta-analysis"><i class="fas fa-link"></i></a>
+</h2>
+<p>Let’s first begin with something you will hardly ever do in real life: a meta-analysis of a single study. This is a little silly, because a simple <em>t</em>-test or correlation will tell you the same thing – but it is educational to compare a <em>t</em>-test with a meta-analysis of a single study, before we look at how multiple studies are combined into a meta-analysis.</p>
+<p>A difference between an independent <em>t</em>-test and a meta-analysis is that a <em>t</em>-test is performed on the raw data, while a meta-analysis is typically performed on the effect size(s) of individual studies. The <code>metafor</code> R package contains a very useful function called <code>escalc</code> that can be used to calculate effect sizes, their variances, and confidence intervals around effect size estimates. So let’s start by calculating the effect size to enter into our meta-analysis. As explained in the chapter on <a href="effectsize.html#effectsize">effect sizes</a> the two main effect sizes used for meta-analyses of continuous variables are the standardized mean difference (<em>d</em>) or the correlation (<em>r</em>), although it is of course also possible to perform meta-analyses on dichotomous variables (we will see an example below). The code below will calculate the <strong>standardized mean difference</strong> (SMD) from two independent groups from <strong>means</strong> (specified by m1i and m2i), <strong>standard deviations</strong> (sd1i and sd2i), and the number of observations in each group (n1i and n2i). By default, <code>metafor</code> computes the effect size ‘<strong>Hedges’ g</strong>’ which is the unbiased version of Cohen’s <em>d</em> (see the section on <a href="effectsize.html#cohend">Cohen's d</a> in the chapter on Effect Sizes).</p>
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.metafor-project.org">metafor</a></span><span class="op">)</span>
+<span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://wviechtb.github.io/metafor/reference/escalc.html">escalc</a></span><span class="op">(</span>measure <span class="op">=</span> <span class="st">"SMD"</span>,
+            n1i <span class="op">=</span> <span class="fl">50</span>, <span class="co"># sample size in group 1</span>
+            m1i <span class="op">=</span> <span class="fl">5.6</span>, <span class="co"># observed mean in group 1</span>
+            sd1i <span class="op">=</span> <span class="fl">1.2</span>, <span class="co"># observed standard deviation in group 1</span>
+            n2i <span class="op">=</span> <span class="fl">50</span>, <span class="co"># sample size in group 2</span>
+            m2i <span class="op">=</span> <span class="fl">4.9</span>, <span class="co"># observed mean in group 2</span>
+            sd2i <span class="op">=</span> <span class="fl">1.3</span><span class="op">)</span> <span class="co"># observed standard deviation in group 2</span>
+<span class="va">g</span></code></pre></div>
+<pre><code>##       yi     vi 
+## 1 0.5553 0.0415</code></pre>
+<p>The output gives you Hedge’s <em>g</em> (under the <code>yi</code> column, which always returns the effect size, in this case the standardized mean difference) and the variance of the effect size estimate (under <code>vi</code>). As explained in Borenstein, Hedges, Higgins, and Rothstein (2009, formula 4.18 to 4.24) the standardized mean difference Hedges’ <em>g</em> is calculated by dividing the difference between means by the pooled standard deviation, multiplied by a correction factor, J:</p>
+<p><span class="math display">\[
+J = (1 - \ \ 3/(4df - 1))
+\]</span></p>
+<p><span class="math display">\[
+g = J \times \ \left( \frac{{\overline{X}}_{1} - {\overline{X}}_{2}}{S_{\text{within}}} \right)
+\]</span></p>
+<p>and a very good approximation of the variance of the standardized mean
+difference (SMD) Hedges’ g is provided by:</p>
+<p><span class="math display">\[
+Vg = J^{2} \times \left( \frac{n_{1} + n_{2}}{n_{1}n_{2}} + \frac{g^{2}}{2(n_{1} + n_{2})} \right)
+\]</span></p>
+<p>The variance of the standardized mean difference depends only on the sample size (n1 and n2) and the value of the standardized mean difference itself. <strong>To perform the required calculations for a meta-analysis, you need the effect sizes and their variance</strong>. This means that if you have coded the effect sizes and the sample sizes (per group) from studies in the literature, you have the information you need to perform a meta-analysis. You do not need to manually calculate the effect size and its variance using the two formula above – the <code>escalc</code> function does this for you. We can now easily perform a single study meta-analysis using the <code>rma</code> function in the <code>metafor</code> package:</p>
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">meta_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://wviechtb.github.io/metafor/reference/rma.uni.html">rma</a></span><span class="op">(</span><span class="va">yi</span>, <span class="va">vi</span>, data <span class="op">=</span> <span class="va">g</span><span class="op">)</span>
+<span class="va">meta_res</span></code></pre></div>
+<pre><code>## 
+## Random-Effects Model (k = 1; tau^2 estimator: REML)
+## 
+## tau^2 (estimated amount of total heterogeneity): 0
+## tau (square root of estimated tau^2 value):      0
+## I^2 (total heterogeneity / total variability):   0.00%
+## H^2 (total variability / sampling variability):  1.00
+## 
+## Test for Heterogeneity:
+## Q(df = 0) = 0.0000, p-val = 1.0000
+## 
+## Model Results:
+## 
+## estimate      se    zval    pval   ci.lb   ci.ub 
+##   0.5553  0.2038  2.7243  0.0064  0.1558  0.9547  ** 
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+<p>Under 'Model Results' we find the effect size Hedges’ g (0.5552575) and the standard error (0.2038175), the <em>Z</em>-test statistic testing the mean difference against the null-hypothesis (2.7242881), and the 95% confidence interval [ci.lb = 0.1557826; ci.ub = ] around the effect size (the interval width can be specified using the ‘level =’ option). We also see the <em>p</em>-value for the test of the meta-analytic effect size against 0. In this case we can reject the null-hypothesis (<em>p</em> = 0.006444).</p>
+<p>In a meta-analysis, a <em>Z</em>-test is used to examine whether the null-hypothesis can be rejected. This assumes a normally distributed random effect size model. Normally, you would analyze data from a single study with two groups using a <em>t</em>-test, which not surprisingly uses a <em>t</em>-distribution. If the sample size is large enough, the <em>Z</em> and <em>t</em> distribution are very similar. I don't know why statistical computations sometimes care a lot about a small amount of bias (the difference between the effect size <em>d</em> and <em>g</em>, for example) and sometimes not (the difference between <em>Z</em> and <em>t</em>), but meta-analysts seem happy with <em>Z</em>-scores (with large enough sample sizes (which is commonly true in a meta-analysis) the difference between a <em>Z</em>-test and <em>t</em>-test is tiny). If we directly compare a single-study meta-analysis based on a <em>Z</em>-test with a <em>t</em>-test, we will see some tiny differences in the results.</p>
+<p>As explained in the chapter on <a href="effectsize.html#effectsize">effect sizes</a> we can directly calculate the effect size Hedges’ <em>g</em> (and it's 95% confidence interval) using MOTE <span class="citation">(<a href="references.html#ref-buchanan_mote_2017" role="doc-biblioref">Buchanan et al., 2017</a>)</span>. The MOTE package uses the <em>t</em>-distribution when calculating confidence intervals around the effect size (and we can see this makes only a tiny difference compared to using the <em>Z</em>-distribution in a meta-analysis with 50 observations in each group).</p>
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Calculate Hedges g and perform t-test with MOTE </span>
+<span class="va">MOTE_res</span> <span class="op">&lt;-</span> <span class="fu">MOTE</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MOTE/man/g.ind.t.html">g.ind.t</a></span><span class="op">(</span>m1 <span class="op">=</span> <span class="fl">5.6</span>, 
+                          m2 <span class="op">=</span> <span class="fl">4.9</span>, 
+                          sd1 <span class="op">=</span> <span class="fl">1.2</span>, 
+                          sd2 <span class="op">=</span> <span class="fl">1.3</span>, 
+                          n1 <span class="op">=</span> <span class="fl">50</span>, 
+                          n2 <span class="op">=</span> <span class="fl">53</span>, 
+                          a <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span>
+<span class="va">MOTE_res</span><span class="op">$</span><span class="va">statistic</span></code></pre></div>
+<pre><code>## [1] "$t$(101) = 2.83, $p$ = 0.00553819625499491"</code></pre>
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">MOTE_res</span><span class="op">$</span><span class="va">p</span></code></pre></div>
+<pre><code>## [1] 0.005538196</code></pre>
+<p>The <em>t</em>-value is 2.8348536, and the <em>p</em>-value is 0.0055382.</p>
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Calculate Hedges g with MOTE </span>
+<span class="va">MOTE_res</span><span class="op">$</span><span class="va">estimate</span></code></pre></div>
+<pre><code>## [1] "$d_{g}$ = 0.55, 95\\% CI [0.16, 0.94]"</code></pre>
+<p>The results are very similar to those computed when performing a meta-analysis, with <em>g</em> = 0.55, 95% CI[0.16; 0.94], where the effect size and the upper bound for the confidence interval differ only 0.01 after rounding.</p>
+<p>It is common to visualize the results of a meta-analysis using a forest plot (see Figure <a href="meta.html#fig:metaforest">11.9</a>). We see the effect size for Study 1 marked by the black square at 0.56, and the confidence interval is visualized by lines extending to 0.16 on the left and 0.95 on the right. The numbers are printed on the right-hand side of the forest plot. On the lower half of the forest plot, we see a stretched-out diamond. The diamond summarizes the meta-analytic effect size estimate, with the center being at the meta-analytic effect size estimate, and the left and right endpoints at the 95% confidence interval of the meta-analytic effect size estimate. Because we only have a single study, the meta-analytic effect size estimate is the same as the effect size estimate for our single study.</p>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:metaforest"></span>
+<img src="12-meta_files/figure-html/metaforest-1.png" alt="Forest plot for a single study." width="100%"><p class="caption">
+Figure 11.9: Forest plot for a single study.
+</p>
+</div>
+</div>
+<div id="simulating-meta-analyses-of-mean-standardized-differences" class="section level2" number="11.8">
+<h2>
+<span class="header-section-number">11.8</span> Simulating meta-analyses of mean standardized differences<a class="anchor" aria-label="anchor" href="#simulating-meta-analyses-of-mean-standardized-differences"><i class="fas fa-link"></i></a>
+</h2>
+<p>Meta-analyses get a bit more exciting when we are using them to analyze results from multiple studies. When multiple studies are combined in a meta-analysis, effect size estimates are not simply averaged, but they are <strong>weighed</strong> by the <strong>precision</strong> of the effect size estimate, which is determined by the sample size of the study. Thus, the larger the sample size of an individual study, the more weight it gets in the meta-analysis, meaning that it has more influence on the meta-analytic effect size estimate.</p>
+<p>One intuitive way to learn about meta-analyses is to simulate studies and meta-analyze them.</p>
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">94</span><span class="op">)</span>
+<span class="va">nSims</span> <span class="op">&lt;-</span> <span class="fl">12</span> <span class="co"># number of simulated studies</span>
+<span class="va">m1</span> <span class="op">&lt;-</span> <span class="fl">106</span> <span class="co"># population mean group 1</span>
+<span class="va">sd1</span> <span class="op">&lt;-</span> <span class="fl">15</span> <span class="co"># standard deviation group 1</span>
+<span class="va">m2</span> <span class="op">&lt;-</span> <span class="fl">100</span> <span class="co"># population mean group 2</span>
+<span class="va">sd2</span> <span class="op">&lt;-</span> <span class="fl">15</span> <span class="co"># standard deviation group 1</span>
+<span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>yi <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>, vi <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="co"># create empty dataframe</span>
+
+<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">nSims</span><span class="op">)</span> <span class="op">{</span> <span class="co"># for each simulated study</span>
+  <span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">30</span><span class="op">:</span><span class="fl">80</span>, <span class="fl">1</span><span class="op">)</span> <span class="co"># pick a sample size per group</span>
+  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">n</span>, mean <span class="op">=</span> <span class="va">m1</span>, sd <span class="op">=</span> <span class="va">sd1</span><span class="op">)</span> 
+  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">n</span>, mean <span class="op">=</span> <span class="va">m2</span>, sd <span class="op">=</span> <span class="va">sd2</span><span class="op">)</span>
+  <span class="va">metadata</span><span class="op">[</span><span class="va">i</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://wviechtb.github.io/metafor/reference/escalc.html">escalc</a></span><span class="op">(</span>n1i <span class="op">=</span> <span class="va">n</span>, n2i <span class="op">=</span> <span class="va">n</span>, m1i <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, m2i <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>, 
+                          sd1i <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, sd2i <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>, measure <span class="op">=</span> <span class="st">"SMD"</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://wviechtb.github.io/metafor/reference/rma.uni.html">rma</a></span><span class="op">(</span><span class="va">yi</span>, <span class="va">vi</span>, data <span class="op">=</span> <span class="va">metadata</span>, method <span class="op">=</span> <span class="st">"FE"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>,<span class="fl">4</span>,<span class="fl">0</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://wviechtb.github.io/metafor/reference/forest.html">forest</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></code></pre></div>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:meta-sim"></span>
+<img src="12-meta_files/figure-html/meta-sim-1.png" alt="Forest plot for 12 simulated studies." width="100%"><p class="caption">
+Figure 11.10: Forest plot for 12 simulated studies.
+</p>
+</div>
+<p>We see 12 rows, one for each study, each with their own effect size and confidence interval. If you look closely, you can see the squares that indicate the effect size estimate for each study differ in size. The larger the sample size, the bigger the square. Study 3 had a relatively small sample size, which can be seen both by the small square, and the relatively wide confidence interval. Study 2 had a larger sample size, and thus a slightly larger square and narrower confidence interval. At the bottom of the graph we find the meta-analytic effect size and its confidence interval, both visualized by a diamond and numerically. The model is referred to as a FE Model, or <strong>Fixed Effect (FE) model</strong>. The alternative approach is a RE Model, or <strong>Random Effects (RE) model</strong> (the difference is discussed below).</p>
+<p>You might notice that the first two studies in the meta-analysis were not statistically significant. Take a moment to think for yourself if you would have continued this research line, after not finding an effect twice in a row. If you feel like it, run the code above several times (remove the set.seed or you will get the same result each time) and see how often this happens with a population effect size and range of sample sizes in this simulation. As should be clear from the section on <a href="meta.html#mixed">mixed results</a>, it is important to think meta-analytically, because in the long run there will be situations where you will find one or two non-significant results early in a research line, even when there is a true effect.</p>
+<p>Let's also look at the result of the meta-analysis, which is a bit more interesting now that we have 12 studies:</p>
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">result</span></code></pre></div>
+<pre><code>## 
+## Fixed-Effects Model (k = 12)
+## 
+## I^2 (total heterogeneity / total variability):   0.00%
+## H^2 (total variability / sampling variability):  0.83
+## 
+## Test for Heterogeneity:
+## Q(df = 11) = 9.1824, p-val = 0.6051
+## 
+## Model Results:
+## 
+## estimate      se    zval    pval   ci.lb   ci.ub 
+##   0.3655  0.0564  6.4777  &lt;.0001  0.2549  0.4761  *** 
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+<p>We see a test for <strong>heterogeneity</strong>, a topic we will return to <a href="meta.html#heterogeneity">below</a>. We see the model results, which in this specific simulation yielded a meta-analytic effect size estimate of 0.37. The confidence interval around the effect size estimate [0.25; 0.48] is much narrower than we saw before for a single study. This is because the 12 studies we simulated together have quite a large sample size, and the larger the sample size, the smaller the standard error, and thus the narrower the confidence interval is. The meta-analytic effect size estimate is statistically different from 0 (<em>p</em> &lt; 0.0001) so we can reject the null hypothesis if we use an alpha level of 0.05.</p>
+<div id="fixed-effect-vs-random-effects" class="section level3" number="11.8.1">
+<h3>
+<span class="header-section-number">11.8.1</span> Fixed Effect vs Random Effects<a class="anchor" aria-label="anchor" href="#fixed-effect-vs-random-effects"><i class="fas fa-link"></i></a>
+</h3>
+<p>There are two possible models when performing a meta-analysis. One model, known as a fixed effect model, assumes there is one effect size that generates the data in all studies in the meta-analysis. This model assumes there is no variation between individual studies – all have exactly the same true effect size. The perfect example of this is the simulations we have done so far. We specified a single true effect in the population, and generated random samples
+from this population effect.</p>
+<p>Alternatively, one can use a model where the true effect differs in some way in each individual study. We don’t have a single true effect in the population, but a range of <strong>randomly distributed</strong> true effect sizes (hence the ‘random effects’ model). Studies differs in some way from each other (or some sets of studies differ from other sets), and their true effect sizes differ as well. Note the difference between a fixed effect model, and a random effect<strong>s</strong> model, in that the plural ‘effects’ is used only in the latter. Borenstein et al
+(2009) state there are two reasons to use a fixed effect model: When all studies are functionally equivalent, and when your goal is <em>not</em> to generalize to other populations. This makes the random effects model generally the better choice, although some people have raised the concern that random-effects models give more weight to smaller studies, which can be more biased. By default, metafor will use a random effects model. We used the method="FE" command to explicitly ask for a fixed effect model. In the meta-analyses we will simulate in the rest of this assignment we will leave out this command and simulate random effects meta-analyses.</p>
+</div>
+<div id="simulating-meta-analyses-for-dichotomous-outcomes" class="section level3" number="11.8.2">
+<h3>
+<span class="header-section-number">11.8.2</span> Simulating meta-analyses for dichotomous outcomes<a class="anchor" aria-label="anchor" href="#simulating-meta-analyses-for-dichotomous-outcomes"><i class="fas fa-link"></i></a>
+</h3>
+<p>Although meta-analyses on mean differences are very common, a meta-analysis can be performed on many different effect sizes. To show a slightly less common example, let’s simulate a meta-analysis based on odds ratios. Sometimes the main outcome in an experiment is a dichotomous variable, such as the success or failure on a task. In such study designs we can calculate risk ratios, odds ratios, or risk differences as the effect size measure. Risk differences are sometimes judged easiest to interpret, but odds ratios are most often used for a meta-analysis because they have attractive statistical properties. An <strong>odds ratio</strong> is a ratio of two odds. To illustrate how an odds ratio is calculated, it is useful to consider the four possible outcomes in a 2 x 2 table of outcomes:</p>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr class="header">
+<th align="left"></th>
+<th align="center">Success</th>
+<th align="center">Failure</th>
+<th align="center">N</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Experimental</td>
+<td align="center"><em>A</em></td>
+<td align="center"><em>B</em></td>
+<td align="center"><em>n1</em></td>
+</tr>
+<tr class="even">
+<td align="left">Control</td>
+<td align="center"><em>C</em></td>
+<td align="center"><em>D</em></td>
+<td align="center"><em>n2</em></td>
+</tr>
+</tbody>
+</table></div>
+<p>The odds ratio is calculated as:
+<span class="math display">\[OR = \ \frac{\text{AD}}{\text{BC}}\]</span>
+The meta-analysis is performed on log transformed odds ratios (because log transformed odds ratios are symmetric around 1, see Borenstein et al., 2009), and thus the log of the odds ratio is used, which has a variance which is approximated by:
+<span class="math display">\[\text{Var}\left( \log\text{OR} \right) = \ \frac{1}{A} + \frac{1}{B} + \frac{1}{C} + \frac{1}{D}\]</span></p>
+<p>Let’s assume that we train students in using a spaced learning strategy (they work through a textbook every week instead of cramming the week before the exam). Without such training, 70 out of 100 students succeed in passing the course after the first exam, but with this training, 80 out of 100 students
+pass.</p>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr class="header">
+<th></th>
+<th>Success</th>
+<th>Failure</th>
+<th>N</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Experimental</td>
+<td>80</td>
+<td>20</td>
+<td>100</td>
+</tr>
+<tr class="even">
+<td>Control</td>
+<td>70</td>
+<td>30</td>
+<td>100</td>
+</tr>
+</tbody>
+</table></div>
+<p>The odds of passing in the experimental group is 80/20, or 4, while odds in the control condition are 70/30, or 2.333. The ratio of these two odds is then: 4/2.333 = 1.714, or:</p>
+<p><span class="math display">\[
+OR = \ \frac{80 \times 30}{20\  \times 70} = 1.714
+\]</span></p>
+<p>We can simulate studies with dichotomous outcomes, where we set the percentage of successes and
+failures in the experimental and control condition. In the script below, by default the percentage of success in the experimental condition is 70%, and in the control condition it is 50%.</p>
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.metafor-project.org">metafor</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">5333</span><span class="op">)</span>
+<span class="va">nSims</span> <span class="op">&lt;-</span> <span class="fl">12</span> <span class="co">#number of simulated experiments</span>
+
+<span class="va">pr1</span> <span class="op">&lt;-</span> <span class="fl">0.7</span> <span class="co"># Set percentage of successes in Group 1</span>
+<span class="va">pr2</span> <span class="op">&lt;-</span> <span class="fl">0.5</span> <span class="co"># Set percentage of successes in Group 2</span>
+
+<span class="va">ai</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="va">nSims</span><span class="op">)</span> <span class="co"># set up empty vector for successes group 1</span>
+<span class="va">bi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="va">nSims</span><span class="op">)</span> <span class="co"># set up empty vector for failures group 1</span>
+<span class="va">ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="va">nSims</span><span class="op">)</span> <span class="co"># set up empty vector for successes group 2</span>
+<span class="va">di</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="va">nSims</span><span class="op">)</span> <span class="co"># set up empty vector for failures group 2</span>
+
+<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">nSims</span><span class="op">)</span> <span class="op">{</span> <span class="co">#for each simulated experiment</span>
+  <span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">30</span><span class="op">:</span><span class="fl">80</span>, <span class="fl">1</span><span class="op">)</span>
+  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span><span class="op">(</span><span class="va">n</span>, <span class="fl">1</span>, <span class="va">pr1</span><span class="op">)</span> <span class="co">#produce simulated participants (1 = success, 0 is failure)</span>
+  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span><span class="op">(</span><span class="va">n</span>, <span class="fl">1</span>, <span class="va">pr2</span><span class="op">)</span> <span class="co">#produce simulated participants (1 = success, 0 is failure)</span>
+  <span class="va">ai</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">x</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="co">#Successes Group 1</span>
+  <span class="va">bi</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">x</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="co">#Failures Group 1</span>
+  <span class="va">ci</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">y</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="co">#Successes Group 2</span>
+  <span class="va">di</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">y</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="co">#Failures Group 2</span>
+<span class="op">}</span>
+
+<span class="co"># Combine data into dataframe</span>
+<span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">ai</span>, <span class="va">bi</span>, <span class="va">ci</span>, <span class="va">di</span><span class="op">)</span>
+<span class="co"># Create escalc object from metadata dataframe </span>
+<span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://wviechtb.github.io/metafor/reference/escalc.html">escalc</a></span><span class="op">(</span>measure <span class="op">=</span> <span class="st">"OR"</span>, 
+                   ai <span class="op">=</span> <span class="va">ai</span>, bi <span class="op">=</span> <span class="va">bi</span>, ci <span class="op">=</span> <span class="va">ci</span>, di <span class="op">=</span> <span class="va">di</span>, 
+                   data <span class="op">=</span> <span class="va">metadata</span><span class="op">)</span>
+<span class="co"># Perform Meta-analysis</span>
+<span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://wviechtb.github.io/metafor/reference/rma.uni.html">rma</a></span><span class="op">(</span><span class="va">yi</span>, <span class="va">vi</span>, data <span class="op">=</span> <span class="va">metadata</span><span class="op">)</span>
+<span class="co"># Create forest plot. Using ilab and ilab.xpos arguments to add counts</span>
+<span class="fu"><a href="https://wviechtb.github.io/metafor/reference/forest.html">forest</a></span><span class="op">(</span><span class="va">result</span>, 
+       ilab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">metadata</span><span class="op">$</span><span class="va">ai</span>, <span class="va">metadata</span><span class="op">$</span><span class="va">bi</span>, <span class="va">metadata</span><span class="op">$</span><span class="va">ci</span>, <span class="va">metadata</span><span class="op">$</span><span class="va">di</span><span class="op">)</span>, 
+       xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>, <span class="fl">8</span><span class="op">)</span>, 
+       ilab.xpos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">7</span>, <span class="op">-</span><span class="fl">6</span>, <span class="op">-</span><span class="fl">5</span>, <span class="op">-</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">7</span>,<span class="op">-</span><span class="fl">6</span>,<span class="op">-</span><span class="fl">5</span>,<span class="op">-</span><span class="fl">4</span><span class="op">)</span>, <span class="fl">14.7</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"E+"</span>, <span class="st">"E-"</span>, <span class="st">"C+"</span>, <span class="st">"C-"</span><span class="op">)</span>, font <span class="op">=</span> <span class="fl">2</span>, cex <span class="op">=</span> <span class="fl">.8</span><span class="op">)</span> <span class="co"># add labels</span></code></pre></div>
+<div class="inline-figure"><img src="12-meta_files/figure-html/unnamed-chunk-2-1.png" width="100%" style="display: block; margin: auto;"></div>
+<p>The forest plot presents the studies and four columns of data after the study label, which contain the number of successes and failures in the experimental groups (E+ and E-), and the number of successes and failures in the control group (C+ and C-). Imagine we study the percentage of people who get a job
+within 6 months after a job training program, compared to a control condition. In Study 1, which had 50 participants in each condition, 29 people in the job training condition got a job within 6 months, and 21 did not get a job. In the control condition, 23 people got a job, but 27 did not. The effect size estimate for the random effects model is 0.65. Feel free to play around with the script, adjusting the number of studies, or the sample sizes in each study, to examine the effect it has on the meta-analytic effect size estimate.</p>
+<p>We can also get the meta-analytic test results by printing the test output. We see that there was no heterogeneity in this meta-analysis. This is true (we simulated identical studies) but also highly unlikely to ever happen in real life, where variation in effect sizes between studies included in a meta-analysis is a much more realistic scenario.</p>
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Print result meta-analysis</span>
+<span class="va">result</span></code></pre></div>
+<pre><code>## 
+## Random-Effects Model (k = 12; tau^2 estimator: REML)
+## 
+## tau^2 (estimated amount of total heterogeneity): 0 (SE = 0.0645)
+## tau (square root of estimated tau^2 value):      0
+## I^2 (total heterogeneity / total variability):   0.00%
+## H^2 (total variability / sampling variability):  1.00
+## 
+## Test for Heterogeneity:
+## Q(df = 11) = 4.8886, p-val = 0.9364
+## 
+## Model Results:
+## 
+## estimate      se    zval    pval   ci.lb   ci.ub 
+##   0.6548  0.1132  5.7824  &lt;.0001  0.4328  0.8767  *** 
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div id="heterogeneity" class="section level3" number="11.8.3">
+<h3>
+<span class="header-section-number">11.8.3</span> Heterogeneity<a class="anchor" aria-label="anchor" href="#heterogeneity"><i class="fas fa-link"></i></a>
+</h3>
+<p>Although researchers often primarily use meta-analysis to compute a meta-analytic effect size estimate, and test whether this effect is statistically different from zero, <strong>an arguably much more important use of meta-analyses is to explain variation between (sets of) studies</strong>. This variation among (sets of) studies is referred to as <strong>heterogeneity</strong>. One goal of meta-analyses is not just to code effect sizes and estimate the meta-analytic effect size, but to code factors in studies that can explain heterogeneity, and examine which of these factors account for heterogeneity. This can help in theory evaluation or theory development. Tests have been developed to examine whether the studies included in a meta-analysis vary more than would be expected if the underlying true effect size in all
+studies was the same, and measures have been developed to quantify this variation.</p>
+<p>If all studies have the same true population effect size, the only source of variation is random error. If there are real differences between (sets of) studies, there are two sources of variation, namely random variation from study to study, <em>and</em> real differences in effect sizes in (sets of) studies.</p>
+<p>A classical measure of heterogeneity is Cochran’s Q statistic, which is the weighted sum of the squared differences between effect size estimates in each study, and the meta-analytic effect size estimate. The Q statistic can be used to test whether the absence of heterogeneity can be statistically rejected (by comparing it to the expected amount of variation, which is the degrees of freedom, <em>df</em>, or the number of studies -1, see Borenstein et al., 2009), but it can have low power if the number of studies in the meta-analysis is small <span class="citation">(<a href="references.html#ref-huedo-medina_assessing_2006" role="doc-biblioref">Huedo-Medina et al., 2006</a>)</span>.</p>
+<p>On theoretical grounds one might argue that some heterogeneity will always happen in a meta-analysis, and therefore it is more interesting to quantify the extent to which there is heterogeneity. The I² index measures the extent of true heterogeneity. It is calculated as follows: <span class="math display">\[I^{2} = \ \frac{(Q - k - 1)}{Q} \times 100\%\]</span>, where the k is the number of studies (and k-1 is the degrees of freedom). I² ranges from 0 to 100 and can be interpreted as the percentage of the total variability in a set of effect sizes that is due to heterogeneity. When I² = 0 all variability in the effect size estimates can be explained by within-study error, and when I² = 50 half of the total variability can be explained by true heterogeneity. I² values of 25%, 50%, and 75% can be interpreted as low, medium, and high heterogeneity.</p>
+<p>The script below simulates a similar meta-analysis to the example for dichotomous outcomes above, but with a small variation. The first half of the simulated experiments are based on the population success
+rates 0.7 and 0.2, but the second half of the simulated experiments are based on the population success rates 0.9 and 0.7. Thus, in this set of studies the odds ratio differs for the first half of the studies, compared to the second half (successes in Group 1 and 2 are set to 0.2 and 0.7 for the first half, but to 0.7 and 0.9 in the second half). There is true heterogeneity. We use the <code>confint</code> function in the metafor package to report both the I² statistic, and its confidence interval.</p>
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.metafor-project.org">metafor</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2942</span><span class="op">)</span>
+<span class="va">nSims</span> <span class="op">&lt;-</span> <span class="fl">12</span> <span class="co"># Number of simulated experiments</span>
+
+<span class="va">pr1</span> <span class="op">&lt;-</span> <span class="fl">0.7</span> <span class="co"># Set percentage of successes in Group 1</span>
+<span class="va">pr2</span> <span class="op">&lt;-</span> <span class="fl">0.2</span> <span class="co"># Set percentage of successes in Group 2</span>
+
+<span class="va">ai</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="va">nSims</span><span class="op">)</span> <span class="co"># set up empty vector for successes group 1</span>
+<span class="va">bi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="va">nSims</span><span class="op">)</span> <span class="co"># set up empty vector for failures group 1</span>
+<span class="va">ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="va">nSims</span><span class="op">)</span> <span class="co"># set up empty vector for successes group 2</span>
+<span class="va">di</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="va">nSims</span><span class="op">)</span> <span class="co"># set up empty vector for failures group 2</span>
+
+<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">nSims</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span> <span class="op">{</span> <span class="co"># for half (/2) of the simulated studies</span>
+  <span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">30</span><span class="op">:</span><span class="fl">80</span>, <span class="fl">1</span><span class="op">)</span>
+  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span><span class="op">(</span><span class="va">n</span>, <span class="fl">1</span>, <span class="va">pr1</span><span class="op">)</span> <span class="co"># produce simulated participants (1 = success, 0 is failure)</span>
+  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span><span class="op">(</span><span class="va">n</span>, <span class="fl">1</span>, <span class="va">pr2</span><span class="op">)</span> <span class="co"># produce simulated participants (1 = success, 0 is failure)</span>
+  <span class="va">ai</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">x</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># Successes Group 1</span>
+  <span class="va">bi</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">x</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="co"># Failures Group 1</span>
+  <span class="va">ci</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">y</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># Successes Group 2</span>
+  <span class="va">di</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">y</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="co"># Failures Group 2</span>
+<span class="op">}</span>
+
+<span class="va">pr1</span> <span class="op">&lt;-</span> <span class="fl">0.9</span> <span class="co">#Set percentage of successes in Group 1</span>
+<span class="va">pr2</span> <span class="op">&lt;-</span> <span class="fl">0.7</span> <span class="co">#Set percentage of successes in Group 2</span>
+
+<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="op">(</span><span class="va">nSims</span><span class="op">/</span><span class="fl">2</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">:</span><span class="op">(</span><span class="va">nSims</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span> <span class="co">#for the other half (/2) of each simulated study</span>
+  <span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">30</span><span class="op">:</span><span class="fl">80</span>, <span class="fl">1</span><span class="op">)</span>
+  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span><span class="op">(</span><span class="va">n</span>, <span class="fl">1</span>, <span class="va">pr1</span><span class="op">)</span> <span class="co"># produce simulated participants (1 = success, 0 is failure)</span>
+  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span><span class="op">(</span><span class="va">n</span>, <span class="fl">1</span>, <span class="va">pr2</span><span class="op">)</span> <span class="co"># produce simulated participants (1 = success, 0 is failure)</span>
+  <span class="va">ai</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">x</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># Successes Group 1</span>
+  <span class="va">bi</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">x</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="co"># Failures Group 1</span>
+  <span class="va">ci</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">y</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># Successes Group 2</span>
+  <span class="va">di</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">y</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="co"># Failures Group 2</span>
+<span class="op">}</span>
+
+<span class="co"># Combine data into dataframe</span>
+<span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">ai</span>, <span class="va">bi</span>, <span class="va">ci</span>, <span class="va">di</span><span class="op">)</span>
+<span class="co"># Create escalc object from metadata dataframe </span>
+<span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://wviechtb.github.io/metafor/reference/escalc.html">escalc</a></span><span class="op">(</span>measure <span class="op">=</span> <span class="st">"OR"</span>, 
+                   ai <span class="op">=</span> <span class="va">ai</span>, bi <span class="op">=</span> <span class="va">bi</span>, ci <span class="op">=</span> <span class="va">ci</span>, di <span class="op">=</span> <span class="va">di</span>, 
+                   data <span class="op">=</span> <span class="va">metadata</span><span class="op">)</span>
+<span class="co"># Perform Meta-analysis</span>
+<span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://wviechtb.github.io/metafor/reference/rma.uni.html">rma</a></span><span class="op">(</span><span class="va">yi</span>, <span class="va">vi</span>, data <span class="op">=</span> <span class="va">metadata</span><span class="op">)</span>
+<span class="co"># Print result meta-analysis</span>
+<span class="va">result</span></code></pre></div>
+<pre><code>## 
+## Random-Effects Model (k = 12; tau^2 estimator: REML)
+## 
+## tau^2 (estimated amount of total heterogeneity): 0.3174 (SE = 0.2429)
+## tau (square root of estimated tau^2 value):      0.5634
+## I^2 (total heterogeneity / total variability):   56.53%
+## H^2 (total variability / sampling variability):  2.30
+## 
+## Test for Heterogeneity:
+## Q(df = 11) = 25.7650, p-val = 0.0070
+## 
+## Model Results:
+## 
+## estimate      se    zval    pval   ci.lb   ci.ub 
+##   1.8125  0.2190  8.2764  &lt;.0001  1.3833  2.2417  *** 
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://wviechtb.github.io/metafor/reference/confint.rma.html">confint</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span> <span class="co"># Get confidence interval for indices of heterogeneity</span></code></pre></div>
+<pre><code>## 
+##        estimate   ci.lb   ci.ub 
+## tau^2    0.3174  0.0355  1.2286 
+## tau      0.5634  0.1883  1.1084 
+## I^2(%)  56.5308 12.6888 83.4276 
+## H^2      2.3005  1.1453  6.0341</code></pre>
+<p>Based on the test for heterogeneity, we can reject the null hypothesis that there is no heterogeneity in the meta-analysis. Tests for heterogeneity themselves have Type 1 and Type 2 error rates, and with a small number of studies (such as in our example, n = 12) tests for heterogeneity can have low power. If you remove the set.seed command and run the code multiple times, you will see that the test for heterogeneity will often not be significant, even though there is true heterogeneity in the simulation. In large meta-analyses, power can be so high that the test always yields a <em>p</em>-value small enough to reject the null hypothesis, but then it is important to look at the I² estimate.</p>
+</div>
+<div id="metareporting" class="section level3" number="11.8.4">
+<h3>
+<span class="header-section-number">11.8.4</span> Improving the reproducibility of meta-analyses<a class="anchor" aria-label="anchor" href="#metareporting"><i class="fas fa-link"></i></a>
+</h3>
+<p>Although meta-analyses do not provide definitive conclusions, they are typically interpreted as state-of-the-art empirical knowledge about a specific effect or research area. Large-scale meta-analyses often accumulate a massive number of citations and influence future research and theory development. It is therefore essential that published meta-analyses are of the highest possible quality.</p>
+<p>At the same time, the conclusions from meta-analyses are often open for debate and are subject to change as new data becomes available. We recently proposed practical recommendations to increase the reproducibility of meta-analyses to facilitate quality control, improve reporting guidelines, allow researchers to re-analyze meta-analyses based on alternative inclusion criteria, and future-proof meta-analyses by making sure the collected meta-analytic data is shared so that continuously accumulating meta-analyses can be performed, and so that novel statistical techniques can be applied on the collected data as they become available <span class="citation">(<a href="references.html#ref-lakens_reproducibility_2016" role="doc-biblioref">Lakens et al., 2016</a>)</span>. The need for the improvement in reproducibility of meta-analysis is clear - a recent review of 150 meta-analyses in Psychological BUlletin revealed that only 1 meta-analysis shared the statistical code <span class="citation">(<a href="references.html#ref-polanin_transparency_2020" role="doc-biblioref">Polanin et al., 2020</a>)</span>. This is unacceptable in the current day and age. Following the recommendations summarized in Table <a href="meta.html#tab:table-rec1">11.1</a> should substantially improve the state-of-the-art in meta-analyses.</p>
+<div class="inline-table"><table class="table table-sm">
+<caption>
+<span id="tab:table-rec1">Table 11.1: </span>Six practical recommendations to improve the quality and reproducibility of meta-analyses.</caption>
+<colgroup>
+<col width="5%">
+<col width="94%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">What?</th>
+<th align="left">How?</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Facilitate cumulative science</td>
+<td align="left">Disclose all meta-analytic data (effect sizes, sample sizes for each condition, test statistics and degrees of freedom, means, standard deviations, and correlations between dependent observations) for each data point. Quote relevant text from studies that describe the meta-analytic data to prevent confusion, such as when one effect size is selected from a large number of tests reported in a study. When analyzing subgroups, include quotes from the original study that underlie this classification, and specify any subjective decisions.</td>
+</tr>
+<tr class="even">
+<td align="left">Facilitate quality control</td>
+<td align="left">Specify which effect size calculations are used and which assumptions are made for missing data (e.g., assuming equal sample sizes in each condition, imputed values for unreported effect sizes), if necessary for each effect size extracted from the literature. Specify who extracted and coded the data, knowing it is preferable that two researchers independently extract effect sizes from the literature.</td>
+</tr>
+<tr class="odd">
+<td align="left">Use reporting guidelines</td>
+<td align="left">A minimal requirement when reporting meta-analyses is to adhere to one of the reporting standards (e.g., PRISMA). The reporting guidelines ask authors of meta-analyses to report essential information that should be made available either in the main text of the article, or by providing a completed checklist as supplementary material during review and after publication.</td>
+</tr>
+<tr class="even">
+<td align="left">Preregister</td>
+<td align="left">Whenever possible, pre-register the meta-analysis research protocol to distinguish between confirmatory and exploratory analyses. Perform a prospective meta-analysis where possible.</td>
+</tr>
+<tr class="odd">
+<td align="left">Facilitate reproducibility</td>
+<td align="left">Allow others to re-analyze the data to examine how sensitive the results are to subjective choices such as inclusion criteria. Always include a link to data files that can be directly analyzed with statistical software, either by providing completely reproducible scripts containing both the data and the reported analyses in free software (e.g., R), or at the very minimum a spreadsheet that contains all meta-analytic data that can easily analyzed in any statistical program.</td>
+</tr>
+<tr class="even">
+<td align="left">Recruit expertise</td>
+<td align="left">Consider consulting a librarian before you start the literature search, and a statistician before coding the effect sizes, for advice on how make the literature search and effect size calculations reproducible.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="prereg.html"><span class="header-section-number">10</span> Preregistration and Transparency</a></div>
+<div class="next"><a href="references.html"><span class="header-section-number">12</span> References</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#meta"><span class="header-section-number">11</span> Meta-analysis</a></li>
+<li><a class="nav-link" href="#random-variation"><span class="header-section-number">11.1</span> Random Variation</a></li>
+<li><a class="nav-link" href="#variation-in-single-samples"><span class="header-section-number">11.2</span> Variation in single samples</a></li>
+<li><a class="nav-link" href="#variance-in-two-groups-and-their-difference."><span class="header-section-number">11.3</span> Variance in two groups, and their difference.</a></li>
+<li><a class="nav-link" href="#correlations-between-two-groups"><span class="header-section-number">11.4</span> Correlations between two groups</a></li>
+<li><a class="nav-link" href="#mixed"><span class="header-section-number">11.5</span> Mixed Results</a></li>
+<li><a class="nav-link" href="#introduction-to-meta-analysis"><span class="header-section-number">11.6</span> Introduction to Meta-Analysis</a></li>
+<li><a class="nav-link" href="#a-single-study-meta-analysis"><span class="header-section-number">11.7</span> A single study meta-analysis</a></li>
+<li>
+<a class="nav-link" href="#simulating-meta-analyses-of-mean-standardized-differences"><span class="header-section-number">11.8</span> Simulating meta-analyses of mean standardized differences</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#fixed-effect-vs-random-effects"><span class="header-section-number">11.8.1</span> Fixed Effect vs Random Effects</a></li>
+<li><a class="nav-link" href="#simulating-meta-analyses-for-dichotomous-outcomes"><span class="header-section-number">11.8.2</span> Simulating meta-analyses for dichotomous outcomes</a></li>
+<li><a class="nav-link" href="#heterogeneity"><span class="header-section-number">11.8.3</span> Heterogeneity</a></li>
+<li><a class="nav-link" href="#metareporting"><span class="header-section-number">11.8.4</span> Improving the reproducibility of meta-analyses</a></li>
+</ul>
+</li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/Lakens/statistical_inferences/blob/master/12-meta.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/Lakens/statistical_inferences/edit/master/12-meta.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Improving Your Statistical Inferences</strong>" was written by Daniel Lakens. It was last built on 2022-03-12.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

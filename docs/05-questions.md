@@ -114,5 +114,6 @@ It makes sense to *describe* an unexpected effect in the opposite direction of y
 
 <!-- ## Statistical Decision Theory -->
 
+<!-- ## The null is never true (except when it is) but then I already discuss this in range predictions section -->
 
 
