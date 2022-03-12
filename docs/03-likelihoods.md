@@ -166,21 +166,8 @@ x <- 5 # set successes
 H0 <- 0.5 # specify one hypothesis you want to compare
 H1 <- 0.4 # specify another hypothesis you want to compare
 dbinom(x, n, H0) / dbinom(x, n, H1) # Returns the H0/H1 likelihood ratio
-```
-
-```
-## [1] 1.226433
-```
-
-```r
 dbinom(x, n, H1) / dbinom(x, n, H0) # Returns the H1/H0 likelihood ratio
-```
 
-```
-## [1] 0.8153727
-```
-
-```r
 theta <- seq(0, 1, len = 100) # create probability variable from 0 to 1
 like <- dbinom(x, n, theta)
 
@@ -192,8 +179,6 @@ segments(H1, dbinom(x, n, H1), x / n, dbinom(x, n, H1), lty = 2, lwd = 2)
 segments(x / n, dbinom(x, n, H0), x / n, dbinom(x, n, H1), lwd = 2)
 title(paste("Likelihood Ratio H0/H1:", round(dbinom(x, n, H0) / dbinom(x, n, H1), digits = 2), " Likelihood Ratio H1/H0:", round(dbinom(x, n, H1) / dbinom(x, n, H0), digits = 2)))
 ```
-
-<img src="03-likelihoods_files/figure-html/unnamed-chunk-2-1.png" width="100%" style="display: block; margin: auto;" />
 
 A) The likelihood curve is a horizontal line.
 B) The script returns and error message: it is not possible to plot the likelihood curve for 0 heads.
