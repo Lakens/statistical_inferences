@@ -257,7 +257,7 @@ The second reason is most relevant for large data sets, and is related to [Lindl
 
 <iframe src="https://shiny.ieis.tue.nl/JustifyAlpha/" width="100%" height="400px" data-external="1"></iframe>
 
-## Why you don't need to adjust your alpha level for all tests you'll do in your lifetime.{#multiplecomparisons}
+## Why you don't need to adjust your alpha level for all tests you'll do in your lifetime.
 
 Some researchers criticize corrections for multiple comparisons because one might as well correct for all tests you do in your lifetime [@perneger_whats_1998. If you choose to use a Neyman-Pearson approasch to statistics the only reason to correct for all tests you perform in your lifetime is when all the work you have done in your life tests a single theory, and you would use your last words to decide to accept or reject this theory, as long as only one of all individual tests you have performed yielded a p < α. Researchers rarely work like this.
 

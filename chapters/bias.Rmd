@@ -4,11 +4,29 @@ knitr::opts_chunk$set(error = FALSE, warning = FALSE, message = FALSE, out.width
 
 # Bias detection{#bias}
 
-fix headers
-Integrate the explanation of the tests with the results. 
-add code for trim and fill
-integrate each bias technique with the example, not mention each twice.
-Add statcheck, GRIM. 
+
+<!-- fix headers -->
+<!-- Integrate the explanation of the tests with the results.  -->
+<!-- add code for trim and fill -->
+<!-- integrate each bias technique with the example, not mention each twice. -->
+
+
+
+
+
+Bias can be introduced throughout the research process. It is useful to prevent this or to detect it. Some researchers recommend a skeptical attitude towards any claim you read in the scientific literature. For example, the philosopher of science Deborah Mayo [-@mayo_statistical_2018] writes: "Confronted with the statistical news flash of the day, your first question is: Are the results due to selective reporting, cherry picking, or any number of other similar ruses?". You might not make yourself very popular if this is the first question you ask a speaker at the next scientific conference you are attending, but at the same time it would be naïve to ignore the fact that researchers more or less intentionally introduce bias into their claims.
+
+At the most extreme end of practices that introduce bias into scientific research is **research misconduct**: Making up data or results, or changing or omitting data or results such that the research isn’t accurately represented in the research record. For example, [Andrew Wakefield](https://en.wikipedia.org/wiki/Andrew_Wakefield) authored a fraudulent paper in 1998 that claimed a link between the measles, mumps, and rubella (MMR) vaccine and autism. It was retracted in 2010, but only after it caused damage to trust in vaccines among some parts of the general population. The website Retraction Watch maintains a [database](retractiondatabase.org) that tracks reasons why scientific papers are retracted, including data fabrication. It is unknown how often data fabrication occurs in practice, but some estimates suggest that almost 2% of scientists have fabricated, falsified or modified data or results at least once [@fanelli_how_2009].
+
+A different category of mistakes are statistical reporting errors, which range from reporting incorrect degrees of freedom, to reporting *p* = 0.056 as *p* < 0.05 [@nuijten_prevalence_2015]. Although we should do our best to prevent errors, everyone makes them, and data and code sharing become more common, it will become easier to detect errors in the work of other researchers. As Dorothy Bishop [-@bishop_fallibility_2018] writes: "As open science becomes increasingly the norm, we will find that everyone is fallible. The reputations of scientists will depend not on whether there are flaws in their research, but on how they respond when those flaws are noted."
+
+[Statcheck](http://statcheck.io/) is software that automatically extracts statistics from articles and recomputes their *p*-values, as long as statistics are reported following guidelines from the American Psychological Association (APA). It checks if the reported statistics are internally consistent: Given the test statistics and degrees of freedom, is the reported *p*-value accurate? If it is, that makes it less likely that you have made a mistake (although it does not prevent coherent mistakes!) and if it is not, you should check if all the information in your statistical test is accurate. Statcheck is not perfect, and it will make Type 1 errors where it flags something as an error when it actually is not, but it is an easy to use tool to check your articles before you submit them for publication. 
+
+Some inconsistencies in data are less easy to automatically detect, but can be identified manually. For example, @brown_grim_2017 show that many papers report means that are not possible given the sample size (known as the [*GRIM* test](http://nickbrown.fr/GRIM)). For example, Matti Heino noticed in a [blog post](https://mattiheino.com/2016/11/13/legacy-of-psychology/) that three of the reported means in the table in a classic study by Festinger and Carlsmith are mathematically impossible. With 20 observations per condition, and a scale from -5 to 5, all means should end in a multiple of 1/20, or 0.05. The three means ending in X.X8 or X.X2 are not consistent with the reported sample size and scale. Of course, such inconsistencies can be due to failing to report that there was missing data for some of the questions, but the GRIM test has also been used to uncover [scientific misconduct](https://en.wikipedia.org/wiki/GRIM_test). 
+
+```{r festinger, echo = FALSE, fig.cap="Screenshot of the table reporting the main results from Festinger and Carlsmith, 1959"}
+knitr::include_graphics("images/festinger_carlsmith.png")
+```
 
 ## Publication bias
 
