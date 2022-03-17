@@ -77,10 +77,11 @@
 <li><a class="" href="power.html"><span class="header-section-number">8</span> Sample size justification</a></li>
 <li><a class="active" href="equivalencetest.html"><span class="header-section-number">9</span> Equivalence Testing and Interval Hypotheses</a></li>
 <li><a class="" href="prereg.html"><span class="header-section-number">10</span> Preregistration and Transparency</a></li>
-<li><a class="" href="meta.html"><span class="header-section-number">11</span> Meta-analysis</a></li>
-<li><a class="" href="bias.html"><span class="header-section-number">12</span> Bias detection</a></li>
-<li><a class="" href="computationalreproducibility.html"><span class="header-section-number">13</span> Computational Reproducibility</a></li>
-<li><a class="" href="references.html"><span class="header-section-number">14</span> References</a></li>
+<li><a class="" href="sequential.html"><span class="header-section-number">11</span> Sequential Analysis</a></li>
+<li><a class="" href="meta.html"><span class="header-section-number">12</span> Meta-analysis</a></li>
+<li><a class="" href="bias.html"><span class="header-section-number">13</span> Bias detection</a></li>
+<li><a class="" href="computationalreproducibility.html"><span class="header-section-number">14</span> Computational Reproducibility</a></li>
+<li><a class="" href="references.html"><span class="header-section-number">15</span> References</a></li>
 </ul>
 
         <div class="book-extra">
@@ -322,20 +323,111 @@ The 90% HDI ranges from -0.06 to 0.39, with an estimated mean based on the prior
 <p>Because the TOST procedure is based on two one-sided tests, a 90% confidence interval is used when the one-sided tests are performed at an alpha level of 5%. Because both the test against the upper bound and the test against the lower bound needs to be statistically significant to declare equivalence (which as explained in the chapter on <a href="#multiplecomparisons">error control</a> is an intersection-union approach to multiple testing) it is not necessary to correct for the fact that two tests are performed. If the alpha level is adjusted for multiple comparisons, or if the alpha level is justified instead of relying on the default 5% level (or both), the corresponding confidence interval should be used, where CI = 100 - (2 * <span class="math inline">\(\alpha\)</span>). Thus, the width of the confidence interval is directly related to the choice for the alpha level, as we are making decisions to reject the smallest effect size of interest, or not, based on whether the confidence interval excluded the effect that is tested against.</p>
 <p>When using a Highest Density Interval from a Bayesian perspective, such as the ROPE procedure, the choice for a width of a confidence interval does not follow logically from a desired error rate, or any other principle. Kruschke (2014, Chapter 5) writes: “How should we define 'reasonably credible'? One way is by saying that any points within the 95% HDI are reasonably credible.” McElreath has recommended the use of 67%, 89%, and 97%, because "No reason. They are prime numbers, which makes them easy to remember.". There are only two principled solutions. First, if a highest density interval width is used to make claims, these claims will be made with certain error rates, and researchers should quantify the risk of erroneous claim by computing frequentist error rates. This would make the ROPE procedure a Bayesian/Frequentist compromise procedure, where the computation of a posterior distribution allows for Bayesian interpretations of which parameters values are believed to be most probable, while decisions based on whether or not the HDI falls within an equivalence range have a formally controlled error rate. Note that when using an informative prior, a HDI does not match a CI, and the error rate when using a HDI can only be derived through simulations. The second solution is to not make any claims, present the full posterior distribution, and let readers draw their own conclusions.</p>
 </div>
-<div id="test-yourself-6" class="section level2" number="9.7">
+<div id="the-small-telescopes-approach" class="section level2" number="9.7">
 <h2>
-<span class="header-section-number">9.7</span> Test Yourself<a class="anchor" aria-label="anchor" href="#test-yourself-6"><i class="fas fa-link"></i></a>
+<span class="header-section-number">9.7</span> The Small Telescopes Approach<a class="anchor" aria-label="anchor" href="#the-small-telescopes-approach"><i class="fas fa-link"></i></a>
 </h2>
-<!-- **Q1**: What is the correct interpretation of the following result if a researchers has performed a nil null hypothesis and an equivalence test (the equivalence bounds are indicated by the vertical dashed lines)?  -->
-<!-- ```{r, eq_q_1, echo = FALSE} -->
-<!-- res <- TOSTER::tsum_TOST(m1 = 0, m2 = 0.2, sd1 = 1, sd2 = 1, -->
-<!--                   n1 = 100, n2 = 100, low_eqbound = -0.34, high_eqbound = 0.34) -->
-<!-- plot(res, type = "tnull") -->
-<!-- ``` -->
-<!-- A) We can reject an effect of 0, and we fail to reject the smallest effect size of interest. Therefore we can claim there is an effect  -->
+<p>Ideally, researchers who publish empirical claims would always specify which empircal observations would falsify their claim. Regrettably, this is not yet common practice. This is particularly problematic when a researcher performs a close replication of earlier work. Because it is never possible to prove an effect is exactly zero, and the original authors seldom
+specify which range of effect sizes would falsify their hypotheses, it has proven to be very difficult to interpret the outcome of a replication study <span class="citation">(<a href="references.html#ref-anderson_theres_2016" role="doc-biblioref">S. F. Anderson &amp; Maxwell, 2016</a>)</span>. When does the new data contradict the original finding?</p>
+<p>Consider a study in which you want to test the idea of the wisdom of crowds. You ask 20 people to estimate the number of coins in a jar, expecting the average to be very close to the true value. The research question is whether the people can on average correctly guess the number of coins, which is 500. The observed mean guess by 20 people is 550, with a standard deviation of 100. The observed difference from the true value is statistically significant, <em>t</em>(19)=2.37, <em>p</em> = 0.0375, with a Cohen’s <em>d</em> of 0.5. Can it really be that the group average is so far off? Is there no Wisdom of Crowds? Was there something special about the coins you used that make it especially difficult to guess their number? Or was it just a fluke? You set out to perform a close replication of this study.</p>
+<p>You want your study to be informative, regardless of whether there is an effect or not. This means you need to design a replication study that will allow you to draw an informative conclusion, regardless of whether the alternative hypothesis is true (the crowd will not estimate the true number of coins accurately) or whether the null hypothesis is true (the crowd will guess 500 coins, and the original study was a fluke). But since the original researcher did not specify a smallest effect size of interest, when would a replication study allow you to
+conclude the original study is contradicted by the new data? Observing a mean of exactly 500 would perhaps by some be considered quite convincing, but due to random variation you will (almost) never find a mean score of exactly 500. A non-significant result can’t be interpreted as the absence of an effect, because your study might have too small a sample size to detect meaningful effects, and the result might be a Type 2 error. So how can we move forward and define an effect size that is meaningful? How can you design a study that has the ability to falsify a previous finding?</p>
+<p>Uri Simonsohn <span class="citation">(<a href="references.html#ref-simonsohn_small_2015" role="doc-biblioref">2015</a>)</span> defines a small effect as “<strong>one that would give 33% power to the original study</strong>”. In other words, the effect size that would give the original study odds of 2:1 <em>against</em> observing a statistically significant result if there was an effect. The idea is that if the original study had 33% power, the probability of observing a significant effect, if there was a true effect, is too low to reliably distinguish signal from noise (or situations where there is a true effect from situations where there is no true effect). Simonsohn (2015, p. 561) calls this the <strong>small telescopes approach</strong>, and writes: “Imagine an astronomer claiming to have found a new planet with a telescope. Another astronomer tries to replicate the discovery using a larger telescope and finds nothing. Although this does not prove that the planet does not exist, it does nevertheless contradict the original findings, because planets that are observable with the smaller telescope should also be observable with the larger one.”</p>
+<p>Although this approach to setting a smallest effect size of interest (SESOI) is arbitrary (why not 30% power, or 35%?) it suffices for practical purposes (and you are free to choose a power level you think is too low). The nice thing about this definition of a SESOI is that <strong>if you know the sample size of the original study, you can always calculate the effect size that study had 33% power to detect</strong>. You can thus always use this approach to set a smallest effect size of interest. If you fail to find support for an effect size the original study has
+33% power to detect, it does not mean there is no true effect, and not even that the effect is too small to be of any theoretical or practical interest. But using the small telescopes approach is a good <strong>first step</strong>, since it will get the conversation started about which effects are meaningful and allows researchers who want to replicate a study to specify when they would consider the original claim falsified.</p>
+<p>With the small telescopes approach, the SESOI is based <strong>only on the sample size in the original study</strong>. A smallest effect size of interest is set only for <strong>effects in the same direction</strong>. All effects smaller than this effect (including large effects in the opposite direction) are interpreted as a failure to replicate the original results. We see that the small telescopes approach is a <strong>one-sided equivalence test</strong>, where only the upper bound is specified, and the smallest effect size of interest is determined based on the sample size of the original study. The test examines if we can reject effects as large or larger than the effect the original study has 33% power to detect. It is a simple one-sided test, not against 0, but against a SESOI.</p>
+<p>For example, consider our study above in which 20 guessers tried to estimate the number of coins. The results were analyzed with a two-sided one-sample <em>t</em>-test, using an alpha level of 0.05. To determine the effect size that this study had 33% power for, we can perform a sensitivity analysis. In a sensitivity analysis we compute the required effect size given the alpha, sample size, and desired statistical power. Note that Simonsohn uses a two-sided test in his power analyses, which we will follow here – if the original study reported a pre-registered directional prediction, the power analysis should be based on a one-sided test. In this case, the alpha level is 0.05, the total sample size is 20, and the desired power is 33%. We compute the effect size that gives us 33% power and see that it is a Cohen’s <em>d</em> of 0.358. This means we can set our smallest effect size of interest for the replication study to <em>d</em> = 0.358. If we can reject effects as large or larger than <em>d</em> = 0.358, we can conclude that the effect is smaller than anything the original study had 33% power for. The screenshot below illustrates the correct settings in G*power, and the code in R is:</p>
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/heliosdrm/pwr">"pwr"</a></span><span class="op">)</span>
 
-<!-- UPDATE TIER PROTOCOL https://osf.io/4cxed/ -->
-<!-- ADD INFO TO PREREG SO PEOPLE CAN BE FOUND-->
+<span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.t.test.html">pwr.t.test</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">20</span>, sig.level <span class="op">=</span> <span class="fl">0.05</span>, power <span class="op">=</span> <span class="fl">0.33</span>, type <span class="op">=</span> <span class="st">"one.sample"</span>, 
+           alternative <span class="op">=</span> <span class="st">"two.sided"</span><span class="op">)</span></code></pre></div>
+<pre><code>## 
+##      One-sample t test power calculation 
+## 
+##               n = 20
+##               d = 0.3577466
+##       sig.level = 0.05
+##           power = 0.33
+##     alternative = two.sided</code></pre>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:smalltelpower"></span>
+<img src="images/0deabffd850f7b63c16e41e0af9ae0b6.png" alt="Screenshot illustrating a sensitivity power analysis in G*Power to compute the effect size an original study had 33% power to detect." width="100%"><p class="caption">
+Figure 9.5: Screenshot illustrating a sensitivity power analysis in G*Power to compute the effect size an original study had 33% power to detect.
+</p>
+</div>
+<p>Determining the SESOI based on the effect size the original study had 33% power to detect has an additional convenient property. Imagine the true effect size is
+actually 0, and you perform a statistical test to see if the data is statistically smaller than the SESOI based on the small telescopes approach
+(which is called an inferiority test). If you increase the sample size by 2.5 times, you will have approximately 80% power for this one-ssided equivalence test, assuming
+the true effect size is exactly 0 (e.g., d = 0). People who do a replication study can follow the small telescope recommendations, and very easily determine both the <strong>smallest effect size of interest</strong>, and the <strong>sample size</strong> needed to design an informative replication study, assuming the true effect size is 0 (but see the section above for a-priori power analyses where you want to test for equivalence, but do not expect a true effect size of 0).</p>
+<p>The figure below, from Simonsohn (2015) illustrates the small telescopes approach using a real-life example. The original study by Zhong and Liljenquist (2006) had a tiny sample size of 30 participants in each condition and observed an effect size of d = 0.53, which was barely statistically different from zero. Given a sample size of 30 per condition, the study had 33% power to detect effects larger than d = 0.401. This “small effect” is indicated by the green dashed line. In R, the smallest effect size of interest is calculated using:</p>
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/heliosdrm/pwr">"pwr"</a></span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.t.test.html">pwr.t.test</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">30</span>, sig.level <span class="op">=</span> <span class="fl">0.05</span>, power <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">3</span>, type <span class="op">=</span> <span class="st">"two.sample"</span>,
+           alternative <span class="op">=</span> <span class="st">"two.sided"</span><span class="op">)</span></code></pre></div>
+<pre><code>## 
+##      Two-sample t test power calculation 
+## 
+##               n = 30
+##               d = 0.401303
+##       sig.level = 0.05
+##           power = 0.3333333
+##     alternative = two.sided
+## 
+## NOTE: n is number in *each* group</code></pre>
+<p>Note that 33% power is a rounded value, and the calculation uses 1/3 (or
+0.3333333…).</p>
+<div class="inline-figure"><img src="images/a4aa20a6e2dadfbaa82bc614d40693c7.png" width="100%" style="display: block; margin: auto;"></div>
+<p>We can see that the first replication by Gámez and colleagues also had a relatively small sample size (N = 47, compared to N = 60 in the original study),
+and was not designed to yield informative results when interpreted with a small telescopes approach. The confidence interval is very wide and includes the null
+effect (d = 0) and the smallest effect size of interest (d = 0.401). Thus, this study is inconclusive. We can’t reject the null, but we can also not reject
+effect sizes of 0.401 or larger that are still considered to be in line with the original result. The second replication has a much larger sample size, and tells
+us that we can’t reject the null, but we can reject the smallest effect size of interest, suggesting that the effect is smaller than what is considered an
+interesting effect based on the small telescopes approach.</p>
+<p>Although the <em>small telescope</em> recommendations are easy to use, one should take care not to turn any statistical procedure into a heuristic. In our example above with the 20 referees, a Cohen’s <em>d</em> of 0.358 would be used as a smallest effect size of interest, and a sample size of 50 would be collected (2.5 times the original 20), but if someone would make the effort to perform a replication study, it would be relatively easy to collect a larger sample size. Alternatively, had the original study been extremely large, it would have had high power for effects that might not be practically significant, and we would not want to collect 2.5 times as many observations in a replication study. Indeed, as Simonsohn writes: “whether we need 2.5 times the original sample size or not depends on the question we wish to answer. If we are interested in testing whether the effect size is smaller than d33%, then, yes, we need about 2.5 times the original sample size no matter how big that original sample was.
+When samples are very large, however, that may not be the question of interest.” Always think about the question you want to ask, and design the study so that it provides an informative answer for a question of interest. Do not automatically follow a 2.5 times n heuristic, and always reflect on whether the use of a suggested procedure is appropriate in your situation.</p>
+</div>
+<div id="test-yourself-6" class="section level2" number="9.8">
+<h2>
+<span class="header-section-number">9.8</span> Test Yourself<a class="anchor" aria-label="anchor" href="#test-yourself-6"><i class="fas fa-link"></i></a>
+</h2>
+<p><strong>Q1</strong>. In the discussion about the small telescopes approach to equivalence testing, we calculated the SESOI for a one-sample <em>t</em>-test. Adjust the R code (or use G*power) to calculate power for a <strong>two-sample t-test</strong> with an <strong>alpha level of 0.05</strong>, <strong>n = 20</strong> in each condition (you only need to change “one.sample” into “two.sample” in the R code, or choose the correct option in G*power). What is the SESOI based on the small telescope approach? Note that for this answer, it happens to depend on whether you enter the power as 0.33 or 1/3 (or 0.333).</p>
+<ol style="list-style-type: upper-alpha">
+<li>d = 0.25 (setting power to 0.33) or 0.26 (setting power to 1/3)</li>
+<li>d = 0.33 (setting power to 0.33) or 0.34 (setting power to 1/3)</li>
+<li>d = 0.49 (setting power to 0.33) or 0.50 (setting power to 1/3)</li>
+<li>d = 0.71 (setting power to 0.33) or 0.72 (setting power to 1/3)</li>
+</ol>
+<p><strong>Q2</strong>. Let’s assume you are trying to replicate a previous result based on a correlation in a two-sided test. The study had 150 participants. Calculate the
+SESOI for a replication of this study that will use an alpha level of 0.05, based on the small telescopes approach using either G*Power or R. Note that for
+this answer, it happens to depend on whether you enter the power as 0.33 or 1/3 (or 0.333). In R, you need the code:</p>
+<p><code>pwr.r.test(n = X, sig.level = X, power = X, alternative = "two.sided")</code></p>
+<ol style="list-style-type: upper-alpha">
+<li>r = 0.124 (setting power to 0.33) or 0.125 (setting power to 1/3)</li>
+<li>r = 0.224 (setting power to 0.33) or 0.225 (setting power to 1/3)</li>
+<li>r = 0.226 (setting power to 0.33) or 0.227 (setting power to 1/3)</li>
+<li>r = 0.402 (setting power to 0.33) or 0.403 (setting power to 1/3)</li>
+</ol>
+<p><strong>Q3</strong>. In the age of big data researchers often have access to large databases, and can run correlations on samples of thousands of observations. Let’s assume
+the original study in the previous question did not have 150 observations, but 15000 observations. We still use an alpha level of 0.05. Note that for this
+answer, it happens to depend on whether you enter the power as 0.33 or 1/3 (or 0.333). What is the SESOI based on the small telescopes approach?</p>
+<ol style="list-style-type: upper-alpha">
+<li>r = 0.0124 (setting power to 0.33) or 0.0125 (setting power to 1/3)</li>
+<li>r = 0.0224 (setting power to 0.33) or 0.0225 (setting power to 1/3)</li>
+<li>r = 0.0226 (setting power to 0.33) or 0.0227 (setting power to 1/3)</li>
+<li>r = 0.0402 (setting power to 0.33) or 0.0403 (setting power to 1/3)</li>
+</ol>
+<p>Is this effect likely to be practically or theoretically significant? Probably not. This would be a situation where the small telescopes approach is not a very useful procedure to determine a smallest effect size of interest.</p>
+<p><strong>Q4</strong>: Using the small telescopes approach, you set the SESOI in a replication study to <em>d</em> = 0.35, and set the alpha level to 0.05. After collecting the data in
+a well-powered replication study that was as close to the original study as practically possible, you find no significant effect, and you can reject effects as large or larger than <em>d</em> = 0.35. What is the correct interpretation of this result?</p>
+<ol style="list-style-type: upper-alpha">
+<li>There is no effect.</li>
+<li>We can statistically reject (using an alpha of 0.05) effects anyone would find theoretically meaningful.</li>
+<li>We can statistically reject (using an alpha of 0.05) effects anyone would find practically relevant.</li>
+<li>We can statistically reject (using an alpha of 0.05) effects as large or larger than 0.35.</li>
+</ol>
+<!-- **Q1**: What is the correct interpretation of the following result if a researchers has performed a nil null hypothesis and an equivalence test (the equivalence bounds are indicated by the vertical dashed lines)?  --><!-- ```{r, eq_q_1, echo = FALSE} --><!-- res <- TOSTER::tsum_TOST(m1 = 0, m2 = 0.2, sd1 = 1, sd2 = 1, --><!--                   n1 = 100, n2 = 100, low_eqbound = -0.34, high_eqbound = 0.34) --><!-- plot(res, type = "tnull") --><!-- ``` --><!-- A) We can reject an effect of 0, and we fail to reject the smallest effect size of interest. Therefore we can claim there is an effect  --><!-- UPDATE TIER PROTOCOL https://osf.io/4cxed/ --><!-- ADD INFO TO PREREG SO PEOPLE CAN BE FOUND-->
 </div>
 </div>
   <div class="chapter-nav">
@@ -351,7 +443,8 @@ The 90% HDI ranges from -0.06 to 0.39, with an estimated mean based on the prior
 <li><a class="nav-link" href="#power-analysis-for-interval-hypothesis-tests"><span class="header-section-number">9.4</span> Power Analysis for Interval Hypothesis Tests</a></li>
 <li><a class="nav-link" href="#ROPE"><span class="header-section-number">9.5</span> The Bayesian ROPE procedure</a></li>
 <li><a class="nav-link" href="#which-interval-width-should-be-used"><span class="header-section-number">9.6</span> Which interval width should be used?</a></li>
-<li><a class="nav-link" href="#test-yourself-6"><span class="header-section-number">9.7</span> Test Yourself</a></li>
+<li><a class="nav-link" href="#the-small-telescopes-approach"><span class="header-section-number">9.7</span> The Small Telescopes Approach</a></li>
+<li><a class="nav-link" href="#test-yourself-6"><span class="header-section-number">9.8</span> Test Yourself</a></li>
 </ul>
 
       <div class="book-extra">

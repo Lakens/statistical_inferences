@@ -65,8 +65,7 @@ $$FPRP = \frac{\text{False}\ \text{Positives}}{(\text{True}\ \text{Positives}
   
 The PPV and FPRP combine classic Frequentist concepts of statistical power and alpha levels with prior probabilities that H0 and H1 are true. They depend on the proportion of studies you do where there is an effect (H1 is true), and where there is no effect (H0 is true), in addition to the statistical power, and the alpha level. After all, you can only observe a false positive if the null hypothesis is true, and you can only observe a true positive if the alternative hypothesis is true. Whenever you perform a study, you are either operating in a reality where there is a true effect, or you are operating in a reality where there is no effect – but you don’t know in which reality you are.
 
-When you perform studies, you will be aware of all outcomes of your studies (both the significant and the non-significant findings). When you read the literature, there is publication bias, and you often only have access to significant results. This is when thinking about the PPV (and the FPRP) becomes important. If we set the alpha level to 5%, in the long run 5% of studies where H0 is true (FP + TN) will be significant. But in a literature with only significant results, we do not have access to all true negatives, and it is
-possible that the proportion of false positives in the literature is much larger than 5%.
+When you perform studies, you will be aware of all outcomes of your studies (both the significant and the non-significant findings). When you read the literature, there is publication bias, and you often only have access to significant results. This is when thinking about the PPV (and the FPRP) becomes important. If we set the alpha level to 5%, in the long run 5% of studies where H0 is true (FP + TN) will be significant. But in a literature with only significant results, we do not have access to all true negatives, and it is possible that the proportion of false positives in the literature is much larger than 5%.
 
 If we continue the example above, we see there are 85 positive results (80 + 5) in the 200 studies. The false positive report probability is 5/85 = 0.0588. At the same time, the alpha of 5% guarantees that (in the long run) 5% of the 100 studies where the null hypothesis is true are Type 1 errors: 5%\*100 = 0.05. This is also true. When we do 200 studies, at most 0.05\*200 = 10 could possibly be false positives (if H0 was true in all experiments). In the 200 studies we performed (and where H0 was true in only 50% of the studies), the **proportion of false positives for all experiments** is only 2.5%. Thus, for all experiments you do, the proportion of false positives will, in the long run, never be higher than the Type I error rate set by the researcher (e.g., 5% when H0 is true in all experiments), but it can be lower (when H0 is true in less than 100% of the experiments).
 
@@ -291,7 +290,7 @@ B) The proportion of false positives for all experiments we have performed is on
 C) The proportion of false positives for all experiments we have performed is only 5% when you have 50% power – if power increases above 50%, the proportion of false positives for all experiments we have performed becomes smaller.
 D) The proportion of false positives for all experiments we have performed is only 5% when you have 100% power, and it becomes smaller if power is lower than 100%.
 
-**Q2**: What will make the biggest difference in improving the probability that you will find a true positive? Check your answer by shifting the sliders in the online PPV app. 
+**Q2**: What will make the biggest difference in improving the probability that you will find a true positive? Check your answer by shifting the sliders in the online PPV app at http://shinyapps.org/apps/PPV/ or https://shiny.ieis.tue.nl/PPV/ 
 
 A) Increase the % of a-priori true hypotheses
 B) Decrease the % of a-priori true hypotheses
@@ -358,7 +357,7 @@ C) Optional stopping inflates the Type 1 error rate. We can see this in the bars
 A) At each look, the Type 1 error rate is higher than the alpha level (0.05).
 When using optional stopping (and reporting only the lowest *p*-value), the Type 1 error rate is higher than 0.05.
 B) At each look, the Type 1 error rate is approximately equal to the alpha level (0.05). When using optional stopping (and reporting only the lowest *p*-value), the alpha level also approximately equals the alpha level (0.05).
-C) At each look, the Type 1 error rate is approximately equal to the alpha level (0.05). When using optional stopping, the Type 1 error rate is also higher than the alpha level (0.05).
+C) At each look, the Type 1 error rate is approximately equal to the alpha level (0.05). When using optional stopping, the Type 1 error rate is higher than the alpha level (0.05).
 
 **Q6**: Change the number of looks in the simulation to **2** (change 'looks <- 5' to 'looks <- 2'), and leave all other settings the same. Run the simulation again. What is the Type 1 error rate using optional stopping with only 1 interim analysis, rounded to 2 digits? (Note that due to small number of simulations, the exact alpha level you get might differ a little bit from the
 answer options below).

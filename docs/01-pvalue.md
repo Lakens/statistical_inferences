@@ -572,6 +572,15 @@ B) The probability that a replication study will yield a significant result is 1
 C) The probability that a replication study will yield a significant result is equal to the statistical power of the replication study (if there is a true effect), or the alpha level (if there is no true effect).
 D) The probability that a replication study will yield a significant result is equal to the statistical power of the replication study + the alpha level.
 
+This question is conceptually very similar to that asked by Tversky and Kahneman [-@tversky_belief_1971] in article 'Belief in the law of small numbers': 
+
+<div class="figure" style="text-align: center">
+<img src="images/belieflawsmallnumers.png" alt="Screenshot of first paragraph in Tversky and Kahneman, 1971" width="100%" />
+<p class="caption">(\#fig:smallnumbers)Screenshot of first paragraph in Tversky and Kahneman, 1971</p>
+</div>
+
+Tversky and Kahneman argue a reasonable answer is 48%, but the only correct response is the same as the correct response to question 9, and the exact probability can not be known [@miller_what_2009]. 
+
 **Q10:** Does a non-significant *p*-value (i.e., *p* = 0.65) mean that the null hypothesis is true?
 
 A) No - the result could be a Type 2 error, or a false negative.
@@ -593,8 +602,7 @@ B) No, because *p*-values are never a statement about the probability of a hypot
 C) Yes, because an exceptionally rare event has occurred.
 D) Yes, because the difference is statistically significant.
 
-**Q13:** Is a statistically significant effect always a practically important
-effect?
+**Q13:** Is a statistically significant effect always a practically important effect?
 
 A) No, because in extremely large samples, extremely small effects can be statistically significant, and small effects are never practically important.
 B) No, because the alpha level could in theory be set to 0.20, and in that case a significant effect is not practically important.
