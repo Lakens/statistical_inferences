@@ -49,7 +49,7 @@ De Groot [-@de_groot_methodology_1969] already pointed out the importance of spe
 * *a statement of the confirmation criteria, including formulation of null hypotheses, if any, choice of statistical test(s), significance level and resulting confirmation intervals;*
 * *for each of the details mentioned, a brief note on their rationale, i.e., a justification of the investigator's particular choices."*
 
-With the rise of the internet it has become feasible to create online registries that allow researchers to specify their study design, the sample plan, and statistical analysis plan before the data is collected. This makes it possible to see which predictions are confirmed, based on statistical analyses that are not influences by looking at the results they give. This is important, because you can’t test a hypothesis on the data used to generate it. When exploring data, you can perform a hypothesis test, but you can not *test* a hypothesis.
+With the rise of the internet, many improvements to science have emerged, one of which is that it has become feasible to create online registries that allow researchers to specify their study design, the sample plan, and statistical analysis plan before the data is collected. This makes it possible to see which predictions are confirmed, based on statistical analyses that are not influences by looking at the results they give. This is important, because you can’t test a hypothesis on the data used to generate it. When exploring data, you can perform a hypothesis test, but you can not *test* a hypothesis.
 
 Preregistration has the goal to allow others to transparently evaluate the capacity of a test to falsify a prediction [@lakens_value_2019]. When effect size estimates are biased, for example due to the desire to obtain a *significant* result, hypothesis tests performed on these estimates have inflated Type 1 error rates. When bias emerges due to the desire to obtain a *non-significant* test result hypothesis tests have reduced statistical power. The goal of preregistration is not simply to control the Type 1 error rate in hypothesis tests, but to prevent researchers from non-transparently reducing the capacity of the test to falsify a prediction in general. 
 
@@ -376,7 +376,7 @@ The final result should look like the screenshot below:
 
 <img src="images/dec08b890995634acf624123962ed970.png" width="100%" style="display: block; margin: auto;" />
 
-Go back to the main page of your OSF project by clicking on the name of your project in the top left of the screen. **The final thing that we need to do is make it possible for others to access our files by making the project page public**. By default, the project is private, and you can use the OSF to privately store your research data. But you can also make the page public, whenever you are ready. **If the page is not public, it can ont be graded for a class assignment!**
+Go back to the main page of your OSF project by clicking on the name of your project in the top left of the screen. **The final thing that we need to do is make it possible for others to access our files by making the project page public**. By default, the project is private, and you can use the OSF to privately store your research data. But you can also make the page public, whenever you are ready. **If the page is not public, it can not be graded for a class assignment!**
 
 Click the ‘Make Public’ button (highlighted by the red square in the picture below)
 

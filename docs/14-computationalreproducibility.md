@@ -7,7 +7,7 @@
 Technology has greatly improved how scientists work. The internet has made it
 easy to share information – including data, materials, and code – and new
 software and online platforms have emerged to facilitate the workflow of
-scientists. One important goal of a scientific workflow is to make sure that the
+scientists [@spellman_short_2015]. One important goal of a scientific workflow is to make sure that the
 final work you publish is computationally reproducible. **Computational
 reproducibility** means that when you use the **same data** as in the published
 article, you can reproduce the **same results**. In other words, if the authors
@@ -354,19 +354,21 @@ Select R.
 <img src="images/2f929ee323a9f222c85675f5fc45672f.png" width="50%" style="display: block; margin: auto;" />
 
 In the R Markdown file, you’ll see a new section of R code that starts with
-\`\`\`{r} and ends with \`\`\`. You can also just create these sections by
+three apostrophes followed by {r} and ends with three apostrophes. You can also just create these sections by
 manually typing in these two lines.
 
 Copy-paste the code below – make sure to get all the text – and paste it between
-the start line (\`\`\`) and the end line (\`\`\`) of the R code chunk. Note that
+the start line and the end line of the R code chunk. Note that
 there is not hard return between ‘str’ and ‘oop.txt’ – when copy-pasting this,
 you probably need to correct this.
 
-`stroop_data \<-`
-`read.table("https://raw.githubusercontent.com/Lakens/Stroop/master/stroop.txt",`
-`sep = "\\t", header = TRUE)`
 
-`write.table(stroop_data, file = "stroop.csv", quote = F, row.names = F)`
+```r
+stroop_data <- read.table("https://raw.githubusercontent.com/Lakens/Stroop/master/stroop.txt",
+sep = "\\t", header = TRUE)`
+
+write.table(stroop_data, file = "stroop.csv", quote = F, row.names = F)
+```
 
 After copy-pasting the text, the code section should look like this (again, be
 aware of any difficulties when copy-pasting text from a PDF file into RStudio):

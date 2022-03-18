@@ -8,7 +8,7 @@ Most scientific studies are designed to test the prediction that an effect or a 
 
 Open a result section of an article you are writing, or the result section of articles you have recently read. Search for *p* > 0.05, and look carefully what you or the scientists concluded. If you see the conclusion that there was 'no effect' or there was 'no association between variables', you have found an example of forgetting that *absence of evidence is not evidence of absence* [@altman_statistics_1995]. A non-significant result in itself only tells us that we can not reject the null hypothesis. It is tempting to ask after *p* > 0.05 'so, is the true effect zero'? But the *p*-value from a null-hypothesis significance test can not answer that question. It might be useful to think of the answer to the question whether an effect is absent after observing *p* > 0.05 as 無 ([mu](https://en.wikipedia.org/wiki/Mu_(negative)#Non-dualistic_meaning)), used as a non-dualistic answer, neither yes nor no, or 'unasking the question', because it is not possible to answer the question whether an effect is absent based on *p* > 0.05. 
 
-There should be many situations where researchers are interested in examining whether an effect is absent. For example, it can be important to show two groups do not differ on factors that might be a confound in the experimental design (e.g., examining whether a manipulation intended to increase fatigue did not affect the mood of the participants by showing that positive and negative affect did not differ between the groups). Researchers might be interested in whether two interventions work equally well, especially when the newer intervention costs less or requires less effort (e.g., is online therapy just as efficient as in person therapy?). And other times we might be interested to demonstrate the absence of an effect because a theoretical model predicts there is no effect, or because we believe a previously published study was a false positive, and we expect to show the absence of an effect in a replication study.
+There should be many situations where researchers are interested in examining whether an effect is absent. For example, it can be important to show two groups do not differ on factors that might be a confound in the experimental design (e.g., examining whether a manipulation intended to increase fatigue did not affect the mood of the participants by showing that positive and negative affect did not differ between the groups). Researchers might be interested in whether two interventions work equally well, especially when the newer intervention costs less or requires less effort (e.g., is online therapy just as efficient as in person therapy?). And other times we might be interested to demonstrate the absence of an effect because a theoretical model predicts there is no effect, or because we believe a previously published study was a false positive, and we expect to show the absence of an effect in a replication study. And yet, when you ask researchers if they have ever designed a study where the goal was to show that there was no effect, for example by predicting that there would be no difference between two conditions, many people say they have never designed a study where their main prediction was that the effect size was 0. Researchers almost always predict there is a difference. One reason might be that many researchers would not even know how to statistically support such a prediction, because they have not been trained in the use of equivalence testing.
 
 Statistical approaches have been developed to allow researchers to make claims about the absence of effects. However, it is never possible to show an effect is *exactly* 0. Even if you would collect data from every person in the world, the effect in any single study will randomly vary around the true effect size of 0, and there will be a tiny observed difference. Hodges and Lehman [@hodges_testing_1954] were the first to discuss the statistical problem of testing whether two populations have the same mean. They suggest (p. 264) to: “test that their means do not differ by more than an amount specified to represent the smallest difference of practical interest.” Nunnaly [@nunnally_place_1960] similarly proposed a ‘fixed-increment’ hypothesis where researcher compare an observed effect against a range of values that is deemed too small to be meaningful. Defining a range of values considered practically equivalent to the absence of an effect is known as an **equivalence range** [@bauer_unifying_1996] or a **region of practical equivalence** [@kruschke_bayesian_2013]. The equivalence range should be specified in advance, and requires careful consideration of which effects are too small to be meaningful. 
 
@@ -279,6 +279,7 @@ In Bayesian estimation, one way to argue for the absence of a meaningful effect 
 If the prior used by Kruschke was perfectly uniform, and the ROPE procedure and an equivalence test used the same confidence interval (e.g., 90%), the two tests would yield  identical results. There would only be philosophical differences in how the numbers are interpreted. The BEST package in R that can be used to perform the ROPE procedure by default uses a ‘broad’ prior, and therefore results of the ROPE procedure and an equivalence test are not exactly the same, but they are very close. One might even argue the two tests are 'practically equivalent'. In the R code below random normally distributed data for two conditions is generated (with means of 0 and a standard deviation of 1) and the ROPE procedure and a TOST equivalence test are performed. 
 
 <img src="09-equivalencetest_files/figure-html/unnamed-chunk-7-1.png" width="100%" style="display: block; margin: auto;" /><img src="09-equivalencetest_files/figure-html/unnamed-chunk-7-2.png" width="100%" style="display: block; margin: auto;" />
+
 The 90% HDI ranges from -0.06 to 0.39, with an estimated mean based on the prior and the data of 0.164. The HDI falls completely between the upper and the lower bound of the equivalence range, and therefore values more extreme than -0.5 or 0.5 are deemed implausible. The 95% CI ranges from -0.07 to 0.36 with an observed mean difference of 0.15. We see that the numbers are not identical, because in Bayesian estimation the observed values are combined with a prior, and the mean estimate is not purely based on the data. But the results are very similar, and will in most cases lead to similar inferences. The BEST R package also enables researchers to perform simulation based power analyses, which take a long time but, when using a broad prior, yield a result that is basically identical to the sample size from a power analysis for an equivalence test. The biggest benefit of ROPE over TOST is that it allows you to incorporate prior information. If you have reliable prior information, ROPE can use this information, which is especially useful if you don’t have a lot of data. If you use informed priors, check the robustness of the posterior against reasonable changes in the prior in sensitivity analyses.
 
 ## Which interval width should be used?
@@ -287,22 +288,43 @@ Because the TOST procedure is based on two one-sided tests, a 90% confidence int
 
 When using a Highest Density Interval from a Bayesian perspective, such as the ROPE procedure, the choice for a width of a confidence interval does not follow logically from a desired error rate, or any other principle. Kruschke (2014, Chapter 5) writes: “How should we define 'reasonably credible'? One way is by saying that any points within the 95% HDI are reasonably credible.” McElreath has recommended the use of 67%, 89%, and 97%, because "No reason. They are prime numbers, which makes them easy to remember.". There are only two principled solutions. First, if a highest density interval width is used to make claims, these claims will be made with certain error rates, and researchers should quantify the risk of erroneous claim by computing frequentist error rates. This would make the ROPE procedure a Bayesian/Frequentist compromise procedure, where the computation of a posterior distribution allows for Bayesian interpretations of which parameters values are believed to be most probable, while decisions based on whether or not the HDI falls within an equivalence range have a formally controlled error rate. Note that when using an informative prior, a HDI does not match a CI, and the error rate when using a HDI can only be derived through simulations. The second solution is to not make any claims, present the full posterior distribution, and let readers draw their own conclusions.
 
-## The Small Telescopes Approach
+## Setting the Smallest Effect Size of Interest {#sesoi}
 
-Ideally, researchers who publish empirical claims would always specify which empircal observations would falsify their claim. Regrettably, this is not yet common practice. This is particularly problematic when a researcher performs a close replication of earlier work. Because it is never possible to prove an effect is exactly zero, and the original authors seldom
-specify which range of effect sizes would falsify their hypotheses, it has proven to be very difficult to interpret the outcome of a replication study [@anderson_theres_2016]. When does the new data contradict the original finding?
+To be able to falsify our predictions using an equivalence test is to specify which observed values would be too small to be predicted by our theory. We can never say that an effect is exactly zero, but we can examine whether observed effects are too small to be theoretically or practically interesting. This requires that we specify the **smallest effect size of interest** (SESOI). The same concept goes by many names, such as a minimal important difference, or clinically significant difference [@king_point_2011]. Take a moment to think about what the smallest effect size is that you would still consider theoretically or practically meaningful for the next study you are designing. It might be difficult to determine what the smallest effect size is that you would consider interesting, and the question what the smallest effect size of interest is might be something you have never really thought about to begin with. However, determining your smallest effect size of interest has important practical benefits. First, if researchers in a field are able to specify which effects would be too small to matter, it becomes very straightforward to power a study for the effects that are meaningful. The second benefit of specifying the smallest effect size of interest is that it makes your study falsifiable. Having your predictions falsified by someone else might not feel that great for you personally, but it is quite useful for science as a whole [@popper_logic_2002]. After all, if there is no way a prediction can be wrong, why would anyone be impressed if the prediction is right? 
+
+To start thinking about which effect sizes matter, ask yourself whether *any* effect in the predicted direction is actually support for the alternative hypothesis. For example, would an effect size of a Cohen's *d* of 10 be support for your hypothesis? In psychology, it should be rare that a theory prediucts such a huge effect, and if you observed a *d* = 10, you would probably check for either a computation error, or a confound in the study. On the other end of the scale, would an effect of *d* = 0.001 be in line with the theoretically proposed mechanism? Such an effect is incredibly small, and it well below what an individual would notice, as it would fall below the **just noticeable difference** given perceptual and cognitive limitations. Therefore, a *d* = 0.001 would in most cases lead researchers to conclude "Well, this is really too small to be something that my theory has predicted, and such a small effect is practically equivalent to the absence of an effect." However, when we make a directional prediction, we say that these types of effects all are part of our alternative hypothesis. Even though many researchers would agree such tiny effects are too small to matter, they are still officially support for our alternative hypothesis if we have a directional prediction with a nil null hypothesis. Furthermore, researchers rarely have the resources to statistically reject the presence of effects this small, so the claim that such effects matter would still support a theoretical prediction makes the theory **practically unflasifiable**: A researcher could simply respond to any replication study showing a non-significant small effect (e.g., d = 0.05) by saying: "That does not falsify, my prediction, I guess the effect is just a bit smaller than d = 0.05", without ever having to admit the prediction is falsified. This is problematic, because if we do not have a process of replication and falsification, a scientific discipline risks a slide towards the unfalsifiable [@ferguson_vast_2012]. So whenever possible, when you design an experiment or you have a theory and a theoretical prediction, carefully think about and clearly state, what the smallest effect size of interest is. 
+
+## Specifying a SESOI based on theory 
+
+One example of a theoretically predicted smallest effect size of interest can be found in study by Burriss et al. [-@burriss_changes_2015], who examined whether women displayed increased redness in the face during the fertile phase of their ovulatory cycle. The hypothesis was that a slightly redder skin signals greater attractiveness and physical health, and that sending this signal to men yields an evolutionary advantage. This hypothesis presupposes that men can detect the increase in redness with the naked eye. Burriss et al. collected data from 22 women and showed that the redness of their facial skin indeed increased during their fertile period. However, this increase was not large enough for men to detect with the naked eye, so the hypothesis was falsified. Because the just-noticeable difference in redness of the skin can be measured, it was possible to establish a theoretically motivated SESOI. A theoretically motivated smallest effect size of interest can be derived from just-noticeable differences, which provide a lower bound on effect sizes that can influence individuals, or based on computational models, which can provide a lower bound on parameters in the model that will still be able to explain observed findings in the empirical literature.
+
+## Anchor based methods to set a SESOI
+
+Building on the idea of a just-noticeable difference, psychologists are often interested in effects that are large enough to be noticed by single individuals. One procedure to estimate what constitutes a meaningful change on an individual level is the anchor-based method [@jaeschke_measurement_1989; norman_truly_2004; @king_point_2011]. Measurements are collected at two time points (e.g., a quality of life measure before and after treatment). At the second time point an independent measure (the anchor) is used to determine if individuals show no change compared to time point 1, or if they have improved, or worsened. Often, the patient is directly asked to answer the anchor question, and indicate if they subjectively feel the same, better, or worse at time point 2 compared to time point 1. @button_minimal_2015 used an anchor-based method to estimate that a minimal clinically important difference on the Beck Depression Inventory corresponded to a 17.5% reduction in scores from baseline.
+
+Anvari and Lakens [-@anvari_using_2021] applied the anchor-based method to examine a smallest effect of interest for affect as measured by the widely used Positive and Negative Affect Scale (PANAS). Participants completed the 20 item PANAS on two time points several days apart (using a Likert scale going from 1 = “very slightly or not at all”, to 5 = “extremely”). At the second time point they were also asked to indicate if their affect had changed a little, a lot, or not at all. When people indicated their affect had changed “a little”, the average change in Likert units was 0.26 scale points for positive affect and 0.28 scale points for negative affect. Thus, an intervention to improve people’s affective state that should lead to what individuals subjectively consider at least a little improvement might set the SESOI at 0.3 units on the PANAS. 
+
+## Specifying a SESOI based on a cost-benefit analysis 
+
+Another principled approach to justify a smallest effect size of interest is to perform a cost-benefit analysis. Research shows that cognitive training may improve mental abilities in older adults which might benefit older drivers [@ball_effects_2002]. Based on these findings, Viamonte, Ball, and Kilgore [-@viamonte_cost-benefit_2006] performed a cost-benefit analysis and concluded that based on the cost of the intervention ($247.50), the probability of an accident for drivers older than 75 (p = 0.0710), and the cost of an accident ($22.000), performing the intervention on all drivers aged 75 or older was more efficient than not intervening or only intervening after a screening test. Furthermore, sensitivity analyses revealed intervening for all drivers would remain beneficial as long as the reduction in collision risk is 25%. Therefore, a 25% reduction in the probability of elderly above 75 getting into a car accident could be set as the smallest effect size of interest.
+
+For another example, economists have examined the value of a statistical life, based on willingness to pay to reduce the risk of death, at $1.5 - $2.5 million (in the year 2000, in western countries, see Mrozek & Taylor [-@mrozek_what_2002]). Building on this work, Abelson [-@abelson_value_2003] calculated the willingness to pay to prevent acute health issues such as eye irritation at about $40-$50 per day. A researcher may be examining a psychological intervention that reduces the amount of times people touch their face close to their eyes, thereby reducing eye irritations caused by bacteria. If the intervention costs $20 per year to administer, it therefore should reduce the average number of days with eye irritation in the population by at least 0.5 days for the intervention to be worth the cost. A cost-benefit analysis can also be based on the resources required to empirically study a very small effect when weighed against the value this knowledge would have for the scientific community.
+
+## Specifying the SESOI using the small telescopes approach
+
+Ideally, researchers who publish empirical claims would always specify which empircal observations would falsify their claim. Regrettably, this is not yet common practice. This is particularly problematic when a researcher performs a close replication of earlier work. Because it is never possible to prove an effect is exactly zero, and the original authors seldom specify which range of effect sizes would falsify their hypotheses, it has proven to be very difficult to interpret the outcome of a replication study [@anderson_theres_2016]. When does the new data contradict the original finding?
 
 Consider a study in which you want to test the idea of the wisdom of crowds. You ask 20 people to estimate the number of coins in a jar, expecting the average to be very close to the true value. The research question is whether the people can on average correctly guess the number of coins, which is 500. The observed mean guess by 20 people is 550, with a standard deviation of 100. The observed difference from the true value is statistically significant, *t*(19)=2.37, *p* = 0.0375, with a Cohen’s *d* of 0.5. Can it really be that the group average is so far off? Is there no Wisdom of Crowds? Was there something special about the coins you used that make it especially difficult to guess their number? Or was it just a fluke? You set out to perform a close replication of this study.
 
 You want your study to be informative, regardless of whether there is an effect or not. This means you need to design a replication study that will allow you to draw an informative conclusion, regardless of whether the alternative hypothesis is true (the crowd will not estimate the true number of coins accurately) or whether the null hypothesis is true (the crowd will guess 500 coins, and the original study was a fluke). But since the original researcher did not specify a smallest effect size of interest, when would a replication study allow you to
 conclude the original study is contradicted by the new data? Observing a mean of exactly 500 would perhaps by some be considered quite convincing, but due to random variation you will (almost) never find a mean score of exactly 500. A non-significant result can’t be interpreted as the absence of an effect, because your study might have too small a sample size to detect meaningful effects, and the result might be a Type 2 error. So how can we move forward and define an effect size that is meaningful? How can you design a study that has the ability to falsify a previous finding?
 
-Uri Simonsohn [-@simonsohn_small_2015] defines a small effect as “**one that would give 33% power to the original study**”. In other words, the effect size that would give the original study odds of 2:1 *against* observing a statistically significant result if there was an effect. The idea is that if the original study had 33% power, the probability of observing a significant effect, if there was a true effect, is too low to reliably distinguish signal from noise (or situations where there is a true effect from situations where there is no true effect). Simonsohn (2015, p. 561) calls this the **small telescopes approach**, and writes: “Imagine an astronomer claiming to have found a new planet with a telescope. Another astronomer tries to replicate the discovery using a larger telescope and finds nothing. Although this does not prove that the planet does not exist, it does nevertheless contradict the original findings, because planets that are observable with the smaller telescope should also be observable with the larger one.”
+Uri Simonsohn [-@simonsohn_small_2015] defines a small effect as “one that would give 33% power to the original study”. In other words, the effect size that would give the original study odds of 2:1 *against* observing a statistically significant result if there was an effect. The idea is that if the original study had 33% power, the probability of observing a significant effect, if there was a true effect, is too low to reliably distinguish signal from noise (or situations where there is a true effect from situations where there is no true effect). Simonsohn (2015, p. 561) calls this the **small telescopes approach**, and writes: “Imagine an astronomer claiming to have found a new planet with a telescope. Another astronomer tries to replicate the discovery using a larger telescope and finds nothing. Although this does not prove that the planet does not exist, it does nevertheless contradict the original findings, because planets that are observable with the smaller telescope should also be observable with the larger one.”
 
-Although this approach to setting a smallest effect size of interest (SESOI) is arbitrary (why not 30% power, or 35%?) it suffices for practical purposes (and you are free to choose a power level you think is too low). The nice thing about this definition of a SESOI is that **if you know the sample size of the original study, you can always calculate the effect size that study had 33% power to detect**. You can thus always use this approach to set a smallest effect size of interest. If you fail to find support for an effect size the original study has
-33% power to detect, it does not mean there is no true effect, and not even that the effect is too small to be of any theoretical or practical interest. But using the small telescopes approach is a good **first step**, since it will get the conversation started about which effects are meaningful and allows researchers who want to replicate a study to specify when they would consider the original claim falsified.
+Although this approach to setting a smallest effect size of interest (SESOI) is arbitrary (why not 30% power, or 35%?) it suffices for practical purposes (and you are free to choose a power level you think is too low). The nice thing about this definition of a SESOI is that if you know the sample size of the original study, you can always calculate the effect size that study had 33% power to detect. You can thus always use this approach to set a smallest effect size of interest. If you fail to find support for an effect size the original study has
+33% power to detect, it does not mean there is no true effect, and not even that the effect is too small to be of any theoretical or practical interest. But using the small telescopes approach is a good first step, since it will get the conversation started about which effects are meaningful and allows researchers who want to replicate a study to specify when they would consider the original claim falsified.
 
-With the small telescopes approach, the SESOI is based **only on the sample size in the original study**. A smallest effect size of interest is set only for **effects in the same direction**. All effects smaller than this effect (including large effects in the opposite direction) are interpreted as a failure to replicate the original results. We see that the small telescopes approach is a **one-sided equivalence test**, where only the upper bound is specified, and the smallest effect size of interest is determined based on the sample size of the original study. The test examines if we can reject effects as large or larger than the effect the original study has 33% power to detect. It is a simple one-sided test, not against 0, but against a SESOI.
+With the small telescopes approach, the SESOI is based only on the sample size in the original study. A smallest effect size of interest is set only for effects in the same direction. All effects smaller than this effect (including large effects in the opposite direction) are interpreted as a failure to replicate the original results. We see that the small telescopes approach is a **one-sided equivalence test**, where only the upper bound is specified, and the smallest effect size of interest is determined based on the sample size of the original study. The test examines if we can reject effects as large or larger than the effect the original study has 33% power to detect. It is a simple one-sided test, not against 0, but against a SESOI.
 
 For example, consider our study above in which 20 guessers tried to estimate the number of coins. The results were analyzed with a two-sided one-sample *t*-test, using an alpha level of 0.05. To determine the effect size that this study had 33% power for, we can perform a sensitivity analysis. In a sensitivity analysis we compute the required effect size given the alpha, sample size, and desired statistical power. Note that Simonsohn uses a two-sided test in his power analyses, which we will follow here – if the original study reported a pre-registered directional prediction, the power analysis should be based on a one-sided test. In this case, the alpha level is 0.05, the total sample size is 20, and the desired power is 33%. We compute the effect size that gives us 33% power and see that it is a Cohen’s *d* of 0.358. This means we can set our smallest effect size of interest for the replication study to *d* = 0.358. If we can reject effects as large or larger than *d* = 0.358, we can conclude that the effect is smaller than anything the original study had 33% power for. The screenshot below illustrates the correct settings in G\*power, and the code in R is:
 
@@ -333,7 +355,7 @@ pwr.t.test(n = 20, sig.level = 0.05, power = 0.33, type = "one.sample",
 Determining the SESOI based on the effect size the original study had 33% power to detect has an additional convenient property. Imagine the true effect size is
 actually 0, and you perform a statistical test to see if the data is statistically smaller than the SESOI based on the small telescopes approach
 (which is called an inferiority test). If you increase the sample size by 2.5 times, you will have approximately 80% power for this one-ssided equivalence test, assuming
-the true effect size is exactly 0 (e.g., d = 0). People who do a replication study can follow the small telescope recommendations, and very easily determine both the **smallest effect size of interest**, and the **sample size** needed to design an informative replication study, assuming the true effect size is 0 (but see the section above for a-priori power analyses where you want to test for equivalence, but do not expect a true effect size of 0).
+the true effect size is exactly 0 (e.g., d = 0). People who do a replication study can follow the small telescope recommendations, and very easily determine both the smallest effect size of interest, and the sample size needed to design an informative replication study, assuming the true effect size is 0 (but see the section above for a-priori power analyses where you want to test for equivalence, but do not expect a true effect size of 0).
 
 The figure below, from Simonsohn (2015) illustrates the small telescopes approach using a real-life example. The original study by Zhong and Liljenquist (2006) had a tiny sample size of 30 participants in each condition and observed an effect size of d = 0.53, which was barely statistically different from zero. Given a sample size of 30 per condition, the study had 33% power to detect effects larger than d = 0.401. This “small effect” is indicated by the green dashed line. In R, the smallest effect size of interest is calculated using:
 
@@ -361,8 +383,10 @@ pwr.t.test(n = 30, sig.level = 0.05, power = 1/3, type = "two.sample",
 Note that 33% power is a rounded value, and the calculation uses 1/3 (or
 0.3333333…).
 
-<img src="images/a4aa20a6e2dadfbaa82bc614d40693c7.png" width="100%" style="display: block; margin: auto;" />
-
+<div class="figure" style="text-align: center">
+<img src="images/a4aa20a6e2dadfbaa82bc614d40693c7.png" alt="Example used in Simonsohn 2015 of an original study and two replication studies." width="100%" />
+<p class="caption">(\#fig:simonsohnexample)Example used in Simonsohn 2015 of an original study and two replication studies.</p>
+</div>
 
 We can see that the first replication by Gámez and colleagues also had a relatively small sample size (N = 47, compared to N = 60 in the original study),
 and was not designed to yield informative results when interpreted with a small telescopes approach. The confidence interval is very wide and includes the null
@@ -374,7 +398,33 @@ interesting effect based on the small telescopes approach.
 Although the *small telescope* recommendations are easy to use, one should take care not to turn any statistical procedure into a heuristic. In our example above with the 20 referees, a Cohen’s *d* of 0.358 would be used as a smallest effect size of interest, and a sample size of 50 would be collected (2.5 times the original 20), but if someone would make the effort to perform a replication study, it would be relatively easy to collect a larger sample size. Alternatively, had the original study been extremely large, it would have had high power for effects that might not be practically significant, and we would not want to collect 2.5 times as many observations in a replication study. Indeed, as Simonsohn writes: “whether we need 2.5 times the original sample size or not depends on the question we wish to answer. If we are interested in testing whether the effect size is smaller than d33%, then, yes, we need about 2.5 times the original sample size no matter how big that original sample was.
 When samples are very large, however, that may not be the question of interest.” Always think about the question you want to ask, and design the study so that it provides an informative answer for a question of interest. Do not automatically follow a 2.5 times n heuristic, and always reflect on whether the use of a suggested procedure is appropriate in your situation.
 
-## Test Yourself
+
+## Setting the Smallest Effect Size of Interest to the Minimal Statistically Detectable Effect
+
+Given a sample size and alpha level, every test has a [minimal statistically detectable effect](#minimaldetectable). For example, given a test with 86 participants in each group, and an alpha level of 5%, only *t*-tests which yield a *t* ≥ 1.974 will be statistically significant. In other words, *t* = 1.974 is the **critical *t*-value**. Given a sample size and alpha level, the critical *t*-value can be transformed into a **critical *d*-value**. As visualized in Figure \@ref(fig:distpowerplot1), with n = 50 in each group and an alpha level of 5% the critical *d*-value is 0.4. This means that only effects larger than 0.4 will yield a *p* \< α. The critical *d*-value is influenced by the sample size per group, and the alpha level, but does not depend on the the true effect size.
+
+<div class="figure" style="text-align: center">
+<img src="images/dpplot50.png" alt="Null and alternative distribution with Type 1 and Type 2 error indicating the smallest effect size that will be statistically significant with n = 50 per condition." width="100%" />
+<p class="caption">(\#fig:distpowerplot1)Null and alternative distribution with Type 1 and Type 2 error indicating the smallest effect size that will be statistically significant with n = 50 per condition.</p>
+</div>
+
+It is possible to observe a statistically significant test result if the true effect size is *smaller* than the critical effect size. Due to random variation, it is possible to observe a larger value in a *sample* than is the true value in the population. This is the reason the statistical power of a test is never 0 in a null hypothesis significance test. As illustrated in Figure \@ref(fig:distpowerplot2), even if the true effect size is smaller than the critical value (i.e., if the true effect size is 0.2) we see from the distribution that we can expect some *observed effect sizes* to be larger than 0.4 when the *true population effect size* is d = 0.2 – if we compute the statistical power for this test, it turns out we can expect 16.77% of the *observed effect sizes* will be larger than 0.4, in the long run. That is not a lot, but it is something. This is also the reason why publication bias combined with underpowered research is problematic: It leads to a large **overestimation of the true effect size** when only observed effect sizes from statistically significant findings in underpowered studies end up in the scientific literature.
+
+<div class="figure" style="text-align: center">
+<img src="images/dpplot502.png" alt="Null and alternative distribution with Type 1 and Type 2 error indicating the smallest effect size that will be statistically significant with n = 50 per condition." width="100%" />
+<p class="caption">(\#fig:distpowerplot2)Null and alternative distribution with Type 1 and Type 2 error indicating the smallest effect size that will be statistically significant with n = 50 per condition.</p>
+</div>
+
+We can use the minimal statistically detectable effect to set the SESOI for replication studies. If you attempt to replicate a study, one justifiable option when choosing the smallest effect size of interest (SESOI) is to use the smallest observed effect size that could have been statistically significant in the study you are replicating. In other words, you decide that effects that could not have yielded a *p*-value less than α in an original study will not be considered meaningful in the replication study. The assumption here is that the original authors were interested in observing a significant effect, and thus were not interested in observed effect sizes that could not have yielded a significant result. It might be likely that the original authors did not consider which effect sizes their study had good statistical power to detect, or that they were interested in smaller effects but gambled on observing an especially large effect in the sample purely as a result of random variation. Even then, when building on earlier research that does not specify a SESOI, a justifiable starting point might be to set the SESOI to the smallest effect size that, when observed in the original study, **could have been statistically significant**. Not all researchers might agree with this (e.g., the original authors might say they actually cared just as much about an effect of d = 0.001). However, as we try to change the field from the current situation where no one specifies what would falsify their hypothesis, or what their smallest effect size of interest is, this approach is one way to get started. In practice, as explained in the section on [post-hoc power](#posthoc), due to the relation between *p* = 0.05 and 50% power for the observed effect size, this justification for a SESOI will mean that the SESOI is set to the effect size the original study had 50% power to detect for an independent *t*test. This approach is in some ways similar to the small telescopes approach by Simonsohn (2015), except that it will lead to a somewhat larger SESOI.
+
+Setting a smallest effect size of interest for a replication study is a bit like a tennis match. Original authors serve and hit the ball across the net, saying ‘look, something is going on’. The approach to set the SESOI to the effect size that could have been significant in the original study is a return volley which allows you to say ‘there does not seem to be anything large enough that could have been significant in your own original study’ after performing a well-designed replication study with high statistical power to reject the SESOI. This is never the end of the match – the original authors can attempt to return the ball with a more specific statement about effects their theory predicts, and demonstrate such a smaller effect size is present. But the ball is back in their court, and if they want to continue to claim there is an effect, they will have to support their claim by new data.
+
+Beyond replication studies, the amount of data that is collected limits the inferences one can make. It is also possible to compute a minimal statistically detectable effect based on the sample sizes that are typically used in a research field. For example, imagine a line of research in which a hypothesis has almost always
+been tested by performing a one-sample *t*-test, and where the sample sizes that are collected are always smaller than 100 observations. A one-sample *t*-test on 100 observations, using an alpha of .05 (two sided), has 80% power to detect an effect of *d* = 0.28 (as can be calculated in a sensitivity power analysis). In a new study, concluding that one can reliably reject the presence of effects more extreme than *d* = 0.28 suggests that sample sizes of 100 might not be enough to detect effects in such research lines. Rejecting the presence of effects more extreme than *d* = 0.28 does not test a theoretical prediction, but it contributes to the literature by answering a **resource question**. It suggests that future studies in this research line will need to change the design of their studies by substantially increasing the sample size. Setting the smallest effect size of interest based on this approach does not answer any theoretical question (after all, the SESOI is not based on any
+theoretical prediction). But informing peers that given the sample size commonly collected in a field in a field, the effect is not large enough so that it can be reliably studies is a useful contribution to the literature. It does not mean that the effect is not interesting per se, and a field might decide that it is time to examine the research question collaboratively, by coordinating research lines, and collecting enough data to reliably study whether a smaller effect is present.
+
+
+## Test Yourself (TO DO)
 
 **Q1**. In the discussion about the small telescopes approach to equivalence testing, we calculated the SESOI for a one-sample *t*-test. Adjust the R code (or use G\*power) to calculate power for a **two-sample t-test** with an **alpha level of 0.05**, **n = 20** in each condition (you only need to change “one.sample” into “two.sample” in the R code, or choose the correct option in G\*power). What is the SESOI based on the small telescope approach? Note that for this answer, it happens to depend on whether you enter the power as 0.33 or 1/3 (or 0.333).
 
@@ -423,4 +473,109 @@ D) We can statistically reject (using an alpha of 0.05) effects as large or larg
 <!-- ``` -->
 
 <!-- A) We can reject an effect of 0, and we fail to reject the smallest effect size of interest. Therefore we can claim there is an effect  -->
+
+
+
+
+**Q1**: When the true d = 0.79 and n = 50 per group, the blue area is
+approximately the same size as one of the red areas, which means (feel free to
+use information in the text beneath the sliders):
+
+A) The Type 1 error rate is approximately as large as the Type 2 error rate
+B) The Type 1 error rate is approximately twice as large as the Type 2 error rate
+C) The Type 2 error rate is approximately twice as large as the Type 1 error rate
+D) The Type 1 error rate and the Type 2 error rate cannot be directly compared.
+
+**Q2**: Three sliders influence what the figure looks like: The sample size per
+condition, the true effect size, and the alpha level. Which statement is true?
+
+A) The critical d-value is influenced by the sample size per group, the true effect size, but **not** by the alpha level.
+B) The critical d-value is influenced by the sample size per group, the alpha level, but **not** by the true effect size.
+C) The critical d-value is influenced by the alpha level, the true effect size, but **not** by the sample size per group.
+D) The critical d-value is influenced by the sample size per group, the alpha level, and by the true effect size.
+
+
+**Q3**: Imagine researchers performed a study with 18 participants in each
+condition, and performed a t-test using an alpha level of 0.01. What is the
+smallest effect size that could have been statistically significant in this
+study?
+
+A) d = 0.47
+
+B) d = 0.56
+
+C) d = 0.91
+
+D) d = 1
+
+**Q4**: You expect the true effect size in your next study to be d = 0.5, and
+you plan to use an alpha level of 0.05. You collect 30 participants in each
+group for an independent *t*-test. Which statement is true?
+
+A) You have low power for all possible effect sizes.
+
+B) You have sufficient (i.e., \> 80%) power for all effect sizes you are
+interested in.
+
+C) Observed effect sizes of d = 0.5 will never be statistically significant.
+
+D) Observed effect sizes of d = 0.5 will be statistically significant.
+
+
+
+
+
+**Setting the SESOI based on theoretical predictions**
+
+If you are not building on previous studies, the SESOI can be set based on
+**theoretical predictions**, or a **cost-benefit analysis** that specifies the
+smallest effect size that would be practically relevant. Sometimes, an
+intervention should have a specific effect size to be worthwhile (for example,
+financially). Testing against a SESOI based on cost-benefit analysis allows you
+to decide if an intervention is worth it, when weighed against the costs.
+
+**Q5**: Take a moment to think about whether the **theory** you are building on
+makes a quantifiable prediction that would allow you to set a smallest effect
+size of interest.
+
+**Q6**: Take a moment to think about whether the topic you study allows you to
+make a **cost-benefit analysis**, where an effect size needs to be large enough
+to be worthwhile.
+
+The example we have used above concerned an independent *t*-test, but the idea
+can be generalized. A shiny app for an F-test is available here:
+<http://shiny.ieis.tue.nl/f_p_power/>. The effect size associated to the power
+of an F-test is partial eta squared ($\eta_{p}^{2})$, which for a One-Way
+ANOVA (visualized in the Shiny app) equals eta-squared.
+
+The distribution for eta-squared looks slightly different from the distribution
+of Cohen’s d, primarily because an *F*-test is a one-directional test (and
+because of this, eta-squared values are all positive, while Cohen’s d can be
+positive or negative). The light grey line plots the expected distribution of
+eta-squared when the null is true, with the red area under the curve indicating
+Type 1 errors, and the black line plots the expected distribution of eta-squared
+when the true effect size is η = 0.059. The blue area indicates the expected
+effect sizes smaller that the critical η of 0.04, which will not be
+statistically significant, and thus will be Type 2 errors.
+
+![](images/7f6d17dc07bdc9e95ea8944d78b16d7c.png)
+
+**Q7**: Set the number of participants (per condition) to 14, and the number of
+groups to 3. Which effect sizes (expressed in partial eta-squared, as indicated
+on the vertical axis) can be statistically significant with n = 14 per group,
+and 3 groups?
+
+A) Only effects larger than 0.11
+
+B) Only effects larger than 0.13
+
+C) Only effects larger than 0.14
+
+D) Only effects larger than 0.16
+
+Every sample size and alpha level implies observed effect sizes that can be
+statistically significant in your study. Looking at which observed effects you
+can detect is a useful way to make sure you could actually detect the smallest
+effect size you are interested in.
+
 

@@ -1160,16 +1160,16 @@ getAnalysisResults(seq_design,
 
 ```
 ## [PROGRESS] Stage results calculated [0.0319 secs] 
-## [PROGRESS] Conditional power calculated [0.0239 secs] 
-## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.001 secs] 
-## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.5146 secs] 
-## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.5017 secs] 
-## [PROGRESS] Repeated confidence interval calculated [1.02 secs] 
-## [PROGRESS] Repeated p-values of stage 1 calculated [0.1616 secs] 
-## [PROGRESS] Repeated p-values of stage 2 calculated [0.1691 secs] 
-## [PROGRESS] Repeated p-values calculated [0.3326 secs] 
+## [PROGRESS] Conditional power calculated [0.0264 secs] 
+## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.002 secs] 
+## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.8318 secs] 
+## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.5575 secs] 
+## [PROGRESS] Repeated confidence interval calculated [1.39 secs] 
+## [PROGRESS] Repeated p-values of stage 1 calculated [0.1606 secs] 
+## [PROGRESS] Repeated p-values of stage 2 calculated [0.1586 secs] 
+## [PROGRESS] Repeated p-values calculated [0.3191 secs] 
 ## [PROGRESS] Final p-value calculated [0.001 secs] 
-## [PROGRESS] Final confidence interval calculated [0.0598 secs]
+## [PROGRESS] Final confidence interval calculated [0.0599 secs]
 ```
 
 ```
