@@ -380,8 +380,7 @@ pwr.t.test(n = 30, sig.level = 0.05, power = 1/3, type = "two.sample",
 ## NOTE: n is number in *each* group
 ```
 
-Note that 33% power is a rounded value, and the calculation uses 1/3 (or
-0.3333333…).
+Note that 33% power is a rounded value, and the calculation uses 1/3 (or 0.3333333…).
 
 <div class="figure" style="text-align: center">
 <img src="images/a4aa20a6e2dadfbaa82bc614d40693c7.png" alt="Example used in Simonsohn 2015 of an original study and two replication studies." width="100%" />
@@ -395,8 +394,7 @@ effect sizes of 0.401 or larger that are still considered to be in line with the
 us that we can’t reject the null, but we can reject the smallest effect size of interest, suggesting that the effect is smaller than what is considered an
 interesting effect based on the small telescopes approach.
 
-Although the *small telescope* recommendations are easy to use, one should take care not to turn any statistical procedure into a heuristic. In our example above with the 20 referees, a Cohen’s *d* of 0.358 would be used as a smallest effect size of interest, and a sample size of 50 would be collected (2.5 times the original 20), but if someone would make the effort to perform a replication study, it would be relatively easy to collect a larger sample size. Alternatively, had the original study been extremely large, it would have had high power for effects that might not be practically significant, and we would not want to collect 2.5 times as many observations in a replication study. Indeed, as Simonsohn writes: “whether we need 2.5 times the original sample size or not depends on the question we wish to answer. If we are interested in testing whether the effect size is smaller than d33%, then, yes, we need about 2.5 times the original sample size no matter how big that original sample was.
-When samples are very large, however, that may not be the question of interest.” Always think about the question you want to ask, and design the study so that it provides an informative answer for a question of interest. Do not automatically follow a 2.5 times n heuristic, and always reflect on whether the use of a suggested procedure is appropriate in your situation.
+Although the *small telescope* recommendations are easy to use, one should take care not to turn any statistical procedure into a heuristic. In our example above with the 20 referees, a Cohen’s *d* of 0.358 would be used as a smallest effect size of interest, and a sample size of 50 would be collected (2.5 times the original 20), but if someone would make the effort to perform a replication study, it would be relatively easy to collect a larger sample size. Alternatively, had the original study been extremely large, it would have had high power for effects that might not be practically significant, and we would not want to collect 2.5 times as many observations in a replication study. Indeed, as Simonsohn writes: “whether we need 2.5 times the original sample size or not depends on the question we wish to answer. If we are interested in testing whether the effect size is smaller than d33%, then, yes, we need about 2.5 times the original sample size no matter how big that original sample was. When samples are very large, however, that may not be the question of interest.” Always think about the question you want to ask, and design the study so that it provides an informative answer for a question of interest. Do not automatically follow a 2.5 times n heuristic, and always reflect on whether the use of a suggested procedure is appropriate in your situation.
 
 
 ## Setting the Smallest Effect Size of Interest to the Minimal Statistically Detectable Effect
@@ -578,4 +576,310 @@ statistically significant in your study. Looking at which observed effects you
 can detect is a useful way to make sure you could actually detect the smallest
 effect size you are interested in.
 
+
+
+**Q1)** When the 90% CI around an effect size falls within the equivalence
+range, the observed effect is statistically smaller than the smallest effect
+size of interest. Based on your knowledge about confidence intervals, and
+looking at the picture above, when you lower the equivalence range from -0.4 –
+0.4 to -0.3 – 0.3, what is needed for the equivalence test to be significant
+(assuming the effect size estimate and standard deviation remains the same)?
+
+A) A larger effect size.
+
+B) A lower alpha level.
+
+C) A larger sample size.
+
+D) Lower statistical power.
+
+To answer questions 2 through 9, open the EquivalenceTesting.R script. The
+script will allow you to perform the TOST procedure for the questions below by
+filling in the summary statistics. To help you along, I have already copied the
+function and all arguments – you just need to fill in the correct values for
+each function, and interpret the output.
+
+**Q2)** Researchers often manipulate something they are interested in. To ensure
+their manipulation does not inadvertently alter participants’ moods, they assess
+positive and negative emotions using the PANAS. Let’s assume in one specific
+experiment, positive mood in one condition (*M1* = 4.55, *SD1* = 1.05, *n1* =
+15) did not differ from the mood in the other condition (*M2* = 4.87, *SD2* =
+1.11, *n2* = 15). The researchers conclude: “*Mood did not differ between
+conditions, t = 0.81, p =.42*”. Let’s assume we consider any effect larger than
+*d*=-0.5 and smaller than *d* = 0.5 equivalent (even though *d* = 0.5 is
+actually a medium effect size!). Use the R code for the independent *t*-test,
+and fill in the 8 numbers (note: you need to fill in -0.5, not 0.5, as the lower
+equivalence bound). Were the authors correct in concluding mood did not differ
+between conditions, given the equivalence range of -0.5 to 0.5?
+
+**Use 0.05 as the alpha level for all questions in this assignment.**
+
+A) Yes
+
+B) No
+
+**Q3)** If we increase the sample size in the above example to 150 participants
+in each condition, and assuming the means and standard deviations remain the
+same, which conclusion would we draw?
+
+A) Equivalent: The difference in mood is not statistically significant, and it
+is statistically equivalent.
+
+B) Undetermined: The difference in mood is not statistically significant, and it
+is not statistically equivalent.
+
+C) Not zero, and not meaningful: The difference in mood is statistically
+significant, and it is statistically equivalent.
+
+D) Not zero, and meaningful: The difference in mood is statistically
+significant, and it is not statistically equivalent.
+
+**Q4)** We might wonder how wide our bounds would need to be, to have decent
+power to conclude equivalence. Let’s aim for 90% power, and use an alpha of 0.01
+for our test. The powerTOSTtwo function can be used to calculate how wide our
+equivalence bounds would need to be, to have 90% power with 15 participants in
+each condition and an alpha of 0.01 (this power analysis assumes the true effect
+size is 0 – more advanced power analyses can be performed with PASS software).
+Which equivalence bounds should a researcher use if they want 90% power with 15
+participants and an alpha of 0.01? Round the answer to two digits after the
+decimal.
+
+A) d = -1.07 and d = 1.07
+
+B) d = -1.20 and d = 1.20
+
+C) d = -1.32 and d = 1.32
+
+D) d = -1.45 and d = 1.45
+
+You can see that with such a small sample, **we can only reject effect sizes
+that are very large** (d \> 1). Is it interesting to perform a study where you
+can only reject effects that are very large? It depends. Most effect sizes
+studied in for example psychology, but also many other social sciences, are much
+smaller. Asking ‘can we reject very large effects’ is therefore not very
+interesting (unless a theory explicitly predicts only very large effects,
+obviously!)
+
+**Q5)** The most common use of power analysis is to determine the sample size
+needed to design a study with high power to detect a significant effect. If we
+want to have 90% power, use an alpha of 0.01, and use equivalence bounds of d =
+-0.5 and d = 0.5, how many participants **in each group** or condition should we
+collect? Use the code in the R file.
+
+A) 87
+
+B) 105
+
+C) 127
+
+D) 254
+
+**Q6)** Change the equivalence range to -0.1 and 0.1. To be able to reject
+effects outside such a very narrow equivalence range, you’ll need a large sample
+size. With an alpha of 0.01, and a desired power of 0.9 (or 90%), how many
+participants would you need in each group?
+
+A) 2165
+
+B) 2604
+
+C) 3155
+
+D) 6310
+
+You can see it takes a very large sample size to have high power to reliably
+reject very small effects. This should not be surprising – it also requires a
+very large sample size to *detect* small effects!
+
+**Q7)** You can do equivalence tests for all tests. The TOSTER package has
+functions for t-tests, correlations, differences between proportions, and
+meta-analyses. Let’s do an equivalence test for a meta-analysis. Hyde, Lindberg,
+Linn, Ellis, and Williams (2008) report that effect sizes for gender differences
+in mathematics tests across the 7 million students in the US represent trivial
+differences, where a trivial difference is specified as an effect size smaller
+then d = 0.1. The table with Cohen’s d and se is reproduced below:
+
+| **Grades**  | **d + se**       |
+|-------------|------------------|
+| Grade 2     | 0.06 +/- 0.003   |
+| Grade 3     | 0.04 +/- 0.002   |
+| Grade 4     | \-0.01 +/- 0.002 |
+| Grade 5     | \-0.01 +/- 0.002 |
+| Grade 6     | \-0.01 +/- 0.002 |
+| Grade 7     | \-0.02 +/- 0.002 |
+| Grade 8     | \-0.02 +/- 0.002 |
+| Grade 9     | \-0.01 +/- 0.003 |
+| Grade 10    | 0.04 +/- 0.003   |
+| Grade 11    | 0.06 +/- 0.003   |
+
+For grade 2, when we perform an equivalence test with boundaries of d = -0.1 and
+d = 0.1, using an alpha of 0.01, which conclusion can we draw? Use the TOSTER
+function TOSTmeta, and enter the alpha, effect size (ES), standard error (se),
+and equivalence bounds.
+
+A) Equivalent: The difference in test scores is not statistically significant,
+and it is statistically equivalent.
+
+B) Undetermined: The difference in test scores is not statistically significant,
+and it is not statistically equivalent.
+
+C) Not zero, and not meaningful: The difference in test scores is statistically
+significant, and it is statistically equivalent.
+
+D) Not zero, and meaningful: The difference in test scores is statistically
+significant, and it is not statistically equivalent.
+
+**Q8)** Olson, Fazio, and Hermann (2007) reported correlations between implicit
+and explicit measures of self-esteem, such as the IAT, Rosenberg’s self-esteem
+scale, a feeling thermometer, and trait ratings. In Study 1 71 participants
+completed the self-esteem measures. Because no equivalence bounds are mentioned,
+we can see which equivalence bounds the researchers would have 50% power to
+detect (the bounds a study has 50% power for, is related to the bounds that can
+just be detected with p \< .05, see Lakens, Scheel, and Isager, 2018 or this
+[blog
+post](http://daniellakens.blogspot.nl/2017/05/how-power-analysis-implicitly-reveals.html)).
+Use the powerTOSTr function (which is used for correlations, and when the
+equivalence bounds are set based on *r*). Which boundaries do we have 50% power
+for, with an alpha of 0.05, and 71 participants? Round the bounds to 2 digits
+after the decimal.
+
+A) r = -0.19 and r = 0.19
+
+B) r = -0.21 and r = 0.21
+
+C) r = -0.27 and r = 0.27
+
+D) r = -0.32 and r = 0.32
+
+**Q9)** The correlations observed by Olson et al (2007), Study 1, are presented
+in the table below (significant correlations are flagged by an asterisk).
+
+| Measure             | IAT | Rosenberg | Feeling thermometer | Trait ratings |
+|---------------------|-----|-----------|---------------------|---------------|
+| IAT                 | \-  | \-.12     | \-.09               | \-.06         |
+| Rosenberg           |     | \-        | .62\*               | .09           |
+| Feeling thermometer |     |           | \-                  | .29\*         |
+| Trait ratings       |     |           |                     | \-            |
+
+We can test each correlation for equivalence, for example the correlation
+between the IAT and the Rosenberg self-esteem scale of -0.12, given 71
+participants. When you test all 4 non-significant correlations (-0.12, -0.09,
+-0.06, and 0.09) for equivalence, using an alpha of 0.05 and equivalence bounds
+of *r* = -0.2 and *r* = 0.2, how many are statistically equivalent?
+
+A) 0
+
+B) 1
+
+C) 2
+
+D) 3
+
+
+
+**Q1**: Null-Hypothesis Significance Tests are so common we rarely think about
+whether they are the right question to ask. But **when you perform a
+null-hypothesis test, you should justify why the null-hypothesis is an
+interesting hypothesis to test against**. This is not always self-evident, and
+sometimes the null hypothesis is simply not very interesting. Look at the last
+paper you wrote, or are currently writing (or if you have not written a paper,
+look at a paper you want to build on or apply in some way). Identify the most
+important hypothesis tests and ask yourself whether **the null hypothesis was
+justified**. Was it plausible that the null hypothesis was true? And was it an
+interesting value to test against?
+
+
+**Q2**: Two-sided tests are so common we rarely think about whether they are the
+right question to ask. But if you make a directional prediction, it often makes
+sense to perform a directional test. Look at the last paper you wrote or are
+currently writing (or if you have not written a paper, look at a paper you want
+to build on or apply in some way). Identify the main hypothesis in the
+introduction. Did the hypothesis make a one-sided prediction? Take a look at the
+result section. Was the hypothesis tested in a two-sided test?
+
+**Q3**: Look at the last paper you wrote or are currently writing (or if you
+have not written a paper, look at a paper you want to build on or apply in some
+way). Take a look at the null-hypothesis tests (whether Bayesian or frequentist)
+and judge if the question of whether the effect is zero is interesting, or if
+the authors (or you yourself) might actually have been implicitly arguing to the
+presence of some unspecified minimal effect. **If you were able to specify this
+minimal effect, would it have made more sense to report a minimal effect test
+for some of the hypothesis tests**?
+
+**Q4**: **Open the file testing_range_predictions.R**. Run the code. You will
+see the following test and figure as output:
+
+Equivalence Test Result:
+
+The equivalence test was significant, t(32) = 22.892, p =
+0.00000000000000000000104, given equivalence bounds of 1.000 and 10.000 (on a
+raw scale) and an alpha of 0.05.
+
+Null Hypothesis Test Result:
+
+The null hypothesis test was significant, t(32) = 29.062, p =
+0.00000000000000000000000142, given an alpha of 0.05.
+
+![](media/48d9d00c6ad493b2c84b65377bd1d138.png)
+
+In the figure, we see our mean difference of 4.71, and the confidence interval
+around it. The difference is clearly not 0 (the confidence interval does not
+overlap with the vertical dashed grey line at 0), but the difference is also
+statistically larger than 1 (and smaller than 10, but we are not interested in
+the upper bound in this specific case). We see the *t*-value for the null
+hypothesis test (29.06) is larger than the *t*-value for the minimal effect test
+(22.892). Why?
+
+A) The minimal effect test is **one-sided**, but the null hypothesis
+significance test is **two-sided**, and therefore the t-value for the
+null-hypothesis test is larger.
+
+B) The minimal effect test is **two-sided**, but the null hypothesis
+significance test is **one-sided**, and therefore the t-value for the
+null-hypothesis test is larger.
+
+C) The minimal effect test is **against a value of 1, which is closer to the
+observed mean difference,** and therefore the test result is less extreme**.**
+
+D) A null-hypothesis test is uniformly most powerful – any alternative test will
+always have less power, and thus a lower t-value, than a null-hypothesis test.
+
+**Q5**: Realistically speaking, we probably do not want the positive and
+negative words to just differ 1 scale point. Let’s say we want the two groups of
+words to have evaluations that differ at least 3 scale points. Change the lower
+bound (or minimum effect) we want to test against in line 8 from 1 to 3. How
+does this affect the null-hypothesis test? How does this affect the equivalence
+test against the lower bound of 3?
+
+A) The *t*-value for both the null-hypothesis test as the equivalence test are
+now 10.551. Adjusting the minimum effect thus influences both test results.
+
+B) The *t*-value for the null-hypothesis test is now 10.551, the *t*-value for
+the equivalence test remains stable at 22.892. Adjusting the minimum effect thus
+influences only the null hypothesis test.
+
+C) The *t*-value for the null-hypothesis test remains 29.06, the *t*-value for
+the equivalence test is lowered to 10.551. Adjusting the minimum effect thus
+influences only the equivalence test.
+
+D) The *t*-value for the null-hypothesis test is now 10.551, the *t*-value for
+the equivalence test increases to 32.892. Adjusting the minimum effect thus
+influences only the equivalence test.
+
+**Q6:** This is a more difficult insight question. Based on the previous two
+questions, a general pattern emerges. (Hint: think about effect size, and the
+difference we are testing in the two tests). Compared to a null hypothesis test,
+a minimal effect test:
+
+A) is **riskier**, but also has **less** power, and thus a minimal effect test
+requires a **larger** number of observations than a null-hypothesis test.
+
+B) is **riskier**, but also has **more** power, and thus a minimal effect test
+requires a **smaller** number of observations than a null-hypothesis test.
+
+C) is **less risky**, but also has **less** power, and thus a minimal effect
+test requires a **larger** number of observations than a null-hypothesis test.
+
+D) is **less risky**, but also has **more** power, and thus a minimal effect
+test requires a **smaller** number of observations than a null-hypothesis test.
 
