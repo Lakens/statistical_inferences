@@ -4,8 +4,6 @@
 
 # Sequential Analysis {#sequential}
 
-NOT COMPLETED
-
 Repeatedly analyzing incoming data while data collection is in progress has many advantages. Researchers can stop the data collection at an interim analysis when they can reject the null hypothesis or the smallest effect size of interest, even if they would be willing to collect more data if needed, or if the results show there is an unexpected problem with the study (e.g., participants misunderstand the instructions or questions). One could easily argue that psychological researchers have an ethical obligation to repeatedly analyze accumulating data, given that continuing data collection whenever the desired level of confidence is reached, or whenever it is sufficiently clear that the expected effects are not present, is a waste of the time of participants and the money provided by taxpayers. In addition to this ethical argument, designing studies that make use of sequential analyses can be more efficient than when data is only analyzed a single time, when the maximum sample size a researcher is willing to collect has been reached. 
 
 Sequential analyses should not be confused with [**optional stopping**](##optionalstopping), which was discussed in the chapter on error control. In optional stopping, researchers use an unadjusted alpha level (e.g., 5%) to repeatedly analyze the data as it comes in, which can substantially inflate the Type 1 error rate. The critical difference with **sequential analysis** is that the Type 1 error rate is controlled. By lowering the alpha level at each look at the data, the overall Type I error rate can be controlled, much like a Bonferroni correction is used to prevent inflation of the Type 1 error rate for multiple comparisons. Indeed, the Bonferroni correction is a valid (but conservative) approach to control the error rate in sequential analyses [@wassmer_group_2016]. 
@@ -507,17 +505,17 @@ res
 
 
 ```
-## [PROGRESS] Stage results calculated [0.0479 secs] 
-## [PROGRESS] Conditional power calculated [0.0349 secs] 
-## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.001 secs] 
-## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.5635 secs] 
-## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.5984 secs] 
-## [PROGRESS] Repeated confidence interval calculated [1.16 secs] 
-## [PROGRESS] Repeated p-values of stage 1 calculated [0.2265 secs] 
-## [PROGRESS] Repeated p-values of stage 2 calculated [0.221 secs] 
-## [PROGRESS] Repeated p-values calculated [0.4485 secs] 
-## [PROGRESS] Final p-value calculated [0.001 secs] 
-## [PROGRESS] Final confidence interval calculated [0.0728 secs]
+## [PROGRESS] Stage results calculated [0.0868 secs] 
+## [PROGRESS] Conditional power calculated [0.0658 secs] 
+## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.002 secs] 
+## [PROGRESS] Repeated confidence interval of stage 1 calculated [1.41 secs] 
+## [PROGRESS] Repeated confidence interval of stage 2 calculated [1.23 secs] 
+## [PROGRESS] Repeated confidence interval calculated [2.64 secs] 
+## [PROGRESS] Repeated p-values of stage 1 calculated [0.4622 secs] 
+## [PROGRESS] Repeated p-values of stage 2 calculated [0.485 secs] 
+## [PROGRESS] Repeated p-values calculated [0.9513 secs] 
+## [PROGRESS] Final p-value calculated [0.002 secs] 
+## [PROGRESS] Final confidence interval calculated [0.1491 secs]
 ```
 
 
@@ -564,12 +562,12 @@ res
 ##   Median unbiased estimate                     : NA, 0.2814
 ```
 
-Imagine we have performed a study planned to have at most 2 equally spaced looks at the data, where we perform a two-sided test with an alpha of 0.05, and we use a Pocock type alpha spending function, and we observe mean differences between the two conditions of at the last look. Based on a Pocock-like alpha spending function with three equally spaced looks the alpha level at each look for a two-sided *t*-test is 0.03101, and 0.02774. We can thus reject $H_0$ after look 2. But we would also like to report an effect size, and adjusted *p* values and confidence intervals. 
+Imagine we have performed a study planned to have at most 2 equally spaced looks at the data, where we perform a two-sided test with an alpha of 0.05, and we use a Pocock type alpha spending function, and we observe mean differences between the two conditions of at the last look. Based on a Pocock-like alpha spending function with two equally spaced looks the alpha level for a two-sided *t*-test is 0.03101, and 0.02774. We can thus reject $H_0$ after look 2. But we would also like to report an effect size, and adjusted *p* values and confidence intervals. 
 
 
 The results show that the action after look 1 was to continue data collection, and that we could reject $H_0$ at the second look. The unadjusted mean difference is provided in the row "Overall effect size" and at the final look this was 0.293. The adjusted mean difference is provided in the row "Median unbiased estimate" and is lower, and the adjusted confidence interval is in the row "Final confidence interval", giving the result 0.281, 95% CI [-0.02, 0.573]. 
 
-The unadjusted *p* values for a one-sided tests are reported in the row "Overall p-value". The actual *p* values for our two-sided test would be twice as large, so 0.6667808, 0.0476883. The adjusted *p*-value at the final look is provided in the row "Final p-value" and it is 0.06662. 
+The unadjusted *p* values for a one-sided tests are reported in the row "Overall p-value". The actual *p* values for our two-sided test would be twice as large, so 0.6668, 0.0477. The adjusted *p*-value at the final look is provided in the row "Final p-value" and it is 0.06662. 
 
 
 

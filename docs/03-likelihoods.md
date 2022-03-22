@@ -10,7 +10,7 @@ Unlike the Neyman-Pearson frequentist approach, likelihoodists are interested in
 
 Likelihood approaches to statistical inferences form a bridge between frequentist approaches and Bayesian approaches, and are an independent third approach to statistical inferences. At the same time, likelihood functions are an important part of Neyman-Pearson statistics through the Neyman-Pearson lemma, which shows that the likelihood ratio test it the most powerful test of H0 against H1, and is useful in determining the critical value used to reject a hypothesis. In Bayesian approaches, the likelihood is combined with a prior to compute a posterior probability distribution. 
 
-We can use likelihood functions to make inferences about unknown quantities. Let’s imagine you flip a coin 10 times, and it turns up heads 8 times. What is the true probability (which we will indicate by the Greek letter theta, p) of this coin landing on heads?
+We can use likelihood functions to make inferences about unknown quantities. Let’s imagine you flip a coin 10 times, and it turns up heads 8 times. What is the true probability (which is sometimes indicated by the Greek letter theta, but we will use p in this chapter) of this coin landing on heads?
 
 The **binomial probability** of observing *x* successes in *n* studies is:
 
@@ -48,7 +48,7 @@ When computing a probability, we assume the model to be known, and compute the p
 </div>
 
 
-The likelihood is plotted for all possible values of *p* (from 0 to 1). It should not be surprising that given the data we have observed, the most likely value for the true parameter is 8 out of 10, or *p* = 0.8, with a likelihood of 0.30 (the highest point on the y-axis). In this example, *p* = 0.8 is called the **maximum likelihood estimator**. It is important to know that the likelihood itself has no meaning in isolation. In this sense, it differs from a probability. But we can compare likelihoods of the same function across different values of *p*. You can read off any other value for any other θ, and see that given the observed data, low values of *p* (e.g., 0.2) are not very likely.
+The likelihood is plotted for all possible values of *p* (from 0 to 1). It should not be surprising that given the data we have observed, the most likely value for the true parameter is 8 out of 10, or *p* = 0.8, with a likelihood of 0.30 (the highest point on the y-axis). In this example, *p* = 0.8 is called the **maximum likelihood estimator**. It is important to know that the likelihood itself has no meaning in isolation. In this sense, it differs from a probability. But we can compare likelihoods of the same function across different values of *p*. You can read off any other value for any other p, and see that given the observed data, low values of *p* (e.g., 0.2) are not very likely.
 
 There is a subtle difference between a probability and a likelihood. In colloquial language, you can use both terms to mean the same thing, but in statistics both terms used for different sides of the same coin. Note how the equation for Pr involves both information about the data (*k*, *n*) and information about the parameter (*p*). To compute a **probability**, we view *p* as fixed (for instance, for a fair coin, we plug in *p* = 0.5) and then estimate the probability of different outcomes (*k*, *n*). The resulting function is the probability mass function. To compute the **likelihood**, we instead view the observed data as fixed (e.g., observing 5 heads out of 10 coin tosses), and we view Pr as a function of *p*, estimating the value that maximizes the likelihood of a particular sample.
 
@@ -79,7 +79,7 @@ In Figure \@ref(fig:like4) we see likelihood curves for 10, 100, and 1000 coin f
 
 ## Likelihood ratios
 
-We can use the likelihood function to compare possible values of θ. For example, we might believe the coin we flipped was fair, even though we flipped eight out of ten heads. A fair coin will have *p* = 0.5, while we observed *p* = 0.8. The likelihood function allows us to compute the relative likelihood for different possible parameters. How much more likely is our observed data under the hypothesis that this is an unfair coin that will on average turn up heads 80% of the time, compared to the alternative theory that this is a fair coin which should turn up heads 50% of the time?
+We can use the likelihood function to compare possible values of p. For example, we might believe the coin we flipped was fair, even though we flipped eight out of ten heads. A fair coin will have *p* = 0.5, while we observed *p* = 0.8. The likelihood function allows us to compute the relative likelihood for different possible parameters. How much more likely is our observed data under the hypothesis that this is an unfair coin that will on average turn up heads 80% of the time, compared to the alternative theory that this is a fair coin which should turn up heads 50% of the time?
 
 We can calculate the likelihood ratio:
 
@@ -150,7 +150,7 @@ So far we have computed likelihoods for binomial probabilities, but likelihoods 
 
 ### Questions about likelihoods
 
-**Q1**: Let’s assume you expect this is a fair coin. What is the binomial probability of observing 8 heads out of 10 coin flips, when θ = 0.5? (You can use the functions in the chapter, or compute it by hand).
+**Q1**: Let’s assume you expect this is a fair coin. What is the binomial probability of observing 8 heads out of 10 coin flips, when p = 0.5? (You can use the functions in the chapter, or compute it by hand).
 
 A) 0.044
 B) 0.05
@@ -182,25 +182,25 @@ title(paste("Likelihood Ratio H0/H1:", round(dbinom(x, n, H0) / dbinom(x, n, H1)
 
 A) The likelihood curve is a horizontal line.
 B) The script returns and error message: it is not possible to plot the likelihood curve for 0 heads.
-C) The curve starts at its highest point at θ = 0, and then the likelihood decreases as θ increases.
-D) The curve starts at its lowest point at θ = 0, and then the likelihood increases as θ increases.
+C) The curve starts at its highest point at p = 0, and then the likelihood decreases as p increases.
+D) The curve starts at its lowest point at p = 0, and then the likelihood increases as p increases.
 
 **Q3**: Get a coin out of your wallet. Flip it 13 times, and count the number of heads. Using the code above, calculate the likelihood of your observed results under the hypothesis that your coin is fair, compared to the hypothesis that the coin is not fair. Set the number of successes (x) to the number of heads you observed. Change H1 to the number of heads you have observed (or leave it to 0 if you didn’t observe any heads at all!). You can just use 4/13, or enter 0.3038. Leave H0 at 0.5. Run the script to calculate the likelihood ratio. What is the likelihood ratio of a fair compared to a non-fair coin (or H0/H1) that flips heads as often as you have observed, based on the observed data? Round your answer to 2 digits after the decimal.
 
 Earlier we mentioned that with increasing sample sizes, we had collected stronger relative evidence. Let’s say we would want to compare L(p = 0.4) with L(p = 0.5). 
 
-**Q4**: What is the likelihood ratio if H1 is 0.4, H1 is 0.5, and you flip 5 heads in 10 trials? From the two possible ways to calculate the likelihood ratio (H1/H0 and H0/H1), report the likelihood that is ≥ 1, and round to 2 digits after the decimal point.
+**Q4**: What is the likelihood ratio if H1 is 0.4, H0 is 0.5, and you flip 5 heads in 10 trials? From the two possible ways to calculate the likelihood ratio (H1/H0 and H0/H1), report the likelihood that is ≥ 1, and round to 2 digits after the decimal point.
 
-**Q5**: What is the likelihood ratio if H1 is 0.4, H1 is 0.5, and you flip 50 heads in 100 trials? From the two possible ways to calculate the likelihood ratio (H1/H0 and H0/H1), report the likelihood that is ≥ 1, and round to 2 digits after the decimal point.
+**Q5**: What is the likelihood ratio if H1 is 0.4, H0 is 0.5, and you flip 50 heads in 100 trials? From the two possible ways to calculate the likelihood ratio (H1/H0 and H0/H1), report the likelihood that is ≥ 1, and round to 2 digits after the decimal point.
 
-**Q6**: What is the likelihood ratio if H1 is 0.4, H1 is 0.5, and you flip 500 heads in 1000 trials? From the two possible ways to calculate the likelihood ratio (H1/H0 and H0/H1), report the likelihood that is ≥ 1, and round to 2 digits after the decimal point.
+**Q6**: What is the likelihood ratio if H1 is 0.4, H0 is 0.5, and you flip 500 heads in 1000 trials? From the two possible ways to calculate the likelihood ratio (H1/H0 and H0/H1), report the likelihood that is ≥ 1, and round to 2 digits after the decimal point.
 
-**Q7**: When comparing two hypotheses (θ = X vs θ = Y), a likelihood ratio of: 
+**Q7**: When comparing two hypotheses (p = X vs p = Y), a likelihood ratio of: 
 
 A) 0.02 means that there is not enough evidence in the data for either of the two hypotheses. 
 B) 5493 means that hypothesis p = X is most supported by the data.
-C) 5493 means that hypothesis p = X is much more supported by the data than θ = Y.
-D) 0.02 means that the hypothesis that the data are 2% more likely under the hypothesis that θ = X than under the hypothesis that p = Y. 
+C) 5493 means that hypothesis p = X is much more supported by the data than p = Y.
+D) 0.02 means that the hypothesis that the data are 2% more likely under the hypothesis that p = X than under the hypothesis that p = Y. 
 
 
 ### Questions about mixed results
@@ -209,7 +209,7 @@ D) 0.02 means that the hypothesis that the data are 2% more likely under the hyp
 
 A) When H1 is true, alpha = 0.05, and power = 0.80, it is almost as likely to observe one or more non-significant results (48.8%) as it is to observe only significant results (51.2%).
 B) When alpha = 0.05 and power = 0.80, it is extremely rare that you will find 3 significant results (0.0125%), regardless of whether H0 is true or H1 is true.
-C) When alpha = 0.05 and power = 0.80, 2 out of 3 statistically significant results is the most likely outcome overall (38.4%) when H1 is true. 
+C) When alpha = 0.05 and power = 0.80, 2 out of 3 statistically significant results is the most likely outcome of all possible outcomes (0 out of 3, 1 out of 3, 2 out of 3, or 3 out of 3), and occurs 38.4% of the time when H1 is true. 
 D) When alpha = 0.05 and power = 0.80, the probability of finding at least one false positive (a significant result when H0 is true) in three studies is 5%.
 
 **Q9:** Sometimes in lines of three studies, you’ll find a significant effect in one study, but there is no effect in the other two related studies. Assume the two related studies were not exactly the same in every way (e.g., you have changed the manipulation, or the procedure, or some of the questions). It could be that the two other studies did not work because of minor differences that had some effect you do not fully understand yet. Or it could be that the single significant result was a Type 1 error, and H0 was true in all three studies. Which statement below is correct, assuming a 5% Type 1 error rate and 80% power?

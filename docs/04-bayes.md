@@ -27,8 +27,7 @@ $$
 
 A Bayesian analysis of data requires specifying the prior. Here, we will continue our example based on a binomial probability, such as a coin flip. In the likelihood example, we compared two point hypotheses (e.g., *p* = 0.5 vs. *p* = 0.8). In Bayesian statistics, parameters are considered to be random variables, and the uncertainty or degree of belief with respect to the parameters is quantified by **probability distributions**.
 
-A binomial probability lies between 0 and 1. You could draw any probability density you want over 0 and 1, and turn it into a prior, but for good reasons (simplicity, mostly) a beta-prior is often used for binomial probabilities. The shape of the beta-prior depends on two parameters, $\alpha$ and $\beta$. Note that these are the same Greek letters as used for the Type 1 error rate and Type 2 error rate, but that is purely coincidental! The $\alpha$ and $\beta$ in binomial probabilities are unrelated to error rates, and the use of the same letters is mainly due to a
-lack of creativity among statisticians and the limited choice the alphabet gives us. It also does not help that $\beta$ is one of the parameters of the Beta distribution. Try to keep these different Beta’s apart! The probability density function is:
+A binomial probability lies between 0 and 1. You could draw any probability density you want over 0 and 1, and turn it into a prior, but for good reasons (simplicity, mostly) a beta-prior is often used for binomial probabilities. The shape of the beta-prior depends on two parameters, $\alpha$ and $\beta$. Note that these are the same Greek letters as used for the Type 1 error rate and Type 2 error rate, but that is purely coincidental! The $\alpha$ and $\beta$ in binomial probabilities are unrelated to error rates, and the use of the same letters is mainly due to a lack of creativity among statisticians and the limited choice the alphabet gives us. It also does not help that $\beta$ is one of the parameters of the Beta distribution. Try to keep these different Beta’s apart! The probability density function is:
 
 $$
 \int_{}^{}{\left( x,\ \alpha,\ \beta \right) = \ \frac{1}{B(\alpha,\beta)}}x^{\alpha - 1}{(1 - x)}^{\beta - 1}
@@ -78,7 +77,6 @@ Now that we have a distribution for the prior, and a distribution for the poster
 <p class="caption">(\#fig:bayes4)Plot for the prior, likelihood, and posterior.</p>
 </div>
 
-
 The Bayes Factor is used to quantify this increase in relative evidence. Let’s calculate the Bayes Factor for the hypothesis that the coin is fair for the newborn. The Bayes Factor is simply the value of the posterior distribution at *p* = 0.5, divided by the value of the prior distribution at *p* = 0.5:
 
 BF10 = Beta(*p* = 0.5, 11, 11)/Beta(*p* = 0.5, 1, 1) = 3.70/1 = 3.70
@@ -107,6 +105,8 @@ We see that for the newborn, *p* = 0.5 has become more probable, but so has *p* 
 We can now also see the difference between a likelihood inference approach, and a Bayesian inference approach. In likelihood inference, you can compare different values of *p* for the same likelihood curve (e.g., *p* = 0.5 vs *p* = 0.8) and calculate the likelihood ratio. In Bayesian inference, you can compare the difference between the prior and the posterior for the same value of *p*, and calculate the Bayes Factor.
 
 If you have never seen Bayes Factors before, you might find it difficult to interpret the numbers. As with any guideline (e.g., interpreting effect sizes as small, medium, and large) there is criticism on the use of benchmarks. On the other hand, you have to start somewhere in getting a feel for what Bayes Factors mean. A Bayes factor between 1 and 3 is considered ‘not worth more than a bare mention’, larger than 3 (or smaller than 1/3) is considered ‘substantial’, and larger than 10 (or smaller than 1/10) is considered ‘strong’. These labels refer to the increase in how much you believe a specific hypothesis, not in the posterior belief in that hypothesis. If you think extra-sensory perception is extremely implausible, a single study with a BF = 14 will increase your belief, but you will now think extra-sensory perception is pretty much extremely implausible.
+
+Bayes factors are often promoted as an alternative to *p*-values. One stated benefit is that they can provide support both for the alternative, as for the null [@dienes_using_2014]. However, the same can be achieved with frequentist equivalence tests, as we will see in the chapter on [equivalence testing](#equivalencetest), and inferences based on Bayes factors and equivalence tests typically lead to the same conclusions [@lakens_improving_2020]. Another reason that some people give to switch to Bayes factors instead of *p*-values is that, as we saw in the chapter on [*p*-values](#misconceptions), *p*-values are often misunderstood. However, not surprisingly, Bayes factors are at least as often misunderstood and misused [@wong_potential_2021]. Statistical inferences are hard, and thinking about probabilities is not something we get right by trusting our intuition. We need to train ourselves to draw correct inferences, and switching to a different statistic will not prevent misuse. 
 
 ## Bayesian Estimation {#bayesest}
 
@@ -281,10 +281,10 @@ The posterior mean is identical to the Frequentist mean, but this is only the ca
 
 **Q5**: Assume the outcome of 20 coin flips had been 18 heads. Change x to 18 in line 2 and run the script. Remember that the mean of the prior Beta(1,1) distribution is α/(α+β), or 1/(1+1) = 0.5. The Frequentist mean is simply x/n, or 18/20=0.9. Which statement is true?
 
-A) The frequentist mean is **higher** than the mean of the posterior, because the mean of the posterior is **closer** to the mean of the prior distribution.
-B) The frequentist mean is **lower** than the mean of the posterior, because the mean of the posterior is **closer** to the mean of the prior distribution.
-C) The frequentist mean is **higher** than the mean of the posterior, because the mean of the posterior is **further from** to the mean of the prior distribution.
-D) The frequentist mean is **lower** than the mean of the posterior, because the mean of the posterior is **further from** to the mean of the prior distribution.
+A) The frequentist mean is **higher** than the mean of the posterior, because by combining the prior with the data, the mean of the posterior is **closer** to the mean of the prior distribution.
+B) The frequentist mean is **lower** than the mean of the posterior, because by combining the prior with the data, the mean of the posterior is **closer** to the mean of the prior distribution.
+C) The frequentist mean is **higher** than the mean of the posterior, because by combining the prior with the data, the mean of the posterior is **further from** to the mean of the prior distribution.
+D) The frequentist mean is **lower** than the mean of the posterior, because by combining the prior with the data, the mean of the posterior is **further from** to the mean of the prior distribution.
 
 **Q6**: What is, today, your best estimate of the probability that the sun rises every day? Assume you were born with an uniform Beta(1,1) prior. The sun can either rise, or it does not. Assume you have seen the sun every day since you were born, which means there has been a continuous string of successes for every day you have been alive. It is ok to estimate the days you have been alive by just multiplying your age by 365 days. What is your best estimate of the probability that the sun will rise?
 

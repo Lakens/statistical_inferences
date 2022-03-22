@@ -11,8 +11,6 @@ options(scipen = 999)
 
 # Sequential Analysis {#sequential}
 
-NOT COMPLETED
-
 Repeatedly analyzing incoming data while data collection is in progress has many advantages. Researchers can stop the data collection at an interim analysis when they can reject the null hypothesis or the smallest effect size of interest, even if they would be willing to collect more data if needed, or if the results show there is an unexpected problem with the study (e.g., participants misunderstand the instructions or questions). One could easily argue that psychological researchers have an ethical obligation to repeatedly analyze accumulating data, given that continuing data collection whenever the desired level of confidence is reached, or whenever it is sufficiently clear that the expected effects are not present, is a waste of the time of participants and the money provided by taxpayers. In addition to this ethical argument, designing studies that make use of sequential analyses can be more efficient than when data is only analyzed a single time, when the maximum sample size a researcher is willing to collect has been reached. 
 
 Sequential analyses should not be confused with [**optional stopping**](##optionalstopping), which was discussed in the chapter on error control. In optional stopping, researchers use an unadjusted alpha level (e.g., 5%) to repeatedly analyze the data as it comes in, which can substantially inflate the Type 1 error rate. The critical difference with **sequential analysis** is that the Type 1 error rate is controlled. By lowering the alpha level at each look at the data, the overall Type I error rate can be controlled, much like a Bonferroni correction is used to prevent inflation of the Type 1 error rate for multiple comparisons. Indeed, the Bonferroni correction is a valid (but conservative) approach to control the error rate in sequential analyses [@wassmer_group_2016]. 
@@ -417,12 +415,12 @@ res <- getAnalysisResults(
 res
 ```
 
-Imagine we have performed a study planned to have at most 2 equally spaced looks at the data, where we perform a two-sided test with an alpha of 0.05, and we use a Pocock type alpha spending function, and we observe mean differences between the two conditions of at the last look. Based on a Pocock-like alpha spending function with three equally spaced looks the alpha level at each look for a two-sided *t*-test is `r format(seq_design$stageLevels[1]*2, nsmall = 4, digits = 4)`, and `r format(seq_design$stageLevels[2]*2, nsmall = 4, digits = 4)`. We can thus reject $H_0$ after look `r res$finalStage`. But we would also like to report an effect size, and adjusted *p* values and confidence intervals. 
+Imagine we have performed a study planned to have at most 2 equally spaced looks at the data, where we perform a two-sided test with an alpha of 0.05, and we use a Pocock type alpha spending function, and we observe mean differences between the two conditions of at the last look. Based on a Pocock-like alpha spending function with two equally spaced looks the alpha level for a two-sided *t*-test is `r format(seq_design$stageLevels[1]*2, nsmall = 4, digits = 4)`, and `r format(seq_design$stageLevels[2]*2, nsmall = 4, digits = 4)`. We can thus reject $H_0$ after look `r res$finalStage`. But we would also like to report an effect size, and adjusted *p* values and confidence intervals. 
 
 
 The results show that the action after look 1 was to continue data collection, and that we could reject $H_0$ at the second look. The unadjusted mean difference is provided in the row "Overall effect size" and at the final look this was `r round(res$.stageResults$effectSizes[2], 3)`. The adjusted mean difference is provided in the row "Median unbiased estimate" and is lower, and the adjusted confidence interval is in the row "Final confidence interval", giving the result `r round(res$medianUnbiasedEstimates[2], 3)`, 95% CI [`r round(res$finalConfidenceIntervalLowerBounds[2], 3)`, `r round(res$finalConfidenceIntervalUpperBounds[2], 3)`]. 
 
-The unadjusted *p* values for a one-sided tests are reported in the row "Overall p-value". The actual *p* values for our two-sided test would be twice as large, so `r res$.stageResults$overallPValues*2`. The adjusted *p*-value at the final look is provided in the row "Final p-value" and it is `r format(res$finalPValues[2], nsmall = 4, digits = 4)`. 
+The unadjusted *p* values for a one-sided tests are reported in the row "Overall p-value". The actual *p* values for our two-sided test would be twice as large, so `r round(res$.stageResults$overallPValues * 2, 4)`. The adjusted *p*-value at the final look is provided in the row "Final p-value" and it is `r format(res$finalPValues[2], nsmall = 4, digits = 4)`. 
 
 
 
