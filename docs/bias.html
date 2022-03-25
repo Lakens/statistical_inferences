@@ -10,6 +10,7 @@
 <meta name="generator" content="bookdown 0.25 with bs4_book()">
 <meta property="og:title" content="Chapter 13 Bias detection | Improving Your Statistical Inferences">
 <meta property="og:type" content="book">
+<meta property="og:url" content="https://lakens.github.io/statistical_inferences/bias.html">
 <meta property="og:description" content="Bias can be introduced throughout the research process. It is useful to prevent this or to detect it. Some researchers recommend a skeptical attitude towards any claim you read in the scientific...">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chapter 13 Bias detection | Improving Your Statistical Inferences">
@@ -18,6 +19,13 @@
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/kePrint-0.0.1/kePrint.js"></script><link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+<!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0MK2WTGRM3"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0MK2WTGRM3');
+    </script><link rel="shortcut icon" href="images/favicon.ico">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
     
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
@@ -128,7 +136,7 @@ Figure 13.2: Positive result rates for standard reports and Registered Reports. 
 <p>New methods to detect publication bias are continuously developed, and old methods become outdated (even though you can still see them appear in meta-analyses). One outdated method is known as <strong>fail-safe N</strong>. The idea was to calculate the number of non-significant results one would need to have in file-drawers before an observed meta-analytic effect size estimate would no longer be statistically different from 0. It is <a href="https://handbook-5-1.cochrane.org/chapter_10/10_4_4_3_fail_safe_n.htm">no longer recommended</a>, and Becker <span class="citation">(<a href="references.html#ref-becker_failsafe_2005" role="doc-biblioref">2005</a>)</span> writes "Given the other approaches that now exist for dealing with publication bias, the failsafe N should be abandoned in favor of other, more informative analyses". Currently, the only use fail-safe N has is as a tool to identify meta-analyses that are not state-of-the-art.</p>
 <p>Before we can explain a second method (Trim-and-Fill), it’s useful to explain a common way to visualize meta-analyses, known as a <strong>funnel plot</strong>. In a funnel plot, the x-axis is used to plot the effect size of each study, and the y-axis is used to plot the ‘precision’ of each effect size. Typically, the y-axis is used to plot the standard error of each effect size estimate. The larger the study, the more precise the effect size estimate, the smaller the standard error, and thus the higher up in the funnel plot the study will be, and an infinitely precise study (with a standard error of 0) would be at the top of y-axis.</p>
 <p>The script below simulates meta-analyses based nsims studies, and stores all the results needed need to examine bias detection tools. In the first section of the script, statistically significant results in the desired direction are simulated, and in the second part null results are generated, which are subsequently combined. The script generates a percentage of significant results as indicated by <code>pub.bias</code> - when set to 1, all results are significant. Currently, pu.bias is set to 0.05, as there is no true effect in the simulation (<code>m1</code> and <code>m2</code> are equal, so there is no difference between the groups), so only 5% false positives should be expected. Finally, the meta-analysis is perfomed, the results are printed, and a funnel plot is created.</p>
-<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.metafor-project.org">metafor</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/olafmersmann/truncnorm">truncnorm</a></span><span class="op">)</span>
 
@@ -330,7 +338,7 @@ Figure 13.10: Result of the p-curve analysis of the biased studies.
 </div>
 <p>The distribution of <em>p</em>-values clearly looks like it comes from a uniform distribution (as it indeed does), and the statistical test indicates we can reject a <em>p</em>-value distribution as steep or steeper as would be generated by a set of studies with 33% power, <em>p</em> &lt; 0.0001. The app also provides an estimate of the average power of the tests that generated the observed <em>p</em>-value distribution, 5%, which is indeed correct. Therefore, we can conclude these studies, even though many effects are statistically significant, are more in line with selective reporting of Type 1 errors, than with a <em>p</em>-value distribution that should be expected if there was a true effect that was studied with sufficient statistical power. The theory might still be true, but the set of studies we have analyzed here do not provide support for the theory.</p>
 <p>A similar meta-analytic technique is <em>p</em>-uniform*, which can also be used to estimate a bias-adjusted meta-analytic effect size estimate. Below, we see the output of the <em>p</em>-uniform* which estimates the bias-corrected effect size to be <em>d</em> = 0.0126, which is not statistically different from 0, <em>p</em> = 0.3857.</p>
-<div class="sourceCode" id="cb95"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">puniform</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/puniform/man/puniform.html">puniform</a></span><span class="op">(</span>m1i <span class="op">=</span> <span class="va">metadata</span><span class="op">$</span><span class="va">m1</span>, m2i <span class="op">=</span> <span class="va">metadata</span><span class="op">$</span><span class="va">m2</span>, n1i <span class="op">=</span> <span class="va">metadata</span><span class="op">$</span><span class="va">n1</span>, 
   n2i <span class="op">=</span> <span class="va">metadata</span><span class="op">$</span><span class="va">n2</span>, sd1i <span class="op">=</span> <span class="va">metadata</span><span class="op">$</span><span class="va">sd1</span>, sd2i <span class="op">=</span> <span class="va">metadata</span><span class="op">$</span><span class="va">sd2</span>, side <span class="op">=</span> <span class="st">"right"</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
@@ -356,7 +364,7 @@ Figure 13.10: Result of the p-curve analysis of the biased studies.
 ##     0.2701    0.0125   21.6025   &lt;.001    0.2456    0.2946   77.6031     0.945</code></pre>
 <p>An even more novel technique that also meta-analyzes the <em>p</em>-values from individual studies is <em>z</em>-curve, which is basically a meta-analysis of observed power <span class="citation">(<a href="references.html#ref-bartos_z-curve20_2020" role="doc-biblioref">Bartoš &amp; Schimmack, 2020</a>; <a href="references.html#ref-brunner_estimating_2020" role="doc-biblioref">Brunner &amp; Schimmack, 2020</a>; <a href="references.html#ref-sotola_garbage_2022" role="doc-biblioref">Sotola, 2022</a>)</span>. Like a traditional meta-analysis, <em>z</em>-curve transforms observed test results (<em>p</em>-values) into <em>z</em>-scores. Using mixtures of normal distributions centered at means 0 to 6, <em>z</em>-curve aims to estimate the average power of the studies. The newest version of <em>z</em>-curve then calculates the <em>observed discovery rate</em> (ODR: the percentage of significant results, or the observed power), the <em>expected discovery rate</em> (EDR: the proportion of the area under the curve on the right side of the significance criterion) and the expected replication rate (ERR: the expected proportion of successfully replicated significant studies from all significant studies). <em>Z</em>-curve is able to correct for selection bias for positive results (under specific assumptions), and can estimate the EDR and ERR using only the significant <em>p</em>-values.</p>
 <p>To examine the presence of bias, it is preferable to submit non-significant and significant <em>p</em>-values to a <em>z</em>-curve analysis, even if only the significant <em>p</em>-values are used to produce estimates. Publication bias can then be examined by comparing the ODR to the EDR. Since our simulated studies have bias, the <em>z</em>-curve analysis should be able to indicate this.</p>
-<div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb93"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Perform the z-curve analysis using the z-curve package</span>
 <span class="va">z_res</span> <span class="op">&lt;-</span> <span class="fu">zcurve</span><span class="fu">::</span><span class="fu"><a href="https://fbartos.github.io/zcurve/reference/zcurve.html">zcurve</a></span><span class="op">(</span>p <span class="op">=</span> <span class="va">metadata</span><span class="op">$</span><span class="va">pvalues</span>, method <span class="op">=</span> <span class="st">"EM"</span>, bootstrap <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">z_res</span>, all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
@@ -376,7 +384,7 @@ Figure 13.10: Result of the p-curve analysis of the biased studies.
 ## Model converged in 38 + 205 iterations
 ## Fitted using 96 p-values. 100 supplied, 96 significant (ODR = 0.96, 95% CI [0.89, 0.99]).
 ## Q = -6.69, 95% CI[-23.63, 11.25]</code></pre>
-<div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb95"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">z_res</span>, annotation <span class="op">=</span> <span class="cn">TRUE</span>, CI <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="13-bias_files/figure-html/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;"></div>
 <p>We see that 96 out of 100 studies were significant, which makes the observed discovery rate (ODR), or observed power (across all these studies with different sample sizes) 0.96, 95% CI[0.89;0.99]. The expected discovery rate (EDR) is only 0.053, which differs statistically differ from the observed discovery rate, as indicated by the fact that the confidence interval of the EDR does not overlap with the ODR of 0.96. This means there is clear indication of selection bias based on the <em>z</em>-curve analysis. The expected replicability rate for these studies is only 0.052, which is in line with the expectation that we will only observe 5% Type 1 errors. Thus, even though we only entered significant <em>p</em>-values, <em>z</em>-curve analysis correctly suggests that we should not expect these results to replicate.</p>
@@ -422,11 +430,11 @@ Figure 13.10: Result of the p-curve analysis of the biased studies.
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Improving Your Statistical Inferences</strong>" was written by Daniel Lakens. It was last built on 2022-03-22.</p>
+    <p>"<strong>Improving Your Statistical Inferences</strong>" was written by Daniel Lakens. It was last built on 2022-03-25.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
-    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+    <p><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"></a></p>
   </div>
 
 </div></div>

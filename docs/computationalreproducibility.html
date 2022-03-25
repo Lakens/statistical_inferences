@@ -10,6 +10,7 @@
 <meta name="generator" content="bookdown 0.25 with bs4_book()">
 <meta property="og:title" content="Chapter 14 Computational Reproducibility | Improving Your Statistical Inferences">
 <meta property="og:type" content="book">
+<meta property="og:url" content="https://lakens.github.io/statistical_inferences/computationalreproducibility.html">
 <meta property="og:description" content="Technology has greatly improved how scientists work. The internet has made it easy to share information – including data, materials, and code – and new software and online platforms have emerged...">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chapter 14 Computational Reproducibility | Improving Your Statistical Inferences">
@@ -18,6 +19,13 @@
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/kePrint-0.0.1/kePrint.js"></script><link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+<!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0MK2WTGRM3"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0MK2WTGRM3');
+    </script><link rel="shortcut icon" href="images/favicon.ico">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
     
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
@@ -384,10 +392,10 @@ manually typing in these two lines.</p>
 the start line and the end line of the R code chunk. Note that
 there is not hard return between ‘str’ and ‘oop.txt’ – when copy-pasting this,
 you probably need to correct this.</p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="computationalreproducibility.html#cb100-1" aria-hidden="true" tabindex="-1"></a>stroop_data <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"https://raw.githubusercontent.com/Lakens/Stroop/master/stroop.txt"</span>,</span>
-<span id="cb100-2"><a href="computationalreproducibility.html#cb100-2" aria-hidden="true" tabindex="-1"></a><span class="at">sep =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">t"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>)<span class="st">`</span></span>
-<span id="cb100-3"><a href="computationalreproducibility.html#cb100-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb100-4"><a href="computationalreproducibility.html#cb100-4" aria-hidden="true" tabindex="-1"></a><span class="at">write.table(stroop_data, file = "stroop.csv", quote = F, row.names = F)</span></span></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="computationalreproducibility.html#cb96-1" aria-hidden="true" tabindex="-1"></a>stroop_data <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"https://raw.githubusercontent.com/Lakens/Stroop/master/stroop.txt"</span>,</span>
+<span id="cb96-2"><a href="computationalreproducibility.html#cb96-2" aria-hidden="true" tabindex="-1"></a><span class="at">sep =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">t"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>)<span class="st">`</span></span>
+<span id="cb96-3"><a href="computationalreproducibility.html#cb96-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb96-4"><a href="computationalreproducibility.html#cb96-4" aria-hidden="true" tabindex="-1"></a><span class="at">write.table(stroop_data, file = "stroop.csv", quote = F, row.names = F)</span></span></code></pre></div>
 <p>After copy-pasting the text, the code section should look like this (again, be
 aware of any difficulties when copy-pasting text from a PDF file into RStudio):</p>
 <div class="inline-figure"><img src="images/6d87836ecdcc9b06891059acc43930a2.png" width="100%" style="display: block; margin: auto;"></div>
@@ -528,7 +536,7 @@ of the Congruent reaction times is calculated, and rounded to 2 digits. You can
 see this number in the text.</p>
 <p>Learning to program takes time. You can see some things are quite tricky to
 program. For example, the code:</p>
-<div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">ttest_result</span><span class="op">$</span><span class="va">p.value</span> <span class="op">&gt;</span> <span class="fl">0.001</span>,<span class="st">" = "</span>, <span class="st">" &lt; "</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">ttest_result</span><span class="op">$</span><span class="va">p.value</span> <span class="op">&gt;</span> <span class="fl">0.001</span>, <span class="fu"><a href="https://rdrr.io/r/base/formatc.html">formatC</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">ttest_result</span><span class="op">$</span><span class="va">p.value</span>,
  digits<span class="op">=</span><span class="fl">3</span><span class="op">)</span>, digits<span class="op">=</span><span class="fl">3</span>, format<span class="op">=</span><span class="st">"f"</span><span class="op">)</span>, <span class="st">"0.001"</span><span class="op">)</span></code></pre></div>
@@ -724,11 +732,11 @@ histogram for the reaction times in the Congruent condition. Give it a try.</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Improving Your Statistical Inferences</strong>" was written by Daniel Lakens. It was last built on 2022-03-22.</p>
+    <p>"<strong>Improving Your Statistical Inferences</strong>" was written by Daniel Lakens. It was last built on 2022-03-25.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
-    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+    <p><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"></a></p>
   </div>
 
 </div></div>

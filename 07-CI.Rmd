@@ -181,7 +181,7 @@ When we rewrite the formula used for the confidence interval to $\sigma/\sqrt(1/
 
 ## Capture Percentages
 
-It can be difficult to understand why a 95% confidence interval does not provide us with the interval where 95% of future means will fall. The percentage of means that falls within a single confidence interval is called the **capture percentage**. In Figure \@ref(fig:metaci) we see two randomly simulated studies with the same sample size from the same population. The true effect size in both studies is 0, and we see that the 95% confidence intervals for both studies contain the true population value of 0. However, the two confidence intervals cover quite different ranges of effect sizes, with the confidence interval in Study 1 ranging from -0.07 to 0.48, and the confidence interval in Study 2 ranging from -0.50 to 0.06. It can not be true that in the future, 95% of the effect sizes we should expect will fall between -0.07 to 0.048, **and** 95% of the effect sizes we should expect will fall between -0.50 to 0.06. 
+It can be difficult to understand why a 95% confidence interval does not provide us with the interval where 95% of future means will fall. The percentage of means that falls within a single confidence interval is called the **capture percentage**. A capture percentage is not something we would ever use to make inferences about data, but it is useful to learn about capture percentages to prevent misinterpreting confidence intervals. In Figure \@ref(fig:metaci) we see two randomly simulated studies with the same sample size from the same population. The true effect size in both studies is 0, and we see that the 95% confidence intervals for both studies contain the true population value of 0. However, the two confidence intervals cover quite different ranges of effect sizes, with the confidence interval in Study 1 ranging from -0.07 to 0.48, and the confidence interval in Study 2 ranging from -0.50 to 0.06. It can not be true that in the future, 95% of the effect sizes we should expect will fall between -0.07 to 0.048, **and** 95% of the effect sizes we should expect will fall between -0.50 to 0.06. 
 
 ```{r, metaci, echo=FALSE, fig.cap="Meta-analysis of 2 simulated studies from the same population."}
 set.seed(15)
@@ -290,7 +290,7 @@ B) The larger the sample size, the smaller the confidence intervals. The sample 
 C) The larger the sample size, the larger the confidence intervals, and the closer the sample means are to the true population mean.
 D) The larger the sample size, the smaller the confidence intervals, and the closer the sample means are to the true population mean.
 
-**Q3**: Which of the studies 1 to 4 in the forest plot below were statistically significant?
+**Q3**: In the forest plot below, we see the effect size (indicated by the square) and the confidence interval of the effect size (indicated by the line around the effect). Which of the studies 1 to 4 in the forest plot below were statistically significant?
 
 ```{r, metaQ, echo=FALSE, fig.cap="Meta-analysis of 4 studies"}
 set.seed(229)
@@ -325,9 +325,9 @@ D) Studies 1, 2 and 4
 
 **Q4**: The light black diamond in the bottom row is the fixed effects meta-analytic effect size estimate. Instead of using a black horizontal line, the upper limit and lower limit of the confidence interval are indicated by the left and right points of the diamond. The center of the diamond is the meta-analytic effect size estimate. A meta-analysis calculates the effect size by combining and weighing all studies. Which statement is true?
 
-A) The confidence interval for a meta-analytic effect size estimate is always wider than that for a single study, because of the additional variation between studies.
-B) The confidence interval for a meta-analytic effect size estimate is always more narrow than that for a single study, because of the combined sample size of all studies included in the meta-analysis.
-C) The confidence interval for a meta-analytic effect size estimate does not become wider or more narrow compared to the confidence interval of a single study, it just becomes closer to the true population parameter.
+A) The confidence interval for a fixed effect meta-analytic effect size estimate is always wider than that for a single study, because of the additional variation between studies.
+B) The confidence interval for a fixed effect meta-analytic effect size estimate is always more narrow than that for a single study, because of the combined sample size of all studies included in the meta-analysis.
+C) The confidence interval for a fixed effect meta-analytic effect size estimate does not become wider or more narrow compared to the confidence interval of a single study, it just becomes closer to the true population parameter.
 
 **Q5**: Let’s assume a researcher calculates a mean of 7.5, and a standard deviation of 6.3, in a sample of 20 people. The critical value for a *t*-distribution with df = 19 is 2.093. Calculate the upper limit of the confidence interval around the mean using the formula below. Is it:
 $$
@@ -339,7 +339,7 @@ B) 2.95
 C) 8.91
 D) 10.45
 
-Copy the code below into R and run the code. It will generate plots like the one in Figure \@ref(fig:cioverlap). Run the entire script as often as you want (notice the variability in the *p*-values due to the relatively low power in the test!), to answer the following question. The *p*-value in the plot will tell you if the difference is statistically significant, and what the *p*-value is.
+Copy the code below into R and run the code. It will generate plots like the one in Figure \@ref(fig:cioverlap). Run the entire script as often as you want (notice the variability in the *p*-values due to the relatively low power in the test!), to answer the following question. The *p*-value in the plot will tell you if the difference is statistically significant, and what the *p*-value is. Run the simulation until you find a *p*-value close to *p* = 0.05.
 
 ```{r, evaluate=FALSE}
 x <- rnorm(n = 50, mean = 3, sd = 5) # get sample group 1
@@ -368,18 +368,18 @@ segments(1:1, d$lower[1:2], 1:2, d$lower[1:2], lty = 3)
 text(3, 1, paste("P-value", round(t.test(x, y)$p.value, digits = 3)))
 ```
 
-**Q6**: How much do two 95% confidence intervals around individual means from independent groups overlap when the effect is only just statistically significant (*p* ≈ 0.05) at an alpha of 0.05?
+**Q6**: How much do two 95% confidence intervals around individual means from independent groups overlap when the mean difference between the two means is only just statistically significant (*p* ≈ 0.05 at an alpha of 0.05)?
 
-A) When the 95% confidence interval around one mean does not contain the mean of the other group, the groups differ significantly from each other.
-B) When the 95% confidence interval around one mean does not overlap with the 95% confidence interval of the mean of the other group, the groups differ significantly from each other.
-C) When the overlap between two confidence intervals is approximately half of one side of the confidence interval, the groups differ significantly from each other.
+A) When the 95% confidence interval around one mean does not contain the mean of the other group, the groups always differ significantly from each other.
+B) When the 95% confidence interval around one mean does not overlap with the 95% confidence interval of the mean of the other group, the groups always differ significantly from each other.
+C) When the overlap between the two confidence intervals around each mean overlap a little bit (the upper bound of the CI overlaps with the lower quarter of the confidence interval around the other mean) the groups differ significantly from each other at approximately *p* = 0.05.
 D) There is no relationship between the overlap of the 95% confidence intervals around two independent means, and the *p*-value for the difference between these groups.
 
 Note that this visual overlap rule can only be used when the comparison is made between independent groups, not between dependent groups! The 95% confidence interval around effect sizes is therefore typically more easily interpretable in relation to the significance of a test.
 
 Let’s experience this through simulation. The simulation in the R script below generates a large number of additional samples, after the initial one that was plotted. The simulation returns the number of CI that contains the mean (which should be 95% in the long run). The simulation also returns the % of means from future studies that fall within the 95% of the original study, or the capture percentage. It differs from (and is often lower, but sometimes higher, than) the confidence interval.
 
-```{r, evaluate = FALSE}
+```{r, eval = FALSE}
 library(ggplot2)
 
 n <- 20 # set sample size
@@ -439,7 +439,7 @@ cat("The capture percentage for the plotted study, or the % of values within
     "is:", 100 * length(mean_sim) / nsims, "%")
 ```
 
-**Q7**: Run the simulations multiple times. Look at the output you will get in the R console. For example: “95.077 % of the 95% confidence intervals contained the true mean” and “The capture percentage for the plotted study, or the % of values within the observed confidence interval from 88.17208 to 103.1506 is: 82.377 %”. While running the simulations multiple times, look at the confidence interval around the sample mean, and relate this to the capture percentage. Which statement is true?
+**Q7**: Run the simulations multiple times. Look at the output you will get in the R console. For example: “95.077 % of the 95% confidence intervals contained the true mean” and “The capture percentage for the plotted study, or the % of values within the observed confidence interval from 88.17208 to 103.1506 is: 82.377 %”. While running the simulations multiple times, look at the confidence interval around the sample mean, and relate this to the capture percentage. Run the simulation until you have seen a range of means closer and further away from the true mean in the simulation (100). Which statement is true?
 
 A) The farther the sample mean is from the true population mean, the lower the capture percentage.
 B) The farther the sample mean is from the true population mean, the higher the capture percentage.
@@ -495,7 +495,7 @@ B) 95% CI [0.82; 1.28]
 C) 95% CI [0.76; 1.46]
 D) 95% CI [1.52; 2.92]
 
-**Q11**: If we want the 95% CI around the standard deviation of 1 to be at most 0.05 away from the assumed population standard deviation, how large should our number of observations be? Note that this means we want the 95% CI to fall within 0.95 and 1.05. But notice from the calculations above that the distribution of the sample standard deviations is not symmetrical. Standard deviations can’t be smaller than 0 (because they are the square rooted variance). So in practice the question is: What is the smallest number of observations for the upper 95% CI to be smaller than 1.05? Replace n with each of the values in the answer options.
+**Q11**: If we want the 95% CI around the standard deviation of 1 to be at most 0.05 away from the assumed population standard deviation, how large should our number of observations be? Note that this means we want the 95% CI to fall within 0.95 and 1.05. But notice from the calculations above that the distribution of the sample standard deviations is not symmetrical. Standard deviations can’t be smaller than 0 (because they are the square rooted variance). So in practice the question is: What is the **smallest** number of observations for the upper 95% CI to be smaller than 1.05? Replace n with each of the values in the answer options.
 
 A) n = 489
 B) n = 498

@@ -60,34 +60,34 @@ To start, researchers should consider what their smallest effect size of interes
 <caption>(\#tab:table-effect-eval)Overview of possible ways to evaluate which effect sizes are interesting.</caption>
  <thead>
   <tr>
-   <th style="text-align:left;"> Type of justification </th>
-   <th style="text-align:left;"> When is this justification applicable? </th>
+   <th style="text-align:left;"> Type of evaluation </th>
+   <th style="text-align:left;"> Which question should a researcher ask? </th>
   </tr>
  </thead>
 <tbody>
   <tr>
-   <td style="text-align:left;"> Measure entire population </td>
-   <td style="text-align:left;"> A researcher can specify the entire population, it is finite, and it is possible to measure (almost) every entity in the population. </td>
+   <td style="text-align:left;"> Smallest effect size of interest </td>
+   <td style="text-align:left;"> What is the smallest effect size that is considered theoretically or practically interesting? </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Resource constraints </td>
-   <td style="text-align:left;"> Limited resources are the primary reason for the choice of the sample size a researcher can collect. </td>
+   <td style="text-align:left;"> The minimal statistically detectable effect </td>
+   <td style="text-align:left;"> Given the test and sample size, what is the critical effect size that can be statistically significant? </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Accuracy </td>
-   <td style="text-align:left;"> The research question focusses on the size of a parameter, and a researcher collects sufficient data to have an estimate with a desired level of accuracy. </td>
+   <td style="text-align:left;"> Expected effect size </td>
+   <td style="text-align:left;"> Which effect size is expected based on theoretical predictions or previous research? </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> A-priori power analysis </td>
-   <td style="text-align:left;"> The research question has the aim to test whether certain effect sizes can be statistically rejected with a desired statistical power. </td>
+   <td style="text-align:left;"> Width of confidence interval </td>
+   <td style="text-align:left;"> Which effect sizes are excluded based on the expected width of the confidence interval around the effect size? </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Heuristics </td>
-   <td style="text-align:left;"> A researcher decides upon the sample size based on a heuristic, general rule or norm that is described in the literature, or communicated orally. </td>
+   <td style="text-align:left;"> Sensitivity power analysis </td>
+   <td style="text-align:left;"> Across a range of possible effect sizes, which effects does a design have sufficient power to detect when performing a hypothesis test? </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> No justification </td>
-   <td style="text-align:left;"> A researcher has no reason to choose a specific sample size, or does not have a clearly specified inferential goal and wants to communicate this honestly. </td>
+   <td style="text-align:left;"> Distribution of effect sizes in a research area </td>
+   <td style="text-align:left;"> What is the empirical range of effect sizes in a specific research area and which effects are a priori unlikely to be observed? </td>
   </tr>
 </tbody>
 </table>
@@ -132,34 +132,30 @@ Even if a researcher believes it is worth collecting data because a future meta-
 <caption>(\#tab:table-pow-rec)Overview of recommendations when reporting a sample size justification based on resource constraints.</caption>
  <thead>
   <tr>
-   <th style="text-align:left;"> Type of justification </th>
-   <th style="text-align:left;"> When is this justification applicable? </th>
+   <th style="text-align:left;"> What to address </th>
+   <th style="text-align:left;"> How to address it? </th>
   </tr>
  </thead>
 <tbody>
   <tr>
-   <td style="text-align:left;"> Measure entire population </td>
-   <td style="text-align:left;"> A researcher can specify the entire population, it is finite, and it is possible to measure (almost) every entity in the population. </td>
+   <td style="text-align:left;"> Will a future meta-analysis be performed? </td>
+   <td style="text-align:left;"> Consider the plausibility that sufficient highly similar studies will be performed in the future to make a meta-analysis possible. </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Resource constraints </td>
-   <td style="text-align:left;"> Limited resources are the primary reason for the choice of the sample size a researcher can collect. </td>
+   <td style="text-align:left;"> Will a decision or claim be made regardless of the amount of data that is available? </td>
+   <td style="text-align:left;"> If a decision is made then any data that is collected will reduce errorates. Consider using a compromise power analysis to determine Type I and Type II error rates. Are the costs worth the reduction in errors? </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Accuracy </td>
-   <td style="text-align:left;"> The research question focusses on the size of a parameter, and a researcher collects sufficient data to have an estimate with a desired level of accuracy. </td>
+   <td style="text-align:left;"> What is the critical effect size? </td>
+   <td style="text-align:left;"> Report and interpret the critical effect size, with a focus on whether a expected effect sizes could yield significant results. If not indicate the interpretation of the data will not be based on p values. </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> A-priori power analysis </td>
-   <td style="text-align:left;"> The research question has the aim to test whether certain effect sizes can be statistically rejected with a desired statistical power. </td>
+   <td style="text-align:left;"> What is the width of the confidence interval? </td>
+   <td style="text-align:left;"> Report and interpret the width of the confidence interval. What will an estimate with this much uncertainty be useful for? If the null hypothesis is true, would rejecting effects outside of the confidence interval be worthwhile (ignoring how a design might have low power to actually test against these values)? </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Heuristics </td>
-   <td style="text-align:left;"> A researcher decides upon the sample size based on a heuristic, general rule or norm that is described in the literature, or communicated orally. </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> No justification </td>
-   <td style="text-align:left;"> A researcher has no reason to choose a specific sample size, or does not have a clearly specified inferential goal and wants to communicate this honestly. </td>
+   <td style="text-align:left;"> Which effect sizes will a design have decent power to detect? </td>
+   <td style="text-align:left;"> Report a sensitivity power analysis, and report the effect sizes that can be detected across a range of desired power levels (e.g., 80%, 90%, and 95%) or plot a sensitivity analysis. </td>
   </tr>
 </tbody>
 </table>
@@ -229,34 +225,34 @@ The reproducible report needs to be accompanied by justifications for the choice
 <caption>(\#tab:table-pow-rec-2)Overview of recommendations when reporting an a-priori power analysis.</caption>
  <thead>
   <tr>
-   <th style="text-align:left;"> Type of justification </th>
-   <th style="text-align:left;"> When is this justification applicable? </th>
+   <th style="text-align:left;"> What to take into account? </th>
+   <th style="text-align:left;"> How to take it into account? </th>
   </tr>
  </thead>
 <tbody>
   <tr>
-   <td style="text-align:left;"> Measure entire population </td>
-   <td style="text-align:left;"> A researcher can specify the entire population, it is finite, and it is possible to measure (almost) every entity in the population. </td>
+   <td style="text-align:left;"> List all primary analyses that are planned. </td>
+   <td style="text-align:left;"> Specify all planned primary analyses that test hypotheses for which Type I and Type II error rates should be controlled. </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Resource constraints </td>
-   <td style="text-align:left;"> Limited resources are the primary reason for the choice of the sample size a researcher can collect. </td>
+   <td style="text-align:left;"> Specify the alpha level for each analysis </td>
+   <td style="text-align:left;"> List and justify the Type I error rate for each analysis. Make sure to correct for multiple comparisons where needed. </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Accuracy </td>
-   <td style="text-align:left;"> The research question focusses on the size of a parameter, and a researcher collects sufficient data to have an estimate with a desired level of accuracy. </td>
+   <td style="text-align:left;"> What is the desired power? </td>
+   <td style="text-align:left;"> List and justify the desired power (or Type II error rate) for each analysis. </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> A-priori power analysis </td>
-   <td style="text-align:left;"> The research question has the aim to test whether certain effect sizes can be statistically rejected with a desired statistical power. </td>
+   <td style="text-align:left;"> For each power analysis, specify the effect size metric, the effect size, and the justification for powering for this effect size. </td>
+   <td style="text-align:left;"> Report the effect size metric (e.g., Cohen's d, Cohen's f), the effect size (e.g., 0.3). and the justification for the effect size, and whether it is based is based on a smallest effect size of interest, a meta-analytic effect size estimate, the estimate of a single previous study, or some other source. </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Heuristics </td>
-   <td style="text-align:left;"> A researcher decides upon the sample size based on a heuristic, general rule or norm that is described in the literature, or communicated orally. </td>
+   <td style="text-align:left;"> Consider the possibility that the null hypothesis is true. </td>
+   <td style="text-align:left;"> Perform a power analysis for the test that is planned to examine the absence of a meaningful effect (e.g., power for an equivalence test). </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> No justification </td>
-   <td style="text-align:left;"> A researcher has no reason to choose a specific sample size, or does not have a clearly specified inferential goal and wants to communicate this honestly. </td>
+   <td style="text-align:left;"> Make sure the power analysis is reproducible. </td>
+   <td style="text-align:left;"> Include the code used to run the power analysis, or print a report containing the details about the power analyses that has been performed. </td>
   </tr>
 </tbody>
 </table>
@@ -355,34 +351,22 @@ Third, the meta-analytic effect size estimate should not be biased. Check if the
 <caption>(\#tab:tablemetajust)Overview of recommendations when justifying the use of a meta-analytic effect size estimate for a power analysis.</caption>
  <thead>
   <tr>
-   <th style="text-align:left;"> Type of justification </th>
-   <th style="text-align:left;"> When is this justification applicable? </th>
+   <th style="text-align:left;"> What to take into account </th>
+   <th style="text-align:left;"> How to take it into account? </th>
   </tr>
  </thead>
 <tbody>
   <tr>
-   <td style="text-align:left;"> Measure entire population </td>
-   <td style="text-align:left;"> A researcher can specify the entire population, it is finite, and it is possible to measure (almost) every entity in the population. </td>
+   <td style="text-align:left;"> Are the studies in the meta-analysis similar? </td>
+   <td style="text-align:left;"> Are the studies in the meta-analyses very similar in design, measures, and the population to the study you are planning? Evaluate the generalizability of the effect size estimate to your study. </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Resource constraints </td>
-   <td style="text-align:left;"> Limited resources are the primary reason for the choice of the sample size a researcher can collect. </td>
+   <td style="text-align:left;"> Are the studies in the meta-analysis homogeneous? </td>
+   <td style="text-align:left;"> Is there heterogeneity in the meta-analysis? If so, use the meta-analytic effect size estimate of the most relevant homogenous subsample. </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Accuracy </td>
-   <td style="text-align:left;"> The research question focusses on the size of a parameter, and a researcher collects sufficient data to have an estimate with a desired level of accuracy. </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> A-priori power analysis </td>
-   <td style="text-align:left;"> The research question has the aim to test whether certain effect sizes can be statistically rejected with a desired statistical power. </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Heuristics </td>
-   <td style="text-align:left;"> A researcher decides upon the sample size based on a heuristic, general rule or norm that is described in the literature, or communicated orally. </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> No justification </td>
-   <td style="text-align:left;"> A researcher has no reason to choose a specific sample size, or does not have a clearly specified inferential goal and wants to communicate this honestly. </td>
+   <td style="text-align:left;"> Is the effect size estimate unbiased? </td>
+   <td style="text-align:left;"> Did the original study report bias detection tests, and was there bias? If so, it might be wise to use a more conservative effect size estimate, based on bias correction techniques while acknowledging these corrected effect size estimates might not represent the true meta-analytic effect size estimate. </td>
   </tr>
 </tbody>
 </table>
@@ -416,34 +400,22 @@ To summarize, an effect size from a previous study in an a-priori power analysis
 <caption>(\#tab:table-es-just)Overview of recommendations when justifying the use of an effect size estimate from a single study.</caption>
  <thead>
   <tr>
-   <th style="text-align:left;"> Type of justification </th>
-   <th style="text-align:left;"> When is this justification applicable? </th>
+   <th style="text-align:left;"> What to take into account </th>
+   <th style="text-align:left;"> How to take it into account? </th>
   </tr>
  </thead>
 <tbody>
   <tr>
-   <td style="text-align:left;"> Measure entire population </td>
-   <td style="text-align:left;"> A researcher can specify the entire population, it is finite, and it is possible to measure (almost) every entity in the population. </td>
+   <td style="text-align:left;"> Is the study sufficiently similar? </td>
+   <td style="text-align:left;"> Consider if there are differences between the studies in terms of the population, the design, the manipulations, the measures, or other factors that should lead one to expect a different effect size. </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Resource constraints </td>
-   <td style="text-align:left;"> Limited resources are the primary reason for the choice of the sample size a researcher can collect. </td>
+   <td style="text-align:left;"> Is there a risk of bias? </td>
+   <td style="text-align:left;"> Evaluate the possibility that if the effect size estimate had been smaller you would not have used it (or it would not have been published). Examine the difference when entering the reported, and a bias corrected, effect size estimate in a power analysis. </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Accuracy </td>
-   <td style="text-align:left;"> The research question focusses on the size of a parameter, and a researcher collects sufficient data to have an estimate with a desired level of accuracy. </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> A-priori power analysis </td>
-   <td style="text-align:left;"> The research question has the aim to test whether certain effect sizes can be statistically rejected with a desired statistical power. </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Heuristics </td>
-   <td style="text-align:left;"> A researcher decides upon the sample size based on a heuristic, general rule or norm that is described in the literature, or communicated orally. </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> No justification </td>
-   <td style="text-align:left;"> A researcher has no reason to choose a specific sample size, or does not have a clearly specified inferential goal and wants to communicate this honestly. </td>
+   <td style="text-align:left;"> How large is the uncertainty? </td>
+   <td style="text-align:left;"> Studies with a small number of observations have large uncertainty. Consider the possibility of using a more conservative effect size estimate to reduce the possibility of an underpowered study for the true effect size (such as a safeguard power analysis). </td>
   </tr>
 </tbody>
 </table>
@@ -555,34 +527,22 @@ A compromise power analysis requires a researcher to specify the sample size. Th
 <caption>(\#tab:table-compromise-just)Overview of recommendations when justifying error rates based on a compromise power analysis.</caption>
  <thead>
   <tr>
-   <th style="text-align:left;"> Type of justification </th>
-   <th style="text-align:left;"> When is this justification applicable? </th>
+   <th style="text-align:left;"> What to take into account </th>
+   <th style="text-align:left;"> How to take it into account? </th>
   </tr>
  </thead>
 <tbody>
   <tr>
-   <td style="text-align:left;"> Measure entire population </td>
-   <td style="text-align:left;"> A researcher can specify the entire population, it is finite, and it is possible to measure (almost) every entity in the population. </td>
+   <td style="text-align:left;"> What is the justification for the sample size? </td>
+   <td style="text-align:left;"> Specify why a specific sample size is collected (e.g., based on resource constraints or other factors that determined the sample size). </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Resource constraints </td>
-   <td style="text-align:left;"> Limited resources are the primary reason for the choice of the sample size a researcher can collect. </td>
+   <td style="text-align:left;"> What is the justification for the effect size? </td>
+   <td style="text-align:left;"> Is the effect size based on a smallest effect size of interest or an expected effect size? </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Accuracy </td>
-   <td style="text-align:left;"> The research question focusses on the size of a parameter, and a researcher collects sufficient data to have an estimate with a desired level of accuracy. </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> A-priori power analysis </td>
-   <td style="text-align:left;"> The research question has the aim to test whether certain effect sizes can be statistically rejected with a desired statistical power. </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Heuristics </td>
-   <td style="text-align:left;"> A researcher decides upon the sample size based on a heuristic, general rule or norm that is described in the literature, or communicated orally. </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> No justification </td>
-   <td style="text-align:left;"> A researcher has no reason to choose a specific sample size, or does not have a clearly specified inferential goal and wants to communicate this honestly. </td>
+   <td style="text-align:left;"> What is the desired ratio of Type I vs Type II error rates? </td>
+   <td style="text-align:left;"> Weigh the relative costs of a Type I and a Type II error by carefully evaluating the consequences of each type of error. </td>
   </tr>
 </tbody>
 </table>
