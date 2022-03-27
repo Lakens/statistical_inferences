@@ -1,7 +1,5 @@
 
 
-
-
 # Equivalence Testing and Interval Hypotheses {#equivalencetest}
 
 Most scientific studies are designed to test the prediction that an effect or a difference exists. Does a new intervention work? Is there a relationship between two variables? These studies are analyzed with a commonly analyzed with a null-hypothesis significance test. When a statistically significant *p*-value is observed, the null-hypothesis can be rejected, and researchers claim that the intervention works, or that there is a relationship between two variables. But if the *p*-value is not statistically significant, researcher very often draw a logically incorrect conclusion: They conclude there is no effect based on *p* > 0.05. 
@@ -278,7 +276,7 @@ In Bayesian estimation, one way to argue for the absence of a meaningful effect 
 
 If the prior used by Kruschke was perfectly uniform, and the ROPE procedure and an equivalence test used the same confidence interval (e.g., 90%), the two tests would yield  identical results. There would only be philosophical differences in how the numbers are interpreted. The BEST package in R that can be used to perform the ROPE procedure by default uses a ‘broad’ prior, and therefore results of the ROPE procedure and an equivalence test are not exactly the same, but they are very close. One might even argue the two tests are 'practically equivalent'. In the R code below random normally distributed data for two conditions is generated (with means of 0 and a standard deviation of 1) and the ROPE procedure and a TOST equivalence test are performed. 
 
-<img src="09-equivalencetest_files/figure-html/unnamed-chunk-7-1.png" width="100%" style="display: block; margin: auto;" /><img src="09-equivalencetest_files/figure-html/unnamed-chunk-7-2.png" width="100%" style="display: block; margin: auto;" />
+<img src="09-equivalencetest_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;" /><img src="09-equivalencetest_files/figure-html/unnamed-chunk-6-2.png" width="100%" style="display: block; margin: auto;" />
 
 The 90% HDI ranges from -0.06 to 0.39, with an estimated mean based on the prior and the data of 0.164. The HDI falls completely between the upper and the lower bound of the equivalence range, and therefore values more extreme than -0.5 or 0.5 are deemed implausible. The 95% CI ranges from -0.07 to 0.36 with an observed mean difference of 0.15. We see that the numbers are not identical, because in Bayesian estimation the observed values are combined with a prior, and the mean estimate is not purely based on the data. But the results are very similar, and will in most cases lead to similar inferences. The BEST R package also enables researchers to perform simulation based power analyses, which take a long time but, when using a broad prior, yield a result that is basically identical to the sample size from a power analysis for an equivalence test. The biggest benefit of ROPE over TOST is that it allows you to incorporate prior information. If you have reliable prior information, ROPE can use this information, which is especially useful if you don’t have a lot of data. If you use informed priors, check the robustness of the posterior against reasonable changes in the prior in sensitivity analyses.
 
@@ -332,8 +330,13 @@ For example, consider our study above in which 20 guessers tried to estimate the
 ```r
 library("pwr")
 
-pwr.t.test(n = 20, sig.level = 0.05, power = 0.33, type = "one.sample", 
-           alternative = "two.sided")
+pwr::pwr.t.test(
+  n = 20, 
+  sig.level = 0.05, 
+  power = 0.33, 
+  type = "one.sample",
+  alternative = "two.sided"
+)
 ```
 
 ```
@@ -352,19 +355,19 @@ pwr.t.test(n = 20, sig.level = 0.05, power = 0.33, type = "one.sample",
 <p class="caption">(\#fig:smalltelpower)Screenshot illustrating a sensitivity power analysis in G*Power to compute the effect size an original study had 33% power to detect.</p>
 </div>
 
-Determining the SESOI based on the effect size the original study had 33% power to detect has an additional convenient property. Imagine the true effect size is
-actually 0, and you perform a statistical test to see if the data is statistically smaller than the SESOI based on the small telescopes approach
-(which is called an inferiority test). If you increase the sample size by 2.5 times, you will have approximately 80% power for this one-ssided equivalence test, assuming
-the true effect size is exactly 0 (e.g., *d* = 0). People who do a replication study can follow the small telescope recommendations, and very easily determine both the smallest effect size of interest, and the sample size needed to design an informative replication study, assuming the true effect size is 0 (but see the section above for a-priori power analyses where you want to test for equivalence, but do not expect a true effect size of 0).
+Determining the SESOI based on the effect size the original study had 33% power to detect has an additional convenient property. Imagine the true effect size is actually 0, and you perform a statistical test to see if the data is statistically smaller than the SESOI based on the small telescopes approach (which is called an inferiority test). If you increase the sample size by 2.5 times, you will have approximately 80% power for this one-sided equivalence test, assuming the true effect size is exactly 0 (e.g., *d* = 0). People who do a replication study can follow the small telescope recommendations, and very easily determine both the smallest effect size of interest, and the sample size needed to design an informative replication study, assuming the true effect size is 0 (but see the section above for a-priori power analyses where you want to test for equivalence, but do not expect a true effect size of 0).
 
 The figure below, from Simonsohn (2015) illustrates the small telescopes approach using a real-life example. The original study by Zhong and Liljenquist (2006) had a tiny sample size of 30 participants in each condition and observed an effect size of *d* = 0.53, which was barely statistically different from zero. Given a sample size of 30 per condition, the study had 33% power to detect effects larger than *d* = 0.401. This “small effect” is indicated by the green dashed line. In R, the smallest effect size of interest is calculated using:
 
 
 ```r
-library("pwr")
-
-pwr.t.test(n = 30, sig.level = 0.05, power = 1/3, type = "two.sample",
-           alternative = "two.sided")
+pwr::pwr.t.test(
+  n = 30, 
+  sig.level = 0.05, 
+  power = 1/3, 
+  type = "two.sample",
+  alternative = "two.sided"
+)
 ```
 
 ```
@@ -417,282 +420,204 @@ been tested by performing a one-sample *t*-test, and where the sample sizes that
 theoretical prediction). But informing peers that given the sample size commonly collected in a field in a field, the effect is not large enough so that it can be reliably studies is a useful contribution to the literature. It does not mean that the effect is not interesting per se, and a field might decide that it is time to examine the research question collaboratively, by coordinating research lines, and collecting enough data to reliably study whether a smaller effect is present.
 
 
-## Test Yourself (TO DO)
+## Test Yourself
 
-**Q1**. In the discussion about the small telescopes approach to equivalence testing, we calculated the SESOI for a one-sample *t*-test. Adjust the R code (or use G\*power) to calculate power for a **two-sample t-test** with an **alpha level of 0.05**, **n = 20** in each condition (you only need to change “one.sample” into “two.sample” in the R code, or choose the correct option in G\*power). What is the SESOI based on the small telescope approach? Note that for this answer, it happens to depend on whether you enter the power as 0.33 or 1/3 (or 0.333).
+### Questions about equivalence tests
 
-A) *d* =0.25 (setting power to 0.33) or 0.26 (setting power to 1/3)
-B) *d* =0.33 (setting power to 0.33) or 0.34 (setting power to 1/3)
-C) *d* =0.49 (setting power to 0.33) or 0.50 (setting power to 1/3)
-D) *d* =0.71 (setting power to 0.33) or 0.72 (setting power to 1/3)
+**Q1**: When the 90% CI around a mean difference falls just within the equivalence range from -0.4 to 0.4, we can reject the smallest effect size of interest. Based on your knowledge about confidence intervals, when the equivalence range is changed to -0.3 – 0.3, what is needed for the equivalence test to be significant (assuming the effect size estimate and standard deviation remains the same)? 
 
-**Q2**. Let’s assume you are trying to replicate a previous result based on a correlation in a two-sided test. The study had 150 participants. Calculate the
-SESOI for a replication of this study that will use an alpha level of 0.05, based on the small telescopes approach using either G\*Power or R. Note that for
-this answer, it happens to depend on whether you enter the power as 0.33 or 1/3 (or 0.333). In R, you need the code:
+A) A larger effect size.
+B) A lower alpha level.
+C) A larger sample size.
+D) Lower statistical power.
 
-`pwr.r.test(n = X, sig.level = X, power = X, alternative = "two.sided")`
+**Q2**: Why is it incorrect to conclude that there is no effect, when an equivalence test is statistically significant? 
 
-A) r = 0.124 (setting power to 0.33) or 0.125 (setting power to 1/3)
-B) r = 0.224 (setting power to 0.33) or 0.225 (setting power to 1/3)
-C) r = 0.226 (setting power to 0.33) or 0.227 (setting power to 1/3)
-D) r = 0.402 (setting power to 0.33) or 0.403 (setting power to 1/3)
+A) An equivalence test is a statement about the data, not about the presence or absence of an effect. 
+B) The result of an equivalence test could be a Type 1 error, and therefore, one should conclude that there is no effect, or a Type 1 error has been observed.  
+C) An equivalence test rejects values as large or larger than the smallest effect size of interest, so the possibility that there is a small non-zero effect cannot be rejected.  
+D) We conclude there is no effect when the equivalence test is non-significant, not when the equivalence test is significant.  
 
-**Q3**. In the age of big data researchers often have access to large databases, and can run correlations on samples of thousands of observations. Let’s assume
-the original study in the previous question did not have 150 observations, but 15000 observations. We still use an alpha level of 0.05. Note that for this
-answer, it happens to depend on whether you enter the power as 0.33 or 1/3 (or 0.333). What is the SESOI based on the small telescopes approach? 
+**Q3**: Researchers are interested in showing that students who use an online textbook perform just as well as students who use a paper textbook. If so, they can recommend teachers to allow students to choose their preferred medium, but if there is a benefit, they would recommend the medium that leads to better student performance. They randomly assign students to use an online textbook or a paper textbook, and compare their grades on the exam for the course (from the worst possible grade, 1, to the best possible grade, 10). They find that the both groups of students perform similarly, with for the paper textbook condition *m* = 7.35, *sd* = 1.15, *n* = 50, and the online textbook *m* = 7.13, *sd* = 1.21, *n* = 50). Let’s assume we consider any effect as large or larger than
+half a grade point (0.5) worthwhile, but any difference smaller than 0.5 too small to matter, and the alpha level is set at 0.05. What would the authors conclude? Copy the code below into R, replacing all zeroes with the correct numbers. Type `?tsum_TOST` for help with the function.
 
-A) r = 0.0124 (setting power to 0.33) or 0.0125 (setting power to 1/3)
-B) r = 0.0224 (setting power to 0.33) or 0.0225 (setting power to 1/3)
-C) r = 0.0226 (setting power to 0.33) or 0.0227 (setting power to 1/3)
-D) r = 0.0402 (setting power to 0.33) or 0.0403 (setting power to 1/3)
+<!-- ```{r eval = FALSE} -->
 
-Is this effect likely to be practically or theoretically significant? Probably not. This would be a situation where the small telescopes approach is not a very useful procedure to determine a smallest effect size of interest.
-
-**Q4**: Using the small telescopes approach, you set the SESOI in a replication study to *d* = 0.35, and set the alpha level to 0.05. After collecting the data in
-a well-powered replication study that was as close to the original study as practically possible, you find no significant effect, and you can reject effects as large or larger than *d* = 0.35. What is the correct interpretation of this result?
-
-A) There is no effect.
-B) We can statistically reject (using an alpha of 0.05) effects anyone would find theoretically meaningful.
-C) We can statistically reject (using an alpha of 0.05) effects anyone would find practically relevant.
-D) We can statistically reject (using an alpha of 0.05) effects as large or larger than 0.35.
-
-<!-- **Q1**: What is the correct interpretation of the following result if a researchers has performed a nil null hypothesis and an equivalence test (the equivalence bounds are indicated by the vertical dashed lines)?  -->
-
-<!-- ```{r, eq_q_1, echo = FALSE} -->
-<!-- res <- TOSTER::tsum_TOST(m1 = 0, m2 = 0.2, sd1 = 1, sd2 = 1, -->
-<!--                   n1 = 100, n2 = 100, low_eqbound = -0.34, high_eqbound = 0.34) -->
-<!-- plot(res, type = "tnull") -->
+<!-- TOSTER::tsum_TOST(m1 = 7.35, -->
+<!--                   sd1 = 1.15, -->
+<!--                   n1 = 50, -->
+<!--                   m2 = 7.13, -->
+<!--                   sd2 = 1.21, -->
+<!--                   n2 = 50, -->
+<!--                   low_eqbound = -0.5, -->
+<!--                   high_eqbound = 0.5, -->
+<!--                   eqbound_type = "raw", -->
+<!--                   alpha = 0.05) -->
 
 <!-- ``` -->
 
-<!-- A) We can reject an effect of 0, and we fail to reject the smallest effect size of interest. Therefore we can claim there is an effect  -->
 
 
+```r
+TOSTER::tsum_TOST(
+  m1 = 0.00,
+  sd1 = 0.00,
+  n1 = 0,
+  m2 = 0.00,
+  sd2 = 0.00,
+  n2 = 0,
+  low_eqbound = -0.0,
+  high_eqbound = 0.0,
+  eqbound_type = "raw",
+  alpha = 0.05
+)
+```
+
+A) We can **reject** an effect size of zero, and we can **reject** the presence of effects as large or larger than the smallest effect size of interest. 
+B) We can **not reject** an effect size of zero, and we can **reject** the presence of effects as large or larger than the smallest effect size of interest. 
+C) We can **reject** an effect size of zero, and we can **not reject** the presence of effects as large or larger than the smallest effect size of interest. 
+D) We can **not reject** an effect size of zero, and we can **not reject** the presence of effects as large or larger than the smallest effect size of interest. 
+
+**Q4**: If we increase the sample size in question Q3 to 150 participants in each condition, and assuming the observed means and standard deviations would be exactly the same, which conclusion would we draw?
+
+A) We can **reject** an effect size of zero, and we can **reject** the presence of effects as large or larger than the smallest effect size of interest. 
+B) We can **not reject** an effect size of zero, and we can **reject** the presence of effects as large or larger than the smallest effect size of interest. 
+C) We can **reject** an effect size of zero, and we can **not reject** the presence of effects as large or larger than the smallest effect size of interest. 
+D) We can **not reject** an effect size of zero, and we can **not reject** the presence of effects as large or larger than the smallest effect size of interest. 
+
+**Q5**: If we increase the sample size in question Q3 to 500 participants in each condition, and assuming the observed means and standard deviations would be exactly the same, which conclusion would we draw?
+
+A) We can **reject** an effect size of zero, and we can **reject** the presence of effects as large or larger than the smallest effect size of interest. 
+B) We can **not reject** an effect size of zero, and we can **reject** the presence of effects as large or larger than the smallest effect size of interest. 
+C) We can **reject** an effect size of zero, and we can **not reject** the presence of effects as large or larger than the smallest effect size of interest. 
+D) We can **not reject** an effect size of zero, and we can **not reject** the presence of effects as large or larger than the smallest effect size of interest. 
+
+Sometimes the result of a test is **inconclusive**, as both the null hypothesis test, and the equivalence test, of not statistically significant. The only solution in such a case is to collect additional data. Sometimes both the null hypothesis test and the equivalence test are statistically significant, in which case the effect is **statistically different from zero, but practically insignificant** (based on the justification for the SESOI). 
+
+**Q6**: We might wonder what the statistical power was for the test in Q3, assuming there was no true difference between the two groups (so a true effect size of 0). Using the new and improved `power_t_TOST` function in the TOSTER R package, we can compute the power using a sensitivity power analysis (i.e., entering the sample size per group of 50, the assumed true effect size of 0, the equivalence bounds, and the alpha level. Note that because the equivalence bounds were specified on a raw scale in Q3, we will also need to specify an estimate for the true standard deviation in the population. Let's assume this true standard deviation is 1.2. Round the answer to two digits after the decimal. Type `?power_t_TOST` for help with the function. What was the power in Q3?
+
+
+<!-- ```{r eval = FALSE} -->
+<!-- TOSTER::power_t_TOST( -->
+<!--   n = 15, -->
+<!--   delta = 0.0, -->
+<!--   sd = 1.2, -->
+<!--   low_eqbound = -0.5, -->
+<!--   high_eqbound = 0.5, -->
+<!--   alpha = 0.05, -->
+<!--   type = "two.sample" -->
+<!-- ) -->
+<!-- ``` -->
+
+
+```r
+TOSTER::power_t_TOST(
+  n = 00,
+  delta = 0.0,
+  sd = 0.0,
+  low_eqbound = -0.0,
+  high_eqbound = 0.0,
+  alpha = 0.05,
+  type = "two.sample"
+)
+```
+
+A) 0.00
+B) 0.05
+C) 0.33
+D) 0.40
+
+**Q7**: Assume we would only have had 15 participants in each group in Q3, instead of 50. What would be the statistical power of the test with this smaller sample size (keeping all other settings as in Q6)? Round the answer to 2 digits. 
+
+A) 0.00
+B) 0.05
+C) 0.33
+D) 0.40
+
+**Q8**: You might remember from discussions on statistical power for a null hypothesis significance test that the statistical power id never smaller than 5% (if the true effect size is 0, power is formally undefined, but we will observe at least 5% Type 1 errors, and the power increases when introducing a true effect). In a two-sided equivalence tests, power can be lower than the alpha level. Why? 
+
+A) Because in an equivalence test the Type 1 error rate is not bounded at 5%.
+B) Because in an equivalence test the null hypothesis and alternative hypothesis are reversed, and therefore the Type 2 error rate does not have a lower bound (just as the Type 1 error rate in NHST has no lower bound).
+C) Because the confidence interval needs to fall between the lower and upper bound of the equivalence interval, and with small sample sizes, this probability can be close to one (because the confidence interval is very wide). 
+D) Because the equivalence test is based on a confidence interval, and not on a *p*-value, and therefore power is not limited by the alpha level. 
+
+**Q9**: A well designed study has high power to detect an effect of interest, but also to reject the smallest effect size of interest. Perform an a-priori power analysis for the situation described in Q3. Which sample size in **each group** needs to be collected to achieved a desired statistical power of 90% (or 0.9), assuming the true effect size is 0, and we still assume the true standard deviation is 1.2? Use the code below, and round up the sample size (as we can not collect a partial observation). 
+
+
+<!-- ```{r eval = FALSE} -->
+<!-- TOSTER::power_t_TOST( -->
+<!--   power = 0.90, -->
+<!--   delta = 0.0, -->
+<!--   sd = 1.2, -->
+<!--   low_eqbound = -0.5, -->
+<!--   high_eqbound = 0.5, -->
+<!--   alpha = 0.05, -->
+<!--   type = "two.sample" -->
+<!-- ) -->
+<!-- ``` -->
+
+
 
-
-**Q1**: When the true *d* =0.79 and n = 50 per group, the blue area is
-approximately the same size as one of the red areas, which means (feel free to
-use information in the text beneath the sliders):
-
-A) The Type 1 error rate is approximately as large as the Type 2 error rate
-B) The Type 1 error rate is approximately twice as large as the Type 2 error rate
-C) The Type 2 error rate is approximately twice as large as the Type 1 error rate
-D) The Type 1 error rate and the Type 2 error rate cannot be directly compared.
-
-**Q2**: Three sliders influence what the figure looks like: The sample size per
-condition, the true effect size, and the alpha level. Which statement is true?
-
-A) The critical d-value is influenced by the sample size per group, the true effect size, but **not** by the alpha level.
-B) The critical d-value is influenced by the sample size per group, the alpha level, but **not** by the true effect size.
-C) The critical d-value is influenced by the alpha level, the true effect size, but **not** by the sample size per group.
-D) The critical d-value is influenced by the sample size per group, the alpha level, and by the true effect size.
-
-
-**Q3**: Imagine researchers performed a study with 18 participants in each
-condition, and performed a t-test using an alpha level of 0.01. What is the
-smallest effect size that could have been statistically significant in this
-study?
-
-A) *d* =0.47
-
-B) *d* =0.56
-
-C) *d* =0.91
-
-D) *d* =1
-
-**Q4**: You expect the true effect size in your next study to be *d* =0.5, and
-you plan to use an alpha level of 0.05. You collect 30 participants in each
-group for an independent *t*-test. Which statement is true?
-
-A) You have low power for all possible effect sizes.
-
-B) You have sufficient (i.e., \> 80%) power for all effect sizes you are
-interested in.
-
-C) Observed effect sizes of *d* =0.5 will never be statistically significant.
-
-D) Observed effect sizes of *d* =0.5 will be statistically significant.
-
-
-
-
-
-**Setting the SESOI based on theoretical predictions**
-
-If you are not building on previous studies, the SESOI can be set based on
-**theoretical predictions**, or a **cost-benefit analysis** that specifies the
-smallest effect size that would be practically relevant. Sometimes, an
-intervention should have a specific effect size to be worthwhile (for example,
-financially). Testing against a SESOI based on cost-benefit analysis allows you
-to decide if an intervention is worth it, when weighed against the costs.
-
-**Q5**: Take a moment to think about whether the **theory** you are building on
-makes a quantifiable prediction that would allow you to set a smallest effect
-size of interest.
-
-**Q6**: Take a moment to think about whether the topic you study allows you to
-make a **cost-benefit analysis**, where an effect size needs to be large enough
-to be worthwhile.
-
-The example we have used above concerned an independent *t*-test, but the idea
-can be generalized. A shiny app for an F-test is available here:
-<http://shiny.ieis.tue.nl/f_p_power/>. The effect size associated to the power
-of an F-test is partial eta squared ($\eta_{p}^{2})$, which for a One-Way
-ANOVA (visualized in the Shiny app) equals eta-squared.
-
-The distribution for eta-squared looks slightly different from the distribution
-of Cohen’s d, primarily because an *F*-test is a one-directional test (and
-because of this, eta-squared values are all positive, while Cohen’s d can be
-positive or negative). The light grey line plots the expected distribution of
-eta-squared when the null is true, with the red area under the curve indicating
-Type 1 errors, and the black line plots the expected distribution of eta-squared
-when the true effect size is η = 0.059. The blue area indicates the expected
-effect sizes smaller that the critical η of 0.04, which will not be
-statistically significant, and thus will be Type 2 errors.
-
-![](images/7f6d17dc07bdc9e95ea8944d78b16d7c.png)
-
-**Q7**: Set the number of participants (per condition) to 14, and the number of
-groups to 3. Which effect sizes (expressed in partial eta-squared, as indicated
-on the vertical axis) can be statistically significant with n = 14 per group,
-and 3 groups?
-
-A) Only effects larger than 0.11
-
-B) Only effects larger than 0.13
-
-C) Only effects larger than 0.14
-
-D) Only effects larger than 0.16
-
-Every sample size and alpha level implies observed effect sizes that can be
-statistically significant in your study. Looking at which observed effects you
-can detect is a useful way to make sure you could actually detect the smallest
-effect size you are interested in.
-
-
-
-**Q1)** When the 90% CI around an effect size falls within the equivalence
-range, the observed effect is statistically smaller than the smallest effect
-size of interest. Based on your knowledge about confidence intervals, and
-looking at the picture above, when you lower the equivalence range from -0.4 –
-0.4 to -0.3 – 0.3, what is needed for the equivalence test to be significant
-(assuming the effect size estimate and standard deviation remains the same)?
-
-A) A larger effect size.
-
-B) A lower alpha level.
-
-C) A larger sample size.
-
-D) Lower statistical power.
-
-To answer questions 2 through 9, open the EquivalenceTesting.R script. The
-script will allow you to perform the TOST procedure for the questions below by
-filling in the summary statistics. To help you along, I have already copied the
-function and all arguments – you just need to fill in the correct values for
-each function, and interpret the output.
-
-**Q2)** Researchers often manipulate something they are interested in. To ensure
-their manipulation does not inadvertently alter participants’ moods, they assess
-positive and negative emotions using the PANAS. Let’s assume in one specific
-experiment, positive mood in one condition (*M1* = 4.55, *SD1* = 1.05, *n1* =
-15) did not differ from the mood in the other condition (*M2* = 4.87, *SD2* =
-1.11, *n2* = 15). The researchers conclude: “*Mood did not differ between
-conditions, t = 0.81, p =.42*”. Let’s assume we consider any effect larger than
-*d*=-0.5 and smaller than *d* = 0.5 equivalent (even though *d* = 0.5 is
-actually a medium effect size!). Use the R code for the independent *t*-test,
-and fill in the 8 numbers (note: you need to fill in -0.5, not 0.5, as the lower
-equivalence bound). Were the authors correct in concluding mood did not differ
-between conditions, given the equivalence range of -0.5 to 0.5?
-
-**Use 0.05 as the alpha level for all questions in this assignment.**
-
-A) Yes
-
-B) No
-
-**Q3)** If we increase the sample size in the above example to 150 participants
-in each condition, and assuming the means and standard deviations remain the
-same, which conclusion would we draw?
-
-A) Equivalent: The difference in mood is not statistically significant, and it
-is statistically equivalent.
-
-B) Undetermined: The difference in mood is not statistically significant, and it
-is not statistically equivalent.
-
-C) Not zero, and not meaningful: The difference in mood is statistically
-significant, and it is statistically equivalent.
-
-D) Not zero, and meaningful: The difference in mood is statistically
-significant, and it is not statistically equivalent.
-
-**Q4)** We might wonder how wide our bounds would need to be, to have decent
-power to conclude equivalence. Let’s aim for 90% power, and use an alpha of 0.01
-for our test. The powerTOSTtwo function can be used to calculate how wide our
-equivalence bounds would need to be, to have 90% power with 15 participants in
-each condition and an alpha of 0.01 (this power analysis assumes the true effect
-size is 0 – more advanced power analyses can be performed with PASS software).
-Which equivalence bounds should a researcher use if they want 90% power with 15
-participants and an alpha of 0.01? Round the answer to two digits after the
-decimal.
-
-A) *d* = -1.07 and *d* = 1.07
-
-B) *d* = -1.20 and *d* = 1.20
-
-C) *d* = -1.32 and *d* = 1.32
-
-D) *d* = -1.45 and *d* =1.45
-
-You can see that with such a small sample, **we can only reject effect sizes
-that are very large** (d \> 1). Is it interesting to perform a study where you
-can only reject effects that are very large? It depends. Most effect sizes
-studied in for example psychology, but also many other social sciences, are much
-smaller. Asking ‘can we reject very large effects’ is therefore not very
-interesting (unless a theory explicitly predicts only very large effects,
-obviously!)
-
-**Q5)** The most common use of power analysis is to determine the sample size
-needed to design a study with high power to detect a significant effect. If we
-want to have 90% power, use an alpha of 0.01, and use equivalence bounds of d =
--0.5 and *d* =0.5, how many participants **in each group** or condition should we
-collect? Use the code in the R file.
-
-A) 87
-
-B) 105
-
-C) 127
-
-D) 254
-
-**Q6)** Change the equivalence range to -0.1 and 0.1. To be able to reject
-effects outside such a very narrow equivalence range, you’ll need a large sample
-size. With an alpha of 0.01, and a desired power of 0.9 (or 90%), how many
-participants would you need in each group?
-
-A) 2165
-
-B) 2604
-
-C) 3155
-
-D) 6310
-
-You can see it takes a very large sample size to have high power to reliably
-reject very small effects. This should not be surprising – it also requires a
-very large sample size to *detect* small effects!
-
-**Q7)** You can do equivalence tests for all tests. The TOSTER package has
-functions for t-tests, correlations, differences between proportions, and
-meta-analyses. Let’s do an equivalence test for a meta-analysis. Hyde, Lindberg,
-Linn, Ellis, and Williams (2008) report that effect sizes for gender differences
-in mathematics tests across the 7 million students in the US represent trivial
-differences, where a trivial difference is specified as an effect size smaller
-then *d* =0.1. The table with Cohen’s d and se is reproduced below:
+```r
+TOSTER::power_t_TOST(
+  power = 0.00,
+  delta = 0.0,
+  sd = 0.0,
+  low_eqbound = -0.0,
+  high_eqbound = 0.0,
+  alpha = 0.05,
+  type = "two.sample"
+)
+```
+
+A) 100
+B) 126
+C) 200
+D) 252
+
+**Q10**: Assume that when performing the power analysis for Q9 we did not expect the true effect size to be 0, but actually a mean difference of 0.1 grade point. Which sample size would we need to collect for the equivalence test, now that we expect a true effect size of 0.1?
+
+<!-- ```{r eval = FALSE} -->
+<!-- TOSTER::power_t_TOST( -->
+<!--   power = 0.90, -->
+<!--   delta = 0.1, -->
+<!--   sd = 1.2, -->
+<!--   low_eqbound = -0.5, -->
+<!--   high_eqbound = 0.5, -->
+<!--   alpha = 0.05, -->
+<!--   type = "two.sample" -->
+<!-- ) -->
+<!-- ``` -->
+
+A) 117
+B) 157
+C) 314
+D) 3118
+
+**Q11)** Change the equivalence range to -0.1 and 0.1 for Q9 (and leave the expected effect size to 0). To be able to reject effects outside such a very narrow equivalence range, you’ll need a large sample size. With an alpha of 0.05, and a desired power of 0.9 (or 90%), how many participants would you need in each group?
+
+<!-- ```{r eval = FALSE} -->
+<!-- TOSTER::power_t_TOST( -->
+<!--   power = 0.90, -->
+<!--   delta = 0.0, -->
+<!--   sd = 1.2, -->
+<!--   low_eqbound = -0.1, -->
+<!--   high_eqbound = 0.1, -->
+<!--   alpha = 0.05, -->
+<!--   type = "two.sample" -->
+<!-- ) -->
+<!-- ``` -->
+
+A) 1107
+B) 1157
+C) 2468
+D) 3118
+
+You can see it takes a very large sample size to have high power to reliably reject very small effects. This should not be surprising. After all, it also requires a very large sample size to *detect* small effects! This is why we typically leave it to a future meta-analysis to detect, or reject, the presence of small effects.
+
+
+**Q12**: You can do equivalence tests for all tests. The TOSTER package has functions for *t*-tests, correlations, differences between proportions, and meta-analyses. If the test you want to perform is not included in any software, remember that you can just use a 90% confidence interval, and test whether you can reject the smallest effect size of interest. Let’s perform an equivalence test for a meta-analysis. Hyde, Lindberg, Linn, Ellis, and Williams (2008) report that effect sizes for gender differences
+in mathematics tests across the 7 million students in the US represent trivial differences, where a trivial difference is specified as an effect size smaller then *d* =0.1. The table with Cohen’s d and se is reproduced below:
 
 | **Grades**  | **d + se**       |
 |-------------|------------------|
@@ -707,174 +632,141 @@ then *d* =0.1. The table with Cohen’s d and se is reproduced below:
 | Grade 10    | 0.04 +/- 0.003   |
 | Grade 11    | 0.06 +/- 0.003   |
 
-For grade 2, when we perform an equivalence test with boundaries of *d* =-0.1 and
-*d* =0.1, using an alpha of 0.01, which conclusion can we draw? Use the TOSTER
-function TOSTmeta, and enter the alpha, effect size (ES), standard error (se),
-and equivalence bounds.
-
-A) Equivalent: The difference in test scores is not statistically significant,
-and it is statistically equivalent.
-
-B) Undetermined: The difference in test scores is not statistically significant,
-and it is not statistically equivalent.
-
-C) Not zero, and not meaningful: The difference in test scores is statistically
-significant, and it is statistically equivalent.
-
-D) Not zero, and meaningful: The difference in test scores is statistically
-significant, and it is not statistically equivalent.
-
-**Q8)** Olson, Fazio, and Hermann (2007) reported correlations between implicit
-and explicit measures of self-esteem, such as the IAT, Rosenberg’s self-esteem
-scale, a feeling thermometer, and trait ratings. In Study 1 71 participants
-completed the self-esteem measures. Because no equivalence bounds are mentioned,
-we can see which equivalence bounds the researchers would have 50% power to
-detect (the bounds a study has 50% power for, is related to the bounds that can
-just be detected with p \< .05, see Lakens, Scheel, and Isager, 2018 or this
-[blog
-post](http://daniellakens.blogspot.nl/2017/05/how-power-analysis-implicitly-reveals.html)).
-Use the powerTOSTr function (which is used for correlations, and when the
-equivalence bounds are set based on *r*). Which boundaries do we have 50% power
-for, with an alpha of 0.05, and 71 participants? Round the bounds to 2 digits
-after the decimal.
-
-A) r = -0.19 and r = 0.19
-
-B) r = -0.21 and r = 0.21
-
-C) r = -0.27 and r = 0.27
-
-D) r = -0.32 and r = 0.32
-
-**Q9)** The correlations observed by Olson et al (2007), Study 1, are presented
-in the table below (significant correlations are flagged by an asterisk).
-
-| Measure             | IAT | Rosenberg | Feeling thermometer | Trait ratings |
-|---------------------|-----|-----------|---------------------|---------------|
-| IAT                 | \-  | \-.12     | \-.09               | \-.06         |
-| Rosenberg           |     | \-        | .62\*               | .09           |
-| Feeling thermometer |     |           | \-                  | .29\*         |
-| Trait ratings       |     |           |                     | \-            |
-
-We can test each correlation for equivalence, for example the correlation
-between the IAT and the Rosenberg self-esteem scale of -0.12, given 71
-participants. When you test all 4 non-significant correlations (-0.12, -0.09,
--0.06, and 0.09) for equivalence, using an alpha of 0.05 and equivalence bounds
-of *r* = -0.2 and *r* = 0.2, how many are statistically equivalent?
-
-A) 0
-
-B) 1
-
-C) 2
-
-D) 3
+For grade 2, when we perform an equivalence test with boundaries of *d* =-0.1 and *d* =0.1, using an alpha of 0.01, which conclusion can we draw? Use the TOSTER function TOSTmeta, and enter the alpha, effect size (ES), standard error (se), and equivalence bounds. 
 
 
+```r
+TOSTER::TOSTmeta(
+  ES = 0.06,
+  se = 0.003,
+  low_eqbound_d = -0.1,
+  high_eqbound_d = 0.1,
+  alpha = 0.05
+)
+```
+A) We can **reject** an effect size of zero, and we can **reject** the presence of effects as large or larger than the smallest effect size of interest. 
+B) We can **not reject** an effect size of zero, and we can **reject** the presence of effects as large or larger than the smallest effect size of interest. 
+C) We can **reject** an effect size of zero, and we can **not reject** the presence of effects as large or larger than the smallest effect size of interest. 
+D) We can **not reject** an effect size of zero, and we can **not reject** the presence of effects as large or larger than the smallest effect size of interest. 
 
-**Q1**: Null-Hypothesis Significance Tests are so common we rarely think about
-whether they are the right question to ask. But **when you perform a
-null-hypothesis test, you should justify why the null-hypothesis is an
-interesting hypothesis to test against**. This is not always self-evident, and
-sometimes the null hypothesis is simply not very interesting. Look at the last
-paper you wrote, or are currently writing (or if you have not written a paper,
-look at a paper you want to build on or apply in some way). Identify the most
-important hypothesis tests and ask yourself whether **the null hypothesis was
-justified**. Was it plausible that the null hypothesis was true? And was it an
-interesting value to test against?
+### Questions about the small telescopes approach
+
+**Q13**: What is the smallest effect size of interest based on the small telescopes approach, when the original study collected 20 participants in each condition of an independent *t*-test, with an **alpha level of 0.05**. Note that for this answer, it happens to depend on whether you enter the power as 0.33 or 1/3 (or 0.333). You can use the code below, which relies on the `pwr` package. 
+
+<!-- ```{r} -->
+<!-- pwr::pwr.t.test( -->
+<!--   n = 20,  -->
+<!--   sig.level = 0.05,  -->
+<!--   power = 1/3,  -->
+<!--   type = "two.sample", -->
+<!--   alternative = "two.sided" -->
+<!-- ) -->
+<!-- ``` -->
 
 
-**Q2**: Two-sided tests are so common we rarely think about whether they are the
-right question to ask. But if you make a directional prediction, it often makes
-sense to perform a directional test. Look at the last paper you wrote or are
-currently writing (or if you have not written a paper, look at a paper you want
-to build on or apply in some way). Identify the main hypothesis in the
-introduction. Did the hypothesis make a one-sided prediction? Take a look at the
-result section. Was the hypothesis tested in a two-sided test?
+```r
+pwr::pwr.t.test(
+  n = 0, 
+  sig.level = 0.00, 
+  power = 0, 
+  type = "two.sample",
+  alternative = "two.sided"
+)
+```
 
-**Q3**: Look at the last paper you wrote or are currently writing (or if you
-have not written a paper, look at a paper you want to build on or apply in some
-way). Take a look at the null-hypothesis tests (whether Bayesian or frequentist)
-and judge if the question of whether the effect is zero is interesting, or if
-the authors (or you yourself) might actually have been implicitly arguing to the
-presence of some unspecified minimal effect. **If you were able to specify this
-minimal effect, would it have made more sense to report a minimal effect test
-for some of the hypothesis tests**?
+A) *d* =0.25 (setting power to 0.33) or 0.26 (setting power to 1/3)
+B) *d* =0.33 (setting power to 0.33) or 0.34 (setting power to 1/3)
+C) *d* =0.49 (setting power to 0.33) or 0.50 (setting power to 1/3)
+D) *d* =0.71 (setting power to 0.33) or 0.72 (setting power to 1/3)
 
-**Q4**: **Open the file testing_range_predictions.R**. Run the code. You will
-see the following test and figure as output:
+**Q14**: Let’s assume you are trying to replicate a previous result based on a correlation in a two-sided test. The study had 150 participants. Calculate the SESOI using a small telescopes justification for a replication of this study that will use an alpha level of 0.05. Note that for this answer, it happens to depend on whether you enter the power as 0.33 or 1/3 (or 0.333). You can use the code below.
 
-Equivalence Test Result:
 
-The equivalence test was significant, t(32) = 22.892, p =
-0.00000000000000000000104, given equivalence bounds of 1.000 and 10.000 (on a
-raw scale) and an alpha of 0.05.
+<!-- ```{r, eval = FALSE} -->
+<!-- pwr::pwr.r.test( -->
+<!--   n = 150,  -->
+<!--   sig.level = 0.05,  -->
+<!--   power = 1/3,  -->
+<!--   alternative = "two.sided") -->
+<!-- ``` -->
 
-Null Hypothesis Test Result:
 
-The null hypothesis test was significant, t(32) = 29.062, p =
-0.00000000000000000000000142, given an alpha of 0.05.
+```r
+pwr::pwr.r.test(
+  n = 0, 
+  sig.level = 0, 
+  power = 0, 
+  alternative = "two.sided")
+```
 
-![](media/48d9d00c6ad493b2c84b65377bd1d138.png)
+A) r = 0.124 (setting power to 0.33) or 0.125 (setting power to 1/3)
+B) r = 0.224 (setting power to 0.33) or 0.225 (setting power to 1/3)
+C) r = 0.226 (setting power to 0.33) or 0.227 (setting power to 1/3)
+D) r = 0.402 (setting power to 0.33) or 0.403 (setting power to 1/3)
 
-In the figure, we see our mean difference of 4.71, and the confidence interval
-around it. The difference is clearly not 0 (the confidence interval does not
-overlap with the vertical dashed grey line at 0), but the difference is also
-statistically larger than 1 (and smaller than 10, but we are not interested in
-the upper bound in this specific case). We see the *t*-value for the null
-hypothesis test (29.06) is larger than the *t*-value for the minimal effect test
-(22.892). Why?
+**Q15**: In the age of big data researchers often have access to large databases, and can run correlations on samples of thousands of observations. Let’s assume the original study in the previous question did not have 150 observations, but 15000 observations. We still use an alpha level of 0.05. Note that for this answer, it happens to depend on whether you enter the power as 0.33 or 1/3 (or 0.333). What is the SESOI based on the small telescopes approach? 
 
-A) The minimal effect test is **one-sided**, but the null hypothesis
-significance test is **two-sided**, and therefore the t-value for the
-null-hypothesis test is larger.
+A) r = 0.0124 (setting power to 0.33) or 0.0125 (setting power to 1/3)
+B) r = 0.0224 (setting power to 0.33) or 0.0225 (setting power to 1/3)
+C) r = 0.0226 (setting power to 0.33) or 0.0227 (setting power to 1/3)
+D) r = 0.0402 (setting power to 0.33) or 0.0403 (setting power to 1/3)
 
-B) The minimal effect test is **two-sided**, but the null hypothesis
-significance test is **one-sided**, and therefore the t-value for the
-null-hypothesis test is larger.
+Is this effect likely to be practically or theoretically significant? Probably not. This would be a situation where the small telescopes approach is not a very useful procedure to determine a smallest effect size of interest.
 
-C) The minimal effect test is **against a value of 1, which is closer to the
-observed mean difference,** and therefore the test result is less extreme**.**
+**Q16**: Using the small telescopes approach, you set the SESOI in a replication study to *d* = 0.35, and set the alpha level to 0.05. After collecting the data in a well-powered replication study that was as close to the original study as practically possible, you find no significant effect, and you can reject effects as large or larger than *d* = 0.35. What is the correct interpretation of this result?
 
-D) A null-hypothesis test is uniformly most powerful – any alternative test will
-always have less power, and thus a lower t-value, than a null-hypothesis test.
+A) There is no effect.
+B) We can statistically reject (using an alpha of 0.05) effects anyone would find theoretically meaningful.
+C) We can statistically reject (using an alpha of 0.05) effects anyone would find practically relevant.
+D) We can statistically reject (using an alpha of 0.05) effects the original study had 33% power to detect.
 
-**Q5**: Realistically speaking, we probably do not want the positive and
-negative words to just differ 1 scale point. Let’s say we want the two groups of
-words to have evaluations that differ at least 3 scale points. Change the lower
-bound (or minimum effect) we want to test against in line 8 from 1 to 3. How
-does this affect the null-hypothesis test? How does this affect the equivalence
-test against the lower bound of 3?
+### Questions about specifying the SESOI as the Minimal Statistically Detectable Effect
 
-A) The *t*-value for both the null-hypothesis test as the equivalence test are
-now 10.551. Adjusting the minimum effect thus influences both test results.
+**Q17**: Open the online Shiny app that can be used to compute the minimal statistically detectable effect for two independent groups: https://shiny.ieis.tue.nl/d_p_power/. Three sliders influence what the figure looks like: The sample size per
+condition, the true effect size, and the alpha level. Which statement is true?
 
-B) The *t*-value for the null-hypothesis test is now 10.551, the *t*-value for
-the equivalence test remains stable at 22.892. Adjusting the minimum effect thus
-influences only the null hypothesis test.
+A) The critical *d*-value is influenced by the sample size per group, the true effect size, but **not** by the alpha level.
+B) The critical *d*-value is influenced by the sample size per group, the alpha level, but **not** by the true effect size.
+C) The critical *d*-value is influenced by the alpha level, the true effect size, but **not** by the sample size per group.
+D) The critical *d*-value is influenced by the sample size per group, the alpha level, and by the true effect size.
 
-C) The *t*-value for the null-hypothesis test remains 29.06, the *t*-value for
-the equivalence test is lowered to 10.551. Adjusting the minimum effect thus
-influences only the equivalence test.
 
-D) The *t*-value for the null-hypothesis test is now 10.551, the *t*-value for
-the equivalence test increases to 32.892. Adjusting the minimum effect thus
-influences only the equivalence test.
+**Q18**: Imagine researchers performed a study with 18 participants in each condition, and performed a *t*-test using an alpha level of 0.01. Using the Shiny app, what is the smallest effect size that could have been statistically significant in this study?
 
-**Q6:** This is a more difficult insight question. Based on the previous two
-questions, a general pattern emerges. (Hint: think about effect size, and the
-difference we are testing in the two tests). Compared to a null hypothesis test,
-a minimal effect test:
+A) *d* = 0.47
+B) *d* = 0.56
+C) *d* = 0.91
+D) *d* = 1
 
-A) is **riskier**, but also has **less** power, and thus a minimal effect test
-requires a **larger** number of observations than a null-hypothesis test.
+**Q19**: You expect the true effect size in your next study to be *d* = 0.5, and you plan to use an alpha level of 0.05. You collect 30 participants in each group for an independent *t*-test. Which statement is true?
 
-B) is **riskier**, but also has **more** power, and thus a minimal effect test
-requires a **smaller** number of observations than a null-hypothesis test.
+A) You have low power for all possible effect sizes.
+B) You have sufficient (i.e., \> 80%) power for all effect sizes you are interested in.
+C) Observed effect sizes of *d* = 0.5 will never be statistically significant.
+D) Observed effect sizes of *d* = 0.5 will be statistically significant.
 
-C) is **less risky**, but also has **less** power, and thus a minimal effect
-test requires a **larger** number of observations than a null-hypothesis test.
+The example we have used so far was based on performing an independent *t*-test, but the idea can be generalized. A shiny app for an *F*-test is available here: <http://shiny.ieis.tue.nl/f_p_power/>. The effect size associated to the power of an *F*-test is partial eta squared ($\eta_{p}^{2})$, which for a One-Way ANOVA (visualized in the Shiny app) equals eta-squared.
 
-D) is **less risky**, but also has **more** power, and thus a minimal effect
-test requires a **smaller** number of observations than a null-hypothesis test.
+The distribution for eta-squared looks slightly different from the distribution of Cohen’s *d*, primarily because an *F*-test is a one-directional test (and because of this, eta-squared values are all positive, while Cohen’s *d* can be positive or negative). The light grey line plots the expected distribution of eta-squared when the null is true, with the red area under the curve indicating Type 1 errors, and the black line plots the expected distribution of eta-squared when the true effect size is η = 0.059. The blue area indicates the expected effect sizes smaller that the critical η of 0.04, which will not be statistically significant, and thus will be Type 2 errors.
 
+<div class="figure" style="text-align: center">
+<img src="images/7f6d17dc07bdc9e95ea8944d78b16d7c.png" alt="Illustration of the criticial F-value for two groups, 50 observations per group, and an alpha level of 0.05." width="100%" />
+<p class="caption">(\#fig:critf)Illustration of the criticial F-value for two groups, 50 observations per group, and an alpha level of 0.05.</p>
+</div>
+
+**Q20**: Set the number of participants (per condition) to 14, and the number of groups to 3. Using the Shiny app at <http://shiny.ieis.tue.nl/f_p_power/> which effect sizes (expressed in partial eta-squared, as indicated on the vertical axis) can be statistically significant with n = 14 per group, and 3 groups?
+
+A) Only effects larger than 0.11
+B) Only effects larger than 0.13
+C) Only effects larger than 0.14
+D) Only effects larger than 0.16
+
+Every sample size and alpha level implies a minimal statistically detectable effect that can be statistically significant in your study. Looking at which observed effects you can detect is a useful way to make sure you could actually detect the smallest
+effect size you are interested in.
+
+**Q21**: Using the minimal statistically detectable effect, you set the SESOI in a replication study to *d* = 0.35, and set the alpha level to 0.05. After collecting the data in a well-powered replication study that was as close to the original study as practically possible, you find no significant effect, and you can reject effects as large or larger than *d* = 0.35. What is the correct interpretation of this result?
+
+A) There is no effect.
+B) We can statistically reject (using an alpha of 0.05) effects anyone would find theoretically meaningful.
+C) We can statistically reject (using an alpha of 0.05) effects anyone would find practically relevant.
+D) We can statistically reject (using an alpha of 0.05) effects that could have been statistically significant in the original study.
