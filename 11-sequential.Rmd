@@ -25,7 +25,7 @@ The use of sequential analyses is only slowly becoming more popular in many scie
 
 >Because of the substantial savings in the expected number of observations effected by the sequential probability ratio test, and because of the simplicity of this test procedure in practical applications, the National Defense Research Committee considered these developments sufficiently useful for the war effort to make it desirable to keep the results out of the reach of the enemy, at least for a certain period of time. The author was, therefore, requested to submit his findings in a restricted report which was dated September, 1943.
 
-Sequential analyses are well-established procedures, and have been developed in great detail over the last decades [@proschan_statistical_2006; @jennison_group_2000; @wassmer_group_2016]. Here, we will explain the basics of how to control error rates in sequential analyses, and perform a-priori power analysis and compare when sequential designs will be more or less efficient than fixed designs. BEfore we discuss these topics, it is useful to clarify some terminology. A **look** means analyzing all the data collected up to a specific point. E.g., you look after 50, 100, and 150 observations, and analyze all the data that has been collected up to that point. After 50 and 100 observations we perform an **interim analysis**, and after 150 observations we perform the **final analysis**, after which we always stop. Not all looks have to occur in practice. If the analysis reveals a statistically significant result at look 1, data collection can be terminated. We can stop because we reject H0 (e.g., in a null hypothesis significance test), or because we reject H1 (e.g., in an equivalence test). We can also stop for **curtailment** or for **futility**: It is either impossible, or very unlikely for the final analysis to yield p < alpha. The **overall alpha level** in a sequential design differs from the alpha level at each look (also called **stage**). For example, if we want an overall Type I error rate of 5% for a two-sided test with 3 looks, the alpha level for each look could be 0.0221 (if we decide to use a correction for the alpha level proposed by Pocock [@pocock_group_1977].
+Sequential analyses are well-established procedures, and have been developed in great detail over the last decades [@proschan_statistical_2006; @jennison_group_2000; @wassmer_group_2016]. Here, we will explain the basics of how to control error rates in group sequential analyses, and perform a-priori power analysis and compare when sequential designs will be more or less efficient than fixed designs. Before we discuss these topics, it is useful to clarify some terminology. A **look** means analyzing all the data collected up to a specific point. E.g., you look after 50, 100, and 150 observations, and analyze all the data that has been collected up to that point. After 50 and 100 observations we perform an **interim analysis**, and after 150 observations we perform the **final analysis**, after which we always stop. Not all looks have to occur in practice. If the analysis reveals a statistically significant result at look 1, data collection can be terminated. We can stop because we reject $H_0$ (e.g., in a null hypothesis significance test), or because we reject $H_1$ (e.g., in an equivalence test). We can also stop for **curtailment** or for **futility**: It is either impossible, or very unlikely for the final analysis to yield p < alpha. The **overall alpha level** in a sequential design differs from the alpha level at each look (also called **stage**). For example, if we want an overall Type I error rate of 5% for a two-sided test with 3 looks, the alpha level for each look could be 0.0221 (if we decide to use a correction for the alpha level proposed by Pocock [@pocock_group_1977]. In this chapter we will focus on group sequential designs, where data is collected in multiple groups, but other sequential approaches exist, as explained in the chapter on [sample size justification](#sequentialsamplesize)
 
 ## Choosing alpha levels for sequential analyses.
 
@@ -39,7 +39,7 @@ With more than one interim analysis, additional critical values have to be deter
 
 ## The Pocock correction
 
-The first decision researchers need to make is how they want to correct the Type I error rate across looks. Four common approaches are the Pocock correction, the O'Brien'Fleming correction, The Haybittle & Peto correction, and the Wang and Tsiatis approach. Users are also free to specify their own preferred way to spend the alpha level across looks. 
+The first decision researchers need to make is how they want to correct the Type I error rate across looks. Four common approaches are the Pocock correction, the O'Brien-Fleming correction, The Haybittle & Peto correction, and the Wang and Tsiatis approach. Users are also free to specify their own preferred way to spend the alpha level across looks. 
 
 The Pocock correction is the simplest way to correct the alpha level for multiple looks. Conceptually, it is very similar to the Bonferroni correction. The Pocock correction has been created such that the alpha level is identical for each look at the data, resulting in constant critical values (expressed as *z* values) $u_k = c$ to reject the null hypothesis, $H_0$, at look $k$. The following code uses the package `rpact` to design a study for a sequential analysis:
 
@@ -230,7 +230,7 @@ The sample size per condition at the first look is `r round(power_res_seq$number
 
 However, the maximum sample size is not the expected sample size for this design, because of the possibility that we can stop data collection at an earlier look in the sequential design. In the long run, if *d* = 0.5, and we use an Pocock-like alpha spending function, and ignoring upward rounding because we can only collect a complete number of observations, we will sometimes collect `r ceiling(power_res_seq$numberOfSubjects1[1]) * 2` participants and stop after the first look, and the remaining time continue to `r ceiling(power_res_seq$numberOfSubjects1[2]) * 2` participants. As we see in the rows 'Reject per stage' the data collection is expected to stop after the first look in `r round(power_res_seq$rejectPerStage[1], 2)` of the studies because we have observed a significant result. The remainder of the time (1 - `r round(power_res_seq$rejectPerStage[1], 2)` = `r 1 - round(power_res_seq$rejectPerStage[1], 2)`) 
 
-This means that, assuming there is a true effect of *d* = 0.5, the *expected* sample size on average is the probability of stopping at each look, multiplied by the number of observations we collect at each look, so `r round(power_res_seq$rejectPerStage[1], 2)` * `r ceiling(power_res_seq$numberOfSubjects1[1]) * 2` + `r round(power_res_seq$rejectPerStage[2], 2)` * `r ceiling(power_res_seq$numberOfSubjects1[2]) * 2` = `r round(power_res_seq$rejectPerStage[1] * ceiling(power_res_seq$numberOfSubjects1[1]) * 2 + (1 -  power_res_seq$rejectPerStage[1]) * ceiling(power_res_seq$numberOfSubjects1[2]) * 2, 2)`. The `rpact` package returns `r round(power_res_seq$expectedNumberOfSubjectsH1, 2)` under "Expected number of subjects under H1" - the small difference is due to the fact that `rpact` does not round the number of observations up, although it should). So, assuming the true effect is *d* = 0.5, in any single study we might need to collect slightly more data than in a fixed design (where we would collect `r ceiling(power_res$numberOfSubjects1) * 2`), but on average we will need to collect less observations in a sequential design.
+This means that, assuming there is a true effect of *d* = 0.5, the *expected* sample size on average is the probability of stopping at each look, multiplied by the number of observations we collect at each look, so `r round(power_res_seq$rejectPerStage[1], 2)` * `r ceiling(power_res_seq$numberOfSubjects1[1]) * 2` + `r round(power_res_seq$rejectPerStage[2], 2)` * `r ceiling(power_res_seq$numberOfSubjects1[2]) * 2` = `r round(power_res_seq$rejectPerStage[1] * ceiling(power_res_seq$numberOfSubjects1[1]) * 2 + (1 -  power_res_seq$rejectPerStage[1]) * ceiling(power_res_seq$numberOfSubjects1[2]) * 2, 2)`. The `rpact` package returns `r round(power_res_seq$expectedNumberOfSubjectsH1, 2)` under "Expected number of subjects under $H_1$" - the small difference is due to the fact that `rpact` does not round the number of observations up, although it should). So, assuming the true effect is *d* = 0.5, in any single study we might need to collect slightly more data than in a fixed design (where we would collect `r ceiling(power_res$numberOfSubjects1) * 2`), but on average we will need to collect less observations in a sequential design.
 
 Because power is a curve, and the true effect size is unknown, it is useful to plot power across a range of possible effect sizes, so that we can explore the expected sample size, in the long run, if we use a sequential design, for different true effect sizes.
 
@@ -333,7 +333,7 @@ power_res_seq <- getSampleSizeMeans(
 plot(power_res_seq, type = 1)
 ```
 
-With a beta-spending function the expected number of subjects under H1 will increase, so if the alternative hypothesis is true, designing a study to be able to stop for futility comes at a cost. However, it is possible that $H_0$ is true, and when it is, stopping for futility reduces the expected sample size. In Figure \@ref(fig:powerseq2) you can see the probability of stopping (the green line) is now also high when the true effect size is 0, as we will now stop for futility, and if we do, the expected sample size (the blue line) is lower compared to \@ref(fig:powerseq). It is important to design studies that have a high informational value to reject the presence of a meaningful effect at the final analysis, but whether stopping for futility early is an option you want to build into a study is a choice that requires considering the probability that the null hypothesis is true and the (perhaps small) increase in the sample size. 
+With a beta-spending function the expected number of subjects under $H_1$ will increase, so if the alternative hypothesis is true, designing a study to be able to stop for futility comes at a cost. However, it is possible that $H_0$ is true, and when it is, stopping for futility reduces the expected sample size. In Figure \@ref(fig:powerseq2) you can see the probability of stopping (the green line) is now also high when the true effect size is 0, as we will now stop for futility, and if we do, the expected sample size (the blue line) is lower compared to \@ref(fig:powerseq). It is important to design studies that have a high informational value to reject the presence of a meaningful effect at the final analysis, but whether stopping for futility early is an option you want to build into a study is a choice that requires considering the probability that the null hypothesis is true and the (perhaps small) increase in the sample size. 
 
 ```{r powerseq2, echo = FALSE, fig.cap="Power curve for a sequential design with 2 looks with stopping for futility."}
 sample_res <- getPowerMeans(
@@ -422,5 +422,144 @@ The results show that the action after look 1 was to continue data collection, a
 
 The unadjusted *p* values for a one-sided tests are reported in the row "Overall p-value". The actual *p* values for our two-sided test would be twice as large, so `r round(res$.stageResults$overallPValues * 2, 4)`. The adjusted *p*-value at the final look is provided in the row "Final p-value" and it is `r format(res$finalPValues[2], nsmall = 4, digits = 4)`. 
 
+## Test Yourself
 
+**Q1**: Sequential analyses can increase the efficiency of the studies you perform. Which statement is true for a sequential design in which researchers only stop if H0 can be rejected (and did not specify a rule to stop for futility)? 
 
+A) Sequential analyses will reduce the sample size of every study you will perform. 
+B) Sequential analyses will on average reduce the sample size of studies you will perform. 
+*C) Sequential analyses will on average reduce the sample size of studies you will perform, as long as there is a true effect (when a rule to stop for futility has not been specified). 
+D) Sequential analyses will on average require the same sample size as fixed designs, but offer more flexibility. 
+
+**Q2**: What is the difference between sequential analysis and optional stopping? 
+
+A) The only difference is that a sequential analysis is transparently reporting, while optional stopping is typically not disclosed in a paper. 
+B) In sequential analysis the Type 1 error rate is controlled, while in optional stopping the Type 1 error rate is inflated. 
+C) In optional stopping data collection is only terminated when a significant result has been observed, while in sequential analysis data collection can also stop when the absence of a meaningful effect has been established. 
+D) In sequential analysis it is not possible to design a study where you analyze the data after every participant, while you can do this in optional stopping.
+
+**Q3**: What is the defining feature of the Pocock correction? 
+
+A) It uses a very conservative alpha level for early looks, and the alpha level at the last look is close to the unadjusted alpha level in a fixed design. 
+B) It uses the same alpha level at each look (or almost the same alpha level at each look, when using an Pocock-like alpha spending function). 
+C) It uses a critical value of 3 at each interim analysis, and spends the remaining Type 1 error rate at the last look. 
+D) It has a parameter that can be chosen such that the Type 1 error rate is spent more conservatively or more liberally in early interim analyses. 
+
+**Q4**: A benefit of the O’Brien-Fleming correction is that the alpha level at the last look is close to the alpha level. Why is this a benefit? 
+
+A) It means that the sample size based on an a-priori power analysis (which depends on the alpha level) is close to the sample size in a fixed design, while allowing additional looks at the data. 
+B) It means the Type 1 error rate is not inflated only a little bit, compared to a fixed design. 
+C) It means the Type 1 error rate is only a bit more conservative, compared to a fixed design.
+D) It means that the sample size based on an a-priori power analysis (which depends on the alpha level) is always identical to the sample size in a fixed design, while allowing additional looks at the data. 
+
+**Q5**: A researcher uses a sequential design for a study with 5 looks at the data, with a desired overall alpha level of 0.05 for a two-sided test, and chooses a **Pocock correction**. After continuing data collect to the third look, the researcher observes a *p*-value of 0.011. Which statement is true? Note: remember that `rpact` returns one-sided alpha levels. You can use the following code by replacing 0 and specifying the typeOfDesign: 
+
+```{r, eval = FALSE}
+design <- rpact::getDesignGroupSequential(
+  kMax = 0,
+  typeOfDesign = "",
+  sided = 0,
+  alpha = 0.0
+)
+design
+```
+
+A) The researcher can reject the null hypothesis and can terminate data collection.
+B) The researcher fails to reject the null hypothesis and needs to continue the data collection.
+
+**Q6**: A researcher uses a sequential design for a study with 5 looks at the data, with a desired overall alpha level of 0.05, and chooses an **O’Brien-Fleming correction**. After continuing data collect to the third look, the researcher observes a *p*-value of 0.011. Which statement is true (you can use the same code as for Q5)? 
+
+A) The researcher can reject the null hypothesis and can terminate data collection.
+B) The researcher fails to reject the null hypothesis and needs to continue the data collection.
+
+**Q7**: For the design in **Q5** (using the Pocock correction), what is the sample size required to achieve 80% power (the default – you can change the default by specifying a different value than `beta = 0.2` in the ` getDesignGroupSequential` function) for an effect size of *d* = 0.5 (which equals a mean difference of 0.5 with a standard deviation of 1). You can use the code below. 
+ 
+```{r, eval = FALSE}
+power_res <- rpact::getSampleSizeMeans(
+  design = design,
+  groups = 2,
+  alternative = 0.5, 
+  stDev = 1, 
+  allocationRatioPlanned = 1,
+  normalApproximation = FALSE)
+
+power_res
+```
+
+A) 64 (32 in each independent group). 
+B) 128 (64 in each independent group)
+C) 154 (77 in each independent group)
+D) 158 (79 in each independent group)
+
+**Q8**: For the design in Q5, what is the sample size required to achieve 80% power for an effect size of *d* = 0.5 ` for a fixed design with only one look? First update the design (by changing the `kMax` to 1) and then re-run the function `getSampleSizeMeans`. 
+
+A) 64 (32 in each independent group). 
+B) 128 (64 in each independent group)
+C) 154 (77 in each independent group)
+D) 158 (79 in each independent group)
+
+We see the sample size increases quite a bit because of the choice for the Pocock correction, and the number of looks (5, which lead to a low alpha level at the final look). The ratio of the maximum sample size for a sequential design and the sample size for a fixed design is known as the **inflation factor**, which is independent of the effect size. Although a-priori power analyses have not been programmed for all types of tests, the inflation factor  can be used to compute the increased number of observations that is required relative to a fixed design for any test. Researchers can perform an a-priori power analysis for a fixed design with any tool they would normally use, and multiply the total number of observations with the inflation factor to determine the required sample size for a sequential design. The inflation factor can be retrieved using the `getDesignCharacteristics` function.
+
+**Q9**: First, re-run the code to create a sequential design with 5 looks at the data used in Q5. Then, run the code below, and find the inflation factor. What is the inflation factor, or the required increase in the sample size for a sequential design with 5 looks using the Pocock correction, compared to a fixed design? Note that `rpact` does not round up the number of observations for per group to whole numbers when calculating the inflation factor. 
+
+```{r, eval = FALSE}
+rpact::getDesignCharacteristics(design)
+```
+
+A) The inflation factor is 1
+B) The inflation factor is 1.0284
+C) The inflation factor is 1.2286
+D) The inflation factor is 1.2536
+
+**Q10**: We see the inflation factor is quite large, and there is a certain probability that we will have to collect more observations than using a fixed design. Re-run the code for Q7 (for the Pocock design with 5 looks). We see that on average, if there is a true effect of 0.5, we will be more efficient than in a fixed design. What is the expected number of subjects under H1, as provided by `rpact`?
+
+A) 101.9
+B) 104.3
+C) 125.3
+D) 152.8
+
+We see the sequential design will on average be more efficient than a fixed design, but the decision about the trade-off between the specific sequential design used, and whether the possible benefit is worth the risk of collecting additional data, must be made on a case-by-case basis. 
+
+**Q11**: First, re-run the code to create a sequential design with 5 looks at the data used in Q6 (so using the O’Brien-Fleming correction). Then, run the code below, and find the inflation factor for this design. What is the inflation factor? 
+
+A) The inflation factor is 1
+B) The inflation factor is 1.0284
+C) The inflation factor is 1.2286
+D) The inflation factor is 1.2536
+
+**Q12**: It is also possible to stop for futility (or to reject the presence of a specific effect of interest). Researchers should decide between binding and non-binding beta-spending functions, but they do not need to decide between binding and non-binding alpha spending functions. If a researcher observed a statistically significant result at an interim analysis, but decides not to stop the data collection, but continue the data collection (for example to get a more precise effect size estimate) what are the consequences? 
+
+A) The Type 1 error rate will inflate, and the Type 2 error rate will inflate. 
+B) The Type 1 error rate will inflate, and the Type 2 error rate will not inflate. 
+C) The Type 1 error rate will not inflate, and the Type 2 error rate will inflate. 
+D) The Type 1 error rate will not inflate, and the Type 2 error rate will not inflate. 
+
+**Q13**: In the plot below you see the *t*-score boundaries for a sequential design to stop to reject $H_0$ (the red line) and to reject $H_1$ (the blue line). At the second interim look, you perform a test, and observe a *t*-value of 2. Which decision would you make?
+
+```{r, futilityq13, echo = FALSE, fig.cap="Example of O'Brien-Fleming-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) with a 5% Type 1 and Type 2 error."}
+seq_design <- rpact::getDesignGroupSequential(
+  kMax = 3,
+  typeOfDesign = "asOF",
+  sided = 1,
+  alpha = 0.05,
+  beta = 0.05,
+  typeBetaSpending = "bsOF",
+  bindingFutility = FALSE
+  )
+
+# Compute the sample size we need
+power_res_seq <- rpact::getSampleSizeMeans(
+  design = seq_design,
+  groups = 2,
+  alternative = 0.5, 
+  stDev = 1, 
+  allocationRatioPlanned = 1,
+  normalApproximation = FALSE)
+
+plot(power_res_seq, type = 1)
+```
+
+A) You can reject $H_0$ and stop data collection.
+B) You can reject $H_1$ and stop data collection.
+C) You reject both $H_0$ and $H_1$ and stop data collection.
+D) You fail to reject both $H_0$ and $H_1$ and continue data collection.
