@@ -1,8 +1,3 @@
----
-output: html_document
-editor_options: 
-  chunk_output_type: console
----
 
 
 
@@ -510,17 +505,17 @@ res
 
 
 ```
-## [PROGRESS] Stage results calculated [0.0389 secs] 
-## [PROGRESS] Conditional power calculated [0.0359 secs] 
-## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.002 secs] 
-## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.517 secs] 
-## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.5559 secs] 
-## [PROGRESS] Repeated confidence interval calculated [1.07 secs] 
-## [PROGRESS] Repeated p-values of stage 1 calculated [0.2431 secs] 
-## [PROGRESS] Repeated p-values of stage 2 calculated [0.2251 secs] 
-## [PROGRESS] Repeated p-values calculated [0.4692 secs] 
+## [PROGRESS] Stage results calculated [0.0409 secs] 
+## [PROGRESS] Conditional power calculated [0.0269 secs] 
+## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.001 secs] 
+## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.5575 secs] 
+## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.5276 secs] 
+## [PROGRESS] Repeated confidence interval calculated [1.09 secs] 
+## [PROGRESS] Repeated p-values of stage 1 calculated [0.2433 secs] 
+## [PROGRESS] Repeated p-values of stage 2 calculated [0.2872 secs] 
+## [PROGRESS] Repeated p-values calculated [0.5306 secs] 
 ## [PROGRESS] Final p-value calculated [0.002 secs] 
-## [PROGRESS] Final confidence interval calculated [0.0817 secs]
+## [PROGRESS] Final confidence interval calculated [0.1037 secs]
 ```
 
 
@@ -580,7 +575,7 @@ The unadjusted *p* values for a one-sided tests are reported in the row "Overall
 
 A) Sequential analyses will reduce the sample size of every study you will perform. 
 B) Sequential analyses will on average reduce the sample size of studies you will perform. 
-*C) Sequential analyses will on average reduce the sample size of studies you will perform, as long as there is a true effect (when a rule to stop for futility has not been specified). 
+C) Sequential analyses will on average reduce the sample size of studies you will perform, as long as there is a true effect (when a rule to stop for futility has not been specified). 
 D) Sequential analyses will on average require the same sample size as fixed designs, but offer more flexibility. 
 
 **Q2**: What is the difference between sequential analysis and optional stopping? 
@@ -625,7 +620,7 @@ B) The researcher fails to reject the null hypothesis and needs to continue the 
 A) The researcher can reject the null hypothesis and can terminate data collection.
 B) The researcher fails to reject the null hypothesis and needs to continue the data collection.
 
-**Q7**: For the design in **Q5** (using the Pocock correction), what is the sample size required to achieve 80% power (the default – you can change the default by specifying a different value than `beta = 0.2` in the ` getDesignGroupSequential` function) for an effect size of *d* = 0.5 (which equals a mean difference of 0.5 with a standard deviation of 1). You can use the code below. 
+**Q7**: For the design in Q5 (using the Pocock correction), what is the sample size required to achieve 80% power (the default – you can change the default by specifying a different value than `beta = 0.2` in the ` getDesignGroupSequential` function) for an effect size of *d* = 0.5 (which equals a mean difference of 0.5 with a standard deviation of 1). You can use the code below. 
  
 
 ```r
@@ -645,7 +640,7 @@ B) 128 (64 in each independent group)
 C) 154 (77 in each independent group)
 D) 158 (79 in each independent group)
 
-**Q8**: For the design in Q5, what is the sample size required to achieve 80% power for an effect size of *d* = 0.5 ` for a fixed design with only one look? First update the design (by changing the `kMax` to 1) and then re-run the function `getSampleSizeMeans`. 
+**Q8**: For the design in Q5, what is the sample size required to achieve 80% power for an effect size of *d* = 0.5 for a fixed design with only one look? First update the design (by changing the `kMax` to 1) and then re-run the function `getSampleSizeMeans`. 
 
 A) 64 (32 in each independent group). 
 B) 128 (64 in each independent group)
@@ -666,7 +661,7 @@ B) The inflation factor is 1.0284
 C) The inflation factor is 1.2286
 D) The inflation factor is 1.2536
 
-**Q10**: We see the inflation factor is quite large, and there is a certain probability that we will have to collect more observations than using a fixed design. Re-run the code for Q7 (for the Pocock design with 5 looks). We see that on average, if there is a true effect of 0.5, we will be more efficient than in a fixed design. What is the expected number of subjects under H1, as provided by `rpact`?
+**Q10**: We see the inflation factor is quite large, and there is a certain probability that we will have to collect more observations than using a fixed design. Re-run the code for Q7 (for the Pocock design with 5 looks). We see that on average, if there is a true effect of 0.5, we will be more efficient than in a fixed design. What is the expected number of subjects under $H_1$, as provided by `rpact`?
 
 A) 101.9
 B) 104.3

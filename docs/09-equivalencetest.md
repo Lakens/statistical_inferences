@@ -594,7 +594,7 @@ B) 157
 C) 314
 D) 3118
 
-**Q11)** Change the equivalence range to -0.1 and 0.1 for Q9 (and leave the expected effect size to 0). To be able to reject effects outside such a very narrow equivalence range, you’ll need a large sample size. With an alpha of 0.05, and a desired power of 0.9 (or 90%), how many participants would you need in each group?
+**Q11**: Change the equivalence range to -0.1 and 0.1 for Q9 (and leave the expected effect size to 0). To be able to reject effects outside such a very narrow equivalence range, you’ll need a large sample size. With an alpha of 0.05, and a desired power of 0.9 (or 90%), how many participants would you need in each group?
 
 <!-- ```{r eval = FALSE} -->
 <!-- TOSTER::power_t_TOST( -->
@@ -699,17 +699,17 @@ pwr::pwr.r.test(
   alternative = "two.sided")
 ```
 
-A) r = 0.124 (setting power to 0.33) or 0.125 (setting power to 1/3)
-B) r = 0.224 (setting power to 0.33) or 0.225 (setting power to 1/3)
-C) r = 0.226 (setting power to 0.33) or 0.227 (setting power to 1/3)
-D) r = 0.402 (setting power to 0.33) or 0.403 (setting power to 1/3)
+A) *r* = 0.124 (setting power to 0.33) or 0.125 (setting power to 1/3)
+B) *r* = 0.224 (setting power to 0.33) or 0.225 (setting power to 1/3)
+C) *r* = 0.226 (setting power to 0.33) or 0.227 (setting power to 1/3)
+D) *r* = 0.402 (setting power to 0.33) or 0.403 (setting power to 1/3)
 
 **Q15**: In the age of big data researchers often have access to large databases, and can run correlations on samples of thousands of observations. Let’s assume the original study in the previous question did not have 150 observations, but 15000 observations. We still use an alpha level of 0.05. Note that for this answer, it happens to depend on whether you enter the power as 0.33 or 1/3 (or 0.333). What is the SESOI based on the small telescopes approach? 
 
-A) r = 0.0124 (setting power to 0.33) or 0.0125 (setting power to 1/3)
-B) r = 0.0224 (setting power to 0.33) or 0.0225 (setting power to 1/3)
-C) r = 0.0226 (setting power to 0.33) or 0.0227 (setting power to 1/3)
-D) r = 0.0402 (setting power to 0.33) or 0.0403 (setting power to 1/3)
+A) *r* = 0.0124 (setting power to 0.33) or 0.0125 (setting power to 1/3)
+B) *r* = 0.0224 (setting power to 0.33) or 0.0225 (setting power to 1/3)
+C) *r* = 0.0226 (setting power to 0.33) or 0.0227 (setting power to 1/3)
+D) *r* = 0.0402 (setting power to 0.33) or 0.0403 (setting power to 1/3)
 
 Is this effect likely to be practically or theoretically significant? Probably not. This would be a situation where the small telescopes approach is not a very useful procedure to determine a smallest effect size of interest.
 
