@@ -67,7 +67,7 @@ So far we have simulated only a single group of observations, but it is also inf
 <p class="caption">(\#fig:plot-group1)Simulation of 10 observations in two independent groups.</p>
 </div>
 
-The two groups differ in how close they are to their true means, and as a consequence, the difference between groups varies as well. Note that this difference is the main variable in statistical analyses when comparing two groups in for example a *t*-test. In this specific simulation, we got quite extreme results, with a score of 96 (when the population mean is 100) and a score of 111 (when the population mean is 106). So in this sample, due to random variation, we would get an overestimate of the true effect. Let's simulate 4 additional datasets to see the variation. 
+The two groups differ in how close they are to their true means, and as a consequence, the difference between groups varies as well. Note that this difference is the main variable in statistical analyses when comparing two groups in for example a *t*-test. In this specific simulation, we got quite extreme results, with a score of 96 (when the population mean is 100) and a score of 111 (when the population mean is 106). So in this sample, due to random variation, we would lead to an effect size estimate that is quite a bit larger than the true effect size. Let's simulate 4 additional datasets to see the variation. 
 
 <div class="figure" style="text-align: center">
 <img src="12-meta_files/figure-html/plot-group2-1.png" alt="Four simulated samples of independent groups." width="100%" />
@@ -81,7 +81,12 @@ We see that there is quite some variation, up to the point that in one simulatio
 <p class="caption">(\#fig:plotgroup3)Simulated sample of 250 independent observations</p>
 </div>
 
-So far we have seen random variation in means, but correlations will show similar variation as a function of the sample size. We will continue with our example of IQ scores, but now we search for fraternal (so not identical) twins, and measure their IQ. From the literature, we know the true correlation of IQ scores between fraternal twins is around *r* = 0.55. We find 30 fraternal twins, measure their IQ’s, and plot the relation between the IQ of both individuals. In this simulation, we assume all twins have a mean IQ of 100 with a standard deviation of 15. 
+The variation in the estimate of the mean descreases as the sample size increases. The larger the sample size, the more precise the estimate of the mean becomes. The **standard deviation of the sample** ($\sigma_x$) of single IQ scores is 15, irrespective of the sample size, and the larger the sample size, the more accurately we can measure the true standard deviation. But the **standard deviation of the sampling distribution of the sample mean** ($\sigma_\overline{x}$) decreases, as the sample size increases, and is referred to as the **standard error (SE)**. The estimated standard deviation of the sample mean, or the standard error, calculated based on the observed standard deviation of the sample ($\sigma_x$) is:
+
+$$SE = \sigma_\overline{x} =  \frac{\sigma_x}{\sqrt{n}}$$
+Based on this formula, and assuming an observed standard deviation of the sample of 15, the standard error of the mean is 4.74 for a sample size of 10, and 0.95 for a sample size of 250. Because estimates with a lower standard error are more precise, the effect size estimates in a meta-analysis are weighed based on the standard error, with the more precise estimates getting more weight. 
+
+So far we have seen random variation in means, but correlations will show similar variation as a function of the sample size. We will continue with our example of measuring IQ scores, but now we search for fraternal (so not identical) twins, and measure their IQ. Estimates from the literature suggest the true correlation of IQ scores between fraternal twins is around *r* = 0.55. We find 30 fraternal twins, measure their IQ scores, and plot the relation between the IQ of both individuals. In this simulation, we assume all twins have a mean IQ of 100 with a standard deviation of 15. 
 
 The correlation is calculated based on the IQ scores of one fraternal twin (x) and the IQ scores of the other fraternal twin (y) for each pair of twins, and the total number of pairs (N). In the numerator of the formula, the number of pairs is multiplied by the sum of the product of x and y, and from this value the sum of x multiplied by the sum of y is subtracted. In the denominator, the square root is taken from the number of pairs multiplied by the sum of x squared, from which the sum of x, which is then squared, is subtracted, and multiplied by the same calculation but now for y. 
 
@@ -93,12 +98,16 @@ When we randomly simulate observations for 30 twins, we get the following result
 <p class="caption">(\#fig:plot-cor1)Correlation based on 30 pairs.</p>
 </div>
 
-On the x-axis, we see the IQ score of one twin, and one the y-axis we see the IQ score of the second twin. The black dotted diagonal line illustrates the true correlation (0.55), while the yellow line shows the observed correlation (in this case, *r* = 0.43). The slope of the yellow line is determined by the observed correlation, but the position of the line is influenced by the mean IQ scores in both groups (in this simulation, the mean on the y-axis is 105, somewhat below 100, and the mean on the x-axis is 102, also slightly above 100. The blue area is the 95% confidence interval around the observed correlation. As we saw in the chapter on [confidence intervals](#confint), 95% of the time (in the long run) the blue area will contain the true correlation (the dotted black line). As in the examples based on means, increasing the sample size to 300 narrows the confidence interval considerably, and will mean the most of the time the correlation in the sample is much closer to the correlation in the population.
+On the x-axis, we see the IQ score of one twin, and one the y-axis we see the IQ score of the second twin. The black dotted diagonal line illustrates the true correlation (0.55), while the yellow line shows the observed correlation (in this case, *r* = 0.43). The slope of the yellow line is determined by the observed correlation, but the position of the line is influenced by the mean IQ scores in both groups (in this simulation, the mean on the y-axis is 105, somewhat below 100, and the mean on the x-axis is 102, also slightly above 100. The blue area is the 95% confidence interval around the observed correlation. As we saw in the chapter on [confidence intervals](#confint), 95% of the time (in the long run) the blue area will contain the true correlation (the dotted black line). As in the examples based on means, increasing the sample size to 300 narrows the confidence interval considerably, and will mean the most of the time the correlation in the sample is much closer to the correlation in the population. As the sample size increases, the estimate of the correlation becomes more precise, following the formula of the standard error of a correlation:
+
+$$SE_{r_{xy}} = \frac{1 - r^2_{xy}}{\sqrt(n - 2)}$$
 
 <div class="figure" style="text-align: center">
 <img src="12-meta_files/figure-html/plot-cor2-1.png" alt="Correlation based on 300 pairs." width="100%" />
 <p class="caption">(\#fig:plot-cor2)Correlation based on 300 pairs.</p>
 </div>
+
+Because estimates of means, standard deviations, or correlations based on small samples have relatively large uncertainty, it is preferable to collect larger samples. However, this is not always possible, and often the goal of a study is not to provide an accurate estimate, but to test a hypothesis. A study often requires less observations to achieve sufficient power for a hypothesis test, than are required to be able to accurately estimate a parameter [@maxwell_sample_2008]. Therefore, scientists often rely on meta-analyses, where data from multiple studies are combined, to provide accurate estimates.
 
 ## Introduction to Meta-Analysis
 
@@ -176,7 +185,7 @@ meta_res
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
-Under 'Model Results' we find the effect size Hedges’ g (0.5552575) and the standard error (0.2038175), the *Z*-test statistic testing the mean difference against the null-hypothesis (2.7242881), and the 95% confidence interval [ci.lb = 0.1557826; ci.ub = ] around the effect size (the interval width can be specified using the ‘level =’ option). We also see the *p*-value for the test of the meta-analytic effect size against 0. In this case we can reject the null-hypothesis (*p* = 0.006444).
+Under 'Model Results' we find the effect size Hedges’ g (0.56) and the standard error (0.2), the *Z*-test statistic testing the mean difference against the null-hypothesis (2.72), and the 95% confidence interval [ci.lb = 0.16; ci.ub = 0.95] around the effect size (the interval width can be specified using the ‘level =’ option). We also see the *p*-value for the test of the meta-analytic effect size against 0. In this case we can reject the null-hypothesis (*p* = 0.006).
 
 In a meta-analysis, a *Z*-test is used to examine whether the null-hypothesis can be rejected. This assumes a normally distributed random effect size model. Normally, you would analyze data from a single study with two groups using a *t*-test, which not surprisingly uses a *t*-distribution. If the sample size is large enough, the *Z* and *t* distribution are very similar. I don't know why statistical computations sometimes care a lot about a small amount of bias (the difference between the effect size *d* and *g*, for example) and sometimes not (the difference between *Z* and *t*), but meta-analysts seem happy with *Z*-scores (with large enough sample sizes (which is commonly true in a meta-analysis) the difference between a *Z*-test and *t*-test is tiny). If we directly compare a single-study meta-analysis based on a *Z*-test with a *t*-test, we will see some tiny differences in the results. 
 
@@ -184,9 +193,16 @@ As explained in the chapter on [effect sizes](#effectsize) we can directly calcu
 
 
 
-The *t*-value is 2.8348536, and the *p*-value is 0.0055382. The results are very similar to those computed when performing a meta-analysis, with *g* = 0.55, 95% CI[0.16; 0.94], where the effect size and the upper bound for the confidence interval differ only 0.01 after rounding. 
+The *t*-value is 2.835, and the *p*-value is 0.006. The results are very similar to those computed when performing a meta-analysis, with *g* = 0.55, 95% CI[0.16; 0.94], where the effect size and the upper bound for the confidence interval differ only 0.01 after rounding. 
 
-It is common to visualize the results of a meta-analysis using a forest plot (see Figure \@ref(fig:metaforest)). We see the effect size for Study 1 marked by the black square at 0.56, and the confidence interval is visualized by lines extending to 0.16 on the left and 0.95 on the right. The numbers are printed on the right-hand side of the forest plot. On the lower half of the forest plot, we see a stretched-out diamond. The diamond summarizes the meta-analytic effect size estimate, with the center being at the meta-analytic effect size estimate, and the left and right endpoints at the 95% confidence interval of the meta-analytic effect size estimate. Because we only have a single study, the meta-analytic effect size estimate is the same as the effect size estimate for our single study.
+It is now common to visualize the results of a meta-analysis using a forest plot. Acording to @cooper_handbook_2009 the first forest plot was published in 1978 [@freiman_importance_1978], with the goal to visualize a large set of studies that had concluded the absence of an effect based on non-significant results in small studies (see Figure \@ref(fig:freiman1978)). By plotting the width of the confidence interval for each study, it becomes possible to see that even though the studies do not reject an effect size of 0, and thus were all non-significant, many studies also did not reject the presence of a meaningful favorable treatment effect. To make large studies more noticeable in a forest plot, later version added a square to indicate the estimated effect size, where the size of the square was proportional to the weight that will be assigned to the study when computing the combined effect. 
+
+<div class="figure" style="text-align: center">
+<img src="images/freiman1978.jpg" alt="First version of a forest plot by Freiman and colleagues, 1978 (image from https://www.jameslindlibrary.org/freiman-ja-chalmers-tc-smith-h-kuebler-rr-1978/)" width="25%" />
+<p class="caption">(\#fig:freiman1978)First version of a forest plot by Freiman and colleagues, 1978 (image from https://www.jameslindlibrary.org/freiman-ja-chalmers-tc-smith-h-kuebler-rr-1978/)</p>
+</div>
+
+In Figure \@ref(fig:metaforest) we see a modern version of a forest plot, with the effect size for Study 1 marked by the black square at 0.56, and the confidence interval visualized by lines extending to 0.16 on the left and 0.95 on the right. The numbers printed on the right-hand side of the forest plot provide the exact values for the effect size estimate and the lower and upper bound of the confidence interval. On the lower half of the forest plot, we see a stretched-out diamond, in a row labeled 'RE Model', for 'Random Effects model'. The diamond summarizes the meta-analytic effect size estimate, with the center being at the meta-analytic effect size estimate, and the left and right endpoints at the 95% confidence interval of the meta-analytic effect size estimate. Because we only have a single study, the meta-analytic effect size estimate is the same as the effect size estimate for our single study.
 
 <div class="figure" style="text-align: center">
 <img src="12-meta_files/figure-html/metaforest-1.png" alt="Forest plot for a single study." width="100%" />
@@ -494,3 +510,70 @@ Table: (\#tab:table-rec1)Six practical recommendations to improve the quality an
 |Recruit expertise             |Consider consulting a librarian before you start the literature search, and a statistician before coding the effect sizes, for advice on how make the literature search and effect size calculations reproducible.                                                                                                                                                                                                                                                                                                                                         |
 
 For another open educational resource on meta-analysis in R, see [Doing Meta-Analysis in R](https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R).
+
+## Test Yourself
+
+
+**Q1**: What is the true about the standard deviation of the sample, and the standard deviation of the mean (or the standard error)?
+
+A) As the sample size increases, the standard deviation of the sample becomes smaller, and the standard deviation of the mean (or standard error) becomes smaller. 
+B) As the sample size increases, the standard deviation of the sample becomes more accurate, and the standard deviation of the mean (or standard error) becomes smaller. 
+C) As the sample size increases, the standard deviation of the sample becomes more smaller, and the standard deviation of the mean (or standard error) becomes more accurate. 
+D) As the sample size increases, the standard deviation of the sample becomes more accurate, and the standard deviation of the mean (or standard error) becomes more accurate. 
+
+**Q2**: If we would perform a meta-analysis by just averaging all observed effect sizes, an effect size of *d* = 0.7 from a small study with 20 observations would influence the meta-analytic effect size estimate just as much as a *d* = 0.3 from a study with 2000 observations. How is the meta-analytic effect size estimate computed instead? 
+
+A) Effect sizes estimates from small studies undergo a small study correction before being included. 
+B) Effect size estimates from small studies are ignored when computing a meta-analytic effect size estimate. 
+C) Effect sizes are weighed based on the precision of their estimate, determined by the standard error. 
+D) Effect sizes are weighed based on how close they are to the meta-analytic effect size estimate, with studies further removed receiving less weight. 
+
+**Q3**: The size of the squares indicating effect sizes in a forest plot vary as a function of the: 
+
+A) Power of the study
+B) Size of the effect
+C) Sample size
+D) Type 1 error rate
+
+**Q4**: One can compute a ‘fixed effect model’ or a ‘random effects model’ when performing a meta-analysis on studies in the scientific literature. Which statement is true? 
+
+A) It is generally recommended to compute a **fixed effect** model, mainly because not all studies included in a meta-analysis will be functionally similar. 
+B) It is generally recommended to compute a **random effects** model, mainly because not all studies included in a meta-analysis will be functionally similar. 
+C) It is generally recommended to compute a **fixed effect** model, as this reduces the heterogeneity in the set of studies. 
+D) It is generally recommended to compute a **random effects** model, as this reduces the heterogeneity in the set of studies. 
+
+**Q5**: When there is no heterogeneity in the effect size estimates included in a meta-analysis, a fixed effect and random effects model will yield similar conclusions. If there is variability in the effect size estimates, the two models can yield different results. Below, we see two forest plots based on the same 5 simulated studies. The top plot is based on a random effects meta-analysis, the bottom plot based on a fixed effect meta-analysis. A random effects meta-analysis incorporates uncertainty about the variability of effect size estimates into the final meta-analytic estimate. How does this translate into a difference between the two plots? 
+
+<div class="figure" style="text-align: center">
+<img src="12-meta_files/figure-html/unnamed-chunk-4-1.png" alt="Simulated studies under a random effects model" width="100%" />
+<p class="caption">(\#fig:unnamed-chunk-4)Simulated studies under a random effects model</p>
+</div>
+
+<div class="figure" style="text-align: center">
+<img src="12-meta_files/figure-html/unnamed-chunk-5-1.png" alt="Simulated studies under a fixed effect model" width="100%" />
+<p class="caption">(\#fig:unnamed-chunk-5)Simulated studies under a fixed effect model</p>
+</div>
+
+A) There is no difference in the meta-analytic effect size estimate between the plots, as each effect size estimate from the 5 studies is identical. 
+B) The effect size in the random effects model is identical to the estimate from the fixed effect model, but the confidence interval is larger. 
+C) The effect size in the random effects model is identical to the estimate from the fixed effect model, but the confidence interval is smaller. 
+D) The effect size in the random effects model is larger than the estimate from the fixed effect model, as it incorporates additional uncertainty about bias in the estimate. 
+
+**Q6**: Which statement is true about the two measures of heterogeneity discussed above, Cochran’s $Q$ and $I^2$? 
+
+A) Cochran’s $Q$ relies on a hypothesis testing approach to detecting heterogeneity, and with few studies, it can have low power. $I^2$ relies on an estimation approach, and with few studies, it can have large uncertainty. 
+B) Cochran’s $Q$ relies on an estimation approach, and with few studies, it can have large uncertainty. $I^2$ relies on a hypothesis testing approach to detecting heterogeneity, and with few studies, it can have low power. 
+
+**Q7**: Researchers who perform very similar studies in a research line can combine all studies (whether they all yield statistically significant results, or not) into an internal meta-analysis, combining the effect sizes into a meta-analytic estimate. What is a strength of this approach, and what is a risk? 
+
+A) A strength is an internal meta-analysis can reduce the Type 1 error rate when multiple studies have been performed, each with their own 5% alpha level, but a weakness is that by selectively including studies in an internal meta-analysis, researcher have additional flexibility to *p*-hack.
+B) A strength is an internal meta-analysis can reduce the Type 1 error rate when multiple studies have been performed, each with their own 5% alpha level, but a weakness is that the effect size estimate might be biased compared to the estimates from the single studies, especially when there is heterogeneity.
+C) A strength is an internal meta-analysis can prevent publication bias by providing a way to report all results (including non-significant results), but a weakness is that by selectively including studies in an internal meta-analysis, researcher have additional flexibility to *p*-hack.
+D) A strength is an internal meta-analysis can prevent publication bias by providing a way to report all results (including non-significant results), but a weakness is that the effect size estimate might be biased compared to the estimates from the single studies, especially when there is heterogeneity.
+
+**Q8**: What is the best way to guarantee the statistical results in a meta-analysis are computationally reproducible? Choose the best answer.
+
+A) Use open source software, such as `metafor` for R, and do not use commercial software, such as 'Comprehensive Meta-Analysis', and share the data and code.
+B) Clearly describe the analyses that are performed, and the way effect sizes have been calculated. 
+C) Present a forest plot, which includes a table with the effect sizes and confidence intervals.
+D) Preregister the meta-analysis, and clearly specify as many of the subjective decisions you will need to make in advance. 

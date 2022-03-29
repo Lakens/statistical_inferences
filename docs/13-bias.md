@@ -26,7 +26,7 @@ Some inconsistencies in data are less easy to automatically detect, but can be i
 
 Publication bias is one of the biggest challenges that science faces. **Publication bias** is the practice of selectively submitting and publishing scientific research, often based on whether or not the results are ‘statistically significant’ or not. The scientific literature is dominated by these statistically significant results. At the same time, we know that many studies researchers perform do not yield significant results. When scientists only have access to significant results, but not to all results, they are lacking a complete overview of the evidence for a hypothesis. In extreme cases, selective reporting can lead to a situation where there are hundreds of statistically significant results in the published literature, but no true effect because there are even more non-significant studies that are not shared. This is known as the **file-drawer problem**, when non-significant results are hidden away in file-drawers (or nowadays, folders on your computer) and not available to the scientific community. Every scientist should work towards solving the publication bias, because it is extremely difficult to learn what is likely to be true as long as scientists do not share all their results.  
 
-Publication bias can only be fixed by making all your research results available to fellow scientists, irrespective of the *p*-value of the main hypothesis test. Registered Reports are one way to combat publication bias, as this type of scientic article is reviewed based on the introduction, method, and statistical analysis plan, before the data is collected. After peer review, the article can get an 'in principle acceptance', which means that as long as the research plan is followed, the article will be published, regardless of the results. Not surprisingly, as shown in Figure \@ref(fig:fig.1.3.1), an analysis of the first Registered Reports revealed that 31 out of 71 (44%) observed positive results, compared to 146 out of 152 (96%) of comparable standard scientific articles published during the same time period [@scheel_excess_2021].  
+Publication bias can only be fixed by making all your research results available to fellow scientists, irrespective of the *p*-value of the main hypothesis test. Registered Reports are one way to combat publication bias, as this type of scientic article is reviewed based on the introduction, method, and statistical analysis plan, before the data is collected. After peer review, the article can get an 'in principle acceptance', which means that as long as the research plan is followed, the article will be published, regardless of the results. Not surprisingly, as shown in Figure \@ref(fig:scheel), an analysis of the first Registered Reports revealed that 31 out of 71 (44%) observed positive results, compared to 146 out of 152 (96%) of comparable standard scientific articles published during the same time period [@scheel_excess_2021].  
 
 <div class="figure" style="text-align: center">
 <img src="images/scheel.png" alt="Positive result rates for standard reports and Registered Reports. Error bars indicate 95% confidence intervals around the observed positive result rate." width="100%" />
@@ -37,7 +37,7 @@ In the past, Registered Reports did not exist, and scientisits did not share all
 
 In the chapter on [likelihoods](#likelihoods) we saw how mixed results are to be expected, and can be strong evidence for the alternative hypothesis. It is not only the case that mixed results should be expected, but exclusively observing statistically significant results, especially when the statistical power is low, is very surprising. With the commonly used lower limit for statistical power of 80%, a non-significant result in one out of five studies when there is a true effect. Some researchers have pointed out that *not* finding mixed results can be very unlikely (or ‘too good to be true’) in a set of studies [@francis_frequency_2014; @schimmack_ironic_2012]. We don’t have a very good feeling for what real patterns of studies look like, because we are continuously exposed to a scientific literature that does not reflect reality. Almost all multiple study papers in the scientific literature present only statistically significant results, even though this is unlikely.
 
-The [online Shiny app we used to compute binomial likelihoods](http://shiny.ieis.tue.nl/mixed_results_likelihood/) displays, if you scroll to the bottom of the page, binomial probabilities to find multiple significant findings given a specific assumption about the power of the tests. Francis [@francis_frequency_2014] used these binomial likelihoods to calculate the test of excessive significance [@ioannidis_exploratory_2007] for 44 articles published in the journal Psychological Science between 2009 and 2012 that contained four studies or more. He found that for 36 of these articles, the likelihood of observing four significant results, given the average power computed based on the observed effect sizes, was less than 10%. Given his choice of an alpha of 0.10, this binomial probability is a hypothesis test, and allows the claims (at a 10% alpha level) that whenever the binomial probability of the number of statistically significant results is lower than 10%, the data is surprising, and we can reject the hypothesis that this is an unbiased set of studies. In other words, it is unlikely that this many significant results would be observed, suggesting that publication bias or other selection effects have played a role in these articles. 
+The [online Shiny app we used to compute binomial likelihoods](http://shiny.ieis.tue.nl/mixed_results_likelihood/) displays, if you scroll to the bottom of the page, binomial probabilities to find multiple significant findings given a specific assumption about the power of the tests. Francis [@francis_frequency_2014] used these binomial likelihoods to calculate the test of excessive significance [@ioannidis_exploratory_2007] for 44 articles published in the journal Psychological Science between 2009 and 2012 that contained four studies or more. He found that for 36 of these articles, the likelihood of observing four significant results, given the average power computed based on the observed effect sizes, was less than 10%. Given his choice of an alpha level of 0.10, this binomial probability is a hypothesis test, and allows the claims (at a 10% alpha level) that whenever the binomial probability of the number of statistically significant results is lower than 10%, the data is surprising, and we can reject the hypothesis that this is an unbiased set of studies. In other words, it is unlikely that this many significant results would be observed, suggesting that publication bias or other selection effects have played a role in these articles. 
 
 One of these 44 articles had been co-authored by myself [@jostmann_weight_2009]. At this time, I knew little about statistical power and publication bias, and beyond accused of improper scientific conduct was stressful. And yet, the accusations were correct - we had selectively reported results, and selectively reported analyses that worked. Having received virtually no training on this topic, we educated ourselves, and uploaded an unpublished study to the website psychfiledrawer.org (which no longer exists) to share our filedrawer. Some years later, we assisted when Many Labs 3 included one of the studies we had published in the set of studies they were replicating [@ebersole_many_2016], and when a null result was observed, we wrote "We have had to conclude that there is actually no reliable evidence for the effect" [@jostmann_short_2016]. I hope this educational materials prevents others from making a fool of themselves like we did. 
 
@@ -207,7 +207,7 @@ We can also see signs of bias in the forest plot for a meta-analysis. In Figure 
 <p class="caption">(\#fig:twoforestplot)Forest plot of unbiased meta-analysis (left) and biased meta-analysies (right).</p>
 </div>
 
-When there is publication bias because researchers only publish statistically significant results (p \< alpha), and you calculate the effect size in a meta-analysis, the meta-analytic effect size estimate is **higher** when there is publication bias (where researchers publish only effects with p \< alpha) compared to when there is no publication bias. This is because publication bias filters out the smaller (non-significant) effect sizes. which are then not included in the computation of the meta-analytic effect size. This leads to a meta-analytic effect size estimate that is larger than the true population effect size. With strong publication bias, we know the meta-analytic effect size is inflated, but we don't know by how much. The true effect size could just be a bit smaller, but the true effect size could also be 0, such as in the case of the ego-deplation literature.
+When there is publication bias because researchers only publish statistically significant results (*p* \< $\alpha$), and you calculate the effect size in a meta-analysis, the meta-analytic effect size estimate is **higher** when there is publication bias (where researchers publish only effects with *p* \< $\alpha$) compared to when there is no publication bias. This is because publication bias filters out the smaller (non-significant) effect sizes. which are then not included in the computation of the meta-analytic effect size. This leads to a meta-analytic effect size estimate that is larger than the true population effect size. With strong publication bias, we know the meta-analytic effect size is inflated, but we don't know by how much. The true effect size could just be a bit smaller, but the true effect size could also be 0, such as in the case of the ego-deplation literature.
 
 ## Trim and Fill  
 
@@ -338,7 +338,7 @@ plot(z_res, annotation = TRUE, CI = TRUE)
 
 <img src="13-bias_files/figure-html/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;" />
 
-We see that 96 out of 100 studies were significant, which makes the observed discovery rate (ODR), or observed power (across all these studies with different sample sizes) 0.96, 95% CI[0.89;0.99]. The expected discovery rate (EDR) is only 0.053, which differs statistically differ from the observed discovery rate, as indicated by the fact that the confidence interval of the EDR does not overlap with the ODR of 0.96. This means there is clear indication of selection bias based on the *z*-curve analysis. The expected replicability rate for these studies is only 0.052, which is in line with the expectation that we will only observe 5% Type 1 errors. Thus, even though we only entered significant *p*-values, *z*-curve analysis correctly suggests that we should not expect these results to replicate.
+We see that 96 out of 100 studies were significant, which makes the observed discovery rate (ODR), or observed power (across all these studies with different sample sizes) 0.96, 95% CI[0.89;0.99]. The expected discovery rate (EDR) is only 0.053, which differs statistically from the observed discovery rate, as indicated by the fact that the confidence interval of the EDR does not overlap with the ODR of 0.96. This means there is clear indication of selection bias based on the *z*-curve analysis. The expected replicability rate for these studies is only 0.052, which is in line with the expectation that we will only observe 5% Type 1 errors. Thus, even though we only entered significant *p*-values, *z*-curve analysis correctly suggests that we should not expect these results to replicate.
 
 ## Conclusion  
 
@@ -347,3 +347,81 @@ Publication bias is a big problem in science. It is present in almost all meta-a
 There is a lot of activity in the literature on tests for publication bias. There are many different tests, and you need to carefully check the assumptions of each test before applying it. Most tests don’t work well when there is large heterogeneity, and heterogeneity is quite likely. A meta-analysis should always examine whether there is publication bias, preferably using multiple publication bias tests, and therefpre it is useful to not just code effect sizes, but also test statistics or *p*-values. None of the bias detection techniques discussed in this assignment will be a silver bullet, but they will be better than naively interpreting the uncorrected effect size estimate from the meta-analysis.
 
 For another open educational resource on tests for publication bias, see [Doing Meta-Analysis in R](https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R/pub-bias.html).
+
+## Test Yourself
+
+**Q1**: What happens when there is publication bias because researchers only
+publish statistically significant results (*p* \< $\alpha$), and you calculate the effect size in a meta-analysis? 
+
+A) The meta-analytic effect size estimate is **identical** whether there is
+publication bias (where researchers publish only effects with *p* \< $\alpha$) or no publication bias.
+B) The meta-analytic effect size estimate is **closer to the true effect size** when there is publication bias (where researchers publish only effects with *p* \< $\alpha$) compared to when there is no publication bias.
+C) The meta-analytic effect size estimate is **higher** when there is publication bias (where researchers publish only effects with *p* \< $\alpha$) compared to when there is no publication bias.
+D) The meta-analytic effect size estimate is **lower** when there is publication bias (where researchers publish only effects with *p* \< $\alpha$) compared to when there is no publication bias.
+
+**Q2**: The forest plot in the figure below looks quite peculiar. What do you notice?
+
+<img src="13-bias_files/figure-html/metasimq2-1.png" width="100%" style="display: block; margin: auto;" />
+
+A) All effect sizes are quite similar, suggesting large sample sizes and highly accurate effect size measures.
+B) The studies look as if they were designed based on perfect a-priori power analyses, all yielding just significant results.
+C) The studies have confidence intervals that only just fail to include 0, suggesting most studies are only just statistically significant. This suggests publication bias.
+D) All effects are in the same direction, which suggests that one-sided tests have been performed, even though these might not have been preregistered.
+
+**Q3**: Which statement is true?
+
+A) With extreme publication bias, all individual studies in a literature can be significant, but the standard errors are so large that the meta-analytic effect size estimate is not significantly different from 0.
+B) With extreme publication bias, all individual studies in a literature can be significant, but the meta-analytic effect size estimate will be severely inflated, sgiving the impression there is overwhelming support for $H_1$ when in reality $H_0$ is true.
+C) With extreme publication bias, all individual studies are significant, but
+meta-analytic effect size estimates are automatically corrected for publication bias in most statistical packages, and the meta-analytic effect size estimate is therefore quite reliable.
+D) Regardless of whether there is publication bias, the meta-analytic effect size estimate is severely biased, and it should never be considered a reliable estimate of the population.
+
+**Q4**: Which statement is true based on the plot below, vizualizing a PET-PEESE meta-regression?
+
+<div class="figure" style="text-align: center">
+<img src="13-bias_files/figure-html/petpeeseq4-1.png" alt="Funnel plot with PET_PEESE regression lines for the same studies as in Q2." width="100%" />
+<p class="caption">(\#fig:petpeeseq4)Funnel plot with PET_PEESE regression lines for the same studies as in Q2.</p>
+</div>
+
+A) Using PET-PEESE meta-regression we can show that the true effect size is d = 0 (based on the PET estimate).
+B) Using PET-PEESE meta-regression we can show that the true effect size is d = 0.23 (based on the PEESE estimate).
+C) Using PET-PEESE meta-regression we can show that the true effect size is d = 0.34 (based on the normal meta-analytic effect size estimate).
+D) The small sample size (8 studies) means PET has very low power to reject the null, and therefore it is not a reliable indicator of bias - but there might be reason to worry. 
+
+**Q5**: Take a look at the figure and output table of the *p*-curve app below, which gives the results for the studies in Q2. Which interpretation of the output is correct?
+
+
+
+<div class="figure" style="text-align: center">
+<img src="images/pcurveresultq5.png" alt="Result of the p-curve analysis of the biased studies in Q2." width="100%" />
+<p class="caption">(\#fig:pcurveresultq5)Result of the p-curve analysis of the biased studies in Q2.</p>
+</div>
+
+A) Based on the continuous Stouffer’s test for the full *p*-curve, we can not reject a *p*-value distribution expected under $H_0$, and we can reject a *p*-value distribution as expected if $H_1$ is true and studies had 33% power.
+B) Based on the continuous Stouffer’s test for the full *p*-curve, we can
+conclude the observed *p*-value distribution is not skewed enough to be
+interpreted as the presence of a true effect size, therefore the theory used to deduce these studies is incorrect. 
+C) Based on the continuous Stouffer’s test for the full *p*-curve, we can
+conclude the observed *p*-value distribution is skewed enough to be
+interpreted in line with a *p*-value distribution as expected if $H_1$ is true and studies had 33% power.
+D) Based on the continuous Stouffer’s test for the full *p*-curve, we can
+conclude the observed *p*-value distribution is flatter than we
+would expect if the studies had 33% power, and therefore, we can conclude these studies are based on fabricated data.
+
+**Q6**: The true effect size in the studies simulated in Q2 is 0 - there is no true effect. Which statement about the *z*-curve analysis below is true? 
+
+<img src="13-bias_files/figure-html/zcurveq6-1.png" width="100%" style="display: block; margin: auto;" />
+
+A) The expected discovery rate and the expected replicability rate are both statistically significant, and therefore we can expect the observed effects to successfully replicate in future studies. 
+B) Despite the fact that the average observed power (the observed discovery rate) is 100%, *z*-curve correctly predicts the expected replicability rate (which is 5%, as only Type 1 errors will be statistically significant). 
+C) *Z*-curve is not able to find an indication of bias, as the expected discovery rate and the expected replicability rate do not differ from each other statistically.
+D) Although the observed discovery rate is 1 (indicating an observed power of 100%) the confidence interval ranges from 0.66 to 1, which indicates that the studies could have a lower but more realistic power, and the fact that 100% of the results were significant could have happened by chance. 
+
+**Q7**: We did not yet perform a trim and fill analysis, and given the analyses above (e.g., the *z*-curve analysis), which statement is true? 
+
+A) The trim-and-fill method would most likely not indicate any missing studies to 'fill'. 
+B) The trim-and-fill method has known low power to detect bias, and would contradict the *z*-curve or *p*-curve analysis reported above. 
+C) The trim-and-fill analysis would indicate bias, but so did the *p*-curve and *z*-curve analysis, and the adjusted effect size estimate by trim-and-fill does not adequately correct for bias, so the analysis would not add anything. 
+D) The trim-and-fill method provides a reliable estimate of the true effect size, which is not provided by any of the other methods discussed so far, and therefore it should be reported alongside other bias detection tests.
+
+**Q8**: Publication bias is defined as the practice of selectively submitting and publishing scientific research. Throughout this chapter, we have focussed on selectively submitting *significant* results. Can you think of a research line or a research question where researchers might prefer to selectively publish *non-significant* results? 

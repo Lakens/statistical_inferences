@@ -1,7 +1,7 @@
 --- 
 title: "Improving Your Statistical Inferences"
 author: "Daniel Lakens"
-date: "2022-03-28"
+date: "2022-03-29"
 site: bookdown::bookdown_site
 documentclass: krantz
 bibliography: [book.bib]
@@ -18,7 +18,7 @@ output:
     pandoc_args: --top-level-division=chapter
 ---
 
-# Welcome {-}
+# Introduction {-}
 
 
 
