@@ -653,7 +653,7 @@ A good moment to create a stable version of your project is when your manuscript
 
 <img src="images/502f57cf747457838ed0a0e2c5af0496.png" width="100%" style="display: block; margin: auto;" />
 
-If you are ready to create a Registration, follow the instructions on the OSF: <https://help.osf.io/hc/en-us/articles/360019930893-Register-Your-Project>. As an example of a Registration that was made to store all work related to one of my scientific publications, see <https://doi.org//10.17605/OSF.IO/9Z6WB> (this link is itself an example of how to link to an OSF project using a DOI).
+If you are ready to create a Registration, follow the instructions on the OSF: <https://help.osf.io/article/158-create-a-preregistration>. As an example of a Registration that was made to store all work related to one of my scientific publications, see <https://doi.org//10.17605/OSF.IO/9Z6WB> (this link is itself an example of how to link to an OSF project using a DOI).
 
 ### EXTRA: Sharing Reproducible Code on Code Ocean
 
