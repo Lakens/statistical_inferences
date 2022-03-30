@@ -1,7 +1,7 @@
 --- 
 title: "Improving Your Statistical Inferences"
 author: "Daniel Lakens"
-date: "2022-03-29"
+date: "2022-03-30"
 site: bookdown::bookdown_site
 documentclass: krantz
 bibliography: [book.bib]
@@ -9,7 +9,7 @@ monofont: "Source Code Pro"
 url: https://lakens.github.io/statistical_inferences/
 # cover-image: path to the social sharing image like images/cover.jpg
 description: |
-  Open education resource to improve statistical inferences based on the work by Daniel Lakens.
+  Open Educational Resource to improve statistical inferences based on the work by Daniel Lakens.
 biblio-style: apalike
 csl: apa.csl # Downloaded from https://www.zotero.org/styles?q=id%3Aapa
 link-citations: yes
@@ -31,5 +31,6 @@ If you find any mistakes, or have suggestions for improvement, you can [submit a
 
 
 Dr. Daniël Lakens
+Eindhoven University of Technology
 
 <img src="images/me.png" width="30%" style="display: block; margin: auto;" />
