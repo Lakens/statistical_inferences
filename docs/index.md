@@ -1,7 +1,7 @@
 --- 
 title: "Improving Your Statistical Inferences"
 author: "Daniel Lakens"
-date: "2022-03-30"
+date: "2022-03-31"
 site: bookdown::bookdown_site
 documentclass: krantz
 bibliography: [book.bib]
@@ -31,6 +31,7 @@ If you find any mistakes, or have suggestions for improvement, you can [submit a
 
 
 Dr. Daniël Lakens
+
 Eindhoven University of Technology
 
 <img src="images/me.png" width="30%" style="display: block; margin: auto;" />

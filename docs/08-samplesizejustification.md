@@ -215,7 +215,7 @@ There is a wide range of tools available to perform power analyses. Whichever to
 When reporting an a-priori power analysis, make sure that the power analysis is completely reproducible. If power analyses are performed in R it is possible to share the analysis script and information about the version of the package. In many software packages it is possible to export the power analysis that is performed as a PDF file. For example, in G\*Power analyses can be exported under the 'protocol of power analysis' tab. If the software package provides no way to export the analysis, add a screenshot of the power analysis to the supplementary files.
 
 <div class="figure" style="text-align: center">
-<img src="images/gpowprotocol.png" alt="All details about the power analysis that is performed can be exported in G*Power." width="240" />
+<img src="images/gpowprotocol.png" alt="All details about the power analysis that is performed can be exported in G*Power." width="100%" />
 <p class="caption">(\#fig:gpowprotocol)All details about the power analysis that is performed can be exported in G*Power.</p>
 </div>
 
