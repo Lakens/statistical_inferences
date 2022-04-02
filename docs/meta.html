@@ -4,17 +4,17 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Chapter 12 Meta-analysis | Improving Your Statistical Inferences</title>
+<title>Chapter 11 Meta-analysis | Improving Your Statistical Inferences</title>
 <meta name="author" content="Daniel Lakens">
 <meta name="description" content="Every single study is just a data-point in a future meta-analysis. If you draw small samples from a population, the mean and standard deviation in the sample can differ considerably from the mean...">
 <meta name="generator" content="bookdown 0.25 with bs4_book()">
-<meta property="og:title" content="Chapter 12 Meta-analysis | Improving Your Statistical Inferences">
+<meta property="og:title" content="Chapter 11 Meta-analysis | Improving Your Statistical Inferences">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://lakens.github.io/statistical_inferences/meta.html">
 <meta property="og:image" content="https://lakens.github.io/statistical_inferences/images/logo.png">
 <meta property="og:description" content="Every single study is just a data-point in a future meta-analysis. If you draw small samples from a population, the mean and standard deviation in the sample can differ considerably from the mean...">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Chapter 12 Meta-analysis | Improving Your Statistical Inferences">
+<meta name="twitter:title" content="Chapter 11 Meta-analysis | Improving Your Statistical Inferences">
 <meta name="twitter:description" content="Every single study is just a data-point in a future meta-analysis. If you draw small samples from a population, the mean and standard deviation in the sample can differ considerably from the mean...">
 <meta name="twitter:image" content="https://lakens.github.io/statistical_inferences/images/logo.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -90,10 +90,10 @@
 <li><a class="" href="confint.html"><span class="header-section-number">7</span> Confidence Intervals</a></li>
 <li><a class="" href="power.html"><span class="header-section-number">8</span> Sample size justification</a></li>
 <li><a class="" href="equivalencetest.html"><span class="header-section-number">9</span> Equivalence Testing and Interval Hypotheses</a></li>
-<li><a class="" href="prereg.html"><span class="header-section-number">10</span> Preregistration and Transparency</a></li>
-<li><a class="" href="sequential.html"><span class="header-section-number">11</span> Sequential Analysis</a></li>
-<li><a class="active" href="meta.html"><span class="header-section-number">12</span> Meta-analysis</a></li>
-<li><a class="" href="bias.html"><span class="header-section-number">13</span> Bias detection</a></li>
+<li><a class="" href="sequential.html"><span class="header-section-number">10</span> Sequential Analysis</a></li>
+<li><a class="active" href="meta.html"><span class="header-section-number">11</span> Meta-analysis</a></li>
+<li><a class="" href="bias.html"><span class="header-section-number">12</span> Bias detection</a></li>
+<li><a class="" href="prereg.html"><span class="header-section-number">13</span> Preregistration and Transparency</a></li>
 <li><a class="" href="computationalreproducibility.html"><span class="header-section-number">14</span> Computational Reproducibility</a></li>
 <li><a class="" href="references.html"><span class="header-section-number">15</span> References</a></li>
 </ul>
@@ -103,15 +103,15 @@
         </div>
       </nav>
 </div>
-  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="meta" class="section level1" number="12">
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="meta" class="section level1" number="11">
 <h1>
-<span class="header-section-number">12</span> Meta-analysis<a class="anchor" aria-label="anchor" href="#meta"><i class="fas fa-link"></i></a>
+<span class="header-section-number">11</span> Meta-analysis<a class="anchor" aria-label="anchor" href="#meta"><i class="fas fa-link"></i></a>
 </h1>
 <p>Every single study is just a data-point in a future meta-analysis. If you draw small samples from a population, the mean and standard deviation in the sample can differ considerably from the mean and standard deviation in the population. There is great variability in small samples. Parameter estimates from small samples are very imprecise, and therefore the 95% confidence intervals around effect sizes are very wide. Indeed, this led Cohen <span class="citation">(<a href="references.html#ref-cohen_earth_1994" role="doc-biblioref">1994</a>)</span> to write “I suspect that the main reason <a href="confint.html#confint">confidence intervals</a> are not reported is that they are so embarrassingly large!” If we want a more precise estimate of our parameter of interest, such as the mean difference or correlation in the population, we need either run extremely large single studies, or alternatively, combine data from several studies by performing a meta-analysis. The most common approach to combine studies is to perform a meta-analysis of effect size estimates.</p>
 <p>You can perform a meta-analysis for a set of studies in a single article you plan to publish (often called an internal meta-analysis), or you can search the literature for multiple studies reported in as many different articles as possible, and perform a meta-analysis on all studies others have published. An excellent introduction to meta-analyses is provided in the book by <span class="citation">Borenstein (<a href="references.html#ref-borenstein_introduction_2009" role="doc-biblioref">2009</a>)</span>. There is commercial software you can use to perform meta-analyses, but I highly recommend against using such software. Almost all commercial software packages lack transparency, and do not allow you to share your analysis code and data with other researchers. In this assignment, we will be using R to perform a meta-analysis of effect sizes, using the <code>metafor</code> package by <span class="citation">Viechtbauer (<a href="references.html#ref-viechtbauer_conducting_2010" role="doc-biblioref">2010</a>)</span>. An important benefit of using <code>metafor</code> is that your meta-analysis can be made completely reproducible. If you plan to perform a narrative review, it is relatively little additional effort to also code the effect sizes and sample size, and perform an effect size meta-analysis, and to code the statistical tests and <em>p</em>-values, to perform a <em>p</em>-curve or <em>z</em>-curve analysis (which will be discussed in the next chapter on <a href="bias.html#bias">bias detection</a>.</p>
-<div id="random-variation" class="section level2" number="12.1">
+<div id="random-variation" class="section level2" number="11.1">
 <h2>
-<span class="header-section-number">12.1</span> Random Variation<a class="anchor" aria-label="anchor" href="#random-variation"><i class="fas fa-link"></i></a>
+<span class="header-section-number">11.1</span> Random Variation<a class="anchor" aria-label="anchor" href="#random-variation"><i class="fas fa-link"></i></a>
 </h2>
 <p>People find it difficult to think about random variation. Our mind is more strongly geared towards recognizing patterns than randomness. In this section the goal is to learn what random variation looks like, and how the number of observations collected determines the amount of variation.</p>
 <p>Intelligence tests have been designed such that the mean Intelligence Quotient of the entire population of adults is 100, with a standard deviation of 15. This will not be true for every sample we draw from the population. Let’s get a feel for what the IQ scores from a sample look like. Which IQ scores will people in our sample have?</p>
@@ -137,47 +137,47 @@
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">backgroundcolor</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:plot-hist-iq-1"></span>
-<img src="12-meta_files/figure-html/plot-hist-iq-1-1.png" alt="Simulation of 10 random datapoints with mean = 100 and sd = 15 in the population." width="100%"><p class="caption">
-Figure 12.1: Simulation of 10 random datapoints with mean = 100 and sd = 15 in the population.
+<img src="11-meta_files/figure-html/plot-hist-iq-1-1.png" alt="Simulation of 10 random datapoints with mean = 100 and sd = 15 in the population." width="100%"><p class="caption">
+Figure 11.1: Simulation of 10 random datapoints with mean = 100 and sd = 15 in the population.
 </p>
 </div>
 <p>The plot above provides one example of a randomly simulated dataset of 10 points drawn from a normal distribution with a mean of 100 and a standard deviation of 15. The grey bars indicate the frequency with which each IQ score was observed. The red dotted line illustrates the normal distribution based on the mean and sd of the population. Both the observed mean (97), as well as the observed standard deviation (14), differ from the true population values. If we simulate 4 additional datasets, we see both the mean and the standard deviation vary.</p>
-<div class="inline-figure"><img src="12-meta_files/figure-html/sim-4-iq-1.png" width="100%" style="display: block; margin: auto;"></div>
+<div class="inline-figure"><img src="11-meta_files/figure-html/sim-4-iq-1.png" width="100%" style="display: block; margin: auto;"></div>
 <p>Imagine we did not yet know what the mean IQ was in our population (where <em>M</em> = 100), or the standard deviation (where <em>SD</em> = 15), and that we would only have access to one dataset. Our estimate might be rather far off. This type of variation is to be expected in small samples of 10 participants, given the true standard deviation. The variability in the mean is determined by the standard deviation of the measurement. In real life, the standard deviation can be reduced by for example using multiple and reliable measurements (which is why an IQ test has not just one question, but many different questions). But we can also make sure our sample mean is closer to the population mean by increasing the sample size.</p>
 <p>A new simulated sample with 100 participants is plotted below. We are slowly seeing what is known as the <strong>normal distribution</strong> (and the frequency scores start to resemble the red dotted line illustrating the normal distribution of the population). This is the well-known
 bell shaped curve that represents the distribution of many variables in scientific research (although some other types of distributions are quite common as well). The mean and standard deviation are much closer to the true mean and standard deviation, and this is true for most of the simulated samples if you set n &lt;- 100 in the code above and run additional simulations.</p>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:plot-hist-iq-2"></span>
-<img src="12-meta_files/figure-html/plot-hist-iq-2-1.png" alt="100 random datapoints with mean = 100 and sd = 15 in the population." width="100%"><p class="caption">
-Figure 12.2: 100 random datapoints with mean = 100 and sd = 15 in the population.
+<img src="11-meta_files/figure-html/plot-hist-iq-2-1.png" alt="100 random datapoints with mean = 100 and sd = 15 in the population." width="100%"><p class="caption">
+Figure 11.2: 100 random datapoints with mean = 100 and sd = 15 in the population.
 </p>
 </div>
 <p>If we simulate a really large sample of 1000 observation, we will see the benefits of collecting a large sample size in terms of accuracy of the measurement. Not every simulated study of 1000 people will yield the true mean and standard deviation, but it will happen quite often. And note how although the distribution is very close to a normal distribution, even with 1000 people it is not perfect.</p>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:plot-hist-iq-3"></span>
-<img src="12-meta_files/figure-html/plot-hist-iq-3-1.png" alt="1000 random datapoints with mean = 100 and sd = 15 in the population." width="100%"><p class="caption">
-Figure 12.3: 1000 random datapoints with mean = 100 and sd = 15 in the population.
+<img src="11-meta_files/figure-html/plot-hist-iq-3-1.png" alt="1000 random datapoints with mean = 100 and sd = 15 in the population." width="100%"><p class="caption">
+Figure 11.3: 1000 random datapoints with mean = 100 and sd = 15 in the population.
 </p>
 </div>
 <p>So far we have simulated only a single group of observations, but it is also informative to examine the variation we will observe when we compare the means in two independent groups. Assume we have a new IQ training program that will increase peoples IQ score with 6 points. People in condition 1 are in the control condition – they do not get IQ training. People in condition 2 get IQ training. Let’s simulate 10 people in each group, assuming the IQ in the control condition is 100, and in the experimental group is 106 (the SD is still 15 in each group).</p>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:plot-group1"></span>
-<img src="12-meta_files/figure-html/plot-group1-1.png" alt="Simulation of 10 observations in two independent groups." width="100%"><p class="caption">
-Figure 12.4: Simulation of 10 observations in two independent groups.
+<img src="11-meta_files/figure-html/plot-group1-1.png" alt="Simulation of 10 observations in two independent groups." width="100%"><p class="caption">
+Figure 11.4: Simulation of 10 observations in two independent groups.
 </p>
 </div>
 <p>The two groups differ in how close they are to their true means, and as a consequence, the difference between groups varies as well. Note that this difference is the main variable in statistical analyses when comparing two groups in for example a <em>t</em>-test. In this specific simulation, we got quite extreme results, with a score of 96 (when the population mean is 100) and a score of 111 (when the population mean is 106). So in this sample, due to random variation, we would lead to an effect size estimate that is quite a bit larger than the true effect size. Let's simulate 4 additional datasets to see the variation.</p>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:plot-group2"></span>
-<img src="12-meta_files/figure-html/plot-group2-1.png" alt="Four simulated samples of independent groups." width="100%"><p class="caption">
-Figure 12.5: Four simulated samples of independent groups.
+<img src="11-meta_files/figure-html/plot-group2-1.png" alt="Four simulated samples of independent groups." width="100%"><p class="caption">
+Figure 11.5: Four simulated samples of independent groups.
 </p>
 </div>
-<p>We see that there is quite some variation, up to the point that in one simulation the sample means are in the opposite direction of the population means. Again, increasing the sample size will mean that, in the long run, the sample means will get closer to the population means, and that we are more accurately estimation the difference between conditions. With 250 observations in each group, a randomly simulated set of observations for the two groups might look like Figure <a href="meta.html#fig:plotgroup3">12.6</a>. Note that this difference might not look impressive. Yet, an independent <em>t</em>-test, the difference would pass a significance test with a very low alpha level.</p>
+<p>We see that there is quite some variation, up to the point that in one simulation the sample means are in the opposite direction of the population means. Again, increasing the sample size will mean that, in the long run, the sample means will get closer to the population means, and that we are more accurately estimation the difference between conditions. With 250 observations in each group, a randomly simulated set of observations for the two groups might look like Figure <a href="meta.html#fig:plotgroup3">11.6</a>. Note that this difference might not look impressive. Yet, an independent <em>t</em>-test, the difference would pass a significance test with a very low alpha level.</p>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:plotgroup3"></span>
-<img src="12-meta_files/figure-html/plotgroup3-1.png" alt="Simulated sample of 250 independent observations" width="100%"><p class="caption">
-Figure 12.6: Simulated sample of 250 independent observations
+<img src="11-meta_files/figure-html/plotgroup3-1.png" alt="Simulated sample of 250 independent observations" width="100%"><p class="caption">
+Figure 11.6: Simulated sample of 250 independent observations
 </p>
 </div>
 <p>The variation in the estimate of the mean descreases as the sample size increases. The larger the sample size, the more precise the estimate of the mean becomes. The <strong>standard deviation of the sample</strong> (<span class="math inline">\(\sigma_x\)</span>) of single IQ scores is 15, irrespective of the sample size, and the larger the sample size, the more accurately we can measure the true standard deviation. But the <strong>standard deviation of the sampling distribution of the sample mean</strong> (<span class="math inline">\(\sigma_\overline{x}\)</span>) decreases, as the sample size increases, and is referred to as the <strong>standard error (SE)</strong>. The estimated standard deviation of the sample mean, or the standard error, calculated based on the observed standard deviation of the sample (<span class="math inline">\(\sigma_x\)</span>) is:</p>
@@ -189,30 +189,30 @@ Based on this formula, and assuming an observed standard deviation of the sample
 When we randomly simulate observations for 30 twins, we get the following result.</p>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:plot-cor1"></span>
-<img src="12-meta_files/figure-html/plot-cor1-1.png" alt="Correlation based on 30 pairs." width="100%"><p class="caption">
-Figure 12.7: Correlation based on 30 pairs.
+<img src="11-meta_files/figure-html/plot-cor1-1.png" alt="Correlation based on 30 pairs." width="100%"><p class="caption">
+Figure 11.7: Correlation based on 30 pairs.
 </p>
 </div>
 <p>On the x-axis, we see the IQ score of one twin, and one the y-axis we see the IQ score of the second twin. The black dotted diagonal line illustrates the true correlation (0.55), while the yellow line shows the observed correlation (in this case, <em>r</em> = 0.43). The slope of the yellow line is determined by the observed correlation, but the position of the line is influenced by the mean IQ scores in both groups (in this simulation, the mean on the y-axis is 105, somewhat below 100, and the mean on the x-axis is 102, also slightly above 100. The blue area is the 95% confidence interval around the observed correlation. As we saw in the chapter on <a href="confint.html#confint">confidence intervals</a>, 95% of the time (in the long run) the blue area will contain the true correlation (the dotted black line). As in the examples based on means, increasing the sample size to 300 narrows the confidence interval considerably, and will mean the most of the time the correlation in the sample is much closer to the correlation in the population. As the sample size increases, the estimate of the correlation becomes more precise, following the formula of the standard error of a correlation:</p>
 <p><span class="math display">\[SE_{r_{xy}} = \frac{1 - r^2_{xy}}{\sqrt{(n - 2)}}\]</span></p>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:plot-cor2"></span>
-<img src="12-meta_files/figure-html/plot-cor2-1.png" alt="Correlation based on 300 pairs." width="100%"><p class="caption">
-Figure 12.8: Correlation based on 300 pairs.
+<img src="11-meta_files/figure-html/plot-cor2-1.png" alt="Correlation based on 300 pairs." width="100%"><p class="caption">
+Figure 11.8: Correlation based on 300 pairs.
 </p>
 </div>
 <p>Because estimates of means, standard deviations, or correlations based on small samples have relatively large uncertainty, it is preferable to collect larger samples. However, this is not always possible, and often the goal of a study is not to provide an accurate estimate, but to test a hypothesis. A study often requires less observations to achieve sufficient power for a hypothesis test, than are required to be able to accurately estimate a parameter <span class="citation">(<a href="references.html#ref-maxwell_sample_2008" role="doc-biblioref">Maxwell et al., 2008</a>)</span>. Therefore, scientists often rely on meta-analyses, where data from multiple studies are combined, to provide accurate estimates.</p>
 </div>
-<div id="introduction-to-meta-analysis" class="section level2" number="12.2">
+<div id="introduction-to-meta-analysis" class="section level2" number="11.2">
 <h2>
-<span class="header-section-number">12.2</span> Introduction to Meta-Analysis<a class="anchor" aria-label="anchor" href="#introduction-to-meta-analysis"><i class="fas fa-link"></i></a>
+<span class="header-section-number">11.2</span> Introduction to Meta-Analysis<a class="anchor" aria-label="anchor" href="#introduction-to-meta-analysis"><i class="fas fa-link"></i></a>
 </h2>
 <p>Every single study is just a data-point in a future meta-analysis. If you draw small samples from a population, the mean and standard deviation in the sample can differ considerably from the mean and standard deviation in the population. There is great variability in small samples. Parameter estimates from small samples are very imprecise, and therefore the 95% confidence intervals around effect sizes are very wide. If we want a more precise estimate of our parameter of interest, such as the mean difference or correlation in the population, we need either run extremely large single studies, or alternatively, combine data from several studies by performing a <strong>meta-analysis</strong>. The most common approach to combine studies is to perform a meta-analysis of effect size estimates.</p>
 <p>You can perform a meta-analysis for a set of studies in a single article you plan to publish (often called an <strong>internal meta-analysis</strong>), or you can search the literature for multiple studies reported in as many different articles as possible, and perform a meta-analysis on all studies others have published. An excellent introduction to meta-analyses is provided in the book by Borenstein, Hedges, Higgins, and Rothstein <span class="citation">Borenstein (<a href="references.html#ref-borenstein_introduction_2009" role="doc-biblioref">2009</a>)</span>. There is commercial software you can use to perform meta-analyses, but I highly recommend <em>against</em> using such software. Almost all commercial software packages lack transparency, and do not allow you to share your analysis code and data with other researchers. In this assignment, we will be using R to perform a meta-analysis of effect sizes, using the <strong>metafor</strong> package by Viechtbauer <span class="citation">(<a href="references.html#ref-viechtbauer_conducting_2010" role="doc-biblioref">2010</a>)</span>. An important benefit of using <code>metafor</code> is that your meta-analysis can be made completely reproducible.</p>
 </div>
-<div id="a-single-study-meta-analysis" class="section level2" number="12.3">
+<div id="a-single-study-meta-analysis" class="section level2" number="11.3">
 <h2>
-<span class="header-section-number">12.3</span> A single study meta-analysis<a class="anchor" aria-label="anchor" href="#a-single-study-meta-analysis"><i class="fas fa-link"></i></a>
+<span class="header-section-number">11.3</span> A single study meta-analysis<a class="anchor" aria-label="anchor" href="#a-single-study-meta-analysis"><i class="fas fa-link"></i></a>
 </h2>
 <p>Let’s first begin with something you will hardly ever do in real life: a meta-analysis of a single study. This is a little silly, because a simple <em>t</em>-test or correlation will tell you the same thing – but it is educational to compare a <em>t</em>-test with a meta-analysis of a single study, before we look at how multiple studies are combined into a meta-analysis.</p>
 <p>A difference between an independent <em>t</em>-test and a meta-analysis is that a <em>t</em>-test is performed on the raw data, while a meta-analysis is typically performed on the effect size(s) of individual studies. The <code>metafor</code> R package contains a very useful function called <code>escalc</code> that can be used to calculate effect sizes, their variances, and confidence intervals around effect size estimates. So let’s start by calculating the effect size to enter into our meta-analysis. As explained in the chapter on <a href="effectsize.html#effectsize">effect sizes</a> the two main effect sizes used for meta-analyses of continuous variables are the standardized mean difference (<em>d</em>) or the correlation (<em>r</em>), although it is of course also possible to perform meta-analyses on dichotomous variables (we will see an example below). The code below will calculate the <strong>standardized mean difference</strong> (SMD) from two independent groups from <strong>means</strong> (specified by m1i and m2i), <strong>standard deviations</strong> (sd1i and sd2i), and the number of observations in each group (n1i and n2i). By default, <code>metafor</code> computes the effect size ‘<strong>Hedges’ g</strong>’ which is the unbiased version of Cohen’s <em>d</em> (see the section on <a href="effectsize.html#cohend">Cohen's d</a> in the chapter on Effect Sizes).</p>
@@ -266,24 +266,24 @@ Vg = J^{2} \times \left( \frac{n_{1} + n_{2}}{n_{1}n_{2}} + \frac{g^{2}}{2(n_{1}
 <p>In a meta-analysis, a <em>Z</em>-test is used to examine whether the null-hypothesis can be rejected. This assumes a normally distributed random effect size model. Normally, you would analyze data from a single study with two groups using a <em>t</em>-test, which not surprisingly uses a <em>t</em>-distribution. If the sample size is large enough, the <em>Z</em> and <em>t</em> distribution are very similar. I don't know why statistical computations sometimes care a lot about a small amount of bias (the difference between the effect size <em>d</em> and <em>g</em>, for example) and sometimes not (the difference between <em>Z</em> and <em>t</em>), but meta-analysts seem happy with <em>Z</em>-scores (with large enough sample sizes (which is commonly true in a meta-analysis) the difference between a <em>Z</em>-test and <em>t</em>-test is tiny). If we directly compare a single-study meta-analysis based on a <em>Z</em>-test with a <em>t</em>-test, we will see some tiny differences in the results.</p>
 <p>As explained in the chapter on <a href="effectsize.html#effectsize">effect sizes</a> we can directly calculate the effect size Hedges’ <em>g</em> (and it's 95% confidence interval) using MOTE <span class="citation">(<a href="references.html#ref-buchanan_mote_2017" role="doc-biblioref">Buchanan et al., 2017</a>)</span>. The MOTE package uses the <em>t</em>-distribution when calculating confidence intervals around the effect size (and we can see this makes only a tiny difference compared to using the <em>Z</em>-distribution in a meta-analysis with 50 observations in each group).</p>
 <p>The <em>t</em>-value is 2.835, and the <em>p</em>-value is 0.006. The results are very similar to those computed when performing a meta-analysis, with <em>g</em> = 0.55, 95% CI[0.16; 0.94], where the effect size and the upper bound for the confidence interval differ only 0.01 after rounding.</p>
-<p>It is now common to visualize the results of a meta-analysis using a forest plot. Acording to <span class="citation">H. M. Cooper et al. (<a href="references.html#ref-cooper_handbook_2009" role="doc-biblioref">2009</a>)</span> the first forest plot was published in 1978 <span class="citation">(<a href="references.html#ref-freiman_importance_1978" role="doc-biblioref">Freiman et al., 1978</a>)</span>, with the goal to visualize a large set of studies that had concluded the absence of an effect based on non-significant results in small studies (see Figure <a href="meta.html#fig:freiman1978">12.9</a>). By plotting the width of the confidence interval for each study, it becomes possible to see that even though the studies do not reject an effect size of 0, and thus were all non-significant, many studies also did not reject the presence of a meaningful favorable treatment effect. To make large studies more noticeable in a forest plot, later version added a square to indicate the estimated effect size, where the size of the square was proportional to the weight that will be assigned to the study when computing the combined effect.</p>
+<p>It is now common to visualize the results of a meta-analysis using a forest plot. Acording to <span class="citation">H. M. Cooper et al. (<a href="references.html#ref-cooper_handbook_2009" role="doc-biblioref">2009</a>)</span> the first forest plot was published in 1978 <span class="citation">(<a href="references.html#ref-freiman_importance_1978" role="doc-biblioref">Freiman et al., 1978</a>)</span>, with the goal to visualize a large set of studies that had concluded the absence of an effect based on non-significant results in small studies (see Figure <a href="meta.html#fig:freiman1978">11.9</a>). By plotting the width of the confidence interval for each study, it becomes possible to see that even though the studies do not reject an effect size of 0, and thus were all non-significant, many studies also did not reject the presence of a meaningful favorable treatment effect. To make large studies more noticeable in a forest plot, later version added a square to indicate the estimated effect size, where the size of the square was proportional to the weight that will be assigned to the study when computing the combined effect.</p>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:freiman1978"></span>
 <img src="images/freiman1978.jpg" alt="First version of a forest plot by Freiman and colleagues, 1978 (image from https://www.jameslindlibrary.org/freiman-ja-chalmers-tc-smith-h-kuebler-rr-1978/)" width="100%"><p class="caption">
-Figure 12.9: First version of a forest plot by Freiman and colleagues, 1978 (image from <a href="https://www.jameslindlibrary.org/freiman-ja-chalmers-tc-smith-h-kuebler-rr-1978/" class="uri">https://www.jameslindlibrary.org/freiman-ja-chalmers-tc-smith-h-kuebler-rr-1978/</a>)
+Figure 11.9: First version of a forest plot by Freiman and colleagues, 1978 (image from <a href="https://www.jameslindlibrary.org/freiman-ja-chalmers-tc-smith-h-kuebler-rr-1978/" class="uri">https://www.jameslindlibrary.org/freiman-ja-chalmers-tc-smith-h-kuebler-rr-1978/</a>)
 </p>
 </div>
-<p>In Figure <a href="meta.html#fig:metaforest">12.10</a> we see a modern version of a forest plot, with the effect size for Study 1 marked by the black square at 0.56, and the confidence interval visualized by lines extending to 0.16 on the left and 0.95 on the right. The numbers printed on the right-hand side of the forest plot provide the exact values for the effect size estimate and the lower and upper bound of the confidence interval. On the lower half of the forest plot, we see a stretched-out diamond, in a row labeled 'RE Model', for 'Random Effects model'. The diamond summarizes the meta-analytic effect size estimate, with the center being at the meta-analytic effect size estimate, and the left and right endpoints at the 95% confidence interval of the meta-analytic effect size estimate. Because we only have a single study, the meta-analytic effect size estimate is the same as the effect size estimate for our single study.</p>
+<p>In Figure <a href="meta.html#fig:metaforest">11.10</a> we see a modern version of a forest plot, with the effect size for Study 1 marked by the black square at 0.56, and the confidence interval visualized by lines extending to 0.16 on the left and 0.95 on the right. The numbers printed on the right-hand side of the forest plot provide the exact values for the effect size estimate and the lower and upper bound of the confidence interval. On the lower half of the forest plot, we see a stretched-out diamond, in a row labeled 'RE Model', for 'Random Effects model'. The diamond summarizes the meta-analytic effect size estimate, with the center being at the meta-analytic effect size estimate, and the left and right endpoints at the 95% confidence interval of the meta-analytic effect size estimate. Because we only have a single study, the meta-analytic effect size estimate is the same as the effect size estimate for our single study.</p>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:metaforest"></span>
-<img src="12-meta_files/figure-html/metaforest-1.png" alt="Forest plot for a single study." width="100%"><p class="caption">
-Figure 12.10: Forest plot for a single study.
+<img src="11-meta_files/figure-html/metaforest-1.png" alt="Forest plot for a single study." width="100%"><p class="caption">
+Figure 11.10: Forest plot for a single study.
 </p>
 </div>
 </div>
-<div id="simulating-meta-analyses-of-mean-standardized-differences" class="section level2" number="12.4">
+<div id="simulating-meta-analyses-of-mean-standardized-differences" class="section level2" number="11.4">
 <h2>
-<span class="header-section-number">12.4</span> Simulating meta-analyses of mean standardized differences<a class="anchor" aria-label="anchor" href="#simulating-meta-analyses-of-mean-standardized-differences"><i class="fas fa-link"></i></a>
+<span class="header-section-number">11.4</span> Simulating meta-analyses of mean standardized differences<a class="anchor" aria-label="anchor" href="#simulating-meta-analyses-of-mean-standardized-differences"><i class="fas fa-link"></i></a>
 </h2>
 <p>Meta-analyses get a bit more exciting when we are using them to analyze results from multiple studies. When multiple studies are combined in a meta-analysis, effect size estimates are not simply averaged, but they are <strong>weighed</strong> by the <strong>precision</strong> of the effect size estimate, which is determined by the sample size of the study. Thus, the larger the sample size of an individual study, the more weight it gets in the meta-analysis, meaning that it has more influence on the meta-analytic effect size estimate.</p>
 <p>One intuitive way to learn about meta-analyses is to simulate studies and meta-analyze them. The code below simulates 12 studies. There is a true effect in the simulated studies, as the difference in means in the population is 0.4 (and given the standard deviation of 1, Cohen's <em>d</em> = 0.4 as well). The studies vary in their sample size between 30 observations and 100 observations per condition. The meta-analysis is performed, and a forest plot is created.</p>
@@ -308,8 +308,8 @@ Figure 12.10: Forest plot for a single study.
 <span class="fu">metafor</span><span class="fu">::</span><span class="fu"><a href="https://wviechtb.github.io/metafor/reference/forest.html">forest</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:meta-sim"></span>
-<img src="12-meta_files/figure-html/meta-sim-1.png" alt="Forest plot for 12 simulated studies." width="100%"><p class="caption">
-Figure 12.11: Forest plot for 12 simulated studies.
+<img src="11-meta_files/figure-html/meta-sim-1.png" alt="Forest plot for 12 simulated studies." width="100%"><p class="caption">
+Figure 11.11: Forest plot for 12 simulated studies.
 </p>
 </div>
 <p>We see 12 rows, one for each study, each with their own effect size and confidence interval. If you look closely, you can see the squares that indicate the effect size estimate for each study differ in size. The larger the sample size, the bigger the square. Study 5 had a relatively small sample size, which can be seen both by the small square, and the relatively wide confidence interval. Study 9 had a larger sample size, and thus a slightly larger square and narrower confidence interval. At the bottom of the graph we find the meta-analytic effect size and its confidence interval, both visualized by a diamond and numerically. The model is referred to as a FE Model, or <strong>Fixed Effect (FE) model</strong>. The alternative approach is a RE Model, or <strong>Random Effects (RE) model</strong> (the difference is discussed below).</p>
@@ -333,16 +333,16 @@ Figure 12.11: Forest plot for 12 simulated studies.
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>We see a test for <strong>heterogeneity</strong>, a topic we will return to <a href="meta.html#heterogeneity">below</a>. We see the model results, which in this specific simulation yielded a meta-analytic effect size estimate of 0.4. The confidence interval around the effect size estimate [0.3 ; 0.51] is much narrower than we saw before for a single study. This is because the 12 studies we simulated together have quite a large sample size, and the larger the sample size, the smaller the standard error, and thus the narrower the confidence interval is. The meta-analytic effect size estimate is statistically different from 0 (<em>p</em> &lt; 0.0001) so we can reject the null hypothesis if we use an alpha level of 0.05. Note that, as discussed in the chapter on sample size justification and in line with the section on justifying error rates in the chapter on error control, it seems sensible to use a much lower alpha level than 5% in meta-analyses.</p>
 </div>
-<div id="fixed-effect-vs-random-effects" class="section level2" number="12.5">
+<div id="fixed-effect-vs-random-effects" class="section level2" number="11.5">
 <h2>
-<span class="header-section-number">12.5</span> Fixed Effect vs Random Effects<a class="anchor" aria-label="anchor" href="#fixed-effect-vs-random-effects"><i class="fas fa-link"></i></a>
+<span class="header-section-number">11.5</span> Fixed Effect vs Random Effects<a class="anchor" aria-label="anchor" href="#fixed-effect-vs-random-effects"><i class="fas fa-link"></i></a>
 </h2>
 <p>There are two possible models when performing a meta-analysis. One model, known as a fixed effect model, assumes there is one effect size that generates the data in all studies in the meta-analysis. This model assumes there is no variation between individual studies – all have exactly the same true effect size. The perfect example of this is the simulations we have done so far. We specified a single true effect in the population, and generated random samples from this population effect.</p>
 <p>Alternatively, one can use a model where the true effect differs in some way in each individual study. We don’t have a single true effect in the population, but a range of <strong>randomly distributed</strong> true effect sizes (hence the ‘random effects’ model). Studies differs in some way from each other (or some sets of studies differ from other sets), and their true effect sizes differ as well. Note the difference between a fixed effect model, and a random effect<strong>s</strong> model, in that the plural ‘effects’ is used only in the latter. Borenstein et al <span class="citation">(<a href="references.html#ref-borenstein_introduction_2009" role="doc-biblioref">2009</a>)</span> state there are two reasons to use a fixed effect model: When all studies are functionally equivalent, and when your goal is <em>not</em> to generalize to other populations. This makes the random effects model generally the better choice, although some people have raised the concern that random-effects models give more weight to smaller studies, which can be more biased. By default, <code>metafor</code> will use a random effects model. We used the <code>method="FE"</code> command to explicitly ask for a fixed effect model. In the meta-analyses we will simulate in the rest of this assignment we will leave out this command and simulate random effects meta-analyses, as this is the better choice in many real life meta-analyses. .</p>
 </div>
-<div id="simulating-meta-analyses-for-dichotomous-outcomes" class="section level2" number="12.6">
+<div id="simulating-meta-analyses-for-dichotomous-outcomes" class="section level2" number="11.6">
 <h2>
-<span class="header-section-number">12.6</span> Simulating meta-analyses for dichotomous outcomes<a class="anchor" aria-label="anchor" href="#simulating-meta-analyses-for-dichotomous-outcomes"><i class="fas fa-link"></i></a>
+<span class="header-section-number">11.6</span> Simulating meta-analyses for dichotomous outcomes<a class="anchor" aria-label="anchor" href="#simulating-meta-analyses-for-dichotomous-outcomes"><i class="fas fa-link"></i></a>
 </h2>
 <p>Although meta-analyses on mean differences are very common, a meta-analysis can be performed on different effect sizes measures. To show a slightly less common example, let’s simulate a meta-analysis based on odds ratios. Sometimes the main outcome in an experiment is a dichotomous variable, such as the success or failure on a task. In such study designs we can calculate risk ratios, odds ratios, or risk differences as the effect size measure. Risk differences are sometimes judged easiest to interpret, but odds ratios are most often used for a meta-analysis because they have attractive statistical properties. An <strong>odds ratio</strong> is a ratio of two odds. To illustrate how an odds ratio is calculated, it is useful to consider the four possible outcomes in a 2 x 2 table of outcomes:</p>
 <div class="inline-table"><table class="table table-sm">
@@ -440,7 +440,7 @@ failures in the experimental and control condition. In the script below, by defa
        xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>, <span class="fl">8</span><span class="op">)</span>, 
        ilab.xpos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">7</span>, <span class="op">-</span><span class="fl">6</span>, <span class="op">-</span><span class="fl">5</span>, <span class="op">-</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">7</span>,<span class="op">-</span><span class="fl">6</span>,<span class="op">-</span><span class="fl">5</span>,<span class="op">-</span><span class="fl">4</span><span class="op">)</span>, <span class="fl">14.7</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"E+"</span>, <span class="st">"E-"</span>, <span class="st">"C+"</span>, <span class="st">"C-"</span><span class="op">)</span>, font <span class="op">=</span> <span class="fl">2</span>, cex <span class="op">=</span> <span class="fl">.8</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="12-meta_files/figure-html/unnamed-chunk-2-1.png" width="100%" style="display: block; margin: auto;"></div>
+<div class="inline-figure"><img src="11-meta_files/figure-html/unnamed-chunk-2-1.png" width="100%" style="display: block; margin: auto;"></div>
 <p>The forest plot presents the studies and four columns of data after the study label, which contain the number of successes and failures in the experimental groups (E+ and E-), and the number of successes and failures in the control group (C+ and C-). Imagine we study the percentage of people who get a job within 6 months after a job training program, compared to a control condition. In Study 1, which had 50 participants in each condition, 29 people in the job training condition got a job within 6 months, and 21 did not get a job. In the control condition, 23 people got a job, but 27 did not. The effect size estimate for the random effects model is 0.65. Feel free to play around with the script, adjusting the number of studies, or the sample sizes in each study, to examine the effect it has on the meta-analytic effect size estimate.</p>
 <p>We can also get the meta-analytic test results by printing the test output. We see that there was no heterogeneity in this meta-analysis. This is true (we simulated identical studies) but also highly unlikely to ever happen in real life, where variation in effect sizes between studies included in a meta-analysis is a much more realistic scenario.</p>
 <div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
@@ -465,9 +465,9 @@ failures in the experimental and control condition. In the script below, by defa
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
-<div id="heterogeneity" class="section level2" number="12.7">
+<div id="heterogeneity" class="section level2" number="11.7">
 <h2>
-<span class="header-section-number">12.7</span> Heterogeneity<a class="anchor" aria-label="anchor" href="#heterogeneity"><i class="fas fa-link"></i></a>
+<span class="header-section-number">11.7</span> Heterogeneity<a class="anchor" aria-label="anchor" href="#heterogeneity"><i class="fas fa-link"></i></a>
 </h2>
 <p>Although researchers often primarily use meta-analysis to compute a meta-analytic effect size estimate, and test whether this effect is statistically different from zero, <strong>an arguably much more important use of meta-analyses is to explain variation between (sets of) studies</strong>. This variation among (sets of) studies is referred to as <strong>heterogeneity</strong>. One goal of meta-analyses is not just to code effect sizes and estimate the meta-analytic effect size, but to code factors in studies that can explain heterogeneity, and examine which of these factors account for heterogeneity. This can help in theory evaluation or theory development. Tests have been developed to examine whether the studies included in a meta-analysis vary more than would be expected if the underlying true effect size in all studies was the same, and measures have been developed to quantify this variation.</p>
 <p>If all studies have the same true population effect size, the only source of variation is random error. If there are real differences between (sets of) studies, there are two sources of variation, namely random variation from study to study, <em>and</em> real differences in effect sizes in (sets of) studies.</p>
@@ -549,9 +549,9 @@ failures in the experimental and control condition. In the script below, by defa
 <p>Based on the test for heterogeneity, we can reject the null hypothesis that there is no heterogeneity in the meta-analysis. Tests for heterogeneity themselves have Type 1 and Type 2 error rates, and with a small number of studies (such as in our example, n = 12) tests for heterogeneity can have low power. If you remove the set.seed command and run the code multiple times, you will see that the test for heterogeneity will often not be significant, even though there is true heterogeneity in the simulation. In large meta-analyses, power can be so high that the test always yields a <em>p</em>-value small enough to reject the null hypothesis, but then it is important to look at the I² estimate.</p>
 <p>Recently there has been considerable attention to the possibility that effect sizes within research lines have substantial heterogeneity <span class="citation">(<a href="references.html#ref-bryan_behavioural_2021" role="doc-biblioref">Bryan et al., 2021</a>)</span>. Large heterogeneity can impact the power of studies, and therefore has consequences for how studies are planned <span class="citation">(<a href="references.html#ref-kenny_unappreciated_2019" role="doc-biblioref">Kenny &amp; Judd, 2019</a>)</span>. Although heterogeneity seems to be low in direct replication studies <span class="citation">(<a href="references.html#ref-olsson-collentine_heterogeneity_2020" role="doc-biblioref">Olsson-Collentine et al., 2020</a>)</span> it is high in most meta-analyses, which has been argued to reflect a lack of understanding of the effects in this research lines <span class="citation">(<a href="references.html#ref-linden_heterogeneity_2021" role="doc-biblioref">Linden &amp; Hönekopp, 2021</a>)</span>.</p>
 </div>
-<div id="strengths-and-weaknesses-of-meta-analysis" class="section level2" number="12.8">
+<div id="strengths-and-weaknesses-of-meta-analysis" class="section level2" number="11.8">
 <h2>
-<span class="header-section-number">12.8</span> Strengths and weaknesses of meta-analysis<a class="anchor" aria-label="anchor" href="#strengths-and-weaknesses-of-meta-analysis"><i class="fas fa-link"></i></a>
+<span class="header-section-number">11.8</span> Strengths and weaknesses of meta-analysis<a class="anchor" aria-label="anchor" href="#strengths-and-weaknesses-of-meta-analysis"><i class="fas fa-link"></i></a>
 </h2>
 <p>The conclusions from meta-analyses have been debated from the very first meta-analyses that were performed. It's ironic that, as far as I can find, the 'garbage in-garbage out' criticism of meta-analysis originates from Eysenck <span class="citation">(<a href="references.html#ref-eysenck_exercise_1978" role="doc-biblioref">1978</a>)</span> because although it is valid criticism, Eysenck himself published literal garbage, as he has been found <a href="https://www.science.org/content/article/misconduct-allegations-push-psychology-hero-his-pedestal">guilty of scientific misconduct</a> which has led to a large number of <a href="http://retractiondatabase.org/RetractionSearch.aspx?AspxAutoDetectCookieSupport=1#?AspxAutoDetectCookieSupport%3d1%26auth%3dEysenck%252c%2bHans%2bJ">retractions</a> and expressions of concern). Eysenck wrote, about a meta-analysis that yielded results he did not like:</p>
 <blockquote>
@@ -562,15 +562,15 @@ The notion that one can distill scientific knowledge from a compilation of studi
 <p>The problem of 'garbage in, garbage out' remains one of the most common, and difficult to deal with, criticisms of meta-analysis. It is true that a meta-analysis cannot turn low quality data into a good effect size estimate, or highly heterogeneous effect sizes into a useful estimate of an effect size that generalizes to all studies included in the meta-analysis. The decision which studies to include in a meta-analysis is a difficult one, and often leads to disagreements in the conclusions of meta-analyses performed on the same set of studies <span class="citation">(<a href="references.html#ref-ferguson_comment_2014" role="doc-biblioref">Ferguson, 2014</a>; <a href="references.html#ref-goodyear-smith_analysis_2012" role="doc-biblioref">Goodyear-Smith et al., 2012</a>)</span>. Finally, meta-analyses can be biased, in the same way individual studies are biased, which is a topic explored in more detail in the chapter on <a href="bias.html#bias">bias detection</a>.</p>
 <p>A strength of meta-analysis is that combining highly similar studies into a single analysis increases the statistical power of the test, as well as the accuracy of the effect size estimate. Whenever it is not possible or efficient to perform studies with a large number of observations in each study, an unbiased meta-analysis can provide better statistical inferences. Furthermore, including an <strong>internal meta-analysis</strong> in a multi-study paper (when all studies are sufficiently similar) can be a way to reduce the file-drawer problem, by allowing researchers to publish mixed results. At the same time, researchers have raised the concern that if researchers selectively report studies when they perform an internal meta-analysis they simply increase the flexibility in the data analysis, and are more likely to erroneously claim support for their hypothesis <span class="citation">(<a href="references.html#ref-vosgerau_99_2019" role="doc-biblioref">Vosgerau et al., 2019</a>)</span>. Researchers should publish all well-designed studies they have performed in a research line, and if the studies are similar and unbiased, a meta-analysis will improve inferences. At the same time, the result of a meta-analysis may be biased, and should not be interpreted as the final answer. For this reason, an analysis of the heterogeneity of effect size estimates, and the use of statistical techniques to detect bias, are an essential part of any meta-analysis.</p>
 </div>
-<div id="metareporting" class="section level2" number="12.9">
+<div id="metareporting" class="section level2" number="11.9">
 <h2>
-<span class="header-section-number">12.9</span> Improving the reproducibility of meta-analyses<a class="anchor" aria-label="anchor" href="#metareporting"><i class="fas fa-link"></i></a>
+<span class="header-section-number">11.9</span> Improving the reproducibility of meta-analyses<a class="anchor" aria-label="anchor" href="#metareporting"><i class="fas fa-link"></i></a>
 </h2>
 <p>Although meta-analyses do not provide definitive conclusions, they are typically interpreted as state-of-the-art empirical knowledge about a specific effect or research area. Large-scale meta-analyses often accumulate a massive number of citations and influence future research and theory development. It is therefore essential that published meta-analyses are of the highest possible quality.</p>
-<p>At the same time, the conclusions from meta-analyses are often open for debate and are subject to change as new data becomes available. We recently proposed practical recommendations to increase the reproducibility of meta-analyses to facilitate quality control, improve reporting guidelines, allow researchers to re-analyze meta-analyses based on alternative inclusion criteria, and future-proof meta-analyses by making sure the collected meta-analytic data is shared so that continuously accumulating meta-analyses can be performed, and so that novel statistical techniques can be applied on the collected data as they become available <span class="citation">(<a href="references.html#ref-lakens_reproducibility_2016" role="doc-biblioref">Lakens et al., 2016</a>)</span>. The need for the improvement in reproducibility of meta-analysis is clear - a recent review of 150 meta-analyses in Psychological Bulletin revealed that only 1 meta-analysis shared the statistical code <span class="citation">(<a href="references.html#ref-polanin_transparency_2020" role="doc-biblioref">Polanin et al., 2020</a>)</span>. This is unacceptable in the current day and age. Following the recommendations summarized in Table <a href="meta.html#tab:table-rec1">12.1</a> should substantially improve the state-of-the-art in meta-analyses.</p>
+<p>At the same time, the conclusions from meta-analyses are often open for debate and are subject to change as new data becomes available. We recently proposed practical recommendations to increase the reproducibility of meta-analyses to facilitate quality control, improve reporting guidelines, allow researchers to re-analyze meta-analyses based on alternative inclusion criteria, and future-proof meta-analyses by making sure the collected meta-analytic data is shared so that continuously accumulating meta-analyses can be performed, and so that novel statistical techniques can be applied on the collected data as they become available <span class="citation">(<a href="references.html#ref-lakens_reproducibility_2016" role="doc-biblioref">Lakens et al., 2016</a>)</span>. The need for the improvement in reproducibility of meta-analysis is clear - a recent review of 150 meta-analyses in Psychological Bulletin revealed that only 1 meta-analysis shared the statistical code <span class="citation">(<a href="references.html#ref-polanin_transparency_2020" role="doc-biblioref">Polanin et al., 2020</a>)</span>. This is unacceptable in the current day and age. Following the recommendations summarized in Table <a href="meta.html#tab:table-rec1">11.1</a> should substantially improve the state-of-the-art in meta-analyses.</p>
 <div class="inline-table"><table class="table table-sm">
 <caption>
-<span id="tab:table-rec1">Table 12.1: </span>Six practical recommendations to improve the quality and reproducibility of meta-analyses.</caption>
+<span id="tab:table-rec1">Table 11.1: </span>Six practical recommendations to improve the quality and reproducibility of meta-analyses.</caption>
 <colgroup>
 <col width="5%">
 <col width="94%">
@@ -608,9 +608,9 @@ The notion that one can distill scientific knowledge from a compilation of studi
 </table></div>
 <p>For another open educational resource on meta-analysis in R, see <a href="https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R">Doing Meta-Analysis in R</a>.</p>
 </div>
-<div id="test-yourself-10" class="section level2" number="12.10">
+<div id="test-yourself-9" class="section level2" number="11.10">
 <h2>
-<span class="header-section-number">12.10</span> Test Yourself<a class="anchor" aria-label="anchor" href="#test-yourself-10"><i class="fas fa-link"></i></a>
+<span class="header-section-number">11.10</span> Test Yourself<a class="anchor" aria-label="anchor" href="#test-yourself-9"><i class="fas fa-link"></i></a>
 </h2>
 <p><strong>Q1</strong>: What is the true about the standard deviation of the sample, and the standard deviation of the mean (or the standard error)?</p>
 <ol style="list-style-type: upper-alpha">
@@ -643,14 +643,14 @@ The notion that one can distill scientific knowledge from a compilation of studi
 <p><strong>Q5</strong>: When there is no heterogeneity in the effect size estimates included in a meta-analysis, a fixed effect and random effects model will yield similar conclusions. If there is variability in the effect size estimates, the two models can yield different results. Below, we see two forest plots based on the same 5 simulated studies. The top plot is based on a random effects meta-analysis, the bottom plot based on a fixed effect meta-analysis. A random effects meta-analysis incorporates uncertainty about the variability of effect size estimates into the final meta-analytic estimate. How does this translate into a difference between the two plots?</p>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:unnamed-chunk-4"></span>
-<img src="12-meta_files/figure-html/unnamed-chunk-4-1.png" alt="Simulated studies under a random effects model" width="100%"><p class="caption">
-Figure 12.12: Simulated studies under a random effects model
+<img src="11-meta_files/figure-html/unnamed-chunk-4-1.png" alt="Simulated studies under a random effects model" width="100%"><p class="caption">
+Figure 11.12: Simulated studies under a random effects model
 </p>
 </div>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:unnamed-chunk-5"></span>
-<img src="12-meta_files/figure-html/unnamed-chunk-5-1.png" alt="Simulated studies under a fixed effect model" width="100%"><p class="caption">
-Figure 11.5: Simulated studies under a fixed effect model
+<img src="11-meta_files/figure-html/unnamed-chunk-5-1.png" alt="Simulated studies under a fixed effect model" width="100%"><p class="caption">
+Figure 10.5: Simulated studies under a fixed effect model
 </p>
 </div>
 <ol style="list-style-type: upper-alpha">
@@ -679,28 +679,28 @@ Figure 11.5: Simulated studies under a fixed effect model
 </div>
 </div>
   <div class="chapter-nav">
-<div class="prev"><a href="sequential.html"><span class="header-section-number">11</span> Sequential Analysis</a></div>
-<div class="next"><a href="bias.html"><span class="header-section-number">13</span> Bias detection</a></div>
+<div class="prev"><a href="sequential.html"><span class="header-section-number">10</span> Sequential Analysis</a></div>
+<div class="next"><a href="bias.html"><span class="header-section-number">12</span> Bias detection</a></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
       <ul class="nav navbar-nav">
-<li><a class="nav-link" href="#meta"><span class="header-section-number">12</span> Meta-analysis</a></li>
-<li><a class="nav-link" href="#random-variation"><span class="header-section-number">12.1</span> Random Variation</a></li>
-<li><a class="nav-link" href="#introduction-to-meta-analysis"><span class="header-section-number">12.2</span> Introduction to Meta-Analysis</a></li>
-<li><a class="nav-link" href="#a-single-study-meta-analysis"><span class="header-section-number">12.3</span> A single study meta-analysis</a></li>
-<li><a class="nav-link" href="#simulating-meta-analyses-of-mean-standardized-differences"><span class="header-section-number">12.4</span> Simulating meta-analyses of mean standardized differences</a></li>
-<li><a class="nav-link" href="#fixed-effect-vs-random-effects"><span class="header-section-number">12.5</span> Fixed Effect vs Random Effects</a></li>
-<li><a class="nav-link" href="#simulating-meta-analyses-for-dichotomous-outcomes"><span class="header-section-number">12.6</span> Simulating meta-analyses for dichotomous outcomes</a></li>
-<li><a class="nav-link" href="#heterogeneity"><span class="header-section-number">12.7</span> Heterogeneity</a></li>
-<li><a class="nav-link" href="#strengths-and-weaknesses-of-meta-analysis"><span class="header-section-number">12.8</span> Strengths and weaknesses of meta-analysis</a></li>
-<li><a class="nav-link" href="#metareporting"><span class="header-section-number">12.9</span> Improving the reproducibility of meta-analyses</a></li>
-<li><a class="nav-link" href="#test-yourself-10"><span class="header-section-number">12.10</span> Test Yourself</a></li>
+<li><a class="nav-link" href="#meta"><span class="header-section-number">11</span> Meta-analysis</a></li>
+<li><a class="nav-link" href="#random-variation"><span class="header-section-number">11.1</span> Random Variation</a></li>
+<li><a class="nav-link" href="#introduction-to-meta-analysis"><span class="header-section-number">11.2</span> Introduction to Meta-Analysis</a></li>
+<li><a class="nav-link" href="#a-single-study-meta-analysis"><span class="header-section-number">11.3</span> A single study meta-analysis</a></li>
+<li><a class="nav-link" href="#simulating-meta-analyses-of-mean-standardized-differences"><span class="header-section-number">11.4</span> Simulating meta-analyses of mean standardized differences</a></li>
+<li><a class="nav-link" href="#fixed-effect-vs-random-effects"><span class="header-section-number">11.5</span> Fixed Effect vs Random Effects</a></li>
+<li><a class="nav-link" href="#simulating-meta-analyses-for-dichotomous-outcomes"><span class="header-section-number">11.6</span> Simulating meta-analyses for dichotomous outcomes</a></li>
+<li><a class="nav-link" href="#heterogeneity"><span class="header-section-number">11.7</span> Heterogeneity</a></li>
+<li><a class="nav-link" href="#strengths-and-weaknesses-of-meta-analysis"><span class="header-section-number">11.8</span> Strengths and weaknesses of meta-analysis</a></li>
+<li><a class="nav-link" href="#metareporting"><span class="header-section-number">11.9</span> Improving the reproducibility of meta-analyses</a></li>
+<li><a class="nav-link" href="#test-yourself-9"><span class="header-section-number">11.10</span> Test Yourself</a></li>
 </ul>
 
       <div class="book-extra">
         <ul class="list-unstyled">
-<li><a id="book-source" href="https://github.com/Lakens/statistical_inferences/blob/master/12-meta.Rmd">View source <i class="fab fa-github"></i></a></li>
-          <li><a id="book-edit" href="https://github.com/Lakens/statistical_inferences/edit/master/12-meta.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+<li><a id="book-source" href="https://github.com/Lakens/statistical_inferences/blob/master/11-meta.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/Lakens/statistical_inferences/edit/master/11-meta.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
         </ul>
 </div>
     </nav>
