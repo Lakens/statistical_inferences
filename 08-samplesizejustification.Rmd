@@ -1,28 +1,14 @@
 ```{r, include = FALSE}
 knitr::opts_chunk$set(error = FALSE, warning = FALSE, message = FALSE, out.width  = '100%', fig.width  = 8, fig.height = 5, fig.align  = 'center')
+backgroundcolor <- "#fffafa"
 
-library(tidyverse)
-library(gridExtra)
-library(kableExtra)
-library(ggrepel)
-library(grid)
-library(magrittr)
-library(kableExtra)
-library(tidyverse)
 library(pwr)
 library(Superpower)
 library(ggplot2)
-library(patchwork)
-library(MASS)
-library(viridis)
-library(TOSTER)
-library(BEST)
-library(metafor)
-library(MOTE)
-library(binom)
-library(MASS)
 library(BUCSS)
-
+library(MOTE)
+library(MASS)
+library(patchwork)
 ```
 
 # Sample size justification {#power}
@@ -171,7 +157,7 @@ plot_power_custom <- (function(d, N, p_upper) {
   t <- qt(1 - (p_upper / 2), df = (N * 2) - 2)
   1 - (pt(t, df = N * 2 - 2, ncp = ncp) - pt(-t, df = N * 2 - 2, ncp = ncp))
 })
-par(bg = "white")
+par(bg = backgroundcolor)
 plot(-10,
   xlab = "sample size (per group)", ylab = "Power", axes = FALSE,
   main = "", xlim = c(0, N * 2), ylim = c(0, 1), cex.lab = 1.3
@@ -201,7 +187,7 @@ x <- seq(low_x, high_x, length = 10000) # create x values
 d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2) # calculate distribution of d based on t-distribution
 y_max <- max(d_dist) + 1
 # create plot
-par(bg = "white")
+par(bg = backgroundcolor)
 d <- round(d, 2)
 plot(-10, xlim = c(low_x, high_x), ylim = c(0, y_max), xlab = substitute(paste("Cohen's d")), ylab = "Density", main = "", cex.lab = 1.3, cex.axis = 1.2)
 # abline(v = seq(low_x,high_x,0.1), h = seq(0,0.5,0.1), col = "lightgrey", lty = 1)
@@ -364,7 +350,7 @@ x <- seq(low_x, high_x, length = 10000) # create x values
 d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2) # calculate distribution of d based on t-distribution
 y_max <- max(d_dist) + 1
 # create plot
-par(bg = "white")
+par(bg = backgroundcolor)
 d <- round(d, 2)
 plot(-10, xlim = c(low_x, high_x), ylim = c(0, y_max), xlab = substitute(paste("Cohen's d")), ylab = "Density", main = "", cex.lab = 1.3, cex.axis = 1.2)
 # abline(v = seq(low_x,high_x,0.1), h = seq(0,0.5,0.1), col = "lightgrey", lty = 1)
@@ -469,7 +455,7 @@ crit_f <- qf(1 - alpha_level, df1, df2)
 x <- seq(xmin, xmax, length = 1000)
 # F-value function
 eta_pop_dist <- function(x) df((x * df2) / (df1 - x * df1), df1, df2, ncp)
-par(bg = "white")
+par(bg = backgroundcolor)
 plot(-10,
   xlab = substitute(paste(eta[p]^2)), ylab = "Density", axes = FALSE,
   main = "", xlim = c(0, xmax), ylim = c(0, ymax), cex.lab = 1.3
@@ -499,7 +485,7 @@ curve(eta_pop_dist, 0.00000000001, 1, n = 10000, col = "grey33", lwd = 3, lty = 
 
 ```{r, echo = FALSE}
 # convert eta of 0.176 to f of 0.4621604
-pwr_res <- pwr.anova.test(k = 3,  
+pwr_res <- pwr::pwr.anova.test(k = 3,  
                f = 0.4621604, 
                sig.level = 0.05, 
                power = 0.8)$n
@@ -581,6 +567,7 @@ We see that the margin of error is almost, but not exactly, the same as the mini
 ```{r noncentralt, echo = FALSE, fig.cap="Central (black) and 2 non-central (darkgrey and lightgrey) *t* distributions."}
 x <- seq(-12, 12, length = 10000)
 y <- dt(x, df = 5, 0)
+par(bg = backgroundcolor)
 plot(x, 
      y, 
      type = "l", 
@@ -786,7 +773,7 @@ plot_obs_pow_t <- (function(alpha_level, n, p_val) {
   1 - pt(q = qt(1 - alpha_level/2, 2 * n - 2), df = 2 * n - 2, ncp = qt(1 - p_val/2, 2 * n - 2))
 })
 
-par(bg = "white", pty = "s")
+par(bg = backgroundcolor, pty = "s")
 plot(-10,
   xlab = "p value", 
   ylab = "Observed power", 
@@ -860,7 +847,9 @@ p1 <- ggplot(datasetplot, aes(DV, fill = as.factor(IV))) +
   xlab("IQ") +
   ylab("number of people") +
   ggtitle("Data") +
-  theme_bw(base_size = 10) +
+  theme_bw(base_size = 10) + 
+  theme(plot.background = element_rect(fill = backgroundcolor))  + 
+  theme(panel.background = element_rect(fill = backgroundcolor)) +
   theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) +
   geom_vline(xintercept = mean(x), colour = "black", linetype = "dashed", size = 1) +
   geom_vline(xintercept = mean(y), colour = "black", linetype = "dashed", size = 1) +
@@ -878,7 +867,9 @@ p2 <- ggplot(as.data.frame(dif), aes(dif)) +
   xlab("IQ dif") +
   ylab("number of people") +
   ggtitle("Data") +
-  theme_bw(base_size = 10) +
+  theme_bw(base_size = 10) + 
+  theme(plot.background = element_rect(fill = backgroundcolor))  + 
+  theme(panel.background = element_rect(fill = backgroundcolor)) +
   theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) +
   geom_vline(xintercept = mean(dif), colour = "gray20", linetype = "dashed") +
   coord_cartesian(xlim = c(-80, 80)) +
@@ -896,7 +887,9 @@ p3 <- ggplot(dataset, aes(x = x, y = y)) +
   xlab("IQ twin 1") +
   ylab("IQ twin 2") +
   ggtitle(paste("Correlation = ", round(cor(x, y), digits = 2), sep = "")) +
-  theme_bw(base_size = 10) +
+  theme_bw(base_size = 10) + 
+  theme(plot.background = element_rect(fill = backgroundcolor))  + 
+  theme(panel.background = element_rect(fill = backgroundcolor)) +
   theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank()) +
   #coord_fixed(ratio = 1) +
   theme(plot.title = element_text(hjust = 0.5))
@@ -942,6 +935,8 @@ p4 <- ggplot(datasetplot, aes(DV, fill = as.factor(IV)))  +
   stat_function(fun=dnorm, args=c(mean=mx,sd=sdx), size=1, color="#E69F00", lty=2) +
   stat_function(fun=dnorm, args=c(mean=my,sd=sdy), size=1, color="#56B4E9", lty=2) +
   xlab("IQ") + ylab("number of people")  + ggtitle("Data") + theme_bw(base_size=12) + 
+  theme(plot.background = element_rect(fill = backgroundcolor))  + 
+  theme(panel.background = element_rect(fill = backgroundcolor)) + 
   theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) + 
   geom_vline(xintercept=mean(x), colour="black", linetype="dashed", size=1) + 
   geom_vline(xintercept=mean(y), colour="black", linetype="dashed", size=1) + 
@@ -956,6 +951,8 @@ p5 <- ggplot(as.data.frame(dif), aes(dif))  +
   geom_histogram(colour="black", fill="grey", aes(y=..density..), binwidth=2) +
   #  geom_density(fill=NA, colour="black", size = 1) +
   xlab("IQ dif") + ylab("number of people")  + ggtitle("Data") + theme_bw(base_size=10) + 
+  theme(plot.background = element_rect(fill = backgroundcolor))  + 
+  theme(panel.background = element_rect(fill = backgroundcolor)) + 
   theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) + 
   geom_vline(xintercept=mean(dif), colour="gray20", linetype="dashed") + 
   coord_cartesian(xlim=c(-80,80)) + scale_x_continuous(breaks=c(seq(-80, 80, 20))) +
@@ -971,8 +968,9 @@ p6 <- ggplot(dataset, aes(x=x, y=y)) +
   xlab("IQ twin 1") + ylab("IQ twin 2")  + ggtitle(paste("Correlation = ",round(cor(x,y),digits=2),sep="")) + theme_bw(base_size=10) + 
   theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank()) +
   coord_fixed(ratio = 1)  +
-  theme(plot.title = element_text(hjust = 0.5))
-
+  theme(plot.title = element_text(hjust = 0.5)) + 
+  theme(plot.background = element_rect(fill = backgroundcolor))  + 
+  theme(panel.background = element_rect(fill = backgroundcolor))
 
 # Use patchwork to combine and plot only 1 legend without title.
 combined <- p4 + p5 + p6 & theme(legend.position = "none", 
@@ -983,175 +981,6 @@ combined
 The correlation between dependent variables is an important aspect of within designs. I recommend explicitly reporting the correlation between dependent variables in within designs (e.g., participants responded significantly slower (*M* = 390, *SD* = 44) when they used their feet than when they used their hands (*M* = 371, *SD* = 44, *r* = .953), *t*(17) = 5.98, *p* < 0.001, Hedges' *g* = 0.43, $M_{diff}$ = 19, 95% CI [12; 26]). Since most dependent variables in within designs in psychology are positively correlated, within designs will increase the power you can achieve given the sample size you have available. Use within-designs when possible, but weigh the benefits of higher power against the downsides of order effects or carryover effects that might be problematic in a within-subject design [@maxwell_designing_2017].
 
 You can use this [Shiny app](http://shiny.ieis.tue.nl/within_between/) to play around with different means, sd's, and correlations, and see the effect of the distribution of the difference scores.
-
-<!-- So what does the correlation do so that it increases the power of within designs, or reduces the number of observations you need? Let’s see what effect the correlation has on power by simulating and plotting correlated data. In the R script below, I’m simulating two measurements of IQ scores with a specific sample size (i.e., 10000), mean (i.e., 100 vs 106), standard deviation (i.e., 15), and correlation between the two measurements. The script generates three plots. -->
-
-<!-- We will start with a simulation where the correlation between measurements is 0. First, we see the two normally distributed IQ measurements on the left, with means of 100 and 106, and standard deviations of 15 (due to the large sample size, the numbers equal the input in the simulation, although small variation might still occur). In the scatter plot on the right, we can see that the correlation between the measurements is indeed 0. Let's look at the distribution of the mean differences. The mean difference is -6 (in line with the simulation settings), and the standard deviation is 21. This is also as expected. The standard deviation of the difference scores is $\sqrt{2}$ times as large as the standard deviation in each measurement, and indeed, 15×$\sqrt{2}$ = 21.21, which is rounded to 21. This situation where the correlation between measurements is zero equals the situation in an independent *t* test, where the correlation between measurements is not taken into account.  -->
-
-
-<!-- ```{r, plot-1, fig.height = 16, fig.fullwidth = TRUE, fig.cap="Distributions of two dependent groups with means 100 and 106 and a standard deviation of 15, distribution of the differences, and correlation of 0."} -->
-<!-- set.seed(419) -->
-<!-- #Set color palette -->
-<!-- cbbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7") -->
-
-<!-- n <- 10000 # set the sample size for each group -->
-<!-- mx <- 100 # set the mean in group 1 -->
-<!-- sdx <- 15 # set the standard deviation in group 1 -->
-<!-- my <- 106 # set the mean in group 2 -->
-<!-- sdy <- 15 # set the standard deviation in group 2 -->
-<!-- cor.true <- 0.0 # set true correlation -->
-<!-- # randomly draw data -->
-<!-- cov.mat <- matrix(c(1.0, cor.true, cor.true, 1.0), nrow = 2, byrow = T) -->
-<!-- mu <- c(0, 0) -->
-<!-- mat <- mvrnorm(n, Sigma = cov.mat, mu = mu, empirical = FALSE) -->
-<!-- x <- mat[, 1] * sdx + mx -->
-<!-- y <- mat[, 2] * sdy + my -->
-<!-- dif <- x - y -->
-<!-- dataset <- data.frame(x, y) -->
-<!-- DV <- c(x, y) # combine the two samples into a single variable -->
-<!-- IV <- as.factor(c(rep("1", n), rep("2", n))) # create the independent variable (1 and 2) -->
-<!-- datasetplot <- data.frame(IV, DV) # create a dataframe (to make the plot) -->
-
-<!-- #plot graph two groups -->
-<!-- p1 <- ggplot(datasetplot, aes(DV, fill = as.factor(IV))) + -->
-<!--   geom_histogram(alpha = 0.4, binwidth = 2, position = "identity", colour = "black", aes(y = ..density..)) + -->
-<!--   scale_fill_manual(values = cbbPalette, name = "Condition") + -->
-<!--   stat_function(fun = dnorm, args = c(mean = mx, sd = sdx), size = 1, color = "#E69F00", lty = 2) + -->
-<!--   stat_function(fun = dnorm, args = c(mean = my, sd = sdy), size = 1, color = "#56B4E9", lty = 2) + -->
-<!--   xlab("IQ") + -->
-<!--   ylab("number of people") + -->
-<!--   ggtitle("Data") + -->
-<!--   theme_bw(base_size = 20) + -->
-<!--   theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) + -->
-<!--   geom_vline(xintercept = mean(x), colour = "black", linetype = "dashed", size = 1) + -->
-<!--   geom_vline(xintercept = mean(y), colour = "black", linetype = "dashed", size = 1) + -->
-<!--   coord_cartesian(xlim = c(50, 150)) + -->
-<!--   scale_x_continuous(breaks = c(60, 80, 100, 120, 140)) + -->
-<!--   annotate("text", size = 6, x = 70, y = 0.02, label = paste("Mean X = ", round(mean(x)), "\n", "SD = ", round(sd(x)), sep = "")) + -->
-<!--   annotate("text", size = 6, x = 130, y = 0.02, label = paste("Mean Y = ", round(mean(y)), "\n", "SD = ", round(sd(y)), sep = "")) + -->
-<!--   theme(plot.title = element_text(hjust = 0.5), legend.position = "none") -->
-
-<!-- #plot data differences -->
-<!-- p2 <- ggplot(as.data.frame(dif), aes(dif)) + -->
-<!--   geom_histogram(colour = "black", fill = "grey", aes(y = ..density..), binwidth = 2) + -->
-<!--   #  geom_density(fill=NA, colour="black", size = 1) + -->
-<!--   xlab("IQ dif") + -->
-<!--   ylab("number of people") + -->
-<!--   ggtitle("Data") + -->
-<!--   theme_bw(base_size = 20) + -->
-<!--   theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) + -->
-<!--   geom_vline(xintercept = mean(dif), colour = "grey20", linetype = "dashed") + -->
-<!--   coord_cartesian(xlim = c(-80, 80)) + -->
-<!--   scale_x_continuous(breaks = c(seq(-80, 80, 20))) + -->
-<!--   annotate("text", size = 6, x = mean(dif), y = 0.01, label = paste("Mean = ", round(mean(dif)), "\n", "SD = ", round(sd(dif)), sep = "")) + -->
-<!--   theme(plot.title = element_text(hjust = 0.5)) -->
-
-<!-- # Plot correlation -->
-<!-- p3 <- ggplot(dataset, aes(x = x, y = y)) + -->
-<!--   geom_point(size = 2) + # Use hollow circles -->
-<!--   geom_smooth(method = lm, colour = "#E69F00", size = 1, fill = "#56B4E9") + # Add linear regression line -->
-<!--   coord_cartesian(xlim = c(40, 160), ylim = c(40, 160)) + -->
-<!--   scale_x_continuous(breaks = c(seq(40, 160, 20))) + -->
-<!--   scale_y_continuous(breaks = c(seq(40, 160, 20))) + -->
-<!--   xlab("IQ twin 1") + -->
-<!--   ylab("IQ twin 2") + -->
-<!--   ggtitle(paste("Correlation = ", round(cor(x, y), digits = 2), sep = "")) + -->
-<!--   theme_bw(base_size = 20) + -->
-<!--   theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank()) + -->
-<!--   coord_fixed(ratio = 1) + -->
-<!--   theme(plot.title = element_text(hjust = 0.5)) -->
-
-
-<!-- # Use patchwork to combine and plot only 1 legend without title. -->
-<!-- combined <- p1 / p2 / p3 + -->
-<!--   theme(legend.position = "none", legend.title = element_blank()) -->
-<!-- combined -->
-<!-- ``` -->
-
-<!-- ```{r, plot-4, fig.height = 16, fig.fullwidth = TRUE, fig.cap="Distributions of two independent groups with means 100 and 106 and a standard deviation of 15, distribution of the differences, and correlation of 0.7."} -->
-<!-- set.seed(419) -->
-<!-- #Set color palette -->
-<!-- cbbPalette<-c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7") -->
-
-<!-- n<-10000  #set the sample size for each group -->
-<!-- mx<-100  #set the mean in group 1 -->
-<!-- sdx<-15  #set the standard deviation in group 1 -->
-<!-- my<-106  #set the mean in group 2 -->
-<!-- sdy<-15  #set the standard deviation in group 2 -->
-<!-- cor.true <- 0.7 #set true correlation -->
-<!-- #randomly draw data -->
-<!-- cov.mat <- matrix(c(1.0, cor.true, cor.true, 1.0), nrow = 2, byrow = T) -->
-<!-- mu <- c(0,0) -->
-<!-- mat <- mvrnorm(n, Sigma = cov.mat, mu = mu, empirical = FALSE) -->
-<!-- x<-mat[,1]*sdx+mx -->
-<!-- y<-mat[,2]*sdy+my -->
-<!-- dif<-x-y -->
-<!-- dataset<-data.frame(x,y) -->
-<!-- DV<-c(x,y) #combine the two samples into a single variable -->
-<!-- IV<-as.factor(c(rep("1", n), rep("2", n))) #create the independent variable (1 and 2)  -->
-<!-- datasetplot<-data.frame(IV,DV) #create a dataframe (to make the plot) -->
-
-<!-- #plot graph two groups -->
-<!-- p1 <- ggplot(datasetplot, aes(DV, fill = as.factor(IV))) + -->
-<!--   geom_histogram(alpha = 0.4, binwidth = 2, position = "identity", colour = "black", aes(y = ..density..)) + -->
-<!--   scale_fill_manual(values = cbbPalette, name = "Condition") + -->
-<!--   stat_function(fun = dnorm, args = c(mean = mx, sd = sdx), size = 1, color = "#E69F00", lty = 2) + -->
-<!--   stat_function(fun = dnorm, args = c(mean = my, sd = sdy), size = 1, color = "#56B4E9", lty = 2) + -->
-<!--   xlab("IQ") + -->
-<!--   ylab("number of people") + -->
-<!--   ggtitle("Data") + -->
-<!--   theme_bw(base_size = 20) + -->
-<!--   theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) + -->
-<!--   geom_vline(xintercept = mean(x), colour = "black", linetype = "dashed", size = 1) + -->
-<!--   geom_vline(xintercept = mean(y), colour = "black", linetype = "dashed", size = 1) + -->
-<!--   coord_cartesian(xlim = c(50, 150)) + -->
-<!--   scale_x_continuous(breaks = c(60, 80, 100, 120, 140)) + -->
-<!--   annotate("text", size = 6, x = 70, y = 0.02, label = paste("Mean X = ", round(mean(x)), "\n", "SD = ", round(sd(x)), sep = "")) + -->
-<!--   annotate("text", size = 6, x = 130, y = 0.02, label = paste("Mean Y = ", round(mean(y)), "\n", "SD = ", round(sd(y)), sep = "")) + -->
-<!--   theme(plot.title = element_text(hjust = 0.5), legend.position = "none") -->
-
-<!-- #plot data differences -->
-<!-- p2 <- ggplot(as.data.frame(dif), aes(dif)) + -->
-<!--   geom_histogram(colour = "black", fill = "grey", aes(y = ..density..), binwidth = 2) + -->
-<!--   #  geom_density(fill=NA, colour="black", size = 1) + -->
-<!--   xlab("IQ dif") + -->
-<!--   ylab("number of people") + -->
-<!--   ggtitle("Data") + -->
-<!--   theme_bw(base_size = 20) + -->
-<!--   theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) + -->
-<!--   geom_vline(xintercept = mean(dif), colour = "grey20", linetype = "dashed") + -->
-<!--   coord_cartesian(xlim = c(-80, 80)) + -->
-<!--   scale_x_continuous(breaks = c(seq(-80, 80, 20))) + -->
-<!--   annotate("text", size = 6, x = mean(dif), y = 0.01, label = paste("Mean = ", round(mean(dif)), "\n", "SD = ", round(sd(dif)), sep = "")) + -->
-<!--   theme(plot.title = element_text(hjust = 0.5)) -->
-
-<!-- # Plot correlation -->
-<!-- p3 <- ggplot(dataset, aes(x = x, y = y)) + -->
-<!--   geom_point(size = 2) + # Use hollow circles -->
-<!--   geom_smooth(method = lm, colour = "#E69F00", size = 1, fill = "#56B4E9") + # Add linear regression line -->
-<!--   coord_cartesian(xlim = c(40, 160), ylim = c(40, 160)) + -->
-<!--   scale_x_continuous(breaks = c(seq(40, 160, 20))) + -->
-<!--   scale_y_continuous(breaks = c(seq(40, 160, 20))) + -->
-<!--   xlab("IQ twin 1") + -->
-<!--   ylab("IQ twin 2") + -->
-<!--   ggtitle(paste("Correlation = ", round(cor(x, y), digits = 2), sep = "")) + -->
-<!--   theme_bw(base_size = 20) + -->
-<!--   theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank()) + -->
-<!--   coord_fixed(ratio = 1) + -->
-<!--   theme(plot.title = element_text(hjust = 0.5)) -->
-
-
-<!-- # Use patchwork to combine and plot only 1 legend without title. -->
-<!-- combined <- p1 / p2 / p3 + -->
-<!--   theme(legend.position = "none", legend.title = element_blank()) -->
-<!-- combined -->
-<!-- ``` -->
-
-<!-- Now let’s increase the correlation between dependent variables to 0.7. Nothing has changed when we plot the means. The correlation between measurements is now strongly positive, as we see in the plot on the right. The important difference lies in the standard deviation of the difference scores. The SD of the difference scores is 11 instead of 21 in the uncorrelated example. Because the standardized effect size is the difference divided by the standard deviation, the effect size (Cohen’s dz in within designs) is larger in this test than in the test above. -->
-
-<!-- If you set the correlation to a negative value, the standard deviation of the difference scores would increase. I like to think of dependent variables in within-designs as dance partners. If they are well-coordinated (or highly correlated), one person steps to the left, and the other person steps to the left the same distance. If there is no coordination (or no correlation), when one dance partner steps to the left, the other dance partner is just as likely to move to the wrong direction as to the right direction. Such a dance couple will take up a lot more space on the dance floor. -->
-
-<!-- You see that the correlation between dependent variables is an important aspect of within designs. I recommend explicitly reporting the correlation between dependent variables in within designs (e.g., participants responded significantly slower (*M* = 390, *SD* = 44) when they used their feet than when they used their hands (*M* = 371, *SD* = 44, *r* = .953), *t*(17) = 5.98, *p* < 0.001, Hedges' g = 0.43, M_diff = 19, 95% CI [12; 26]).  -->
 
 In general, the smaller the variation, the larger the standardized effect size (because we are dividing the raw effect by a smaller standard deviation) and thus the higher the power given the same number of observations. Some additional recommendations are provided in the literature [@allison_power_1997; @bausell_power_2002; @hallahan_statistical_1996], such as:
 

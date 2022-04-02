@@ -10,13 +10,13 @@ In the previous chapter on [*p*-values](#pvalue) we have learned that in the Ney
   
 If you perform a study and plan to make a claim based on the statistical test you plan to perform, the the long run probability of making a correct claim or an erroneous claim is determined by three factors, namely the Type 1 error rate, the Type 2 error rate, and the probability that the null-hypothesis is true. There are four possible outcomes of a statistical test, depending on whether the result is statistically significant or not, and whether the null hypothesis is true, or not.
   
-**False Positive (FP)**: Concluding there is a true effect, when there is a no true effect ($H_0$ is true). This is also referred to as a **Type 1 error**, and indicated by **α**.
+**False Positive (FP)**: Concluding there is a true effect, when there is a no true effect ($H_0$ is true). This is also referred to as a **Type 1 error**, and indicated by **$\alpha$**.
   
-**False Negative (FN)**: Concluding there is a no true effect, when there is a true effect ($H_1$ is true). This is also referred to as a **Type 2 error**, and indicated by **β**.
+**False Negative (FN)**: Concluding there is a no true effect, when there is a true effect ($H_1$ is true). This is also referred to as a **Type 2 error**, and indicated by **$\beta$**.
   
-**True Negative (TN)**: Concluding there is no true effect, when there is a no true effect ($H_0$ is true). This is the complement of False Positives, and is thus indicated by**1-α**.
+**True Negative (TN)**: Concluding there is no true effect, when there is a no true effect ($H_0$ is true). This is the complement of False Positives, and is thus indicated by**1-$\alpha$**.
   
-**True Positive (TP)**: Concluding there is a true effect, when there is a true effect ($H_1$ is true). This is the complement of False Negatives, and is thus indicated by **1-β**.
+**True Positive (TP)**: Concluding there is a true effect, when there is a true effect ($H_1$ is true). This is the complement of False Negatives, and is thus indicated by **1-$\beta$**.
   
 The probability of observing a true positive when there is a true effect is, in the long run, equal to the **statistical power** of your study. The probability of observing a false positive when the null hypothesis is true is, in the long run, equal to the **alpha level** you have set, or the **Type 1 error rate**.
   
@@ -35,8 +35,8 @@ Let's assume we perform 200 studies with a 5% alpha level, 80% power, and a 50% 
   
   |                                                            | $H_0$ True (50%)                                 | $H_1$ True (50%)                                |
   |------------------------------------------------------------|-----------------------------------------------|----------------------------------------------|
-  | Significant Finding (Positive result) α = 5%, 1-β=80%      | **False Positive 5%\*50%=2.5% (5 studies)**   | **True Positive 80%\*50%=40% (80 studies)**  |
-  | Non-Significant Finding (Negative result) 1-α = 95%, β=20% | **True Negative 95%\*50%=47.5% (95 studies)** | **False Negative 20%\*50%=10% (20 studies)** |
+  | Significant Finding (Positive result) $\alpha$ = 5%, 1-$\beta$ = 80%      | **False Positive 5% $\times$ 50% = 2.5% (5 studies)**   | **True Positive 80% $\times$ 50% = 40% (80 studies)**  |
+  | Non-Significant Finding (Negative result) 1-$\alpha$ = 95%, $\beta$ = 20% | **True Negative 95% $\times$ 50% = 47.5% (95 studies)** | **False Negative 20% $\times$ 50% = 10% (20 studies)** |
   
 In the table above we see that 2.5% of all studies will be a false positive (a 5% Type 1 error rate,
 multiplied by a 50% probability that $H_0$ is true). 40% of all studies will be a true positive (80% power multiplied by a 50% probability that $H_1$ is true). The probability of a false negative is 10% (a 20% Type 2 error rate multiplied by a 50% probability that $H_1$ is true). The most likely outcome is a true negative, with 47.5% (a 95% probability observing a non-significant result, multiplied by a 50% probability that $H_0$ is true). 
@@ -126,6 +126,7 @@ for (i in 10:n) { # for each simulated participants after the first 10
 p <- p[10:n] # Remove first 10 empty p-values
 
 # Create the plot
+par(bg = backgroundcolor)
 plot(0, col = "red", lty = 1, lwd = 3, ylim = c(0, 1), xlim = c(10, n), 
      type = "l", xlab = "sample size", ylab = "p-value")
 lines(p, lwd = 2)
@@ -251,7 +252,7 @@ The second reason is most relevant for large data sets, and is related to [Lindl
 
 ## Why you don't need to adjust your alpha level for all tests you'll do in your lifetime.
 
-Some researchers criticize corrections for multiple comparisons because one might as well correct for all tests you do in your lifetime [@perneger_whats_1998]. If you choose to use a Neyman-Pearson approasch to statistics the only reason to correct for all tests you perform in your lifetime is when all the work you have done in your life tests a single theory, and you would use your last words to decide to accept or reject this theory, as long as only one of all individual tests you have performed yielded a p < α. Researchers rarely work like this.
+Some researchers criticize corrections for multiple comparisons because one might as well correct for all tests you do in your lifetime [@perneger_whats_1998]. If you choose to use a Neyman-Pearson approasch to statistics the only reason to correct for all tests you perform in your lifetime is when all the work you have done in your life tests a single theory, and you would use your last words to decide to accept or reject this theory, as long as only one of all individual tests you have performed yielded a *p* < $\alpha$. Researchers rarely work like this.
 
 Instead, in a Neyman-Pearson approach to hypothesis testing, the goal is to use data to make decisions about how to act. Neyman [-@neyman_inductive_1957] calls his approach **inductive behavior**. The outcome of an experiment leads one to take different possible actions, which can be either practical (e.g., implement a new procedure, abandon a research line) or scientific (e.g., claim there is or is no effect). From an error-statistical approach [@mayo_statistical_2018] inflated Type 1 error rates mean that it has become very likely that you will be able to claim support for your hypothesis, even when the hypothesis is wrong. This reduces the severity of the test. To prevent this, we need to control our error rate at the level of our claim.
 
@@ -294,7 +295,7 @@ F) Decrease the power
 
 Increasing the power requires bigger sample sizes, or studying larger effects. Increasing the % of a-priori true hypotheses can be done by making better predictions – for example building on reliable findings, and relying on strong theories. These are useful recommendations if you want to increase the probability of performing studies where you find a statistically significant result.
 
-**Q3**: Set the “% of a priori true hypotheses” slider to 50%. Leave the ‘α level’ slider at 5%. Leave the ‘% of p-hacked studies’ slider at 0. The title of Ioannidis’ paper is ‘why most published research findings are false’. One reason might be that studies often have low power. At which value for power is the PPV 50%. In other words, at which level of power is a significant result just as likely to be true, as that it is false?
+**Q3**: Set the “% of a priori true hypotheses” slider to 50%. Leave the ‘$\alpha$ level’ slider at 5%. Leave the ‘% of p-hacked studies’ slider at 0. The title of Ioannidis’ paper is ‘why most published research findings are false’. One reason might be that studies often have low power. At which value for power is the PPV 50%. In other words, at which level of power is a significant result just as likely to be true, as that it is false?
 
 A) 80%
 B) 50%
@@ -311,7 +312,7 @@ B) When the probability of examining a true hypothesis is high, combined with ei
 C) When the alpha level is high, combined with either low power or substantial bias (e.g., p-hacking).
 D) When power is low and p-hacking is high (regardless of the % of true hypotheses one examines).
 
-**Q5**: Set the “% of a priori true hypotheses” slider to 0%. Set the “% of p-hacked studies” slider to 0%. Set the “α level” slider to 5%. Play around with the power slider. Which statement is true? 
+**Q5**: Set the “% of a priori true hypotheses” slider to 0%. Set the “% of p-hacked studies” slider to 0%. Set the “$\alpha$ level” slider to 5%. Play around with the power slider. Which statement is true? 
 **Without *p*-hacking, when the alpha level is 5%, and when 0% of the hypotheses are true, **
 
 A) the proportion of false positives for all experiments we have performed is 100%.

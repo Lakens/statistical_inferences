@@ -1,8 +1,3 @@
----
-output: html_document
-editor_options: 
-  chunk_output_type: console
----
 
 
 # Bias detection{#bias}
@@ -29,7 +24,7 @@ Publication bias is one of the biggest challenges that science faces. **Publicat
 Publication bias can only be fixed by making all your research results available to fellow scientists, irrespective of the *p*-value of the main hypothesis test. Registered Reports are one way to combat publication bias, as this type of scientic article is reviewed based on the introduction, method, and statistical analysis plan, before the data is collected. After peer review, the article can get an 'in principle acceptance', which means that as long as the research plan is followed, the article will be published, regardless of the results. Not surprisingly, as shown in Figure \@ref(fig:scheel), an analysis of the first Registered Reports revealed that 31 out of 71 (44%) observed positive results, compared to 146 out of 152 (96%) of comparable standard scientific articles published during the same time period [@scheel_excess_2021].  
 
 <div class="figure" style="text-align: center">
-<img src="images/scheel.png" alt="Positive result rates for standard reports and Registered Reports. Error bars indicate 95% confidence intervals around the observed positive result rate." width="100%" />
+<img src="images/scheel.png" alt="Positive result rates for standard reports and Registered Reports. Error bars indicate 95% confidence intervals around the observed positive result rate." width="75%" />
 <p class="caption">(\#fig:scheel)Positive result rates for standard reports and Registered Reports. Error bars indicate 95% confidence intervals around the observed positive result rate.</p>
 </div>
 
@@ -332,6 +327,7 @@ summary(z_res, all = TRUE)
 ```
 
 ```r
+par(bg = backgroundcolor)
 plot(z_res, annotation = TRUE, CI = TRUE)
 ```
 

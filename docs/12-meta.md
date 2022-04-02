@@ -31,7 +31,9 @@ ggplot(as.data.frame(x), aes(x)) +
   geom_vline(xintercept = mean(x), colour = "gray20", linetype = "dashed") +
   coord_cartesian(xlim = c(50, 150)) +
   scale_x_continuous(breaks = seq(50, 150, 10)) +
-  annotate("text", x = mean(x), y = 0.02, label = paste("Mean = ", round(mean(x)), "\n", "SD = ", round(sd(x)), sep = ""), size = 8)
+  annotate("text", x = mean(x), y = 0.02, label = paste("Mean = ", round(mean(x)), "\n", "SD = ", round(sd(x)), sep = ""), size = 8) + 
+  theme(plot.background = element_rect(fill = backgroundcolor))  + 
+  theme(panel.background = element_rect(fill = backgroundcolor))
 ```
 
 <div class="figure" style="text-align: center">
@@ -233,6 +235,7 @@ for (i in 1:nSims) { # for each simulated study
        m2i = mean(y), sd1i = sd(x), sd2i = sd(y), measure = "SMD")
 }
 result <- metafor::rma(yi, vi, data = metadata, method = "FE")
+par(bg = backgroundcolor)
 metafor::forest(result)
 ```
 
@@ -340,6 +343,7 @@ metadata <- escalc(measure = "OR",
 result <- rma(yi, vi, data = metadata)
 # Create forest plot. Using ilab and ilab.xpos arguments to add counts
 par(mar=c(5,4,0,2))
+par(bg = backgroundcolor)
 forest(result, 
        ilab = cbind(metadata$ai, metadata$bi, metadata$ci, metadata$di), 
        xlim = c(-10, 8), 

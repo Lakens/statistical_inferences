@@ -32,11 +32,6 @@ Thus, in a Neyman-Pearson approach, *p*-values form the basis of decisions about
 
 ## Creating a null model
 
-<div class="figure" style="text-align: center">
-<img src="images/worship.jpg" alt="Scientists have a tendency to worship *p*-values below a value of 0.05." width="25%" />
-<p class="caption">(\#fig:worship)Scientists have a tendency to worship *p*-values below a value of 0.05.</p>
-</div>
-
 Assume I ask two groups of 10 people how much they liked the extended directors cut of the Lord of the Rings (LOTR) trilogy. This means our **total sample size** (*N*) is 20, and the sample size in each group (*n*) is 10. The first group consists of my friends, and the second groups consists of friends of my wife. Our friends rate the trilogy on a score from 1 to 10. We can calculate the average rating by my friends, which is 8.7, and the average rating by my wife’s friends, which is 7.7. We can compare the scores in both groups by looking at the raw data, and by plotting the data.
 
 <table class="table table-striped" style="width: auto !important; ">
@@ -163,6 +158,7 @@ for (i in 1:100000) { # for each simulated experiment
 }
 
 (sum(p < 0.05) / 100000) # compute power
+par(bg = backgroundcolor)
 hist(p, breaks = 20) # plot a histogram
 ```
 
@@ -212,7 +208,7 @@ When researchers “accept” or “reject” a hypothesis in a Neyman-Pearson a
 
 The claim is about the data we have observed, but not about the theory we used to make predictions. The claim is about observed data, as it is a statistical inference, and not about the theory, which requires a theoretical inference. Data never 'proves' a theory is true or false. A basic statement can **corroborate** a prediction derived from a theory, or not. If many predictions deduced from a theory are corroborated, we can become increasingly convinced the theory is close to the truth. This 'truth-likeness' of theories is called **verisimilitude** [@niiniluoto_verisimilitude_1998; @popper_logic_2002]. A shorter statement when a hypothesis test is presented would therefore read 'p = .xx, which corroborates our prediction, at an alpha level of y%', or 'p = .xx, which does not corroborate our prediction, at a statistical power of y% for our effect size of interest'. Often, the alpha level or the statistical power is only mentioned in the experimental design section of an article, but repeating them in the results section might remind readers of the error rates associated with your claims. 
 
-Even when we have made correct claims, the underlying theory can be false. Popper [@popper_logic_2002] reminds us that “The empirical basis of objective science has thus nothing ‘absolute’ basis about it”. He argues science is not built on a solid bedrock, but on piles driven in a swamp and notes that “We simply stop when we are satisfied that the piles are firm enough to carry the structure, at least for the time being.” As Hacking [-@hacking_logic_1965] writes: “Rejection is not refutation. Plenty of rejections must be only tentative.” So when we reject the null model, we do so tentatively, aware of the fact we might have done so in error, without necessarily believing the null model is false, and without believing the theory we have used to make predictions is true. For Neyman [-@neyman_inductive_1957] inferential behavior is an: “act of will to behave in the future (perhaps until new experiments are performed) in a particular manner, conforming with the outcome of the experiment”. All knowledge in science is provisional.
+Even when we have made correct claims, the underlying theory can be false. Popper [-@popper_logic_2002] reminds us that “The empirical basis of objective science has thus nothing ‘absolute’ basis about it”. He argues science is not built on a solid bedrock, but on piles driven in a swamp and notes that “We simply stop when we are satisfied that the piles are firm enough to carry the structure, at least for the time being.” As Hacking [-@hacking_logic_1965] writes: “Rejection is not refutation. Plenty of rejections must be only tentative.” So when we reject the null model, we do so tentatively, aware of the fact we might have done so in error, without necessarily believing the null model is false, and without believing the theory we have used to make predictions is true. For Neyman [-@neyman_inductive_1957] inferential behavior is an: “act of will to behave in the future (perhaps until new experiments are performed) in a particular manner, conforming with the outcome of the experiment”. All knowledge in science is provisional.
 
 Some statisticians recommend interpreting *p*-values as measures of *evidence*. For example, Bland [-@bland_introduction_2015] teaches that *p*-values can be interpreted as a 'rough and ready' guide for the strength of evidence, and that *p* > 0.1 indicates 'little or no evidence', 0.01 < *p* < 0.05 indicates 'evidence', *p* < 0.001 is 'very strong evidence'. This is incorrect [@lakens_why_2022], as is clear from the previous discussions of Lindley's paradox and uniform *p*-value distributions. If you want to quantify *evidence*, see the chapters on [likelihoods](#likelihoods) or [Bayesian statistics](#bayes).
 

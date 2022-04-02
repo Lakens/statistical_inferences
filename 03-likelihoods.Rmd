@@ -1,5 +1,11 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 ```{r, include = FALSE}
 knitr::opts_chunk$set(error = FALSE, warning = FALSE, message = FALSE, out.width  = '100%', fig.width  = 8, fig.height = 5, fig.align  = 'center')
+backgroundcolor <- "#fffafa"
 ```
 
 # Likelihoods{#likelihoods}
@@ -55,6 +61,7 @@ k <- 8 # set successes
 
 p <- seq(0, 1, len = 1000)
 like <- dbinom(k, n, p)
+par(bg = backgroundcolor)
 plot(p, like, type = "l", xlab = "p", ylab = "Likelihood", lwd = 2)
 
 # points(H0, dbinom(k, n, H0), lwd = 2)
@@ -88,6 +95,7 @@ k <- 0 # set successes
 
 p <- seq(0, 1, len = 1000)
 like <- dbinom(k, n, p)
+par(bg = backgroundcolor)
 plot(p, like, type = "l", xlab = "p", ylab = "Likelihood", lwd = 2)
 
 # points(H0, dbinom(k, n, H0), lwd = 2)
@@ -114,6 +122,7 @@ likcom<-lik1*lik2
 likcom<-likcom/max(likcom) #standardize the likelihood curve with max 1 (to compare plots)
 liktot<-dbinom(12,20,theta)
 liktot<-liktot/max(liktot)
+par(bg = backgroundcolor)
 plot(theta,likcom,type='l', lwd=4, col="darkgrey", xlab="p", ylab='Likelihood', main="Likelihood Function")
 lines(theta,lik1,lty=2, lwd=2)
 lines(theta,lik2,lty=3, lwd=2)
@@ -134,6 +143,7 @@ lik2<-dbinom(50,100,theta)
 lik2<-lik2/max(lik2) #standardize the likelihood curve with max 1 (to compare plots)
 lik3<-dbinom(500,1000,theta)
 lik3<-lik3/max(lik3) #standardize the likelihood curve with max 1 (to compare plots)
+par(bg = backgroundcolor)
 plot(theta,lik3,type='l',xlab= "p", ylab='Likelihood', main="Likelihood Curve N = 10, 100, and 1000", lwd=2)
 lines(theta,lik1,lty=2, lwd=2)
 lines(theta,lik2,lty=3, lwd=2)
@@ -164,6 +174,7 @@ H1 <- .8 #specify p(sig|H1) which is power (1-beta)
 theta<- seq(0,1,len=100)
 like <- dbinom(x,n,theta)
 LR<-(dbinom(x,n,H1))/(dbinom(x,n,H0))
+par(bg = backgroundcolor)
 plot(theta,like,type='l',xlab= "p",
      ylab='Likelihood', lwd=2)
 points(H0,dbinom(x,n,H0))
@@ -188,6 +199,7 @@ H1 <- .8 #specify p(sig|H1) which is power (1-beta)
 theta<- seq(0,1,len=100)
 like <- dbinom(x,n,theta)
 LR<-(dbinom(x,n,H1))/(dbinom(x,n,H0))
+par(bg = backgroundcolor)
 plot(theta,like,type='l',xlab= "p",
      ylab='Likelihood', lwd=2)
 points(H0,dbinom(x,n,H0))
@@ -212,6 +224,7 @@ H1 <- .3 #specify p(sig|H1) which is power (1-beta)
 theta<- seq(0,1,len=100)
 like <- dbinom(x,n,theta)
 LR<-(dbinom(x,n,H1))/(dbinom(x,n,H0))
+par(bg = backgroundcolor)
 plot(theta,like,type='l',xlab= "p",
      ylab='Likelihood', lwd=2)
 points(H0,dbinom(x,n,H0))
@@ -248,6 +261,7 @@ LR <- round(max(dbinom(x, n, H0) / dbinom(
   dbinom(x, n, H0)), digits = 2)
 theta <- seq(0, 1, len = 1000)
 like <- dbinom(x, n, theta)
+par(bg = backgroundcolor)
 plot(theta, like, type = "l", xlab = "p", ylab = "Likelihood", lwd = 2)
 points(H0, dbinom(x, n, H0), lwd = 2)
 points(H1, dbinom(x, n, H1), lwd = 2)
@@ -283,7 +297,7 @@ x <- seq(low_x, high_x, length = 10000) # create x values
 
 t_dist <- dt(x, df = (N * 2) - 2, ncp = ncp) # calculate distribution of t based on t-distribution
 y_max <- max(t_dist) + 0.3 # Set max value for plot
-
+par(bg = backgroundcolor)
 plot(-10, xlim = c(low_x, high_x), ylim = c(0, y_max), xlab = "t-value", ylab = "Density")
 lines(x, t_dist, col = "black", type = "l", lwd = 2) # plot t for alternative
 t_dist <- dt(x, df = (N * 2) - 2, ncp = 0)

@@ -1,10 +1,6 @@
----
-output: html_document
-editor_options: 
-  chunk_output_type: console
----
 ```{r, include = FALSE}
 knitr::opts_chunk$set(error = FALSE, warning = FALSE, message = FALSE, out.width  = '100%', fig.width  = 8, fig.height = 5, fig.align  = 'center')
+backgroundcolor <- "#fffafa"
 ```
 
 # Bias detection{#bias}
@@ -29,7 +25,7 @@ Publication bias is one of the biggest challenges that science faces. **Publicat
 
 Publication bias can only be fixed by making all your research results available to fellow scientists, irrespective of the *p*-value of the main hypothesis test. Registered Reports are one way to combat publication bias, as this type of scientic article is reviewed based on the introduction, method, and statistical analysis plan, before the data is collected. After peer review, the article can get an 'in principle acceptance', which means that as long as the research plan is followed, the article will be published, regardless of the results. Not surprisingly, as shown in Figure \@ref(fig:scheel), an analysis of the first Registered Reports revealed that 31 out of 71 (44%) observed positive results, compared to 146 out of 152 (96%) of comparable standard scientific articles published during the same time period [@scheel_excess_2021].  
 
-```{r scheel, echo = FALSE, fig.cap="Positive result rates for standard reports and Registered Reports. Error bars indicate 95% confidence intervals around the observed positive result rate."}
+```{r scheel, echo = FALSE, out.width  = '75%', fig.cap="Positive result rates for standard reports and Registered Reports. Error bars indicate 95% confidence intervals around the observed positive result rate."}
 knitr::include_graphics("images/scheel.png")
 ```
 
@@ -209,6 +205,7 @@ If we examine the funnel plot in Figure \@ref(fig:funnel1) we see each study rep
 
 ```{r funnel1, echo = FALSE, fig.cap="Funnel plot of unbiased null results."}
 # Print a Funnel Plot
+par(bg = backgroundcolor)
 metafor::funnel(result, level = 0.95, refline = 0)
 abline(v = result$b[1], lty = "dashed") #  vertical line at meta-analytic ES
 points(x = result$b[1], y = 0, cex = 1.5, pch = 17) # add point
@@ -294,6 +291,7 @@ The biased nature of the set of studies we have analyzed becomes clear if we exa
 
 ```{r funnel2, echo = FALSE, fig.cap="Funnel plot of biased null results with mostly significant results."}
 # Print a Funnel Plot
+par(bg = backgroundcolor)
 metafor::funnel(result.biased, level = 0.95, refline = 0)
 abline(v = result.biased$b[1], lty = "dashed") #  vertical line at meta-analytic ES
 points(x = result.biased$b[1], y = 0, cex = 1.5, pch = 17) # add point
@@ -310,6 +308,7 @@ We can also see signs of bias in the forest plot for a meta-analysis. In Figure 
 ```{r twoforestplot, echo = FALSE, fig.width=5, fig.height=15, fig.cap="Forest plot of unbiased meta-analysis (left) and biased meta-analysies (right)."}
 par(mfrow=c(1,2))
 par(mar=c(5,4,1,1))
+par(bg = backgroundcolor)
 forest(result, annotate=FALSE, cex=.8, at=seq(-2,2,1), digits=1, xlim=c(-5,2))
 par(mar=c(5,3,1,2))
 forest(result.biased, annotate=FALSE, slab=rep("",length(result$yi)), cex=.8, at=seq(-2,2,1), digits=1, xlim=c(-4,3))
@@ -325,6 +324,7 @@ Trim and fill is a technique that aims to augment a dataset by adding hypothetic
 ```{r trimfill1, fig.margin = FALSE, echo = FALSE, fig.cap="Funnel plot with assumed missing effects added through trim-and-fill."}
 
 result.trimfill <- metafor::trimfill(result.biased)
+par(bg = backgroundcolor)
 metafor::funnel(result.trimfill, refline = 0)
 abline(v = result.biased$b[1], lty = "dashed") #  vertical line at meta-analytic ES
 points(x = result.biased$b[1], y = 0, cex = 1.5, pch = 17) # add point
@@ -354,6 +354,7 @@ PET <- metafor::rma(yi = yi, sei = sei, mods = ~sei, data = metadata, method = "
 PEESE <- metafor::rma(yi = yi, sei = sei, mods = ~I(sei^2), data = metadata, method = "FE")
 
 # Funnel Plot 
+par(bg = backgroundcolor)
 metafor::funnel(result.biased, level = 0.95, refline = 0, main = paste("FE d =", round(result.biased$b[1],2),"PET d =", round(PET$b[1],2),"PEESE d =", round(PEESE$b[1],2)))
 abline(v = result.biased$b[1], lty = "dashed") #draw vertical line at meta-analytic effect size estimate
 points(x = result.biased$b[1], y = 0, cex = 1.5, pch = 17) #draw point at meta-analytic effect size estimate
@@ -415,6 +416,7 @@ To examine the presence of bias, it is preferable to submit non-significant and 
 # Perform the z-curve analysis using the z-curve package
 z_res <- zcurve::zcurve(p = metadata$pvalues, method = "EM", bootstrap = 1000)
 summary(z_res, all = TRUE)
+par(bg = backgroundcolor)
 plot(z_res, annotation = TRUE, CI = TRUE)
 ```
 
@@ -509,6 +511,7 @@ metadata$sei <- sqrt(metadata$vi)
 
 #Perform meta-analysis
 result.biased <- metafor::rma(yi, vi, data = metadata)
+par(bg = backgroundcolor)
 metafor::forest(result.biased)
 ```
 
@@ -536,6 +539,7 @@ PET <- metafor::rma(yi = yi, sei = sei, mods = ~sei, data = metadata, method = "
 PEESE <- metafor::rma(yi = yi, sei = sei, mods = ~I(sei^2), data = metadata, method = "FE")
 
 # Funnel Plot 
+par(bg = backgroundcolor)
 metafor::funnel(result.biased, level = 0.95, refline = 0, main = paste("FE d =", round(result.biased$b[1],2),"PET d =", round(PET$b[1],2),"PEESE d =", round(PEESE$b[1],2)))
 abline(v = result.biased$b[1], lty = "dashed") #draw vertical line at meta-analytic effect size estimate
 points(x = result.biased$b[1], y = 0, cex = 1.5, pch = 17) #draw point at meta-analytic effect size estimate
@@ -585,6 +589,7 @@ would expect if the studies had 33% power, and therefore, we can conclude these 
 ```{r zcurveq6, cache = TRUE, echo = FALSE}
 # Perform the z-curve analysis using the z-curve package
 z_res <- zcurve::zcurve(p = metadata$pvalues, method = "EM", bootstrap = 1000)
+par(bg = backgroundcolor)
 plot(z_res, annotation = TRUE, CI = TRUE)
 ```
 
