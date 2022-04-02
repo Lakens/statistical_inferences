@@ -403,7 +403,7 @@ Now we need to add a line of code that we will run, and with which we will load
 the stroop.csv dataset from the local folder. Underneath the last commented out
 line of code, but within the R code block, add:
 
-`stroop_data \<- read.csv("stroop.csv", sep = " ", header = TRUE)`
+`stroop_data <- read.csv("stroop.csv", sep = " ", header = TRUE)`
 
 <img src="images/f14461f73699f865e4850e99990606f2.png" width="100%" style="display: block; margin: auto;" />
 
