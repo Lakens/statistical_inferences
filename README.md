@@ -1,7 +1,7 @@
-This book is work in progress (expected completion June 2022). If you stumble across this page, please keep it semi-public, and don't share it with others yet. 
+# Improving Your Statistical Inferences
 
-To do:
+This repository contains the source files for the open educational resource 'Improving Your Statistical Inferences' by Daniël Lakens available at https://lakens.github.io/statistical_inferences/. 
 
-Questions for chapters after CI. 
-Add SESOI sections, and SESOI based on resource contraints and small telescopes approach
-Add chapter on sequential analyses
+You can cite this resource as: 
+
+Lakens, D. (2022). Improving Your Statistical Inferences. Retrieved from https://lakens.github.io/statistical_inferences/. 
