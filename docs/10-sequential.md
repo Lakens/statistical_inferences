@@ -505,17 +505,17 @@ res
 
 
 ```
-## [PROGRESS] Stage results calculated [0.0559 secs] 
+## [PROGRESS] Stage results calculated [0.0379 secs] 
 ## [PROGRESS] Conditional power calculated [0.0299 secs] 
-## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.002 secs] 
-## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.6842 secs] 
-## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.6044 secs] 
-## [PROGRESS] Repeated confidence interval calculated [1.29 secs] 
-## [PROGRESS] Repeated p-values of stage 1 calculated [0.2743 secs] 
-## [PROGRESS] Repeated p-values of stage 2 calculated [0.2753 secs] 
-## [PROGRESS] Repeated p-values calculated [0.5505 secs] 
+## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.001 secs] 
+## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.6712 secs] 
+## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.7969 secs] 
+## [PROGRESS] Repeated confidence interval calculated [1.47 secs] 
+## [PROGRESS] Repeated p-values of stage 1 calculated [0.3311 secs] 
+## [PROGRESS] Repeated p-values of stage 2 calculated [0.2603 secs] 
+## [PROGRESS] Repeated p-values calculated [0.5934 secs] 
 ## [PROGRESS] Final p-value calculated [0.002 secs] 
-## [PROGRESS] Final confidence interval calculated [0.0918 secs]
+## [PROGRESS] Final confidence interval calculated [0.0858 secs]
 ```
 
 
