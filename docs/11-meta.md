@@ -121,7 +121,7 @@ You can perform a meta-analysis for a set of studies in a single article you pla
 
 Let’s first begin with something you will hardly ever do in real life: a meta-analysis of a single study. This is a little silly, because a simple *t*-test or correlation will tell you the same thing – but it is educational to compare a *t*-test with a meta-analysis of a single study, before we look at how multiple studies are combined into a meta-analysis.
 
-A difference between an independent *t*-test and a meta-analysis is that a *t*-test is performed on the raw data, while a meta-analysis is typically performed on the effect size(s) of individual studies. The `metafor` R package contains a very useful function called `escalc` that can be used to calculate effect sizes, their variances, and confidence intervals around effect size estimates. So let’s start by calculating the effect size to enter into our meta-analysis. As explained in the chapter on [effect sizes](#effectsize) the two main effect sizes used for meta-analyses of continuous variables are the standardized mean difference (*d*) or the correlation (*r*), although it is of course also possible to perform meta-analyses on dichotomous variables (we will see an example below). The code below will calculate the **standardized mean difference** (SMD) from two independent groups from **means** (specified by m1i and m2i), **standard deviations** (sd1i and sd2i), and the number of observations in each group (n1i and n2i). By default, `metafor` computes the effect size ‘**Hedges’ g**’ which is the unbiased version of Cohen’s *d* (see the section on [Cohen's d](#cohend) in the chapter on Effect Sizes).
+A difference between an independent *t*-test and a meta-analysis is that a *t*-test is performed on the raw data, while a meta-analysis is typically performed on the effect size(s) of individual studies. The `metafor` R package contains a very useful function called `escalc` that can be used to calculate effect sizes, their variances, and confidence intervals around effect size estimates. So let’s start by calculating the effect size to enter into our meta-analysis. As explained in the chapter on [effect sizes](#effectsize) the two main effect sizes used for meta-analyses of continuous variables are the standardized mean difference (*d*) or the correlation (*r*), although it is of course also possible to perform meta-analyses on dichotomous variables (we will see an example below). The code below will calculate the **standardized mean difference** (SMD) from two independent groups from **means** (specified by m1i and m2i), **standard deviations** (sd1i and sd2i), and the number of observations in each group (n1i and n2i). By default, `metafor` computes the effect size ‘**Hedges’ g**’ which is the unbiased version of Cohen’s *d* (see the section on [Cohen's *d*](#cohend) in the chapter on Effect Sizes).
 
 
 ```r
@@ -593,7 +593,7 @@ B) Use commercial software, such as 'Comprehensive Meta-Analysis', that although
 
 2. What is an internal meta-analysis?
 
-3. If you analyze only a single study, a t-test and a meta-analysis differ slightly in the results. Why? 
+3. If you analyze only a single study, a *t*-test and a meta-analysis differ slightly in the results. Why? 
 
 4. What are the black squares in a forest plot, and what are the horizontal lines through each black square?
 
