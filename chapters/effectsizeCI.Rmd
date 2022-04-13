@@ -194,7 +194,7 @@ Based on our recent [preprint](https://psyarxiv.com/baxsf/) explaining power ana
 
 We are planning a two independent group experiment. We are using a validated measure, and we know the standard deviation of our measure is approximately 2. We are interested in observing a mean difference of 1 or more, because smaller effects would not be practically meaningful. We expect the mean in the conrol condition to be 0, and therefore want the mean in the intervention group to be 1 or higher.
 
-This means the standardized effect size is the mean difference, divided by the standard deviation, or 1/2 = 0.5. This is the Cohen's d we want to be able to detect in our study:
+This means the standardized effect size is the mean difference, divided by the standard deviation, or 1/2 = 0.5. This is the Cohen's *d* we want to be able to detect in our study:
 
 \begin{equation}
 d = \frac{m_1-m_2}{\sigma} =  \frac{1-0}{2} = 0.5.
@@ -219,7 +219,7 @@ If we take the expected means of 0 and 1, and a standard deviation of 2, the gra
 f = \frac{\sigma _{ m }}{\sigma} = \frac{0.5}{2} = 0.25
 \end{equation}
 
-We see that for two groups Cohen's f is half as large as Cohen's d, or $f = \frac{1}{2}d$, which always holds for an *F-test with two independent groups. 
+We see that for two groups Cohen's f is half as large as Cohen's *d*, or $f = \frac{1}{2}d$, which always holds for an *F-test with two independent groups. 
 
 Although calculating effect sizes by hand is obviously an incredibly enjoyable thing to do, you might prefer using software that performs these calculations for you. Here, I will use our Superpower power analysis package (developed by Aaron Caldwell and me). The code below uses a function from the package that computes power analytically for a one-way ANOVA where all conditions are manipulated between participants. In addition to the effect size, the function will compute power for any sample size per condition you enter. Let's assume you have a friend who told you that they heard from someone else that you now need to use 50 observations in each condition (n = 50), so you plan to follow this trustworthy advice. We see the code below returns a Cohen's *f* of 0.25, and also tells us we would have 61.78% power if we use a preregistered alpha level of 0.03.
 
@@ -246,7 +246,7 @@ Superpower::plot_power(design, alpha_level = 0.03, min_n = 45, max_n = 150)$plot
 
 So far we have explained the basics for effect size calculations (and we have looked at statistical power) for 2 group ANOVA designs. Now we have the basis to look at interaction effects.
 
-One of the main points in this blog post is that it is better to talk about interactions in ANOVAs in terms of the pattern of means, standard deviations, and correlations, than in terms of a standarized effect size. The reason for this is that, while for two groups a difference between means directly relates to a Cohen's d, widely different patterns of means in an ANOVA will have the same Cohen's *f*. In my experience helping colleagues out their with power analyses for ANOVA designs, talking about effects in terms of a Cohen's *f* is rarely a good place to start when thinking about what your hypothesis predicts. Instead, you need to specify the predicted pattern of means, have some knowledge about the standard deviation of your measure, and then calculate your predicted effect size. 
+One of the main points in this blog post is that it is better to talk about interactions in ANOVAs in terms of the pattern of means, standard deviations, and correlations, than in terms of a standarized effect size. The reason for this is that, while for two groups a difference between means directly relates to a Cohen's *d*, widely different patterns of means in an ANOVA will have the same Cohen's *f*. In my experience helping colleagues out their with power analyses for ANOVA designs, talking about effects in terms of a Cohen's *f* is rarely a good place to start when thinking about what your hypothesis predicts. Instead, you need to specify the predicted pattern of means, have some knowledge about the standard deviation of your measure, and then calculate your predicted effect size. 
 
 There are two types of interactions, as visualized below. In an ordinal interaction, the mean of one group ("B1") is always higher than the mean for the other group ("B2"). Disordinal interactions are also known as 'cross-over' interactions, and occur when the group with the larger mean switches over. The difference is important, since another main takeaway of this blog post is that, in two studies where the largest simple comparison has the same effect size, a study with a disordinal interaction has much higher power than a study with an ordinal interaction. Thus, if possible, you will want to design experiments where an effect in one condition flips around in the other condition, instead of an experiment where the effect in the other condition just disappears. I personally never realized this before I learned how to compute power for interactions, and never took this simple but important fact into account. Let's see why it is important.
 
@@ -355,7 +355,7 @@ design <- Superpower::ANOVA_design(
 Superpower::ANOVA_exact(design, alpha_level = 0.03)
 ```
 
-First let's look at the Power and Effect size for the pairwise comparisons. Not surprisingly, these are just the same as our original t-test, given that we have 50 observations per condition, and our mean difference is either 1, or a Cohen's d of 0.5 (in which case we have 61.78% power) or the mean difference is 0, and we have no power (because there is no true effect) but we wil observe significant results 3% of the time because we set our apha level to 0.03.
+First let's look at the Power and Effect size for the pairwise comparisons. Not surprisingly, these are just the same as our original *t*-test, given that we have 50 observations per condition, and our mean difference is either 1, or a Cohen's *d* of 0.5 (in which case we have 61.78% power) or the mean difference is 0, and we have no power (because there is no true effect) but we wil observe significant results 3% of the time because we set our apha level to 0.03.
 
 Then, let's look at the results for the ANOVA. Since there are no main effects in a perfect crossover interaction, we have a 3% Type 1 error rate. We see the power for the crossover interaction between factor a and b is 91.06%. This is much larger than the power for the simple effects. The reason is that the contrast that is equal to the test of the interaction is based on all 200 observations. Unlike the pairwise comparisons with 50 vs 50 observations, the contrast for the interaction has 100 vs 100 observations. Given that the effect size is the same (*f* = 0.25) we end up with much higher power. 
 
@@ -436,7 +436,7 @@ The width of the confidence interval depends on the sample size, the confidence 
 
 ![](images/cilarge.png)
 
-As mentioned earlier, when a 95% confidence interval does not contain 0, the effect is statistically different from 0. For a *t*-test, this is true for the confidence interval around an effect size, or around a mean difference, because the mean difference, or the standardized mean difference (the effect size) are directly related to the significance test. In the plots above, the mean difference and the 95% confidence interval around it are visible on the right of each plot. When this 95% confidence interval does not contain 0, the t-test is significant at an alpha of 0.05. But the two confidence intervals around the
+As mentioned earlier, when a 95% confidence interval does not contain 0, the effect is statistically different from 0. For a *t*-test, this is true for the confidence interval around an effect size, or around a mean difference, because the mean difference, or the standardized mean difference (the effect size) are directly related to the significance test. In the plots above, the mean difference and the 95% confidence interval around it are visible on the right of each plot. When this 95% confidence interval does not contain 0, the *t*-test is significant at an alpha of 0.05. But the two confidence intervals around the
 individual means can be more difficult to interpret in relation to whether the means differ enough to be statistically significant. Open CI_Overlap.R, and run the code. It will generate plots like the one above. Run the entire script as often as you want (notice the variability in the *p*-values due to the relatively low power in the test!), to answer the following question. The *p*-value in the plot will tell you if the difference is statistically significant, and what the *p*-value is.
 
 Q6: How much do two 95% confidence intervals around individual means from
@@ -540,11 +540,11 @@ res$statistic
 res$estimate
 ```
 
-Although many solutions exists to compute Cohen's d, MOTE sets itself apart by allowing researchers to compute effect sizes and confidence intervals for many additional effect sizes, such as (partial) omega squared for between subjects ANOVA ($\omega^{2}$ and $\omega^{2}_p$), generalized omega squared for ANOVA ($\omega^{2}_G$), Epsilon squared for ANOVA ($\varepsilon^{2}$) and (partial) generalized eta squared for ANOVA ($\eta^{2}_G$), as well as Hedges' g (bias corrected Cohen's d). If you are want to compute effect sizes and their confidence intervals, this is the first resource you should try. 
+Although many solutions exists to compute Cohen's *d*, MOTE sets itself apart by allowing researchers to compute effect sizes and confidence intervals for many additional effect sizes, such as (partial) omega squared for between subjects ANOVA ($\omega^{2}$ and $\omega^{2}_p$), generalized omega squared for ANOVA ($\omega^{2}_G$), Epsilon squared for ANOVA ($\varepsilon^{2}$) and (partial) generalized eta squared for ANOVA ($\eta^{2}_G$), as well as Hedges' g (bias corrected Cohen's *d*). If you are want to compute effect sizes and their confidence intervals, this is the first resource you should try. 
 
 ### JASP
 
-Free statistical software [JAPS](https://jasp-stats.org/) is a strong alternative to SPSS that (unlike SPSS) allows users to compute Cohen's d and the confidence interval for both independent and dependent *t*tests.
+Free statistical software [JAPS](https://jasp-stats.org/) is a strong alternative to SPSS that (unlike SPSS) allows users to compute Cohen's *d* and the confidence interval for both independent and dependent *t*tests.
 
 ```{r jasp1, fig.margin = FALSE, echo = FALSE, fig.cap="JASP menu option allows you to select Cohen's d and a CI around it."}
 knitr::include_graphics("images/jaspeffectci1.png")
@@ -559,7 +559,7 @@ JASP also allows you to compute omega squared $\omega^{2}$, the less biased vers
 
 ### ESCI software
 
-For people who prefer to use [ESCI software](https://thenewstatistics.com/itns/esci/) by Geoff Cumming, ESCI also has an option to provide 95% CI around Cohen's d, both for independent as for dependent *t*-tests. However, the option is slightly hidden - you need to scroll to the right, where you can check a box which is placed out of view.
+For people who prefer to use [ESCI software](https://thenewstatistics.com/itns/esci/) by Geoff Cumming, ESCI also has an option to provide 95% CI around Cohen's *d*, both for independent as for dependent *t*-tests. However, the option is slightly hidden - you need to scroll to the right, where you can check a box which is placed out of view.
 
 ```{r esci, fig.margin = FALSE, echo=FALSE, fig.cap="ESCI software has a somewhat hidden option to compute 95% CI around Cohen's d for within and between *t*-tests."}
 knitr::include_graphics("images/esci1.png")
@@ -615,6 +615,6 @@ Upper.lim
 
 ### Why should you report 90% CI for eta-squared?
 
-You will see that in the code above I used a 90% CI for effect sizes calculated for an *F*-test. The reason for this is explained by [Karl Wuensch](http://core.ecu.edu/psyc/wuenschk/StatHelp/StatHelp.htm), a leader in the field of applied statistics education, who has gone out of his way to explain this in a very clear document, including examples, [which you can find here](http://core.ecu.edu/psyc/wuenschk/docs30/CI-Eta2-Alpha.doc). If you don’t want to read it, you should know that while Cohen’s d can be both positive and negative, r² or η² are squared, and can therefore only be positive. This is related to the fact that *F*-tests (as commonly used in ANOVA) are one-sided. If you calculate a 95% CI, you can get situations where the confidence interval includes 0, but the test reveals a statistical difference with a *p* < .05 (for a more mathematical explanation, see @steiger_beyond_2004. This means that a 95% CI around Cohen's d equals a 90% CI around η² for exactly the same test. 
+You will see that in the code above I used a 90% CI for effect sizes calculated for an *F*-test. The reason for this is explained by [Karl Wuensch](http://core.ecu.edu/psyc/wuenschk/StatHelp/StatHelp.htm), a leader in the field of applied statistics education, who has gone out of his way to explain this in a very clear document, including examples, [which you can find here](http://core.ecu.edu/psyc/wuenschk/docs30/CI-Eta2-Alpha.doc). If you don’t want to read it, you should know that while Cohen’s d can be both positive and negative, r² or η² are squared, and can therefore only be positive. This is related to the fact that *F*-tests (as commonly used in ANOVA) are one-sided. If you calculate a 95% CI, you can get situations where the confidence interval includes 0, but the test reveals a statistical difference with a *p* < .05 (for a more mathematical explanation, see @steiger_beyond_2004. This means that a 95% CI around Cohen's *d* equals a 90% CI around η² for exactly the same test. 
 
 As a final detail, because eta-squared cannot be smaller than zero, the lower bound for the confidence interval can not be smaller than 0. This means that a confidence interval for an effect that is not statistically different from 0 has to start at 0. You report such a CI as 90% CI [.00; .XX]  where the XX is the upper limit of the CI. 
