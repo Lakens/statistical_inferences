@@ -555,7 +555,7 @@ ifelse(ttest_result$p.value > 0.001, formatC(round(ttest_result$p.value,
 ```
 
 is a lot of code to make sure the exact *p*-value is reported, unless this
-p-value is smaller than 0.001, in which case ‘p \< 0.001’ is printed (the papaja
+*p*-value is smaller than 0.001, in which case ‘p \< 0.001’ is printed (the papaja
 package below makes reporting statistics a lot easier!). The first time you need
 to program something like this takes a lot of time – but remember you can re-use
 code in the future, and you can steal a lot of code from others! You can

@@ -505,17 +505,17 @@ res
 
 
 ```
-## [PROGRESS] Stage results calculated [0.0327 secs] 
-## [PROGRESS] Conditional power calculated [0.0235 secs] 
-## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0 secs] 
-## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.6835 secs] 
-## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.9168 secs] 
-## [PROGRESS] Repeated confidence interval calculated [1.6 secs] 
-## [PROGRESS] Repeated p-values of stage 1 calculated [0.3842 secs] 
-## [PROGRESS] Repeated p-values of stage 2 calculated [0.3729 secs] 
-## [PROGRESS] Repeated p-values calculated [0.7666 secs] 
+## [PROGRESS] Stage results calculated [0.0576 secs] 
+## [PROGRESS] Conditional power calculated [0.0521 secs] 
+## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.0013 secs] 
+## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.7909 secs] 
+## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.5785 secs] 
+## [PROGRESS] Repeated confidence interval calculated [1.37 secs] 
+## [PROGRESS] Repeated p-values of stage 1 calculated [0.2613 secs] 
+## [PROGRESS] Repeated p-values of stage 2 calculated [0.272 secs] 
+## [PROGRESS] Repeated p-values calculated [0.5384 secs] 
 ## [PROGRESS] Final p-value calculated [0 secs] 
-## [PROGRESS] Final confidence interval calculated [0.1167 secs]
+## [PROGRESS] Final confidence interval calculated [0.0959 secs]
 ```
 
 
@@ -567,7 +567,7 @@ Imagine we have performed a study planned to have at most 2 equally spaced looks
 
 The results show that the action after look 1 was to continue data collection, and that we could reject $H_0$ at the second look. The unadjusted mean difference is provided in the row "Overall effect size" and at the final look this was 0.293. The adjusted mean difference is provided in the row "Median unbiased estimate" and is lower, and the adjusted confidence interval is in the row "Final confidence interval", giving the result 0.281, 95% CI [-0.02, 0.573]. 
 
-The unadjusted *p* values for a one-sided tests are reported in the row "Overall p-value". The actual *p* values for our two-sided test would be twice as large, so 0.6668, 0.0477. The adjusted *p*-value at the final look is provided in the row "Final p-value" and it is 0.06662. 
+The unadjusted *p* values for a one-sided tests are reported in the row "Overall *p*-value". The actual *p* values for our two-sided test would be twice as large, so 0.6668, 0.0477. The adjusted *p*-value at the final look is provided in the row "Final *p*-value" and it is 0.06662. 
 
 ## Test Yourself
 

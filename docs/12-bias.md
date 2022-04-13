@@ -233,7 +233,7 @@ Let’s explore how PET-PEESE meta-regression attempts to give us an unbiased ef
 <p class="caption">(\#fig:petpeese)Funnel plot with PET_PEESE regression lines.</p>
 </div>
 
-## P-value meta-analysis  
+## *P*-value meta-analysis  
 
 In addition to a meta-analysis of effect sizes, it is possible to perform a meta-analysis of *p*-values. The first of such approaches is known as the [**Fisher's combined probability test**](https://en.wikipedia.org/wiki/Fisher%27s_method), and more recent bias detection tests such as *p*-curve analysis [@simonsohn_p-curve_2014] and *p*-uniform* [@aert_correcting_2018] build on this idea. These two techniques are an example of selection model approaches to test and adjust for meta-analysis [@iyengar_selection_1988], where a model about the data generating process of the effect sizes is combined with a selection model of how publication bias impacts which effect sizes become part of the scientific literature.  
 
