@@ -505,17 +505,17 @@ res
 
 
 ```
-## [PROGRESS] Stage results calculated [0.0479 secs] 
-## [PROGRESS] Conditional power calculated [0.0269 secs] 
-## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.002 secs] 
-## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.5156 secs] 
-## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.5346 secs] 
-## [PROGRESS] Repeated confidence interval calculated [1.05 secs] 
-## [PROGRESS] Repeated p-values of stage 1 calculated [0.2104 secs] 
-## [PROGRESS] Repeated p-values of stage 2 calculated [0.2201 secs] 
-## [PROGRESS] Repeated p-values calculated [0.4306 secs] 
-## [PROGRESS] Final p-value calculated [0.002 secs] 
-## [PROGRESS] Final confidence interval calculated [0.0658 secs]
+## [PROGRESS] Stage results calculated [0.141 secs] 
+## [PROGRESS] Conditional power calculated [0.1098 secs] 
+## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.0156 secs] 
+## [PROGRESS] Repeated confidence interval of stage 1 calculated [2.39 secs] 
+## [PROGRESS] Repeated confidence interval of stage 2 calculated [2.24 secs] 
+## [PROGRESS] Repeated confidence interval calculated [4.63 secs] 
+## [PROGRESS] Repeated p-values of stage 1 calculated [0.7041 secs] 
+## [PROGRESS] Repeated p-values of stage 2 calculated [0.6474 secs] 
+## [PROGRESS] Repeated p-values calculated [1.35 secs] 
+## [PROGRESS] Final p-value calculated [0.0156 secs] 
+## [PROGRESS] Final confidence interval calculated [0.2039 secs]
 ```
 
 
@@ -695,3 +695,23 @@ A) You can reject $H_0$ and stop data collection.
 B) You can reject $H_1$ and stop data collection.
 C) You reject both $H_0$ and $H_1$ and stop data collection.
 D) You fail to reject both $H_0$ and $H_1$ and continue data collection.
+
+### Open Questions
+
+1. What is the difference between sequential analysis and optional stopping? 
+
+2. What is a possible benefit of using a sequential design over a fixed design?
+
+3. What does it mean to stop data collection for futility? 
+
+4. What is the difference in the philosophy of how the alpha is spent across looks between the Pocock and O’Brien-Fleming approaches?
+
+5. What is the benefit of the fat that the alpha level at the final look when using an O’Brien-Fleming correction is close to the uncorrected alpha level?
+
+6. What is the difference between the Pocock and O’Brien-Fleming correction, and the corresponding Pocock and O’Brien-Fleming alpha spending functions developed by Lan and DeMets? 
+
+7. How can it be that even though the maximum sample size for a sequential design is slightly larger than the sample size for a fixed design, sequential designs can still be more efficient? 
+
+8. When does incorporating a stopping rule for futility increase the efficiency of a sequential design? 
+
+9. On average, what is the effect of stopping early in a sequential design on the effect size estimate? What is an argument to not correct the effect size estimate when reporting it? 

@@ -300,3 +300,20 @@ Frick [-@frick_appropriate_1996] has argued against Rozeboom, by stating:
 >Rozeboom (1960) suggested that scientists should not be making decisions about claims, they should be calculating and updating the probability of these claims. However, this does not seem practical. If there were only a handful of potential claims in any given area of psychology, it would be feasible to assign them probabilities, to be constantly updating the probabilities, and to expect experimenters to keep track of these ever-changing probabilities. In fact, just the number of claims in psychology is overwhelming. It would probably be impossible for human beings to keep track of the probability for each claim, especially if these probabilities were constantly changing. In any case, scientists do not assign probabilities to claims. Instead, scientists act like the goal of science is to collect a corpus of claims that are considered to be established (Giere, 1972).
 
 When it comes to philosophy of science, there are no right or wrong answers. Reflect in 250 words on your thoughts about the two goals of science outlines by Rozeboom and Frick, and how these relate to your philosophy of science. 
+
+### Open Questions
+
+1. What is a Bayes factor?
+
+2. What is the difference between a Bayes factor and a likelihood ratio?
+
+3. What does a Bayes factor of 1 mean?
+
+4. What is the prior in Bayesian inference, and is it possible that different people have different priors? 
+
+5. What is the difference between a Frequentist confidence interval and a Bayesian credible interval? 
+
+6. What is the difference between a uniform and informed prior when we compute the posterior distribution?
+
+7. Give a definition of a credible interval.
+

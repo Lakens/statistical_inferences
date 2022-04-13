@@ -264,3 +264,17 @@ As the scenario above shows, *p*-hacking makes studies extremely uninformative.
 
 **Q14**: Unless you will power all your studies at 99.99% for the rest of your career (which would be slightly inefficient, but great if you don’t like insecurity), you will observe mixed results in lines of research. How do you plan to deal with mixed results in lines of research?
 
+### Open Questions
+
+1. What is the difference between a probability and a likelihood? 
+
+2. Why is it important to remember that a likelihood ratio is relative evidence? 
+
+3. If we compare 2 hypotheses, H0 and H1, and the likelihood ratio of H1 compared to H0 is 77, what does this mean?
+
+4. What are benchmarks for medium and strong evidence according to Royall?
+
+5. How can it be that a likelihood ratio is 200, but both hypotheses are incorrect?
+
+6. If we perform multiple studies and find 2 out of 3 studies show a significant results, how can this actually be strong evidence for H1? 
+

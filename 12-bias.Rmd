@@ -45,9 +45,9 @@ One of these 44 articles had been co-authored by myself [@jostmann_weight_2009].
 
 New methods to detect publication bias are continuously developed, and old methods become outdated (even though you can still see them appear in meta-analyses). One outdated method is known as **fail-safe N**. The idea was to calculate the number of non-significant results one would need to have in file-drawers before an observed meta-analytic effect size estimate would no longer be statistically different from 0. It is [no longer recommended](https://handbook-5-1.cochrane.org/chapter_10/10_4_4_3_fail_safe_n.htm), and Becker [-@becker_failsafe_2005] writes "Given the other approaches that now exist for dealing with publication bias, the failsafe N should be abandoned in favor of other, more informative analyses". Currently, the only use fail-safe N has is as a tool to identify meta-analyses that are not state-of-the-art.  
 
-Before we can explain a second method (Trim-and-Fill), it’s useful to explain a common way to visualize meta-analyses, known as a **funnel plot**. In a funnel plot, the x-axis is used to plot the effect size of each study, and the y-axis is used to plot the ‘precision’ of each effect size. Typically, the y-axis is used to plot the standard error of each effect size estimate. The larger the study, the more precise the effect size estimate, the smaller the standard error, and thus the higher up in the funnel plot the study will be, and an infinitely precise study (with a standard error of 0) would be at the top of y-axis. 
+Before we can explain a second method (Trim-and-Fill), it’s useful to explain a common way to visualize meta-analyses, known as a **funnel plot**. In a funnel plot, the x-axis is used to plot the effect size of each study, and the y-axis is used to plot the ‘precision’ of each effect size. Typically, the y-axis is used to plot the standard error of each effect size estimate. The larger the number of observations in a study, the more precise the effect size estimate, the smaller the standard error, and thus the higher up in the funnel plot the study will be. An infinitely precise study (with a standard error of 0) would be at the top of y-axis. 
 
-The script below simulates meta-analyses based nsims studies, and stores all the results needed need to examine bias detection tools. In the first section of the script, statistically significant results in the desired direction are simulated, and in the second part null results are generated, which are subsequently combined. The script generates a percentage of significant results as indicated by `pub.bias` - when set to 1, all results are significant. Currently, `pub.bias` is set to 0.05, as there is no true effect in the simulation (`m1` and `m2` are equal, so there is no difference between the groups), so only 5% false positives should be expected. Finally, the meta-analysis is perfomed, the results are printed, and a funnel plot is created. 
+The script below simulates meta-analyses for `nsims` studies, and stores all the results needed need to examine bias detection tools. In the first section of the script, statistically significant results in the desired direction are simulated, and in the second part null results are generated. The script generates a percentage of significant results as indicated by `pub.bias` - when set to 1, all results are significant. In the code below, `pub.bias` is set to 0.05. Because there is no true effect in the simulation (`m1` and `m2` are equal, so there is no difference between the groups), the only significant results that should be expected are the 5% false positives. Finally, the meta-analysis is performed, the results are printed, and a funnel plot is created.
 
 ```{r metasim, eval = FALSE}
 library(metafor)
@@ -127,7 +127,7 @@ points(x = result$b[1], y = 0, cex = 1.5, pch = 17) # add point
 
 ```
 
-Let’s start by looking at what unbiased research looks like, be running the code, keeping `pub.bias` at 0.05, such that only 5% Type 1 errors enter the scientific literature.
+Let’s start by looking at what unbiased research looks like, by running the code, keeping `pub.bias` at 0.05, such that only 5% Type 1 errors enter the scientific literature.
 
 ```{r metasim1, echo = FALSE}
 library(metafor)
@@ -203,9 +203,9 @@ result
 
 ```
 
-When we examine the results of the meta-analysis, we see there are 100 studies in the meta-analysis (`k = 100`), and there is no statistically significant heterogeneity (*p* = `r  round(result$QEp,2)`, which is not too surprising as we programmed the simulation to have a true effect size of 0, there is no heterogeneity in effect sizes). We also get the results for the meta-analysis. The meta-analytic estimate is *d* = `r round(result$b[1], 3)`, which is very close to 0 (as it should be, because the true effect size is indeed 0). The standard error around this estimate is `r  round(result$se,3)`. With 100 studies, we have a very accurate estimate of the true effect size. The *Z*-value for the test against *d* = 0 is `r  round(result$zval,3)`, and the *p*-value for this test is `r  round(result$pval,2)`. We can not reject the hypothesis that the true effect size is 0. The CI around the effect size estimate (`r  round(result$ci.lb,3)`, `r  round(result$ci.ub,3)`) includes 0. 
+When we examine the results of the meta-analysis we see there are 100 studies in the meta-analysis (`k = 100`), and there is no statistically significant heterogeneity (*p* = `r  round(result$QEp,2)`, which is not too surprising, as we programmed the simulation to have a true effect size of 0, and there is no heterogeneity in effect sizes). We also get the results for the meta-analysis. The meta-analytic estimate is *d* = `r round(result$b[1], 3)`, which is very close to 0 (as it should be, because the true effect size is indeed 0). The standard error around this estimate is `r  round(result$se,3)`. With 100 studies, we have a very accurate estimate of the true effect size. The *Z*-value for the test against *d* = 0 is `r  round(result$zval,3)`, and the *p*-value for this test is `r  round(result$pval,2)`. We can not reject the hypothesis that the true effect size is 0. The CI around the effect size estimate (`r  round(result$ci.lb,3)`, `r  round(result$ci.ub,3)`) includes 0. 
 
-If we examine the funnel plot in Figure \@ref(fig:funnel1) we see each study represented as a dot. The larger the sample size, the higher up in the plot, and the smaller the sample size, the lower in the plot. The white pyramid represent the area within which a study is not statistically significant, because the observed effect size (x-axis) is not far enough removed from 0 such that the confidence interval around the observed effect size would exclude 0. The lower the standard error, the more narrow the confidence interval, and the smaller the effect sizes can can be statistically significant. At the same time, the smaller the standard error, the closer the effect size will be to the true effect size, so the less likely we will see effects far away from 0. We should expect 95% of the effect size estimates to fall within the funnel, if it is centered on the true effect size. We see only a few studies (five, to be exact) fall outside the white pyramid on the right side of the plot. These are the 5% significant results that we programmed in the simulation. Note that all 5 of these studies are false positives, as there is no true effect. If there was a true effect (e.g., *d* = 0.5, my changing `m1 <- 0` in the simulation to `m1 <- 0.5` the cloud of points would move to the right, and be centered on 0.5 instead of 0.  
+If we examine the funnel plot in Figure \@ref(fig:funnel1) we see each study represented as a dot. The larger the sample size, the higher up in the plot, and the smaller the sample size, the lower in the plot. The white pyramid represent the area within which a study is not statistically significant, because the observed effect size (x-axis) is not far enough removed from 0 such that the confidence interval around the observed effect size would exclude 0. The lower the standard error, the more narrow the confidence interval, and the smaller the effect sizes can can be statistically significant. At the same time, the smaller the standard error, the closer the effect size will be to the true effect size, so the less likely we will see effects far away from 0. We should expect 95% of the effect size estimates to fall within the funnel, if it is centered on the true effect size. We see only a few studies (five, to be exact) fall outside the white pyramid on the right side of the plot. These are the 5% significant results that we programmed in the simulation. Note that all 5 of these studies are false positives, as there is no true effect. If there was a true effect (you can re-run the simulation and set *d* to 0.5 by changing `m1 <- 0` in the simulation to `m1 <- 0.5`) the pyramid cloud of points would move to the right, and be centered on 0.5 instead of 0.  
 
 ```{r funnel1, echo = FALSE, fig.cap="Funnel plot of unbiased null results."}
 # Print a Funnel Plot
@@ -216,7 +216,7 @@ points(x = result$b[1], y = 0, cex = 1.5, pch = 17) # add point
 
 ```
 
-We can now compare the unbiased meta-analysis above with a biased meta-analysis. We can simulate a situation with extreme publication bias. Building on the estimate by @scheel_excess_2021, let's assume 96% of the results show positive results, by setting `pub.bias <- 0.96` in the code. We keep both means at 0, so there still is not real effect, but we will end up with mainly Type 1 errors in the predicted direction in the final set of studies. We can simulate biased results, and perform the meta-analysis to see if the statistical inference might be misleading. 
+We can now compare the unbiased meta-analysis above with a biased meta-analysis. We can simulate a situation with extreme publication bias. Building on the estimate by @scheel_excess_2021, let's assume 96% of the studies show positive results. We set `pub.bias <- 0.96` in the code. We keep both means at 0, so there still is not real effect, but we will end up with mainly Type 1 errors in the predicted direction in the final set of studies. After simulating biased results, we can perform the meta-analysis to see if the statistical inference based on the meta-analysis is misleading. 
 
 ```{r metasim2, echo = FALSE}
 set.seed(5)
@@ -289,7 +289,6 @@ result.biased <- metafor::rma(yi, vi, data = metadata)
 result.biased
 
 ```
-
 
 The biased nature of the set of studies we have analyzed becomes clear if we examine the funnel plot in Figure \@ref(fig:funnel2). The pattern is quite peculiar. We see four unbiased null results, as we programmed into the simulation, but the remainder of the 96 studies are statistically significant, even though the null is true. We see most studies fall just on the edge of the white pyramid. Because *p*-values are uniformaly distributed under the null, the Type 1 errors we observe often have *p*-values in the range of 0.02 to 0.05, unlike what we would expect if there was a true effect. These just significant *p*-values fall just outside of the white pyramid. The large the study, the smaller the effect size that is significant. The fact that the effect sizes do not vary around a single true effect size (e.g., *d* = 0 or *d* = 0.5), but that effect sizes become smaller, the larger the sample size (or the smaller the standard error), is a strong indicator of bias. The vertical dotted line and black triangle at the top of the plot illustrate the observed (upwardly biased) meta-analytic effect size estimate. 
 
@@ -610,3 +609,20 @@ C) The trim-and-fill analysis would indicate bias, but so did the *p*-curve and 
 D) The trim-and-fill method provides a reliable estimate of the true effect size, which is not provided by any of the other methods discussed so far, and therefore it should be reported alongside other bias detection tests.
 
 **Q8**: Publication bias is defined as the practice of selectively submitting and publishing scientific research. Throughout this chapter, we have focussed on selectively submitting *significant* results. Can you think of a research line or a research question where researchers might prefer to selectively publish *non-significant* results? 
+
+
+### Open Questions
+
+1. What is the idea behind the GRIM test? 
+
+2. What is the definition of ‘publication bias’?
+
+3. What is the file-drawer problem?
+
+4. In a funnel plot, what is true for studies that fall inside the funnel (when it is centered on 0)? 
+
+5. What is true for the trim-and-fill approach with respect to its ability to detect and correct effect size estimates? 
+
+6. When using the PET-PEESE approach, what is important to consider when the meta-analysis has a small number of studies? 
+
+7. What conclusions can we draw from the 2 tests that are reported in a p-curve analysis?

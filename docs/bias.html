@@ -19,9 +19,9 @@
 <meta name="twitter:image" content="https://lakens.github.io/statistical_inferences/images/logo.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><link href="libs/_Open%20Sans-0.4.0/font.css" rel="stylesheet">
-<link href="libs/_Fira%20Code-0.4.0/font.css" rel="stylesheet">
-<link href="libs/_Montserrat-0.4.0/font.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><link href="libs/_Open%20Sans-0.4.1/font.css" rel="stylesheet">
+<link href="libs/_Fira%20Code-0.4.1/font.css" rel="stylesheet">
+<link href="libs/_Montserrat-0.4.1/font.css" rel="stylesheet">
 <script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/kePrint-0.0.1/kePrint.js"></script><link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 <!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0MK2WTGRM3"></script><script>
@@ -147,8 +147,8 @@ Figure 12.3: Positive result rates for standard reports and Registered Reports. 
 <span class="header-section-number">12.2</span> Bias detection in meta-analysis<a class="anchor" aria-label="anchor" href="#bias-detection-in-meta-analysis"><i class="fas fa-link"></i></a>
 </h2>
 <p>New methods to detect publication bias are continuously developed, and old methods become outdated (even though you can still see them appear in meta-analyses). One outdated method is known as <strong>fail-safe N</strong>. The idea was to calculate the number of non-significant results one would need to have in file-drawers before an observed meta-analytic effect size estimate would no longer be statistically different from 0. It is <a href="https://handbook-5-1.cochrane.org/chapter_10/10_4_4_3_fail_safe_n.htm">no longer recommended</a>, and Becker <span class="citation">(<a href="references.html#ref-becker_failsafe_2005" role="doc-biblioref">2005</a>)</span> writes "Given the other approaches that now exist for dealing with publication bias, the failsafe N should be abandoned in favor of other, more informative analyses". Currently, the only use fail-safe N has is as a tool to identify meta-analyses that are not state-of-the-art.</p>
-<p>Before we can explain a second method (Trim-and-Fill), it’s useful to explain a common way to visualize meta-analyses, known as a <strong>funnel plot</strong>. In a funnel plot, the x-axis is used to plot the effect size of each study, and the y-axis is used to plot the ‘precision’ of each effect size. Typically, the y-axis is used to plot the standard error of each effect size estimate. The larger the study, the more precise the effect size estimate, the smaller the standard error, and thus the higher up in the funnel plot the study will be, and an infinitely precise study (with a standard error of 0) would be at the top of y-axis.</p>
-<p>The script below simulates meta-analyses based nsims studies, and stores all the results needed need to examine bias detection tools. In the first section of the script, statistically significant results in the desired direction are simulated, and in the second part null results are generated, which are subsequently combined. The script generates a percentage of significant results as indicated by <code>pub.bias</code> - when set to 1, all results are significant. Currently, <code>pub.bias</code> is set to 0.05, as there is no true effect in the simulation (<code>m1</code> and <code>m2</code> are equal, so there is no difference between the groups), so only 5% false positives should be expected. Finally, the meta-analysis is perfomed, the results are printed, and a funnel plot is created.</p>
+<p>Before we can explain a second method (Trim-and-Fill), it’s useful to explain a common way to visualize meta-analyses, known as a <strong>funnel plot</strong>. In a funnel plot, the x-axis is used to plot the effect size of each study, and the y-axis is used to plot the ‘precision’ of each effect size. Typically, the y-axis is used to plot the standard error of each effect size estimate. The larger the number of observations in a study, the more precise the effect size estimate, the smaller the standard error, and thus the higher up in the funnel plot the study will be. An infinitely precise study (with a standard error of 0) would be at the top of y-axis.</p>
+<p>The script below simulates meta-analyses for <code>nsims</code> studies, and stores all the results needed need to examine bias detection tools. In the first section of the script, statistically significant results in the desired direction are simulated, and in the second part null results are generated. The script generates a percentage of significant results as indicated by <code>pub.bias</code> - when set to 1, all results are significant. In the code below, <code>pub.bias</code> is set to 0.05. Because there is no true effect in the simulation (<code>m1</code> and <code>m2</code> are equal, so there is no difference between the groups), the only significant results that should be expected are the 5% false positives. Finally, the meta-analysis is performed, the results are printed, and a funnel plot is created.</p>
 <div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.metafor-project.org">metafor</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/olafmersmann/truncnorm">truncnorm</a></span><span class="op">)</span>
@@ -224,7 +224,7 @@ Figure 12.3: Positive result rates for standard reports and Registered Reports. 
 <span class="fu">metafor</span><span class="fu">::</span><span class="fu"><a href="https://wviechtb.github.io/metafor/reference/funnel.html">funnel</a></span><span class="op">(</span><span class="va">result</span>, level <span class="op">=</span> <span class="fl">0.95</span>, refline <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>v <span class="op">=</span> <span class="va">result</span><span class="op">$</span><span class="va">b</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, lty <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span> <span class="co">#  vertical line at meta-analytic ES</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">result</span><span class="op">$</span><span class="va">b</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, y <span class="op">=</span> <span class="fl">0</span>, cex <span class="op">=</span> <span class="fl">1.5</span>, pch <span class="op">=</span> <span class="fl">17</span><span class="op">)</span> <span class="co"># add point</span></code></pre></div>
-<p>Let’s start by looking at what unbiased research looks like, be running the code, keeping <code>pub.bias</code> at 0.05, such that only 5% Type 1 errors enter the scientific literature.</p>
+<p>Let’s start by looking at what unbiased research looks like, by running the code, keeping <code>pub.bias</code> at 0.05, such that only 5% Type 1 errors enter the scientific literature.</p>
 <pre><code>## 
 ## Random-Effects Model (k = 100; tau^2 estimator: REML)
 ## 
@@ -243,15 +243,15 @@ Figure 12.3: Positive result rates for standard reports and Registered Reports. 
 ## 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
-<p>When we examine the results of the meta-analysis, we see there are 100 studies in the meta-analysis (<code>k = 100</code>), and there is no statistically significant heterogeneity (<em>p</em> = 0.69, which is not too surprising as we programmed the simulation to have a true effect size of 0, there is no heterogeneity in effect sizes). We also get the results for the meta-analysis. The meta-analytic estimate is <em>d</em> = -0.002, which is very close to 0 (as it should be, because the true effect size is indeed 0). The standard error around this estimate is 0.012. With 100 studies, we have a very accurate estimate of the true effect size. The <em>Z</em>-value for the test against <em>d</em> = 0 is -0.177, and the <em>p</em>-value for this test is 0.86. We can not reject the hypothesis that the true effect size is 0. The CI around the effect size estimate (-0.026, 0.021) includes 0.</p>
-<p>If we examine the funnel plot in Figure <a href="bias.html#fig:funnel1">12.4</a> we see each study represented as a dot. The larger the sample size, the higher up in the plot, and the smaller the sample size, the lower in the plot. The white pyramid represent the area within which a study is not statistically significant, because the observed effect size (x-axis) is not far enough removed from 0 such that the confidence interval around the observed effect size would exclude 0. The lower the standard error, the more narrow the confidence interval, and the smaller the effect sizes can can be statistically significant. At the same time, the smaller the standard error, the closer the effect size will be to the true effect size, so the less likely we will see effects far away from 0. We should expect 95% of the effect size estimates to fall within the funnel, if it is centered on the true effect size. We see only a few studies (five, to be exact) fall outside the white pyramid on the right side of the plot. These are the 5% significant results that we programmed in the simulation. Note that all 5 of these studies are false positives, as there is no true effect. If there was a true effect (e.g., <em>d</em> = 0.5, my changing <code>m1 &lt;- 0</code> in the simulation to <code>m1 &lt;- 0.5</code> the cloud of points would move to the right, and be centered on 0.5 instead of 0.</p>
+<p>When we examine the results of the meta-analysis we see there are 100 studies in the meta-analysis (<code>k = 100</code>), and there is no statistically significant heterogeneity (<em>p</em> = 0.69, which is not too surprising, as we programmed the simulation to have a true effect size of 0, and there is no heterogeneity in effect sizes). We also get the results for the meta-analysis. The meta-analytic estimate is <em>d</em> = -0.002, which is very close to 0 (as it should be, because the true effect size is indeed 0). The standard error around this estimate is 0.012. With 100 studies, we have a very accurate estimate of the true effect size. The <em>Z</em>-value for the test against <em>d</em> = 0 is -0.177, and the <em>p</em>-value for this test is 0.86. We can not reject the hypothesis that the true effect size is 0. The CI around the effect size estimate (-0.026, 0.021) includes 0.</p>
+<p>If we examine the funnel plot in Figure <a href="bias.html#fig:funnel1">12.4</a> we see each study represented as a dot. The larger the sample size, the higher up in the plot, and the smaller the sample size, the lower in the plot. The white pyramid represent the area within which a study is not statistically significant, because the observed effect size (x-axis) is not far enough removed from 0 such that the confidence interval around the observed effect size would exclude 0. The lower the standard error, the more narrow the confidence interval, and the smaller the effect sizes can can be statistically significant. At the same time, the smaller the standard error, the closer the effect size will be to the true effect size, so the less likely we will see effects far away from 0. We should expect 95% of the effect size estimates to fall within the funnel, if it is centered on the true effect size. We see only a few studies (five, to be exact) fall outside the white pyramid on the right side of the plot. These are the 5% significant results that we programmed in the simulation. Note that all 5 of these studies are false positives, as there is no true effect. If there was a true effect (you can re-run the simulation and set <em>d</em> to 0.5 by changing <code>m1 &lt;- 0</code> in the simulation to <code>m1 &lt;- 0.5</code>) the pyramid cloud of points would move to the right, and be centered on 0.5 instead of 0.</p>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:funnel1"></span>
 <img src="12-bias_files/figure-html/funnel1-1.png" alt="Funnel plot of unbiased null results." width="100%"><p class="caption">
 Figure 12.4: Funnel plot of unbiased null results.
 </p>
 </div>
-<p>We can now compare the unbiased meta-analysis above with a biased meta-analysis. We can simulate a situation with extreme publication bias. Building on the estimate by <span class="citation">Scheel, Schijen, et al. (<a href="references.html#ref-scheel_excess_2021" role="doc-biblioref">2021</a>)</span>, let's assume 96% of the results show positive results, by setting <code>pub.bias &lt;- 0.96</code> in the code. We keep both means at 0, so there still is not real effect, but we will end up with mainly Type 1 errors in the predicted direction in the final set of studies. We can simulate biased results, and perform the meta-analysis to see if the statistical inference might be misleading.</p>
+<p>We can now compare the unbiased meta-analysis above with a biased meta-analysis. We can simulate a situation with extreme publication bias. Building on the estimate by <span class="citation">Scheel, Schijen, et al. (<a href="references.html#ref-scheel_excess_2021" role="doc-biblioref">2021</a>)</span>, let's assume 96% of the studies show positive results. We set <code>pub.bias &lt;- 0.96</code> in the code. We keep both means at 0, so there still is not real effect, but we will end up with mainly Type 1 errors in the predicted direction in the final set of studies. After simulating biased results, we can perform the meta-analysis to see if the statistical inference based on the meta-analysis is misleading.</p>
 <pre><code>## 
 ## Random-Effects Model (k = 100; tau^2 estimator: REML)
 ## 
@@ -488,9 +488,21 @@ would expect if the studies had 33% power, and therefore, we can conclude these 
 <li>The trim-and-fill method provides a reliable estimate of the true effect size, which is not provided by any of the other methods discussed so far, and therefore it should be reported alongside other bias detection tests.</li>
 </ol>
 <p><strong>Q8</strong>: Publication bias is defined as the practice of selectively submitting and publishing scientific research. Throughout this chapter, we have focussed on selectively submitting <em>significant</em> results. Can you think of a research line or a research question where researchers might prefer to selectively publish <em>non-significant</em> results?</p>
-
-<!-- UPDATE TIER PROTOCOL https://osf.io/4cxed/ -->
-<!-- ADD INFO TO PREREG SO PEOPLE CAN BE FOUND-->
+<div id="open-questions-10" class="section level3" number="12.7.1">
+<h3>
+<span class="header-section-number">12.7.1</span> Open Questions<a class="anchor" aria-label="anchor" href="#open-questions-10"><i class="fas fa-link"></i></a>
+</h3>
+<ol style="list-style-type: decimal">
+<li><p>What is the idea behind the GRIM test?</p></li>
+<li><p>What is the definition of ‘publication bias’?</p></li>
+<li><p>What is the file-drawer problem?</p></li>
+<li><p>In a funnel plot, what is true for studies that fall inside the funnel (when it is centered on 0)?</p></li>
+<li><p>What is true for the trim-and-fill approach with respect to its ability to detect and correct effect size estimates?</p></li>
+<li><p>When using the PET-PEESE approach, what is important to consider when the meta-analysis has a small number of studies?</p></li>
+<li><p>What conclusions can we draw from the 2 tests that are reported in a p-curve analysis?</p></li>
+</ol>
+<!-- UPDATE TIER PROTOCOL https://osf.io/4cxed/ --><!-- ADD INFO TO PREREG SO PEOPLE CAN BE FOUND-->
+</div>
 </div>
 </div>
   <div class="chapter-nav">
@@ -506,7 +518,9 @@ would expect if the studies had 33% power, and therefore, we can conclude these 
 <li><a class="nav-link" href="#pet-peese"><span class="header-section-number">12.4</span> PET-PEESE</a></li>
 <li><a class="nav-link" href="#p-value-meta-analysis"><span class="header-section-number">12.5</span> P-value meta-analysis</a></li>
 <li><a class="nav-link" href="#conclusion"><span class="header-section-number">12.6</span> Conclusion</a></li>
-<li><a class="nav-link" href="#test-yourself-10"><span class="header-section-number">12.7</span> Test Yourself</a></li>
+<li>
+<a class="nav-link" href="#test-yourself-10"><span class="header-section-number">12.7</span> Test Yourself</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#open-questions-10"><span class="header-section-number">12.7.1</span> Open Questions</a></li></ul>
+</li>
 </ul>
 
       <div class="book-extra">
@@ -524,7 +538,7 @@ would expect if the studies had 33% power, and therefore, we can conclude these 
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>Lakens, D. (2022). Improving Your Statistical Inferences. https://doi.org/10.5281/zenodo.6409077. Built on 2022-04-07.</p>
+    <p>Lakens, D. (2022). Improving Your Statistical Inferences. https://doi.org/10.5281/zenodo.6409077. Built on 2022-04-12.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
