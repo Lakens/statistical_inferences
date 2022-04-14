@@ -4,22 +4,24 @@ author: "Daniël Lakens"
 date: "2022-04-12"
 site: bookdown::bookdown_site
 documentclass: website
-bibliography: [book.bib]
+bibliography: [include/book.bib]
+biblio-style: apalike
+biblatexoptions: [refsegment=chapter]
+csl: include/apa.csl # Downloaded from https://www.zotero.org/styles?q=id%3Aapa
+link-citations: yes
 monofont: "Source Code Pro"
-url: https://lakens.github.io/statistical_inferences/
-cover-image: images/logo.png
 description: |
   This open educational resource contains information to improve statistical inferences, design better experiments, and report scientific research more transparently.
-biblio-style: apalike
-csl: apa.csl # Downloaded from https://www.zotero.org/styles?q=id%3Aapa
-link-citations: yes
-output:
-  bookdown::pdf_book:
-    pandoc_args: --top-level-division=chapter
+url: https://lakens.github.io/statistical_inferences/
+github-repo: lakens/statistical_inferences
+cover-image: images/logo.png
+favicon: images/favicon.ico
+always_allow_html: true
+classoption: oneside
+geometry: margin=1in
 ---
 
 # Introduction {-}
-
 
 
 

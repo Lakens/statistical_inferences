@@ -1,31 +1,45 @@
 ```{r, include = FALSE}
-knitr::opts_chunk$set(error = FALSE, warning = FALSE, message = FALSE, out.width  = '100%', fig.width  = 8, fig.height = 5, fig.align  = 'center')
-backgroundcolor <- "#fffafa"
+source("include/globals.R")
+
+# needed to make the chapter (not visible)
+library(kableExtra)
+library(ggplot2)
+
 ```
 
 ```{r, include = FALSE}
-library(tidyverse)
-library(gridExtra)
-library(kableExtra)
-library(ggrepel)
-library(grid)
-library(magrittr)
-library(pwr)
-library(Superpower)
-library(ggplot2)
-library(patchwork)
-library(MASS)
-library(viridis)
-library(TOSTER)
-library(BEST)
-library(metafor)
-library(MOTE)
-library(binom)
-library(MASS)
-library(gsDesign)
-library(rpact)
-library(BUCSS)
-library(flextable)
+# Add Type 1 error rate function
+add_type1_error <- function(N, 
+                            side = "right", 
+                            col = rgb(1, 0, 0, 1)) {
+  mult <- ifelse(side == "right", 1, -1)
+  crit_d <- mult * abs(qt(0.05 / 2, (N * 2) - 2)) / sqrt(N / 2)
+  
+  if (side == "right") {
+    y <- seq(crit_d, 10, length = 10000)
+  } else {
+    y <- seq(-10, crit_d, length = 10000)
+  }
+  
+  # determine upperbounds polygon
+  suppressWarnings({
+    z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2) * sqrt(N / 2))
+  })
+  
+  if (side == "right") {
+    polygon(c(crit_d, y, 10), c(0, z, 0), col = col)
+  } else {
+    polygon(c(y, crit_d, crit_d), c(z, 0, 0), col = col)
+  }
+}
+
+# calculate distribution of d based on t-distribution
+calc_d_dist <- function(x, N, ncp = 0) {
+  suppressWarnings({
+    # generates a lot of warnings sometimes
+    dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2) 
+  })
+}
 ```
 
 # Using *p*-values to test a hypothesis {#pvalue}
@@ -66,7 +80,7 @@ Assume I ask two groups of 10 people how much they liked the extended directors 
 
 ```{r friends, echo=F, tab.cap = "Ratings for the Lord of the Rings extended trilogy by two groups of friends."}
 
-friends <- c("friend_1", "friend_2", "friend_3", "friend_4", "friend_5", "friend_6", "friend_7", "friend_8", "friend_9", "friend_10")
+friends <- paste0("friend_", 1:10)
 friends_daniel <- c(9, 7, 8, 9, 8, 9, 9, 10, 9, 9)
 friends_kyra <- c(9, 6, 7, 8, 7, 9, 8, 8, 8, 7)
 df <- data.frame(friends, friends_daniel, friends_kyra)
@@ -289,6 +303,7 @@ It is useful to distinguish the null hypothesis (the prediction that the mean di
   
 I personally find things become a lot clearer if you plot the null model as mean differences instead of *t*-values. So below, you can see a null model for the mean differences we can expect when compare two groups of 50 observations where the true difference between the two groups is 0, and the standard deviation is in each group is 1. Because the standard deviation is 1, you can also interpret the mean differences as a Cohen’s *d* effect size. So this is also the distribution you can expect for a Cohen's *d* of 0, when collecting 50 observations per group in an independent *t*-test.
 
+
 ```{r, fig131, echo = FALSE, fig.cap="Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test"}
 # Figure 1 & 2 (set to N <- 5000 for Figure 2)
 # Set x-axis upper and lower scale points
@@ -307,7 +322,7 @@ ncp <- d * sqrt(N / 2)
 
 # calc d-distribution
 x <- seq(low_x, high_x, length = 10000) # create x values
-d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2) # calculate distribution of d based on t-distribution
+d_dist <- calc_d_dist(x, N, ncp)
 
 # Set max Y
 y_max <- max(d_dist) + 0.5
@@ -319,17 +334,9 @@ plot(-10, xlim = c(low_x, high_x), ylim = c(0, y_max), xlab = "Difference", ylab
 d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = 0) * sqrt(N / 2)
 lines(x, d_dist, col = "black", type = "l", lwd = 2)
 
-# Add Type 1 error rate right
-crit_d <- abs(qt(0.05 / 2, (N * 2) - 2)) / sqrt(N / 2)
-y <- seq(crit_d, 10, length = 10000)
-z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2) * sqrt(N / 2)) # determine upperbounds polygon
-polygon(c(crit_d, y, 10), c(0, z, 0), col = rgb(1, 0, 0, 1))
-
-# Add Type 1 error rate left
-crit_d <- -abs(qt(0.05 / 2, (N * 2) - 2)) / sqrt(N / 2)
-y <- seq(-10, crit_d, length = 10000)
-z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2) * sqrt(N / 2)) # determine upperbounds polygon
-polygon(c(y, crit_d, crit_d), c(z, 0, 0), col = rgb(1, 0, 0, 1))
+# Add type 1 error rate
+add_type1_error(N, "right")
+add_type1_error(N, "left")
 
 ```
 
@@ -340,6 +347,7 @@ The y-axis of the graph represents the density, which provides an indication of 
 Let’s assume that the null model in the Figure above is true, and that we observe a mean difference of 0.5 between the two groups. This observed difference falls in the red area in the right tail of the distribution. This means that the observed mean difference is relatively surprising, under the assumption that the true mean difference is 0. If the true mean difference is 0, the probability density functions shows that we should not expect a mean difference of 0.5 very often. If we calculate a *p*-value for this observation, it would be lower than 5%. The probability of observing a mean difference that is at least far away from 0 as 0.5 (either to the left from the mean, or to the right, when we do a two-tailed test) is less than 5%.
 
 One reason why I prefer to plot the null model in raw scores instead of *t*-values is that you can see how the null model changes when the sample size increases. When we collect 5000 instead of 50 observations, we see the null model is still centered on 0 – but in our null model we now expect most values will fall very close around 0. 
+
 
 ```{r, fig132, echo = FALSE, fig.cap= "Distribution of observed Cohen's d effect sizes when collecting 5000 observations per group in an independent t-test when d = 0."}
 low_x <- -1
@@ -354,7 +362,7 @@ ncp <- d * sqrt(N / 2)
 
 # calc d-distribution
 x <- seq(low_x, high_x, length = 10000) # create x values
-d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2) # calculate distribution of d based on t-distribution
+d_dist <- calc_d_dist(x, N, ncp)
 
 # Set max Y
 y_max <- max(d_dist) + 0.5
@@ -363,20 +371,12 @@ y_max <- max(d_dist) + 0.5
 par(bg = backgroundcolor)
 plot(-10, xlim = c(low_x, high_x), ylim = c(0, y_max), xlab = "Difference", ylab = "", main = paste("null hypothesis for N = ", N))
 
-d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = 0) * sqrt(N / 2)
+d_dist <- calc_d_dist(x, N, 0)
 lines(x, d_dist, col = "black", type = "l", lwd = 2)
 
-# Add Type 1 error rate right
-crit_d <- abs(qt(0.05 / 2, (N * 2) - 2)) / sqrt(N / 2)
-y <- seq(crit_d, 10, length = 10000)
-z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2) * sqrt(N / 2)) # determine upperbounds polygon
-polygon(c(crit_d, y, 10), c(0, z, 0), col = rgb(1, 0, 0, 1))
-
-# Add Type 1 error rate left
-crit_d <- -abs(qt(0.05 / 2, (N * 2) - 2)) / sqrt(N / 2)
-y <- seq(-10, crit_d, length = 10000)
-z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2) * sqrt(N / 2)) # determine upperbounds polygon
-polygon(c(y, crit_d, crit_d), c(z, 0, 0), col = rgb(1, 0, 0, 1))
+# Add type 1 error rate
+add_type1_error(N, "right")
+add_type1_error(N, "left")
 
 ```
 
@@ -405,7 +405,7 @@ high_x <- 3
 y_max <- 2
 
 # Set sample size per group and effect size d (assumes equal sample sizes per group)
-N <- 50 # sample size per group for indepndent t-test
+N <- 50 # sample size per group for independent t-test
 d <- 0.5 # please enter positive d only
 # Calculate non-centrality parameter - equals t-value from sample
 ncp <- d * sqrt(N / 2)
@@ -415,7 +415,7 @@ ncp <- d / (sqrt((1 / N) + (1 / N)))
 
 # calc d-distribution
 x <- seq(low_x, high_x, length = 10000) # create x values
-d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2) # calculate distribution of d based on t-distribution
+d_dist <- calc_d_dist(x, N, ncp)
 
 # Set max Y
 y_max <- max(d_dist) + 0.5
@@ -425,20 +425,12 @@ plot(-10, xlim = c(low_x, high_x), ylim = c(0, y_max), xlab = "Difference", ylab
 # abline(v = seq(low_x,high_x,0.1), h = seq(0,0.5,0.1), col = "lightgray", lty = 1)
 lines(x, d_dist, col = "black", type = "l", lwd = 2)
 # add d = 0 line
-d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = 0) * sqrt(N / 2)
+d_dist <- calc_d_dist(x, N, ncp=0)
 lines(x, d_dist, col = "darkgrey", type = "l", lwd = 2)
 
-# Add Type 1 error rate right
-crit_d <- abs(qt(0.05 / 2, (N * 2) - 2)) / sqrt(N / 2)
-y <- seq(crit_d, 10, length = 10000)
-z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2) * sqrt(N / 2)) # determine upperbounds polygon
-polygon(c(crit_d, y, 10), c(0, z, 0), col = rgb(1, 0, 0, 1))
-
-# Add Type 1 error rate left
-crit_d <- -abs(qt(0.05 / 2, (N * 2) - 2)) / sqrt(N / 2)
-y <- seq(-10, crit_d, length = 10000)
-z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2) * sqrt(N / 2)) # determine upperbounds polygon
-polygon(c(y, crit_d, crit_d), c(z, 0, 0), col = rgb(1, 0, 0, 1))
+# Add type 1 error rate
+add_type1_error(N, "right")
+add_type1_error(N, "left")
 
 ```
 
@@ -460,7 +452,7 @@ ncp <- d * sqrt(N / 2)
 
 # calc d-distribution
 x <- seq(low_x, high_x, length = 10000) # create x values
-d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2) # calculate distribution of d based on t-distribution
+d_dist <- calc_d_dist(x, N, ncp)
 
 # Set max Y
 y_max <- max(d_dist) + 0.5
@@ -469,20 +461,12 @@ par(bg = backgroundcolor)
 plot(-10, xlim = c(low_x, high_x), ylim = c(0, y_max), xlab = "Difference", ylab = "", main = paste("Null and alternative hypothesis for N = ", N))
 lines(x, d_dist, col = "black", type = "l", lwd = 2)
 # add d = 0 line
-d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = 0) * sqrt(N / 2)
+d_dist <- calc_d_dist(x, N, ncp=0)
 lines(x, d_dist, col = "darkgrey", type = "l", lwd = 2)
 
-# Add Type 1 error rate right
-crit_d <- abs(qt(0.05 / 2, (N * 2) - 2)) / sqrt(N / 2)
-y <- seq(crit_d, 10, length = 10000)
-z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2) * sqrt(N / 2)) # determine upperbounds polygon
-polygon(c(crit_d, y, 10), c(0, z, 0), col = rgb(1, 0, 0, 1))
-
-# Add Type 1 error rate left
-crit_d <- -abs(qt(0.05 / 2, (N * 2) - 2)) / sqrt(N / 2)
-y <- seq(-10, crit_d, length = 10000)
-z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2) * sqrt(N / 2)) # determine upperbounds polygon
-polygon(c(y, crit_d, crit_d), c(z, 0, 0), col = rgb(1, 0, 0, 1))
+# Add type 1 error rate
+add_type1_error(N, "right")
+add_type1_error(N, "left")
 
 ```
 
@@ -524,7 +508,7 @@ ncp <- d * sqrt(N / 2)
 
 # calc d-distribution
 x <- seq(low_x, high_x, length = 10000) # create x values
-d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2) # calculate distribution of d based on t-distribution
+d_dist <- calc_d_dist(x, N, ncp)
 
 # Set max Y
 y_max <- max(d_dist) + 0.5
@@ -533,20 +517,12 @@ par(bg = backgroundcolor)
 plot(-10, xlim = c(low_x, high_x), ylim = c(0, y_max), xlab = "Difference", ylab = "", main = paste("Null and alternative hypothesis for N = ", N))
 lines(x, d_dist, col = "black", type = "l", lwd = 2)
 # add d = 0 line
-d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = 0) * sqrt(N / 2)
+d_dist <- calc_d_dist(x, N, ncp = 0)
 lines(x, d_dist, col = "darkgrey", type = "l", lwd = 2)
 
-# Add Type 1 error rate right
-crit_d <- abs(qt(0.05 / 2, (N * 2) - 2)) / sqrt(N / 2)
-y <- seq(crit_d, 10, length = 10000)
-z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2) * sqrt(N / 2)) # determine upperbounds polygon
-polygon(c(crit_d, y, 10), c(0, z, 0), col = rgb(1, 0, 0, 1))
-
-# Add Type 1 error rate left
-crit_d <- -abs(qt(0.05 / 2, (N * 2) - 2)) / sqrt(N / 2)
-y <- seq(-10, crit_d, length = 10000)
-z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2) * sqrt(N / 2)) # determine upperbounds polygon
-polygon(c(y, crit_d, crit_d), c(z, 0, 0), col = rgb(1, 0, 0, 1))
+# Add type 1 error rate
+add_type1_error(N, "right")
+add_type1_error(N, "left")
 
 segments(0.35, 0, 0.35, 2.2, col = "black", lwd = 2)
 text(0.35, 2.4, paste("Observed mean difference"), cex = 1)
@@ -589,24 +565,16 @@ ncp <- d * sqrt(N / 2)
 
 # calc d-distribution
 x <- seq(low_x, high_x, length = 10000) # create x values
-d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2) # calculate distribution of d based on t-distribution
+d_dist <- calc_d_dist(x, N, ncp)
 
 par(bg = backgroundcolor)
 plot(-10, xlim = c(low_x, high_x), ylim = c(0, y_max), xlab = "Difference", ylab = "", main = paste("Null hypothesis for N = ", N))
-d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = 0) * sqrt(N / 2)
+d_dist <- calc_d_dist(x, N, ncp = 0)
 lines(x, d_dist, col = "black", type = "l", lwd = 2)
 
-# Add Type 1 error rate right
-crit_d <- abs(qt(0.05 / 2, (N * 2) - 2)) / sqrt(N / 2)
-y <- seq(crit_d, 10, length = 10000)
-z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2, ncp = 0) * sqrt(N / 2)) # determine upperbounds polygon
-polygon(c(crit_d, y, 10), c(0, z, 0), col = rgb(1, 0, 0, 1))
-
-# Add Type 1 error rate left
-crit_d <- -abs(qt(0.05 / 2, (N * 2) - 2)) / sqrt(N / 2)
-y <- seq(-10, crit_d, length = 10000)
-z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2, ncp = 0) * sqrt(N / 2)) # determine upperbounds polygon
-polygon(c(y, crit_d, crit_d), c(z, 0, 0), col = rgb(1, 0, 0, 1))
+# Add type 1 error rate
+add_type1_error(N, "right")
+add_type1_error(N, "left")
 
 segments(0.5, 0, 0.5, 2.2, col = "black", lwd = 2)
 text(0.5, 2.4, paste("Observed mean difference"), cex = 1)
@@ -653,24 +621,16 @@ ncp <- d * sqrt(N / 2)
 
 # calc d-distribution
 x <- seq(low_x, high_x, length = 10000) # create x values
-d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2) # calculate distribution of d based on t-distribution
+d_dist <- calc_d_dist(x, N, ncp)
 
 par(bg = backgroundcolor)
 plot(-10, xlim = c(low_x, high_x), ylim = c(0, y_max), xlab = "Difference", ylab = "", main = paste("Null hypothesis for N = ", N))
-d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = 0) * sqrt(N / 2)
+d_dist <- calc_d_dist(x, N, ncp = 0)
 lines(x, d_dist, col = "black", type = "l", lwd = 2)
 
-# Add Type 1 error rate right
-crit_d <- abs(qt(0.05 / 2, (N * 2) - 2)) / sqrt(N / 2)
-y <- seq(crit_d, 10, length = 10000)
-z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2, ncp = 0) * sqrt(N / 2)) # determine upperbounds polygon
-polygon(c(crit_d, y, 10), c(0, z, 0), col = rgb(1, 0, 0, 1))
-
-# Add Type 1 error rate left
-crit_d <- -abs(qt(0.05 / 2, (N * 2) - 2)) / sqrt(N / 2)
-y <- seq(-10, crit_d, length = 10000)
-z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2, ncp = 0) * sqrt(N / 2)) # determine upperbounds polygon
-polygon(c(y, crit_d, crit_d), c(z, 0, 0), col = rgb(1, 0, 0, 1))
+# Add type 1 error rate
+add_type1_error(N, "right")
+add_type1_error(N, "left")
 
 segments(0.5, 0, 0.5, 2.2, col = "black", lwd = 2)
 text(0.5, 2.4, paste("Observed mean difference"), cex = 1)

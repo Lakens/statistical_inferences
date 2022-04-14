@@ -36,10 +36,14 @@ $$
 
 where *B($\alpha$, $\beta$)* is the beta function. Understanding the mathematical basis of this function is beyond the scope of this chapter, but you can read more on [Wikipedia](https://en.wikipedia.org/wiki/Beta_distribution) or Kruschke's book on Doing Bayesian Data Analysis [@kruschke_doing_2014]. The beta-prior for a variety of values for $\alpha$ and $\beta$ can be seen in the figure below.
 
-<div class="figure" style="text-align: center">
-<img src="04-bayes_files/figure-html/bayes1-1.png" alt="Four examples of Bayesian priors" width="100%" />
-<p class="caption">(\#fig:bayes1)Four examples of Bayesian priors</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{04-bayes_files/figure-latex/bayes1-1} 
+
+}
+
+\caption{Four examples of Bayesian priors}(\#fig:bayes1)
+\end{figure}
 
 These beta densities reflect different types of priors. Let’s assume you are approached by a street merchant who tries to sell you a special coin with heads and tails that, when flipped, will almost always turn up heads. The $\alpha$ = 1, $\beta$ = 1 prior is what a newborn baby would have as a prior, without any idea of what to expect when you flip a coin, and thus every value of *p* is equally likely. The $\alpha$ = 1, $\beta$ = 1/2 prior is what a true believer would have as a prior. The sales merchant tells you the coin will turn up heads almost every time, and thus, you believe it will turn up heads almost every time. The $\alpha$ = 4, $\beta$ = 4, and the $\alpha$ = 100, $\beta$ = 100 priors are for slightly and extremely skeptical people. With an $\alpha$ = 4, $\beta$ = 4 prior, you expect the coin will be fair, but you are willing to believe a wide range of other true values is possible (the curve is centered on 0.5, but the curve is wide, allowing for very high and low values of *p*). With the $\alpha$ = 100, $\beta$ = 100 prior you are really convinced coins are fair, and believe there will be only a very slight bias, at most (the curve is again centered on 0.5, and a skeptic believes the *p* will lie between 0.4 and 0.6 – a much narrower range compared to the slightly skeptic individual).
 
@@ -62,10 +66,14 @@ Thus, the posterior distribution for the newborn is a Beta(11,11) distribution. 
 
 Take a look at the Figure below. Given 10 heads out of 20 coin flips, we see the prior distribution of the newborn (the horizontal grey line), the likelihood (the blue dotted line) and the posterior (the black line).
 
-<div class="figure" style="text-align: center">
-<img src="04-bayes_files/figure-html/bayes2-1.png" alt="Four examples of how different priors are updated based on data to the posterior." width="100%" />
-<p class="caption">(\#fig:bayes2)Four examples of how different priors are updated based on data to the posterior.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{04-bayes_files/figure-latex/bayes2-1} 
+
+}
+
+\caption{Four examples of how different priors are updated based on data to the posterior.}(\#fig:bayes2)
+\end{figure}
 
 For the true believer the posterior distribution is not centered on the maximum likelihood of the observed data, but just a bit in the direction of the prior. The slightly skeptic and the strong skeptic end up with a much stronger belief in a fair coin after observing the data, but mainly because they already had a stronger prior that the coin was fair.
 
@@ -73,10 +81,14 @@ For the true believer the posterior distribution is not centered on the maximum 
 
 Now that we have a distribution for the prior, and a distribution for the posterior, we can see in the graphs below for which values of *p* our belief has increased. Everywhere where the black line (of the posterior) is higher than the grey line (of the prior) our belief in that *p* has increased.
 
-<div class="figure" style="text-align: center">
-<img src="04-bayes_files/figure-html/bayes4-1.png" alt="Plot for the prior, likelihood, and posterior." width="100%" />
-<p class="caption">(\#fig:bayes4)Plot for the prior, likelihood, and posterior.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{04-bayes_files/figure-latex/bayes4-1} 
+
+}
+
+\caption{Plot for the prior, likelihood, and posterior.}(\#fig:bayes4)
+\end{figure}
 
 The Bayes Factor is used to quantify this increase in relative evidence. Let’s calculate the Bayes Factor for the hypothesis that the coin is fair for the newborn. The Bayes Factor is simply the value of the posterior distribution at *p* = 0.5, divided by the value of the prior distribution at *p* = 0.5:
 
@@ -84,24 +96,36 @@ BF10 = Beta(*p* = 0.5, 11, 11)/Beta(*p* = 0.5, 1, 1) = 3.70/1 = 3.70
 
 You can check this in an [online Bayes Factor calculator](http://pcl.missouri.edu/bf-binomial) [@rouder_bayesian_2009]. At successes, fill in 10, at trials, fill in 20. We want to calculate the Bayes Factor for the point null value of *p* = 0.5, so fill in 0.5. The $\alpha$ and $\beta$ for the prior are both 1, given the newborns prior of Beta(1,1). Clicking ‘submit query’ will give you the Bayes factor of 3.70.
 
-<div class="figure" style="text-align: center">
-<img src="images/binombayesonline.png" alt="Screenshot of the online calculator for binomially distributed observations" width="100%" />
-<p class="caption">(\#fig:gpower-screenshot)Screenshot of the online calculator for binomially distributed observations</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/binombayesonline} 
+
+}
+
+\caption{Screenshot of the online calculator for binomially distributed observations}(\#fig:gpower-screenshot)
+\end{figure}
 
 We can calculate and plot the Bayes Factor, and show the prior (grey), likelihood (dashed blue) and posterior (black). For the example of 20 flips, 10 heads, and the newborn prior, the plot looks like this:
 
-<div class="figure" style="text-align: center">
-<img src="04-bayes_files/figure-html/bayes6-1.png" alt="Plot for the prior, likelihood, and posterior." width="100%" />
-<p class="caption">(\#fig:bayes6)Plot for the prior, likelihood, and posterior.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{04-bayes_files/figure-latex/bayes6-1} 
+
+}
+
+\caption{Plot for the prior, likelihood, and posterior.}(\#fig:bayes6)
+\end{figure}
 
 We see that for the newborn, *p* = 0.5 has become more probable, but so has *p* = 0.4. Now let’s assume the strong skeptic, who believes the coin is fair with a prior of Beta(100, 100), buys the coin and flips it 100 times. Surprisingly, the coin comes up heads 90 out of 100 flips. The plot of the prior, likelihood, and posterior now looks much more extreme, because we had a very informed prior, and extremely different data. We see the grey prior distribution, the dashed blue likelihood based on the data, and the posterior distribution in black. The Bayes Factor of 0 represents the substantial drop in belief that the coin is fair – indeed, this now seems an untenable hypothesis, even for the strong skeptic. It shows how data can update your belief. Where a newborn would now completely believe that the true *p* for the coin is somewhere around 0.9, the strong skeptic has more reason to believe the *p* is around 0.65, due to the strong prior conviction that the coin is fair. Given enough data, even this strong skeptic will become convinced that the coin will return heads most of the time as well.
 
-<div class="figure" style="text-align: center">
-<img src="04-bayes_files/figure-html/bayes7-1.png" alt="Plot for the prior, likelihood, and posterior." width="100%" />
-<p class="caption">(\#fig:bayes7)Plot for the prior, likelihood, and posterior.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{04-bayes_files/figure-latex/bayes7-1} 
+
+}
+
+\caption{Plot for the prior, likelihood, and posterior.}(\#fig:bayes7)
+\end{figure}
 
 We can now also see the difference between a likelihood inference approach, and a Bayesian inference approach. In likelihood inference, you can compare different values of *p* for the same likelihood curve (e.g., *p* = 0.5 vs *p* = 0.8) and calculate the likelihood ratio. In Bayesian inference, you can compare the difference between the prior and the posterior for the same value of *p*, and calculate the Bayes Factor.
 
@@ -119,10 +143,14 @@ A credible interval and a confidence interval are the same, when a uniform prior
 
 We can plot the mean for the posterior when 10 heads out of 20 coin flips are observed, given a uniform prior. 
 
-<div class="figure" style="text-align: center">
-<img src="04-bayes_files/figure-html/bayes8-1.png" alt="Plot for the mean of the posterior when 10 out of 20 heads are observed given a uniform prior." width="100%" />
-<p class="caption">(\#fig:bayes8)Plot for the mean of the posterior when 10 out of 20 heads are observed given a uniform prior.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{04-bayes_files/figure-latex/bayes8-1} 
+
+}
+
+\caption{Plot for the mean of the posterior when 10 out of 20 heads are observed given a uniform prior.}(\#fig:bayes8)
+\end{figure}
 
 We can also use the ‘binom’ package to calculate the posterior mean, credible interval, and **highest density interval (HDI)**. The highest density interval is an alternative to the credible interval that works better when the posterior beta distribution is skewed (and is identical when the posterior distribution is symmetrical. We won’t go into the calculations of the HDI here.
 
@@ -202,7 +230,9 @@ segments(H0, dbeta(H0, aposterior, bposterior), H0, dbeta(H0, aprior, bprior), l
 title(paste("Bayes Factor:", round(BF10, digits = 2)))
 ```
 
-<img src="04-bayes_files/figure-html/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics[width=1\linewidth]{04-bayes_files/figure-latex/unnamed-chunk-3-1} \end{center}
 
 We see that for the newborn, *p* = 0.5 has become more probable, but so has *p* = 0.4.
 
@@ -253,7 +283,9 @@ polygon(c(theta[theta > UL], rev(theta[theta > UL])), c(posterior[theta > UL], r
 title(paste("Mean posterior:", round((aposterior / (aposterior + bposterior)), digits = 5), ", 95% Credible Interval:", round(LL, digits = 2), ";", round(UL, digits = 2)))
 ```
 
-<img src="04-bayes_files/figure-html/unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics[width=1\linewidth]{04-bayes_files/figure-latex/unnamed-chunk-4-1} \end{center}
 
 ```r
 if (!require(binom)) {

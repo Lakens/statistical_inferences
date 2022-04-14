@@ -1,14 +1,17 @@
 ```{r, include = FALSE}
-knitr::opts_chunk$set(error = FALSE, warning = FALSE, message = FALSE, out.width  = '100%', fig.width  = 8, fig.height = 5, fig.align  = 'center')
-backgroundcolor <- "#fffafa"
+source("include/globals.R")
 
+# needed to make the chapter (not visible)
 library(pwr)
-library(Superpower)
-library(ggplot2)
 library(BUCSS)
-library(MOTE)
+library(TOSTER)
 library(MASS)
+library(MOTE)
+library(ggplot2)
 library(patchwork)
+
+# library(Superpower) # not used?
+
 ```
 
 # Sample size justification {#power}
@@ -225,11 +228,11 @@ pow_nhst <- power.t.test(
 ```
 
 ```{r, results = 'hide', echo = FALSE}
-pow_eq <- TOSTER::powerTOSTtwo(
+pow_eq <- TOSTER::power_t_TOST(
   alpha = 0.05, 
-  statistical_power = 0.9, 
-  low_eqbound_d = -0.4, 
-  high_eqbound_d = 0.4)
+  power = 0.9, 
+  low_eqbound = -0.4, 
+  high_eqbound = 0.4)$n
 ```
 
 This point is perhaps best illustrated if we consider a study where an a-priori power analysis is performed both for a test of the *presence* of an effect, as for a test of the *absence* of an effect. When designing a study, it essential to consider the possibility that there is no effect (e.g., a mean difference of zero). An a-priori power analysis can be performed both for a null hypothesis significance test, as for a test of the absence of a meaningful effect, such as an equivalence test that can statistically provide support for the null hypothesis by rejecting the presence of effects that are large enough to matter [@meyners_equivalence_2012; @lakens_equivalence_2017; @rogers_using_1993]. When multiple primary tests will be performed based on the same sample, each analysis requires a dedicated sample size justification. If possible, a sample size is collected that guarantees that all tests are informative, which means that the collected sample size is based on the largest sample size returned by any of the a-priori power analyses. 
@@ -492,7 +495,7 @@ pwr_res <- pwr::pwr.anova.test(k = 3,
 
 
 
-BUCSS_res <- ss.power.ba(
+BUCSS_res <- BUCSS::ss.power.ba(
   F.observed = 4.5,
   N = 45,
   levels.A = 3,
@@ -537,8 +540,8 @@ If a researcher can estimate the standard deviation of the observations that wil
 
 ```{r MOTE-CI-1, echo = FALSE}
 # Compute the effect size d and 95% CI
-res <- d.ind.t(m1 = 0, m2 = 0, sd1 = 4, sd2 = 4, 
-               n1 = 15, n2 = 15, a = .05)
+res <- MOTE::d.ind.t(m1 = 0, m2 = 0, sd1 = 4, sd2 = 4, 
+                     n1 = 15, n2 = 15, a = .05)
 # Print the result
 # res$estimate
 # Compute the average Margin of Error (MOE)
@@ -548,16 +551,20 @@ res <- d.ind.t(m1 = 0, m2 = 0, sd1 = 4, sd2 = 4,
 # (res$d - res$dlow)
 # (res$dhigh - res$d)
 
-res2 <- d.ind.t(m1 = 0.5, m2 = 0, sd1 = 1, sd2 = 1, n1 = 15, n2 = 15, a = .05)
+res2 <- MOTE::d.ind.t(m1 = 0.5, m2 = 0, sd1 = 1, sd2 = 1, n1 = 15, n2 = 15, a = .05)
 
-res3 <- d.ind.t(m1 = 0.7479725, m2 = 0, sd1 = 1, sd2 = 1, n1 = 15, n2 = 15, a = .05)
+res3 <- MOTE::d.ind.t(m1 = 0.7479725, m2 = 0, sd1 = 1, sd2 = 1, n1 = 15, n2 = 15, a = .05)
 
 ```
 
 If we compute the 95% CI for an effect size of *d* = 0 based on the *t* statistic and sample size [@smithson_confidence_2003], we see that with 15 observations in each condition of an independent *t* test the 95% CI ranges from *d* = `r round(res$dlow, 3)` to *d* = `r round(res$dhigh, 3)`. Confidence intervals around effect sizes can be computed using the MOTE Shiny app: https://www.aggieerin.com/shiny-server/. The margin of error is half the width of the 95% CI, `r round((res$dhigh - res$dlow)/2, 3)`. A Bayesian estimator who uses an uninformative prior would compute a credible interval with the same (or a very similar) upper and lower bound [@albers_credible_2018; @kruschke_bayesian_2011], and might conclude that after collecting the data they would be left with a range of plausible values for the population effect that is too large to be informative. Regardless of the statistical philosophy you plan to rely on when analyzing the data, the evaluation of what we can conclude based on the width of our interval tells us that with 15 observation per group we will not learn a lot. 
 
 ```{r, results = 'hide', echo = FALSE}
-power_tost <- TOSTER::powerTOSTtwo(alpha = 0.05, N = 50, low_eqbound_d = -0.6, high_eqbound_d = 0.6)
+power_tost <- TOSTER::power_t_TOST(
+  alpha = 0.05, 
+  n = 50, 
+  low_eqbound = -0.6, 
+  high_eqbound = 0.6)$power
 ```
 
 One useful way of interpreting the width of the confidence interval is based on the effects you would be able to reject if the true effect size is 0. In other words, if there is no effect, which effects would you have been able to reject given the collected data, and which effect sizes would not be rejected, if there was no effect? Effect sizes in the range of *d* = 0.7 are findings such as "People become aggressive when they are provoked", "People prefer their own group to other groups", and "Romantic partners resemble one another in physical attractiveness" [@richard_one_2003]. The width of the confidence interval tells you that you can only reject the presence of effects that are so large, if they existed, you would probably already have noticed them. If it is true that most effects that you study are realistically much smaller than *d* = 0.7, there is a good possibility that we do not learn anything we didn't already know by performing a study with n = 15. Even without data, in most research lines we would not consider certain large effects plausible (although the effect sizes that are plausible differ between fields, as discussed below). On the other hand, in large samples where researchers can for example reject the presence of effects larger than *d* = 0.2, if the null hypothesis was true, this analysis of the width of the confidence interval would suggest that peers in many research lines would likely consider the study to be informative. 
@@ -829,7 +836,7 @@ cor.true <- 0.0 # set true correlation
 # randomly draw data
 cov.mat <- matrix(c(1.0, cor.true, cor.true, 1.0), nrow = 2, byrow = T)
 mu <- c(0, 0)
-mat <- mvrnorm(n, Sigma = cov.mat, mu = mu, empirical = FALSE)
+mat <- MASS::mvrnorm(n, Sigma = cov.mat, mu = mu, empirical = FALSE)
 x <- mat[, 1] * sdx + mx
 y <- mat[, 2] * sdy + my
 dif <- x - y
@@ -919,7 +926,7 @@ cor.true <- 0.7 #set true correlation
 #randomly draw data
 cov.mat <- matrix(c(1.0, cor.true, cor.true, 1.0), nrow = 2, byrow = T)
 mu <- c(0,0)
-mat <- mvrnorm(n, Sigma = cov.mat, mu = mu, empirical = FALSE)
+mat <- MASS::mvrnorm(n, Sigma = cov.mat, mu = mu, empirical = FALSE)
 x<-mat[,1]*sdx+mx
 y<-mat[,2]*sdy+my
 dif<-x-y
