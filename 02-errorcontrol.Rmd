@@ -141,7 +141,7 @@ cat("The p-value dropped below 0.05 for the first time at sample size:",
     
 For example, in the Figure below, you see the *p*-value plotted on the y-axis (from 0 to 1) and the sample size plotted on the x-axis (from 0 to 200). For this simulation, the true effect size was d = 0, meaning there is no true effect. We can thus only observe true negatives or false positives. As the sample size increases, the *p*-value slowly moves up and down (remember from the chapter on [*p*-values](#pvalues) that when there is no true effect, *p*-values are uniformly distributed). In Figure \@ref(fig:animatep), the *p*-value drops below the grey line (indicating an alpha level 0.05) after collecting 83 participants in each condition, only to drift back upwards to larger *p*-values. From this figure, if becomes clear that the more often we look at the data, and the larger the total sample size, the higher the probability that one of the analyses will yield a p < $\alpha$. If resources are infinite, the Type 1 error rate will be 1, and a researcher can always find a significant result through optional stopping.  
 
-```{r, animatep, eval=TRUE, echo=FALSE, cache=TRUE, animation.hook="gifski", interval = 0.01, fig.cap='Simulated *p*-values for each additional observation when the null is true.'}
+```{r, animatep-gif, eval=FALSE, echo=FALSE, cache=TRUE}
 set.seed(929)
 
 n <- 200 # total number of datapoints (per condition) after initial 10
@@ -160,20 +160,40 @@ for (i in 10:n) { # for each simulated participants after the first 10
 }
 
 p <- p[10:n] # Remove first 10 empty p-values
+filenames <- character(n)
 
 # Create the plot
 for(i in 1:n){
+  filenames[i] <- tempfile(fileext = ".png")
+  png(filenames[i], width = 800, height = 500, units = "px")
   par(bg = backgroundcolor)
   plot(0, col = "red", lty = 1, lwd = 3, ylim = c(0, 1), xlim = c(10, n), type = "l", xlab = "sample size", ylab = "p-value", cex.lab = 1, cex.axis = 1)
   lines(p[1:i], lwd = 2)
   abline(h = 0.05, col = "darkgrey", lty = 2, lwd = 2) # draw line at p = 0.05
+  dev.off()
 }
 
+# save last image for PDF
+file.copy(filenames[n], "images/animatep.png")
+
+# make gif for html
+gifski::gifski(png_files = filenames, 
+               gif_file = "images/animatep.gif", 
+               delay = 0.01)
 ```
+
+```{r animatep, echo = FALSE, fig.cap='Simulated *p*-values for each additional observation when the null is true.'}
+if (knitr::is_latex_output()) {
+  knitr::include_graphics("images/animatep.png")
+} else {
+  knitr::include_graphics("images/animatep.gif")
+}
+```
+
 
 When there *is* a true effect, we see that *p*-values also vary, but they will eventually drop to below the alpha level. Due to the variation, we just do not know exactly when. When we perform an a-priori power analysis, we can compute the probability that looking at a specific sample size will yield a significant *p*-value. In Figure \@ref(fig:animatep2) we see the same simulation, but now when there is a true but small effect of d = 0.3. With 200 observations per condition, a sensitivity power analysis reveals that we have 85% power. If we would analyze the data at an interim analysis (e.g., after 150 observations) we would often already find a statistically significant effect (as we would have 74% power). This illustrates a benefit of sequential analyses, where we control error rates, but can stop early at an interim analysis. Sequential analyses are especially useful in large or expensive studies where there is uncertainty about the true effect size. 
 
-```{r animatep2, eval=TRUE, echo=FALSE, cache=TRUE, animation.hook="gifski", interval = 0.01, fig.cap='Simulated *p*-values for each additional observation when d = 0.3.'}
+```{r animatep2-gif, eval=FALSE, echo=FALSE, cache=TRUE}
 set.seed(928)
 
 n <- 200 # total number of datapoints (per condition) after initial 10
@@ -192,15 +212,35 @@ for (i in 10:n) { # for each simulated participants after the first 10
 }
 
 p <- p[10:n] # Remove first 10 empty p-values
+filenames <- character(n)
 
 # Create the plot
 for(i in 1:n){
+  filenames[i] <- tempfile(fileext = ".png")
+  png(filenames[i], width = 800, height = 500, units = "px")
   par(bg = backgroundcolor)
   plot(0, col = "red", lty = 1, lwd = 3, ylim = c(0, 1), xlim = c(10, n), type = "l", xlab = "sample size", ylab = "p-value", cex.lab = 1, cex.axis = 1)
   lines(p[1:i], lwd = 2)
   abline(h = 0.05, col = "darkgrey", lty = 2, lwd = 2) # draw line at p = 0.05
+  dev.off()
 }
 
+# save last image for PDF
+file.copy(filenames[n], "images/animatep2.png")
+
+# make gif for html
+gifski::gifski(png_files = filenames, 
+               gif_file = "images/animatep2.gif", 
+               delay = 0.01)
+
+```
+
+```{r animatep2, echo = FALSE, fig.cap='Simulated *p*-values for each additional observation when d = 0.3.'}
+if (knitr::is_latex_output()) {
+  knitr::include_graphics("images/animatep2.png")
+} else {
+  knitr::include_graphics("images/animatep2.gif")
+}
 ```
 
 Let's more formally examine the inflation of the Type 1 error rate through optional stopping in a **simulation study**. Copy the code below into R and run the code. Note that the 50000 simulations (needed to get the error rates reasonably accurate) take some time to run. 

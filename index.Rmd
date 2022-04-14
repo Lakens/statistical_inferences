@@ -3,13 +3,13 @@ title: "Improving Your Statistical Inferences"
 author: "Daniël Lakens"
 date: "2022-04-12"
 site: bookdown::bookdown_site
-documentclass: website
+documentclass: book
 bibliography: [include/book.bib]
 biblio-style: apalike
 biblatexoptions: [refsegment=chapter]
 csl: include/apa.csl # Downloaded from https://www.zotero.org/styles?q=id%3Aapa
 link-citations: yes
-monofont: "Source Code Pro"
+#monofont: "Source Code Pro"
 description: |
   This open educational resource contains information to improve statistical inferences, design better experiments, and report scientific research more transparently.
 url: https://lakens.github.io/statistical_inferences/

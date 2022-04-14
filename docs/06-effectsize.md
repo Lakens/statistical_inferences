@@ -49,10 +49,14 @@ minute differences will turn out to be statistically significant (we will look a
 
 ## The Hungry Judges study
 
-<div class="figure" style="text-align: center">
-<img src="images/hungryjudges.png" alt="Proportion of rulings in favor of the prisoners by ordinal position. Circled points indicate the first decision in each of the three decision sessions; tick marks on x axis denote every third case; dotted line denotes food break. From Danziger, S., Levav, J., &amp; Avnaim-Pesso, L. (2011). Extraneous factors in judicial decisions. Proceedings of the National Academy of Sciences, 108(17), 6889–6892. https://doi.org/10.1073/PNAS.1018033108" width="100%" />
-<p class="caption">(\#fig:hungryjudges)Proportion of rulings in favor of the prisoners by ordinal position. Circled points indicate the first decision in each of the three decision sessions; tick marks on x axis denote every third case; dotted line denotes food break. From Danziger, S., Levav, J., & Avnaim-Pesso, L. (2011). Extraneous factors in judicial decisions. Proceedings of the National Academy of Sciences, 108(17), 6889–6892. https://doi.org/10.1073/PNAS.1018033108</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/hungryjudges} 
+
+}
+
+\caption{Proportion of rulings in favor of the prisoners by ordinal position. Circled points indicate the first decision in each of the three decision sessions; tick marks on x axis denote every third case; dotted line denotes food break. From Danziger, S., Levav, J., Avnaim-Pesso, L. (2011). Extraneous factors in judicial decisions. Proceedings of the National Academy of Sciences, 108(17), 6889–6892. https://doi.org/10.1073/PNAS.1018033108}(\#fig:hungryjudges)
+\end{figure}
 
 We see a graphical representation of the proportion of favorable parole decisions that real-life judges are making as a function of the number of cases they process across the day in Figure \@ref(fig:hungryjudges). This study is mentioned in many popular science books as an example of a finding that shows that people do not always make rational decisions, but that "judicial rulings can be swayed by extraneous variables that should have no bearing on legal decisions" [@danziger_extraneous_2011]. We see that early on in the day, judges start by giving about 65% of people parole, which basically means, "All right, you can go back into society." But then very quickly, the number of favorable decisions decreases to basically zero. After a quick break which, as the authors say, "may replenish mental resources by providing rest, improving mood, or by increasing glucose levels in the body" the parole decisions are back up at 65%, and then again quickly drop down to basically zero. They take another break, the percentage of positive decisions is back up to 65%, only to drop again over the course of the day.
 
@@ -68,10 +72,14 @@ Effect sizes can be grouped into two families [@rosenthal_contrasts_2000]: The *
 
 Cohen’s *d* ranges from minus infinity to infinity (although in practice, the mean difference in the positive or negative direction that can be observed will never be infinite), with the value of 0 indicating there is no effect. Cohen [-@cohen_statistical_1988] uses subscripts to distinguish different versions of Cohen’s *d*, a practice I will follow because it prevents confusion (without any specification, Cohen’s *d* denotes the entire family of effect sizes). Cohen refers to the standardized mean difference between two groups of independent observations for the *sample* as $d_s$. Before we get into the statistical details, let’s first visualize what a Cohen’s *d* of 0.001 (as was found in the Facebook study) means. We will use a visualization from <http://rpsychologist.com/d3/cohend/>, a website made by Kristoffer Magnusson, that allows you to visualize the differences between two measurements (such as the increase in negative words used by the Facebook user when the number of positive words on the timeline was reduced). The visualization actually shows two distributions, one dark blue and one light blue, but they overlap so much that the tiny difference in distributions is not visible (click the settings button to change the slider settings, and set the step size to 0.001 to reproduce the figure below in the online app). 
 
-<div class="figure" style="text-align: center">
-<img src="images/rpsychd1.png" alt="A vizualization of 2 groups (although the difference is hardly visible) representing d = 0.001." width="100%" />
-<p class="caption">(\#fig:rpsychd1)A vizualization of 2 groups (although the difference is hardly visible) representing d = 0.001.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/rpsychd1} 
+
+}
+
+\caption{A vizualization of 2 groups (although the difference is hardly visible) representing d = 0.001.}(\#fig:rpsychd1)
+\end{figure}
 
 The four numbers below the distribution express the effect size in different ways to facilitate the interpretation. For example, the **probability of superiority** expresses the probability that a randomly picked observation from one group will have a larger score than a randomly picked observation from the other group. Because the effect is so small, this probability is 50.03% - which means that people in the experimental write almost the same number of positive or negative words as people in the control condition. The **number needed to treat** index illustrates that in the Facebook study a person needs to type 3570 words before we will observe one additional negative word, compared to the control condition. I don't know how often you type this many words on Facebook, but I think we can agree this effect is not noticeable on an individual level. 
 
@@ -93,17 +101,25 @@ $$d_s = t ⨯ \sqrt{\frac{1}{n_{1}} + \frac{1}{n_{2}}}$$
 
 A *d* = 0.001 is an extremely tiny effect, so let's explore an effect size that is a bit more representative of what you would read in the literature. In the meta-meta-analysis mentioned earlier, the median effect size in published studies included in meta-analyses in the psychological literature is *d* = 0.43 [@richard_one_2003]. To get a feeling for this effect size, let's use the online app and set the effect size to *d* = 0.43.
 
-<div class="figure" style="text-align: center">
-<img src="images/rpsychd2.png" alt="A vizualization of 2 groups representing d = 0.43." width="100%" />
-<p class="caption">(\#fig:rpsychd2)A vizualization of 2 groups representing d = 0.43.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/rpsychd2} 
+
+}
+
+\caption{A vizualization of 2 groups representing d = 0.43.}(\#fig:rpsychd2)
+\end{figure}
 
 One example of a meta-analytic effect size in the meta-meta-analysis that is exactly $d_s$ = 0.43 is the finding that people in a group work less hard to achieve a goal than people who work individually, called *social loafing*. This is an effect that is large enough that we notice it in daily life. Yet, if we look at the overlap in the two distributions, we see that the amount of effort people put in overlaps considerably between the two conditions (in the case of social loafing, working individually versus working in a group). We see in Figure \@ref(fig:rpsychd2) that the **probability of superiority**, or the probability that if we randomly draw one person from the group condition and one person from the individual condition, the person working in a group puts in less effort, is only 61.9%. This interpretation of differences between groups is also called the **common language effect size** [@mcgraw_common_1992].
 
-<div class="figure" style="text-align: center">
-<img src="images/rpsychd3.png" alt="A vizualization of 2 groups representing d = 2." width="100%" />
-<p class="caption">(\#fig:rpsychd3)A vizualization of 2 groups representing d = 2.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/rpsychd3} 
+
+}
+
+\caption{A vizualization of 2 groups representing d = 2.}(\#fig:rpsychd3)
+\end{figure}
 
 Based on [this data](http://www.nature.com/pr/journal/v73/n3/full/pr2012189a.html), the difference between the height of 21-year old men and women in The Netherlands is approximately 13 centimeters (in an unstandardized effect size), or a standardized effect size of $d_s$ = 2. If I pick a random man and a random woman walking down the street in my hometown of Rotterdam, how likely is it that the man will be taller than the woman? We see this is quite likely, with a probability of superiority of 92.1%. But even with such a huge effect, there is still considerable overlap in the two distributions. If we conclude the length of people in one group is larger than the length of people in another group, this does not mean everyone in one group is larger than everyone in the other group. 
 
@@ -134,10 +150,14 @@ To not just *report* but *interpret* an effect size, nothing is gained by the co
 
 The *r* family effect sizes are based on the proportion of variance that is explained by group membership (e.g., a correlation of *r* = 0.5 indicates 25% of the variance ($r^2$ is explained by the difference between groups). You might remember that *r* is used to refer to a correlation. The correlation of two continuous variables can range from 0 (completely unrelated) to 1 (perfect positive relationship) or -1 (perfect negative relationship). To get a better feel correlations, play the game [guess the correlation](http://guessthecorrelation.com/) where you will see a scatterplot, and have to guess the correlation between the variables (see figure \@ref(fig:guesscorrelation). 
 
-<div class="figure" style="text-align: center">
-<img src="images/guesscorrelation.png" alt="Screenshot from Guess the Correlation game (the correct answer is r = 0.24)." width="100%" />
-<p class="caption">(\#fig:guesscorrelation)Screenshot from Guess the Correlation game (the correct answer is r = 0.24).</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/guesscorrelation} 
+
+}
+
+\caption{Screenshot from Guess the Correlation game (the correct answer is r = 0.24).}(\#fig:guesscorrelation)
+\end{figure}
 
 The *r* family effect sizes are calculated from the sum of squares (the difference between individual observations and the mean for the group, squared, and summed) for the effect divided by the sums of squares for other factors in the design. Earlier, I mentioned the median effect size in psychology is $d_s$ = 0.43. However, the authors actually report their results as a correlation, *r* = 0.21. We can convert Cohen's *d* into *r* (but take care that this only applies to $d_s$, not $d_z$):
 
@@ -146,10 +166,14 @@ $$r = \frac{d_s}{\sqrt{{d_s^{2}}^{+}\frac{N^{2} - 2N}{n_{1} \times n_{2}}}}$$
 *N* is the total sample size of both groups, whereas $n_1$ and $n_2$ are the sample sizes of the individual groups you are comparing (it is common to use capital $N$ for the total sample size, and lowercase n for sample sizes per group). You can go to <http://rpsychologist.com/d3/correlation/> to look at a good visualization of the proportion of variance that is explained by group membership, and the relationship between *r* and $r^2$. The amount of variance explained is often quite a small number, and we see in Figure \@ref(fig:sharedvariance) that a correlation of 0.21 (the median from the meta-meta-analysis by Richard and colleagues) we see the proportion of variance explained is only 4.4%. Funder and Ozer [-@funder_evaluating_2019] warn against misinterpreting small values for the variance explained as an indication that the effect is not meaningful (and they even consider the practice of squaring the correlation "actively misleading"). 
 
 
-<div class="figure" style="text-align: center">
-<img src="images/sharedvariance.png" alt="Screenshot from correation effect size vizualization by Kristoffer Magnusson for r - 0.21." width="100%" />
-<p class="caption">(\#fig:sharedvariance)Screenshot from correation effect size vizualization by Kristoffer Magnusson for r - 0.21.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/sharedvariance} 
+
+}
+
+\caption{Screenshot from correation effect size vizualization by Kristoffer Magnusson for r - 0.21.}(\#fig:sharedvariance)
+\end{figure}
 
 As we have seen before, it can be useful to interpret effect sizes to identify effects that are practically insignificant, or effects that are implausibly large. Let’s take a look at a study that examines the number of suicides as a function of the amount of country music played on the radio. You can find the paper [here](https://heinonline.org/HOL/P?h=hein.journals/josf71&i=227) It won an [Ig Nobel prize for studies that first make you laugh, and then think](http://www.abc.net.au/science/articles/2004/10/01/1211441.htm), although in this case, the the study should not make you think about country music, but about the importance of interpreting effect sizes.
 
@@ -167,9 +191,9 @@ And they concluded:
 
 We can again compare the size of this effects with other known effects in psychology. In the database by Richard and colleagues, there are very few effects this large, but some examples are that leaders are most effective if they have charisma (*r* = 0.54), good leader–subordinate relations promote subordinate satisfaction (*r* = 0.53), and people can recognize emotions across cultures (*r* = 0.53). These effects are all large and obvious, which should raise some doubts about whether the relationship between listening to country music and suicides can be of the same size. Is country music really that bad? If we search the literature, we find that [other researchers were not able to reproduce the analysis of the original authors](http://sf.oxfordjournals.org/content/74/1/327.short). It is likely that the results are spurious, or a Type 1 error.
 
-Eta squared $\eta^2$ (part of the *r* family of effect sizes, and an extension of r that can be used for more than two sets of observations) measures the proportion of the variation in Y that is associated with membership of the different groups deﬁned by X, or the sum of squares of the effect divided by the total sum of squares:
+Eta squared $\eta^2$ (part of the *r* family of effect sizes, and an extension of r that can be used for more than two sets of observations) measures the proportion of the variation in Y that is associated with membership of the different groups defined by X, or the sum of squares of the effect divided by the total sum of squares:
 
-$$\eta^{2}$ = $\frac{\text{SS}_{\text{effect}}}{\text{SS}_{\text{total}}}$$
+$$\eta^{2} = \frac{\text{SS}_{\text{effect}}}{\text{SS}_{\text{total}}}$$
 
 An $\eta^2$ of .13 means that 13% of the total variance can be accounted for by group membership. Although $\eta^2$ is an efficient way to compare the sizes of effects within a study (given that every effect is interpreted in relation to the total variance, all $\eta^2$ from a single study sum to 100%), eta squared cannot easily be compared between studies, because the total variability in a study ($SS_{total}$) depends on the design of a study, and increases when additional variables are manipulated (e.g., when independent variables are added). Keppel [@keppel_design_1991] has recommended partial eta squared ($\eta_{p}^{2}$) to improve the comparability of effect sizes between studies. $\eta_{p}^{2}$ expresses the sum of squares of the effect in relation to the sum of squares of the effect and the sum of squares of the error associated with the effect. Partial eta squared is calculated as:
 
@@ -227,19 +251,27 @@ We confirm that for two groups Cohen's *f* is half as large as Cohen's *d*.
 
 Now we have the basis to look at interaction effects. Different patterns of means in an ANOVA can have the same Cohen's *f*. There are two types of interactions, as visualized below in Figure \@ref(fig:interactions). In an **ordinal interaction**, the mean of one group ("B1") is always higher than the mean for the other group ("B2"). **Disordinal interactions** are also known as 'cross-over' interactions, and occur when the group with the larger mean switches over. The difference is important, since the disordinal interaction in Figure \@ref(fig:interactions) has a larger effect size than the ordinal interaction.
 
-<div class="figure" style="text-align: center">
-<img src="06-effectsize_files/figure-html/interactions-1.png" alt="Schematic illustration of a disordinal (or cross-over) and ordinal interaction" width="100%" />
-<p class="caption">(\#fig:interactions)Schematic illustration of a disordinal (or cross-over) and ordinal interaction</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{06-effectsize_files/figure-latex/interactions-1} 
+
+}
+
+\caption{Schematic illustration of a disordinal (or cross-over) and ordinal interaction}(\#fig:interactions)
+\end{figure}
 
 Mathematically the interaction effect is computed as the cell mean minus the sum of the grand mean, the marginal mean in each condition of one factor minus the grand mean, and the marginal mean in each condition for the other factor minus grand mean [@maxwell_designing_2004].
 
 Let's consider two cases, one where we have a perfect disordinal interaction (the means of 0 and 1 flip around in the other condition, and are 1 and 0) or an ordinal interaction (the effect is present in one condition, with means 0 and 1, but disappears in the other condition, with means 0 and 0, see Figure \@ref(fig:interactionplots)).
 
-<div class="figure" style="text-align: center">
-<img src="06-effectsize_files/figure-html/interactionplots-1.png" alt="Disordinal (or cross-over) and ordinal interaction with means of 0 and 1, n = 50 per group, and an sd of 2." width="100%" />
-<p class="caption">(\#fig:interactionplots)Disordinal (or cross-over) and ordinal interaction with means of 0 and 1, n = 50 per group, and an sd of 2.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{06-effectsize_files/figure-latex/interactionplots-1} 
+
+}
+
+\caption{Disordinal (or cross-over) and ordinal interaction with means of 0 and 1, n = 50 per group, and an sd of 2.}(\#fig:interactionplots)
+\end{figure}
 
 We can calculate the interaction effect as follows (we will go through the steps in some detail). First, let's look at the disordinal interaction. The grand mean is (1 + 0 + 0 + 1) / 4 = 0.5.
 
