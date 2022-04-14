@@ -40,14 +40,10 @@ Let’s assume we don’t have any other information about this coin. (You might
 
 When computing a probability, we assume the model to be known, and compute the probability of observing a specific outcome. But based on the data we have observed, we can ask the reversed question: which value of *p* will make the observed data **most likely**? When computing a likelihood, we assume the data to be known, and make an inference about the most likely parameter for the model. To answer this question, we can plug in the values for *k* and *n* and find which value of *p* maximizes this function. [Ronald Fisher](https://en.wikipedia.org/wiki/Ronald_Fisher) called this maximum likelihood estimation (this is considered one of the most important developments in 20th century statistics, and Fisher published his first paper on this in 1912 as a third year undergraduate when he was 22 [@aldrich_r_1997]). Since *p* can be any value between 0 and 1, we can plot all values in what is known as the *likelihood function*, so we can see the maximum more easily.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{03-likelihoods_files/figure-latex/like1-1} 
-
-}
-
-\caption{Binomial likelihood function for 8 successes in 10 trials.}(\#fig:like1)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="03-likelihoods_files/figure-html/like1-1.png" alt="Binomial likelihood function for 8 successes in 10 trials." width="100%" />
+<p class="caption">(\#fig:like1)Binomial likelihood function for 8 successes in 10 trials.</p>
+</div>
 
 
 The likelihood is plotted for all possible values of *p* (from 0 to 1). It should not be surprising that given the data we have observed, the most likely value for the true parameter is 8 out of 10, or *p* = 0.8, with a likelihood of 0.30 (the highest point on the y-axis). In this example, *p* = 0.8 is called the **maximum likelihood estimator**. It is important to know that the likelihood itself has no meaning in isolation. In this sense, it differs from a probability. But we can compare likelihoods of the same function across different values of *p*. You can read off any other value for any other p, and see that given the observed data, low values of *p* (e.g., 0.2) are not very likely.
@@ -58,38 +54,26 @@ Likelihoods are an example of statistical inference: We have observed some data,
 
 When a mix of heads and tails has been observed, the likelihood curve rises and falls, as it is not possible that the coin can only come up heads or tails (after all, both have already been pbserved). If only heads of 0 heads are observed. When we plot the likelihood curves for 0 heads in 10 coin flips, the likelihood curve looks like Figure \@ref(fig:like2).
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{03-likelihoods_files/figure-latex/like2-1} 
-
-}
-
-\caption{Binomial likelihood function for 0 successes in 10 trials.}(\#fig:like2)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="03-likelihoods_files/figure-html/like2-1.png" alt="Binomial likelihood function for 0 successes in 10 trials." width="100%" />
+<p class="caption">(\#fig:like2)Binomial likelihood function for 0 successes in 10 trials.</p>
+</div>
 
 Likelihoods can easily be combined. Imagine we have two people flipping the same coin independently. One person observes eight heads out of 10 flips, and the other observes 4 heads out of 10 flips. You might believe that this should give the same likelihood curve as one person flipping a coin 20 times, and observing 12 heads, and indeed, it does. In the plot below, all likelihood curves are standardized by dividing the curve by the maximum of each likelihood curve. This is why all curves now have a maximum of 1, and we can more easily compare different likelihood curves.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{03-likelihoods_files/figure-latex/like3-1} 
-
-}
-
-\caption{Combining likelihoods.}(\#fig:like3)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="03-likelihoods_files/figure-html/like3-1.png" alt="Combining likelihoods." width="100%" />
+<p class="caption">(\#fig:like3)Combining likelihoods.</p>
+</div>
 
 The curve on left is for 4 out of 10 heads, the one on the right is for 8 out of 10 heads. The black dotted curve in the middle is for 12 out of 20 heads. The grey curve, exactly underneath the 12 out of 20 heads curve, is calculated by multiplying the likelihood curves: L(p_combined) *=* L(p = 0.8) \* L(p = 0.4).
 
 In Figure \@ref(fig:like4) we see likelihood curves for 10, 100, and 1000 coin flips, which yield 5, 50, and 500 heads, respectively. The likelihood curves are again standardized to make them more easily comparable. As the sample size increases, the curves become more narrow (the dashed line is for *n* = 10, the dotted line is for *n* = 100, and the solid line is for *n* = 1000). This means that as the sample size increases, our data become increasingly less likely under population parameters further removed from the observed number of heads. In other words, we have collected increasingly strong evidence for *p* = 0.5, compared to most other possible population parameters.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{03-likelihoods_files/figure-latex/like4-1} 
-
-}
-
-\caption{Likelihood function for 5/10, 50/100 and 500/1000 heads in coin flips.}(\#fig:like4)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="03-likelihoods_files/figure-html/like4-1.png" alt="Likelihood function for 5/10, 50/100 and 500/1000 heads in coin flips." width="100%" />
+<p class="caption">(\#fig:like4)Likelihood function for 5/10, 50/100 and 500/1000 heads in coin flips.</p>
+</div>
 
 ## Likelihood ratios
 
@@ -105,40 +89,28 @@ Which is 0.302/0.044 = 6.87. In the plot, both circles show the points on
 the likelihood curve for L(*p* = 0.5) and L(*p* = 0.8).
 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{03-likelihoods_files/figure-latex/like5-1} 
-
-}
-
-\caption{Computing a likelihood ratio for *p* = 0.5 relative to *p* = 0.8 when observing *p* = 0.8.}(\#fig:like5)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="03-likelihoods_files/figure-html/like5-1.png" alt="Computing a likelihood ratio for *p* = 0.5 relative to *p* = 0.8 when observing *p* = 0.8." width="100%" />
+<p class="caption">(\#fig:like5)Computing a likelihood ratio for *p* = 0.5 relative to *p* = 0.8 when observing *p* = 0.8.</p>
+</div>
 
 We can subjectively interpret this likelihood ratio, which tells us an unfair coin that our observed data is 6.87 times more likely under the hypothesis that this coin will turn up heads 80% of the time, than under the hypothesis that this is a fair coin. How convincing is this? Let’s round the likelihood ratio to 7, and imagine two bags of marbles. One bag contains 7 blue marbles. The second contains 7 marbles, each one a different color of the rainbow, so violet, indigo, blue, green, yellow, orange, and red. Someone randomly picks one of the two bags, draws a marble, and shows it to you. The marble is blue: How certain are you this marble came from the bag with all blue marbles, compared to the bag with rainbow coloured marbles? This is how strong the likelihood ratio tells us to believe our data were generated by an unfair coin that turns up heads 80% of the time, relative to a fair coin, given that we have observed 8 heads in 10 tosses. After this explanation intended to not make you rely too much on benchmarks, it might still be useful to know that @royall_statistical_1997 considered likelihood ratios of 8 moderately strong evidence, and likelihood ratios of 32 strong evidence.
 
 Note that likelihood ratios give us the relative evidence for one specified hypothesis, over another specified hypothesis. The likelihood ratio can be calculated for any two hypothesized values. For example, in Figure \@ref(fig:like6) below, the likelihood ratio is calculated that compares the hypothesis for a fair coin (*p* = 0.5) with the alternative hypothesis that the coin comes up heads 80% of the time (*p* = 0.8), when we have observed 4 heads out of 10 coin flips. We see that the observed data are 0.2050/0.0055=37.25 times more likely (ignoring rounding differences – and try to calculate these numbers by hand using the formula provided earlier) under the hypothesis that this is a fair coin is than under the hypothesis that this is a coin that turns up heads 80% of the time.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{03-likelihoods_files/figure-latex/like6-1} 
-
-}
-
-\caption{Computing a likelihood ratio for *p* = 0.5 relative to *p* = 0.8 when observing *p* = 0.4.}(\#fig:like6)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="03-likelihoods_files/figure-html/like6-1.png" alt="Computing a likelihood ratio for *p* = 0.5 relative to *p* = 0.8 when observing *p* = 0.4." width="100%" />
+<p class="caption">(\#fig:like6)Computing a likelihood ratio for *p* = 0.5 relative to *p* = 0.8 when observing *p* = 0.4.</p>
+</div>
 
 A likelihood ratio of 1 means the data are equally likely under both hypotheses. Values further away from 1 indicate that the data are more likely under one hypothesis than the other. The ratio can be expressed in favor of one hypothesis over the other (for example L(*p* = 0.5)/L(*p* = 0.8) or vice versa (L(*p* = 0.8)/L(*p* = 0.5). This means the likelihood ratio of 37.25 for $H_0$ relative to $H_1$ is equivalent to a likelihood ratio of 1/37.25 = 0.02685 for $H_1$ relative to $H_0$. Likelihood ratios range from 0 to infinity, and the closer to zero or infinity, the stronger the relative evidence for one hypothesis over the other. We will see in the chapter on [Bayesian statistics](#bayes) that likelihood ratios are in this sense very similar (and a special case of) a Bayes Factor.
 
 Likelihoods are relative evidence. Just because the data are more likely under one possible value of *p* than another value of *p* doesn’t mean that the data have come from either of these two distributions. Other values might generate even higher likelihood values. For example, consider the situation where we flip a coin 100 times, and observe 50 heads. We compare *p* = 0.3 versus *p* = 0.8, and find that the likelihood ratio is 803462, implying that there is 803461 times more evidence in the data for *p* = 0.3 than for *p* = 0.8. That might sound pretty conclusive evidence for *p* = 0.3. But it is only relative evidence for *p* = 0.3 compared to *p* = 0.8. If we look at the likelihood function, we clearly see that, not surprisingly, *p* = 0.5 is the value that maximizes the likelihood function. Just because one hypothesis is more likely than another hypothesis, does not mean that there isn't a third hypothesis that is even more likely. 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{03-likelihoods_files/figure-latex/like7-1} 
-
-}
-
-\caption{Computing a likelihood ratio for *p* = 0.3 relative to *p* = 0.8 when observing *p* = 0.5 in 100 coin flips.}(\#fig:like7)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="03-likelihoods_files/figure-html/like7-1.png" alt="Computing a likelihood ratio for *p* = 0.3 relative to *p* = 0.8 when observing *p* = 0.5 in 100 coin flips." width="100%" />
+<p class="caption">(\#fig:like7)Computing a likelihood ratio for *p* = 0.3 relative to *p* = 0.8 when observing *p* = 0.5 in 100 coin flips.</p>
+</div>
 
 ## Likelihood of mixed results in sets of studies
 
@@ -153,14 +125,10 @@ To calculate the likelihood assuming $H_1$ is true, we need to make an assumptio
 Both likelihoods at *p* = .05 and *p* = .80 are highlighted in Figure \@ref(fig:like8) by the circles on the dotted vertical lines.We can use the likelihood of the data assuming $H_0$ or $H_1$ is true to calculate the likelihood ratio, 0.384/0.007 = 53.89, which tells us the observed outcome of exactly two significant results out of three studies is 53.89 times more likely when $H_1$ is true and studies had 80% power, than when $H_0$ is true and studies a carefully controlled 5% Type 1 error rate. Likelihood ratios of 8 and 32 have been proposed as benchmarks of moderately strong and strong evidence, respectively [@royall_statistical_1997], which implies that finding two significant results out of the three studies could be considered strong evidence for $H_1$, assuming 80% power. A Shiny app to perform these calculations is available [here](https://shiny.ieis.tue.nl/mixed_results_likelihood/).
 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{03-likelihoods_files/figure-latex/like8-1} 
-
-}
-
-\caption{Computing a likelihood ratio for 2 out of three significant results, assuming an alpha of 5% and 80% power.}(\#fig:like8)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="03-likelihoods_files/figure-html/like8-1.png" alt="Computing a likelihood ratio for 2 out of three significant results, assuming an alpha of 5% and 80% power." width="100%" />
+<p class="caption">(\#fig:like8)Computing a likelihood ratio for 2 out of three significant results, assuming an alpha of 5% and 80% power.</p>
+</div>
 
 In sets of studies, the likelihood ratio in favor of $H_1$ versus H0 after observing a mix of significant and nonsignificant findings can become surprisingly large. Even though the evidence appears to be mixed, there is actually strong evidence in favor of a true effect. For example, when a researcher performs six studies with 80% power and a 5% a level and finds three significant outcomes and three nonsignificant outcomes, the cumulative likelihood ratio is convincingly large at 38-to-1 in favor of $H_1$ to consider the set of studies strong evidence for a true effect. Intuitively, researchers
 might not feel convinced by a set of studies where three out of six results were statistically significant. But if we do the math, we see that such a set of studies can be very strong evidence in favor of a true effect. A better understanding of these probabilities might be an important step in mitigating the negative effects of publication bias. 
@@ -171,14 +139,10 @@ Hopefully, researchers become more inclined to submit nonsignificant findings fo
 
 So far we have computed likelihoods for binomial probabilities, but likelihoods can be computed for any statistical model [@glover_likelihood_2004; @pawitan_all_2001]. For example, we can compute the relative likelihood of observing a *t*-value under the null and an alternative hypothesis (Figure \@ref(fig:like9)). Of course, the observed data is most likely if we assume the observed effect equals the true effect, but examining the likelihood reveals that there are many alternative hypotheses that are relatively more likely than the null hypothesis. This also holds when observing nonsignificant results, which can be more likely under an alternative hypothesis of interest, than under the null hypothesis. This is a reason why it is incorrect to say that there is no effect when *p* > $\alpha$ (see [*p*-value misconception 1](#misconception1)). 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{03-likelihoods_files/figure-latex/like9-1} 
-
-}
-
-\caption{Likelihood ratio for observed *t*-value under H0 and H1.}(\#fig:like9)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="03-likelihoods_files/figure-html/like9-1.png" alt="Likelihood ratio for observed *t*-value under H0 and H1." width="100%" />
+<p class="caption">(\#fig:like9)Likelihood ratio for observed *t*-value under H0 and H1.</p>
+</div>
 
 ## Test Yourself
 
