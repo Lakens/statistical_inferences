@@ -6,28 +6,17 @@
 
 Scientists perform empirical studies to collect data that helps to answer a research question. The more data that is collected, the more informative the study will be with respect to its inferential goals. A sample size justification should consider how informative the data will be given an inferential goal, such as estimating an effect size, or testing a hypothesis. Even though a sample size justification is sometimes requested in manuscript submission guidelines, when submitting a grant to a funder, or submitting a proposal to an ethical review board, the number of observations is often simply *stated*, but not *justified*. This makes it difficult to evaluate how informative a study will be. To prevent such concerns from emerging when it is too late (e.g., after a non-significant hypothesis test has been observed), researchers should carefully justify their sample size before data is collected. In this chapter, which is largely identical to @lakens_sample_2022, we will explore in detail how to justify your sample size. 
 
-\begin{table}
 
-\caption{(\#tab:table-pow-just)Overview of possible justifications for the sample size in a study.}
-\centering
-\begin{tabular}[t]{l|l}
-\hline
-Type of justification & When is this justification applicable?\\
-\hline
-Measure entire population & A researcher can specify the entire population, it is finite, and it is possible to measure (almost) every entity in the population.\\
-\hline
-Resource constraints & Limited resources are the primary reason for the choice of the sample size a researcher can collect.\\
-\hline
-Accuracy & The research question focusses on the size of a parameter, and a researcher collects sufficient data to have an estimate with a desired level of accuracy.\\
-\hline
-A-priori power analysis & The research question has the aim to test whether certain effect sizes can be statistically rejected with a desired statistical power.\\
-\hline
-Heuristics & A researcher decides upon the sample size based on a heuristic, general rule or norm that is described in the literature, or communicated orally.\\
-\hline
-No justification & A researcher has no reason to choose a specific sample size, or does not have a clearly specified inferential goal and wants to communicate this honestly.\\
-\hline
-\end{tabular}
-\end{table}
+Table: (\#tab:table-pow-just)Overview of possible justifications for the sample size in a study.
+
+|Type of justification     |When is this justification applicable?                                                                                                                     |
+|:-------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------|
+|Measure entire population |A researcher can specify the entire population, it is finite, and it is possible to measure (almost) every entity in the population.                       |
+|Resource constraints      |Limited resources are the primary reason for the choice of the sample size a researcher can collect.                                                       |
+|Accuracy                  |The research question focusses on the size of a parameter, and a researcher collects sufficient data to have an estimate with a desired level of accuracy. |
+|A-priori power analysis   |The research question has the aim to test whether certain effect sizes can be statistically rejected with a desired statistical power.                     |
+|Heuristics                |A researcher decides upon the sample size based on a heuristic, general rule or norm that is described in the literature, or communicated orally.          |
+|No justification          |A researcher has no reason to choose a specific sample size, or does not have a clearly specified inferential goal and wants to communicate this honestly. |
 
 ## Six Approaches to Justify Sample Sizes
 
@@ -43,28 +32,17 @@ The informativeness of the data that is collected depends on the inferential goa
 
 To start, researchers should consider what their smallest effect size of interest is. Second, although only relevant when performing a hypothesis test, researchers should consider which effect sizes could be statistically significant given a choice of an alpha level and sample size. Third, it is important to consider the (range of) effect sizes that are expected. This requires a careful consideration of the source of this expectation and the presence of possible biases in these expectations. Fourth, it is useful to consider the width of the confidence interval around possible values of the effect size in the population, and whether we can expect this confidence interval to reject effects we considered a-priori plausible. Fifth, it is worth evaluating the power of the test across a wide range of possible effect sizes in a sensitivity power analysis. Sixth, a researcher can consider the effect size distribution of related studies in the literature.  
 
-\begin{table}
 
-\caption{(\#tab:table-effect-eval)Overview of possible ways to evaluate which effect sizes are interesting.}
-\centering
-\begin{tabular}[t]{l|l}
-\hline
-Type of evaluation & Which question should a researcher ask?\\
-\hline
-Smallest effect size of interest & What is the smallest effect size that is considered theoretically or practically interesting?\\
-\hline
-The minimal statistically detectable effect & Given the test and sample size, what is the critical effect size that can be statistically significant?\\
-\hline
-Expected effect size & Which effect size is expected based on theoretical predictions or previous research?\\
-\hline
-Width of confidence interval & Which effect sizes are excluded based on the expected width of the confidence interval around the effect size?\\
-\hline
-Sensitivity power analysis & Across a range of possible effect sizes, which effects does a design have sufficient power to detect when performing a hypothesis test?\\
-\hline
-Distribution of effect sizes in a research area & What is the empirical range of effect sizes in a specific research area and which effects are a priori unlikely to be observed?\\
-\hline
-\end{tabular}
-\end{table}
+Table: (\#tab:table-effect-eval)Overview of possible ways to evaluate which effect sizes are interesting.
+
+|Type of evaluation                              |Which question should a researcher ask?                                                                                                 |
+|:-----------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------|
+|Smallest effect size of interest                |What is the smallest effect size that is considered theoretically or practically interesting?                                           |
+|The minimal statistically detectable effect     |Given the test and sample size, what is the critical effect size that can be statistically significant?                                 |
+|Expected effect size                            |Which effect size is expected based on theoretical predictions or previous research?                                                    |
+|Width of confidence interval                    |Which effect sizes are excluded based on the expected width of the confidence interval around the effect size?                          |
+|Sensitivity power analysis                      |Across a range of possible effect sizes, which effects does a design have sufficient power to detect when performing a hypothesis test? |
+|Distribution of effect sizes in a research area |What is the empirical range of effect sizes in a specific research area and which effects are a priori unlikely to be observed?         |
 
 ## The Value of Information
 
@@ -102,26 +80,16 @@ One way to increase the probability of a future meta-analysis is if researchers 
 
 Even if a researcher believes it is worth collecting data because a future meta-analysis will be performed, they will most likely perform a statistical test on the data. To make sure their expectations about the results of such a test are well-calibrated, it is important to consider which effect sizes are of interest, and to perform a sensitivity power analysis to evaluate the probability of a Type II error for effects of interest. From the six ways to evaluate which effect sizes are interesting that will be discussed in the second part of this review, it is useful to consider the smallest effect size that can be statistically significant, the expected width of the confidence interval around the effect size, and effects that can be expected in a specific research area, and to evaluate the power for these effect sizes in a sensitivity power analysis. If a decision or claim is made, a compromise power analysis is worthwhile to consider when deciding upon the error rates while planning the study. When reporting a resource constraints sample size justification it is recommended to address the five considerations in Table \@ref(tab:table-pow-rec). Addressing these points explicitly facilitates evaluating if the data is worthwhile to collect. To make it easier to address all relevant points explicitly, an interactive form to implement the recommendations in this manuscript can be found at https://shiny.ieis.tue.nl/sample_size_justification/.
 
-\begin{table}
 
-\caption{(\#tab:table-pow-rec)Overview of recommendations when reporting a sample size justification based on resource constraints.}
-\centering
-\begin{tabular}[t]{l|l}
-\hline
-What to address & How to address it?\\
-\hline
-Will a future meta-analysis be performed? & Consider the plausibility that sufficient highly similar studies will be performed in the future to make a meta-analysis possible.\\
-\hline
-Will a decision or claim be made regardless of the amount of data that is available? & If a decision is made then any data that is collected will reduce errorates. Consider using a compromise power analysis to determine Type I and Type II error rates. Are the costs worth the reduction in errors?\\
-\hline
-What is the critical effect size? & Report and interpret the critical effect size, with a focus on whether a expected effect sizes could yield significant results. If not indicate the interpretation of the data will not be based on p values.\\
-\hline
-What is the width of the confidence interval? & Report and interpret the width of the confidence interval. What will an estimate with this much uncertainty be useful for? If the null hypothesis is true, would rejecting effects outside of the confidence interval be worthwhile (ignoring how a design might have low power to actually test against these values)?\\
-\hline
-Which effect sizes will a design have decent power to detect? & Report a sensitivity power analysis, and report the effect sizes that can be detected across a range of desired power levels (e.g., 80\%, 90\%, and 95\%) or plot a sensitivity analysis.\\
-\hline
-\end{tabular}
-\end{table}
+Table: (\#tab:table-pow-rec)Overview of recommendations when reporting a sample size justification based on resource constraints.
+
+|What to address                                                                      |How to address it?                                                                                                                                                                                                                                                                                                      |
+|:------------------------------------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|Will a future meta-analysis be performed?                                            |Consider the plausibility that sufficient highly similar studies will be performed in the future to make a meta-analysis possible.                                                                                                                                                                                      |
+|Will a decision or claim be made regardless of the amount of data that is available? |If a decision is made then any data that is collected will reduce errorates. Consider using a compromise power analysis to determine Type I and Type II error rates. Are the costs worth the reduction in errors?                                                                                                       |
+|What is the critical effect size?                                                    |Report and interpret the critical effect size, with a focus on whether a expected effect sizes could yield significant results. If not indicate the interpretation of the data will not be based on p values.                                                                                                           |
+|What is the width of the confidence interval?                                        |Report and interpret the width of the confidence interval. What will an estimate with this much uncertainty be useful for? If the null hypothesis is true, would rejecting effects outside of the confidence interval be worthwhile (ignoring how a design might have low power to actually test against these values)? |
+|Which effect sizes will a design have decent power to detect?                        |Report a sensitivity power analysis, and report the effect sizes that can be detected across a range of desired power levels (e.g., 80%, 90%, and 95%) or plot a sensitivity analysis.                                                                                                                                  |
 
 ## A-priori Power Analysis
 
@@ -137,25 +105,17 @@ Given a specified effect size, alpha level, and power, an a-priori power analysi
 
 Although it is common to set the Type I error rate to 5% and aim for 80% power, error rates should be justified [@lakens_justify_2018]. As explained in the section on compromise power analysis, the default recommendation to aim for 80% power lacks a solid justification. In general, the lower the error rates (and thus the higher the power), the more informative a study will be, but the more resources are required. Researchers should carefully weigh the costs of increasing the sample size against the benefits of lower error rates, which would probably make studies designed to achieve a power of 90% or 95% more common for articles reporting a single study. An additional consideration is whether the researcher plans to publish an article consisting of a set of replication and extension studies, in which case the probability of observing multiple Type I errors will be very low, but the probability of observing mixed results even when there is a true effect increases [@lakens_too_2017], which would also be a reason to aim for studies with low Type II error rates, perhaps even by slightly increasing the alpha level for each individual study.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{08-samplesizejustification_files/figure-latex/power-2-1} 
-
-}
-
-\caption{Power curve for an independent *t* test with an effect of *d* = 0.5 and $\alpha$ = 0.05 as a function of the sample size.}(\#fig:power-2)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="08-samplesizejustification_files/figure-epub3/power-2-1.png" alt="Power curve for an independent *t* test with an effect of *d* = 0.5 and $\alpha$ = 0.05 as a function of the sample size." width="100%" />
+<p class="caption">(\#fig:power-2)Power curve for an independent *t* test with an effect of *d* = 0.5 and $\alpha$ = 0.05 as a function of the sample size.</p>
+</div>
 
 Figure \@ref(fig:power-3) visualizes two distributions. The left distribution (dashed line) is centered at 0. This is a model for the null hypothesis. If the null hypothesis is true a statistically significant result will be observed if the effect size is extreme enough (in a two-sided test either in the positive or negative direction), but any significant result would be a Type I error (the dark grey areas under the curve). If there is no true effect, formally statistical power for a null hypothesis significance test is undefined. Any significant effects observed if the null hypothesis is true are Type I errors, or false positives, which occur at the chosen alpha level. The right distribution (solid line) is centered on an effect of *d* = 0.5. This is the specified model for the alternative hypothesis in this study, illustrating the expectation of an effect of *d* = 0.5 if the alternative hypothesis is true. Even though there is a true effect, studies will not always find a statistically significant result. This happens when, due to random variation, the observed effect size is too close to 0 to be statistically significant. Such results are false negatives (the light grey area under the curve on the right). To increase power, we can collect a larger sample size. As the sample size increases, the distributions become more narrow, reducing the probability of a Type II error. These figures can be reproduced and adapted in an online shiny app: http://shiny.ieis.tue.nl/d_p_power/.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{08-samplesizejustification_files/figure-latex/power-3-1} 
-
-}
-
-\caption{Null (*d* = 0, grey dashed line) and alternative (*d* = 0.5, solid black line) hypothesis, with $\alpha$ = 0.05 and n = 80 per group.}(\#fig:power-3)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="08-samplesizejustification_files/figure-epub3/power-3-1.png" alt="Null (*d* = 0, grey dashed line) and alternative (*d* = 0.5, solid black line) hypothesis, with $\alpha$ = 0.05 and n = 80 per group." width="100%" />
+<p class="caption">(\#fig:power-3)Null (*d* = 0, grey dashed line) and alternative (*d* = 0.5, solid black line) hypothesis, with $\alpha$ = 0.05 and n = 80 per group.</p>
+</div>
 
 It is important to highlight that the goal of an a-priori power analysis is *not* to achieve sufficient power for the true effect size. The true effect size is unknown. The goal of an a-priori power analysis is to achieve sufficient power, given a specific *assumption* of the effect size a researcher wants to detect. Just like a Type I error rate is the maximum probability of making a Type I error conditional on the assumption that the null hypothesis is true, an a-priori power analysis is computed under the assumption of a specific effect size. It is unknown if this assumption is correct. All a researcher can do is to make sure their assumptions are well justified. Statistical inferences based on a test where the Type II error rate is controlled are conditional on the assumption of a specific effect size. They allow the inference that, assuming the true effect size is at least as large as that used in the a-priori power analysis, the maximum Type II error rate in a study is not larger than a desired value.
 
@@ -185,39 +145,24 @@ There is a wide range of tools available to perform power analyses. Whichever to
 
 When reporting an a-priori power analysis, make sure that the power analysis is completely reproducible. If power analyses are performed in R it is possible to share the analysis script and information about the version of the package. In many software packages it is possible to export the power analysis that is performed as a PDF file. For example, in G\*Power analyses can be exported under the 'protocol of power analysis' tab. If the software package provides no way to export the analysis, add a screenshot of the power analysis to the supplementary files.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/gpowprotocol} 
-
-}
-
-\caption{All details about the power analysis that is performed can be exported in G*Power.}(\#fig:gpowprotocol)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/gpowprotocol.png" alt="All details about the power analysis that is performed can be exported in G*Power." width="100%" />
+<p class="caption">(\#fig:gpowprotocol)All details about the power analysis that is performed can be exported in G*Power.</p>
+</div>
 
 The reproducible report needs to be accompanied by justifications for the choices that were made with respect to the values used in the power analysis. If the effect size used in the power analysis is based on previous research the factors presented in Table \@ref(tab:tablemetajust) (if the effect size is based on a meta-analysis) or Table \@ref(tab:table-es-just) (if the effect size is based on a single study) should be discussed. If an effect size estimate is based on the existing literature, provide a full citation, and preferably a direct quote from the article where the effect size estimate is reported. If the effect size is based on a smallest effect size of interest, this value should not just be stated, but justified (e.g., based on theoretical predictions or practical implications, see @lakens_equivalence_2018). For an overview of all aspects that should be reported when describing an a-priori power analysis, see Table \@ref(tab:table-pow-rec-2).
 
-\begin{table}
 
-\caption{(\#tab:table-pow-rec-2)Overview of recommendations when reporting an a-priori power analysis.}
-\centering
-\begin{tabular}[t]{l|l}
-\hline
-What to take into account? & How to take it into account?\\
-\hline
-List all primary analyses that are planned. & Specify all planned primary analyses that test hypotheses for which Type I and Type II error rates should be controlled.\\
-\hline
-Specify the alpha level for each analysis & List and justify the Type I error rate for each analysis. Make sure to correct for multiple comparisons where needed.\\
-\hline
-What is the desired power? & List and justify the desired power (or Type II error rate) for each analysis.\\
-\hline
-For each power analysis, specify the effect size metric, the effect size, and the justification for powering for this effect size. & Report the effect size metric (e.g., Cohen's d, Cohen's f), the effect size (e.g., 0.3). and the justification for the effect size, and whether it is based is based on a smallest effect size of interest, a meta-analytic effect size estimate, the estimate of a single previous study, or some other source.\\
-\hline
-Consider the possibility that the null hypothesis is true. & Perform a power analysis for the test that is planned to examine the absence of a meaningful effect (e.g., power for an equivalence test).\\
-\hline
-Make sure the power analysis is reproducible. & Include the code used to run the power analysis, or print a report containing the details about the power analyses that has been performed.\\
-\hline
-\end{tabular}
-\end{table}
+Table: (\#tab:table-pow-rec-2)Overview of recommendations when reporting an a-priori power analysis.
+
+|What to take into account?                                                                                                         |How to take it into account?                                                                                                                                                                                                                                                                                     |
+|:----------------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|List all primary analyses that are planned.                                                                                        |Specify all planned primary analyses that test hypotheses for which Type I and Type II error rates should be controlled.                                                                                                                                                                                         |
+|Specify the alpha level for each analysis                                                                                          |List and justify the Type I error rate for each analysis. Make sure to correct for multiple comparisons where needed.                                                                                                                                                                                            |
+|What is the desired power?                                                                                                         |List and justify the desired power (or Type II error rate) for each analysis.                                                                                                                                                                                                                                    |
+|For each power analysis, specify the effect size metric, the effect size, and the justification for powering for this effect size. |Report the effect size metric (e.g., Cohen's d, Cohen's f), the effect size (e.g., 0.3). and the justification for the effect size, and whether it is based is based on a smallest effect size of interest, a meta-analytic effect size estimate, the estimate of a single previous study, or some other source. |
+|Consider the possibility that the null hypothesis is true.                                                                         |Perform a power analysis for the test that is planned to examine the absence of a meaningful effect (e.g., power for an equivalence test).                                                                                                                                                                       |
+|Make sure the power analysis is reproducible.                                                                                      |Include the code used to run the power analysis, or print a report containing the details about the power analyses that has been performed.                                                                                                                                                                      |
 
 ## Planning for Precision
 
@@ -275,25 +220,17 @@ $$d_{crit} = t_{crit}{\sqrt{\frac{1}{n_1} + \frac{1}{n_2}}}$$
 
 In Figure \@ref(fig:power-effect1) the distribution of Cohen’s *d* is plotted for 15 participants per group when the true effect size is either *d* = 0 or *d* = 0.5. This figure is similar to Figure \@ref(fig:power-3), with the addition that the critical *d* is indicated. We see that with such a small number of observations in each group only observed effects larger than *d* = 0.75 will be statistically significant. Whether such effect sizes are interesting, and can realistically be expected, should be carefully considered and justified.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{08-samplesizejustification_files/figure-latex/power-effect1-1} 
-
-}
-
-\caption{Critical effect size for an independent *t* test with n = 15 per group and $\alpha$ = 0.05.}(\#fig:power-effect1)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="08-samplesizejustification_files/figure-epub3/power-effect1-1.png" alt="Critical effect size for an independent *t* test with n = 15 per group and $\alpha$ = 0.05." width="100%" />
+<p class="caption">(\#fig:power-effect1)Critical effect size for an independent *t* test with n = 15 per group and $\alpha$ = 0.05.</p>
+</div>
 
 G\*Power provides the critical test statistic (such as the critical *t* value) when performing a power analysis. For example, Figure \@ref(fig:gcrit2) shows that for a correlation based on a two-sided test, with $\alpha$ = 0.05, and *N* = 30, only effects larger than *r* = 0.361 or smaller than *r* = -0.361 can be statistically significant. This reveals that when the sample size is relatively small, the observed effect needs to be quite substantial to be statistically significant.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/gpowcrit2} 
-
-}
-
-\caption{The critical correlation of a test based on a total sample size of 30 and $\alpha$ = 0.05 calculated in G*Power.}(\#fig:gcrit2)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/gpowcrit2.png" alt="The critical correlation of a test based on a total sample size of 30 and $\alpha$ = 0.05 calculated in G*Power." width="100%" />
+<p class="caption">(\#fig:gcrit2)The critical correlation of a test based on a total sample size of 30 and $\alpha$ = 0.05 calculated in G*Power.</p>
+</div>
 
 It is important to realize that due to random variation each study has a probability to yield effects larger than the critical effect size, even if the true effect size is small (or even when the true effect size is 0, in which case each significant effect is a Type I error). Computing a minimal statistically detectable effect is useful for a study where no a-priori power analysis is performed, both for studies in the published literature that do not report a sample size justification [@lakens_equivalence_2018], as for researchers who rely on heuristics for their sample size justification. 
 
@@ -317,22 +254,14 @@ Second, researchers should check whether the effect sizes reported in the meta-a
 
 Third, the meta-analytic effect size estimate should not be biased. Check if the bias detection tests that are reported in the meta-analysis are state-of-the-art, or perform multiple bias detection tests yourself [@carter_correcting_2019], and consider bias corrected effect size estimates (even though these estimates might still be biased, and do not necessarily reflect the true population effect size).
 
-\begin{table}
 
-\caption{(\#tab:tablemetajust)Overview of recommendations when justifying the use of a meta-analytic effect size estimate for a power analysis.}
-\centering
-\begin{tabular}[t]{l|l}
-\hline
-What to take into account & How to take it into account?\\
-\hline
-Are the studies in the meta-analysis similar? & Are the studies in the meta-analyses very similar in design, measures, and the population to the study you are planning? Evaluate the generalizability of the effect size estimate to your study.\\
-\hline
-Are the studies in the meta-analysis homogeneous? & Is there heterogeneity in the meta-analysis? If so, use the meta-analytic effect size estimate of the most relevant homogenous subsample.\\
-\hline
-Is the effect size estimate unbiased? & Did the original study report bias detection tests, and was there bias? If so, it might be wise to use a more conservative effect size estimate, based on bias correction techniques while acknowledging these corrected effect size estimates might not represent the true meta-analytic effect size estimate.\\
-\hline
-\end{tabular}
-\end{table}
+Table: (\#tab:tablemetajust)Overview of recommendations when justifying the use of a meta-analytic effect size estimate for a power analysis.
+
+|What to take into account                         |How to take it into account?                                                                                                                                                                                                                                                                                    |
+|:-------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|Are the studies in the meta-analysis similar?     |Are the studies in the meta-analyses very similar in design, measures, and the population to the study you are planning? Evaluate the generalizability of the effect size estimate to your study.                                                                                                               |
+|Are the studies in the meta-analysis homogeneous? |Is there heterogeneity in the meta-analysis? If so, use the meta-analytic effect size estimate of the most relevant homogenous subsample.                                                                                                                                                                       |
+|Is the effect size estimate unbiased?             |Did the original study report bias detection tests, and was there bias? If so, it might be wise to use a more conservative effect size estimate, based on bias correction techniques while acknowledging these corrected effect size estimates might not represent the true meta-analytic effect size estimate. |
 
 ## Using an Estimate from a Previous Study
 
@@ -346,14 +275,10 @@ The two main reasons researchers should be careful when using effect sizes from 
 
 But even if we had access to all effect sizes (e.g., from pilot studies you have performed yourself) due to random variation the observed effect size will sometimes be quite small. Figure \@ref(fig:follow-up-bias) shows it is quite likely to observe an effect of $\eta_p^2$ = 0.01 in a small pilot study, even when the true effect size is 0.0588. Entering an effect size estimate of $\eta_p^2$ = 0.01 in an a-priori power analysis would suggest a total sample size of 957 observations to achieve 80% power in a follow-up study. If researchers only follow up on pilot studies when they observe an effect size in the pilot study that, when entered into a power analysis, yields a sample size that is feasible to collect for the follow-up study, these effect size estimates will be upwardly biased, and power in the follow-up study will be systematically lower than desired [@albers_when_2018]. 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{08-samplesizejustification_files/figure-latex/follow-up-bias-1} 
-
-}
-
-\caption{Distribution of partial eta squared under the null hypothesis (dotted grey curve) and a medium true effect of 0.0588 (solid black curve) for 3 groups with 25 observations.}(\#fig:follow-up-bias)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="08-samplesizejustification_files/figure-epub3/follow-up-bias-1.png" alt="Distribution of partial eta squared under the null hypothesis (dotted grey curve) and a medium true effect of 0.0588 (solid black curve) for 3 groups with 25 observations." width="100%" />
+<p class="caption">(\#fig:follow-up-bias)Distribution of partial eta squared under the null hypothesis (dotted grey curve) and a medium true effect of 0.0588 (solid black curve) for 3 groups with 25 observations.</p>
+</div>
 
 
 
@@ -363,22 +288,14 @@ However, if we assume bias is present, we can use the `BUCSS` R package [@anders
 
 To summarize, an effect size from a previous study in an a-priori power analysis can be used if three conditions are met (see Table \@ref(tab:table-es-just)). First, the previous study is sufficiently similar to the planned study. Second, there was a low risk of bias (e.g., the effect size estimate comes from a Registered Report, or from an analysis for which results would not have impacted the likelihood of publication). Third, the sample size is large enough to yield a relatively accurate effect size estimate, based on the width of a 95% CI around the observed effect size estimate. There is always uncertainty around the effect size estimate, and entering the upper and lower limit of the 95% CI around the effect size estimate might be informative about the consequences of the uncertainty in the effect size estimate for an a-priori power analysis.
 
-\begin{table}
 
-\caption{(\#tab:table-es-just)Overview of recommendations when justifying the use of an effect size estimate from a single study.}
-\centering
-\begin{tabular}[t]{l|l}
-\hline
-What to take into account & How to take it into account?\\
-\hline
-Is the study sufficiently similar? & Consider if there are differences between the studies in terms of the population, the design, the manipulations, the measures, or other factors that should lead one to expect a different effect size.\\
-\hline
-Is there a risk of bias? & Evaluate the possibility that if the effect size estimate had been smaller you would not have used it (or it would not have been published). Examine the difference when entering the reported, and a bias corrected, effect size estimate in a power analysis.\\
-\hline
-How large is the uncertainty? & Studies with a small number of observations have large uncertainty. Consider the possibility of using a more conservative effect size estimate to reduce the possibility of an underpowered study for the true effect size (such as a safeguard power analysis).\\
-\hline
-\end{tabular}
-\end{table}
+Table: (\#tab:table-es-just)Overview of recommendations when justifying the use of an effect size estimate from a single study.
+
+|What to take into account          |How to take it into account?                                                                                                                                                                                                                                     |
+|:----------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|Is the study sufficiently similar? |Consider if there are differences between the studies in terms of the population, the design, the manipulations, the measures, or other factors that should lead one to expect a different effect size.                                                          |
+|Is there a risk of bias?           |Evaluate the possibility that if the effect size estimate had been smaller you would not have used it (or it would not have been published). Examine the difference when entering the reported, and a bias corrected, effect size estimate in a power analysis.  |
+|How large is the uncertainty?      |Studies with a small number of observations have large uncertainty. Consider the possibility of using a more conservative effect size estimate to reduce the possibility of an underpowered study for the true effect size (such as a safeguard power analysis). |
 
 ## Using an Estimate from a Theoretical Model
 
@@ -398,14 +315,10 @@ One useful way of interpreting the width of the confidence interval is based on 
 
 We see that the margin of error is almost, but not exactly, the same as the minimal statistically detectable effect (*d* = 0.748). The small variation is due to the fact that the 95% confidence interval is calculated based on the *t* distribution. If the true effect size is not zero, the confidence interval is calculated based on the non-central *t* distribution, and the 95% CI is asymmetric. Figure \@ref(fig:noncentralt) visualizes three *t* distributions, one symmetric at 0, and two asymmetric distributions with a noncentrality parameter (the normalized difference between the means) of 2 and 3. The asymmetry is most clearly visible in very small samples (the distributions in the plot have 5 degrees of freedom) but remains noticeable in larger samples when calculating confidence intervals and statistical power. For example, for a true effect size of *d* = 0.5 observed with 15 observations per group would yield $d_s$ = 0.50, 95\% CI [-0.23, 1.22]. If we compute the 95% CI around the critical effect size, we would get $d_s$ = 0.75, 95\% CI [0.00, 1.48]. We see the 95% CI ranges from exactly 0 to 1.484, in line with the relation between a confidence interval and a *p* value, where the 95% CI excludes zero if the test is statistically significant. As noted before, the different approaches recommended here to evaluate how informative a study is are often based on the same information.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{08-samplesizejustification_files/figure-latex/noncentralt-1} 
-
-}
-
-\caption{Central (black) and 2 non-central (darkgrey and lightgrey) *t* distributions.}(\#fig:noncentralt)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="08-samplesizejustification_files/figure-epub3/noncentralt-1.png" alt="Central (black) and 2 non-central (darkgrey and lightgrey) *t* distributions." width="100%" />
+<p class="caption">(\#fig:noncentralt)Central (black) and 2 non-central (darkgrey and lightgrey) *t* distributions.</p>
+</div>
 
 ## Plot a Sensitivity Power Analysis
 
@@ -416,25 +329,17 @@ A sensitivity power analysis fixes the sample size, desired power, and alpha lev
 
 Assume a researcher plans to perform a study where 30 observations will be collected in total, 15 in each between participant condition. Figure \@ref(fig:gsens0) shows how to perform a sensitivity power analysis in G\*Power for a study where we have decided to use an alpha level of 5%, and desire 90% power. The sensitivity power analysis reveals the designed study has 90% power to detect effects of at least *d* = 1.23. Perhaps a researcher believes that a desired power of 90% is quite high, and is of the opinion that it would still be interesting to perform a study if the statistical power was lower. It can then be useful to plot a sensitivity curve across a range of smaller effect sizes.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/gpow_sensitivity_1} 
-
-}
-
-\caption{Sensitivity power analysis in G*Power software.}(\#fig:gsens0)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/gpow_sensitivity_1.png" alt="Sensitivity power analysis in G*Power software." width="100%" />
+<p class="caption">(\#fig:gsens0)Sensitivity power analysis in G*Power software.</p>
+</div>
 
 The two dimensions of interest in a sensitivity power analysis are the effect sizes, and the power to observe a significant effect assuming a specific effect size. These two dimensions can be plotted against each other to create a sensitivity curve. For example, a sensitivity curve can be plotted in G\*Power by clicking the 'X-Y plot for a range of values' button, as illustrated in Figure \@ref(fig:gsens1). Researchers can examine which power they would have for an a-priori plausible range of effect sizes, or they can examine which effect sizes would provide reasonable levels of power. In simulation-based approaches to power analysis, sensitivity curves can be created by performing the power analysis for a range of possible effect sizes. Even if 50% power is deemed acceptable (in which case deciding to act as if the null hypothesis is true after a non-significant result is a relatively noisy decision procedure), Figure \@ref(fig:gsens1) shows a study design where power is extremely low for a large range of effect sizes that are reasonable to expect in most fields. Thus, a sensitivity power analysis provides an additional approach to evaluate how informative the planned study is, and can inform researchers that a specific design is unlikely to yield a significant effect for a range of effects that one might realistically expect. 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/sensitivity1} 
-
-}
-
-\caption{Plot of the effect size against the desired power when n = 15 per group and alpha = 0.05.}(\#fig:gsens1)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/sensitivity1.png" alt="Plot of the effect size against the desired power when n = 15 per group and alpha = 0.05." width="100%" />
+<p class="caption">(\#fig:gsens1)Plot of the effect size against the desired power when n = 15 per group and alpha = 0.05.</p>
+</div>
 
 If the number of observations per group had been larger, the evaluation might have been more positive. We might not have had any specific effect size in mind, but if we had collected 150 observations per group, a sensitivity analysis could have shown that power was sufficient for a range of effects we believe is most interesting to examine, and we would still have approximately 50% power for quite small effects. For a sensitivity analysis to be meaningful, the sensitivity curve should be compared against a smallest effect size of interest, or a range of effect sizes that are expected. A sensitivity power analysis has no clear cut-offs to examine [@bacchetti_current_2010]. Instead, the idea is to make a holistic trade-off between different effect sizes one might observe or care about, and their associated statistical power. 
 
@@ -478,14 +383,10 @@ Although the original idea of designing studies that control Type I and Type II 
 
 We see that conventions are built on conventions: the norm to aim for 80% power is built on the norm to set the alpha level at 5%. What we should take away from Cohen is not that we should aim for 80% power, but that we should justify our error rates based on the relative seriousness of each error. This is where compromise power analysis comes in. If you share Cohen's belief that a Type I error is 4 times as serious as a Type II error, and building on our earlier study on 2000 employees, it makes sense to adjust the Type I error rate when the Type II error rate is low for all effect sizes of interest [@cascio_open_1983]. Indeed, @erdfelder_gpower_1996 created the G\*Power software in part to give researchers a tool to perform compromise power analysis. 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/compromise1} 
-
-}
-
-\caption{Compromise power analysis in G*Power.}(\#fig:gpowcompromise)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/compromise1.png" alt="Compromise power analysis in G*Power." width="100%" />
+<p class="caption">(\#fig:gpowcompromise)Compromise power analysis in G*Power.</p>
+</div>
 
 Figure \@ref(fig:gpowcompromise) illustrates how a compromise power analysis is performed in G\*Power when a Type I error is deemed to be equally costly as a Type II error, which for a study with 1000 observations per condition would lead to a Type I error and a Type II error of 0.0179. As Faul, Erdfelder, Lang, and Buchner [-@faul_gpower_2007] write:
 
@@ -499,22 +400,14 @@ For example, if we plan to perform a two-sided *t* test, can feasibly collect at
 
 A compromise power analysis requires a researcher to specify the sample size. This sample size itself requires a justification, so a compromise power analysis will typically be performed together with a resource constraint justification for a sample size. It is especially important to perform a compromise power analysis if your resource constraint justification is strongly based on the need to make a decision, in which case a researcher should think carefully about the Type I and Type II error rates stakeholders are willing to accept. However, a compromise power analysis also makes sense if the sample size is very large, but a researcher did not have the freedom to set the sample size. This might happen if, for example, data collection is part of a larger international study and the sample size is based on other research questions. In designs where the Type II error rate is very small (and power is very high) some statisticians have also recommended to lower the alpha level to prevent Lindley's paradox, a situation where a significant effect (*p* < $\alpha$) is evidence for the null hypothesis [@jeffreys_theory_1939; @good_bayesnon-bayes_1992]. Lowering the alpha level as a function of the statistical power of the test can prevent this paradox, providing another argument for a compromise power analysis when sample sizes are large [@maier_justify_2022]. Finally, a compromise power analysis needs a justification for the effect size, either based on a smallest effect size of interest or an effect size that is expected. Table \@ref(tab:table-compromise-just) lists three aspects that should be discussed alongside a reported compromise power analysis.
 
-\begin{table}
 
-\caption{(\#tab:table-compromise-just)Overview of recommendations when justifying error rates based on a compromise power analysis.}
-\centering
-\begin{tabular}[t]{l|l}
-\hline
-What to take into account & How to take it into account?\\
-\hline
-What is the justification for the sample size? & Specify why a specific sample size is collected (e.g., based on resource constraints or other factors that determined the sample size).\\
-\hline
-What is the justification for the effect size? & Is the effect size based on a smallest effect size of interest or an expected effect size?\\
-\hline
-What is the desired ratio of Type I vs Type II error rates? & Weigh the relative costs of a Type I and a Type II error by carefully evaluating the consequences of each type of error.\\
-\hline
-\end{tabular}
-\end{table}
+Table: (\#tab:table-compromise-just)Overview of recommendations when justifying error rates based on a compromise power analysis.
+
+|What to take into account                                   |How to take it into account?                                                                                                            |
+|:-----------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------|
+|What is the justification for the sample size?              |Specify why a specific sample size is collected (e.g., based on resource constraints or other factors that determined the sample size). |
+|What is the justification for the effect size?              |Is the effect size based on a smallest effect size of interest or an expected effect size?                                              |
+|What is the desired ratio of Type I vs Type II error rates? |Weigh the relative costs of a Type I and a Type II error by carefully evaluating the consequences of each type of error.                |
 
 ## What to do if Your Editor Asks for Post-hoc Power?{#posthocpower}
 
@@ -572,14 +465,10 @@ For other statistical tests, where the alternative distribution is not symmetric
 <!--        ncp = qt(1 - p_val/2, 2 * n - 2)) -->
 <!-- ``` -->
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{08-samplesizejustification_files/figure-latex/obs-power-plot-2-1} 
-
-}
-
-\caption{Relationship between *p* values and power for an independent *t* test with $\alpha$ = 0.05 and n = 10.}(\#fig:obs-power-plot-2)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="08-samplesizejustification_files/figure-epub3/obs-power-plot-2-1.png" alt="Relationship between *p* values and power for an independent *t* test with $\alpha$ = 0.05 and n = 10." width="100%" />
+<p class="caption">(\#fig:obs-power-plot-2)Relationship between *p* values and power for an independent *t* test with $\alpha$ = 0.05 and n = 10.</p>
+</div>
 
 
 When editors or reviewers ask researchers to report post-hoc power analyses they would like to be able to distinguish between true negatives (concluding there is no effect, when there is no effect) and false negatives (a Type II error, concluding there is no effect, when there actually is an effect). Since reporting post-hoc power is just a different way of reporting the *p* value, reporting the post-hoc power will not provide an answer to the question editors are asking [@hoenig_abuse_2001; @lenth_post_2007; @yuan_post_2005; @schulz_sample_2005]. To be able to draw conclusions about the absence of a meaningful effect, one should perform an [equivalence test](#equivalencetest), and design a study with high power to reject the smallest effect size of interest. Alternatively, if no smallest effect size of interest was specified when designing the study, researchers can report a sensitivity power analysis.
@@ -606,25 +495,17 @@ The required number of participants is divided by two because in a within-partic
 
 In Figure \@ref(fig:plot-1) we see two normally distributed scores with a mean difference of 6, wehere the standard deviation of each mean is 15, and the correlation between the measurements is 0. The standard deviation of the difference score is $\sqrt{2}$ times as large as the standard deviation in each measurement, and indeed, 15×$\sqrt{2}$ = 21.21, which is rounded to 21. This situation where the correlation between measurements is zero equals the situation in an independent *t*-test, where the correlation between measurements is not taken into account. 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{08-samplesizejustification_files/figure-latex/plot-1-1} 
-
-}
-
-\caption{Distributions of two dependent groups with means 100 and 106 and a standard deviation of 15, distribution of the differences, and correlation of 0.}(\#fig:plot-1)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="08-samplesizejustification_files/figure-epub3/plot-1-1.png" alt="Distributions of two dependent groups with means 100 and 106 and a standard deviation of 15, distribution of the differences, and correlation of 0." width="100%" />
+<p class="caption">(\#fig:plot-1)Distributions of two dependent groups with means 100 and 106 and a standard deviation of 15, distribution of the differences, and correlation of 0.</p>
+</div>
 
 In Figure \@ref(fig:plot-4) we can see what happens when the two variables are correlated, for example with *r* = 0.7. Nothing has changed when we plot the means. The correlation between measurements is now strongly positive, and the important difference is in the standard deviation of the difference scores, which is 11 instead of 21 in the uncorrelated example. Because the standardized effect size is the difference divided by the standard deviation, the effect size (Cohen’s $d_z$ in within designs) is larger in this test than in the uncorrelated test.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{08-samplesizejustification_files/figure-latex/plot-4-1} 
-
-}
-
-\caption{Distributions of two independent groups with means 100 and 106 and a standard deviation of 15, distribution of the differences, and correlation of 0.7.}(\#fig:plot-4)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="08-samplesizejustification_files/figure-epub3/plot-4-1.png" alt="Distributions of two independent groups with means 100 and 106 and a standard deviation of 15, distribution of the differences, and correlation of 0.7." width="100%" />
+<p class="caption">(\#fig:plot-4)Distributions of two independent groups with means 100 and 106 and a standard deviation of 15, distribution of the differences, and correlation of 0.7.</p>
+</div>
 
 The correlation between dependent variables is an important aspect of within designs. I recommend explicitly reporting the correlation between dependent variables in within designs (e.g., participants responded significantly slower (*M* = 390, *SD* = 44) when they used their feet than when they used their hands (*M* = 371, *SD* = 44, *r* = .953), *t*(17) = 5.98, *p* < 0.001, Hedges' *g* = 0.43, $M_{diff}$ = 19, 95% CI [12; 26]). Since most dependent variables in within designs in psychology are positively correlated, within designs will increase the power you can achieve given the sample size you have available. Use within-designs when possible, but weigh the benefits of higher power against the downsides of order effects or carryover effects that might be problematic in a within-subject design [@maxwell_designing_2017].
 

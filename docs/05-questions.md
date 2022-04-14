@@ -26,14 +26,10 @@ Meehl [-@meehl_appraising_1990] reminds us of the important distinction between 
 
 We never test a theory in isolation, but always include auxiliary hypotheses about the measures and instruments that are used in a study, conditions realized in the experiment, to the **ceteris paribus** clause that assumes all other things are equal. Therefore, it is never clear if a failure to corroborate a theoretical prediction should be blamed on the theory or the auxiliary hypotheses. To generate reliable explanatory theories, researchers therefore have to perform lines of research in which auxiliary hypotheses are systematically tested  [@uygun_tunc_falsificationist_2022].
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/meehl1990} 
-
-}
-
-\caption{Distinction between a theoretical hypothesis, a statistical hypothesis, and observations. Figure based on Meehl, 1990.}(\#fig:meehl1990)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/meehl1990.png" alt="Distinction between a theoretical hypothesis, a statistical hypothesis, and observations. Figure based on Meehl, 1990." width="100%" />
+<p class="caption">(\#fig:meehl1990)Distinction between a theoretical hypothesis, a statistical hypothesis, and observations. Figure based on Meehl, 1990.</p>
+</div>
 
 ## Loosening and Tightening
 
@@ -41,14 +37,10 @@ For each of the three questions above, we can ask questions about description, p
 
 It is important to realize whether your goal is to generate new ideas, or to test new ideas. Researchers are often not explicit about the stage their research is in, which runs the risk of trying to test hypotheses prematurely [@scheel_why_2021]. Clinical trials research is more explicit about the different phases of research, and distinguishes Phase 1, Phase 2, Phase 3, and Phase 4 trials. In a Phase 1 trial researchers evaluate the safety of a new drug or intervention in a small group of non-randomized (often healthy) volunteers, by examining how much of a drug is safe to give, while monitoring a range of possible side effects. A phase 2 trial are often performed with patients as participants, and can focus in more detail on finding the definite dose. The goal is to systematically explore a range of parameters (e.g., the intensity of a stimulus) to identify boundary conditions [@dubin_theory_1969]. A phase 3 trial is a large randomized controlled trial with the goal to test the effectiveness of the new intervention in practice. Phase 3 trials require a prespecified statistical analyses plan that strictly controls error rates. Finally, a Phase 4 trial examines long term safety and generalizability. Compared to a Phase 3 trial, there is more loosening, as researchers explore the possibility of interactions with other drugs, or moderating effects in certain subgroups of the population. In clinical trials, a Phase 3 trial requires a huge amount of preparation, and is not undertaken lightly. 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/trialphase} 
-
-}
-
-\caption{Four phases of clinical research. <a href="https://clinicalinfo.hiv.gov/en/glossary/phase-1-trial">Source</a>.}(\#fig:trialphase)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/trialphase.jpg" alt="Four phases of clinical research. &lt;a href=&quot;https://clinicalinfo.hiv.gov/en/glossary/phase-1-trial&quot;&gt;Source&lt;/a&gt;." width="100%" />
+<p class="caption">(\#fig:trialphase)Four phases of clinical research. <a href="https://clinicalinfo.hiv.gov/en/glossary/phase-1-trial">Source</a>.</p>
+</div>
 
 ## Three statistical philosophies
 
@@ -82,14 +74,10 @@ Historically, researchers have often been interested in testing hypotheses to ex
 
 In order to be impressed when a prediction is confirmed, the prediction must be able to be wrong. In other words, a theoretical prediction needs to be falsifiable. If our predictions concerned the presence of absence of clearly observable entities (e.g., the existence of a black swan) it is relatively straightforward to divide all possible states of the world into a set that is predicted by our theory (e.g., all swans are white), and a set that is not predicted by our theory (e.g., swans can have other colors than white). However, many scientific questions concern probabilistic events where single observations contain noise due to random variation – rats have a certain probability to develop a tumor, people have a certain probability to buy a product, or particles have a certain probability to appear after a collision. If we want to forbid certain outcomes of our test when measuring probabilistic events, we can divide the states of the world based on the probability that some result will be observed.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/blackwhite} 
-
-}
-
-\caption{Some fields make black and white predictions about the presence or absence of obervables, but in many sciences, predictions are probabilistic, and shades of grey.}(\#fig:blackwhite)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/blackwhite.png" alt="Some fields make black and white predictions about the presence or absence of obervables, but in many sciences, predictions are probabilistic, and shades of grey." width="100%" />
+<p class="caption">(\#fig:blackwhite)Some fields make black and white predictions about the presence or absence of obervables, but in many sciences, predictions are probabilistic, and shades of grey.</p>
+</div>
 
 Just because a hypothesis test can be performed, does not mean it is interesting. A hypothesis test is most useful when 1) both data generating models that are decided between have some plausibility, and 2) it is possible to apply an informative methodological procedure. 
 
@@ -105,27 +93,19 @@ Interestingly, there is quite some disagreement about whether the statistical qu
 
 First, it is clear that a directional test provides a clear advantage in statistical power. As Figure \@ref(fig:onesidedtwosidedratio) shows, the ratio of the sample for a non-directional versus a directional test means that approximately 80% of the sample size of a non-directional test is required to achieve the same power in a directional test (the exact benefit depends on the power and effect size, as seen in the figure below).
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{05-questions_files/figure-latex/onesidedtwosidedratio-1} 
-
-}
-
-\caption{Ratio of the required sample size for a one-sample *t*-test for a non-directional/directional test to achieve 50%, 80% or 95% power.}(\#fig:onesidedtwosidedratio)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="05-questions_files/figure-epub3/onesidedtwosidedratio-1.png" alt="Ratio of the required sample size for a one-sample *t*-test for a non-directional/directional test to achieve 50%, 80% or 95% power." width="100%" />
+<p class="caption">(\#fig:onesidedtwosidedratio)Ratio of the required sample size for a one-sample *t*-test for a non-directional/directional test to achieve 50%, 80% or 95% power.</p>
+</div>
 
 Because in a directional test the alpha level is used for only one tail of the distribution, the critical test value is lower, and all else equal, power is higher. This reduction of the critical value required to declare a statistically significant effect has been criticized because it leads to weaker evidence. For example, @schulz_sample_2005 write: "Using a one-sided test in sample size calculations to reduce required sample sizes stretches credulity.". This is trivially true: Any change to the design of a study that requires a smaller sample size reduces the strength of the evidence you collect, since the strength of evidence is inherently tied to the total number of observations. However, it conflates two types of statistical philosophies, namely a likelihoodist approach, which aims to quantify relative evidence, and a frequentist approach, which aims to provide a procedure to make claims with a maximum error rate. There is a difference between designing a study that yields a certain level of evidence, and a study that adequately controls the error rates when performing a hypothesis test. If you desire a specific level of evidence, design a study that provides this desired level of evidence. If you desire to control the error rate of claims, then that error rate is at most 5% as long as the alpha level is 5%, regardless of whether a one-sided or two-sided test is performed.
 
 Note that there is a subtle distinction between a directional and a one-sided test [@baguley_serious_2012]. Although the two terms overlap when performing a *t*-test, they do not overlap for an *F*-test.  The *F*-value and the *t*-value are related: $t^2 = F$. This holds as long as the df1 = 1 (e.g., F(1, 100), or in other words as long as only two groups are compared. We can see in Figure \@ref(fig:fandt) that the two distributions touch at t = 1 (as 1^2 = 1), and that the *F*-test has no negative values due to the squared nature of the distribution. The critical *t*-value, squared, of a non-directional *t*-test with a 5% error rate equals the critical *F*-value for an *F*-test, which is always one-sided, with a 5% error rate. Due to the 'squared' nature of an *F*-test, an *F*-test is always non-directional. You can logically not halve the *p*-value in an *F*-test to perform a 'one-sided' test, because you can't have a directional *F*-test. When comparing two groups, you can use a *t*-test instead of an *F*-test, which can be directional.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{05-questions_files/figure-latex/fandt-1} 
-
-}
-
-\caption{Distribution and rejection areas for a two-sided t-test and the corresponding F-test with df1 = 1 and df2 = 100.}(\#fig:fandt)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="05-questions_files/figure-epub3/fandt-1.png" alt="Distribution and rejection areas for a two-sided t-test and the corresponding F-test with df1 = 1 and df2 = 100." width="100%" />
+<p class="caption">(\#fig:fandt)Distribution and rejection areas for a two-sided t-test and the corresponding F-test with df1 = 1 and df2 = 100.</p>
+</div>
 
 A final concern raised against one-sided tests is that surprising findings in the opposite direction might be meaningful, and should not be ignored. I agree, but this is not an argument against one-sided testing. The goal in hypothesis testing is, not surprisingly, to test a hypothesis. If you have a directional hypothesis, a result in the opposite direction can never confirm your hypothesis. It can lead one to create a new hypothesis, but this new hypothesis should be tested on a new dataset [@de_groot_methodology_1969]. 
 It makes sense to *describe* an unexpected effect in the opposite direction of your prediction, but there is a difference between describing data, and testing a hypothesis. A one-sided hypothesis test does not prohibit researchers from describing unexpected data patterns. And if you really want to test if there is an effect in either direction, simply preregister a two-sided test. 
