@@ -1,11 +1,5 @@
----
-output: html_document
-editor_options: 
-  chunk_output_type: console
----
 ```{r, include = FALSE}
-knitr::opts_chunk$set(error = FALSE, warning = FALSE, message = FALSE, out.width  = '100%', fig.width  = 8, fig.height = 5, fig.align  = 'center')
-backgroundcolor <- "#fffafa"
+source("include/globals.R")
 ```
 
 # Likelihoods{#likelihoods}
@@ -48,7 +42,11 @@ Let’s assume we don’t have any other information about this coin. (You might
 
 When computing a probability, we assume the model to be known, and compute the probability of observing a specific outcome. But based on the data we have observed, we can ask the reversed question: which value of *p* will make the observed data **most likely**? When computing a likelihood, we assume the data to be known, and make an inference about the most likely parameter for the model. To answer this question, we can plug in the values for *k* and *n* and find which value of *p* maximizes this function. [Ronald Fisher](https://en.wikipedia.org/wiki/Ronald_Fisher) called this maximum likelihood estimation (this is considered one of the most important developments in 20th century statistics, and Fisher published his first paper on this in 1912 as a third year undergraduate when he was 22 [@aldrich_r_1997]). Since *p* can be any value between 0 and 1, we can plot all values in what is known as the *likelihood function*, so we can see the maximum more easily.
 
-```{r, like1, echo = FALSE, fig.cap="Binomial likelihood function for 8 successes in 10 trials."}
+
+
+(ref:like1lab) Binomial likelihood function for 8 successes in 10 trials.
+
+```{r, like1, echo = FALSE, fig.cap="(ref:like1lab)"}
 
 #Calculate the likelihood ratio----
 n <- 10 # set total trials
@@ -82,7 +80,11 @@ Likelihoods are an example of statistical inference: We have observed some data,
 
 When a mix of heads and tails has been observed, the likelihood curve rises and falls, as it is not possible that the coin can only come up heads or tails (after all, both have already been pbserved). If only heads of 0 heads are observed. When we plot the likelihood curves for 0 heads in 10 coin flips, the likelihood curve looks like Figure \@ref(fig:like2).
 
-```{r, like2,  echo = FALSE, fig.cap="Binomial likelihood function for 0 successes in 10 trials."}
+
+
+(ref:like2lab) Binomial likelihood function for 0 successes in 10 trials.
+
+```{r, like2,  echo = FALSE, fig.cap="(ref:like2lab)"}
 
 #Calculate the likelihood ratio----
 n <- 10 # set total trials
@@ -109,7 +111,11 @@ plot(p, like, type = "l", xlab = "p", ylab = "Likelihood", lwd = 2)
 
 Likelihoods can easily be combined. Imagine we have two people flipping the same coin independently. One person observes eight heads out of 10 flips, and the other observes 4 heads out of 10 flips. You might believe that this should give the same likelihood curve as one person flipping a coin 20 times, and observing 12 heads, and indeed, it does. In the plot below, all likelihood curves are standardized by dividing the curve by the maximum of each likelihood curve. This is why all curves now have a maximum of 1, and we can more easily compare different likelihood curves.
 
-```{r, like3,  echo = FALSE, fig.cap="Combining likelihoods."}
+
+
+(ref:like3lab) Combining likelihoods.
+
+```{r, like3,  echo = FALSE, fig.cap="(ref:like3lab)"}
 #Combining Likelihoods
 theta<- seq(0,1,len=100)
 lik1<-dbinom(8,10,theta)
@@ -132,7 +138,11 @@ The curve on left is for 4 out of 10 heads, the one on the right is for 8 out of
 
 In Figure \@ref(fig:like4) we see likelihood curves for 10, 100, and 1000 coin flips, which yield 5, 50, and 500 heads, respectively. The likelihood curves are again standardized to make them more easily comparable. As the sample size increases, the curves become more narrow (the dashed line is for *n* = 10, the dotted line is for *n* = 100, and the solid line is for *n* = 1000). This means that as the sample size increases, our data become increasingly less likely under population parameters further removed from the observed number of heads. In other words, we have collected increasingly strong evidence for *p* = 0.5, compared to most other possible population parameters.
 
-```{r, like4,  echo = FALSE, fig.cap="Likelihood function for 5/10, 50/100 and 500/1000 heads in coin flips."}
+
+
+(ref:like4lab) Likelihood function for 5/10, 50/100 and 500/1000 heads in coin flips.
+
+```{r, like4,  echo = FALSE, fig.cap="(ref:like4lab)"}
 #Increasing sample size
 theta<- seq(0,1,len=1000)
 lik1<-dbinom(5,10,theta)
@@ -162,7 +172,11 @@ Which is 0.302/0.044 = 6.87. In the plot, both circles show the points on
 the likelihood curve for L(*p* = 0.5) and L(*p* = 0.8).
 
 
-```{r, like5,  echo = FALSE, fig.cap="Computing a likelihood ratio for *p* = 0.5 relative to *p* = 0.8 when observing *p* = 0.8."}
+
+
+(ref:like5lab) Computing a likelihood ratio for *p* = 0.5 relative to *p* = 0.8 when observing *p* = 0.8.
+
+```{r, like5,  echo = FALSE, fig.cap="(ref:like5lab)"}
 
 n <- 10  #total number of trials
 x <- 8  #total number of successes
@@ -187,7 +201,11 @@ We can subjectively interpret this likelihood ratio, which tells us an unfair co
 
 Note that likelihood ratios give us the relative evidence for one specified hypothesis, over another specified hypothesis. The likelihood ratio can be calculated for any two hypothesized values. For example, in Figure \@ref(fig:like6) below, the likelihood ratio is calculated that compares the hypothesis for a fair coin (*p* = 0.5) with the alternative hypothesis that the coin comes up heads 80% of the time (*p* = 0.8), when we have observed 4 heads out of 10 coin flips. We see that the observed data are 0.2050/0.0055=37.25 times more likely (ignoring rounding differences – and try to calculate these numbers by hand using the formula provided earlier) under the hypothesis that this is a fair coin is than under the hypothesis that this is a coin that turns up heads 80% of the time.
 
-```{r, like6,  echo = FALSE, fig.cap="Computing a likelihood ratio for *p* = 0.5 relative to *p* = 0.8 when observing *p* = 0.4."}
+
+
+(ref:like6lab) Computing a likelihood ratio for *p* = 0.5 relative to *p* = 0.8 when observing *p* = 0.4.
+
+```{r, like6,  echo = FALSE, fig.cap="(ref:like6lab)"}
 
 n <- 10  #total number of trials
 x <- 4  #total number of successes
@@ -212,7 +230,11 @@ A likelihood ratio of 1 means the data are equally likely under both hypotheses.
 
 Likelihoods are relative evidence. Just because the data are more likely under one possible value of *p* than another value of *p* doesn’t mean that the data have come from either of these two distributions. Other values might generate even higher likelihood values. For example, consider the situation where we flip a coin 100 times, and observe 50 heads. We compare *p* = 0.3 versus *p* = 0.8, and find that the likelihood ratio is 803462, implying that there is 803461 times more evidence in the data for *p* = 0.3 than for *p* = 0.8. That might sound pretty conclusive evidence for *p* = 0.3. But it is only relative evidence for *p* = 0.3 compared to *p* = 0.8. If we look at the likelihood function, we clearly see that, not surprisingly, *p* = 0.5 is the value that maximizes the likelihood function. Just because one hypothesis is more likely than another hypothesis, does not mean that there isn't a third hypothesis that is even more likely. 
 
-```{r, like7,  echo = FALSE, fig.cap="Computing a likelihood ratio for *p* = 0.3 relative to *p* = 0.8 when observing *p* = 0.5 in 100 coin flips."}
+
+
+(ref:like7lab) Computing a likelihood ratio for *p* = 0.3 relative to *p* = 0.8 when observing *p* = 0.5 in 100 coin flips.
+
+```{r, like7,  echo = FALSE, fig.cap="(ref:like7lab)"}
 
 n <- 100  #total number of trials
 x <- 50  #total number of successes
@@ -246,7 +268,11 @@ To calculate the likelihood assuming $H_1$ is true, we need to make an assumptio
 Both likelihoods at *p* = .05 and *p* = .80 are highlighted in Figure \@ref(fig:like8) by the circles on the dotted vertical lines.We can use the likelihood of the data assuming $H_0$ or $H_1$ is true to calculate the likelihood ratio, 0.384/0.007 = 53.89, which tells us the observed outcome of exactly two significant results out of three studies is 53.89 times more likely when $H_1$ is true and studies had 80% power, than when $H_0$ is true and studies a carefully controlled 5% Type 1 error rate. Likelihood ratios of 8 and 32 have been proposed as benchmarks of moderately strong and strong evidence, respectively [@royall_statistical_1997], which implies that finding two significant results out of the three studies could be considered strong evidence for $H_1$, assuming 80% power. A Shiny app to perform these calculations is available [here](https://shiny.ieis.tue.nl/mixed_results_likelihood/).
 
 
-```{r, like8,  echo = FALSE, fig.cap="Computing a likelihood ratio for 2 out of three significant results, assuming an alpha of 5% and 80% power."}
+
+
+(ref:like8lab) Computing a likelihood ratio for 2 out of three significant results, assuming an alpha of 5% and 80% power.
+
+```{r, like8,  echo = FALSE, fig.cap="(ref:like8lab)"}
 #Calculate the likelihood ratio----
 n <- 3 # set total studies
 x <- 2 # set total significant studies
@@ -280,7 +306,11 @@ Hopefully, researchers become more inclined to submit nonsignificant findings fo
 
 So far we have computed likelihoods for binomial probabilities, but likelihoods can be computed for any statistical model [@glover_likelihood_2004; @pawitan_all_2001]. For example, we can compute the relative likelihood of observing a *t*-value under the null and an alternative hypothesis (Figure \@ref(fig:like9)). Of course, the observed data is most likely if we assume the observed effect equals the true effect, but examining the likelihood reveals that there are many alternative hypotheses that are relatively more likely than the null hypothesis. This also holds when observing nonsignificant results, which can be more likely under an alternative hypothesis of interest, than under the null hypothesis. This is a reason why it is incorrect to say that there is no effect when *p* > $\alpha$ (see [*p*-value misconception 1](#misconception1)). 
 
-```{r, like9,  echo = FALSE, fig.cap="Likelihood ratio for observed *t*-value under H0 and H1."}
+
+
+(ref:like9lab) Likelihood ratio for observed *t*-value under H0 and H1.
+
+```{r, like9,  echo = FALSE, fig.cap="(ref:like9lab)"}
 
 N <- 100 # Sample size per group (not total! Total is N * 2)
 tvalue <- 2.1 # Observed t-value

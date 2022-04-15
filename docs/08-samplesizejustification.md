@@ -50,7 +50,7 @@ Since all scientists are faced with resource limitations, they need to balance t
 
 The value of additional information will in most cases be a non-monotonic function, especially when it depends on multiple inferential goals. A researcher might be interested in comparing an effect against a previously observed large effect in the literature, a theoretically predicted medium effect, and the smallest effect that would be practically relevant. In such a situation the expected value of sampling information will lead to different optimal sample sizes for each inferential goal. It could be valuable to collect informative data about a large effect, with additional data having less (or even a negative) marginal utility, up to a point where the data becomes increasingly informative about a medium effect size, with the value of sampling additional information decreasing once more until the study becomes increasingly informative about the presence or absence of a smallest effect of interest.
 
-<!-- ```{r, non-monotonic, fig.cap="Example of a non-monotonically increasing value of information as a function of the sample size."} -->
+<!-- ```{r, non-monotonic, fig.cap="(Example of a non-monotonically increasing value of information as a function of the sample size.)"} -->
 <!-- plot(-1000, xlim = c(0,1600), ylim = c(0,1000), xlab = "Sample Size", ylab = "Value of Information", main = "", cex.lab = 1.3, cex.axis = 1.2, yaxt ='n') -->
 <!-- g <- function(x) x/2 + 110 * sin(0.01 * x) -->
 <!-- curve(g, 0, 1600, lwd = 3, add = TRUE) -->
@@ -105,16 +105,24 @@ Given a specified effect size, alpha level, and power, an a-priori power analysi
 
 Although it is common to set the Type I error rate to 5% and aim for 80% power, error rates should be justified [@lakens_justify_2018]. As explained in the section on compromise power analysis, the default recommendation to aim for 80% power lacks a solid justification. In general, the lower the error rates (and thus the higher the power), the more informative a study will be, but the more resources are required. Researchers should carefully weigh the costs of increasing the sample size against the benefits of lower error rates, which would probably make studies designed to achieve a power of 90% or 95% more common for articles reporting a single study. An additional consideration is whether the researcher plans to publish an article consisting of a set of replication and extension studies, in which case the probability of observing multiple Type I errors will be very low, but the probability of observing mixed results even when there is a true effect increases [@lakens_too_2017], which would also be a reason to aim for studies with low Type II error rates, perhaps even by slightly increasing the alpha level for each individual study.
 
+
+
+(ref:power-2lab) Power curve for an independent *t* test with an effect of *d* = 0.5 and α = 0.05 as a function of the sample size.
+
 <div class="figure" style="text-align: center">
-<img src="08-samplesizejustification_files/figure-html/power-2-1.png" alt="Power curve for an independent *t* test with an effect of *d* = 0.5 and $\alpha$ = 0.05 as a function of the sample size." width="100%" />
-<p class="caption">(\#fig:power-2)Power curve for an independent *t* test with an effect of *d* = 0.5 and $\alpha$ = 0.05 as a function of the sample size.</p>
+<img src="08-samplesizejustification_files/figure-epub3/power-2-1.png" alt="(ref:power-2lab)" width="100%" />
+<p class="caption">(\#fig:power-2)(ref:power-2lab)</p>
 </div>
 
 Figure \@ref(fig:power-3) visualizes two distributions. The left distribution (dashed line) is centered at 0. This is a model for the null hypothesis. If the null hypothesis is true a statistically significant result will be observed if the effect size is extreme enough (in a two-sided test either in the positive or negative direction), but any significant result would be a Type I error (the dark grey areas under the curve). If there is no true effect, formally statistical power for a null hypothesis significance test is undefined. Any significant effects observed if the null hypothesis is true are Type I errors, or false positives, which occur at the chosen alpha level. The right distribution (solid line) is centered on an effect of *d* = 0.5. This is the specified model for the alternative hypothesis in this study, illustrating the expectation of an effect of *d* = 0.5 if the alternative hypothesis is true. Even though there is a true effect, studies will not always find a statistically significant result. This happens when, due to random variation, the observed effect size is too close to 0 to be statistically significant. Such results are false negatives (the light grey area under the curve on the right). To increase power, we can collect a larger sample size. As the sample size increases, the distributions become more narrow, reducing the probability of a Type II error. These figures can be reproduced and adapted in an online shiny app: http://shiny.ieis.tue.nl/d_p_power/.
 
+
+
+(ref:echolab) Null (*d* = 0, grey dashed line) and alternative (*d* = 0.5, solid black line) hypothesis, with α = 0.05 and n = 80 per group.
+
 <div class="figure" style="text-align: center">
-<img src="08-samplesizejustification_files/figure-html/power-3-1.png" alt="Null (*d* = 0, grey dashed line) and alternative (*d* = 0.5, solid black line) hypothesis, with $\alpha$ = 0.05 and n = 80 per group." width="100%" />
-<p class="caption">(\#fig:power-3)Null (*d* = 0, grey dashed line) and alternative (*d* = 0.5, solid black line) hypothesis, with $\alpha$ = 0.05 and n = 80 per group.</p>
+<img src="08-samplesizejustification_files/figure-epub3/power-3-1.png" alt="(ref:echolab)" width="100%" />
+<p class="caption">(\#fig:power-3)(ref:echolab)</p>
 </div>
 
 It is important to highlight that the goal of an a-priori power analysis is *not* to achieve sufficient power for the true effect size. The true effect size is unknown. The goal of an a-priori power analysis is to achieve sufficient power, given a specific *assumption* of the effect size a researcher wants to detect. Just like a Type I error rate is the maximum probability of making a Type I error conditional on the assumption that the null hypothesis is true, an a-priori power analysis is computed under the assumption of a specific effect size. It is unknown if this assumption is correct. All a researcher can do is to make sure their assumptions are well justified. Statistical inferences based on a test where the Type II error rate is controlled are conditional on the assumption of a specific effect size. They allow the inference that, assuming the true effect size is at least as large as that used in the a-priori power analysis, the maximum Type II error rate in a study is not larger than a desired value.
@@ -145,9 +153,13 @@ There is a wide range of tools available to perform power analyses. Whichever to
 
 When reporting an a-priori power analysis, make sure that the power analysis is completely reproducible. If power analyses are performed in R it is possible to share the analysis script and information about the version of the package. In many software packages it is possible to export the power analysis that is performed as a PDF file. For example, in G\*Power analyses can be exported under the 'protocol of power analysis' tab. If the software package provides no way to export the analysis, add a screenshot of the power analysis to the supplementary files.
 
+
+
+(ref:gpowprotocollab) All details about the power analysis that is performed can be exported in G*Power.
+
 <div class="figure" style="text-align: center">
-<img src="images/gpowprotocol.png" alt="All details about the power analysis that is performed can be exported in G*Power." width="100%" />
-<p class="caption">(\#fig:gpowprotocol)All details about the power analysis that is performed can be exported in G*Power.</p>
+<img src="images/gpowprotocol.png" alt="(ref:gpowprotocollab)" width="100%" />
+<p class="caption">(\#fig:gpowprotocol)(ref:gpowprotocollab)</p>
 </div>
 
 The reproducible report needs to be accompanied by justifications for the choices that were made with respect to the values used in the power analysis. If the effect size used in the power analysis is based on previous research the factors presented in Table \@ref(tab:tablemetajust) (if the effect size is based on a meta-analysis) or Table \@ref(tab:table-es-just) (if the effect size is based on a single study) should be discussed. If an effect size estimate is based on the existing literature, provide a full citation, and preferably a direct quote from the article where the effect size estimate is reported. If the effect size is based on a smallest effect size of interest, this value should not just be stated, but justified (e.g., based on theoretical predictions or practical implications, see @lakens_equivalence_2018). For an overview of all aspects that should be reported when describing an a-priori power analysis, see Table \@ref(tab:table-pow-rec-2).
@@ -220,16 +232,24 @@ $$d_{crit} = t_{crit}{\sqrt{\frac{1}{n_1} + \frac{1}{n_2}}}$$
 
 In Figure \@ref(fig:power-effect1) the distribution of Cohen’s *d* is plotted for 15 participants per group when the true effect size is either *d* = 0 or *d* = 0.5. This figure is similar to Figure \@ref(fig:power-3), with the addition that the critical *d* is indicated. We see that with such a small number of observations in each group only observed effects larger than *d* = 0.75 will be statistically significant. Whether such effect sizes are interesting, and can realistically be expected, should be carefully considered and justified.
 
+
+
+(ref:power-effect1lab) Critical effect size for an independent *t* test with n = 15 per group and $\alpha$ = 0.05.
+
 <div class="figure" style="text-align: center">
-<img src="08-samplesizejustification_files/figure-html/power-effect1-1.png" alt="Critical effect size for an independent *t* test with n = 15 per group and $\alpha$ = 0.05." width="100%" />
-<p class="caption">(\#fig:power-effect1)Critical effect size for an independent *t* test with n = 15 per group and $\alpha$ = 0.05.</p>
+<img src="08-samplesizejustification_files/figure-epub3/power-effect1-1.png" alt="(ref:power-effect1lab)" width="100%" />
+<p class="caption">(\#fig:power-effect1)(ref:power-effect1lab)</p>
 </div>
 
 G\*Power provides the critical test statistic (such as the critical *t* value) when performing a power analysis. For example, Figure \@ref(fig:gcrit2) shows that for a correlation based on a two-sided test, with $\alpha$ = 0.05, and *N* = 30, only effects larger than *r* = 0.361 or smaller than *r* = -0.361 can be statistically significant. This reveals that when the sample size is relatively small, the observed effect needs to be quite substantial to be statistically significant.
 
+
+
+(ref:gcrit2lab) The critical correlation of a test based on a total sample size of 30 and α = 0.05 calculated in G*Power.
+
 <div class="figure" style="text-align: center">
-<img src="images/gpowcrit2.png" alt="The critical correlation of a test based on a total sample size of 30 and $\alpha$ = 0.05 calculated in G*Power." width="100%" />
-<p class="caption">(\#fig:gcrit2)The critical correlation of a test based on a total sample size of 30 and $\alpha$ = 0.05 calculated in G*Power.</p>
+<img src="images/gpowcrit2.png" alt="(ref:gcrit2lab)" width="100%" />
+<p class="caption">(\#fig:gcrit2)(ref:gcrit2lab)</p>
 </div>
 
 It is important to realize that due to random variation each study has a probability to yield effects larger than the critical effect size, even if the true effect size is small (or even when the true effect size is 0, in which case each significant effect is a Type I error). Computing a minimal statistically detectable effect is useful for a study where no a-priori power analysis is performed, both for studies in the published literature that do not report a sample size justification [@lakens_equivalence_2018], as for researchers who rely on heuristics for their sample size justification. 
@@ -275,9 +295,13 @@ The two main reasons researchers should be careful when using effect sizes from 
 
 But even if we had access to all effect sizes (e.g., from pilot studies you have performed yourself) due to random variation the observed effect size will sometimes be quite small. Figure \@ref(fig:follow-up-bias) shows it is quite likely to observe an effect of $\eta_p^2$ = 0.01 in a small pilot study, even when the true effect size is 0.0588. Entering an effect size estimate of $\eta_p^2$ = 0.01 in an a-priori power analysis would suggest a total sample size of 957 observations to achieve 80% power in a follow-up study. If researchers only follow up on pilot studies when they observe an effect size in the pilot study that, when entered into a power analysis, yields a sample size that is feasible to collect for the follow-up study, these effect size estimates will be upwardly biased, and power in the follow-up study will be systematically lower than desired [@albers_when_2018]. 
 
+
+
+(ref:follow-up-biaslab) Distribution of partial eta squared under the null hypothesis (dotted grey curve) and a medium true effect of 0.0588 (solid black curve) for 3 groups with 25 observations.
+
 <div class="figure" style="text-align: center">
-<img src="08-samplesizejustification_files/figure-html/follow-up-bias-1.png" alt="Distribution of partial eta squared under the null hypothesis (dotted grey curve) and a medium true effect of 0.0588 (solid black curve) for 3 groups with 25 observations." width="100%" />
-<p class="caption">(\#fig:follow-up-bias)Distribution of partial eta squared under the null hypothesis (dotted grey curve) and a medium true effect of 0.0588 (solid black curve) for 3 groups with 25 observations.</p>
+<img src="08-samplesizejustification_files/figure-epub3/follow-up-bias-1.png" alt="(ref:follow-up-biaslab" width="100%" />
+<p class="caption">(\#fig:follow-up-bias)(ref:follow-up-biaslab</p>
 </div>
 
 
@@ -315,9 +339,13 @@ One useful way of interpreting the width of the confidence interval is based on 
 
 We see that the margin of error is almost, but not exactly, the same as the minimal statistically detectable effect (*d* = 0.748). The small variation is due to the fact that the 95% confidence interval is calculated based on the *t* distribution. If the true effect size is not zero, the confidence interval is calculated based on the non-central *t* distribution, and the 95% CI is asymmetric. Figure \@ref(fig:noncentralt) visualizes three *t* distributions, one symmetric at 0, and two asymmetric distributions with a noncentrality parameter (the normalized difference between the means) of 2 and 3. The asymmetry is most clearly visible in very small samples (the distributions in the plot have 5 degrees of freedom) but remains noticeable in larger samples when calculating confidence intervals and statistical power. For example, for a true effect size of *d* = 0.5 observed with 15 observations per group would yield $d_s$ = 0.50, 95\% CI [-0.23, 1.22]. If we compute the 95% CI around the critical effect size, we would get $d_s$ = 0.75, 95\% CI [0.00, 1.48]. We see the 95% CI ranges from exactly 0 to 1.484, in line with the relation between a confidence interval and a *p* value, where the 95% CI excludes zero if the test is statistically significant. As noted before, the different approaches recommended here to evaluate how informative a study is are often based on the same information.
 
+
+
+(ref:noncentraltlab) Central (black) and 2 non-central (darkgrey and lightgrey) *t* distributions.
+
 <div class="figure" style="text-align: center">
-<img src="08-samplesizejustification_files/figure-html/noncentralt-1.png" alt="Central (black) and 2 non-central (darkgrey and lightgrey) *t* distributions." width="100%" />
-<p class="caption">(\#fig:noncentralt)Central (black) and 2 non-central (darkgrey and lightgrey) *t* distributions.</p>
+<img src="08-samplesizejustification_files/figure-epub3/noncentralt-1.png" alt="(ref:noncentraltlab)" width="100%" />
+<p class="caption">(\#fig:noncentralt)(ref:noncentraltlab)</p>
 </div>
 
 ## Plot a Sensitivity Power Analysis
@@ -329,16 +357,24 @@ A sensitivity power analysis fixes the sample size, desired power, and alpha lev
 
 Assume a researcher plans to perform a study where 30 observations will be collected in total, 15 in each between participant condition. Figure \@ref(fig:gsens0) shows how to perform a sensitivity power analysis in G\*Power for a study where we have decided to use an alpha level of 5%, and desire 90% power. The sensitivity power analysis reveals the designed study has 90% power to detect effects of at least *d* = 1.23. Perhaps a researcher believes that a desired power of 90% is quite high, and is of the opinion that it would still be interesting to perform a study if the statistical power was lower. It can then be useful to plot a sensitivity curve across a range of smaller effect sizes.
 
+
+
+(ref:gsens0lab) Sensitivity power analysis in G*Power software.
+
 <div class="figure" style="text-align: center">
-<img src="images/gpow_sensitivity_1.png" alt="Sensitivity power analysis in G*Power software." width="100%" />
-<p class="caption">(\#fig:gsens0)Sensitivity power analysis in G*Power software.</p>
+<img src="images/gpow_sensitivity_1.png" alt="(ref:gsens0lab)" width="100%" />
+<p class="caption">(\#fig:gsens0)(ref:gsens0lab)</p>
 </div>
 
 The two dimensions of interest in a sensitivity power analysis are the effect sizes, and the power to observe a significant effect assuming a specific effect size. These two dimensions can be plotted against each other to create a sensitivity curve. For example, a sensitivity curve can be plotted in G\*Power by clicking the 'X-Y plot for a range of values' button, as illustrated in Figure \@ref(fig:gsens1). Researchers can examine which power they would have for an a-priori plausible range of effect sizes, or they can examine which effect sizes would provide reasonable levels of power. In simulation-based approaches to power analysis, sensitivity curves can be created by performing the power analysis for a range of possible effect sizes. Even if 50% power is deemed acceptable (in which case deciding to act as if the null hypothesis is true after a non-significant result is a relatively noisy decision procedure), Figure \@ref(fig:gsens1) shows a study design where power is extremely low for a large range of effect sizes that are reasonable to expect in most fields. Thus, a sensitivity power analysis provides an additional approach to evaluate how informative the planned study is, and can inform researchers that a specific design is unlikely to yield a significant effect for a range of effects that one might realistically expect. 
 
+
+
+(ref:gsens1lab) Plot of the effect size against the desired power when n = 15 per group and alpha = 0.05.
+
 <div class="figure" style="text-align: center">
-<img src="images/sensitivity1.png" alt="Plot of the effect size against the desired power when n = 15 per group and alpha = 0.05." width="100%" />
-<p class="caption">(\#fig:gsens1)Plot of the effect size against the desired power when n = 15 per group and alpha = 0.05.</p>
+<img src="images/sensitivity1.png" alt="(ref:gsens1lab)" width="100%" />
+<p class="caption">(\#fig:gsens1)(ref:gsens1lab)</p>
 </div>
 
 If the number of observations per group had been larger, the evaluation might have been more positive. We might not have had any specific effect size in mind, but if we had collected 150 observations per group, a sensitivity analysis could have shown that power was sufficient for a range of effects we believe is most interesting to examine, and we would still have approximately 50% power for quite small effects. For a sensitivity analysis to be meaningful, the sensitivity curve should be compared against a smallest effect size of interest, or a range of effect sizes that are expected. A sensitivity power analysis has no clear cut-offs to examine [@bacchetti_current_2010]. Instead, the idea is to make a holistic trade-off between different effect sizes one might observe or care about, and their associated statistical power. 
@@ -383,9 +419,13 @@ Although the original idea of designing studies that control Type I and Type II 
 
 We see that conventions are built on conventions: the norm to aim for 80% power is built on the norm to set the alpha level at 5%. What we should take away from Cohen is not that we should aim for 80% power, but that we should justify our error rates based on the relative seriousness of each error. This is where compromise power analysis comes in. If you share Cohen's belief that a Type I error is 4 times as serious as a Type II error, and building on our earlier study on 2000 employees, it makes sense to adjust the Type I error rate when the Type II error rate is low for all effect sizes of interest [@cascio_open_1983]. Indeed, @erdfelder_gpower_1996 created the G\*Power software in part to give researchers a tool to perform compromise power analysis. 
 
+
+
+(ref:gpowcompromiselab) Compromise power analysis in G*Power.
+
 <div class="figure" style="text-align: center">
-<img src="images/compromise1.png" alt="Compromise power analysis in G*Power." width="100%" />
-<p class="caption">(\#fig:gpowcompromise)Compromise power analysis in G*Power.</p>
+<img src="images/compromise1.png" alt="(ref:gpowcompromiselab)" width="100%" />
+<p class="caption">(\#fig:gpowcompromise)(ref:gpowcompromiselab)</p>
 </div>
 
 Figure \@ref(fig:gpowcompromise) illustrates how a compromise power analysis is performed in G\*Power when a Type I error is deemed to be equally costly as a Type II error, which for a study with 1000 observations per condition would lead to a Type I error and a Type II error of 0.0179. As Faul, Erdfelder, Lang, and Buchner [-@faul_gpower_2007] write:
@@ -415,7 +455,7 @@ Post-hoc, retrospective, or observed power is used to describe the statistical p
 
 Post-hoc power is directly related to the *p* value of the statistical test [@hoenig_abuse_2001]. For a *z* test where the *p* value is exactly 0.05, post-hoc power is always 50%. The reason for this relationship is that when a *p* value is observed that equals the alpha level of the test (e.g., 0.05), the observed *z* score of the test is exactly equal to the critical value of the test (e.g., *z* = 1.96 in a two-sided test with a 5% alpha level). Whenever the alternative hypothesis is centered on the critical value half the values we expect to observe if this alternative hypothesis is true fall below the critical value, and half fall above the critical value. Therefore, a test where we observed a *p* value identical to the alpha level will have exactly 50% power in a post-hoc power analysis, as the analysis assumes the observed effect size is true.
 
-<!-- ```{r obs-power-plot-1, echo = FALSE, fig.width = 8, fig.height = 8, fig.cap="Relationship between p-values and power for a Z-test."} -->
+<!-- ```{r obs-power-plot-1, echo = FALSE, fig.width = 8, fig.height = 8, fig.cap="(Relationship between p-values and power for a Z-test.)"} -->
 <!-- # For simplicity, take a one-sided test -->
 <!-- # compute z value from p: -->
 <!-- # p_val = 0.05 -->
@@ -465,9 +505,13 @@ For other statistical tests, where the alternative distribution is not symmetric
 <!--        ncp = qt(1 - p_val/2, 2 * n - 2)) -->
 <!-- ``` -->
 
+
+
+(ref:obs-power-plot-2lab) Relationship between *p* values and power for an independent *t* test with α = 0.05 and n = 10.
+
 <div class="figure" style="text-align: center">
-<img src="08-samplesizejustification_files/figure-html/obs-power-plot-2-1.png" alt="Relationship between *p* values and power for an independent *t* test with $\alpha$ = 0.05 and n = 10." width="100%" />
-<p class="caption">(\#fig:obs-power-plot-2)Relationship between *p* values and power for an independent *t* test with $\alpha$ = 0.05 and n = 10.</p>
+<img src="08-samplesizejustification_files/figure-epub3/obs-power-plot-2-1.png" alt="(ref:obs-power-plot-2lab)" width="100%" />
+<p class="caption">(\#fig:obs-power-plot-2)(ref:obs-power-plot-2lab)</p>
 </div>
 
 
@@ -495,16 +539,24 @@ The required number of participants is divided by two because in a within-partic
 
 In Figure \@ref(fig:plot-1) we see two normally distributed scores with a mean difference of 6, wehere the standard deviation of each mean is 15, and the correlation between the measurements is 0. The standard deviation of the difference score is $\sqrt{2}$ times as large as the standard deviation in each measurement, and indeed, 15×$\sqrt{2}$ = 21.21, which is rounded to 21. This situation where the correlation between measurements is zero equals the situation in an independent *t*-test, where the correlation between measurements is not taken into account. 
 
+
+
+(ref:plot-1lab) Distributions of two dependent groups with means 100 and 106 and a standard deviation of 15, distribution of the differences, and correlation of 0.
+
 <div class="figure" style="text-align: center">
-<img src="08-samplesizejustification_files/figure-html/plot-1-1.png" alt="Distributions of two dependent groups with means 100 and 106 and a standard deviation of 15, distribution of the differences, and correlation of 0." width="100%" />
-<p class="caption">(\#fig:plot-1)Distributions of two dependent groups with means 100 and 106 and a standard deviation of 15, distribution of the differences, and correlation of 0.</p>
+<img src="08-samplesizejustification_files/figure-epub3/plot-1-1.png" alt="(ref:plot-1lab)" width="100%" />
+<p class="caption">(\#fig:plot-1)(ref:plot-1lab)</p>
 </div>
 
 In Figure \@ref(fig:plot-4) we can see what happens when the two variables are correlated, for example with *r* = 0.7. Nothing has changed when we plot the means. The correlation between measurements is now strongly positive, and the important difference is in the standard deviation of the difference scores, which is 11 instead of 21 in the uncorrelated example. Because the standardized effect size is the difference divided by the standard deviation, the effect size (Cohen’s $d_z$ in within designs) is larger in this test than in the uncorrelated test.
 
+
+
+(ref:plot-4lab) Distributions of two independent groups with means 100 and 106 and a standard deviation of 15, distribution of the differences, and correlation of 0.7.
+
 <div class="figure" style="text-align: center">
-<img src="08-samplesizejustification_files/figure-html/plot-4-1.png" alt="Distributions of two independent groups with means 100 and 106 and a standard deviation of 15, distribution of the differences, and correlation of 0.7." width="100%" />
-<p class="caption">(\#fig:plot-4)Distributions of two independent groups with means 100 and 106 and a standard deviation of 15, distribution of the differences, and correlation of 0.7.</p>
+<img src="08-samplesizejustification_files/figure-epub3/plot-4-1.png" alt="(ref:plot-4lab)" width="100%" />
+<p class="caption">(\#fig:plot-4)(ref:plot-4lab)</p>
 </div>
 
 The correlation between dependent variables is an important aspect of within designs. I recommend explicitly reporting the correlation between dependent variables in within designs (e.g., participants responded significantly slower (*M* = 390, *SD* = 44) when they used their feet than when they used their hands (*M* = 371, *SD* = 44, *r* = .953), *t*(17) = 5.98, *p* < 0.001, Hedges' *g* = 0.43, $M_{diff}$ = 19, 95% CI [12; 26]). Since most dependent variables in within designs in psychology are positively correlated, within designs will increase the power you can achieve given the sample size you have available. Use within-designs when possible, but weigh the benefits of higher power against the downsides of order effects or carryover effects that might be problematic in a within-subject design [@maxwell_designing_2017].

@@ -1,18 +1,16 @@
 
 
-
-
 # Sequential Analysis {#sequential}
 
 Repeatedly analyzing incoming data while data collection is in progress has many advantages. Researchers can stop the data collection at an interim analysis when they can reject the null hypothesis or the smallest effect size of interest, even if they would be willing to collect more data if needed, or if the results show there is an unexpected problem with the study (e.g., participants misunderstand the instructions or questions). One could easily argue that psychological researchers have an ethical obligation to repeatedly analyze accumulating data, given that continuing data collection whenever the desired level of confidence is reached, or whenever it is sufficiently clear that the expected effects are not present, is a waste of the time of participants and the money provided by taxpayers. In addition to this ethical argument, designing studies that make use of sequential analyses can be more efficient than when data is only analyzed a single time, when the maximum sample size a researcher is willing to collect has been reached. 
 
 Sequential analyses should not be confused with [**optional stopping**](#optionalstopping), which was discussed in the chapter on error control. In optional stopping, researchers use an unadjusted alpha level (e.g., 5%) to repeatedly analyze the data as it comes in, which can substantially inflate the Type 1 error rate. The critical difference with **sequential analysis** is that the Type 1 error rate is controlled. By lowering the alpha level at each look at the data, the overall Type I error rate can be controlled, much like a Bonferroni correction is used to prevent inflation of the Type 1 error rate for multiple comparisons. Indeed, the Bonferroni correction is a valid (but conservative) approach to control the error rate in sequential analyses [@wassmer_group_2016]. 
 
-In sequential analysis a researcher designs a study such that they are able to perform **interim analyses**, say when 25%, 50%, and 75% of the data is collected. At each interim analysis a test is performed at a corrected alpha level, so that over all planned analyses the desired Type 1 error rate is maintained. Sequential analyses are commonly used in medical trials, where quickly discovering an effective treatment can be a matter of life and death. If at an interim analysis researchers decide a new drug is effective, they want to terminate the trial, and give the working drug to patients in the control condition to improve their health, or even save their lives. For example, the safety and efficacy of the Pfizer–BioNTech COVID-19 vaccine used an experimental design where they planned to analyze the data 5 times, and controlled the overall Type 1 error rate by lowering the alpha level for each interim analysis. 
+In sequential analysis a researcher designs a study such that they are able to perform **interim analyses**, say when 25%, 50%, and 75% of the data is collected. At each interim analysis a test is performed at a corrected alpha level, so that over all planned analyses the desired Type 1 error rate is maintained. Sequential analyses are commonly used in medical trials, where quickly discovering an effective treatment can be a matter of life and death. If at an interim analysis researchers decide a new drug is effective, they want to terminate the trial, and give the working drug to patients in the control condition to improve their health, or even save their lives. For example, the safety and efficacy of the Pfizer–BioNTech COVID-19 vaccine used an experimental design where they planned to analyze the data 5 times, and controlled the overall Type 1 error rate by lowering the alpha level for each [interim analysis](https://www.nejm.org/doi/suppl/10.1056/NEJMoa2034577/suppl_file/nejmoa2034577_protocol.pdf). 
     
 <div class="figure" style="text-align: center">
-<img src="images/vaccinetrial.png" alt="Screenshot of the &lt;a href=&quot;https://www.nejm.org/doi/suppl/10.1056/NEJMoa2034577/suppl_file/nejmoa2034577_protocol.pdf&quot;&gt;planned interim analyses&lt;/a&gt; examining the safety and Efficacy of the BNT162b2 mRNA Covid-19 Vaccine." width="100%" />
-<p class="caption">(\#fig:interim)Screenshot of the <a href="https://www.nejm.org/doi/suppl/10.1056/NEJMoa2034577/suppl_file/nejmoa2034577_protocol.pdf">planned interim analyses</a> examining the safety and Efficacy of the BNT162b2 mRNA Covid-19 Vaccine.</p>
+<img src="images/vaccinetrial.png" alt="Screenshot of the planned interim analyses examining the safety and Efficacy of the BNT162b2 mRNA Covid-19 Vaccine." width="100%" />
+<p class="caption">(\#fig:interim)Screenshot of the planned interim analyses examining the safety and Efficacy of the BNT162b2 mRNA Covid-19 Vaccine.</p>
 </div>
     
 The use of sequential analyses is only slowly becoming more popular in many scientific disciplines, but sequential analysis techniques have a long history. As early as 1929, Dodge and Romig realized that analyzing the data sequentially was more efficient than doing so once [@dodge_method_1929]. Wald, who popularized the idea of sequential tests of hypotheses in [-@wald_sequential_1945], performed his work during the second world war. He was only allowed to publish his findings after the war had ended, as he explains in a historical note: 
@@ -91,25 +89,37 @@ We can check the output against the [Wikipedia page for the Pocock correction](h
 
 `rpact` makes it easy to plot the boundaries (based on the critical values) for each look. We see the critical values are higher than the 1.96 we would use for a fixed design with a 5% alpha level, namely *Z* = 2.178. Whenever we observe a test statistical that is more extreme than the critical value, we can reject the null hypothesis. 
 
+
+
+(ref:boundplot1lab) Plot of critical boundaries at each look for a 2 look design with a Pocock correction.
+
 <div class="figure" style="text-align: center">
-<img src="10-sequential_files/figure-html/boundplot1-1.png" alt="Plot of critical boundaries at each look for a 2 look design with a Pocock correction." width="100%" />
-<p class="caption">(\#fig:boundplot1)Plot of critical boundaries at each look for a 2 look design with a Pocock correction.</p>
+<img src="10-sequential_files/figure-epub3/boundplot1-1.png" alt="(ref:boundplot1lab)" width="100%" />
+<p class="caption">(\#fig:boundplot1)(ref:boundplot1lab)</p>
 </div>
 
 The analysis can also be performed in the rpact [shiny app](https://rpact.shinyapps.io/public/) which also allows users to create all plots through simple menu options, and download a complete report of the analyses (e.g., for a preregistration document). 
 
+
+
+(ref:rpactshinylab) Screenshot of rpact Shiny app.
+
 <div class="figure" style="text-align: center">
-<img src="images/RPact1.png" alt="Screenshot of rpact Shiny app." width="100%" />
-<p class="caption">(\#fig:rpactshiny)Screenshot of rpact Shiny app.</p>
+<img src="images/RPact1.png" alt="(ref:rpactshinylab)" width="100%" />
+<p class="caption">(\#fig:rpactshiny)(ref:rpactshinylab)</p>
 </div>
 
 ## Comparing Spending Functions
 
 We can vizualize the corrections for different types of designs for each of 3 looks (2 interim looks and one final look) in the same plot (see Figure \@ref(fig:fourspendingfunctions)). The plot below shows the Pocock, O’Brien-Fleming, Haybittle-Peto, and Wang-Tsiatis correction with $\Delta$ = 0.25. We see that researchers can choose different approaches to spend their alpha level across looks. Researchers can choose to spend their alpha conservatively (keeping most of the alpha for the last look), or more liberally (spending more alpha at the earlier looks, which increases the probability of stopping early for many true effect sizes). 
 
+
+
+(ref:fourspendingfunctionslab) Four different alpha spending functions (O'Brien-Fleming, Pocock, Haybittle-Peto, Wang-Tsiatis) for 3 looks.
+
 <div class="figure" style="text-align: center">
-<img src="10-sequential_files/figure-html/fourspendingfunctions-1.png" alt="Four different alpha spending functions (O'Brien-Fleming, Pocock, Haybittle-Peto, Wang-Tsiatis) for 3 looks." width="100%" />
-<p class="caption">(\#fig:fourspendingfunctions)Four different alpha spending functions (O'Brien-Fleming, Pocock, Haybittle-Peto, Wang-Tsiatis) for 3 looks.</p>
+<img src="10-sequential_files/figure-epub3/fourspendingfunctions-1.png" alt="(ref:fourspendingfunctionslab)" width="100%" />
+<p class="caption">(\#fig:fourspendingfunctions)(ref:fourspendingfunctionslab)</p>
 </div>
 
 We can see that the O'Brien and Fleming correction is much more conservative at the first look, and close to the uncorrected critical value of 1.96 (the black dashed line - for two-sided tests all critical values are mirrored in the negative direction) at the last look: 3.471, 2.454, and 2.004. The Pocock correction has the same critical value at each look (2.289, 2.289, and 2.289), the Haybittle and Peto correction has the same critical value at each look but the last (3, 3, and 1.975), while the critical values decrease for each look with the Wang and Tsiatis correction (2.741, 2.305, and 2.083).
@@ -125,9 +135,13 @@ The approaches to specify the shape of decision boundaries across looks discusse
 The main benefit of these alpha spending functions is that error rates at interim analyses can be controlled, while neither the number nor the timing of the looks needs to be specified in advance. This makes alpha spending approaches much more flexible than earlier approaches to controlling the Type 1 error in group sequential designs. When using an alpha spending function it is important that the decision to perform an interim analysis is not based on collected data, as this can still increase the Type I error rate. As long as this assumption is met, it is possible to update the alpha levels at each look during a study.
 
 
+
+
+(ref:seq-comparisonlab) Comparison of Pocock and O'Brien-Fleming correction, and Pocock-like and O'Brien-Fleming like alpha spending function, for 5 looks.
+
 <div class="figure" style="text-align: center">
-<img src="10-sequential_files/figure-html/unnamed-chunk-5-1.png" alt="Comparison of Pocock and O'Brien-Fleming correction, and Pocock-like and O'Brien-Fleming like alpha spending function, for 5 looks." width="100%" />
-<p class="caption">(\#fig:unnamed-chunk-5)Comparison of Pocock and O'Brien-Fleming correction, and Pocock-like and O'Brien-Fleming like alpha spending function, for 5 looks.</p>
+<img src="10-sequential_files/figure-epub3/seq-comparison-1.png" alt="(ref:seq-comparisonlab)" width="100%" />
+<p class="caption">(\#fig:seq-comparison)(ref:seq-comparisonlab)</p>
 </div>
 
 ## Updating boundaries during a study
@@ -190,8 +204,7 @@ Our actual alpha spending function is no longer captured by the Pocock spending 
 ```r
 design <- getDesignGroupSequential(
   typeOfDesign = "asUser", 
-  informationRates =
-  c(72/206, 132/206, 1), 
+  informationRates = c(72/206, 132/206, 1), 
   alpha = 0.05, 
   sided = 2, 
   userAlphaSpending = c(0.0253, 0.0382, 0.05)
@@ -344,6 +357,10 @@ This means that, assuming there is a true effect of *d* = 0.5, the *expected* sa
 Because power is a curve, and the true effect size is unknown, it is useful to plot power across a range of possible effect sizes, so that we can explore the expected sample size, in the long run, if we use a sequential design, for different true effect sizes.
 
 
+
+(ref:powerseqlab) Power curve for a sequential design with 2 looks.
+
+
 ```r
 # Use getPowerMeans and set max N to 188 based on analysis above
 sample_res <- getPowerMeans(
@@ -359,8 +376,8 @@ plot(sample_res, type = 6)
 ```
 
 <div class="figure" style="text-align: center">
-<img src="10-sequential_files/figure-html/powerseq-1.png" alt="Power curve for a sequential design with 2 looks." width="100%" />
-<p class="caption">(\#fig:powerseq)Power curve for a sequential design with 2 looks.</p>
+<img src="10-sequential_files/figure-epub3/powerseq-1.png" alt="(ref:powerseqlab)" width="100%" />
+<p class="caption">(\#fig:powerseq)(ref:powerseqlab)</p>
 </div>
 
 The blue line in Figure \@ref(fig:powerseq) indicates the expected number of observations we need to collect. Not surprisingly, when the true effect size is 0, we will almost always continue data collection to the end. We will only stop if we observe a Type 1 error, which is rare, and thus the expected number of observations is very close to the maximum sample size we are willing to collect. On the other side of the graph we see the scenario for when the true effect size is *d* = 1. With such a large effect size, we will have high power at our first look, and we will almost always be able to stop at the first look. The red line indicates the power at the final look, and the green line indicates the probability of stopping early. 
@@ -438,9 +455,13 @@ design <- getDesignGroupSequential(
 
 In Figure \@ref(fig:futility1) we see a sequential design where data collection is stopped to reject $H_0$ when the observed *z*-score is larger than the values indicated by the red line, computed based on a Pocock-like alpha spending function (as in Figure \@ref(fig:fourspendingfunctions). In addition, data collection will stop when at an interim analysis a *z*-score lower than or equal to 0 is observed, as indicated by the blue line. At the last look, the red and blue lines meet, because we will either reject $H_0$ at the critical value, or fail to reject $H_0$. 
 
+
+
+(ref:futility1lab) Pocock-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) when the observed effect is in the opposite direction.
+
 <div class="figure" style="text-align: center">
-<img src="10-sequential_files/figure-html/futility1-1.png" alt="Pocock-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) when the observed effect is in the opposite direction." width="100%" />
-<p class="caption">(\#fig:futility1)Pocock-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) when the observed effect is in the opposite direction.</p>
+<img src="10-sequential_files/figure-epub3/futility1-1.png" alt="(ref:futility1lab)" width="100%" />
+<p class="caption">(\#fig:futility1)(ref:futility1lab)</p>
 </div>
 
 Manually specifying the futility bounds is not ideal, as we risk stopping data collection because we fail to reject $H_0$, when there is a high probability of a Type 2 error. It is better to set the futility bounds by directly controlling the Type 2 error across looks at the data. Just as we are willing to distribute our Type I error rate across interim analyses, we can distribute our Type II error rate across looks, and decide to stop for futility when we fail to reject the effect size of interest with a desired Type 2 error rate. 
@@ -452,16 +473,24 @@ If the true effect size is (close to) 0, sequential designs that stop for futili
 
 
 
+
+
+(ref:futility2lab) Pocock-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) based on a Pocock-type beta-spending function.
+
 <div class="figure" style="text-align: center">
-<img src="10-sequential_files/figure-html/futility2-1.png" alt="Pocock-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) based on a Pocock-type beta-spending function." width="100%" />
-<p class="caption">(\#fig:futility2)Pocock-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) based on a Pocock-type beta-spending function.</p>
+<img src="10-sequential_files/figure-epub3/futility2-1.png" alt="(ref:futility2lab)" width="100%" />
+<p class="caption">(\#fig:futility2)(ref:futility2lab)</p>
 </div>
 
 With a beta-spending function the expected number of subjects under $H_1$ will increase, so if the alternative hypothesis is true, designing a study to be able to stop for futility comes at a cost. However, it is possible that $H_0$ is true, and when it is, stopping for futility reduces the expected sample size. In Figure \@ref(fig:powerseq2) you can see the probability of stopping (the green line) is now also high when the true effect size is 0, as we will now stop for futility, and if we do, the expected sample size (the blue line) is lower compared to \@ref(fig:powerseq). It is important to design studies that have a high informational value to reject the presence of a meaningful effect at the final analysis, but whether stopping for futility early is an option you want to build into a study is a choice that requires considering the probability that the null hypothesis is true and the (perhaps small) increase in the sample size. 
 
+
+
+(ref:powerseq2lab) Power curve for a sequential design with 2 looks with stopping for futility.
+
 <div class="figure" style="text-align: center">
-<img src="10-sequential_files/figure-html/powerseq2-1.png" alt="Power curve for a sequential design with 2 looks with stopping for futility." width="100%" />
-<p class="caption">(\#fig:powerseq2)Power curve for a sequential design with 2 looks with stopping for futility.</p>
+<img src="10-sequential_files/figure-epub3/powerseq2-1.png" alt="(ref:powerseq2lab)" width="100%" />
+<p class="caption">(\#fig:powerseq2)(ref:powerseq2lab)</p>
 </div>
 ## Reporting the results of a sequential analysis
 
@@ -516,6 +545,8 @@ res
 ## [PROGRESS] Repeated p-values calculated [0.4378 secs] 
 ## [PROGRESS] Final p-value calculated [0.001 secs] 
 ## [PROGRESS] Final confidence interval calculated [0.0698 secs]
+
+
 ```
 
 
@@ -686,9 +717,13 @@ D) The Type 1 error rate will not inflate, and the Type 2 error rate will not in
 
 **Q13**: In the plot below you see the *t*-score boundaries for a sequential design to stop to reject $H_0$ (the red line) and to reject $H_1$ (the blue line). At the second interim look, you perform a test, and observe a *t*-value of 2. Which decision would you make?
 
+
+
+(ref:futilityq13lab) Example of O'Brien-Fleming-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) with a 5% Type 1 and Type 2 error.
+
 <div class="figure" style="text-align: center">
-<img src="10-sequential_files/figure-html/futilityq13-1.png" alt="Example of O'Brien-Fleming-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) with a 5% Type 1 and Type 2 error." width="100%" />
-<p class="caption">(\#fig:futilityq13)Example of O'Brien-Fleming-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) with a 5% Type 1 and Type 2 error.</p>
+<img src="10-sequential_files/figure-epub3/futilityq13-1.png" alt="(ref:futilityq13lab)" width="100%" />
+<p class="caption">(\#fig:futilityq13)(ref:futilityq13lab)</p>
 </div>
 
 A) You can reject $H_0$ and stop data collection.

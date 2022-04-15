@@ -57,8 +57,7 @@
       margin-left: 2em;
     }
   </style>
-<link rel="stylesheet" href="bs4_style.css">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="include/style.css">
 </head>
 <body data-spy="scroll" data-target="#toc">
 
@@ -95,7 +94,7 @@
 <li><a class="" href="bias.html"><span class="header-section-number">12</span> Bias detection</a></li>
 <li><a class="" href="prereg.html"><span class="header-section-number">13</span> Preregistration and Transparency</a></li>
 <li><a class="" href="computationalreproducibility.html"><span class="header-section-number">14</span> Computational Reproducibility</a></li>
-<li><a class="" href="references.html"><span class="header-section-number">15</span> References</a></li>
+<li><a class="" href="references.html">References</a></li>
 </ul>
 
         <div class="book-extra">
@@ -131,6 +130,7 @@ In R this probability is computed as as:</p>
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">dbinom</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">2</span>, size <span class="op">=</span> <span class="fl">10</span>, prob <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
 <p>Let’s assume we don’t have any other information about this coin. (You might believe most coins are fair; such priors will be discussed when we talk about <a href="bayes.html#bayes">Bayesian statistics</a> in the next chapter). The equation <em>Pr(k;n,p)</em> gives the probability of observing <em>k</em> successes from <em>n</em> trials when a coin’s probability of success is <em>p</em>.</p>
 <p>When computing a probability, we assume the model to be known, and compute the probability of observing a specific outcome. But based on the data we have observed, we can ask the reversed question: which value of <em>p</em> will make the observed data <strong>most likely</strong>? When computing a likelihood, we assume the data to be known, and make an inference about the most likely parameter for the model. To answer this question, we can plug in the values for <em>k</em> and <em>n</em> and find which value of <em>p</em> maximizes this function. <a href="https://en.wikipedia.org/wiki/Ronald_Fisher">Ronald Fisher</a> called this maximum likelihood estimation (this is considered one of the most important developments in 20th century statistics, and Fisher published his first paper on this in 1912 as a third year undergraduate when he was 22 <span class="citation">(<a href="references.html#ref-aldrich_r_1997" role="doc-biblioref">Aldrich, 1997</a>)</span>). Since <em>p</em> can be any value between 0 and 1, we can plot all values in what is known as the <em>likelihood function</em>, so we can see the maximum more easily.</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:like1"></span>
 <img src="03-likelihoods_files/figure-html/like1-1.png" alt="Binomial likelihood function for 8 successes in 10 trials." width="100%"><p class="caption">
@@ -141,6 +141,7 @@ Figure 3.1: Binomial likelihood function for 8 successes in 10 trials.
 <p>There is a subtle difference between a probability and a likelihood. In colloquial language, you can use both terms to mean the same thing, but in statistics both terms used for different sides of the same coin. Note how the equation for Pr involves both information about the data (<em>k</em>, <em>n</em>) and information about the parameter (<em>p</em>). To compute a <strong>probability</strong>, we view <em>p</em> as fixed (for instance, for a fair coin, we plug in <em>p</em> = 0.5) and then estimate the probability of different outcomes (<em>k</em>, <em>n</em>). The resulting function is the probability mass function. To compute the <strong>likelihood</strong>, we instead view the observed data as fixed (e.g., observing 5 heads out of 10 coin tosses), and we view Pr as a function of <em>p</em>, estimating the value that maximizes the likelihood of a particular sample.</p>
 <p>Likelihoods are an example of statistical inference: We have observed some data, and we use this data to draw an inference about different population parameters. More formally, the likelihood function is the (joint) density function evaluated at the observed data. Likelihood functions can be calculated for many different models (binomial distributions, normal distributions, see <span class="citation">Millar (<a href="references.html#ref-millar_maximum_2011" role="doc-biblioref">2011</a>)</span>). This approach is called <strong>likelihoodist statistics</strong>, or <strong>likelihoodism</strong>, and it is distinct from frequentist and Bayesian approaches to statistics, as it directly used the likelihood function to make inferences.</p>
 <p>When a mix of heads and tails has been observed, the likelihood curve rises and falls, as it is not possible that the coin can only come up heads or tails (after all, both have already been pbserved). If only heads of 0 heads are observed. When we plot the likelihood curves for 0 heads in 10 coin flips, the likelihood curve looks like Figure <a href="likelihoods.html#fig:like2">3.2</a>.</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:like2"></span>
 <img src="03-likelihoods_files/figure-html/like2-1.png" alt="Binomial likelihood function for 0 successes in 10 trials." width="100%"><p class="caption">
@@ -148,6 +149,7 @@ Figure 3.2: Binomial likelihood function for 0 successes in 10 trials.
 </p>
 </div>
 <p>Likelihoods can easily be combined. Imagine we have two people flipping the same coin independently. One person observes eight heads out of 10 flips, and the other observes 4 heads out of 10 flips. You might believe that this should give the same likelihood curve as one person flipping a coin 20 times, and observing 12 heads, and indeed, it does. In the plot below, all likelihood curves are standardized by dividing the curve by the maximum of each likelihood curve. This is why all curves now have a maximum of 1, and we can more easily compare different likelihood curves.</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:like3"></span>
 <img src="03-likelihoods_files/figure-html/like3-1.png" alt="Combining likelihoods." width="100%"><p class="caption">
@@ -156,6 +158,7 @@ Figure 3.3: Combining likelihoods.
 </div>
 <p>The curve on left is for 4 out of 10 heads, the one on the right is for 8 out of 10 heads. The black dotted curve in the middle is for 12 out of 20 heads. The grey curve, exactly underneath the 12 out of 20 heads curve, is calculated by multiplying the likelihood curves: L(p_combined) <em>=</em> L(p = 0.8) * L(p = 0.4).</p>
 <p>In Figure <a href="likelihoods.html#fig:like4">3.4</a> we see likelihood curves for 10, 100, and 1000 coin flips, which yield 5, 50, and 500 heads, respectively. The likelihood curves are again standardized to make them more easily comparable. As the sample size increases, the curves become more narrow (the dashed line is for <em>n</em> = 10, the dotted line is for <em>n</em> = 100, and the solid line is for <em>n</em> = 1000). This means that as the sample size increases, our data become increasingly less likely under population parameters further removed from the observed number of heads. In other words, we have collected increasingly strong evidence for <em>p</em> = 0.5, compared to most other possible population parameters.</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:like4"></span>
 <img src="03-likelihoods_files/figure-html/like4-1.png" alt="Likelihood function for 5/10, 50/100 and 500/1000 heads in coin flips." width="100%"><p class="caption">
@@ -173,25 +176,28 @@ Figure 3.4: Likelihood function for 5/10, 50/100 and 500/1000 heads in coin flip
 \]</span></p>
 <p>Which is 0.302/0.044 = 6.87. In the plot, both circles show the points on
 the likelihood curve for L(<em>p</em> = 0.5) and L(<em>p</em> = 0.8).</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:like5"></span>
-<img src="03-likelihoods_files/figure-html/like5-1.png" alt="Computing a likelihood ratio for *p* = 0.5 relative to *p* = 0.8 when observing *p* = 0.8." width="100%"><p class="caption">
+<img src="03-likelihoods_files/figure-html/like5-1.png" alt="Computing a likelihood ratio for p = 0.5 relative to p = 0.8 when observing p = 0.8." width="100%"><p class="caption">
 Figure 3.5: Computing a likelihood ratio for <em>p</em> = 0.5 relative to <em>p</em> = 0.8 when observing <em>p</em> = 0.8.
 </p>
 </div>
 <p>We can subjectively interpret this likelihood ratio, which tells us an unfair coin that our observed data is 6.87 times more likely under the hypothesis that this coin will turn up heads 80% of the time, than under the hypothesis that this is a fair coin. How convincing is this? Let’s round the likelihood ratio to 7, and imagine two bags of marbles. One bag contains 7 blue marbles. The second contains 7 marbles, each one a different color of the rainbow, so violet, indigo, blue, green, yellow, orange, and red. Someone randomly picks one of the two bags, draws a marble, and shows it to you. The marble is blue: How certain are you this marble came from the bag with all blue marbles, compared to the bag with rainbow coloured marbles? This is how strong the likelihood ratio tells us to believe our data were generated by an unfair coin that turns up heads 80% of the time, relative to a fair coin, given that we have observed 8 heads in 10 tosses. After this explanation intended to not make you rely too much on benchmarks, it might still be useful to know that <span class="citation">Royall (<a href="references.html#ref-royall_statistical_1997" role="doc-biblioref">1997</a>)</span> considered likelihood ratios of 8 moderately strong evidence, and likelihood ratios of 32 strong evidence.</p>
 <p>Note that likelihood ratios give us the relative evidence for one specified hypothesis, over another specified hypothesis. The likelihood ratio can be calculated for any two hypothesized values. For example, in Figure <a href="likelihoods.html#fig:like6">3.6</a> below, the likelihood ratio is calculated that compares the hypothesis for a fair coin (<em>p</em> = 0.5) with the alternative hypothesis that the coin comes up heads 80% of the time (<em>p</em> = 0.8), when we have observed 4 heads out of 10 coin flips. We see that the observed data are 0.2050/0.0055=37.25 times more likely (ignoring rounding differences – and try to calculate these numbers by hand using the formula provided earlier) under the hypothesis that this is a fair coin is than under the hypothesis that this is a coin that turns up heads 80% of the time.</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:like6"></span>
-<img src="03-likelihoods_files/figure-html/like6-1.png" alt="Computing a likelihood ratio for *p* = 0.5 relative to *p* = 0.8 when observing *p* = 0.4." width="100%"><p class="caption">
+<img src="03-likelihoods_files/figure-html/like6-1.png" alt="Computing a likelihood ratio for p = 0.5 relative to p = 0.8 when observing p = 0.4." width="100%"><p class="caption">
 Figure 3.6: Computing a likelihood ratio for <em>p</em> = 0.5 relative to <em>p</em> = 0.8 when observing <em>p</em> = 0.4.
 </p>
 </div>
 <p>A likelihood ratio of 1 means the data are equally likely under both hypotheses. Values further away from 1 indicate that the data are more likely under one hypothesis than the other. The ratio can be expressed in favor of one hypothesis over the other (for example L(<em>p</em> = 0.5)/L(<em>p</em> = 0.8) or vice versa (L(<em>p</em> = 0.8)/L(<em>p</em> = 0.5). This means the likelihood ratio of 37.25 for <span class="math inline">\(H_0\)</span> relative to <span class="math inline">\(H_1\)</span> is equivalent to a likelihood ratio of 1/37.25 = 0.02685 for <span class="math inline">\(H_1\)</span> relative to <span class="math inline">\(H_0\)</span>. Likelihood ratios range from 0 to infinity, and the closer to zero or infinity, the stronger the relative evidence for one hypothesis over the other. We will see in the chapter on <a href="bayes.html#bayes">Bayesian statistics</a> that likelihood ratios are in this sense very similar (and a special case of) a Bayes Factor.</p>
 <p>Likelihoods are relative evidence. Just because the data are more likely under one possible value of <em>p</em> than another value of <em>p</em> doesn’t mean that the data have come from either of these two distributions. Other values might generate even higher likelihood values. For example, consider the situation where we flip a coin 100 times, and observe 50 heads. We compare <em>p</em> = 0.3 versus <em>p</em> = 0.8, and find that the likelihood ratio is 803462, implying that there is 803461 times more evidence in the data for <em>p</em> = 0.3 than for <em>p</em> = 0.8. That might sound pretty conclusive evidence for <em>p</em> = 0.3. But it is only relative evidence for <em>p</em> = 0.3 compared to <em>p</em> = 0.8. If we look at the likelihood function, we clearly see that, not surprisingly, <em>p</em> = 0.5 is the value that maximizes the likelihood function. Just because one hypothesis is more likely than another hypothesis, does not mean that there isn't a third hypothesis that is even more likely.</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:like7"></span>
-<img src="03-likelihoods_files/figure-html/like7-1.png" alt="Computing a likelihood ratio for *p* = 0.3 relative to *p* = 0.8 when observing *p* = 0.5 in 100 coin flips." width="100%"><p class="caption">
+<img src="03-likelihoods_files/figure-html/like7-1.png" alt="Computing a likelihood ratio for p = 0.3 relative to p = 0.8 when observing p = 0.5 in 100 coin flips." width="100%"><p class="caption">
 Figure 3.7: Computing a likelihood ratio for <em>p</em> = 0.3 relative to <em>p</em> = 0.8 when observing <em>p</em> = 0.5 in 100 coin flips.
 </p>
 </div>
@@ -205,6 +211,7 @@ Figure 3.7: Computing a likelihood ratio for <em>p</em> = 0.3 relative to <em>p<
 <p>If we perform multiple studies, we can calculate the binomial probability that we will observe a specific number of significant and nonsignificant findings <span class="citation">(<a href="references.html#ref-ioannidis_exploratory_2007" role="doc-biblioref">Ioannidis &amp; Trikalinos, 2007</a>)</span>. We can calculate the probability of finding exactly two significant results out of three studies assuming the null hypothesis is true. When <span class="math inline">\(H_0\)</span> is true, the probability of significant results equals the <span class="math inline">\(\alpha\)</span> level, and thus when the <span class="math inline">\(\alpha\)</span> level is carefully controlled (e.g., in preregistered studies) <em>p</em> = 0.05. When k = 2, n = 3, and <em>p</em> = .05, the binomial probability function tells us that the probability of finding exactly two significant results in three studies is 0.007 (0.05 × 0.05 × 0.95 = 0.002375, and there are three orders in which two of the three results can be observed, so 0.002375 × 3 = 0.007).</p>
 <p>To calculate the likelihood assuming <span class="math inline">\(H_1\)</span> is true, we need to make an assumption about the power in each study. Let’s provisionally assume all studies were powered at 80% and thus <em>p</em> = .80. The probability of observing exactly two significant results in three studies, assuming a power of 0.8, is 0.384 (0.8 × 0.8 × 0.2 = 0.128, and with three orders in which two of the three results can be significant, 0.128 × 3 = 0.384). In other words, if you set out to perform 3 studies, your hypothesis is correct, and you test your hypothesis with 80% power, there is a 38.4% probability of observing 2 out of 3 significant results, and a 9.6% probability to observe 1 out of 3 significant results (and for an extremely unlucky individual, a 0.8% probability of not finding any significant results in three studies, even though there is a true effect). Unless power is extremely high, mixed results should be expected in sets of studies.</p>
 <p>Both likelihoods at <em>p</em> = .05 and <em>p</em> = .80 are highlighted in Figure <a href="likelihoods.html#fig:like8">3.8</a> by the circles on the dotted vertical lines.We can use the likelihood of the data assuming <span class="math inline">\(H_0\)</span> or <span class="math inline">\(H_1\)</span> is true to calculate the likelihood ratio, 0.384/0.007 = 53.89, which tells us the observed outcome of exactly two significant results out of three studies is 53.89 times more likely when <span class="math inline">\(H_1\)</span> is true and studies had 80% power, than when <span class="math inline">\(H_0\)</span> is true and studies a carefully controlled 5% Type 1 error rate. Likelihood ratios of 8 and 32 have been proposed as benchmarks of moderately strong and strong evidence, respectively <span class="citation">(<a href="references.html#ref-royall_statistical_1997" role="doc-biblioref">Royall, 1997</a>)</span>, which implies that finding two significant results out of the three studies could be considered strong evidence for <span class="math inline">\(H_1\)</span>, assuming 80% power. A Shiny app to perform these calculations is available <a href="https://shiny.ieis.tue.nl/mixed_results_likelihood/">here</a>.</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:like8"></span>
 <img src="03-likelihoods_files/figure-html/like8-1.png" alt="Computing a likelihood ratio for 2 out of three significant results, assuming an alpha of 5% and 80% power." width="100%"><p class="caption">
@@ -220,9 +227,10 @@ might not feel convinced by a set of studies where three out of six results were
 <span class="header-section-number">3.3</span> Likelihoods for <em>t</em>-tests<a class="anchor" aria-label="anchor" href="#likettest"><i class="fas fa-link"></i></a>
 </h2>
 <p>So far we have computed likelihoods for binomial probabilities, but likelihoods can be computed for any statistical model <span class="citation">(<a href="references.html#ref-glover_likelihood_2004" role="doc-biblioref">Glover &amp; Dixon, 2004</a>; <a href="references.html#ref-pawitan_all_2001" role="doc-biblioref">Pawitan, 2001</a>)</span>. For example, we can compute the relative likelihood of observing a <em>t</em>-value under the null and an alternative hypothesis (Figure <a href="likelihoods.html#fig:like9">3.9</a>). Of course, the observed data is most likely if we assume the observed effect equals the true effect, but examining the likelihood reveals that there are many alternative hypotheses that are relatively more likely than the null hypothesis. This also holds when observing nonsignificant results, which can be more likely under an alternative hypothesis of interest, than under the null hypothesis. This is a reason why it is incorrect to say that there is no effect when <em>p</em> &gt; <span class="math inline">\(\alpha\)</span> (see <a href="pvalue.html#misconception1"><em>p</em>-value misconception 1</a>).</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:like9"></span>
-<img src="03-likelihoods_files/figure-html/like9-1.png" alt="Likelihood ratio for observed *t*-value under H0 and H1." width="100%"><p class="caption">
+<img src="03-likelihoods_files/figure-html/like9-1.png" alt="Likelihood ratio for observed t-value under H0 and H1." width="100%"><p class="caption">
 Figure 3.9: Likelihood ratio for observed <em>t</em>-value under H0 and H1.
 </p>
 </div>
@@ -346,7 +354,27 @@ Figure 3.9: Likelihood ratio for observed <em>t</em>-value under H0 and H1.
 </div>
 </div>
 </div>
-  <div class="chapter-nav">
+<script>
+$( document ).ready(function() {
+  var cite = ' ';
+  var license = ' <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="blank"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"></a>';
+
+  $("footer div.row div:eq(1) p").html(
+    license + cite
+  );
+
+  function move_sidebar() {
+    var w = window.innerWidth;
+    if (w < 992) {
+      $("#toc").appendTo($("#main-nav"));
+    } else {
+      $("#toc").appendTo($("div.sidebar-chapter"));
+    }
+  }
+  move_sidebar();
+  window.onresize = move_sidebar;
+});
+</script><div class="chapter-nav">
 <div class="prev"><a href="errorcontrol.html"><span class="header-section-number">2</span> Error control</a></div>
 <div class="next"><a href="bayes.html"><span class="header-section-number">4</span> Bayesian statistics</a></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
