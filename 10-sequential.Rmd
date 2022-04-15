@@ -68,13 +68,21 @@ We can check the output against the [Wikipedia page for the Pocock correction](h
 
 `rpact` makes it easy to plot the boundaries (based on the critical values) for each look. We see the critical values are higher than the 1.96 we would use for a fixed design with a 5% alpha level, namely *Z* = `r round(design$criticalValues[1], 3)`. Whenever we observe a test statistical that is more extreme than the critical value, we can reject the null hypothesis. 
 
-```{r boundplot1, fig.margin=FALSE, echo=FALSE, fig.cap="Plot of critical boundaries at each look for a 2 look design with a Pocock correction."}
+
+
+(ref:boundplot1lab) Plot of critical boundaries at each look for a 2 look design with a Pocock correction.
+
+```{r boundplot1, fig.margin=FALSE, echo=FALSE, fig.cap="(ref:boundplot1lab)"}
 plot(design)
 ```
 
 The analysis can also be performed in the rpact [shiny app](https://rpact.shinyapps.io/public/) which also allows users to create all plots through simple menu options, and download a complete report of the analyses (e.g., for a preregistration document). 
 
-```{r rpactshiny, fig.margin=FALSE, echo=FALSE, fig.cap="Screenshot of rpact Shiny app."}
+
+
+(ref:rpactshinylab) Screenshot of rpact Shiny app.
+
+```{r rpactshiny, fig.margin=FALSE, echo=FALSE, fig.cap="(ref:rpactshinylab)"}
 knitr::include_graphics("images/RPact1.png")
 ```
 
@@ -82,7 +90,11 @@ knitr::include_graphics("images/RPact1.png")
 
 We can vizualize the corrections for different types of designs for each of 3 looks (2 interim looks and one final look) in the same plot (see Figure \@ref(fig:fourspendingfunctions)). The plot below shows the Pocock, O’Brien-Fleming, Haybittle-Peto, and Wang-Tsiatis correction with $\Delta$ = 0.25. We see that researchers can choose different approaches to spend their alpha level across looks. Researchers can choose to spend their alpha conservatively (keeping most of the alpha for the last look), or more liberally (spending more alpha at the earlier looks, which increases the probability of stopping early for many true effect sizes). 
 
-```{r, fourspendingfunctions, echo = FALSE, fig.cap="Four different alpha spending functions (O'Brien-Fleming, Pocock, Haybittle-Peto, Wang-Tsiatis) for 3 looks."}
+
+
+(ref:fourspendingfunctionslab) Four different alpha spending functions (O'Brien-Fleming, Pocock, Haybittle-Peto, Wang-Tsiatis) for 3 looks.
+
+```{r, fourspendingfunctions, echo = FALSE, fig.cap="(ref:fourspendingfunctionslab)"}
 # Comparison corrections
 d1 <- getDesignGroupSequential(typeOfDesign = "OF", sided = 2, alpha = 0.05)
 d2 <- getDesignGroupSequential(typeOfDesign = "P", sided = 2, alpha = 0.05)
@@ -108,7 +120,11 @@ The approaches to specify the shape of decision boundaries across looks discusse
 The main benefit of these alpha spending functions is that error rates at interim analyses can be controlled, while neither the number nor the timing of the looks needs to be specified in advance. This makes alpha spending approaches much more flexible than earlier approaches to controlling the Type 1 error in group sequential designs. When using an alpha spending function it is important that the decision to perform an interim analysis is not based on collected data, as this can still increase the Type I error rate. As long as this assumption is met, it is possible to update the alpha levels at each look during a study.
 
 
-```{r seq-comparison, echo = FALSE, fig.cap="Comparison of Pocock and O'Brien-Fleming correction, and Pocock-like and O'Brien-Fleming like alpha spending function, for 5 looks." }
+
+
+(ref:seq-comparisonlab) Comparison of Pocock and O'Brien-Fleming correction, and Pocock-like and O'Brien-Fleming like alpha spending function, for 5 looks.
+
+```{r seq-comparison, echo = FALSE, fig.cap="(ref:seq-comparisonlab)"}
 d1 <- getDesignGroupSequential(typeOfDesign = "P", kMax = 5)
 d2 <- getDesignGroupSequential(typeOfDesign = "asP", kMax = 5)
 d3 <- getDesignGroupSequential(typeOfDesign = "OF", kMax = 5)
@@ -234,7 +250,11 @@ This means that, assuming there is a true effect of *d* = 0.5, the *expected* sa
 
 Because power is a curve, and the true effect size is unknown, it is useful to plot power across a range of possible effect sizes, so that we can explore the expected sample size, in the long run, if we use a sequential design, for different true effect sizes.
 
-```{r powerseq, fig.cap="Power curve for a sequential design with 2 looks." }
+
+
+(ref:powerseqlab) Power curve for a sequential design with 2 looks.
+
+```{r powerseq, fig.cap="(ref:powerseqlab)"}
 # Use getPowerMeans and set max N to 188 based on analysis above
 sample_res <- getPowerMeans(
   design = seq_design,
@@ -296,7 +316,11 @@ design <- getDesignGroupSequential(
 
 In Figure \@ref(fig:futility1) we see a sequential design where data collection is stopped to reject $H_0$ when the observed *z*-score is larger than the values indicated by the red line, computed based on a Pocock-like alpha spending function (as in Figure \@ref(fig:fourspendingfunctions). In addition, data collection will stop when at an interim analysis a *z*-score lower than or equal to 0 is observed, as indicated by the blue line. At the last look, the red and blue lines meet, because we will either reject $H_0$ at the critical value, or fail to reject $H_0$. 
 
-```{r futility1, echo = FALSE, fig.cap="Pocock-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) when the observed effect is in the opposite direction."}
+
+
+(ref:futility1lab) Pocock-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) when the observed effect is in the opposite direction.
+
+```{r futility1, echo = FALSE, fig.cap="(ref:futility1lab)"}
 plot(design)
 ```
 
@@ -329,13 +353,21 @@ power_res_seq <- getSampleSizeMeans(
 ```
 
 
-```{r futility2, echo = FALSE, fig.cap="Pocock-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) based on a Pocock-type beta-spending function."}
+
+
+(ref:futility2lab) Pocock-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) based on a Pocock-type beta-spending function.
+
+```{r futility2, echo = FALSE, fig.cap="(ref:futility2lab)"}
 plot(power_res_seq, type = 1)
 ```
 
 With a beta-spending function the expected number of subjects under $H_1$ will increase, so if the alternative hypothesis is true, designing a study to be able to stop for futility comes at a cost. However, it is possible that $H_0$ is true, and when it is, stopping for futility reduces the expected sample size. In Figure \@ref(fig:powerseq2) you can see the probability of stopping (the green line) is now also high when the true effect size is 0, as we will now stop for futility, and if we do, the expected sample size (the blue line) is lower compared to \@ref(fig:powerseq). It is important to design studies that have a high informational value to reject the presence of a meaningful effect at the final analysis, but whether stopping for futility early is an option you want to build into a study is a choice that requires considering the probability that the null hypothesis is true and the (perhaps small) increase in the sample size. 
 
-```{r powerseq2, echo = FALSE, fig.cap="Power curve for a sequential design with 2 looks with stopping for futility."}
+
+
+(ref:powerseq2lab) Power curve for a sequential design with 2 looks with stopping for futility.
+
+```{r powerseq2, echo = FALSE, fig.cap="(ref:powerseq2lab)"}
 sample_res <- getPowerMeans(
   design = seq_design,
   groups = 2,
@@ -536,7 +568,11 @@ D) The Type 1 error rate will not inflate, and the Type 2 error rate will not in
 
 **Q13**: In the plot below you see the *t*-score boundaries for a sequential design to stop to reject $H_0$ (the red line) and to reject $H_1$ (the blue line). At the second interim look, you perform a test, and observe a *t*-value of 2. Which decision would you make?
 
-```{r, futilityq13, echo = FALSE, fig.cap="Example of O'Brien-Fleming-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) with a 5% Type 1 and Type 2 error."}
+
+
+(ref:futilityq13lab) Example of O'Brien-Fleming-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) with a 5% Type 1 and Type 2 error.
+
+```{r, futilityq13, echo = FALSE, fig.cap="(ref:futilityq13lab)"}
 seq_design <- rpact::getDesignGroupSequential(
   kMax = 3,
   typeOfDesign = "asOF",

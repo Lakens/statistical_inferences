@@ -29,7 +29,11 @@ Equivalence tests are a specific implementation of **interval hypothesis tests**
 
 Indeed, one of the most widely suggested improvements that mitigates the most important limitations of null hypothesis significance testing is to replace the nil null hypothesis with the test of a range prediction (by specifying a non-nil null hypothesis) in an interval hypothesis test [@lakens_practical_2021]. To illustrate the difference, panel A in Figure \@ref(fig:intervaltest) visualizes the results that are predicted in a two-sided null hypothesis test with a nil hypothesis, where the test examines whether an effect of 0 can be rejected. Panel B shows an interval hypothesis where an effect between 0.5 and 2.5 is predicted, where the non-nill null hypothesis consists of values smaller than 0.5 or larger than 2.5, and the interval hypothesis tests examines whether values in these ranges can be rejected. Panel C illustrates an equivalence test, which is basically identical to an interval hypothesis test, but the predicted effects are located in a range around 0, and contain effects that are deemed too small to be meaningful. 
 
-```{r, intervaltest, echo = FALSE, fig.height = 8, fig.cap= "Two-sided null hypothesis test (A), interval hypothesis test (B), equivalence test (C) and minimum effect test (D)."}
+
+
+(ref:intervaltestlab) Two-sided null hypothesis test (A), interval hypothesis test (B), equivalence test (C) and minimum effect test (D).
+
+```{r, intervaltest, echo = FALSE, fig.height = 8, fig.cap="(ref:intervaltestlab)"}
 plotheight <- 0.9
 lowerbound <- -1
 upperbound <- 1
@@ -133,7 +137,11 @@ In a study where researchers are manipulating fatigue by asking participants to 
 
 The TOSTER package (originally created by myself but recently redesigned by [Aaron Caldwell](https://aaroncaldwell.us/)) can be used to plot two *t*-distributions and their critical regions indicating when we can reject the presence of effects smaller than -0.5 and larger than 0.5. It can take some time to get used to the idea that we are rejecting values more extreme than the equivalence bounds. Try to consistently ask in any hypothesis test: Which values can the test reject? In a nil null hypothesis test, we can reject an effect of 0, and in the equivalence test in the Figure below, we can reject values lower than -0.5 and higher than 0.5. In Figure \@ref(fig:tdistequivalence) we see two *t*-distributions centered on the upper and lower bound of the specified equivalence range (-0.5 and 0.5). 
 
-```{r, tdistequivalence, echo = FALSE, fig.cap="The mean difference and its confidence interval plotted below the *t*-distributions used to perform the two-one-sided tests against -0.5 and 0.5."}
+
+
+(ref:tdistequivalencelab) The mean difference and its confidence interval plotted below the *t*-distributions used to perform the two-one-sided tests against -0.5 and 0.5.
+
+```{r, tdistequivalence, echo = FALSE, fig.cap="(ref:tdistequivalencelab)"}
 res <- TOSTER::tsum_TOST(m1 = 4.55, m2 = 4.87, sd1 = 1.05, sd2 = 1.11,
                   n1 = 15, n2 = 15, low_eqbound = -0.5, high_eqbound = 0.5)
 
@@ -162,7 +170,11 @@ Note that because we fail to reject the one-sided test against the lower equival
 
 One way to reduce the probability of an inconclusive effect is to collect sufficient data. Let's imagine the researchers had not collected 15 participants in each condition, but 200 participants. They otherwise observe exactly the same data. As explained in the chapter on [confidence intervals](#confint), as the sample size increases, the confidence interval becomes more narrow. For a TOST equivalence test to be able to reject both the upper and lower bound of the equivalence range, the confidence interval needs to fall completely within the equivalence range. In Figure \@ref(fig:ciequivalence2) we see the same result as in Figure \@ref(fig:tdistequivalence), but now if we had collected 200 observations. Because of the larger sample size, the confidence is more narrow than when we collected 15 participants. We see that the 90% confidence interval around the observed mean difference now excludes both the upper and lower equivalence bound. This means that we can now reject effects outside of the equivalence range (even though barely, with a *p* = `r round(res$TOST$p[2],3)` as the one-sided test against the lower equivalence bound is only just statistically significant).    
 
-```{r, ciequivalence1, echo = FALSE, fig.cap="The mean difference and its confidence interval for an equivalence test with an equivalence range of -0.5 and 0.5."}
+
+
+(ref:ciequivalence1lab) The mean difference and its confidence interval for an equivalence test with an equivalence range of -0.5 and 0.5.
+
+```{r, ciequivalence1, echo = FALSE, fig.cap="(ref:ciequivalence1lab)"}
 res <- TOSTER::tsum_TOST(m1 = 4.55, m2 = 4.87, sd1 = 1.05, sd2 = 1.11,
                   n1 = 200, n2 = 200, low_eqbound = -0.5, high_eqbound = 0.5)
 
@@ -173,7 +185,11 @@ print(res)
 
 In Figure \@ref(fig:ciequivalence2) we see the the same results, but now visualized as a confidence density plot [@schweder_confidence_2016], which is a graphical summary of the distribution of confidence. A confidence density plot allows you to see which effects can be rejected with difference confidence interval widths. We see the bounds of the green area (corresponding to a 90% confidence interval) fall inside the equivalence bounds. Thus, the equivalence test is statistically significant, and we can statistically reject the presence of effects outside the equivalence range. We can also see that the 95% confidence interval excludes 0, and therefore, a traditional null hypothesis significance test is also statistically significant. 
 
-```{r, ciequivalence2, echo = FALSE, fig.cap="The mean difference and its confidence interval for an equivalence test with an equivalence range of -0.5 and 0.5."}
+
+
+(ref:ciequivalence2lab) The mean difference and its confidence interval for an equivalence test with an equivalence range of -0.5 and 0.5.
+
+```{r, ciequivalence2, echo = FALSE, fig.cap="(ref:ciequivalence2lab)"}
 res <- TOSTER::tsum_TOST(m1 = 4.55, m2 = 4.87, sd1 = 1.05, sd2 = 1.11,
                   n1 = 200, n2 = 200, low_eqbound = -0.5, high_eqbound = 0.5)
 
@@ -194,7 +210,11 @@ Equivalence bounds can be specified in raw effect sizes, or in standardized mean
 
 If a researcher has specified a smallest effect size of interest, and is interested in testing whether the effect in the population is larger than this smallest effect of interest, a minimum effect test can be performed. As with any hypothesis test, we can reject the smallest effect of interest whenever the confidence interval around the observed effect does not overlap with it. In the case of a minimum effect test, however, the confidence interval should be fall completely beyond the smallest effect size of interest. For example, let's assume a researcher performs a minimum effect test with 200 observations per condition against a smallest effect size of interest of a mean difference of 0.5.
 
-```{r, tmet, echo = FALSE, fig.cap="The mean difference and its confidence interval plotted below the *t*-distributions used to perform the two-one-sided tests against -0.5 and 0.5 when performing a minimum effect test."}
+
+
+(ref:tmetlab) The mean difference and its confidence interval plotted below the *t*-distributions used to perform the two-one-sided tests against -0.5 and 0.5 when performing a minimum effect test.
+
+```{r, tmet, echo = FALSE, fig.cap="(ref:tmetlab)"}
 res <- TOSTER::tsum_TOST(m1 = 5.73, m2 = 4.87, sd1 = 1.05, sd2 = 1.11,
                   n1 = 200, n2 = 200, low_eqbound = -0.5, high_eqbound = 0.5,
                   hypothesis = "MET")
@@ -330,7 +350,11 @@ pwr::pwr.t.test(
 )
 ```
 
-```{r smalltelpower, echo = FALSE, fig.cap="Screenshot illustrating a sensitivity power analysis in G*Power to compute the effect size an original study had 33% power to detect."}
+
+
+(ref:smalltelpowerlab) Screenshot illustrating a sensitivity power analysis in G*Power to compute the effect size an original study had 33% power to detect.
+
+```{r smalltelpower, echo = FALSE, fig.cap="(ref:smalltelpowerlab)"}
 knitr::include_graphics("images/0deabffd850f7b63c16e41e0af9ae0b6.png")
 ```
 
@@ -350,7 +374,11 @@ pwr::pwr.t.test(
 
 Note that 33% power is a rounded value, and the calculation uses 1/3 (or 0.3333333…).
 
-```{r simonsohnexample, echo = FALSE, fig.cap = "Example used in Simonsohn 2015 of an original study and two replication studies."}
+
+
+(ref:simonsohnexamplelab) Example used in Simonsohn 2015 of an original study and two replication studies.
+
+```{r simonsohnexample, echo = FALSE, fig.cap="(ref:simonsohnexamplelab)"}
 knitr::include_graphics("images/a4aa20a6e2dadfbaa82bc614d40693c7.png")
 ```
 
@@ -363,13 +391,21 @@ Although the *small telescope* recommendations are easy to use, one should take 
 
 Given a sample size and alpha level, every test has a [minimal statistically detectable effect](#minimaldetectable). For example, given a test with 86 participants in each group, and an alpha level of 5%, only *t*-tests which yield a *t* ≥ 1.974 will be statistically significant. In other words, *t* = 1.974 is the **critical *t*-value**. Given a sample size and alpha level, the critical *t*-value can be transformed into a **critical *d*-value**. As visualized in Figure \@ref(fig:distpowerplot1), with n = 50 in each group and an alpha level of 5% the critical *d*-value is 0.4. This means that only effects larger than 0.4 will yield a *p* \< α. The critical *d*-value is influenced by the sample size per group, and the alpha level, but does not depend on the the true effect size.
 
-```{r distpowerplot1, echo = FALSE, fig.cap = "Null and alternative distribution with Type 1 and Type 2 error indicating the smallest effect size that will be statistically significant with n = 50 per condition."}
+
+
+(ref:distpowerplot1lab) Null and alternative distribution with Type 1 and Type 2 error indicating the smallest effect size that will be statistically significant with n = 50 per condition.
+
+```{r distpowerplot1, echo = FALSE, fig.cap="(ref:distpowerplot1lab)"}
 knitr::include_graphics("images/dpplot50.png")
 ```
 
 It is possible to observe a statistically significant test result if the true effect size is *smaller* than the critical effect size. Due to random variation, it is possible to observe a larger value in a *sample* than is the true value in the population. This is the reason the statistical power of a test is never 0 in a null hypothesis significance test. As illustrated in Figure \@ref(fig:distpowerplot2), even if the true effect size is smaller than the critical value (i.e., if the true effect size is 0.2) we see from the distribution that we can expect some *observed effect sizes* to be larger than 0.4 when the *true population effect size* is *d* = 0.2 – if we compute the statistical power for this test, it turns out we can expect 16.77% of the *observed effect sizes* will be larger than 0.4, in the long run. That is not a lot, but it is something. This is also the reason why publication bias combined with underpowered research is problematic: It leads to a large **overestimation of the true effect size** when only observed effect sizes from statistically significant findings in underpowered studies end up in the scientific literature.
 
-```{r distpowerplot2, echo = FALSE, fig.cap = "Null and alternative distribution with Type 1 and Type 2 error indicating the smallest effect size that will be statistically significant with n = 50 per condition."}
+
+
+(ref:distpowerplot2lab) Null and alternative distribution with Type 1 and Type 2 error indicating the smallest effect size that will be statistically significant with n = 50 per condition.
+
+```{r distpowerplot2, echo = FALSE, fig.cap="(ref:distpowerplot2lab)"}
 knitr::include_graphics("images/dpplot502.png")
 ```
 
@@ -705,7 +741,11 @@ The example we have used so far was based on performing an independent *t*-test,
 
 The distribution for eta-squared looks slightly different from the distribution of Cohen’s *d*, primarily because an *F*-test is a one-directional test (and because of this, eta-squared values are all positive, while Cohen’s *d* can be positive or negative). The light grey line plots the expected distribution of eta-squared when the null is true, with the red area under the curve indicating Type 1 errors, and the black line plots the expected distribution of eta-squared when the true effect size is η = 0.059. The blue area indicates the expected effect sizes smaller that the critical η of 0.04, which will not be statistically significant, and thus will be Type 2 errors.
 
-```{r critf, echo = FALSE, fig.cap="Illustration of the criticial F-value for two groups, 50 observations per group, and an alpha level of 0.05."}
+
+
+(ref:critflab) Illustration of the criticial F-value for two groups, 50 observations per group, and an alpha level of 0.05.
+
+```{r critf, echo = FALSE, fig.cap="(ref:critflab)"}
 knitr::include_graphics("images/7f6d17dc07bdc9e95ea8944d78b16d7c.png")
 ```
 

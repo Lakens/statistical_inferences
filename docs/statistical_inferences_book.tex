@@ -266,13 +266,15 @@ A \emph{t}-value can be computed from the mean in the sample, the mean in the po
 
 We can graph the \emph{t}-distribution (for df = 18) and highlight the two tail areas that start at the t-values of 2.5175 and -2.5175.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{01-pvalue_files/figure-latex/tdist-1} 
 
 }
 
-\caption{A *t*-distribution with 18 degrees of freedom.}\label{fig:tdist}
+\caption{A \emph{t}-distribution with 18 degrees of freedom.}\label{fig:tdist}
 \end{figure}
 
 \hypertarget{which-p-values-can-you-expect}{%
@@ -302,18 +304,22 @@ Which \emph{p}-values you can expect is completely determined by the statistical
 
 In the simulation, we generate n = 71 normally distributed IQ scores with a mean of M (106 by default) and a standard deviation of 15. We then perform a one-sample \emph{t}-test, store the \emph{p}-value, and generate a plot of the \emph{p}-value distribution.
 
-\textbackslash begin\{figure\}
 
-\{\centering \includegraphics[width=1\linewidth]{01-pvalue_files/figure-latex/pdistr1-1}
 
-\}
+\begin{figure}
 
-\textbackslash caption\{Distribution of \emph{p}-values when power = 50\%.\}\label{fig:pdistr1}
-\textbackslash end\{figure\}
+{\centering \includegraphics[width=1\linewidth]{01-pvalue_files/figure-latex/pdistr1-1} 
+
+}
+
+\caption{Distribution of \emph{p}-values when power = 50\%.}\label{fig:pdistr1}
+\end{figure}
 
 On the x-axis we see \emph{p}-values from 0 to 1 in 20 bars, and on the y-axis we see how frequently these \emph{p}-values were observed. There is a horizontal red dotted line that indicates an alpha of 5\% (located at a frequency of 100.000*0.05 = 5000) -- but you can ignore this line for now. In the title of the graph, the statistical power that is achieved in the simulated studies is given (assuming an alpha of 0.05): The studies have 50\% power.
 
 The simulation result illustrates the \textbf{probability density function} of \emph{p}-values. A probability density function provides the probability that a random variable has a specific value (such as Figure \ref{fig:tdist} of the \emph{t}-distribution). Because the \emph{p}-value is a random variable, we can use it's probability density function to plot the \emph{p}-value distribution \citep{hung_behavior_1997, ulrich_properties_2018}, as in Figure \ref{fig:pdft}. You can vary the sample size, effect size, and alpha level in \href{http://shiny.ieis.tue.nl/d_p_power/}{this online Shiny app}. Increasing the sample size or the effect size will increase the steepness of the \emph{p}-value distribution, which means that the probability to observe small \emph{p}-values increases. The \emph{p}-value distribution is a function of the statistical power of the test.
+
+
 
 \begin{figure}
 
@@ -321,19 +327,21 @@ The simulation result illustrates the \textbf{probability density function} of \
 
 }
 
-\caption{Probability density function for p-values from a two-sided t-test.}\label{fig:pdft}
+\caption{Probability density function for \emph{p}-values from a two-sided \emph{t}-test.}\label{fig:pdft}
 \end{figure}
 
 When there is no true effect, \emph{p}-values are \textbf{uniformly distributed}. This means that every \emph{p}-value is equally likely to be observed when the null hypothesis is true. In other words, when there is no true effect, a \emph{p}-value of 0.08 is just as likely as a \emph{p}-value of 0.98. I remember thinking this was very counterintuitive when I first learned it (well after completing a PhD), but it makes sense when we think of the goal to guarantee that when \(H_0\) is true, alpha \% of the \emph{p}-values fall below the alpha level. If we set alpha to 0.01, 1\% of the observed \emph{p}-values should fall below 0.01, and if we set alpha to 0.12, 12\% of the observed \emph{p}-values should fall below 0.12. This can only happen if \emph{p}-values are uniformly distributed when the null hypothesis is true.
 
-\textbackslash begin\{figure\}
 
-\{\centering \includegraphics[width=1\linewidth]{01-pvalue_files/figure-latex/pdistr2-1}
 
-\}
+\begin{figure}
 
-\textbackslash caption\{Distribution of \emph{p}-values when power = 50\%.\}\label{fig:pdistr2}
-\textbackslash end\{figure\}
+{\centering \includegraphics[width=1\linewidth]{01-pvalue_files/figure-latex/pdistr2-1} 
+
+}
+
+\caption{Distribution of \emph{p}-values when the null hypothesis is true.}\label{fig:pdistr2}
+\end{figure}
 
 \hypertarget{lindley}{%
 \section{Lindley's paradox}\label{lindley}}
@@ -342,14 +350,16 @@ As the statistical power increases, some \emph{p}-values below 0.05 (e.g., \emph
 
 Yet perhaps surprisingly, observing a \emph{p}-value of 0.04 is more likely when the null hypothesis (\(H_0\)) is true than when the alternative hypothesis (\(H_1\)) is true and we have very high power, as illustrated by the fact that in Figure \ref{fig:paradox} the density of the \emph{p}-value distribution is higher when the null is true, than when a test has 99\% power, at 0.04. Lindley's paradox shows that a \emph{p}-value of for example 0.04 can be statistically significant, but at the same time is evidence for the null hypothesis. From a Neyman-Pearson approach we have made a claim that has a maximum error rate of 5\%, but from a likelihood of Bayesian approach, we should conclude our data supports the null. Lindley's paradox illustrates when different statistical philosophies would reach different conclusions, and why a \emph{p}-value can not directly be interpreted as a measure of evidence, without taking the power of the test into account. Although it is not necessary, researchers might desire to prevent situations where a frequentist rejects the null hypothesis based on \emph{p} \textless{} 0.05, when the evidence in the test favors the null hypothesis over the alternative hypothesis. This can be achieved by lowering the alpha level as a function of the sample size \citep{leamer_specification_1978, maier_justify_2022, good_bayesnon-bayes_1992}, as explained in the chapter on \protect\hyperlink{errorcontrol}{error control}.
 
-\textbackslash begin\{figure\}
 
-\{\centering \includegraphics[width=1\linewidth]{01-pvalue_files/figure-latex/paradox-1}
 
-\}
+\begin{figure}
 
-\textbackslash caption\{\emph{P}-value distribution for 0 (grey horizontal line, 50\% power (black solid curve), and 99\% power (black dotted curve, where \emph{p}-values just below 0.05 are more likely when \(H_0\) is true than when \(H_1\) is true).\}\label{fig:paradox}
-\textbackslash end\{figure\}
+{\centering \includegraphics[width=1\linewidth]{01-pvalue_files/figure-latex/paradox-1} 
+
+}
+
+\caption{\emph{P}-value distribution for 0 (grey horizontal line, 50 percent power (black solid curve), and 99 percent power (black dotted curve, where \emph{p}-values just below 0.05 are more likely when \(H_0\) is true than when \(H_1\) is true).}\label{fig:paradox}
+\end{figure}
 
 \hypertarget{correctly-reporting-and-interpreting-p-values}{%
 \section{\texorpdfstring{Correctly reporting and interpreting \emph{p}-values}{Correctly reporting and interpreting p-values}}\label{correctly-reporting-and-interpreting-p-values}}
@@ -379,13 +389,15 @@ It is useful to distinguish the null hypothesis (the prediction that the mean di
 
 I personally find things become a lot clearer if you plot the null model as mean differences instead of \emph{t}-values. So below, you can see a null model for the mean differences we can expect when compare two groups of 50 observations where the true difference between the two groups is 0, and the standard deviation is in each group is 1. Because the standard deviation is 1, you can also interpret the mean differences as a Cohen's \emph{d} effect size. So this is also the distribution you can expect for a Cohen's \emph{d} of 0, when collecting 50 observations per group in an independent \emph{t}-test.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{01-pvalue_files/figure-latex/fig131-1} 
 
 }
 
-\caption{Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test}\label{fig:fig131}
+\caption{Distribution of observed Cohen's \emph{d} effect sizes when collecting 50 observations per group in an independent \emph{t}-test.}\label{fig:fig131}
 \end{figure}
 
 The first thing to notice is that we expect that the mean of the null model is 0. Looking at the x-axis, we see the plotted distribution is centered on 0. But even if the mean difference in the population is 0 that does not imply every sample we draw from the population will give a mean difference of exactly zero. There is variation around the population value, as a function of the standard deviation and the sample size.
@@ -396,13 +408,15 @@ Let's assume that the null model in the Figure above is true, and that we observ
 
 One reason why I prefer to plot the null model in raw scores instead of \emph{t}-values is that you can see how the null model changes when the sample size increases. When we collect 5000 instead of 50 observations, we see the null model is still centered on 0 -- but in our null model we now expect most values will fall very close around 0.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{01-pvalue_files/figure-latex/fig132-1} 
 
 }
 
-\caption{Distribution of observed Cohen's d effect sizes when collecting 5000 observations per group in an independent t-test when d = 0.}\label{fig:fig132}
+\caption{Distribution of observed Cohen's \emph{d} effect sizes when collecting 5000 observations per group in an independent \emph{t}-test when \emph{d} = 0.}\label{fig:fig132}
 \end{figure}
 
 The distribution is much narrower because the distribution of mean differences is based on the standard error of the difference between means. This value is calculated based on the standard deviation and the sample size, as follows:
@@ -417,16 +431,20 @@ The standard error of the differences between means is thus 0.2 for n = 50 in ea
 
 If we collected n = 5000, and we would again observe a mean difference of 0.5, it should be clear that this same difference is even more surprising than it was when we collected 50 observations. We are now almost ready to address common misconceptions about \emph{p}-values, but before we can do this, we need to introduce a model of the data when the null is not true. If we are not sampling data from a model where the true mean difference is 0, what does our alternative model look like? Some software (such as G*power, see Figure \ref{fig:gpower-screenshot}) will visualize both the null model (red curve) and the alternative model (blue curve) in their output:
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{images/1.3.3} 
 
 }
 
-\caption{Screenshot from G*power software}\label{fig:gpower-screenshot}
+\caption{ref:gpower-screenshotlab}\label{fig:gpower-screenshot}
 \end{figure}
 
 When we do a study, we rarely already know what the true mean difference is (if we already knew, why would we do the study?). But let's assume there is an all-knowing entity. Following Paul Meehl, we will call this all-knowing entity `Omniscient Jones'. Before we collect our sample of 50 observations, Omniscient Jones already knows that the true mean difference in the population is 0.5. Again, we should expect some variation around 0.5 in this alternative model. The figure below shows the expected data pattern when the null hypothesis is true (now indicated by a grey line) and it shows an alternative model, assuming a true mean difference of 0.5 exists in the population (indicated by a black line).
+
+
 
 \begin{figure}
 
@@ -434,10 +452,12 @@ When we do a study, we rarely already know what the true mean difference is (if 
 
 }
 
-\caption{Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test when d = 0.}\label{fig:fig134}
+\caption{Distribution of observed Cohen's \emph{d} effect sizes when collecting 50 observations per group in an independent \emph{t}-test when \emph{d} = 0.}\label{fig:fig134}
 \end{figure}
 
 But Omniscient Jones could have said the true difference was much larger. Let's assume we do another study, but now before we collect our 50 observations, Omniscient Jones tells us that the true mean difference is 1.5. The null model does not change, but the alternative model now moves over to the right.
+
+
 
 You can play around with the alternative and null models in this online app: \url{http://shiny.ieis.tue.nl/d_p_power/}. The app allows you to specify the sample size in each group of an independent \emph{t}-test (from 2 to infinity), the mean difference (from 0 to 2), and the alpha level. In the plot, the red areas visualize Type 1 errors. The blue area visualizes the Type 2 error rate (which we will discuss below). The app also tells you the critical value: There is a vertical line (with n = 50 this line falls at a mean difference of 0.4) and a sentence that says: ``Effects larger than 0.4 will be statistically significant''. Note that the same is true for effects smaller than -0.4, even though there is no second label there, but the app shows the situation for a two-sided independent \emph{t}-test.
 
@@ -462,13 +482,15 @@ Let's take a concrete example that will illustrate why a non-significant result 
 
 Nevertheless, we see that observing a mean difference of 0.35 is not only quite likely given that the true mean difference is 0.5, but observing a mean difference of 0.35 is much more likely under the alternative model, than under the null model. You can see this by comparing the height of the density curve at a difference of 0.35 for the null model, which is approximately 0.5, and the height of the density curve for the alternative model, which is approximately 1.5. See the chapter on \protect\hyperlink{likettest}{likelihoods} for further details.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{01-pvalue_files/figure-latex/fig136-1} 
 
 }
 
-\caption{Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test for d = 0 and d = 0.5 when observing d = 0.35.}\label{fig:fig136}
+\caption{Distribution of observed Cohen's \emph{d} effect sizes when collecting 50 observations per group in an independent t-test for \emph{d} = 0 and \emph{d} = 0.5 when observing \emph{d} = 0.35.}\label{fig:fig136}
 \end{figure}
 
 All the \emph{p}-value tells us is that a mean difference of 0.35 is not extremely surprising, if we assume the null hypothesis is true. There can be many reasons for this. In the real world, where we have no Omniscient Jones to tell us about the true mean difference, it is possible that there is a true effect, as illustrated in the figure above.
@@ -493,18 +515,21 @@ As a simple example of why such extreme statements are incorrect, imagine we gen
 \end{Shaded}
 
 \begin{verbatim}
-##  [1]  1.05554630 -2.27235494  1.10120020 -1.27517026  2.14292556 -1.81700487
-##  [7] -0.77285756 -0.04388653  0.57727029 -0.01386989 -0.37439709  0.16819191
-## [13] -0.30646537 -0.61044684 -0.12299360  1.46441869 -0.71353163 -0.32559382
-## [19] -0.26343061  0.80459724  1.01582133  1.38953240  0.73704367 -1.10922643
-## [25]  0.55215624  0.09303184  1.83147695 -0.07921197 -0.61704926  0.55249771
-## [31]  1.25331058 -0.09503249 -0.73982809  0.81555153  1.59578779 -2.29807107
-## [37]  0.85047940  0.20057231 -2.16356271 -0.58875647  0.21307143 -0.30019351
-## [43]  0.05306980  0.97373570  0.09909685 -0.42043125  1.60192508 -0.27737972
-## [49] -1.50310387  0.15236250
+##  [1]  0.4607006845  0.8451643132  0.6448874040 -1.1900128511 -0.0000148809
+##  [6] -0.8815485341  1.1953127562 -0.8811643808 -2.0057566654  0.1597776625
+## [11] -0.7843683284 -0.8489341458 -0.1369822122  0.8212859958 -0.4897554250
+## [16]  1.3049967140  0.8168562258  0.2805005757  0.3869051798 -0.0189075241
+## [21]  1.4362423269  1.8945976387 -1.5866749171 -1.0715142092 -0.9808272039
+## [26]  1.3715285233  2.7177782459 -0.5486280503  0.5195179902  0.6539742633
+## [31] -1.8928308887 -0.3680439800  0.1392248166 -0.4112260899  0.7437763082
+## [36] -0.0485180030 -0.1892721449  1.2502657280 -0.5588952217  1.2911079047
+## [41] -0.3627621279  0.2722419765 -0.0528833636 -0.3961148185  1.1641803933
+## [46]  1.0230608532  0.6412282184  0.9287245763 -0.1467111927  0.5746347480
 \end{verbatim}
 
 This command generates 50 random observations from a distribution with a mean of 0 and a standard deviation of 1 (in the long run -- the mean and standard deviation will vary in each sample that is generated). Imagine we run this command once, and we observe a mean of 0.5. The figure below visualizes this scenario. We can perform a one-sample \emph{t}-test against 0, and this test tells us, with a \emph{p} \textless{} .05, that the data we have observed is surprisingly different from 0, assuming the random number generator in R functions as it should and generates data with a true mean of 0.
+
+
 
 \begin{figure}
 
@@ -512,7 +537,7 @@ This command generates 50 random observations from a distribution with a mean of
 
 }
 
-\caption{Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test when d = 0 and observing d = 0.5.}\label{fig:fig137}
+\caption{Distribution of observed Cohen's \emph{d} effect sizes when collecting 50 observations per group in an independent \emph{t}-test when \emph{d} = 0 and observing \emph{d} = 0.5.}\label{fig:fig137}
 \end{figure}
 
 The significant \emph{p}-value does not allow us to conclude that the null hypothesis (``the random number generator works'') is false. It is true that the mean of the 50 samples we generated was surprisingly extreme. But a low \emph{p}-value simply tells us that an observation is surprising. We should observe such surprising observations with a low probability when the null hypothesis is true -- but they still happen. Therefore, a significant result does not mean an alternative hypothesis is true -- the result can also be a Type 1 error, and in the example above, Omniscient Jones knows that this is the case.
@@ -541,13 +566,15 @@ Note that nothing about this is a problem with the interpretation of a \emph{p}-
 
 This misinterpretation is one possible explanation of the incorrect statement that a \emph{p}-value is `the probability that the data are observed by chance.' Assume we collect 20 observations, and Omniscient Jones tells us the null hypothesis is true (as in the example above where we generated random numbers in R). This means we are sampling from the distribution in the figure below.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{01-pvalue_files/figure-latex/fig138-1} 
 
 }
 
-\caption{Distribution of observed Cohen's d effect sizes when collecting 20 observations per group in an independent t-test when d = 0.}\label{fig:fig138}
+\caption{Distribution of observed Cohen's \emph{d} effect sizes when collecting 20 observations per group in an independent \emph{t}-test when \emph{d} = 0.}\label{fig:fig138}
 \end{figure}
 
 If this is our reality, it means that 100\% of the time that we observe a significant result, it is a false positive (or Type I error). Thus, 100\% of our significant results are Type 1 errors.
@@ -902,13 +929,15 @@ Not all effects in psychology are additive (we can not combine or transfer an in
 
 This question is conceptually very similar to that asked by Tversky and Kahneman \citeyearpar{tversky_belief_1971} in article `Belief in the law of small numbers':
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{images/belieflawsmallnumers} 
 
 }
 
-\caption{Screenshot of first paragraph in Tversky and Kahneman, 1971}\label{fig:smallnumbers}
+\caption{ref:smallnumberslab}\label{fig:smallnumbers}
 \end{figure}
 
 \begin{quote}
@@ -1087,13 +1116,15 @@ John Ioannides wrote a well known article titled ``Why Most Published Research F
 
 A real-life example where it was useful to understand the concept of the positive predictive value concerned the number of vaccinated and vaccinated people admitted to the hospital with COVID symptoms. In some places equal numbers of patients were vaccinated as unvaccinated. If you do not understand the concept of a positive predictive value, you might believe this reveals that it is equally likely to end up in the hospital, whether you are vaccinated or not. This is incorrect. As Figure \ref{fig:ppvhospital} nicely visualizes, the probability that is person is vaccinated is very high, and the probability that a vaccinated person ends up in the hospital is much lower than the probability that an unvaccinated person ends up in the hospital. However, if we select only those individuals who end up in the hospital, we are computing a probability \emph{conditional} on being in the hospital.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{images/hospitalvaccinated} 
 
 }
 
-\caption{Why there are more vaccinated people in the hospital.}\label{fig:ppvhospital}
+\caption{ref:ppvhospitallab}\label{fig:ppvhospital}
 \end{figure}
 
 It is useful to understand what the probability is that, if you have observed a significant result in an experiment, the result is actually a true positive. In other words, in the long run, how many \emph{true positives} can we expect, among all positive results (both true positives and false positives)? This is known as the Positive Predictive Value (PPV). We can also calculate how many \emph{false positives} we can expect, among all positive results (again, both true positives and false positives). This is known as the \textbf{False Positive Report Probability} \citep{wacholder_assessing_2004}, sometimes also referred to as the False Positive Risk \citep{colquhoun_false_2019}.
@@ -1132,12 +1163,14 @@ People often say something like: ``\emph{Well, we all know 1 in 20 results in th
 
 }
 
-\caption{Quote from the 1830 book by Babbage Reflections on the Decline of Science in England And on Some of Its Causes available <a href="https://www.gutenberg.org/files/1216/1216-h/1216-h.htm">here</a>}\label{fig:cooking}
+\caption{Quote from the 1830 book by Babbage Reflections on the Decline of Science in England And on Some of Its Causes}\label{fig:cooking}
 \end{figure}
 
 If you perform multiple comparisons, there is a risk that the Type 1 error rate inflates. When multiple comparisons are planned, in some cases it is possible to control the Type 1 error rate by lowering the alpha level for each individual analysis. The most widely known approach to control for multiple comparisons is the Bonferroni correction where the alpha level is divided by the number of tests that is performed \citep{dunn_multiple_1961}. However, researchers also often use informal data analysis strategies that inflate the Type 1 error rate. Babbage \citeyearpar{babbage_reflections_1830} already complained about these problematic practices in 1830, and two centuries later, they are still common. Barber \citeyearpar{barber_pitfalls_1976} provides an in depth discussion of a range of approaches, such as eyeballing the data to decide which hypotheses to test (sometimes called `double dipping'), selectively reporting only those analyses that confirm predictions, and ignoring non-significant results, collecting many variables and performing multitudes of tests, or performing sub-group analyses when the planned analysis yields nonsignificant results, or after a nonsignificant prediction derive a new hypothesis that is supported by the data, and test the hypothesis on the data that the hypothesis was derived from (sometimes called HARKing \citep{kerr_harking_1998}). Many researchers admit to having used practices that inflate error rates \citep{fiedler_questionable_2015, john_measuring_2012, van_de_schoot_use_2021, chin_questionable_2021, makel_both_2021}. I myself have used such practices in the first scientific article I published, before I was fully aware of how problematic this was - for an article we published several years later in which we reflect on this, see \citet{jostmann_short_2016}.
 
 For some paradigms, researchers have a lot of flexibility in how to compute the main dependent variable. Elson and colleagues examined 130 publications that use the Competitive Reaction Time Task, in which participants select the duration and intensity of blasts to be delivered to a competitor \citep{elson_press_2014}. The task is used to measure `aggressive behavior' in an ethical manner. To compute the score, researchers can use the duration of a noise blast, the intensity, or a combination therefore, averaged over any number of trials, with several possible transformations of the data. The 130 publications examined reported 157 different quantification strategies in total, showing that most calculations of the dependent variable were unique, used only in a single article. One might wonder why the same authors sometimes use different computations across articles. One possible explanation is that they used this flexibility in the data analysis to find statistically significant results.
+
+
 
 \begin{figure}
 
@@ -1145,11 +1178,13 @@ For some paradigms, researchers have a lot of flexibility in how to compute the 
 
 }
 
-\caption{Plot of publications using CRTT (blue) and unique quantifications of the meaure (red). Figure from FlexibleMeasures.com by <a href="https://www.flexiblemeasures.com/crtt/index.php?menu=quantifications">Malte Elson</a>}\label{fig:flexiblemeasure}
+\caption{Plot of publications using CRTT (blue) and unique quantifications of the measure (red). Figure from FlexibleMeasures.com by Malte Elson}\label{fig:flexiblemeasure}
 \end{figure}
 
 \hypertarget{optionalstopping}{%
 \section{Optional stopping}\label{optionalstopping}}
+
+
 
 \begin{figure}
 
@@ -1157,7 +1192,7 @@ For some paradigms, researchers have a lot of flexibility in how to compute the 
 
 }
 
-\caption{Screenshot a scientific paper explicitly admitting to using optional stopping}\label{fig:optionalstoppingexample}
+\caption{ref:optionalstoppingexamplelab}\label{fig:optionalstoppingexample}
 \end{figure}
 
 One practice that inflates the Type 1 error rate is known as \textbf{optional stopping}. In optional stopping, a researcher repeatedly analyzes the data, continues the data collection when the test result is not statistically significant, but stops when a significant effect is observed. The quote from a published article in the figure above is an example where researchers transparently report they used optional stopping, but more commonly people do not disclose the use of optional stopping in their methods sections. Over the last years, many researchers have learned that optional stopping is problematic. This has in some lead to the general idea that you should not collect data, look at whether the results are significant, and stop data collection when the result is significant, or if not, continue data collection. That is not the correct conclusion, and is an example of becoming too inflexible. The correct approach to collect data in batches, called \textbf{sequential analysis}, has been extensively developed by statisticians, and is used in many medical trials. We will discuss \protect\hyperlink{sequential}{sequential analyses in a dedicated chapter}. The main lesson is that certain research practices can increase the flexibility and efficiency of studies you perform, when done right, but the same practices can inflate the Type 1 error rate when done wrong. Let's therefore try to get a better understanding when we are inflating our Type 1 error rate with optional stopping, and how to do this correctly using sequential analysis.
@@ -1199,16 +1234,20 @@ Copy the code below into R and run it. This script will simulate an ongoing data
 
 For example, in the Figure below, you see the \emph{p}-value plotted on the y-axis (from 0 to 1) and the sample size plotted on the x-axis (from 0 to 200). For this simulation, the true effect size was d = 0, meaning there is no true effect. We can thus only observe true negatives or false positives. As the sample size increases, the \emph{p}-value slowly moves up and down (remember from the chapter on \protect\hyperlink{pvalues}{\emph{p}-values} that when there is no true effect, \emph{p}-values are uniformly distributed). In Figure \ref{fig:animatep}, the \emph{p}-value drops below the grey line (indicating an alpha level 0.05) after collecting 83 participants in each condition, only to drift back upwards to larger \emph{p}-values. From this figure, if becomes clear that the more often we look at the data, and the larger the total sample size, the higher the probability that one of the analyses will yield a p \textless{} \(\alpha\). If resources are infinite, the Type 1 error rate will be 1, and a researcher can always find a significant result through optional stopping.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{images/animatep} 
 
 }
 
-\caption{Simulated *p*-values for each additional observation when the null is true.}\label{fig:animatep}
+\caption{Simulated \emph{p}-values for each additional observation when the null is true.}\label{fig:animatep}
 \end{figure}
 
 When there \emph{is} a true effect, we see that \emph{p}-values also vary, but they will eventually drop to below the alpha level. Due to the variation, we just do not know exactly when. When we perform an a-priori power analysis, we can compute the probability that looking at a specific sample size will yield a significant \emph{p}-value. In Figure \ref{fig:animatep2} we see the same simulation, but now when there is a true but small effect of d = 0.3. With 200 observations per condition, a sensitivity power analysis reveals that we have 85\% power. If we would analyze the data at an interim analysis (e.g., after 150 observations) we would often already find a statistically significant effect (as we would have 74\% power). This illustrates a benefit of sequential analyses, where we control error rates, but can stop early at an interim analysis. Sequential analyses are especially useful in large or expensive studies where there is uncertainty about the true effect size.
+
+
 
 \begin{figure}
 
@@ -1216,7 +1255,7 @@ When there \emph{is} a true effect, we see that \emph{p}-values also vary, but t
 
 }
 
-\caption{Simulated *p*-values for each additional observation when d = 0.3.}\label{fig:animatep2}
+\caption{Simulated \emph{p}-values for each additional observation when d = 0.3.}\label{fig:animatep2}
 \end{figure}
 
 Let's more formally examine the inflation of the Type 1 error rate through optional stopping in a \textbf{simulation study}. Copy the code below into R and run the code. Note that the 50000 simulations (needed to get the error rates reasonably accurate) take some time to run.
@@ -1274,14 +1313,16 @@ So how much does optional stopping inflate the Type 1 error rate? And which \emp
 
 Start by running the simulation without changing any values, so simulating 100 participants in each condition, looking 5 times at your data, with an alpha of 0.05. Note the 50.000 simulations take a while! You should see something similar to Figure \ref{fig:optionalstopfig} below (which is based on 500.000 simulations to make the pattern very clear).
 
-\textbackslash begin\{figure\}
 
-\{\centering \includegraphics[width=1\linewidth]{02-errorcontrol_files/figure-latex/optionalstopfig-1}
 
-\}
+\begin{figure}
 
-\textbackslash caption\{Simulation of 500000 studies performing 5 interim analyses at an alpha level of 5\%\}\label{fig:optionalstopfig}
-\textbackslash end\{figure\}
+{\centering \includegraphics[width=1\linewidth]{02-errorcontrol_files/figure-latex/optionalstopfig-1} 
+
+}
+
+\caption{Simulation of 500000 studies performing 5 interim analyses at an alpha level of 5\%}\label{fig:optionalstopfig}
+\end{figure}
 
 We see 100 bars, one for each \% (so one for all \emph{p}-values between 0.00 and 0.01, one for \emph{p}-values between 0.01 and 0.02, etc.). There is a horizontal line that indicates where all \emph{p}-values should fall, is they would be uniformly distributed (as they should be when there is no true effect, as explained in the chapter on \protect\hyperlink{pvalues}{\emph{p}-values}).
 
@@ -1329,9 +1370,11 @@ The reasoning here is that a design that has 70\% power for the smallest effect 
 
 One should also carefully reflect on the choice of the alpha level when an experiment achieves very high statistical power for all effect sizes that are considered meaningful. If a study has 99\% power for effect sizes of interest, and thus a 1\% Type 2 error rate, but uses the default 5\% alpha level, it also suffers from a lack of balance, and the use of a lower alpha level would lead to a more balanced decision, and increase the severity of the test.
 
-The second reason is most relevant for large data sets, and is related to \protect\hyperlink{lindley}{Lindley's paradox}. As the statistical power increases, some \emph{p}-values below 0.05 (e.g., \emph{p} = 0.04) can be more likely when there is \emph{no} effect than when there \emph{is} an effect. To prevent situations where a frequentist rejects the null hypothesis based on \emph{p} \textless{} 0.05, when the evidence in the test favors the null hypothesis over the alternative hypothesis, it is recommended to lower the alpha level as a function of the sample size. The need to do so is discussed by \citet{leamer_specification_1978}, who writes ``The rule of thumb quite popular now, that is, setting the significance level arbitrarily to .05, is shown to be deficient in the sense that from every reasonable viewpoint the significance level should be a decreasing function of sample size.'' The idea of this approach is to reduce the alpha level such that a Bayes factor or likelihood computed for the a significant results would never be evidence \emph{for} the null hypothesis (for an online Shiny app to perform such calculations, see \href{https://shiny.ieis.tue.nl/JustifyAlpha/}{here} or the app below).
+The second reason is most relevant for large data sets, and is related to \protect\hyperlink{lindley}{Lindley's paradox}. As the statistical power increases, some \emph{p}-values below 0.05 (e.g., \emph{p} = 0.04) can be more likely when there is \emph{no} effect than when there \emph{is} an effect. To prevent situations where a frequentist rejects the null hypothesis based on \emph{p} \textless{} 0.05, when the evidence in the test favors the null hypothesis over the alternative hypothesis, it is recommended to lower the alpha level as a function of the sample size. The need to do so is discussed by \citet{leamer_specification_1978}, who writes ``The rule of thumb quite popular now, that is, setting the significance level arbitrarily to .05, is shown to be deficient in the sense that from every reasonable viewpoint the significance level should be a decreasing function of sample size.'' The idea of this approach is to reduce the alpha level such that a Bayes factor or likelihood computed for the a significant results would never be evidence \emph{for} the null hypothesis (for an online Shiny app to perform such calculations, see \href{https://shiny.ieis.tue.nl/JustifyAlpha/}{here}.
 
-\begin{center}\href{https://shiny.ieis.tue.nl/JustifyAlpha/}{\includegraphics[width=1\linewidth]{02-errorcontrol_files/figure-latex/unnamed-chunk-5-1} }\end{center}
+\begin{verbatim}
+## NULL
+\end{verbatim}
 
 \hypertarget{why-you-dont-need-to-adjust-your-alpha-level-for-all-tests-youll-do-in-your-lifetime.}{%
 \section{Why you don't need to adjust your alpha level for all tests you'll do in your lifetime.}\label{why-you-dont-need-to-adjust-your-alpha-level-for-all-tests-youll-do-in-your-lifetime.}}
@@ -1351,13 +1394,15 @@ So far we have largely focused on Type 1 error control. As was clear from Figure
 
 In Figure \ref{fig:powerd} we see the expected distribution of observed standardized effect sizes (Cohen's \emph{d}) for an independent \emph{t}-test with 50 observations in each condition. The bell-shaped curve on the left represents the expectations if the null is true, and the red areas in the tail represent Type 1 errors. The bell-shaped curve on the right represents the expectations if the alternative hypothesis is true, and d= 0.5. The vertical line at d = 0.4 represents the \textbf{critical effect size}. With this sample size and an alpha level of 0.05, observed effect sizes smaller than d = 0.4 will not be statistically significant. If there is a true effect, these outcomes will be Type 2 errors, illustrated by the blue shaded area. The remainder of the curve reflects true positives, when there is a true effect, and the observed effect sizes is statistically significant. The power of the test is the percentages of the distribution on the right that is larger than the critical value.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{02-errorcontrol_files/figure-latex/powerd-1} 
 
 }
 
-\caption{Distribution of d = 0 and d = 0.5 for an independent *t*-test with n = 50.}\label{fig:powerd}
+\caption{Distribution of \emph{d} = 0 and \emph{d} = 0.5 for an independent \emph{t}-test with \emph{n} = 50.}\label{fig:powerd}
 \end{figure}
 
 The issue of Type 2 error control will be discussed in more detail in the chapter on sample size justification. Even thought the topic of Type 2 error control is only briefly discussed here, it is at least as important as Type 1 error control. An informative study should have a high probability of observing an effect if there is an effect. Indeed, the default recommendation to aim for 80\% power leaves a surprisingly large (20\%) probability of a Type 2 error. If a researcher only cares about not making a decision error, but the researcher does not care about whether this decision error is a false positive or a false negative, an argument could be made that Type 1 and Type 2 errors are weighed equally. Therefore, desiging a study with balanced error rates (e.g., a 5\% Type 1 error and 95\% power) would make sense.
@@ -1681,6 +1726,8 @@ Let's assume we don't have any other information about this coin. (You might bel
 
 When computing a probability, we assume the model to be known, and compute the probability of observing a specific outcome. But based on the data we have observed, we can ask the reversed question: which value of \emph{p} will make the observed data \textbf{most likely}? When computing a likelihood, we assume the data to be known, and make an inference about the most likely parameter for the model. To answer this question, we can plug in the values for \emph{k} and \emph{n} and find which value of \emph{p} maximizes this function. \href{https://en.wikipedia.org/wiki/Ronald_Fisher}{Ronald Fisher} called this maximum likelihood estimation (this is considered one of the most important developments in 20th century statistics, and Fisher published his first paper on this in 1912 as a third year undergraduate when he was 22 \citep{aldrich_r_1997}). Since \emph{p} can be any value between 0 and 1, we can plot all values in what is known as the \emph{likelihood function}, so we can see the maximum more easily.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{03-likelihoods_files/figure-latex/like1-1} 
@@ -1698,6 +1745,8 @@ Likelihoods are an example of statistical inference: We have observed some data,
 
 When a mix of heads and tails has been observed, the likelihood curve rises and falls, as it is not possible that the coin can only come up heads or tails (after all, both have already been pbserved). If only heads of 0 heads are observed. When we plot the likelihood curves for 0 heads in 10 coin flips, the likelihood curve looks like Figure \ref{fig:like2}.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{03-likelihoods_files/figure-latex/like2-1} 
@@ -1708,6 +1757,8 @@ When a mix of heads and tails has been observed, the likelihood curve rises and 
 \end{figure}
 
 Likelihoods can easily be combined. Imagine we have two people flipping the same coin independently. One person observes eight heads out of 10 flips, and the other observes 4 heads out of 10 flips. You might believe that this should give the same likelihood curve as one person flipping a coin 20 times, and observing 12 heads, and indeed, it does. In the plot below, all likelihood curves are standardized by dividing the curve by the maximum of each likelihood curve. This is why all curves now have a maximum of 1, and we can more easily compare different likelihood curves.
+
+
 
 \begin{figure}
 
@@ -1721,6 +1772,8 @@ Likelihoods can easily be combined. Imagine we have two people flipping the same
 The curve on left is for 4 out of 10 heads, the one on the right is for 8 out of 10 heads. The black dotted curve in the middle is for 12 out of 20 heads. The grey curve, exactly underneath the 12 out of 20 heads curve, is calculated by multiplying the likelihood curves: L(p\_combined) \emph{=} L(p = 0.8) * L(p = 0.4).
 
 In Figure \ref{fig:like4} we see likelihood curves for 10, 100, and 1000 coin flips, which yield 5, 50, and 500 heads, respectively. The likelihood curves are again standardized to make them more easily comparable. As the sample size increases, the curves become more narrow (the dashed line is for \emph{n} = 10, the dotted line is for \emph{n} = 100, and the solid line is for \emph{n} = 1000). This means that as the sample size increases, our data become increasingly less likely under population parameters further removed from the observed number of heads. In other words, we have collected increasingly strong evidence for \emph{p} = 0.5, compared to most other possible population parameters.
+
+
 
 \begin{figure}
 
@@ -1745,18 +1798,22 @@ We can calculate the likelihood ratio:
 Which is 0.302/0.044 = 6.87. In the plot, both circles show the points on
 the likelihood curve for L(\emph{p} = 0.5) and L(\emph{p} = 0.8).
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{03-likelihoods_files/figure-latex/like5-1} 
 
 }
 
-\caption{Computing a likelihood ratio for *p* = 0.5 relative to *p* = 0.8 when observing *p* = 0.8.}\label{fig:like5}
+\caption{Computing a likelihood ratio for \emph{p} = 0.5 relative to \emph{p} = 0.8 when observing \emph{p} = 0.8.}\label{fig:like5}
 \end{figure}
 
 We can subjectively interpret this likelihood ratio, which tells us an unfair coin that our observed data is 6.87 times more likely under the hypothesis that this coin will turn up heads 80\% of the time, than under the hypothesis that this is a fair coin. How convincing is this? Let's round the likelihood ratio to 7, and imagine two bags of marbles. One bag contains 7 blue marbles. The second contains 7 marbles, each one a different color of the rainbow, so violet, indigo, blue, green, yellow, orange, and red. Someone randomly picks one of the two bags, draws a marble, and shows it to you. The marble is blue: How certain are you this marble came from the bag with all blue marbles, compared to the bag with rainbow coloured marbles? This is how strong the likelihood ratio tells us to believe our data were generated by an unfair coin that turns up heads 80\% of the time, relative to a fair coin, given that we have observed 8 heads in 10 tosses. After this explanation intended to not make you rely too much on benchmarks, it might still be useful to know that \citet{royall_statistical_1997} considered likelihood ratios of 8 moderately strong evidence, and likelihood ratios of 32 strong evidence.
 
 Note that likelihood ratios give us the relative evidence for one specified hypothesis, over another specified hypothesis. The likelihood ratio can be calculated for any two hypothesized values. For example, in Figure \ref{fig:like6} below, the likelihood ratio is calculated that compares the hypothesis for a fair coin (\emph{p} = 0.5) with the alternative hypothesis that the coin comes up heads 80\% of the time (\emph{p} = 0.8), when we have observed 4 heads out of 10 coin flips. We see that the observed data are 0.2050/0.0055=37.25 times more likely (ignoring rounding differences -- and try to calculate these numbers by hand using the formula provided earlier) under the hypothesis that this is a fair coin is than under the hypothesis that this is a coin that turns up heads 80\% of the time.
+
+
 
 \begin{figure}
 
@@ -1764,12 +1821,14 @@ Note that likelihood ratios give us the relative evidence for one specified hypo
 
 }
 
-\caption{Computing a likelihood ratio for *p* = 0.5 relative to *p* = 0.8 when observing *p* = 0.4.}\label{fig:like6}
+\caption{Computing a likelihood ratio for \emph{p} = 0.5 relative to \emph{p} = 0.8 when observing \emph{p} = 0.4.}\label{fig:like6}
 \end{figure}
 
 A likelihood ratio of 1 means the data are equally likely under both hypotheses. Values further away from 1 indicate that the data are more likely under one hypothesis than the other. The ratio can be expressed in favor of one hypothesis over the other (for example L(\emph{p} = 0.5)/L(\emph{p} = 0.8) or vice versa (L(\emph{p} = 0.8)/L(\emph{p} = 0.5). This means the likelihood ratio of 37.25 for \(H_0\) relative to \(H_1\) is equivalent to a likelihood ratio of 1/37.25 = 0.02685 for \(H_1\) relative to \(H_0\). Likelihood ratios range from 0 to infinity, and the closer to zero or infinity, the stronger the relative evidence for one hypothesis over the other. We will see in the chapter on \protect\hyperlink{bayes}{Bayesian statistics} that likelihood ratios are in this sense very similar (and a special case of) a Bayes Factor.
 
 Likelihoods are relative evidence. Just because the data are more likely under one possible value of \emph{p} than another value of \emph{p} doesn't mean that the data have come from either of these two distributions. Other values might generate even higher likelihood values. For example, consider the situation where we flip a coin 100 times, and observe 50 heads. We compare \emph{p} = 0.3 versus \emph{p} = 0.8, and find that the likelihood ratio is 803462, implying that there is 803461 times more evidence in the data for \emph{p} = 0.3 than for \emph{p} = 0.8. That might sound pretty conclusive evidence for \emph{p} = 0.3. But it is only relative evidence for \emph{p} = 0.3 compared to \emph{p} = 0.8. If we look at the likelihood function, we clearly see that, not surprisingly, \emph{p} = 0.5 is the value that maximizes the likelihood function. Just because one hypothesis is more likely than another hypothesis, does not mean that there isn't a third hypothesis that is even more likely.
+
+
 
 \begin{figure}
 
@@ -1777,7 +1836,7 @@ Likelihoods are relative evidence. Just because the data are more likely under o
 
 }
 
-\caption{Computing a likelihood ratio for *p* = 0.3 relative to *p* = 0.8 when observing *p* = 0.5 in 100 coin flips.}\label{fig:like7}
+\caption{Computing a likelihood ratio for \emph{p} = 0.3 relative to \emph{p} = 0.8 when observing \emph{p} = 0.5 in 100 coin flips.}\label{fig:like7}
 \end{figure}
 
 \hypertarget{likelihood-of-mixed-results-in-sets-of-studies}{%
@@ -1793,14 +1852,16 @@ To calculate the likelihood assuming \(H_1\) is true, we need to make an assumpt
 
 Both likelihoods at \emph{p} = .05 and \emph{p} = .80 are highlighted in Figure \ref{fig:like8} by the circles on the dotted vertical lines.We can use the likelihood of the data assuming \(H_0\) or \(H_1\) is true to calculate the likelihood ratio, 0.384/0.007 = 53.89, which tells us the observed outcome of exactly two significant results out of three studies is 53.89 times more likely when \(H_1\) is true and studies had 80\% power, than when \(H_0\) is true and studies a carefully controlled 5\% Type 1 error rate. Likelihood ratios of 8 and 32 have been proposed as benchmarks of moderately strong and strong evidence, respectively \citep{royall_statistical_1997}, which implies that finding two significant results out of the three studies could be considered strong evidence for \(H_1\), assuming 80\% power. A Shiny app to perform these calculations is available \href{https://shiny.ieis.tue.nl/mixed_results_likelihood/}{here}.
 
-\textbackslash begin\{figure\}
 
-\{\centering \includegraphics[width=1\linewidth]{03-likelihoods_files/figure-latex/like8-1}
 
-\}
+\begin{figure}
 
-\textbackslash caption\{Computing a likelihood ratio for 2 out of three significant results, assuming an alpha of 5\% and 80\% power.\}\label{fig:like8}
-\textbackslash end\{figure\}
+{\centering \includegraphics[width=1\linewidth]{03-likelihoods_files/figure-latex/like8-1} 
+
+}
+
+\caption{Computing a likelihood ratio for 2 out of three significant results, assuming an alpha of 5\% and 80\% power.}\label{fig:like8}
+\end{figure}
 
 In sets of studies, the likelihood ratio in favor of \(H_1\) versus H0 after observing a mix of significant and nonsignificant findings can become surprisingly large. Even though the evidence appears to be mixed, there is actually strong evidence in favor of a true effect. For example, when a researcher performs six studies with 80\% power and a 5\% a level and finds three significant outcomes and three nonsignificant outcomes, the cumulative likelihood ratio is convincingly large at 38-to-1 in favor of \(H_1\) to consider the set of studies strong evidence for a true effect. Intuitively, researchers
 might not feel convinced by a set of studies where three out of six results were statistically significant. But if we do the math, we see that such a set of studies can be very strong evidence in favor of a true effect. A better understanding of these probabilities might be an important step in mitigating the negative effects of publication bias.
@@ -1812,13 +1873,15 @@ Hopefully, researchers become more inclined to submit nonsignificant findings fo
 
 So far we have computed likelihoods for binomial probabilities, but likelihoods can be computed for any statistical model \citep{glover_likelihood_2004, pawitan_all_2001}. For example, we can compute the relative likelihood of observing a \emph{t}-value under the null and an alternative hypothesis (Figure \ref{fig:like9}). Of course, the observed data is most likely if we assume the observed effect equals the true effect, but examining the likelihood reveals that there are many alternative hypotheses that are relatively more likely than the null hypothesis. This also holds when observing nonsignificant results, which can be more likely under an alternative hypothesis of interest, than under the null hypothesis. This is a reason why it is incorrect to say that there is no effect when \emph{p} \textgreater{} \(\alpha\) (see \protect\hyperlink{misconception1}{\emph{p}-value misconception 1}).
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{03-likelihoods_files/figure-latex/like9-1} 
 
 }
 
-\caption{Likelihood ratio for observed *t*-value under H0 and H1.}\label{fig:like9}
+\caption{Likelihood ratio for observed \emph{t}-value under H0 and H1.}\label{fig:like9}
 \end{figure}
 
 \hypertarget{test-yourself-2}{%
@@ -2062,6 +2125,8 @@ A binomial probability lies between 0 and 1. You could draw any probability dens
 
 where \emph{B(\(\alpha\), \(\beta\))} is the beta function. Understanding the mathematical basis of this function is beyond the scope of this chapter, but you can read more on \href{https://en.wikipedia.org/wiki/Beta_distribution}{Wikipedia} or Kruschke's book on Doing Bayesian Data Analysis \citep{kruschke_doing_2014}. The beta-prior for a variety of values for \(\alpha\) and \(\beta\) can be seen in the figure below.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{04-bayes_files/figure-latex/bayes1-1} 
@@ -2092,6 +2157,8 @@ Thus, the posterior distribution for the newborn is a Beta(11,11) distribution. 
 
 Take a look at the Figure below. Given 10 heads out of 20 coin flips, we see the prior distribution of the newborn (the horizontal grey line), the likelihood (the blue dotted line) and the posterior (the black line).
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{04-bayes_files/figure-latex/bayes2-1} 
@@ -2108,6 +2175,8 @@ For the true believer the posterior distribution is not centered on the maximum 
 
 Now that we have a distribution for the prior, and a distribution for the posterior, we can see in the graphs below for which values of \emph{p} our belief has increased. Everywhere where the black line (of the posterior) is higher than the grey line (of the prior) our belief in that \emph{p} has increased.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{04-bayes_files/figure-latex/bayes4-1} 
@@ -2123,6 +2192,8 @@ BF10 = Beta(\emph{p} = 0.5, 11, 11)/Beta(\emph{p} = 0.5, 1, 1) = 3.70/1 = 3.70
 
 You can check this in an \href{http://pcl.missouri.edu/bf-binomial}{online Bayes Factor calculator} \citep{rouder_bayesian_2009}. At successes, fill in 10, at trials, fill in 20. We want to calculate the Bayes Factor for the point null value of \emph{p} = 0.5, so fill in 0.5. The \(\alpha\) and \(\beta\) for the prior are both 1, given the newborns prior of Beta(1,1). Clicking `submit query' will give you the Bayes factor of 3.70.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{images/binombayesonline} 
@@ -2134,6 +2205,8 @@ You can check this in an \href{http://pcl.missouri.edu/bf-binomial}{online Bayes
 
 We can calculate and plot the Bayes Factor, and show the prior (grey), likelihood (dashed blue) and posterior (black). For the example of 20 flips, 10 heads, and the newborn prior, the plot looks like this:
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{04-bayes_files/figure-latex/bayes6-1} 
@@ -2144,6 +2217,8 @@ We can calculate and plot the Bayes Factor, and show the prior (grey), likelihoo
 \end{figure}
 
 We see that for the newborn, \emph{p} = 0.5 has become more probable, but so has \emph{p} = 0.4. Now let's assume the strong skeptic, who believes the coin is fair with a prior of Beta(100, 100), buys the coin and flips it 100 times. Surprisingly, the coin comes up heads 90 out of 100 flips. The plot of the prior, likelihood, and posterior now looks much more extreme, because we had a very informed prior, and extremely different data. We see the grey prior distribution, the dashed blue likelihood based on the data, and the posterior distribution in black. The Bayes Factor of 0 represents the substantial drop in belief that the coin is fair -- indeed, this now seems an untenable hypothesis, even for the strong skeptic. It shows how data can update your belief. Where a newborn would now completely believe that the true \emph{p} for the coin is somewhere around 0.9, the strong skeptic has more reason to believe the \emph{p} is around 0.65, due to the strong prior conviction that the coin is fair. Given enough data, even this strong skeptic will become convinced that the coin will return heads most of the time as well.
+
+
 
 \begin{figure}
 
@@ -2170,6 +2245,8 @@ We can also calculate a \textbf{credible interval} around the mean, which is a B
 A credible interval and a confidence interval are the same, when a uniform prior (e.g., Beta(1,1)) is used. In this case, credible interval is numerically identical to the confidence interval. Only the interpretation differs. Whenever an informed prior is used, the credible interval and confidence interval differ. If the chosen prior is not representative of the truth, the credible interval will not be representative of the truth, but it is always a correct formalization of your beliefs. For a single confidence interval, the probability that it contains the true population parameter is either 0 or 1. Only in the long run will 95\% of confidence intervals contain the true population parameter. These are important differences between Bayesian credible intervals and Frequentist confidence intervals to keep in mind.
 
 We can plot the mean for the posterior when 10 heads out of 20 coin flips are observed, given a uniform prior.
+
+
 
 \begin{figure}
 
@@ -2458,6 +2535,8 @@ Meehl \citeyearpar{meehl_appraising_1990} reminds us of the important distinctio
 
 We never test a theory in isolation, but always include auxiliary hypotheses about the measures and instruments that are used in a study, conditions realized in the experiment, to the \textbf{ceteris paribus} clause that assumes all other things are equal. Therefore, it is never clear if a failure to corroborate a theoretical prediction should be blamed on the theory or the auxiliary hypotheses. To generate reliable explanatory theories, researchers therefore have to perform lines of research in which auxiliary hypotheses are systematically tested \citep{uygun_tunc_falsificationist_2022}.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{images/meehl1990} 
@@ -2525,6 +2604,8 @@ Historically, researchers have often been interested in testing hypotheses to ex
 
 In order to be impressed when a prediction is confirmed, the prediction must be able to be wrong. In other words, a theoretical prediction needs to be falsifiable. If our predictions concerned the presence of absence of clearly observable entities (e.g., the existence of a black swan) it is relatively straightforward to divide all possible states of the world into a set that is predicted by our theory (e.g., all swans are white), and a set that is not predicted by our theory (e.g., swans can have other colors than white). However, many scientific questions concern probabilistic events where single observations contain noise due to random variation -- rats have a certain probability to develop a tumor, people have a certain probability to buy a product, or particles have a certain probability to appear after a collision. If we want to forbid certain outcomes of our test when measuring probabilistic events, we can divide the states of the world based on the probability that some result will be observed.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{images/blackwhite} 
@@ -2549,18 +2630,22 @@ Interestingly, there is quite some disagreement about whether the statistical qu
 
 First, it is clear that a directional test provides a clear advantage in statistical power. As Figure \ref{fig:onesidedtwosidedratio} shows, the ratio of the sample for a non-directional versus a directional test means that approximately 80\% of the sample size of a non-directional test is required to achieve the same power in a directional test (the exact benefit depends on the power and effect size, as seen in the figure below).
 
-\textbackslash begin\{figure\}
 
-\{\centering \includegraphics[width=1\linewidth]{05-questions_files/figure-latex/onesidedtwosidedratio-1}
 
-\}
+\begin{figure}
 
-\textbackslash caption\{Ratio of the required sample size for a one-sample \emph{t}-test for a non-directional/directional test to achieve 50\%, 80\% or 95\% power.\}\label{fig:onesidedtwosidedratio}
-\textbackslash end\{figure\}
+{\centering \includegraphics[width=1\linewidth]{05-questions_files/figure-latex/onesidedtwosidedratio-1} 
+
+}
+
+\caption{Ratio of the required sample size for a one-sample \emph{t}-test for a non-directional/directional test to achieve 50\%, 80\% or 95\% power.}\label{fig:onesidedtwosidedratio}
+\end{figure}
 
 Because in a directional test the alpha level is used for only one tail of the distribution, the critical test value is lower, and all else equal, power is higher. This reduction of the critical value required to declare a statistically significant effect has been criticized because it leads to weaker evidence. For example, \citet{schulz_sample_2005} write: ``Using a one-sided test in sample size calculations to reduce required sample sizes stretches credulity.''. This is trivially true: Any change to the design of a study that requires a smaller sample size reduces the strength of the evidence you collect, since the strength of evidence is inherently tied to the total number of observations. However, it conflates two types of statistical philosophies, namely a likelihoodist approach, which aims to quantify relative evidence, and a frequentist approach, which aims to provide a procedure to make claims with a maximum error rate. There is a difference between designing a study that yields a certain level of evidence, and a study that adequately controls the error rates when performing a hypothesis test. If you desire a specific level of evidence, design a study that provides this desired level of evidence. If you desire to control the error rate of claims, then that error rate is at most 5\% as long as the alpha level is 5\%, regardless of whether a one-sided or two-sided test is performed.
 
 Note that there is a subtle distinction between a directional and a one-sided test \citep{baguley_serious_2012}. Although the two terms overlap when performing a \emph{t}-test, they do not overlap for an \emph{F}-test. The \emph{F}-value and the \emph{t}-value are related: \(t^2 = F\). This holds as long as the df1 = 1 (e.g., F(1, 100), or in other words as long as only two groups are compared. We can see in Figure \ref{fig:fandt} that the two distributions touch at t = 1 (as 1\^{}2 = 1), and that the \emph{F}-test has no negative values due to the squared nature of the distribution. The critical \emph{t}-value, squared, of a non-directional \emph{t}-test with a 5\% error rate equals the critical \emph{F}-value for an \emph{F}-test, which is always one-sided, with a 5\% error rate. Due to the `squared' nature of an \emph{F}-test, an \emph{F}-test is always non-directional. You can logically not halve the \emph{p}-value in an \emph{F}-test to perform a `one-sided' test, because you can't have a directional \emph{F}-test. When comparing two groups, you can use a \emph{t}-test instead of an \emph{F}-test, which can be directional.
+
+
 
 \begin{figure}
 
@@ -2658,13 +2743,15 @@ minute differences will turn out to be statistically significant (we will look a
 \hypertarget{the-hungry-judges-study}{%
 \section{The Hungry Judges study}\label{the-hungry-judges-study}}
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{images/hungryjudges} 
 
 }
 
-\caption{Proportion of rulings in favor of the prisoners by ordinal position. Circled points indicate the first decision in each of the three decision sessions; tick marks on x axis denote every third case; dotted line denotes food break. From Danziger, S., Levav, J., Avnaim-Pesso, L. (2011). Extraneous factors in judicial decisions. Proceedings of the National Academy of Sciences, 108(17), 6889–6892. https://doi.org/10.1073/PNAS.1018033108}\label{fig:hungryjudges}
+\caption{Proportion of rulings in favor of the prisoners by ordinal position. Circled points indicate the first decision in each of the three decision sessions; tick marks on x axis denote every third case; dotted line denotes food break. From Danziger, S., Levav, J., Avnaim-Pesso, L. (2011). Extraneous factors in judicial decisions. Proceedings of the National Academy of Sciences, 108(17), 6889--6892. \url{https://doi.org/10.1073/PNAS.1018033108}}\label{fig:hungryjudges}
 \end{figure}
 
 We see a graphical representation of the proportion of favorable parole decisions that real-life judges are making as a function of the number of cases they process across the day in Figure \ref{fig:hungryjudges}. This study is mentioned in many popular science books as an example of a finding that shows that people do not always make rational decisions, but that ``judicial rulings can be swayed by extraneous variables that should have no bearing on legal decisions'' \citep{danziger_extraneous_2011}. We see that early on in the day, judges start by giving about 65\% of people parole, which basically means, ``All right, you can go back into society.'' But then very quickly, the number of favorable decisions decreases to basically zero. After a quick break which, as the authors say, ``may replenish mental resources by providing rest, improving mood, or by increasing glucose levels in the body'' the parole decisions are back up at 65\%, and then again quickly drop down to basically zero. They take another break, the percentage of positive decisions is back up to 65\%, only to drop again over the course of the day.
@@ -2681,6 +2768,8 @@ We see how examining the size of an effect can lead us to identify findings that
 Effect sizes can be grouped into two families \citep{rosenthal_contrasts_2000}: The \textbf{d family} (based on standardized mean differences) and the \textbf{r family} (based on measures of strength of association). Conceptually, the \emph{d} family effect sizes are based on a comparison between the difference between the observations, divided by the standard deviation of these observations. This means that a Cohen's \emph{d} = 1 means the standardized difference between two groups equals one standard deviation. The size of the effect in the Facebook study above was quantified with Cohen's \emph{d}. Cohen's \emph{d} (the \emph{d} is \href{https://blog.apastyle.org/apastyle/2011/08/the-grammar-of-mathematics-writing-about-variables.html}{italicized}) is used to describe the standardized mean difference of an effect. This value can be used to compare effects across studies, even when the dependent variables are measured with different scales, for example when one study uses 7-point scales to measure dependent variables, while the other study uses 9-point scales. We can even compare effect sizes across completely different measures of the same construct, one study uses a self-report measure, and another study uses a physiological measure. Although we can compare effect sizes across different measurements, this does not mean they are comparable, as we will discuss in more detail in the section on \protect\hyperlink{heterogeneity}{heterogeneity} in the chapter on meta-analysis.
 
 Cohen's \emph{d} ranges from minus infinity to infinity (although in practice, the mean difference in the positive or negative direction that can be observed will never be infinite), with the value of 0 indicating there is no effect. Cohen \citeyearpar{cohen_statistical_1988} uses subscripts to distinguish different versions of Cohen's \emph{d}, a practice I will follow because it prevents confusion (without any specification, Cohen's \emph{d} denotes the entire family of effect sizes). Cohen refers to the standardized mean difference between two groups of independent observations for the \emph{sample} as \(d_s\). Before we get into the statistical details, let's first visualize what a Cohen's \emph{d} of 0.001 (as was found in the Facebook study) means. We will use a visualization from \url{http://rpsychologist.com/d3/cohend/}, a website made by Kristoffer Magnusson, that allows you to visualize the differences between two measurements (such as the increase in negative words used by the Facebook user when the number of positive words on the timeline was reduced). The visualization actually shows two distributions, one dark blue and one light blue, but they overlap so much that the tiny difference in distributions is not visible (click the settings button to change the slider settings, and set the step size to 0.001 to reproduce the figure below in the online app).
+
+
 
 \begin{figure}
 
@@ -2711,6 +2800,8 @@ You can calculate Cohen's \emph{d} for independent groups from the independent s
 
 A \emph{d} = 0.001 is an extremely tiny effect, so let's explore an effect size that is a bit more representative of what you would read in the literature. In the meta-meta-analysis mentioned earlier, the median effect size in published studies included in meta-analyses in the psychological literature is \emph{d} = 0.43 \citep{richard_one_2003}. To get a feeling for this effect size, let's use the online app and set the effect size to \emph{d} = 0.43.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{images/rpsychd2} 
@@ -2721,6 +2812,8 @@ A \emph{d} = 0.001 is an extremely tiny effect, so let's explore an effect size 
 \end{figure}
 
 One example of a meta-analytic effect size in the meta-meta-analysis that is exactly \(d_s\) = 0.43 is the finding that people in a group work less hard to achieve a goal than people who work individually, called \emph{social loafing}. This is an effect that is large enough that we notice it in daily life. Yet, if we look at the overlap in the two distributions, we see that the amount of effort people put in overlaps considerably between the two conditions (in the case of social loafing, working individually versus working in a group). We see in Figure \ref{fig:rpsychd2} that the \textbf{probability of superiority}, or the probability that if we randomly draw one person from the group condition and one person from the individual condition, the person working in a group puts in less effort, is only 61.9\%. This interpretation of differences between groups is also called the \textbf{common language effect size} \citep{mcgraw_common_1992}.
+
+
 
 \begin{figure}
 
@@ -2762,6 +2855,8 @@ To not just \emph{report} but \emph{interpret} an effect size, nothing is gained
 
 The \emph{r} family effect sizes are based on the proportion of variance that is explained by group membership (e.g., a correlation of \emph{r} = 0.5 indicates 25\% of the variance (\(r^2\) is explained by the difference between groups). You might remember that \emph{r} is used to refer to a correlation. The correlation of two continuous variables can range from 0 (completely unrelated) to 1 (perfect positive relationship) or -1 (perfect negative relationship). To get a better feel correlations, play the game \href{http://guessthecorrelation.com/}{guess the correlation} where you will see a scatterplot, and have to guess the correlation between the variables (see figure \ref{fig:guesscorrelation}.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{images/guesscorrelation} 
@@ -2776,6 +2871,8 @@ The \emph{r} family effect sizes are calculated from the sum of squares (the dif
 \[r = \frac{d_s}{\sqrt{{d_s^{2}}^{+}\frac{N^{2} - 2N}{n_{1} \times n_{2}}}}\]
 
 \emph{N} is the total sample size of both groups, whereas \(n_1\) and \(n_2\) are the sample sizes of the individual groups you are comparing (it is common to use capital \(N\) for the total sample size, and lowercase n for sample sizes per group). You can go to \url{http://rpsychologist.com/d3/correlation/} to look at a good visualization of the proportion of variance that is explained by group membership, and the relationship between \emph{r} and \(r^2\). The amount of variance explained is often quite a small number, and we see in Figure \ref{fig:sharedvariance} that a correlation of 0.21 (the median from the meta-meta-analysis by Richard and colleagues) we see the proportion of variance explained is only 4.4\%. Funder and Ozer \citeyearpar{funder_evaluating_2019} warn against misinterpreting small values for the variance explained as an indication that the effect is not meaningful (and they even consider the practice of squaring the correlation ``actively misleading'').
+
+
 
 \begin{figure}
 
@@ -2870,6 +2967,8 @@ We confirm that for two groups Cohen's \emph{f} is half as large as Cohen's \emp
 
 Now we have the basis to look at interaction effects. Different patterns of means in an ANOVA can have the same Cohen's \emph{f}. There are two types of interactions, as visualized below in Figure \ref{fig:interactions}. In an \textbf{ordinal interaction}, the mean of one group (``B1'') is always higher than the mean for the other group (``B2''). \textbf{Disordinal interactions} are also known as `cross-over' interactions, and occur when the group with the larger mean switches over. The difference is important, since the disordinal interaction in Figure \ref{fig:interactions} has a larger effect size than the ordinal interaction.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{06-effectsize_files/figure-latex/interactions-1} 
@@ -2882,6 +2981,8 @@ Now we have the basis to look at interaction effects. Different patterns of mean
 Mathematically the interaction effect is computed as the cell mean minus the sum of the grand mean, the marginal mean in each condition of one factor minus the grand mean, and the marginal mean in each condition for the other factor minus grand mean \citep{maxwell_designing_2004}.
 
 Let's consider two cases, one where we have a perfect disordinal interaction (the means of 0 and 1 flip around in the other condition, and are 1 and 0) or an ordinal interaction (the effect is present in one condition, with means 0 and 1, but disappears in the other condition, with means 0 and 0, see Figure \ref{fig:interactionplots}).
+
+
 
 \begin{figure}
 
@@ -3148,13 +3249,15 @@ When we report point estimates, we should acknowledge and quantify the uncertain
 
 In statistics, we differentiate between the population and the sample. The population is everyone you are interested in, such as all people in the world, elderly who are depressed, or people who buy innovative products. Your sample is everyone you were able to measure from the population you are interested in. We similarly distinguish between a parameter and a statistic. A parameter is a characteristic of the population, while a statistic is a characteristic of a sample. Sometimes, you have data about your entire population. For example, we have measured the height of all the people who have ever walked on the moon. We can calculate the average height of these twelve individuals, and so we know the true parameter. We do not need inferential statistics. However, we do not know the average height of all people who have ever walked on the earth. Therefore, we need to estimate this parameter, using a statistic based on a sample. Although it is rare that a study includes the entire population, it is not impossible, as illustrated in Figure \ref{fig:population}.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{images/population} 
 
 }
 
-\caption{Example of a registry-based study in which the entire population was included in the study. From https://doi.org/10.1093/ije/dyab066}\label{fig:population}
+\caption{Example of a registry-based study in which the entire population was included in the study. From \url{https://doi.org/10.1093/ije/dyab066}}\label{fig:population}
 \end{figure}
 
 When the entire population is measured there is no need to perform a hypothesis test. After all, there is no population to generalize to (although it is possible to argue we are still making an inference, even when the entire population is observed, because we have observed a \emph{metaphorical population} from one of many possible worlds, see \citet{spiegelhalter_art_2019}). When data from the entire population has been collected the population effect size is known, and there is no confidence interval to compute. If the total population size is known, but not measured completely, then the confidence interval width should shrink to zero the closer a study gets to measuring the entire population. This is known as the finite population correction factor for the variance of the estimator \citep{kish_survey_1965}. The variance of a sample mean is \(\sigma^2/n\), which for finite populations is multiplied by the finite population correction factor of the standard error:
@@ -3165,6 +3268,8 @@ where \emph{N} is the size of the population, and \emph{n} is the size of the sa
 \section{What is a Confidence Interval?}\label{what-is-a-confidence-interval}}
 
 Confidence intervals are a statement about the percentage of confidence intervals that contain the true parameter value. This behavior of confidence intervals is nicely visualized on this website by Kristoffer Magnusson: \url{http://rpsychologist.com/d3/CI/}. In Figure \ref{fig:cisim} We see blue dots that represent means from a sample, and that fall around a red vertical line, which represents the true value of the parameter in the population. Due to variation in the sample, the estimates do not all fall on the red line. The horizontal lines around the blue dots are the confidence intervals. By default, the visualization shows 95\% confidence intervals. Most of the lines are black (which means the confidence interval overlaps with the red line indication the true population value), but some are red (indicating they do not capture the true population value). In the long run, 95\% of the horizontal bars will be black, and 5\% will be red.
+
+
 
 \begin{figure}
 
@@ -3187,6 +3292,8 @@ In order to maintain the direct relationship between a confidence interval and a
 To maintain a direct relationship between an \emph{F}-test and its confidence interval, a 90\% CI for effect sizes from an \emph{F}-test should be provided. The reason for this is explained by \href{http://core.ecu.edu/psyc/wuenschk/docs30/CI-Eta2-Alpha.doc}{Karl Wuensch}. Where Cohen's d can take both positive and negative values, r² or η² are squared, and can therefore only take positive values. This is related to the fact that \emph{F}-tests (as commonly used in ANOVA) are one-sided. If you calculate a 95\% CI, you can get situations where the confidence interval includes 0, but the test reveals a statistical difference with a \emph{p} \textless{} .05 (for a more mathematical explanation, see \citet{steiger_beyond_2004}). This means that a 95\% CI around Cohen's \emph{d} in an independent \emph{t}test equals a 90\% CI around η² for exactly the same test performed as an ANOVA. As a final detail, because eta-squared cannot be smaller than zero, the lower bound for the confidence interval can not be smaller than 0. This means that a confidence interval for an effect that is not statistically different from 0 has to start at 0. You report such a CI as 90\% CI {[}.00; .XX{]} where the XX is the upper limit of the CI.
 
 Confidence intervals are often used in forest plots that communicate the results from a meta-analysis. In the plot below, we see 4 rows. Each row shows the effect size estimate from one study (in Hedges' g). For example, study 1 yielded an effect size estimate of 0.44, with a confidence interval around the effect size from 0.08 to 0.8. The horizontal black line, similarly to the visualization we played around with before, is the width of the confidence interval. When it does not touch the effect size 0 (indicated by a black vertical line) the effect is statistically significant.
+
+
 
 \begin{figure}
 
@@ -3226,14 +3333,16 @@ With a 95\% confidence interval, the \(\alpha\) = 0.05, and thus the critical \e
 
 Confidence intervals are often used in plots. In Figure \ref{fig:cioverlap} below, three estimates are vizluaized (the dots), surrounded by three lines (the 95\% confidence intervals). The left two dots (X and Y) represent the \emph{means} of the independent groups X and Y on a scale from 0 to 8 (see the axis from 0-8 on the left side of the plot). The dotted lines between the two confidence intervals visualize the overlap between the confidence intervals around the means. The two confidence intervals around means in columns X and Y are commonly shown in a figure in a scientific article. The third dot, slightly larger, is the \emph{mean difference} between X and Y, and slightly thicker line visualizes the confidence interval of this mean difference. The difference score is expressed using the axis on the right (from -3 to 5). In the plot below, the mean of group X is 3, the mean of group Y is 5.6, and the difference is 2.6. The plot is based on 50 observations per group, and the confidence interval around the mean difference ranges from 0.49 to 4.68, which is quite wide.
 
-\textbackslash begin\{figure\}
 
-\{\centering \includegraphics[width=1\linewidth]{07-CI_files/figure-latex/cioverlap-1}
 
-\}
+\begin{figure}
 
-\textbackslash caption\{Means and 95\% confidence intervals of two independent groups and the mean difference and it's 95\% confidence interval.\}\label{fig:cioverlap}
-\textbackslash end\{figure\}
+{\centering \includegraphics[width=1\linewidth]{07-CI_files/figure-latex/cioverlap-1} 
+
+}
+
+\caption{Means and 95\% confidence intervals of two independent groups and the mean difference and it's 95\% confidence interval.}\label{fig:cioverlap}
+\end{figure}
 
 As mentioned earlier, when a 95\% confidence interval does not contain 0, the effect is statistically different from 0. In Figure \ref{fig:cioverlap} above the mean difference and the 95\% confidence interval around it are indicaed by the `difference' label. As the 95\% confidence interval does not contain 0, the \emph{t}-test is significant at an alpha of 0.05. The \emph{p}-value is indicated in the plot as 0.016. Even though the two means differ statistically from each other, the confidence interval around each mean overlap. One might intuitively believe that an effect is only statistically significant if the confidence interval around the individual means do not overlap, but this is not true. The significance test is related to the confidence interval around the mean difference.
 
@@ -3244,14 +3353,16 @@ Even though 95\% of future confidence intervals will contain the true parameter,
 
 In Figure \ref{fig:predictioninterval} the orange background illustrates the 95\% confidence interval around the mean, and the lighter yellow background illustrates the 95\% prediction interval (PI).
 
-\textbackslash begin\{figure\}
 
-\{\centering \includegraphics[width=1\linewidth]{07-CI_files/figure-latex/predictioninterval-1}
 
-\}
+\begin{figure}
 
-\textbackslash caption\{A comparison of a 95\% confidence interval (gold) and 95\% prediction interval (yellow).\}\label{fig:predictioninterval}
-\textbackslash end\{figure\}
+{\centering \includegraphics[width=1\linewidth]{07-CI_files/figure-latex/predictioninterval-1} 
+
+}
+
+\caption{A comparison of a 95\% confidence interval (gold) and 95\% prediction interval (yellow).}\label{fig:predictioninterval}
+\end{figure}
 
 To calculate the prediction interval, we need a slightly different formula for the standard error, that was used for the confidence interval, namely:
 
@@ -3265,6 +3376,8 @@ When we rewrite the formula used for the confidence interval to \(\sigma/\sqrt(1
 \section{Capture Percentages}\label{capture-percentages}}
 
 It can be difficult to understand why a 95\% confidence interval does not provide us with the interval where 95\% of future means will fall. The percentage of means that falls within a single confidence interval is called the \textbf{capture percentage}. A capture percentage is not something we would ever use to make inferences about data, but it is useful to learn about capture percentages to prevent misinterpreting confidence intervals. In Figure \ref{fig:metaci} we see two randomly simulated studies with the same sample size from the same population. The true effect size in both studies is 0, and we see that the 95\% confidence intervals for both studies contain the true population value of 0. However, the two confidence intervals cover quite different ranges of effect sizes, with the confidence interval in Study 1 ranging from -0.07 to 0.48, and the confidence interval in Study 2 ranging from -0.50 to 0.06. It can not be true that in the future, 95\% of the effect sizes we should expect will fall between -0.07 to 0.048, \textbf{and} 95\% of the effect sizes we should expect will fall between -0.50 to 0.06.
+
+
 
 \begin{figure}
 
@@ -3356,6 +3469,8 @@ Free statistical software \href{https://www.jamovi.org/}{jamovi} and \href{https
 
 For jamovi, the ESCI module allows users to compute effect sizes and confidence intervals, and accompanies educational material that focusses more on estimation and less on testing \citep{cumming_introduction_2016}.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{images/escijamovi} 
@@ -3367,6 +3482,8 @@ For jamovi, the ESCI module allows users to compute effect sizes and confidence 
 
 JASP offers a wide range of frequentist and Bayesian analyses, and in addition to Cohen's \emph{d} also allows users to compute omega squared \(\omega^{2}\), the less biased version of \(\eta^{2}\) \citep{okada_is_2013, albers_when_2018}.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{images/jaspeffectci1} 
@@ -3375,6 +3492,8 @@ JASP offers a wide range of frequentist and Bayesian analyses, and in addition t
 
 \caption{JASP menu option allows you to select Cohen's d and a CI around it.}\label{fig:jasp1}
 \end{figure}
+
+
 
 \begin{figure}
 
@@ -3420,6 +3539,8 @@ JASP offers a wide range of frequentist and Bayesian analyses, and in addition t
 \end{enumerate}
 
 \textbf{Q3}: In the forest plot below, we see the effect size (indicated by the square) and the confidence interval of the effect size (indicated by the line around the effect). Which of the studies 1 to 4 in the forest plot below were statistically significant?
+
+
 
 \begin{figure}
 
@@ -3910,16 +4031,20 @@ Given a specified effect size, alpha level, and power, an a-priori power analysi
 
 Although it is common to set the Type I error rate to 5\% and aim for 80\% power, error rates should be justified \citep{lakens_justify_2018}. As explained in the section on compromise power analysis, the default recommendation to aim for 80\% power lacks a solid justification. In general, the lower the error rates (and thus the higher the power), the more informative a study will be, but the more resources are required. Researchers should carefully weigh the costs of increasing the sample size against the benefits of lower error rates, which would probably make studies designed to achieve a power of 90\% or 95\% more common for articles reporting a single study. An additional consideration is whether the researcher plans to publish an article consisting of a set of replication and extension studies, in which case the probability of observing multiple Type I errors will be very low, but the probability of observing mixed results even when there is a true effect increases \citep{lakens_too_2017}, which would also be a reason to aim for studies with low Type II error rates, perhaps even by slightly increasing the alpha level for each individual study.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{08-samplesizejustification_files/figure-latex/power-2-1} 
 
 }
 
-\caption{Power curve for an independent *t* test with an effect of *d* = 0.5 and $\alpha$ = 0.05 as a function of the sample size.}\label{fig:power-2}
+\caption{Power curve for an independent \emph{t} test with an effect of \emph{d} = 0.5 and α = 0.05 as a function of the sample size.}\label{fig:power-2}
 \end{figure}
 
 Figure \ref{fig:power-3} visualizes two distributions. The left distribution (dashed line) is centered at 0. This is a model for the null hypothesis. If the null hypothesis is true a statistically significant result will be observed if the effect size is extreme enough (in a two-sided test either in the positive or negative direction), but any significant result would be a Type I error (the dark grey areas under the curve). If there is no true effect, formally statistical power for a null hypothesis significance test is undefined. Any significant effects observed if the null hypothesis is true are Type I errors, or false positives, which occur at the chosen alpha level. The right distribution (solid line) is centered on an effect of \emph{d} = 0.5. This is the specified model for the alternative hypothesis in this study, illustrating the expectation of an effect of \emph{d} = 0.5 if the alternative hypothesis is true. Even though there is a true effect, studies will not always find a statistically significant result. This happens when, due to random variation, the observed effect size is too close to 0 to be statistically significant. Such results are false negatives (the light grey area under the curve on the right). To increase power, we can collect a larger sample size. As the sample size increases, the distributions become more narrow, reducing the probability of a Type II error. These figures can be reproduced and adapted in an online shiny app: \url{http://shiny.ieis.tue.nl/d_p_power/}.
+
+
 
 \begin{figure}
 
@@ -3927,7 +4052,7 @@ Figure \ref{fig:power-3} visualizes two distributions. The left distribution (da
 
 }
 
-\caption{Null (*d* = 0, grey dashed line) and alternative (*d* = 0.5, solid black line) hypothesis, with $\alpha$ = 0.05 and n = 80 per group.}\label{fig:power-3}
+\caption{Null (\emph{d} = 0, grey dashed line) and alternative (\emph{d} = 0.5, solid black line) hypothesis, with α = 0.05 and n = 80 per group.}\label{fig:power-3}
 \end{figure}
 
 It is important to highlight that the goal of an a-priori power analysis is \emph{not} to achieve sufficient power for the true effect size. The true effect size is unknown. The goal of an a-priori power analysis is to achieve sufficient power, given a specific \emph{assumption} of the effect size a researcher wants to detect. Just like a Type I error rate is the maximum probability of making a Type I error conditional on the assumption that the null hypothesis is true, an a-priori power analysis is computed under the assumption of a specific effect size. It is unknown if this assumption is correct. All a researcher can do is to make sure their assumptions are well justified. Statistical inferences based on a test where the Type II error rate is controlled are conditional on the assumption of a specific effect size. They allow the inference that, assuming the true effect size is at least as large as that used in the a-priori power analysis, the maximum Type II error rate in a study is not larger than a desired value.
@@ -3954,6 +4079,8 @@ An a-priori power analysis can be performed analytically, or by performing compu
 There is a wide range of tools available to perform power analyses. Whichever tool a researcher decides to use, it will take time to learn how to use the software correctly to perform a meaningful a-priori power analysis. Resources to educate psychologists about power analysis consist of book-length treatments \citep{aberson_applied_2019, cohen_statistical_1988, murphy_statistical_2014, julious_sample_2004}, general introductions \citep{maxwell_sample_2008, brysbaert_how_2019-1, perugini_practical_2018, faul_gpower_2007, baguley_understanding_2004}, and an increasing number of applied tutorials for specific tests \citep{debruine_understanding_2021, lakens_simulation-based_2021, green_simr_2016, brysbaert_power_2018, westfall_statistical_2014, schoemann_determining_2017, kruschke_bayesian_2013}. It is important to be trained in the basics of power analysis, and it can be extremely beneficial to learn how to perform simulation-based power analyses. At the same time, it is often recommended to enlist the help of an expert, especially when a researcher lacks experience with a power analysis for a specific test.
 
 When reporting an a-priori power analysis, make sure that the power analysis is completely reproducible. If power analyses are performed in R it is possible to share the analysis script and information about the version of the package. In many software packages it is possible to export the power analysis that is performed as a PDF file. For example, in G*Power analyses can be exported under the `protocol of power analysis' tab. If the software package provides no way to export the analysis, add a screenshot of the power analysis to the supplementary files.
+
+
 
 \begin{figure}
 
@@ -4051,16 +4178,20 @@ and the critical standardized mean difference is:
 
 In Figure \ref{fig:power-effect1} the distribution of Cohen's \emph{d} is plotted for 15 participants per group when the true effect size is either \emph{d} = 0 or \emph{d} = 0.5. This figure is similar to Figure \ref{fig:power-3}, with the addition that the critical \emph{d} is indicated. We see that with such a small number of observations in each group only observed effects larger than \emph{d} = 0.75 will be statistically significant. Whether such effect sizes are interesting, and can realistically be expected, should be carefully considered and justified.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{08-samplesizejustification_files/figure-latex/power-effect1-1} 
 
 }
 
-\caption{Critical effect size for an independent *t* test with n = 15 per group and $\alpha$ = 0.05.}\label{fig:power-effect1}
+\caption{Critical effect size for an independent \emph{t} test with n = 15 per group and \(\alpha\) = 0.05.}\label{fig:power-effect1}
 \end{figure}
 
 G*Power provides the critical test statistic (such as the critical \emph{t} value) when performing a power analysis. For example, Figure \ref{fig:gcrit2} shows that for a correlation based on a two-sided test, with \(\alpha\) = 0.05, and \emph{N} = 30, only effects larger than \emph{r} = 0.361 or smaller than \emph{r} = -0.361 can be statistically significant. This reveals that when the sample size is relatively small, the observed effect needs to be quite substantial to be statistically significant.
+
+
 
 \begin{figure}
 
@@ -4068,7 +4199,7 @@ G*Power provides the critical test statistic (such as the critical \emph{t} valu
 
 }
 
-\caption{The critical correlation of a test based on a total sample size of 30 and $\alpha$ = 0.05 calculated in G*Power.}\label{fig:gcrit2}
+\caption{The critical correlation of a test based on a total sample size of 30 and α = 0.05 calculated in G*Power.}\label{fig:gcrit2}
 \end{figure}
 
 It is important to realize that due to random variation each study has a probability to yield effects larger than the critical effect size, even if the true effect size is small (or even when the true effect size is 0, in which case each significant effect is a Type I error). Computing a minimal statistically detectable effect is useful for a study where no a-priori power analysis is performed, both for studies in the published literature that do not report a sample size justification \citep{lakens_equivalence_2018}, as for researchers who rely on heuristics for their sample size justification.
@@ -4127,13 +4258,15 @@ The two main reasons researchers should be careful when using effect sizes from 
 
 But even if we had access to all effect sizes (e.g., from pilot studies you have performed yourself) due to random variation the observed effect size will sometimes be quite small. Figure \ref{fig:follow-up-bias} shows it is quite likely to observe an effect of \(\eta_p^2\) = 0.01 in a small pilot study, even when the true effect size is 0.0588. Entering an effect size estimate of \(\eta_p^2\) = 0.01 in an a-priori power analysis would suggest a total sample size of 957 observations to achieve 80\% power in a follow-up study. If researchers only follow up on pilot studies when they observe an effect size in the pilot study that, when entered into a power analysis, yields a sample size that is feasible to collect for the follow-up study, these effect size estimates will be upwardly biased, and power in the follow-up study will be systematically lower than desired \citep{albers_when_2018}.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{08-samplesizejustification_files/figure-latex/follow-up-bias-1} 
 
 }
 
-\caption{Distribution of partial eta squared under the null hypothesis (dotted grey curve) and a medium true effect of 0.0588 (solid black curve) for 3 groups with 25 observations.}\label{fig:follow-up-bias}
+\caption{(ref:follow-up-biaslab}\label{fig:follow-up-bias}
 \end{figure}
 
 In essence, the problem with using small studies to estimate the effect size that will be entered into an a-priori power analysis is that due to publication bias or follow-up bias the effect sizes researchers end up using for their power analysis do not come from a full \emph{F} distribution, but from what is known as a \emph{truncated} \emph{F} distribution \citep{taylor_bias_1996}. For example, imagine if there is extreme publication bias in the situation illustrated in Figure \ref{fig:follow-up-bias}. The only studies that would be accessible to researchers would come from the part of the distribution where \(\eta_p^2\) \textgreater{} 0.08, and the test result would be statistically significant. It is possible to compute an effect size estimate that, based on certain assumptions, corrects for bias. For example, imagine we observe a result in the literature for a One-Way ANOVA with 3 conditions, reported as \emph{F}(2, 42) = 0.017, \(\eta_p^2\) = 0.176. If we would take this effect size at face value and enter it as our effect size estimate in an a-priori power analysis, the suggested sample size to achieve 80\% power would suggest we need to collect 17 observations in each condition.
@@ -4175,13 +4308,15 @@ One useful way of interpreting the width of the confidence interval is based on 
 
 We see that the margin of error is almost, but not exactly, the same as the minimal statistically detectable effect (\emph{d} = 0.748). The small variation is due to the fact that the 95\% confidence interval is calculated based on the \emph{t} distribution. If the true effect size is not zero, the confidence interval is calculated based on the non-central \emph{t} distribution, and the 95\% CI is asymmetric. Figure \ref{fig:noncentralt} visualizes three \emph{t} distributions, one symmetric at 0, and two asymmetric distributions with a noncentrality parameter (the normalized difference between the means) of 2 and 3. The asymmetry is most clearly visible in very small samples (the distributions in the plot have 5 degrees of freedom) but remains noticeable in larger samples when calculating confidence intervals and statistical power. For example, for a true effect size of \emph{d} = 0.5 observed with 15 observations per group would yield \(d_s\) = 0.50, 95\% CI {[}-0.23, 1.22{]}. If we compute the 95\% CI around the critical effect size, we would get \(d_s\) = 0.75, 95\% CI {[}0.00, 1.48{]}. We see the 95\% CI ranges from exactly 0 to 1.484, in line with the relation between a confidence interval and a \emph{p} value, where the 95\% CI excludes zero if the test is statistically significant. As noted before, the different approaches recommended here to evaluate how informative a study is are often based on the same information.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{08-samplesizejustification_files/figure-latex/noncentralt-1} 
 
 }
 
-\caption{Central (black) and 2 non-central (darkgrey and lightgrey) *t* distributions.}\label{fig:noncentralt}
+\caption{Central (black) and 2 non-central (darkgrey and lightgrey) \emph{t} distributions.}\label{fig:noncentralt}
 \end{figure}
 
 \hypertarget{plot-a-sensitivity-power-analysis}{%
@@ -4190,6 +4325,8 @@ We see that the margin of error is almost, but not exactly, the same as the mini
 A sensitivity power analysis fixes the sample size, desired power, and alpha level, and answers the question which effect size a study could detect with a desired power. A sensitivity power analysis is therefore performed when the sample size is already known. Sometimes data has already been collected to answer a different research question, or the data is retrieved from an existing database, and you want to perform a sensitivity power analysis for a new statistical analysis. Other times, you might not have carefully considered the sample size when you initially collected the data, and want to reflect on the statistical power of the study for (ranges of) effect sizes of interest when analyzing the results. Finally, it is possible that the sample size will be collected in the future, but you know that due to resource constraints the maximum sample size you can collect is limited, and you want to reflect on whether the study has sufficient power for effects that you consider plausible and interesting (such as the smallest effect size of interest, or the effect size that is expected).
 
 Assume a researcher plans to perform a study where 30 observations will be collected in total, 15 in each between participant condition. Figure \ref{fig:gsens0} shows how to perform a sensitivity power analysis in G*Power for a study where we have decided to use an alpha level of 5\%, and desire 90\% power. The sensitivity power analysis reveals the designed study has 90\% power to detect effects of at least \emph{d} = 1.23. Perhaps a researcher believes that a desired power of 90\% is quite high, and is of the opinion that it would still be interesting to perform a study if the statistical power was lower. It can then be useful to plot a sensitivity curve across a range of smaller effect sizes.
+
+
 
 \begin{figure}
 
@@ -4201,6 +4338,8 @@ Assume a researcher plans to perform a study where 30 observations will be colle
 \end{figure}
 
 The two dimensions of interest in a sensitivity power analysis are the effect sizes, and the power to observe a significant effect assuming a specific effect size. These two dimensions can be plotted against each other to create a sensitivity curve. For example, a sensitivity curve can be plotted in G*Power by clicking the `X-Y plot for a range of values' button, as illustrated in Figure \ref{fig:gsens1}. Researchers can examine which power they would have for an a-priori plausible range of effect sizes, or they can examine which effect sizes would provide reasonable levels of power. In simulation-based approaches to power analysis, sensitivity curves can be created by performing the power analysis for a range of possible effect sizes. Even if 50\% power is deemed acceptable (in which case deciding to act as if the null hypothesis is true after a non-significant result is a relatively noisy decision procedure), Figure \ref{fig:gsens1} shows a study design where power is extremely low for a large range of effect sizes that are reasonable to expect in most fields. Thus, a sensitivity power analysis provides an additional approach to evaluate how informative the planned study is, and can inform researchers that a specific design is unlikely to yield a significant effect for a range of effects that one might realistically expect.
+
+
 
 \begin{figure}
 
@@ -4243,6 +4382,8 @@ It is proposed here as a convention that, when the investigator has no other bas
 \end{quote}
 
 We see that conventions are built on conventions: the norm to aim for 80\% power is built on the norm to set the alpha level at 5\%. What we should take away from Cohen is not that we should aim for 80\% power, but that we should justify our error rates based on the relative seriousness of each error. This is where compromise power analysis comes in. If you share Cohen's belief that a Type I error is 4 times as serious as a Type II error, and building on our earlier study on 2000 employees, it makes sense to adjust the Type I error rate when the Type II error rate is low for all effect sizes of interest \citep{cascio_open_1983}. Indeed, \citet{erdfelder_gpower_1996} created the G*Power software in part to give researchers a tool to perform compromise power analysis.
+
+
 
 \begin{figure}
 
@@ -4295,13 +4436,15 @@ Post-hoc power is directly related to the \emph{p} value of the statistical test
 
 For other statistical tests, where the alternative distribution is not symmetric (such as for the \emph{t} test, where the alternative hypothesis follows a non-central \emph{t} distribution, see Figure \ref{fig:noncentralt}), a \emph{p} = 0.05 does not directly translate to an observed power of 50\%, but by plotting post-hoc power against the observed \emph{p} value we see that the two statistics are always directly related. As Figure \ref{fig:obs-power-plot-2} shows, if the \emph{p} value is non-significant (i.e., larger than 0.05) the observed power will be less than approximately 50\% in a \emph{t} test. Lenth \citeyearpar{lenth_post_2007} explains how observed power is also completely determined by the observed \emph{p} value for \emph{F} tests, although the statement that a non-significant \emph{p} value implies a power less than 50\% no longer holds.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{08-samplesizejustification_files/figure-latex/obs-power-plot-2-1} 
 
 }
 
-\caption{Relationship between *p* values and power for an independent *t* test with $\alpha$ = 0.05 and n = 10.}\label{fig:obs-power-plot-2}
+\caption{Relationship between \emph{p} values and power for an independent \emph{t} test with α = 0.05 and n = 10.}\label{fig:obs-power-plot-2}
 \end{figure}
 
 When editors or reviewers ask researchers to report post-hoc power analyses they would like to be able to distinguish between true negatives (concluding there is no effect, when there is no effect) and false negatives (a Type II error, concluding there is no effect, when there actually is an effect). Since reporting post-hoc power is just a different way of reporting the \emph{p} value, reporting the post-hoc power will not provide an answer to the question editors are asking \citep{hoenig_abuse_2001, lenth_post_2007, yuan_post_2005, schulz_sample_2005}. To be able to draw conclusions about the absence of a meaningful effect, one should perform an \protect\hyperlink{equivalencetest}{equivalence test}, and design a study with high power to reject the smallest effect size of interest. Alternatively, if no smallest effect size of interest was specified when designing the study, researchers can report a sensitivity power analysis.
@@ -4330,6 +4473,8 @@ The required number of participants is divided by two because in a within-partic
 
 In Figure \ref{fig:plot-1} we see two normally distributed scores with a mean difference of 6, wehere the standard deviation of each mean is 15, and the correlation between the measurements is 0. The standard deviation of the difference score is \(\sqrt{2}\) times as large as the standard deviation in each measurement, and indeed, 15×\(\sqrt{2}\) = 21.21, which is rounded to 21. This situation where the correlation between measurements is zero equals the situation in an independent \emph{t}-test, where the correlation between measurements is not taken into account.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{08-samplesizejustification_files/figure-latex/plot-1-1} 
@@ -4340,6 +4485,8 @@ In Figure \ref{fig:plot-1} we see two normally distributed scores with a mean di
 \end{figure}
 
 In Figure \ref{fig:plot-4} we can see what happens when the two variables are correlated, for example with \emph{r} = 0.7. Nothing has changed when we plot the means. The correlation between measurements is now strongly positive, and the important difference is in the standard deviation of the difference scores, which is 11 instead of 21 in the uncorrelated example. Because the standardized effect size is the difference divided by the standard deviation, the effect size (Cohen's \(d_z\) in within designs) is larger in this test than in the uncorrelated test.
+
+
 
 \begin{figure}
 
@@ -4642,6 +4789,8 @@ The distinction is an important one, especially relative to the controversy rega
 
 Indeed, one of the most widely suggested improvements that mitigates the most important limitations of null hypothesis significance testing is to replace the nil null hypothesis with the test of a range prediction (by specifying a non-nil null hypothesis) in an interval hypothesis test \citep{lakens_practical_2021}. To illustrate the difference, panel A in Figure \ref{fig:intervaltest} visualizes the results that are predicted in a two-sided null hypothesis test with a nil hypothesis, where the test examines whether an effect of 0 can be rejected. Panel B shows an interval hypothesis where an effect between 0.5 and 2.5 is predicted, where the non-nill null hypothesis consists of values smaller than 0.5 or larger than 2.5, and the interval hypothesis tests examines whether values in these ranges can be rejected. Panel C illustrates an equivalence test, which is basically identical to an interval hypothesis test, but the predicted effects are located in a range around 0, and contain effects that are deemed too small to be meaningful.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{09-equivalencetest_files/figure-latex/intervaltest-1} 
@@ -4687,13 +4836,15 @@ In a study where researchers are manipulating fatigue by asking participants to 
 
 The TOSTER package (originally created by myself but recently redesigned by \href{https://aaroncaldwell.us/}{Aaron Caldwell}) can be used to plot two \emph{t}-distributions and their critical regions indicating when we can reject the presence of effects smaller than -0.5 and larger than 0.5. It can take some time to get used to the idea that we are rejecting values more extreme than the equivalence bounds. Try to consistently ask in any hypothesis test: Which values can the test reject? In a nil null hypothesis test, we can reject an effect of 0, and in the equivalence test in the Figure below, we can reject values lower than -0.5 and higher than 0.5. In Figure \ref{fig:tdistequivalence} we see two \emph{t}-distributions centered on the upper and lower bound of the specified equivalence range (-0.5 and 0.5).
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{09-equivalencetest_files/figure-latex/tdistequivalence-1} 
 
 }
 
-\caption{The mean difference and its confidence interval plotted below the *t*-distributions used to perform the two-one-sided tests against -0.5 and 0.5.}\label{fig:tdistequivalence}
+\caption{The mean difference and its confidence interval plotted below the \emph{t}-distributions used to perform the two-one-sided tests against -0.5 and 0.5.}\label{fig:tdistequivalence}
 \end{figure}
 
 Below the two curves we see a line that represents the confidence interval ranging from -0.99 to 0.35, and a dot on the line that indicates the observed mean difference of -0.32. Let's first look at the left curve. We see the green highlighted area in the tails that highlights which observed mean differences would be extreme enough to statistically reject an effect of -0.5. Our observed mean difference of -0.32 lies very close to 0.5, and if we look at the left distribution, the mean is not far enough away from 0.5 to fall in the green area that indicates when observed differences would be statistically significant. We can also perform the equivalence test using the TOSTER package, and look at the results.
@@ -4744,6 +4895,8 @@ Note that because we fail to reject the one-sided test against the lower equival
 
 One way to reduce the probability of an inconclusive effect is to collect sufficient data. Let's imagine the researchers had not collected 15 participants in each condition, but 200 participants. They otherwise observe exactly the same data. As explained in the chapter on \protect\hyperlink{confint}{confidence intervals}, as the sample size increases, the confidence interval becomes more narrow. For a TOST equivalence test to be able to reject both the upper and lower bound of the equivalence range, the confidence interval needs to fall completely within the equivalence range. In Figure \ref{fig:ciequivalence2} we see the same result as in Figure \ref{fig:tdistequivalence}, but now if we had collected 200 observations. Because of the larger sample size, the confidence is more narrow than when we collected 15 participants. We see that the 90\% confidence interval around the observed mean difference now excludes both the upper and lower equivalence bound. This means that we can now reject effects outside of the equivalence range (even though barely, with a \emph{p} = 0.326 as the one-sided test against the lower equivalence bound is only just statistically significant).
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{09-equivalencetest_files/figure-latex/ciequivalence1-1} 
@@ -4780,6 +4933,8 @@ One way to reduce the probability of an inconclusive effect is to collect suffic
 
 In Figure \ref{fig:ciequivalence2} we see the the same results, but now visualized as a confidence density plot \citep{schweder_confidence_2016}, which is a graphical summary of the distribution of confidence. A confidence density plot allows you to see which effects can be rejected with difference confidence interval widths. We see the bounds of the green area (corresponding to a 90\% confidence interval) fall inside the equivalence bounds. Thus, the equivalence test is statistically significant, and we can statistically reject the presence of effects outside the equivalence range. We can also see that the 95\% confidence interval excludes 0, and therefore, a traditional null hypothesis significance test is also statistically significant.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{09-equivalencetest_files/figure-latex/ciequivalence2-1} 
@@ -4805,13 +4960,15 @@ Equivalence bounds can be specified in raw effect sizes, or in standardized mean
 
 If a researcher has specified a smallest effect size of interest, and is interested in testing whether the effect in the population is larger than this smallest effect of interest, a minimum effect test can be performed. As with any hypothesis test, we can reject the smallest effect of interest whenever the confidence interval around the observed effect does not overlap with it. In the case of a minimum effect test, however, the confidence interval should be fall completely beyond the smallest effect size of interest. For example, let's assume a researcher performs a minimum effect test with 200 observations per condition against a smallest effect size of interest of a mean difference of 0.5.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{09-equivalencetest_files/figure-latex/tmet-1} 
 
 }
 
-\caption{The mean difference and its confidence interval plotted below the *t*-distributions used to perform the two-one-sided tests against -0.5 and 0.5 when performing a minimum effect test.}\label{fig:tmet}
+\caption{The mean difference and its confidence interval plotted below the \emph{t}-distributions used to perform the two-one-sided tests against -0.5 and 0.5 when performing a minimum effect test.}\label{fig:tmet}
 \end{figure}
 
 \begin{verbatim}
@@ -5027,14 +5184,16 @@ For example, consider our study above in which 20 guessers tried to estimate the
 ##     alternative = two.sided
 \end{verbatim}
 
-\textbackslash begin\{figure\}
 
-\{\centering \includegraphics[width=1\linewidth]{images/0deabffd850f7b63c16e41e0af9ae0b6}
 
-\}
+\begin{figure}
 
-\textbackslash caption\{Screenshot illustrating a sensitivity power analysis in G*Power to compute the effect size an original study had 33\% power to detect.\}\label{fig:smalltelpower}
-\textbackslash end\{figure\}
+{\centering \includegraphics[width=1\linewidth]{images/0deabffd850f7b63c16e41e0af9ae0b6} 
+
+}
+
+\caption{Screenshot illustrating a sensitivity power analysis in G*Power to compute the effect size an original study had 33\% power to detect.}\label{fig:smalltelpower}
+\end{figure}
 
 Determining the SESOI based on the effect size the original study had 33\% power to detect has an additional convenient property. Imagine the true effect size is actually 0, and you perform a statistical test to see if the data is statistically smaller than the SESOI based on the small telescopes approach (which is called an inferiority test). If you increase the sample size by 2.5 times, you will have approximately 80\% power for this one-sided equivalence test, assuming the true effect size is exactly 0 (e.g., \emph{d} = 0). People who do a replication study can follow the small telescope recommendations, and very easily determine both the smallest effect size of interest, and the sample size needed to design an informative replication study, assuming the true effect size is 0 (but see the section above for a-priori power analyses where you want to test for equivalence, but do not expect a true effect size of 0).
 
@@ -5067,6 +5226,8 @@ The figure below, from Simonsohn (2015) illustrates the small telescopes approac
 
 Note that 33\% power is a rounded value, and the calculation uses 1/3 (or 0.3333333\ldots).
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{images/a4aa20a6e2dadfbaa82bc614d40693c7} 
@@ -5085,6 +5246,8 @@ Although the \emph{small telescope} recommendations are easy to use, one should 
 
 Given a sample size and alpha level, every test has a \protect\hyperlink{minimaldetectable}{minimal statistically detectable effect}. For example, given a test with 86 participants in each group, and an alpha level of 5\%, only \emph{t}-tests which yield a \emph{t} ≥ 1.974 will be statistically significant. In other words, \emph{t} = 1.974 is the \textbf{critical \emph{t}-value}. Given a sample size and alpha level, the critical \emph{t}-value can be transformed into a \textbf{critical \emph{d}-value}. As visualized in Figure \ref{fig:distpowerplot1}, with n = 50 in each group and an alpha level of 5\% the critical \emph{d}-value is 0.4. This means that only effects larger than 0.4 will yield a \emph{p} \textless{} α. The critical \emph{d}-value is influenced by the sample size per group, and the alpha level, but does not depend on the the true effect size.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{images/dpplot50} 
@@ -5095,6 +5258,8 @@ Given a sample size and alpha level, every test has a \protect\hyperlink{minimal
 \end{figure}
 
 It is possible to observe a statistically significant test result if the true effect size is \emph{smaller} than the critical effect size. Due to random variation, it is possible to observe a larger value in a \emph{sample} than is the true value in the population. This is the reason the statistical power of a test is never 0 in a null hypothesis significance test. As illustrated in Figure \ref{fig:distpowerplot2}, even if the true effect size is smaller than the critical value (i.e., if the true effect size is 0.2) we see from the distribution that we can expect some \emph{observed effect sizes} to be larger than 0.4 when the \emph{true population effect size} is \emph{d} = 0.2 -- if we compute the statistical power for this test, it turns out we can expect 16.77\% of the \emph{observed effect sizes} will be larger than 0.4, in the long run. That is not a lot, but it is something. This is also the reason why publication bias combined with underpowered research is problematic: It leads to a large \textbf{overestimation of the true effect size} when only observed effect sizes from statistically significant findings in underpowered studies end up in the scientific literature.
+
+
 
 \begin{figure}
 
@@ -5521,6 +5686,8 @@ The example we have used so far was based on performing an independent \emph{t}-
 
 The distribution for eta-squared looks slightly different from the distribution of Cohen's \emph{d}, primarily because an \emph{F}-test is a one-directional test (and because of this, eta-squared values are all positive, while Cohen's \emph{d} can be positive or negative). The light grey line plots the expected distribution of eta-squared when the null is true, with the red area under the curve indicating Type 1 errors, and the black line plots the expected distribution of eta-squared when the true effect size is η = 0.059. The blue area indicates the expected effect sizes smaller that the critical η of 0.04, which will not be statistically significant, and thus will be Type 2 errors.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{images/7f6d17dc07bdc9e95ea8944d78b16d7c} 
@@ -5690,6 +5857,8 @@ We can check the output against the \href{https://en.wikipedia.org/wiki/Pocock_b
 
 \texttt{rpact} makes it easy to plot the boundaries (based on the critical values) for each look. We see the critical values are higher than the 1.96 we would use for a fixed design with a 5\% alpha level, namely \emph{Z} = 2.178. Whenever we observe a test statistical that is more extreme than the critical value, we can reject the null hypothesis.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{10-sequential_files/figure-latex/boundplot1-1} 
@@ -5700,6 +5869,8 @@ We can check the output against the \href{https://en.wikipedia.org/wiki/Pocock_b
 \end{figure}
 
 The analysis can also be performed in the rpact \href{https://rpact.shinyapps.io/public/}{shiny app} which also allows users to create all plots through simple menu options, and download a complete report of the analyses (e.g., for a preregistration document).
+
+
 
 \begin{figure}
 
@@ -5714,6 +5885,8 @@ The analysis can also be performed in the rpact \href{https://rpact.shinyapps.io
 \section{Comparing Spending Functions}\label{comparing-spending-functions}}
 
 We can vizualize the corrections for different types of designs for each of 3 looks (2 interim looks and one final look) in the same plot (see Figure \ref{fig:fourspendingfunctions}). The plot below shows the Pocock, O'Brien-Fleming, Haybittle-Peto, and Wang-Tsiatis correction with \(\Delta\) = 0.25. We see that researchers can choose different approaches to spend their alpha level across looks. Researchers can choose to spend their alpha conservatively (keeping most of the alpha for the last look), or more liberally (spending more alpha at the earlier looks, which increases the probability of stopping early for many true effect sizes).
+
+
 
 \begin{figure}
 
@@ -5736,6 +5909,8 @@ Corrected alpha levels can be computed to many digits, but this quickly reaches 
 The approaches to specify the shape of decision boundaries across looks discussed so far have an important limitation \citep{proschan_statistical_2006}. They require a pre-specified number of looks (e.g., 4), and the sample size for the interim looks need to be pre-specified as well (e.g., after 25\%, 50\%, 75\%, and 100\% of observations). It is logistically not always feasible to stop the data collection exactly at 25\% of the planned total sample size. An important contribution to the sequential testing literature was made by Lan and DeMets \citeyearpar{lan_discrete_1983} who introduced the alpha spending approach to correct the alpha level. In this approach the cumulative Type I error rate spent across the looks is pre-specified through a function (the \emph{alpha spending function}) in order to control the overall significance level \(\alpha\) at the end of the study.
 
 The main benefit of these alpha spending functions is that error rates at interim analyses can be controlled, while neither the number nor the timing of the looks needs to be specified in advance. This makes alpha spending approaches much more flexible than earlier approaches to controlling the Type 1 error in group sequential designs. When using an alpha spending function it is important that the decision to perform an interim analysis is not based on collected data, as this can still increase the Type I error rate. As long as this assumption is met, it is possible to update the alpha levels at each look during a study.
+
+
 
 \begin{figure}
 
@@ -5966,6 +6141,8 @@ This means that, assuming there is a true effect of \emph{d} = 0.5, the \emph{ex
 
 Because power is a curve, and the true effect size is unknown, it is useful to plot power across a range of possible effect sizes, so that we can explore the expected sample size, in the long run, if we use a sequential design, for different true effect sizes.
 
+
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Use getPowerMeans and set max N to 188 based on analysis above}
@@ -6069,13 +6246,15 @@ Alternatively, if the observed effect size is smaller than expected, one might w
 
 In Figure \ref{fig:futility1} we see a sequential design where data collection is stopped to reject \(H_0\) when the observed \emph{z}-score is larger than the values indicated by the red line, computed based on a Pocock-like alpha spending function (as in Figure \ref{fig:fourspendingfunctions}. In addition, data collection will stop when at an interim analysis a \emph{z}-score lower than or equal to 0 is observed, as indicated by the blue line. At the last look, the red and blue lines meet, because we will either reject \(H_0\) at the critical value, or fail to reject \(H_0\).
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{10-sequential_files/figure-latex/futility1-1} 
 
 }
 
-\caption{Pocock-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) when the observed effect is in the opposite direction.}\label{fig:futility1}
+\caption{Pocock-type boundaries for 3 looks to stop when rejecting \(H_0\) (red line) or to stop for futility (blue line) when the observed effect is in the opposite direction.}\label{fig:futility1}
 \end{figure}
 
 Manually specifying the futility bounds is not ideal, as we risk stopping data collection because we fail to reject \(H_0\), when there is a high probability of a Type 2 error. It is better to set the futility bounds by directly controlling the Type 2 error across looks at the data. Just as we are willing to distribute our Type I error rate across interim analyses, we can distribute our Type II error rate across looks, and decide to stop for futility when we fail to reject the effect size of interest with a desired Type 2 error rate.
@@ -6084,16 +6263,20 @@ When a study is designed such that the null hypothesis significance test has 90\
 
 If the true effect size is (close to) 0, sequential designs that stop for futility are more efficient than designs that do not stop for futility. Adding futility bounds based on beta-spending functions reduces power, which needs to be compensated by increasing the sample size, but this can be compensated by the fact that studies can stop earlier for futility, which can make designs more efficient. When specifying a smallest effect size of interest is not possible, researchers might not want to incorporate stopping for futility into the study design. To control the Type 2 error rate across looks, a \textbf{beta-spending function} needs to be chosen, such as a Pocock type beta spending function, an O'Brien-Fleming type beta spending function, or a user defined beta spending function (the beta-spending function does not need to be the same as the alpha-spending function). In \texttt{rpact} beta-spending functions can only be chosen for directional (one-sided) tests.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{10-sequential_files/figure-latex/futility2-1} 
 
 }
 
-\caption{Pocock-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) based on a Pocock-type beta-spending function.}\label{fig:futility2}
+\caption{Pocock-type boundaries for 3 looks to stop when rejecting \(H_0\) (red line) or to stop for futility (blue line) based on a Pocock-type beta-spending function.}\label{fig:futility2}
 \end{figure}
 
 With a beta-spending function the expected number of subjects under \(H_1\) will increase, so if the alternative hypothesis is true, designing a study to be able to stop for futility comes at a cost. However, it is possible that \(H_0\) is true, and when it is, stopping for futility reduces the expected sample size. In Figure \ref{fig:powerseq2} you can see the probability of stopping (the green line) is now also high when the true effect size is 0, as we will now stop for futility, and if we do, the expected sample size (the blue line) is lower compared to \ref{fig:powerseq}. It is important to design studies that have a high informational value to reject the presence of a meaningful effect at the final analysis, but whether stopping for futility early is an option you want to build into a study is a choice that requires considering the probability that the null hypothesis is true and the (perhaps small) increase in the sample size.
+
+
 
 \begin{figure}
 
@@ -6147,17 +6330,17 @@ Below, we see the same sequential design we started with with 2 looks and a Poco
 \end{Shaded}
 
 \begin{verbatim}
-## [PROGRESS] Stage results calculated [0.0388 secs] 
-## [PROGRESS] Conditional power calculated [0.0249 secs] 
+## [PROGRESS] Stage results calculated [0.0322 secs] 
+## [PROGRESS] Conditional power calculated [0.0269 secs] 
 ## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.001 secs] 
-## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.5353 secs] 
-## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.5754 secs] 
-## [PROGRESS] Repeated confidence interval calculated [1.11 secs] 
-## [PROGRESS] Repeated p-values of stage 1 calculated [0.2222 secs] 
-## [PROGRESS] Repeated p-values of stage 2 calculated [0.219 secs] 
-## [PROGRESS] Repeated p-values calculated [0.4425 secs] 
-## [PROGRESS] Final p-value calculated [0.0015 secs] 
-## [PROGRESS] Final confidence interval calculated [0.0691 secs]
+## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.5871 secs] 
+## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.6445 secs] 
+## [PROGRESS] Repeated confidence interval calculated [1.23 secs] 
+## [PROGRESS] Repeated p-values of stage 1 calculated [0.2693 secs] 
+## [PROGRESS] Repeated p-values of stage 2 calculated [0.2578 secs] 
+## [PROGRESS] Repeated p-values calculated [0.5282 secs] 
+## [PROGRESS] Final p-value calculated [0.002 secs] 
+## [PROGRESS] Final confidence interval calculated [0.0818 secs]
 \end{verbatim}
 
 \begin{verbatim}
@@ -6422,14 +6605,16 @@ We see the sequential design will on average be more efficient than a fixed desi
 
 \textbf{Q13}: In the plot below you see the \emph{t}-score boundaries for a sequential design to stop to reject \(H_0\) (the red line) and to reject \(H_1\) (the blue line). At the second interim look, you perform a test, and observe a \emph{t}-value of 2. Which decision would you make?
 
-\textbackslash begin\{figure\}
 
-\{\centering \includegraphics[width=1\linewidth]{10-sequential_files/figure-latex/futilityq13-1}
 
-\}
+\begin{figure}
 
-\textbackslash caption\{Example of O'Brien-Fleming-type boundaries for 3 looks to stop when rejecting \(H_0\) (red line) or to stop for futility (blue line) with a 5\% Type 1 and Type 2 error.\}\label{fig:futilityq13}
-\textbackslash end\{figure\}
+{\centering \includegraphics[width=1\linewidth]{10-sequential_files/figure-latex/futilityq13-1} 
+
+}
+
+\caption{Example of O'Brien-Fleming-type boundaries for 3 looks to stop when rejecting \(H_0\) (red line) or to stop for futility (blue line) with a 5\% Type 1 and Type 2 error.}\label{fig:futilityq13}
+\end{figure}
 
 \begin{enumerate}
 \def\labelenumi{\Alph{enumi})}
@@ -6485,6 +6670,8 @@ Intelligence tests have been designed such that the mean Intelligence Quotient o
 
 We will start by manually calculating the mean and standard deviation of a random sample of 10 individuals. Their IQ scores are: 91.15, 86.52, 75.64, 115.72, 95.83, 105.44, 87.10, 100.81, 82.63, and 106.22. If we sum these 10 scores and divide them by 10, we get the mean of our sample: 94.71. We can also calculate the standard deviation from our sample. First, we subtract the overall mean (94.71) from each individual IQ score. Then, we square these differences and then sum these squared differences (giving 1374.79). We divide this sum of the squared difference by the sample size minus 1 (10-1=9), and finally take the square root of this value, which gives the standard deviation: 12.36. Copy the code below, remove the \texttt{set.seed(3190)} line (which makes the code reproducible, but create the same data as in the plot below each time) and run it to randomly simulate 10 IQ scores and plot them.
 
+
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{library}\NormalTok{(ggplot2)}
@@ -6526,6 +6713,8 @@ Imagine we did not yet know what the mean IQ was in our population (where \emph{
 A new simulated sample with 100 participants is plotted below. We are slowly seeing what is known as the \textbf{normal distribution} (and the frequency scores start to resemble the red dotted line illustrating the normal distribution of the population). This is the well-known
 bell shaped curve that represents the distribution of many variables in scientific research (although some other types of distributions are quite common as well). The mean and standard deviation are much closer to the true mean and standard deviation, and this is true for most of the simulated samples if you set n \textless- 100 in the code above and run additional simulations.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{11-meta_files/figure-latex/plot-hist-iq-2-1} 
@@ -6536,6 +6725,8 @@ bell shaped curve that represents the distribution of many variables in scientif
 \end{figure}
 
 If we simulate a really large sample of 1000 observation, we will see the benefits of collecting a large sample size in terms of accuracy of the measurement. Not every simulated study of 1000 people will yield the true mean and standard deviation, but it will happen quite often. And note how although the distribution is very close to a normal distribution, even with 1000 people it is not perfect.
+
+
 
 \begin{figure}
 
@@ -6548,6 +6739,8 @@ If we simulate a really large sample of 1000 observation, we will see the benefi
 
 So far we have simulated only a single group of observations, but it is also informative to examine the variation we will observe when we compare the means in two independent groups. Assume we have a new IQ training program that will increase peoples IQ score with 6 points. People in condition 1 are in the control condition -- they do not get IQ training. People in condition 2 get IQ training. Let's simulate 10 people in each group, assuming the IQ in the control condition is 100, and in the experimental group is 106 (the SD is still 15 in each group).
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{11-meta_files/figure-latex/plot-group1-1} 
@@ -6559,6 +6752,8 @@ So far we have simulated only a single group of observations, but it is also inf
 
 The two groups differ in how close they are to their true means, and as a consequence, the difference between groups varies as well. Note that this difference is the main variable in statistical analyses when comparing two groups in for example a \emph{t}-test. In this specific simulation, we got quite extreme results, with a score of 96 (when the population mean is 100) and a score of 111 (when the population mean is 106). So in this sample, due to random variation, we would lead to an effect size estimate that is quite a bit larger than the true effect size. Let's simulate 4 additional datasets to see the variation.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{11-meta_files/figure-latex/plot-group2-1} 
@@ -6569,6 +6764,8 @@ The two groups differ in how close they are to their true means, and as a conseq
 \end{figure}
 
 We see that there is quite some variation, up to the point that in one simulation the sample means are in the opposite direction of the population means. Again, increasing the sample size will mean that, in the long run, the sample means will get closer to the population means, and that we are more accurately estimation the difference between conditions. With 250 observations in each group, a randomly simulated set of observations for the two groups might look like Figure \ref{fig:plotgroup3}. Note that this difference might not look impressive. Yet, an independent \emph{t}-test, the difference would pass a significance test with a very low alpha level.
+
+
 
 \begin{figure}
 
@@ -6591,6 +6788,8 @@ The correlation is calculated based on the IQ scores of one fraternal twin (x) a
 \[r=\frac{n \Sigma x y-(\Sigma x )(\Sigma y)}{\sqrt{[n \Sigma x^{2}-(\Sigma x)^{2}][n \Sigma y^{2}-(\Sigma y)^{2}]}}\]
 When we randomly simulate observations for 30 twins, we get the following result.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{11-meta_files/figure-latex/plot-cor1-1} 
@@ -6603,6 +6802,8 @@ When we randomly simulate observations for 30 twins, we get the following result
 On the x-axis, we see the IQ score of one twin, and one the y-axis we see the IQ score of the second twin. The black dotted diagonal line illustrates the true correlation (0.55), while the yellow line shows the observed correlation (in this case, \emph{r} = 0.43). The slope of the yellow line is determined by the observed correlation, but the position of the line is influenced by the mean IQ scores in both groups (in this simulation, the mean on the y-axis is 105, somewhat below 100, and the mean on the x-axis is 102, also slightly above 100. The blue area is the 95\% confidence interval around the observed correlation. As we saw in the chapter on \protect\hyperlink{confint}{confidence intervals}, 95\% of the time (in the long run) the blue area will contain the true correlation (the dotted black line). As in the examples based on means, increasing the sample size to 300 narrows the confidence interval considerably, and will mean the most of the time the correlation in the sample is much closer to the correlation in the population. As the sample size increases, the estimate of the correlation becomes more precise, following the formula of the standard error of a correlation:
 
 \[SE_{r_{xy}} = \frac{1 - r^2_{xy}}{\sqrt{(n - 2)}}\]
+
+
 
 \begin{figure}
 
@@ -6705,16 +6906,20 @@ The \emph{t}-value is 2.835, and the \emph{p}-value is 0.006. The results are ve
 
 It is now common to visualize the results of a meta-analysis using a forest plot. Acording to \citet{cooper_handbook_2009} the first forest plot was published in 1978 \citep{freiman_importance_1978}, with the goal to visualize a large set of studies that had concluded the absence of an effect based on non-significant results in small studies (see Figure \ref{fig:freiman1978}). By plotting the width of the confidence interval for each study, it becomes possible to see that even though the studies do not reject an effect size of 0, and thus were all non-significant, many studies also did not reject the presence of a meaningful favorable treatment effect. To make large studies more noticeable in a forest plot, later version added a square to indicate the estimated effect size, where the size of the square was proportional to the weight that will be assigned to the study when computing the combined effect.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{images/freiman1978} 
 
 }
 
-\caption{First version of a forest plot by Freiman and colleagues, 1978 (image from https://www.jameslindlibrary.org/freiman-ja-chalmers-tc-smith-h-kuebler-rr-1978/)}\label{fig:freiman1978}
+\caption{First version of a forest plot by Freiman and colleagues, 1978 (image from \url{https://www.jameslindlibrary.org/freiman-ja-chalmers-tc-smith-h-kuebler-rr-1978/})}\label{fig:freiman1978}
 \end{figure}
 
 In Figure \ref{fig:metaforest} we see a modern version of a forest plot, with the effect size for Study 1 marked by the black square at 0.56, and the confidence interval visualized by lines extending to 0.16 on the left and 0.95 on the right. The numbers printed on the right-hand side of the forest plot provide the exact values for the effect size estimate and the lower and upper bound of the confidence interval. On the lower half of the forest plot, we see a stretched-out diamond, in a row labeled `RE Model', for `Random Effects model'. The diamond summarizes the meta-analytic effect size estimate, with the center being at the meta-analytic effect size estimate, and the left and right endpoints at the 95\% confidence interval of the meta-analytic effect size estimate. Because we only have a single study, the meta-analytic effect size estimate is the same as the effect size estimate for our single study.
+
+
 
 \begin{figure}
 
@@ -6731,6 +6936,8 @@ In Figure \ref{fig:metaforest} we see a modern version of a forest plot, with th
 Meta-analyses get a bit more exciting when we are using them to analyze results from multiple studies. When multiple studies are combined in a meta-analysis, effect size estimates are not simply averaged, but they are \textbf{weighed} by the \textbf{precision} of the effect size estimate, which is determined by the sample size of the study. Thus, the larger the sample size of an individual study, the more weight it gets in the meta-analysis, meaning that it has more influence on the meta-analytic effect size estimate.
 
 One intuitive way to learn about meta-analyses is to simulate studies and meta-analyze them. The code below simulates 12 studies. There is a true effect in the simulated studies, as the difference in means in the population is 0.4 (and given the standard deviation of 1, Cohen's \emph{d} = 0.4 as well). The studies vary in their sample size between 30 observations and 100 observations per condition. The meta-analysis is performed, and a forest plot is created.
+
+
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -7141,6 +7348,8 @@ For another open educational resource on meta-analysis in R, see \href{https://b
 
 \textbf{Q5}: When there is no heterogeneity in the effect size estimates included in a meta-analysis, a fixed effect and random effects model will yield similar conclusions. If there is variability in the effect size estimates, the two models can yield different results. Below, we see two forest plots based on the same 5 simulated studies. The top plot is based on a random effects meta-analysis, the bottom plot based on a fixed effect meta-analysis. A random effects meta-analysis incorporates uncertainty about the variability of effect size estimates into the final meta-analytic estimate. How does this translate into a difference between the two plots?
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{11-meta_files/figure-latex/meta-sim-rand-1} 
@@ -7149,6 +7358,8 @@ For another open educational resource on meta-analysis in R, see \href{https://b
 
 \caption{Simulated studies under a random effects model}\label{fig:meta-sim-rand}
 \end{figure}
+
+
 
 \begin{figure}
 
@@ -7245,6 +7456,8 @@ A different category of mistakes are statistical reporting errors, which range f
 
 Some inconsistencies in data are less easy to automatically detect, but can be identified manually. For example, \citet{brown_grim_2017} show that many papers report means that are not possible given the sample size (known as the \href{http://nickbrown.fr/GRIM}{\emph{GRIM} test}). For example, Matti Heino noticed in a \href{https://mattiheino.com/2016/11/13/legacy-of-psychology/}{blog post} that three of the reported means in the table in a classic study by Festinger and Carlsmith are mathematically impossible. With 20 observations per condition, and a scale from -5 to 5, all means should end in a multiple of 1/20, or 0.05. The three means ending in X.X8 or X.X2 are not consistent with the reported sample size and scale. Of course, such inconsistencies can be due to failing to report that there was missing data for some of the questions, but the GRIM test has also been used to uncover \href{https://en.wikipedia.org/wiki/GRIM_test}{scientific misconduct}.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{images/festinger_carlsmith} 
@@ -7259,25 +7472,29 @@ Some inconsistencies in data are less easy to automatically detect, but can be i
 
 Publication bias is one of the biggest challenges that science faces. \textbf{Publication bias} is the practice of selectively submitting and publishing scientific research, often based on whether or not the results are `statistically significant' or not. The scientific literature is dominated by these statistically significant results. At the same time, we know that many studies researchers perform do not yield significant results. When scientists only have access to significant results, but not to all results, they are lacking a complete overview of the evidence for a hypothesis. In extreme cases, selective reporting can lead to a situation where there are hundreds of statistically significant results in the published literature, but no true effect because there are even more non-significant studies that are not shared. This is known as the \textbf{file-drawer problem}, when non-significant results are hidden away in file-drawers (or nowadays, folders on your computer) and not available to the scientific community. Every scientist should work towards solving publication bias, because it is extremely difficult to learn what is likely to be true as long as scientists do not share all their results, and because, as Greenwald \citeyearpar{greenwald_consequences_1975} notes, it is an ethical violation.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{images/greenwald} 
 
 }
 
-\caption{Screenshot of the final sentences of Greenwald, A. G. (1975). Consequences of prejudice against the null hypothesis. Psychological Bulletin, 82(1), 1–20.}\label{fig:greenwald}
+\caption{Screenshot of the final sentences of Greenwald, A. G. (1975). Consequences of prejudice against the null hypothesis. Psychological Bulletin, 82(1), 1--20.}\label{fig:greenwald}
 \end{figure}
 
 Publication bias can only be fixed by making all your research results available to fellow scientists, irrespective of the \emph{p}-value of the main hypothesis test. Registered Reports are one way to combat publication bias, as this type of scientific article is reviewed based on the introduction, method, and statistical analysis plan, before the data is collected \citep{chambers_past_2022, nosek_registered_2014}. After peer review by experts in the field, who might suggest improvements to the design and analysis, the article can get an `in principle acceptance', which means that as long as the research plan is followed, the article will be published, regardless of the results. This should facilitate the publication of null results, and as shown in Figure \ref{fig:scheel}, an analysis of the first published Registered Reports in psychology revealed that 31 out of 71 (44\%) articles observed positive results, compared to 146 out of 152 (96\%) of comparable standard scientific articles published during the same time period \citep{scheel_excess_2021}.
 
-\textbackslash begin\{figure\}
 
-\{\centering \includegraphics[width=0.75\linewidth]{images/scheel}
 
-\}
+\begin{figure}
 
-\textbackslash caption\{Positive result rates for standard reports and Registered Reports. Error bars indicate 95\% confidence intervals around the observed positive result rate.\}\label{fig:scheel}
-\textbackslash end\{figure\}
+{\centering \includegraphics[width=0.75\linewidth]{images/scheel} 
+
+}
+
+\caption{Positive result rates for standard reports and Registered Reports. Error bars indicate 95\% confidence intervals around the observed positive result rate.}\label{fig:scheel}
+\end{figure}
 
 In the past, Registered Reports did not exist, and scientisits did not share all results \citep{franco_publication_2014, greenwald_consequences_1975, sterling_publication_1959}, and as a consequence, we have to try to detect the extent to which publication bias impacts our ability to accurately evaluate the literature. Meta-analyses should always carefully examine the impact of publication bias on the meta-analytic effect size estimate - even though only an estimated 57\% of meta-analyses published in Psychological Bulletin between 1990 to 2017 report that they assessed publication bias \citep{polanin_transparency_2020}. In more recent meta-analyses published in educational research 82\% used bias detection tests, but the methods used were typically far from the state-of-the-art \citep{ropovik_neglect_2021}. Several techniques to detect publication bias have been developed, and this continues to be a very active field of research. All techniques are based on specific assumptions, which you should consider before applying a test \citep{carter_correcting_2019}. There is no silver bullet: None of these techniques can fix publication bias. None of them can tell you with certainty what the true meta-analytic effect size is corrected for publication bias. The best these methods can do is detect publication bias caused by specific mechanisms, under specific conditions. Publication bias can be detected, but it can not be corrected.
 
@@ -7402,6 +7619,8 @@ When we examine the results of the meta-analysis we see there are 100 studies in
 
 If we examine the funnel plot in Figure \ref{fig:funnel1} we see each study represented as a dot. The larger the sample size, the higher up in the plot, and the smaller the sample size, the lower in the plot. The white pyramid represent the area within which a study is not statistically significant, because the observed effect size (x-axis) is not far enough removed from 0 such that the confidence interval around the observed effect size would exclude 0. The lower the standard error, the more narrow the confidence interval, and the smaller the effect sizes can can be statistically significant. At the same time, the smaller the standard error, the closer the effect size will be to the true effect size, so the less likely we will see effects far away from 0. We should expect 95\% of the effect size estimates to fall within the funnel, if it is centered on the true effect size. We see only a few studies (five, to be exact) fall outside the white pyramid on the right side of the plot. These are the 5\% significant results that we programmed in the simulation. Note that all 5 of these studies are false positives, as there is no true effect. If there was a true effect (you can re-run the simulation and set \emph{d} to 0.5 by changing \texttt{m1\ \textless{}-\ 0} in the simulation to \texttt{m1\ \textless{}-\ 0.5}) the pyramid cloud of points would move to the right, and be centered on 0.5 instead of 0.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{12-bias_files/figure-latex/funnel1-1} 
@@ -7436,6 +7655,8 @@ We can now compare the unbiased meta-analysis above with a biased meta-analysis.
 
 The biased nature of the set of studies we have analyzed becomes clear if we examine the funnel plot in Figure \ref{fig:funnel2}. The pattern is quite peculiar. We see four unbiased null results, as we programmed into the simulation, but the remainder of the 96 studies are statistically significant, even though the null is true. We see most studies fall just on the edge of the white pyramid. Because \emph{p}-values are uniformly distributed under the null, the Type 1 errors we observe often have \emph{p}-values in the range of 0.02 to 0.05, unlike what we would expect if there was a true effect. These just significant \emph{p}-values fall just outside of the white pyramid. The large the study, the smaller the effect size that is significant. The fact that the effect sizes do not vary around a single true effect size (e.g., \emph{d} = 0 or \emph{d} = 0.5), but that effect sizes become smaller, the larger the sample size (or the smaller the standard error), is a strong indicator of bias. The vertical dotted line and black triangle at the top of the plot illustrate the observed (upwardly biased) meta-analytic effect size estimate.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{12-bias_files/figure-latex/funnel2-1} 
@@ -7447,6 +7668,8 @@ The biased nature of the set of studies we have analyzed becomes clear if we exa
 
 One might wonder if such extreme bias ever really emerges in scientific research. It does. In Figure \ref{fig:carterbias} we see a funnel plot by \citet{carter_publication_2014} who examined bias in 198 published studies testing the `ego-depletion' effect, the idea that self-control relies on a limited resource. Do you notice any similarities to the extremely biased meta-analysis we simulated above? You might not be surprised that, even though before 2015 researchers thought there was a large and reliable literature demonstrating ego-depletion effects, a Registered Replication report yielded a non-significant effect size estimate \citep{hagger_multilab_2016}, and even when the original researchers tried to replicate their own work, they failed to observe a significant effect of ego-depletion \citep{vohs_multisite_2021}. Imagine the huge amount of wasted time, effort, and money on a literature that was completely based on bias in scientific research. Obviously, such research waste has ethical implications, and researchers need to take their responsibility to prevent such waste in the future.
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{images/carterfunnel} 
@@ -7457,6 +7680,8 @@ One might wonder if such extreme bias ever really emerges in scientific research
 \end{figure}
 
 We can also see signs of bias in the forest plot for a meta-analysis. In Figure \ref{fig:twoforestplot} two forest plots are plotted side by side. The left forest plot is based on unbiased data, the right forest plot is based on biased data. The forest plots are a bit big with 100 studies, but we see that in the left forest plot effects randomly vary around 0 as they should. On the right, beyond the first four studies, all confidence intervals magically just exclude an effect of 0.
+
+
 
 \begin{figure}
 
@@ -7473,6 +7698,8 @@ When there is publication bias because researchers only publish statistically si
 \section{Trim and Fill}\label{trim-and-fill}}
 
 Trim and fill is a technique that aims to augment a dataset by adding hypothetical `missing' studies (that may be in the `file-drawer'). The procedure starts by removing (`trimming') small studies that bias the meta-analytic effect size, then estimates the true effect size, and ends with `filling' in a funnel plot with studies that are assumed to be missing due to publication bias. In the Figure \ref{fig:trimfill1}, you can see the same funnel plot as above, but now with added hypothetical studies (the unfilled circles which represent `imputed' studies). If you look closely, you'll see these points each have a mirror image on the opposite side of the meta-analytic effect size estimate (this is clearest in the lower half of the funnel plot). If we examine the result of the meta-analysis that includes these imputed studies, we see that trim and fill successfully alerts us to the fact that the meta-analysis is biased (if not, it would not add imputed studies) but it fails misearably in correcting the effect size estimate. In the funnel plot, we see the original (biased) effect size estimate indicated by the triangle, and the meta-analytic effect size estimate adjusted with the trim-and-fill method (indicated by the black circle). We see the meta-analytic effect size estimate is a bit lower, but given that the true effect size in the simulation was 0, the adjustment is clearly not sufficient.
+
+
 
 \begin{figure}
 
@@ -7496,6 +7723,8 @@ PET-PEESE has limitations, as all bias detection techniques have. The biggest li
 
 Let's explore how PET-PEESE meta-regression attempts to give us an unbiased effect size estimate, under specific assumptions of how publication bias is caused. In Figure \ref{fig:petpeese} we once again see the funnel plot, not complemented with 2 additional lines through the plots. The vertical line at \emph{d} = 0.27 is the meta-analytic effect size estimate, which is upwardly biased because we are averaging over statistically significant studies only. There are 2 additional lines, which are the meta-regression lines for PET-PEESE based on the formulas detailed previously. The straight diagonal line gives us the PET estimate at a SE of 0 (an infinite sample, at the top of the plot), indicated by the circle. The dotted line around this PET estimate is the 95\% confidence interval for the estimate. In this case, the 95\% CI contains 0, which means that based on the PET estimate of \emph{d} = 0.02, we cannot reject a meta-analytic effect size of 0. Note that even with 100 studies, the 95\% CI is quite wide. Meta-regression is, just like normal regression, only as accurate as the data we have data. This is one limitation of PET-PEESE meta-regression: With small numbers of studies in the meta-analysis, it has low accuracy. If we had been able to reject the null based on the PET estimate, we would then have used the PEESE estimate of \emph{d} = 0.17 for the meta-analytic effect size, corrected for bias (while never knowing whether the model underlying the PEESE estimate corresponded to the true bias generating mechanisms in the meta-analysis, and thus if the meta-analytic estimate was accurate).
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{12-bias_files/figure-latex/petpeese-1} 
@@ -7511,6 +7740,8 @@ Let's explore how PET-PEESE meta-regression attempts to give us an unbiased effe
 In addition to a meta-analysis of effect sizes, it is possible to perform a meta-analysis of \emph{p}-values. The first of such approaches is known as the \href{https://en.wikipedia.org/wiki/Fisher\%27s_method}{\textbf{Fisher's combined probability test}}, and more recent bias detection tests such as \emph{p}-curve analysis \citep{simonsohn_p-curve_2014} and \emph{p}-uniform* \citep{aert_correcting_2018} build on this idea. These two techniques are an example of selection model approaches to test and adjust for meta-analysis \citep{iyengar_selection_1988}, where a model about the data generating process of the effect sizes is combined with a selection model of how publication bias impacts which effect sizes become part of the scientific literature.
 
 \emph{P}-curve analysis tests whether the \emph{p}-value distribution is flatter than what would be expected if the studies you analyze had 33\% power (which suggests the distribution looks more like one expected when the null hypothesis is true), or more right-skewed than a uniform \emph{p}-value distribution (which suggests the studies might have examined a true effect and had at least some power). As an example, let's consider Figure 3 from Simonsohn and colleagues \citeyearpar{simonsohn_p-curve_2014}. The authors compared 20 papers in the Journal of Personality and Social Psychology that used a covariate in the analysis, and 20 studies that did not use a covariate. The authors suspected that researchers might add a covariate in their analyses to try to find a \emph{p}-value smaller than 0.05, when the first analysis they tried did not yield a significant effect.
+
+
 
 \begin{figure}
 
@@ -7536,6 +7767,8 @@ The script stores all the test statistics for the 100 simulated \emph{t}-tests t
 \end{verbatim}
 
 Print all test results with \texttt{cat(metadata\$pcurve,\ sep\ =\ "\textbackslash{}n")}, and go to the online \emph{p}-curve app at \url{http://www.p-curve.com/app4/}. Paste all the test results, and click the `Make the p-curve' button. Note that the \emph{p}-curve app will only yield a result when there are \emph{p}-values smaller than 0.05 - if all test statistics yield a \emph{p} \textgreater{} 0.05, the \emph{p}-curve cannot be computed, as these tests are ignored.
+
+
 
 \begin{figure}
 
@@ -7687,6 +7920,8 @@ publish statistically significant results (\emph{p} \textless{} \(\alpha\)), and
 
 \textbf{Q4}: Which statement is true based on the plot below, visualizing a PET-PEESE meta-regression?
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{12-bias_files/figure-latex/petpeeseq4-1} 
@@ -7710,6 +7945,8 @@ publish statistically significant results (\emph{p} \textless{} \(\alpha\)), and
 \end{enumerate}
 
 \textbf{Q5}: Take a look at the figure and output table of the \emph{p}-curve app below, which gives the results for the studies in Q2. Which interpretation of the output is correct?
+
+
 
 \begin{figure}
 
@@ -7799,6 +8036,8 @@ publish statistically significant results (\emph{p} \textless{} \(\alpha\)), and
 
 For as long as data has been used to support scientific claims people have tried to selectively present data in line with what they wish to be true. In his treatise `On the Decline of Science in England: And on Some of its Cases' Babbage \citet{babbage_reflections_1830} discusses what he calls cooking:
 
+
+
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{images/babbage} 
@@ -7809,6 +8048,8 @@ For as long as data has been used to support scientific claims people have tried
 \end{figure}
 
 The practice Babbage describes is still a problem, almost 200 years later. Researchers still make `multitudes of observations' only to present those that support the story they want to tell. An example of a scientist who does this is Daryl Bem, a parapsychologist who studies whether people have extra-sensory perception that allows them to predict the future. In Figure \ref{fig:bem} you see the results and discussion from a study he performed \citep{bem_feeling_2011}. In this study participants pressed a left or right button to predict whether a picture was hidden behind a left or right curtain. At the moment they made the decision, not even the computer had randomly determined where this picture would appear, so any performence better than average would be very surprising.
+
+
 
 \begin{figure}
 
@@ -7874,6 +8115,8 @@ Preregistration is a tool, and researchers who use it should do so because they 
 \section{How to preregister}\label{how-to-preregister}}
 
 The more detail a preregistration document has, the easier it is for others to transparently evaluate the severity of the tests that are performed. Because it is difficult to come up with all aspects that one should include, researchers have created websites to guide researchers through this process (e.g., \url{https://aspredicted.org/}), submission guidelines, as well as templates \citep{van_t_veer_pre-registration_2016}. The template by Van 't Veer and Giner-Sorolla is an excellent start, and is intended as a place to start for people who have no experience preregistering their research. Another useful paper by \citet{wicherts_degrees_2016} provides a checklist of aspects to consider when planning, executing, analyzing, and reporting research.
+
+
 
 \begin{figure}
 
@@ -8027,6 +8270,8 @@ Let's start by defining a \textbf{theoretical hypothesis}. My favorite movie of 
 \textbf{Q1}: Write down your theoretical hypothesis.
 
 To be able to test a theoretical hypothesis, we will need to operationalize how we will measure how good or bad a movie is. IMDB provides both the IMDB rating, and the metascore (provided by metacritic.com).
+
+
 
 \begin{figure}
 
