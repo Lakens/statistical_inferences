@@ -48,13 +48,11 @@ John Ioannides wrote a well known article titled "Why Most Published Research Fi
 
 A real-life example where it was useful to understand the concept of the positive predictive value concerned the number of vaccinated and vaccinated people admitted to the hospital with COVID symptoms. In some places equal numbers of patients were vaccinated as unvaccinated. If you do not understand the concept of a positive predictive value, you might believe this reveals that it is equally likely to end up in the hospital, whether you are vaccinated or not. This is incorrect. As Figure \@ref(fig:ppvhospital) nicely visualizes, the probability that is person is vaccinated is very high, and the probability that a vaccinated person ends up in the hospital is much lower than the probability that an unvaccinated person ends up in the hospital. However, if we select only those individuals who end up in the hospital, we are computing a probability *conditional* on being in the hospital. 
 
-
-
 (ref:ppvhospitallab) Why there are more vaccinated people in the hospital.
 
 <div class="figure" style="text-align: center">
-<img src="images/hospitalvaccinated.jpg" alt="ref:ppvhospitallab" width="100%" />
-<p class="caption">(\#fig:ppvhospital)ref:ppvhospitallab</p>
+<img src="images/hospitalvaccinated.jpg" alt="(ref:ppvhospitallab)" width="100%" />
+<p class="caption">(\#fig:ppvhospital)(ref:ppvhospitallab)</p>
 </div>
 
 
@@ -101,14 +99,12 @@ For some paradigms, researchers have a lot of flexibility in how to compute the 
 </div>
     
 ## Optional stopping{#optionalstopping}
-  
-
 
 (ref:optionalstoppingexamplelab) Screenshot a scientific paper explicitly admitting to using optional stopping
 
 <div class="figure" style="text-align: center">
-<img src="images/optionalstoppingexample.png" alt="ref:optionalstoppingexamplelab" width="100%" />
-<p class="caption">(\#fig:optionalstoppingexample)ref:optionalstoppingexamplelab</p>
+<img src="images/optionalstoppingexample.png" alt="(ref:optionalstoppingexamplelab)" width="100%" />
+<p class="caption">(\#fig:optionalstoppingexample)(ref:optionalstoppingexamplelab)</p>
 </div>
     
 One practice that inflates the Type 1 error rate is known as **optional stopping**. In optional stopping, a researcher repeatedly analyzes the data, continues the data collection when the test result is not statistically significant, but stops when a significant effect is observed. The quote from a published article in the figure above is an example where researchers transparently report they used optional stopping, but more commonly people do not disclose the use of optional stopping in their methods sections. Over the last years, many researchers have learned that optional stopping is problematic. This has in some lead to the general idea that you should not collect data, look at whether the results are significant, and stop data collection when the result is significant, or if not, continue data collection. That is not the correct conclusion, and is an example of becoming too inflexible. The correct approach to collect data in batches, called **sequential analysis**, has been extensively developed by statisticians, and is used in many medical trials. We will discuss [sequential analyses in a dedicated chapter](#sequential). The main lesson is that certain research practices can increase the flexibility and efficiency of studies you perform, when done right, but the same practices can inflate the Type 1 error rate when done wrong. Let’s therefore try to get a better understanding when we are inflating our Type 1 error rate with optional stopping, and how to do this correctly using sequential analysis. 
