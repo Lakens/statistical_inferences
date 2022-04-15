@@ -15,6 +15,10 @@ Intelligence tests have been designed such that the mean Intelligence Quotient o
 We will start by manually calculating the mean and standard deviation of a random sample of 10 individuals. Their IQ scores are: 91.15, 86.52, 75.64, 115.72, 95.83, 105.44, 87.10, 100.81, 82.63, and 106.22. If we sum these 10 scores and divide them by 10, we get the mean of our sample: 94.71. We can also calculate the standard deviation from our sample. First, we subtract the overall mean (94.71) from each individual IQ score. Then, we square these differences and then sum these squared differences (giving 1374.79). We divide this sum of the squared difference by the sample size minus 1 (10-1=9), and finally take the square root of this value, which gives the standard deviation: 12.36. Copy the code below, remove the `set.seed(3190)` line (which makes the code reproducible, but create the same data as in the plot below each time) and run it to randomly simulate 10 IQ scores and plot them.
 
 
+
+(ref:plot-hist-iq-1lab) Simulation of 10 random datapoints with mean = 100 and sd = 15 in the population.
+
+
 ```r
 library(ggplot2)
 set.seed(3190) # set seed for reproducibility
@@ -37,8 +41,8 @@ ggplot(as.data.frame(x), aes(x)) +
 ```
 
 <div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-epub3/plot-hist-iq-1-1.png" alt="Simulation of 10 random datapoints with mean = 100 and sd = 15 in the population." width="100%" />
-<p class="caption">(\#fig:plot-hist-iq-1)Simulation of 10 random datapoints with mean = 100 and sd = 15 in the population.</p>
+<img src="11-meta_files/figure-epub3/plot-hist-iq-1-1.png" alt="(ref:plot-hist-iq-1lab)" width="100%" />
+<p class="caption">(\#fig:plot-hist-iq-1)(ref:plot-hist-iq-1lab)</p>
 </div>
 
 The plot above provides one example of a randomly simulated dataset of 10 points drawn from a normal distribution with a mean of 100 and a standard deviation of 15. The grey bars indicate the frequency with which each IQ score was observed. The red dotted line illustrates the normal distribution based on the mean and sd of the population. Both the observed mean (97), as well as the observed standard deviation (14), differ from the true population values. If we simulate 4 additional datasets, we see both the mean and the standard deviation vary.
@@ -50,37 +54,57 @@ Imagine we did not yet know what the mean IQ was in our population (where *M* = 
 A new simulated sample with 100 participants is plotted below. We are slowly seeing what is known as the **normal distribution** (and the frequency scores start to resemble the red dotted line illustrating the normal distribution of the population). This is the well-known
 bell shaped curve that represents the distribution of many variables in scientific research (although some other types of distributions are quite common as well). The mean and standard deviation are much closer to the true mean and standard deviation, and this is true for most of the simulated samples if you set n <- 100 in the code above and run additional simulations.
 
+
+
+(ref:plot-hist-iq-2lab) 100 random datapoints with mean = 100 and sd = 15 in the population.
+
 <div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-epub3/plot-hist-iq-2-1.png" alt="100 random datapoints with mean = 100 and sd = 15 in the population." width="100%" />
-<p class="caption">(\#fig:plot-hist-iq-2)100 random datapoints with mean = 100 and sd = 15 in the population.</p>
+<img src="11-meta_files/figure-epub3/plot-hist-iq-2-1.png" alt="(ref:plot-hist-iq-2lab)" width="100%" />
+<p class="caption">(\#fig:plot-hist-iq-2)(ref:plot-hist-iq-2lab)</p>
 </div>
 
 If we simulate a really large sample of 1000 observation, we will see the benefits of collecting a large sample size in terms of accuracy of the measurement. Not every simulated study of 1000 people will yield the true mean and standard deviation, but it will happen quite often. And note how although the distribution is very close to a normal distribution, even with 1000 people it is not perfect.
 
+
+
+(ref:plot-hist-iq-3lab) 1000 random datapoints with mean = 100 and sd = 15 in the population.
+
 <div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-epub3/plot-hist-iq-3-1.png" alt="1000 random datapoints with mean = 100 and sd = 15 in the population." width="100%" />
-<p class="caption">(\#fig:plot-hist-iq-3)1000 random datapoints with mean = 100 and sd = 15 in the population.</p>
+<img src="11-meta_files/figure-epub3/plot-hist-iq-3-1.png" alt="(ref:plot-hist-iq-3lab)" width="100%" />
+<p class="caption">(\#fig:plot-hist-iq-3)(ref:plot-hist-iq-3lab)</p>
 </div>
 
 So far we have simulated only a single group of observations, but it is also informative to examine the variation we will observe when we compare the means in two independent groups. Assume we have a new IQ training program that will increase peoples IQ score with 6 points. People in condition 1 are in the control condition – they do not get IQ training. People in condition 2 get IQ training. Let’s simulate 10 people in each group, assuming the IQ in the control condition is 100, and in the experimental group is 106 (the SD is still 15 in each group).
 
+
+
+(ref:plot-group1lab) Simulation of 10 observations in two independent groups.
+
 <div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-epub3/plot-group1-1.png" alt="Simulation of 10 observations in two independent groups." width="100%" />
-<p class="caption">(\#fig:plot-group1)Simulation of 10 observations in two independent groups.</p>
+<img src="11-meta_files/figure-epub3/plot-group1-1.png" alt="(ref:plot-group1lab)" width="100%" />
+<p class="caption">(\#fig:plot-group1)(ref:plot-group1lab)</p>
 </div>
 
 The two groups differ in how close they are to their true means, and as a consequence, the difference between groups varies as well. Note that this difference is the main variable in statistical analyses when comparing two groups in for example a *t*-test. In this specific simulation, we got quite extreme results, with a score of 96 (when the population mean is 100) and a score of 111 (when the population mean is 106). So in this sample, due to random variation, we would lead to an effect size estimate that is quite a bit larger than the true effect size. Let's simulate 4 additional datasets to see the variation. 
 
+
+
+(ref:plot-group2lab) Four simulated samples of independent groups.
+
 <div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-epub3/plot-group2-1.png" alt="Four simulated samples of independent groups." width="100%" />
-<p class="caption">(\#fig:plot-group2)Four simulated samples of independent groups.</p>
+<img src="11-meta_files/figure-epub3/plot-group2-1.png" alt="(ref:plot-group2lab)" width="100%" />
+<p class="caption">(\#fig:plot-group2)(ref:plot-group2lab)</p>
 </div>
 
 We see that there is quite some variation, up to the point that in one simulation the sample means are in the opposite direction of the population means. Again, increasing the sample size will mean that, in the long run, the sample means will get closer to the population means, and that we are more accurately estimation the difference between conditions. With 250 observations in each group, a randomly simulated set of observations for the two groups might look like Figure \@ref(fig:plotgroup3). Note that this difference might not look impressive. Yet, an independent *t*-test, the difference would pass a significance test with a very low alpha level. 
 
+
+
+(ref:plotgroup3lab) Simulated sample of 250 independent observations
+
 <div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-epub3/plotgroup3-1.png" alt="Simulated sample of 250 independent observations" width="100%" />
-<p class="caption">(\#fig:plotgroup3)Simulated sample of 250 independent observations</p>
+<img src="11-meta_files/figure-epub3/plotgroup3-1.png" alt="(ref:plotgroup3lab)" width="100%" />
+<p class="caption">(\#fig:plotgroup3)(ref:plotgroup3lab)</p>
 </div>
 
 The variation in the estimate of the mean decreases as the sample size increases. The larger the sample size, the more precise the estimate of the mean becomes. The **standard deviation of the sample** ($\sigma_x$) of single IQ scores is 15, irrespective of the sample size, and the larger the sample size, the more accurately we can measure the true standard deviation. But the **standard deviation of the sampling distribution of the sample mean** ($\sigma_{\overline{x}}$) decreases, as the sample size increases, and is referred to as the **standard error (SE)**. The estimated standard deviation of the sample mean, or the standard error, calculated based on the observed standard deviation of the sample ($\sigma_x$) is:
@@ -95,18 +119,26 @@ The correlation is calculated based on the IQ scores of one fraternal twin (x) a
 $$r=\frac{n \Sigma x y-(\Sigma x )(\Sigma y)}{\sqrt{[n \Sigma x^{2}-(\Sigma x)^{2}][n \Sigma y^{2}-(\Sigma y)^{2}]}}$$
 When we randomly simulate observations for 30 twins, we get the following result.
 
+
+
+(ref:plot-cor1lab) Correlation based on 30 pairs.
+
 <div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-epub3/plot-cor1-1.png" alt="Correlation based on 30 pairs." width="100%" />
-<p class="caption">(\#fig:plot-cor1)Correlation based on 30 pairs.</p>
+<img src="11-meta_files/figure-epub3/plot-cor1-1.png" alt="(ref:plot-cor1lab)" width="100%" />
+<p class="caption">(\#fig:plot-cor1)(ref:plot-cor1lab)</p>
 </div>
 
 On the x-axis, we see the IQ score of one twin, and one the y-axis we see the IQ score of the second twin. The black dotted diagonal line illustrates the true correlation (0.55), while the yellow line shows the observed correlation (in this case, *r* = 0.43). The slope of the yellow line is determined by the observed correlation, but the position of the line is influenced by the mean IQ scores in both groups (in this simulation, the mean on the y-axis is 105, somewhat below 100, and the mean on the x-axis is 102, also slightly above 100. The blue area is the 95% confidence interval around the observed correlation. As we saw in the chapter on [confidence intervals](#confint), 95% of the time (in the long run) the blue area will contain the true correlation (the dotted black line). As in the examples based on means, increasing the sample size to 300 narrows the confidence interval considerably, and will mean the most of the time the correlation in the sample is much closer to the correlation in the population. As the sample size increases, the estimate of the correlation becomes more precise, following the formula of the standard error of a correlation:
 
 $$SE_{r_{xy}} = \frac{1 - r^2_{xy}}{\sqrt{(n - 2)}}$$
 
+
+
+(ref:plot-cor2lab) Correlation based on 300 pairs.
+
 <div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-epub3/plot-cor2-1.png" alt="Correlation based on 300 pairs." width="100%" />
-<p class="caption">(\#fig:plot-cor2)Correlation based on 300 pairs.</p>
+<img src="11-meta_files/figure-epub3/plot-cor2-1.png" alt="(ref:plot-cor2lab)" width="100%" />
+<p class="caption">(\#fig:plot-cor2)(ref:plot-cor2lab)</p>
 </div>
 
 Because estimates of means, standard deviations, or correlations based on small samples have relatively large uncertainty, it is preferable to collect larger samples. However, this is not always possible, and often the goal of a study is not to provide an accurate estimate, but to test a hypothesis. A study often requires less observations to achieve sufficient power for a hypothesis test, than are required to be able to accurately estimate a parameter [@maxwell_sample_2008]. Therefore, scientists often rely on meta-analyses, where data from multiple studies are combined, to provide accurate estimates.
@@ -199,16 +231,24 @@ The *t*-value is 2.835, and the *p*-value is 0.006. The results are very similar
 
 It is now common to visualize the results of a meta-analysis using a forest plot. Acording to @cooper_handbook_2009 the first forest plot was published in 1978 [@freiman_importance_1978], with the goal to visualize a large set of studies that had concluded the absence of an effect based on non-significant results in small studies (see Figure \@ref(fig:freiman1978)). By plotting the width of the confidence interval for each study, it becomes possible to see that even though the studies do not reject an effect size of 0, and thus were all non-significant, many studies also did not reject the presence of a meaningful favorable treatment effect. To make large studies more noticeable in a forest plot, later version added a square to indicate the estimated effect size, where the size of the square was proportional to the weight that will be assigned to the study when computing the combined effect. 
 
+
+
+(ref:freiman1978lab) First version of a forest plot by Freiman and colleagues, 1978 (image from https://www.jameslindlibrary.org/freiman-ja-chalmers-tc-smith-h-kuebler-rr-1978/)
+
 <div class="figure" style="text-align: center">
-<img src="images/freiman1978.jpg" alt="First version of a forest plot by Freiman and colleagues, 1978 (image from https://www.jameslindlibrary.org/freiman-ja-chalmers-tc-smith-h-kuebler-rr-1978/)" width="100%" />
-<p class="caption">(\#fig:freiman1978)First version of a forest plot by Freiman and colleagues, 1978 (image from https://www.jameslindlibrary.org/freiman-ja-chalmers-tc-smith-h-kuebler-rr-1978/)</p>
+<img src="images/freiman1978.jpg" alt="(ref:freiman1978lab)" width="100%" />
+<p class="caption">(\#fig:freiman1978)(ref:freiman1978lab)</p>
 </div>
 
 In Figure \@ref(fig:metaforest) we see a modern version of a forest plot, with the effect size for Study 1 marked by the black square at 0.56, and the confidence interval visualized by lines extending to 0.16 on the left and 0.95 on the right. The numbers printed on the right-hand side of the forest plot provide the exact values for the effect size estimate and the lower and upper bound of the confidence interval. On the lower half of the forest plot, we see a stretched-out diamond, in a row labeled 'RE Model', for 'Random Effects model'. The diamond summarizes the meta-analytic effect size estimate, with the center being at the meta-analytic effect size estimate, and the left and right endpoints at the 95% confidence interval of the meta-analytic effect size estimate. Because we only have a single study, the meta-analytic effect size estimate is the same as the effect size estimate for our single study.
 
+
+
+(ref:metaforestlab) Forest plot for a single study.
+
 <div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-epub3/metaforest-1.png" alt="Forest plot for a single study." width="100%" />
-<p class="caption">(\#fig:metaforest)Forest plot for a single study.</p>
+<img src="11-meta_files/figure-epub3/metaforest-1.png" alt="(ref:metaforestlab)" width="100%" />
+<p class="caption">(\#fig:metaforest)(ref:metaforestlab)</p>
 </div>
 
 ## Simulating meta-analyses of mean standardized differences
@@ -216,6 +256,10 @@ In Figure \@ref(fig:metaforest) we see a modern version of a forest plot, with t
 Meta-analyses get a bit more exciting when we are using them to analyze results from multiple studies. When multiple studies are combined in a meta-analysis, effect size estimates are not simply averaged, but they are **weighed** by the **precision** of the effect size estimate, which is determined by the sample size of the study. Thus, the larger the sample size of an individual study, the more weight it gets in the meta-analysis, meaning that it has more influence on the meta-analytic effect size estimate.
 
 One intuitive way to learn about meta-analyses is to simulate studies and meta-analyze them. The code below simulates 12 studies. There is a true effect in the simulated studies, as the difference in means in the population is 0.4 (and given the standard deviation of 1, Cohen's *d* = 0.4 as well). The studies vary in their sample size between 30 observations and 100 observations per condition. The meta-analysis is performed, and a forest plot is created. 
+
+
+
+(ref:meta-simlab) Forest plot for 12 simulated studies.
 
 
 ```r
@@ -240,8 +284,8 @@ metafor::forest(result)
 ```
 
 <div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-epub3/meta-sim-1.png" alt="Forest plot for 12 simulated studies." width="100%" />
-<p class="caption">(\#fig:meta-sim)Forest plot for 12 simulated studies.</p>
+<img src="11-meta_files/figure-epub3/meta-sim-1.png" alt="(ref:meta-simlab)" width="100%" />
+<p class="caption">(\#fig:meta-sim)(ref:meta-simlab)</p>
 </div>
 
 We see 12 rows, one for each study, each with their own effect size and confidence interval. If you look closely, you can see the squares that indicate the effect size estimate for each study differ in size. The larger the sample size, the bigger the square. Study 5 had a relatively small sample size, which can be seen both by the small square, and the relatively wide confidence interval. Study 9 had a larger sample size, and thus a slightly larger square and narrower confidence interval. At the bottom of the graph we find the meta-analytic effect size and its confidence interval, both visualized by a diamond and numerically. The model is referred to as a FE Model, or **Fixed Effect (FE) model**. The alternative approach is a RE Model, or **Random Effects (RE) model** (the difference is discussed below).
@@ -555,14 +599,22 @@ D) It is generally recommended to compute a **random effects** model, as this re
 
 **Q5**: When there is no heterogeneity in the effect size estimates included in a meta-analysis, a fixed effect and random effects model will yield similar conclusions. If there is variability in the effect size estimates, the two models can yield different results. Below, we see two forest plots based on the same 5 simulated studies. The top plot is based on a random effects meta-analysis, the bottom plot based on a fixed effect meta-analysis. A random effects meta-analysis incorporates uncertainty about the variability of effect size estimates into the final meta-analytic estimate. How does this translate into a difference between the two plots? 
 
-<div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-epub3/meta-sim-rand-1.png" alt="Simulated studies under a random effects model" width="100%" />
-<p class="caption">(\#fig:meta-sim-rand)Simulated studies under a random effects model</p>
-</div>
+
+
+(ref:meta-sim-randlab) Simulated studies under a random effects model
 
 <div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-epub3/meta-sim-fixed-1.png" alt="Simulated studies under a fixed effect model" width="100%" />
-<p class="caption">(\#fig:meta-sim-fixed)Simulated studies under a fixed effect model</p>
+<img src="11-meta_files/figure-epub3/meta-sim-rand-1.png" alt="(ref:meta-sim-randlab)" width="100%" />
+<p class="caption">(\#fig:meta-sim-rand)(ref:meta-sim-randlab)</p>
+</div>
+
+
+
+(ref:meta-sim-fixedlab) Simulated studies under a fixed effect model
+
+<div class="figure" style="text-align: center">
+<img src="11-meta_files/figure-epub3/meta-sim-fixed-1.png" alt="(ref:meta-sim-fixedlab)" width="100%" />
+<p class="caption">(\#fig:meta-sim-fixed)(ref:meta-sim-fixedlab)</p>
 </div>
 
 A) There is no difference in the meta-analytic effect size estimate between the plots, as each effect size estimate from the 5 studies is identical. 

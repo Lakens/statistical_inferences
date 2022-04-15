@@ -27,7 +27,11 @@ Intelligence tests have been designed such that the mean Intelligence Quotient o
 
 We will start by manually calculating the mean and standard deviation of a random sample of 10 individuals. Their IQ scores are: 91.15, 86.52, 75.64, 115.72, 95.83, 105.44, 87.10, 100.81, 82.63, and 106.22. If we sum these 10 scores and divide them by 10, we get the mean of our sample: 94.71. We can also calculate the standard deviation from our sample. First, we subtract the overall mean (94.71) from each individual IQ score. Then, we square these differences and then sum these squared differences (giving 1374.79). We divide this sum of the squared difference by the sample size minus 1 (10-1=9), and finally take the square root of this value, which gives the standard deviation: 12.36. Copy the code below, remove the `set.seed(3190)` line (which makes the code reproducible, but create the same data as in the plot below each time) and run it to randomly simulate 10 IQ scores and plot them.
 
-```{r plot-hist-iq-1, echo = TRUE, fig.cap = "Simulation of 10 random datapoints with mean = 100 and sd = 15 in the population."}
+
+
+(ref:plot-hist-iq-1lab) Simulation of 10 random datapoints with mean = 100 and sd = 15 in the population.
+
+```{r plot-hist-iq-1, echo = TRUE, fig.cap="(ref:plot-hist-iq-1lab)"}
 library(ggplot2)
 set.seed(3190) # set seed for reproducibility
 n <- 10 # set sample size
@@ -140,7 +144,11 @@ Imagine we did not yet know what the mean IQ was in our population (where *M* = 
 A new simulated sample with 100 participants is plotted below. We are slowly seeing what is known as the **normal distribution** (and the frequency scores start to resemble the red dotted line illustrating the normal distribution of the population). This is the well-known
 bell shaped curve that represents the distribution of many variables in scientific research (although some other types of distributions are quite common as well). The mean and standard deviation are much closer to the true mean and standard deviation, and this is true for most of the simulated samples if you set n <- 100 in the code above and run additional simulations.
 
-```{r plot-hist-iq-2, fig.margin = FALSE, echo = FALSE, fig.cap="100 random datapoints with mean = 100 and sd = 15 in the population."}
+
+
+(ref:plot-hist-iq-2lab) 100 random datapoints with mean = 100 and sd = 15 in the population.
+
+```{r plot-hist-iq-2, fig.margin = FALSE, echo = FALSE, fig.cap="(ref:plot-hist-iq-2lab)"}
 set.seed(519)
 n <- 100 # set sample size
 x <- rnorm(n = n, mean = 100, sd = 15) # create sample from normal distribution
@@ -163,7 +171,11 @@ ggplot(as.data.frame(x), aes(x)) +
 
 If we simulate a really large sample of 1000 observation, we will see the benefits of collecting a large sample size in terms of accuracy of the measurement. Not every simulated study of 1000 people will yield the true mean and standard deviation, but it will happen quite often. And note how although the distribution is very close to a normal distribution, even with 1000 people it is not perfect.
 
-```{r plot-hist-iq-3, fig.margin = FALSE, echo = FALSE, fig.cap="1000 random datapoints with mean = 100 and sd = 15 in the population."}
+
+
+(ref:plot-hist-iq-3lab) 1000 random datapoints with mean = 100 and sd = 15 in the population.
+
+```{r plot-hist-iq-3, fig.margin = FALSE, echo = FALSE, fig.cap="(ref:plot-hist-iq-3lab)"}
 
 set.seed(618)
 n <- 1000 # set sample size
@@ -187,7 +199,11 @@ ggplot(as.data.frame(x), aes(x)) +
 
 So far we have simulated only a single group of observations, but it is also informative to examine the variation we will observe when we compare the means in two independent groups. Assume we have a new IQ training program that will increase peoples IQ score with 6 points. People in condition 1 are in the control condition – they do not get IQ training. People in condition 2 get IQ training. Let’s simulate 10 people in each group, assuming the IQ in the control condition is 100, and in the experimental group is 106 (the SD is still 15 in each group).
 
-```{r plot-group1, warning=FALSE, fig.margin = FALSE, echo = FALSE, fig.cap="Simulation of 10 observations in two independent groups."}
+
+
+(ref:plot-group1lab) Simulation of 10 observations in two independent groups.
+
+```{r plot-group1, warning=FALSE, fig.margin = FALSE, echo = FALSE, fig.cap="(ref:plot-group1lab)"}
 # Set color palette
 cbbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
@@ -232,7 +248,11 @@ ggplot(dataset, aes(DV, fill = as.factor(IV))) +
 
 The two groups differ in how close they are to their true means, and as a consequence, the difference between groups varies as well. Note that this difference is the main variable in statistical analyses when comparing two groups in for example a *t*-test. In this specific simulation, we got quite extreme results, with a score of 96 (when the population mean is 100) and a score of 111 (when the population mean is 106). So in this sample, due to random variation, we would lead to an effect size estimate that is quite a bit larger than the true effect size. Let's simulate 4 additional datasets to see the variation. 
 
-```{r plot-group2, warning=FALSE, fig.margin = FALSE, echo = FALSE, fig.cap="Four simulated samples of independent groups."}
+
+
+(ref:plot-group2lab) Four simulated samples of independent groups.
+
+```{r plot-group2, warning=FALSE, fig.margin = FALSE, echo = FALSE, fig.cap="(ref:plot-group2lab)"}
 # Set color palette
 cbbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
@@ -369,7 +389,11 @@ combined + plot_layout(guides = "collect")
 
 We see that there is quite some variation, up to the point that in one simulation the sample means are in the opposite direction of the population means. Again, increasing the sample size will mean that, in the long run, the sample means will get closer to the population means, and that we are more accurately estimation the difference between conditions. With 250 observations in each group, a randomly simulated set of observations for the two groups might look like Figure \@ref(fig:plotgroup3). Note that this difference might not look impressive. Yet, an independent *t*-test, the difference would pass a significance test with a very low alpha level. 
 
-```{r plotgroup3, warning=FALSE, fig.margin = FALSE, echo = FALSE, fig.cap="Simulated sample of 250 independent observations"}
+
+
+(ref:plotgroup3lab) Simulated sample of 250 independent observations
+
+```{r plotgroup3, warning=FALSE, fig.margin = FALSE, echo = FALSE, fig.cap="(ref:plotgroup3lab)"}
 # Set color palette
 cbbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
@@ -424,7 +448,11 @@ The correlation is calculated based on the IQ scores of one fraternal twin (x) a
 $$r=\frac{n \Sigma x y-(\Sigma x )(\Sigma y)}{\sqrt{[n \Sigma x^{2}-(\Sigma x)^{2}][n \Sigma y^{2}-(\Sigma y)^{2}]}}$$
 When we randomly simulate observations for 30 twins, we get the following result.
 
-```{r, plot-cor1, warning=FALSE, fig.margin = FALSE, echo = FALSE, fig.cap="Correlation based on 30 pairs."}
+
+
+(ref:plot-cor1lab) Correlation based on 30 pairs.
+
+```{r, plot-cor1, warning=FALSE, fig.margin = FALSE, echo = FALSE, fig.cap="(ref:plot-cor1lab)"}
 set.seed(4130)
 n <- 30 # set sample size
 cor.true <- 0.55 # set true correlation
@@ -462,7 +490,11 @@ On the x-axis, we see the IQ score of one twin, and one the y-axis we see the IQ
 
 $$SE_{r_{xy}} = \frac{1 - r^2_{xy}}{\sqrt{(n - 2)}}$$
 
-```{r, plot-cor2, warning=FALSE, fig.margin = FALSE, echo = FALSE, fig.cap="Correlation based on 300 pairs."}
+
+
+(ref:plot-cor2lab) Correlation based on 300 pairs.
+
+```{r, plot-cor2, warning=FALSE, fig.margin = FALSE, echo = FALSE, fig.cap="(ref:plot-cor2lab)"}
 set.seed(4130)
 n <- 300 # set sample size
 cor.true <- 0.55 # set true correlation
@@ -568,13 +600,21 @@ The *t*-value is `r round(MOTE_res$t, 3)`, and the *p*-value is `r round(MOTE_re
 
 It is now common to visualize the results of a meta-analysis using a forest plot. Acording to @cooper_handbook_2009 the first forest plot was published in 1978 [@freiman_importance_1978], with the goal to visualize a large set of studies that had concluded the absence of an effect based on non-significant results in small studies (see Figure \@ref(fig:freiman1978)). By plotting the width of the confidence interval for each study, it becomes possible to see that even though the studies do not reject an effect size of 0, and thus were all non-significant, many studies also did not reject the presence of a meaningful favorable treatment effect. To make large studies more noticeable in a forest plot, later version added a square to indicate the estimated effect size, where the size of the square was proportional to the weight that will be assigned to the study when computing the combined effect. 
 
-```{r freiman1978, echo=FALSE, out.width  = '100%', fig.height = 10, fig.cap="First version of a forest plot by Freiman and colleagues, 1978 (image from https://www.jameslindlibrary.org/freiman-ja-chalmers-tc-smith-h-kuebler-rr-1978/)"}
+
+
+(ref:freiman1978lab) First version of a forest plot by Freiman and colleagues, 1978 (image from https://www.jameslindlibrary.org/freiman-ja-chalmers-tc-smith-h-kuebler-rr-1978/)
+
+```{r freiman1978, echo=FALSE, out.width  = '100%', fig.height = 10, fig.cap="(ref:freiman1978lab)"}
 knitr::include_graphics("images/freiman1978.jpg")
 ```
 
 In Figure \@ref(fig:metaforest) we see a modern version of a forest plot, with the effect size for Study 1 marked by the black square at `r round(meta_res$b[1], 2)`, and the confidence interval visualized by lines extending to `r round(meta_res$ci.lb, 2)` on the left and `r round(meta_res$ci.ub, 2)` on the right. The numbers printed on the right-hand side of the forest plot provide the exact values for the effect size estimate and the lower and upper bound of the confidence interval. On the lower half of the forest plot, we see a stretched-out diamond, in a row labeled 'RE Model', for 'Random Effects model'. The diamond summarizes the meta-analytic effect size estimate, with the center being at the meta-analytic effect size estimate, and the left and right endpoints at the 95% confidence interval of the meta-analytic effect size estimate. Because we only have a single study, the meta-analytic effect size estimate is the same as the effect size estimate for our single study.
 
-```{r metaforest, fig.margin = FALSE, echo = FALSE, fig.cap="Forest plot for a single study."}
+
+
+(ref:metaforestlab) Forest plot for a single study.
+
+```{r metaforest, fig.margin = FALSE, echo = FALSE, fig.cap="(ref:metaforestlab)"}
 par(mar=c(5,4,0,2))
 par(bg = backgroundcolor)
 metafor::forest(meta_res)
@@ -586,7 +626,11 @@ Meta-analyses get a bit more exciting when we are using them to analyze results 
 
 One intuitive way to learn about meta-analyses is to simulate studies and meta-analyze them. The code below simulates 12 studies. There is a true effect in the simulated studies, as the difference in means in the population is 0.4 (and given the standard deviation of 1, Cohen's *d* = 0.4 as well). The studies vary in their sample size between 30 observations and 100 observations per condition. The meta-analysis is performed, and a forest plot is created. 
 
-```{r meta-sim, echo = TRUE, fig.cap="Forest plot for 12 simulated studies."}
+
+
+(ref:meta-simlab) Forest plot for 12 simulated studies.
+
+```{r meta-sim, echo = TRUE, fig.cap="(ref:meta-simlab)"}
 set.seed(94)
 nSims <- 12 # number of simulated studies
 m1 <- 0.4 # population mean group 1
@@ -840,7 +884,11 @@ D) It is generally recommended to compute a **random effects** model, as this re
 
 **Q5**: When there is no heterogeneity in the effect size estimates included in a meta-analysis, a fixed effect and random effects model will yield similar conclusions. If there is variability in the effect size estimates, the two models can yield different results. Below, we see two forest plots based on the same 5 simulated studies. The top plot is based on a random effects meta-analysis, the bottom plot based on a fixed effect meta-analysis. A random effects meta-analysis incorporates uncertainty about the variability of effect size estimates into the final meta-analytic estimate. How does this translate into a difference between the two plots? 
 
-```{r meta-sim-rand, echo = FALSE, fig.cap="Simulated studies under a random effects model"}
+
+
+(ref:meta-sim-randlab) Simulated studies under a random effects model
+
+```{r meta-sim-rand, echo = FALSE, fig.cap="(ref:meta-sim-randlab)"}
 set.seed(199)
 
 nSims <- 5 # number of simulated studies
@@ -862,7 +910,11 @@ par(bg = backgroundcolor)
 metafor::forest(result)
 ```
 
-```{r meta-sim-fixed, echo = FALSE, fig.cap="Simulated studies under a fixed effect model"}
+
+
+(ref:meta-sim-fixedlab) Simulated studies under a fixed effect model
+
+```{r meta-sim-fixed, echo = FALSE, fig.cap="(ref:meta-sim-fixedlab)"}
 
 set.seed(199)
 nSims <- 5 # number of simulated studies

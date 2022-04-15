@@ -121,7 +121,9 @@ t.test(df_long$rating ~ df_long$`Friend Group`, var.equal = TRUE)
 
 We can graph the *t*-distribution (for df = 18) and highlight the two tail areas that start at the t-values of 2.5175 and -2.5175. 
 
-```{r, tdist, echo = FALSE, out.width='100%', fig.cap="A *t*-distribution with 18 degrees of freedom."}
+(ref:tdistlab) A *t*-distribution with 18 degrees of freedom.
+
+```{r, tdist, echo = FALSE, out.width='100%', fig.cap = '(ref:tdistlab)'}
 par(bg = backgroundcolor)
 x <- seq(-5, 5, length = 100)
 plot(x, dt(x, df = 18), col = "black", type = "l", xlab = "t-value", ylab = "Density", main = "t-distribution", lwd = 2)
@@ -157,7 +159,9 @@ hist(p, breaks = 20) # plot a histogram
 
 In the simulation, we generate n = 71 normally distributed IQ scores with a mean of M (106 by default) and a standard deviation of 15. We then perform a one-sample *t*-test, store the *p*-value, and generate a plot of the *p*-value distribution.
 
-```{r, pdistr1, cache = TRUE, echo=FALSE, fig.cap="Distribution of *p*-values when power = 50%."}
+(ref:pdist1lab) Distribution of *p*-values when power = 50%. 
+
+```{r, pdistr1, cache = TRUE, echo=FALSE, fig.cap = '(ref:pdist1lab)'}
 
 #Set number of simulations
 nSims <- 100000 #number of simulated experiments
@@ -185,7 +189,9 @@ On the x-axis we see *p*-values from 0 to 1 in 20 bars, and on the y-axis we see
 
 The simulation result illustrates the **probability density function** of *p*-values. A probability density function provides the probability that a random variable has a specific value (such as Figure \@ref(fig:tdist) of the *t*-distribution). Because the *p*-value is a random variable, we can use it's probability density function to plot the *p*-value distribution [@hung_behavior_1997; @ulrich_properties_2018], as in Figure \@ref(fig:pdft). You can vary the sample size, effect size, and alpha level in [this online Shiny app](http://shiny.ieis.tue.nl/d_p_power/). Increasing the sample size or the effect size will increase the steepness of the *p*-value distribution, which means that the probability to observe small *p*-values increases. The *p*-value distribution is a function of the statistical power of the test. 
 
-```{r, pdft, echo = FALSE, fig.cap="Probability density function for p-values from a two-sided t-test."}
+(ref:pdftlab) Probability density function for *p*-values from a two-sided *t*-test. 
+
+```{r, pdft, echo = FALSE, fig.cap= '(ref:pdftlab)'}
 
 n <- 71 # sample size per independent group
 d <- 0.33 # effect size
@@ -211,7 +217,9 @@ axis(side = 1, at = seq(0, 1, 0.05),
 
 When there is no true effect, *p*-values are **uniformly distributed**. This means that every *p*-value is equally likely to be observed when the null hypothesis is true. In other words, when there is no true effect, a *p*-value of 0.08 is just as likely as a *p*-value of 0.98. I remember thinking this was very counterintuitive when I first learned it (well after completing a PhD), but it makes sense when we think of the goal to guarantee that when $H_0$ is true, alpha % of the *p*-values fall below the alpha level. If we set alpha to 0.01, 1% of the observed *p*-values should fall below 0.01, and if we set alpha to 0.12, 12% of the observed *p*-values should fall below 0.12. This can only happen if *p*-values are uniformly distributed when the null hypothesis is true.   
 
-```{r pdistr2, cache = TRUE, echo=FALSE, fig.cap="Distribution of *p*-values when power = 50%."}
+(ref:pdist2lab) Distribution of *p*-values when the null hypothesis is true. 
+
+```{r pdistr2, cache = TRUE, echo=FALSE, fig.cap = '(ref:pdist2lab)'}
 
 #Set number of simulations
 nSims <- 100000 #number of simulated experiments
@@ -242,7 +250,9 @@ As the statistical power increases, some *p*-values below 0.05 (e.g., *p* = 0.04
 
 Yet perhaps surprisingly, observing a *p*-value of 0.04 is more likely when the null hypothesis ($H_0$) is true than when the alternative hypothesis ($H_1$) is true and we have very high power, as illustrated by the fact that in Figure \@ref(fig:paradox) the density of the *p*-value distribution is higher when the null is true, than when a test has 99% power, at 0.04. Lindley's paradox shows that a *p*-value of for example 0.04 can be statistically significant, but at the same time is evidence for the null hypothesis. From a Neyman-Pearson approach we have made a claim that has a maximum error rate of 5%, but from a likelihood of Bayesian approach, we should conclude our data supports the null. Lindley's paradox illustrates when different statistical philosophies would reach different conclusions, and why a *p*-value can not directly be interpreted as a measure of evidence, without taking the power of the test into account. Although it is not necessary, researchers might desire to prevent situations where a frequentist rejects the null hypothesis based on *p* < 0.05, when the evidence in the test favors the null hypothesis over the alternative hypothesis. This can be achieved by lowering the alpha level as a function of the sample size [@leamer_specification_1978; @maier_justify_2022; @good_bayesnon-bayes_1992], as explained in the chapter on [error control](#errorcontrol).
 
-```{r, paradox, echo=FALSE, fig.cap="*P*-value distribution for 0 (grey horizontal line, 50% power (black solid curve), and 99% power (black dotted curve, where *p*-values just below 0.05 are more likely when $H_0$ is true than when $H_1$ is true)."}
+(ref:paradoxlab) *P*-value distribution for 0 (grey horizontal line, 50 percent power (black solid curve), and 99 percent power (black dotted curve, where *p*-values just below 0.05 are more likely when $H_0$ is true than when $H_1$ is true). 
+
+```{r, paradox, echo=FALSE, fig.cap= '(ref:paradoxlab)'}
 # Lindley plot
 
 n <- 150
@@ -303,8 +313,9 @@ It is useful to distinguish the null hypothesis (the prediction that the mean di
   
 I personally find things become a lot clearer if you plot the null model as mean differences instead of *t*-values. So below, you can see a null model for the mean differences we can expect when compare two groups of 50 observations where the true difference between the two groups is 0, and the standard deviation is in each group is 1. Because the standard deviation is 1, you can also interpret the mean differences as a Cohen’s *d* effect size. So this is also the distribution you can expect for a Cohen's *d* of 0, when collecting 50 observations per group in an independent *t*-test.
 
+(ref:fig131lab) Distribution of observed Cohen's *d* effect sizes when collecting 50 observations per group in an independent *t*-test.
 
-```{r, fig131, echo = FALSE, fig.cap="Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test"}
+```{r, fig131, echo = FALSE, fig.cap = '(ref:fig131lab)'}
 # Figure 1 & 2 (set to N <- 5000 for Figure 2)
 # Set x-axis upper and lower scale points
 low_x <- -1
@@ -348,8 +359,9 @@ Let’s assume that the null model in the Figure above is true, and that we obse
 
 One reason why I prefer to plot the null model in raw scores instead of *t*-values is that you can see how the null model changes when the sample size increases. When we collect 5000 instead of 50 observations, we see the null model is still centered on 0 – but in our null model we now expect most values will fall very close around 0. 
 
+(ref:fig132lab) Distribution of observed Cohen's *d* effect sizes when collecting 5000 observations per group in an independent *t*-test when *d* = 0. 
 
-```{r, fig132, echo = FALSE, fig.cap= "Distribution of observed Cohen's d effect sizes when collecting 5000 observations per group in an independent t-test when d = 0."}
+```{r, fig132, echo = FALSE, fig.cap= '(ref:fig132lab)'}
 low_x <- -1
 high_x <- 1
 y_max <- 2
@@ -392,13 +404,19 @@ The standard error of the differences between means is thus 0.2 for n = 50 in ea
 
 If we collected n = 5000, and we would again observe a mean difference of 0.5, it should be clear that this same difference is even more surprising than it was when we collected 50 observations. We are now almost ready to address common misconceptions about *p*-values, but before we can do this, we need to introduce a model of the data when the null is not true. If we are not sampling data from a model where the true mean difference is 0, what does our alternative model look like? Some software (such as G\*power, see Figure \@ref(fig:gpower-screenshot)) will visualize both the null model (red curve) and the alternative model (blue curve) in their output:
 
-```{r gpower-screenshot, echo=FALSE, fig.cap="Screenshot from G*power software"}
+
+
+(ref:gpower-screenshotlab) Screenshot from G*Power software
+
+```{r gpower-screenshot, echo=FALSE, fig.cap="ref:gpower-screenshotlab"}
 knitr::include_graphics("images/1.3.3.png")
 ```
 
 When we do a study, we rarely already know what the true mean difference is (if we already knew, why would we do the study?). But let’s assume there is an all-knowing entity. Following Paul Meehl, we will call this all-knowing entity ‘Omniscient Jones’. Before we collect our sample of 50 observations, Omniscient Jones already knows that the true mean difference in the population is 0.5. Again, we should expect some variation around 0.5 in this alternative model. The figure below shows the expected data pattern when the null hypothesis is true (now indicated by a grey line) and it shows an alternative model, assuming a true mean difference of 0.5 exists in the population (indicated by a black line).
 
-```{r fig134, echo = FALSE, fig.cap="Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test when d = 0."}
+(ref:fig134lab) Distribution of observed Cohen's *d* effect sizes when collecting 50 observations per group in an independent *t*-test when *d* = 0.
+
+```{r fig134, echo = FALSE, fig.cap = '(ref:fig134lab)'}
 #Figure 3 & 4 (set d <- 1.5 and high_x <- 1.5 for figure 4)-----
 low_x <- -1
 high_x <- 3
@@ -436,7 +454,9 @@ add_type1_error(N, "left")
 
 But Omniscient Jones could have said the true difference was much larger. Let’s assume we do another study, but now before we collect our 50 observations, Omniscient Jones tells us that the true mean difference is 1.5. The null model does not change, but the alternative model now moves over to the right. 
 
-```{r fig135, echo = FALSE, include = FALSE, fig.cap="Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test for d = 0 and d = 0.5."}
+(ref:fig135lab) Distribution of observed Cohen's *d* effect sizes when collecting 50 observations per group in an independent *t*-test for *d* = 0 and *d* = 0.5.
+
+```{r fig135, echo = FALSE, include = FALSE, fig.cap = '(ref:fig135lab)'}
 low_x <- -1
 high_x <- 1.5
 y_max <- 2
@@ -492,7 +512,9 @@ Let’s take a concrete example that will illustrate why a non-significant resul
 
 Nevertheless, we see that observing a mean difference of 0.35 is not only quite likely given that the true mean difference is 0.5, but observing a mean difference of 0.35 is much more likely under the alternative model, than under the null model. You can see this by comparing the height of the density curve at a difference of 0.35 for the null model, which is approximately 0.5, and the height of the density curve for the alternative model, which is approximately 1.5. See the chapter on [likelihoods](#likettest) for further details.
 
-```{r fig136, echo = FALSE, fig.cap = "Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test for d = 0 and d = 0.5 when observing d = 0.35."}
+(ref:fig136lab) Distribution of observed Cohen's *d* effect sizes when collecting 50 observations per group in an independent t-test for *d* = 0 and *d* = 0.5 when observing *d* = 0.35.
+
+```{r fig136, echo = FALSE, fig.cap = '(ref:fig136lab)'}
 low_x <- -1
 high_x <- 1.5
 y_max <- 2
@@ -549,7 +571,9 @@ rnorm(n = 50, mean = 0, sd = 1)
 
 This command generates 50 random observations from a distribution with a mean of 0 and a standard deviation of 1 (in the long run – the mean and standard deviation will vary in each sample that is generated). Imagine we run this command once, and we observe a mean of 0.5. The figure below visualizes this scenario. We can perform a one-sample *t*-test against 0, and this test tells us, with a *p* < .05, that the data we have observed is surprisingly different from 0, assuming the random number generator in R functions as it should and generates data with a true mean of 0. 
 
-```{r fig137, echo = FALSE, fig.cap="Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test when d = 0 and observing d = 0.5."}
+(ref:fig137lab) Distribution of observed Cohen's *d* effect sizes when collecting 50 observations per group in an independent *t*-test when *d* = 0 and observing *d* = 0.5.
+
+```{r fig137, echo = FALSE, fig.cap= '(ref:fig137lab)'}
 # Set x-axis upper and lower scalepoint
 low_x <- -1
 high_x <- 1
@@ -605,7 +629,9 @@ Note that nothing about this is a problem with the interpretation of a *p*-value
 
 This misinterpretation is one possible explanation of the incorrect statement that a *p*-value is ‘the probability that the data are observed by chance.’ Assume we collect 20 observations, and Omniscient Jones tells us the null hypothesis is true (as in the example above where we generated random numbers in R). This means we are sampling from the distribution in the figure below.
 
-```{r fig138, echo = FALSE, fig.cap="Distribution of observed Cohen's d effect sizes when collecting 20 observations per group in an independent t-test when d = 0."}
+(ref:fig138lab) Distribution of observed Cohen's *d* effect sizes when collecting 20 observations per group in an independent *t*-test when *d* = 0.
+
+```{r fig138, echo = FALSE, fig.cap= '(ref:fig138lab)'}
 # Set x-axis upper and lower scale points
 low_x <- -1
 high_x <- 1
@@ -847,7 +873,11 @@ D) The probability that a replication study will yield a significant result is e
 
 This question is conceptually very similar to that asked by Tversky and Kahneman [-@tversky_belief_1971] in article 'Belief in the law of small numbers': 
 
-```{r smallnumbers, echo=FALSE, fig.cap="Screenshot of first paragraph in Tversky and Kahneman, 1971"}
+
+
+(ref:smallnumberslab) Screenshot of first paragraph in Tversky and Kahneman, 1971
+
+```{r smallnumbers, echo=FALSE, fig.cap="ref:smallnumberslab"}
 knitr::include_graphics("images/belieflawsmallnumers.png")
 ```
 

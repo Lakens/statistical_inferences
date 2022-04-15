@@ -173,6 +173,7 @@ Figure 10.1: Screenshot of the planned interim analyses examining the safety and
 <pre><code>## [1] 0.02938579 0.02938579</code></pre>
 <p>We can check the output against the <a href="https://en.wikipedia.org/wiki/Pocock_boundary">Wikipedia page for the Pocock correction</a> where we indeed see that with 2 looks at the data the alpha level for each look is 0.0294. The Pocock correction is slightly more efficient than using a Bonferroni correction (in which case the alpha levels would be 0.025), because of the dependency in the data (at the second look, the data analyzed at the first look is again part of the analysis).</p>
 <p><code>rpact</code> makes it easy to plot the boundaries (based on the critical values) for each look. We see the critical values are higher than the 1.96 we would use for a fixed design with a 5% alpha level, namely <em>Z</em> = 2.178. Whenever we observe a test statistical that is more extreme than the critical value, we can reject the null hypothesis.</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:boundplot1"></span>
 <img src="10-sequential_files/figure-html/boundplot1-1.png" alt="Plot of critical boundaries at each look for a 2 look design with a Pocock correction." width="100%"><p class="caption">
@@ -180,6 +181,7 @@ Figure 10.2: Plot of critical boundaries at each look for a 2 look design with a
 </p>
 </div>
 <p>The analysis can also be performed in the rpact <a href="https://rpact.shinyapps.io/public/">shiny app</a> which also allows users to create all plots through simple menu options, and download a complete report of the analyses (e.g., for a preregistration document).</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:rpactshiny"></span>
 <img src="images/rpact1.png" alt="Screenshot of rpact Shiny app." width="100%"><p class="caption">
@@ -192,6 +194,7 @@ Figure 10.3: Screenshot of rpact Shiny app.
 <span class="header-section-number">10.3</span> Comparing Spending Functions<a class="anchor" aria-label="anchor" href="#comparing-spending-functions"><i class="fas fa-link"></i></a>
 </h2>
 <p>We can vizualize the corrections for different types of designs for each of 3 looks (2 interim looks and one final look) in the same plot (see Figure <a href="sequential.html#fig:fourspendingfunctions">10.4</a>). The plot below shows the Pocock, O’Brien-Fleming, Haybittle-Peto, and Wang-Tsiatis correction with <span class="math inline">\(\Delta\)</span> = 0.25. We see that researchers can choose different approaches to spend their alpha level across looks. Researchers can choose to spend their alpha conservatively (keeping most of the alpha for the last look), or more liberally (spending more alpha at the earlier looks, which increases the probability of stopping early for many true effect sizes).</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:fourspendingfunctions"></span>
 <img src="10-sequential_files/figure-html/fourspendingfunctions-1.png" alt="Four different alpha spending functions (O'Brien-Fleming, Pocock, Haybittle-Peto, Wang-Tsiatis) for 3 looks." width="100%"><p class="caption">
@@ -208,6 +211,7 @@ Figure 10.4: Four different alpha spending functions (O'Brien-Fleming, Pocock, H
 </h2>
 <p>The approaches to specify the shape of decision boundaries across looks discussed so far have an important limitation <span class="citation">(<a href="references.html#ref-proschan_statistical_2006" role="doc-biblioref">Proschan et al., 2006</a>)</span>. They require a pre-specified number of looks (e.g., 4), and the sample size for the interim looks need to be pre-specified as well (e.g., after 25%, 50%, 75%, and 100% of observations). It is logistically not always feasible to stop the data collection exactly at 25% of the planned total sample size. An important contribution to the sequential testing literature was made by Lan and DeMets <span class="citation">(<a href="references.html#ref-lan_discrete_1983" role="doc-biblioref">1983</a>)</span> who introduced the alpha spending approach to correct the alpha level. In this approach the cumulative Type I error rate spent across the looks is pre-specified through a function (the <em>alpha spending function</em>) in order to control the overall significance level <span class="math inline">\(\alpha\)</span> at the end of the study.</p>
 <p>The main benefit of these alpha spending functions is that error rates at interim analyses can be controlled, while neither the number nor the timing of the looks needs to be specified in advance. This makes alpha spending approaches much more flexible than earlier approaches to controlling the Type 1 error in group sequential designs. When using an alpha spending function it is important that the decision to perform an interim analysis is not based on collected data, as this can still increase the Type I error rate. As long as this assumption is met, it is possible to update the alpha levels at each look during a study.</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:seq-comparison"></span>
 <img src="10-sequential_files/figure-html/seq-comparison-1.png" alt="Comparison of Pocock and O'Brien-Fleming correction, and Pocock-like and O'Brien-Fleming like alpha spending function, for 5 looks." width="100%"><p class="caption">
@@ -381,6 +385,7 @@ Figure 10.5: Comparison of Pocock and O'Brien-Fleming correction, and Pocock-lik
 <p>However, the maximum sample size is not the expected sample size for this design, because of the possibility that we can stop data collection at an earlier look in the sequential design. In the long run, if <em>d</em> = 0.5, and we use an Pocock-like alpha spending function, and ignoring upward rounding because we can only collect a complete number of observations, we will sometimes collect 96 participants and stop after the first look, and the remaining time continue to 190 participants. As we see in the rows 'Reject per stage' the data collection is expected to stop after the first look in 0.6 of the studies because we have observed a significant result. The remainder of the time (1 - 0.6 = 0.4)</p>
 <p>This means that, assuming there is a true effect of <em>d</em> = 0.5, the <em>expected</em> sample size on average is the probability of stopping at each look, multiplied by the number of observations we collect at each look, so 0.6 * 96 + 0.3 * 190 = 133.39. The <code>rpact</code> package returns 132.06 under "Expected number of subjects under <span class="math inline">\(H_1\)</span>" - the small difference is due to the fact that <code>rpact</code> does not round the number of observations up, although it should). So, assuming the true effect is <em>d</em> = 0.5, in any single study we might need to collect slightly more data than in a fixed design (where we would collect 172), but on average we will need to collect less observations in a sequential design.</p>
 <p>Because power is a curve, and the true effect size is unknown, it is useful to plot power across a range of possible effect sizes, so that we can explore the expected sample size, in the long run, if we use a sequential design, for different true effect sizes.</p>
+
 <div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Use getPowerMeans and set max N to 188 based on analysis above</span>
 <span class="va">sample_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getPowerMeans.html">getPowerMeans</a></span><span class="op">(</span>
@@ -461,22 +466,25 @@ Figure 10.6: Power curve for a sequential design with 2 looks.
   bindingFutility <span class="op">=</span> <span class="cn">FALSE</span>
 <span class="op">)</span></code></pre></div>
 <p>In Figure <a href="sequential.html#fig:futility1">10.7</a> we see a sequential design where data collection is stopped to reject <span class="math inline">\(H_0\)</span> when the observed <em>z</em>-score is larger than the values indicated by the red line, computed based on a Pocock-like alpha spending function (as in Figure <a href="sequential.html#fig:fourspendingfunctions">10.4</a>. In addition, data collection will stop when at an interim analysis a <em>z</em>-score lower than or equal to 0 is observed, as indicated by the blue line. At the last look, the red and blue lines meet, because we will either reject <span class="math inline">\(H_0\)</span> at the critical value, or fail to reject <span class="math inline">\(H_0\)</span>.</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:futility1"></span>
-<img src="10-sequential_files/figure-html/futility1-1.png" alt="Pocock-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) when the observed effect is in the opposite direction." width="100%"><p class="caption">
+<img src="10-sequential_files/figure-html/futility1-1.png" alt="Pocock-type boundaries for 3 looks to stop when rejecting \(H_0\) (red line) or to stop for futility (blue line) when the observed effect is in the opposite direction." width="100%"><p class="caption">
 Figure 10.7: Pocock-type boundaries for 3 looks to stop when rejecting <span class="math inline">\(H_0\)</span> (red line) or to stop for futility (blue line) when the observed effect is in the opposite direction.
 </p>
 </div>
 <p>Manually specifying the futility bounds is not ideal, as we risk stopping data collection because we fail to reject <span class="math inline">\(H_0\)</span>, when there is a high probability of a Type 2 error. It is better to set the futility bounds by directly controlling the Type 2 error across looks at the data. Just as we are willing to distribute our Type I error rate across interim analyses, we can distribute our Type II error rate across looks, and decide to stop for futility when we fail to reject the effect size of interest with a desired Type 2 error rate.</p>
 <p>When a study is designed such that the null hypothesis significance test has 90% power to detect an effect of <em>d</em> = 0.5, 10% of the time <span class="math inline">\(H_0\)</span> will not be rejected, when it should. In these 10% of cases where we make a Type 2 error, the conclusion will be that an effect of 0.5 is not present, when in reality, there is an effect of <em>d</em> = 0.5 (or larger). In an equivalence against a smallest effect size of interest of <em>d</em> = 0.5, the conclusion that an effect of 0.5 or larger is not present, when in reality, there is an effect of <em>d</em> = 0.5 (or larger) is called a Type 1 error: We incorrectly conclude the effect is practically equivalent to zero. Therefore, what is a Type 2 error in NHST when <span class="math inline">\(H_0\)</span> is <em>d</em> = 0 and <span class="math inline">\(H_1\)</span> = <em>d</em> = 0.5 is a Type 1 error in an equivalence test where <span class="math inline">\(H_0\)</span> is <em>d</em> = 0.5 and <span class="math inline">\(H_1\)</span> is <em>d</em> = 0 <span class="citation">(<a href="references.html#ref-jennison_group_2000" role="doc-biblioref">Jennison &amp; Turnbull, 2000</a>)</span>. Controlling the Type 2 error in a sequential design can therefore be seen as controlling the Type 1 error for an equivalence test against the effect size the study is powered for. If we design a study to have a 5% Type 1 error rate and equally low Type 2 error rate (e.g., 5%, or 95% power), the study is an informative test for the presence or the absence of an effect of interest.</p>
 <p>If the true effect size is (close to) 0, sequential designs that stop for futility are more efficient than designs that do not stop for futility. Adding futility bounds based on beta-spending functions reduces power, which needs to be compensated by increasing the sample size, but this can be compensated by the fact that studies can stop earlier for futility, which can make designs more efficient. When specifying a smallest effect size of interest is not possible, researchers might not want to incorporate stopping for futility into the study design. To control the Type 2 error rate across looks, a <strong>beta-spending function</strong> needs to be chosen, such as a Pocock type beta spending function, an O'Brien-Fleming type beta spending function, or a user defined beta spending function (the beta-spending function does not need to be the same as the alpha-spending function). In <code>rpact</code> beta-spending functions can only be chosen for directional (one-sided) tests.</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:futility2"></span>
-<img src="10-sequential_files/figure-html/futility2-1.png" alt="Pocock-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) based on a Pocock-type beta-spending function." width="100%"><p class="caption">
+<img src="10-sequential_files/figure-html/futility2-1.png" alt="Pocock-type boundaries for 3 looks to stop when rejecting \(H_0\) (red line) or to stop for futility (blue line) based on a Pocock-type beta-spending function." width="100%"><p class="caption">
 Figure 10.8: Pocock-type boundaries for 3 looks to stop when rejecting <span class="math inline">\(H_0\)</span> (red line) or to stop for futility (blue line) based on a Pocock-type beta-spending function.
 </p>
 </div>
 <p>With a beta-spending function the expected number of subjects under <span class="math inline">\(H_1\)</span> will increase, so if the alternative hypothesis is true, designing a study to be able to stop for futility comes at a cost. However, it is possible that <span class="math inline">\(H_0\)</span> is true, and when it is, stopping for futility reduces the expected sample size. In Figure <a href="sequential.html#fig:powerseq2">10.9</a> you can see the probability of stopping (the green line) is now also high when the true effect size is 0, as we will now stop for futility, and if we do, the expected sample size (the blue line) is lower compared to <a href="sequential.html#fig:powerseq">10.6</a>. It is important to design studies that have a high informational value to reject the presence of a meaningful effect at the final analysis, but whether stopping for futility early is an option you want to build into a study is a choice that requires considering the probability that the null hypothesis is true and the (perhaps small) increase in the sample size.</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:powerseq2"></span>
 <img src="10-sequential_files/figure-html/powerseq2-1.png" alt="Power curve for a sequential design with 2 looks with stopping for futility." width="100%"><p class="caption">
@@ -518,17 +526,17 @@ Figure 10.9: Power curve for a sequential design with 2 looks with stopping for 
   <span class="op">)</span>
 
 <span class="va">res</span></code></pre></div>
-<pre><code>## [PROGRESS] Stage results calculated [0.0382 secs] 
-## [PROGRESS] Conditional power calculated [0.0259 secs] 
-## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.0011 secs] 
-## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.5809 secs] 
-## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.6302 secs] 
-## [PROGRESS] Repeated confidence interval calculated [1.21 secs] 
-## [PROGRESS] Repeated p-values of stage 1 calculated [0.2664 secs] 
-## [PROGRESS] Repeated p-values of stage 2 calculated [0.2401 secs] 
-## [PROGRESS] Repeated p-values calculated [0.5078 secs] 
-## [PROGRESS] Final p-value calculated [0.0017 secs] 
-## [PROGRESS] Final confidence interval calculated [0.0725 secs]</code></pre>
+<pre><code>## [PROGRESS] Stage results calculated [0.0479 secs] 
+## [PROGRESS] Conditional power calculated [0.0399 secs] 
+## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.002 secs] 
+## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.6782 secs] 
+## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.6337 secs] 
+## [PROGRESS] Repeated confidence interval calculated [1.31 secs] 
+## [PROGRESS] Repeated p-values of stage 1 calculated [0.2192 secs] 
+## [PROGRESS] Repeated p-values of stage 2 calculated [0.1973 secs] 
+## [PROGRESS] Repeated p-values calculated [0.4165 secs] 
+## [PROGRESS] Final p-value calculated [0 secs] 
+## [PROGRESS] Final confidence interval calculated [0.0581 secs]</code></pre>
 <pre><code>## Analysis results (means of 2 groups, group sequential design):
 ## 
 ## Design parameters:
@@ -680,9 +688,10 @@ Figure 10.9: Power curve for a sequential design with 2 looks with stopping for 
 <li>The Type 1 error rate will not inflate, and the Type 2 error rate will not inflate.</li>
 </ol>
 <p><strong>Q13</strong>: In the plot below you see the <em>t</em>-score boundaries for a sequential design to stop to reject <span class="math inline">\(H_0\)</span> (the red line) and to reject <span class="math inline">\(H_1\)</span> (the blue line). At the second interim look, you perform a test, and observe a <em>t</em>-value of 2. Which decision would you make?</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:futilityq13"></span>
-<img src="10-sequential_files/figure-html/futilityq13-1.png" alt="Example of O'Brien-Fleming-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) with a 5% Type 1 and Type 2 error." width="100%"><p class="caption">
+<img src="10-sequential_files/figure-html/futilityq13-1.png" alt="Example of O'Brien-Fleming-type boundaries for 3 looks to stop when rejecting \(H_0\) (red line) or to stop for futility (blue line) with a 5% Type 1 and Type 2 error." width="100%"><p class="caption">
 Figure 10.10: Example of O'Brien-Fleming-type boundaries for 3 looks to stop when rejecting <span class="math inline">\(H_0\)</span> (red line) or to stop for futility (blue line) with a 5% Type 1 and Type 2 error.
 </p>
 </div>
@@ -765,11 +774,11 @@ $( document ).ready(function() {
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Improving Your Statistical Inferences</strong>" was written by Daniël Lakens. It was last built on 2022-04-12.</p>
+    <p>Lakens, D. (2022). Improving Your Statistical Inferences. https://doi.org/10.5281/zenodo.6409077. Built on 2022-04-12.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
-    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+    <p><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"></a></p>
   </div>
 
 </div></div>

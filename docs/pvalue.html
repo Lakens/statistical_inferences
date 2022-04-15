@@ -292,9 +292,10 @@ friend_10
 ## mean in group Friends Daniel   mean in group Friends Kyra 
 ##                          8.7                          7.7</code></pre>
 <p>We can graph the <em>t</em>-distribution (for df = 18) and highlight the two tail areas that start at the t-values of 2.5175 and -2.5175.</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:tdist"></span>
-<img src="01-pvalue_files/figure-html/tdist-1.png" alt="A *t*-distribution with 18 degrees of freedom." width="100%"><p class="caption">
+<img src="01-pvalue_files/figure-html/tdist-1.png" alt="A t-distribution with 18 degrees of freedom." width="100%"><p class="caption">
 Figure 1.1: A <em>t</em>-distribution with 18 degrees of freedom.
 </p>
 </div>
@@ -319,25 +320,28 @@ Figure 1.1: A <em>t</em>-distribution with 18 degrees of freedom.
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="va">backgroundcolor</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">p</span>, breaks <span class="op">=</span> <span class="fl">20</span><span class="op">)</span> <span class="co"># plot a histogram</span></code></pre></div>
 <p>In the simulation, we generate n = 71 normally distributed IQ scores with a mean of M (106 by default) and a standard deviation of 15. We then perform a one-sample <em>t</em>-test, store the <em>p</em>-value, and generate a plot of the <em>p</em>-value distribution.</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:pdistr1"></span>
-<img src="01-pvalue_files/figure-html/pdistr1-1.png" alt="Distribution of *p*-values when power = 50%." width="100%"><p class="caption">
+<img src="01-pvalue_files/figure-html/pdistr1-1.png" alt="Distribution of p-values when power = 50%." width="100%"><p class="caption">
 Figure 1.2: Distribution of <em>p</em>-values when power = 50%.
 </p>
 </div>
 <p>On the x-axis we see <em>p</em>-values from 0 to 1 in 20 bars, and on the y-axis we see how frequently these <em>p</em>-values were observed. There is a horizontal red dotted line that indicates an alpha of 5% (located at a frequency of 100.000*0.05 = 5000) – but you can ignore this line for now. In the title of the graph, the statistical power that is achieved in the simulated studies is given (assuming an alpha of 0.05): The studies have 50% power.</p>
 <p>The simulation result illustrates the <strong>probability density function</strong> of <em>p</em>-values. A probability density function provides the probability that a random variable has a specific value (such as Figure <a href="pvalue.html#fig:tdist">1.1</a> of the <em>t</em>-distribution). Because the <em>p</em>-value is a random variable, we can use it's probability density function to plot the <em>p</em>-value distribution <span class="citation">(<a href="references.html#ref-hung_behavior_1997" role="doc-biblioref">Hung et al., 1997</a>; <a href="references.html#ref-ulrich_properties_2018" role="doc-biblioref">Ulrich &amp; Miller, 2018</a>)</span>, as in Figure <a href="pvalue.html#fig:pdft">1.3</a>. You can vary the sample size, effect size, and alpha level in <a href="http://shiny.ieis.tue.nl/d_p_power/">this online Shiny app</a>. Increasing the sample size or the effect size will increase the steepness of the <em>p</em>-value distribution, which means that the probability to observe small <em>p</em>-values increases. The <em>p</em>-value distribution is a function of the statistical power of the test.</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:pdft"></span>
 <img src="01-pvalue_files/figure-html/pdft-1.png" alt="Probability density function for p-values from a two-sided t-test." width="100%"><p class="caption">
-Figure 1.3: Probability density function for p-values from a two-sided t-test.
+Figure 1.3: Probability density function for <em>p</em>-values from a two-sided <em>t</em>-test.
 </p>
 </div>
 <p>When there is no true effect, <em>p</em>-values are <strong>uniformly distributed</strong>. This means that every <em>p</em>-value is equally likely to be observed when the null hypothesis is true. In other words, when there is no true effect, a <em>p</em>-value of 0.08 is just as likely as a <em>p</em>-value of 0.98. I remember thinking this was very counterintuitive when I first learned it (well after completing a PhD), but it makes sense when we think of the goal to guarantee that when <span class="math inline">\(H_0\)</span> is true, alpha % of the <em>p</em>-values fall below the alpha level. If we set alpha to 0.01, 1% of the observed <em>p</em>-values should fall below 0.01, and if we set alpha to 0.12, 12% of the observed <em>p</em>-values should fall below 0.12. This can only happen if <em>p</em>-values are uniformly distributed when the null hypothesis is true.</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:pdistr2"></span>
-<img src="01-pvalue_files/figure-html/pdistr2-1.png" alt="Distribution of *p*-values when power = 50%." width="100%"><p class="caption">
-Figure 1.4: Distribution of <em>p</em>-values when power = 50%.
+<img src="01-pvalue_files/figure-html/pdistr2-1.png" alt="Distribution of p-values when the null hypothesis is true." width="100%"><p class="caption">
+Figure 1.4: Distribution of <em>p</em>-values when the null hypothesis is true.
 </p>
 </div>
 </div>
@@ -347,10 +351,11 @@ Figure 1.4: Distribution of <em>p</em>-values when power = 50%.
 </h2>
 <p>As the statistical power increases, some <em>p</em>-values below 0.05 (e.g., <em>p</em> = 0.04) can be more likely when there is <em>no</em> effect than when there <em>is</em> an effect. This is known as Lindley's paradox <span class="citation">(<a href="references.html#ref-lindley_statistical_1957" role="doc-biblioref">Lindley, 1957</a>)</span>, or sometimes the Jeffreys-Lindley paradox <span class="citation">(<a href="references.html#ref-spanos_who_2013" role="doc-biblioref">Spanos, 2013</a>)</span>. Because the distribution of <em>p</em>-values is a function of the statistical power <span class="citation">(<a href="references.html#ref-cumming_replication_2008" role="doc-biblioref">Cumming, 2008</a>)</span>, the higher the power, the more right-skewed the distribution becomes (i.e., the more likely it becomes that small <em>p</em>-values are observed). When there is no true effect, <em>p</em>-values are uniformly distributed, and 1% of observed <em>p</em>-values fall between 0.04 and 0.05. When the statistical power is extremely high, not only will most <em>p</em>-values fall below 0.05, most <em>p</em>-values will fall below 0.01. In Figure <a href="pvalue.html#fig:paradox">1.5</a> we see that with high power very small <em>p</em>-values (e.g., 0.001) are more likely to be observed when there <em>is</em> an effect than when there is <em>no</em> effect (e.g., the dotted black curve representing 99% power falls above the grey horizontal line representing the uniform distribution when the null is true for a <em>p</em>-value of 0.01).</p>
 <p>Yet perhaps surprisingly, observing a <em>p</em>-value of 0.04 is more likely when the null hypothesis (<span class="math inline">\(H_0\)</span>) is true than when the alternative hypothesis (<span class="math inline">\(H_1\)</span>) is true and we have very high power, as illustrated by the fact that in Figure <a href="pvalue.html#fig:paradox">1.5</a> the density of the <em>p</em>-value distribution is higher when the null is true, than when a test has 99% power, at 0.04. Lindley's paradox shows that a <em>p</em>-value of for example 0.04 can be statistically significant, but at the same time is evidence for the null hypothesis. From a Neyman-Pearson approach we have made a claim that has a maximum error rate of 5%, but from a likelihood of Bayesian approach, we should conclude our data supports the null. Lindley's paradox illustrates when different statistical philosophies would reach different conclusions, and why a <em>p</em>-value can not directly be interpreted as a measure of evidence, without taking the power of the test into account. Although it is not necessary, researchers might desire to prevent situations where a frequentist rejects the null hypothesis based on <em>p</em> &lt; 0.05, when the evidence in the test favors the null hypothesis over the alternative hypothesis. This can be achieved by lowering the alpha level as a function of the sample size <span class="citation">(<a href="references.html#ref-good_bayesnon-bayes_1992" role="doc-biblioref">Good, 1992</a>; <a href="references.html#ref-leamer_specification_1978" role="doc-biblioref">Leamer, 1978</a>; <a href="references.html#ref-maier_justify_2022" role="doc-biblioref">Maier &amp; Lakens, 2022</a>)</span>, as explained in the chapter on <a href="errorcontrol.html#errorcontrol">error control</a>.</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:paradox"></span>
-<img src="01-pvalue_files/figure-html/paradox-1.png" alt="*P*-value distribution for 0 (grey horizontal line, 50% power (black solid curve), and 99% power (black dotted curve, where *p*-values just below 0.05 are more likely when $H_0$ is true than when $H_1$ is true)." width="100%"><p class="caption">
-Figure 1.5: <em>P</em>-value distribution for 0 (grey horizontal line, 50% power (black solid curve), and 99% power (black dotted curve, where <em>p</em>-values just below 0.05 are more likely when <span class="math inline">\(H_0\)</span> is true than when <span class="math inline">\(H_1\)</span> is true).
+<img src="01-pvalue_files/figure-html/paradox-1.png" alt="P-value distribution for 0 (grey horizontal line, 50 percent power (black solid curve), and 99 percent power (black dotted curve, where p-values just below 0.05 are more likely when \(H_0\) is true than when \(H_1\) is true)." width="100%"><p class="caption">
+Figure 1.5: <em>P</em>-value distribution for 0 (grey horizontal line, 50 percent power (black solid curve), and 99 percent power (black dotted curve, where <em>p</em>-values just below 0.05 are more likely when <span class="math inline">\(H_0\)</span> is true than when <span class="math inline">\(H_1\)</span> is true).
 </p>
 </div>
 </div>
@@ -375,20 +380,22 @@ Figure 1.5: <em>P</em>-value distribution for 0 (grey horizontal line, 50% power
 <p>A <em>p</em>-value is the probability of the observed data, or more extreme data, under the assumption that the null hypothesis is true. To understand what this means, it might be especially useful to know what this doesn’t mean. First, we need to know what ‘the assumption that the null hypothesis is true’ looks like, and which data we should expect if the null hypothesis is true. Although the null hypothesis can be any value, in this assignment we will assume the null hypothesis is specified as a mean difference of 0. For example, we might be interested in calculating the difference between a control condition and an experimental condition on a dependent variable.</p>
 <p>It is useful to distinguish the null hypothesis (the prediction that the mean difference in the population is exactly 0) and the null model (a model of the data we should expect when we collect data when the null hypothesis is true). The null hypothesis is a point at 0, but the null model is a distribution. It is visualized in textbooks or power analysis software using pictures as you can see below, with <em>t</em>-values on the horizontal axis, and a critical <em>t</em>-value somewhere between 1.96 – 2.00 (depending on the sample size). This is done because the statistical test when comparing two groups is based on the <em>t</em>-distribution, and the <em>p</em>-value is statistically significant when the <em>t</em>-value is larger than a critical <em>t</em>-value.</p>
 <p>I personally find things become a lot clearer if you plot the null model as mean differences instead of <em>t</em>-values. So below, you can see a null model for the mean differences we can expect when compare two groups of 50 observations where the true difference between the two groups is 0, and the standard deviation is in each group is 1. Because the standard deviation is 1, you can also interpret the mean differences as a Cohen’s <em>d</em> effect size. So this is also the distribution you can expect for a Cohen's <em>d</em> of 0, when collecting 50 observations per group in an independent <em>t</em>-test.</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:fig131"></span>
-<img src="01-pvalue_files/figure-html/fig131-1.png" alt="Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test" width="100%"><p class="caption">
-Figure 1.6: Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test
+<img src="01-pvalue_files/figure-html/fig131-1.png" alt="Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test." width="100%"><p class="caption">
+Figure 1.6: Distribution of observed Cohen's <em>d</em> effect sizes when collecting 50 observations per group in an independent <em>t</em>-test.
 </p>
 </div>
 <p>The first thing to notice is that we expect that the mean of the null model is 0. Looking at the x-axis, we see the plotted distribution is centered on 0. But even if the mean difference in the population is 0 that does not imply every sample we draw from the population will give a mean difference of exactly zero. There is variation around the population value, as a function of the standard deviation and the sample size.</p>
 <p>The y-axis of the graph represents the density, which provides an indication of the relative likelihood of measuring a particular value of a continuous distribution. We can see that the most likely mean difference is the true population value of zero, and that larger differences from zero become increasingly less likely. The graph has two areas that are colored red. These areas represent 2.5% of the most extreme values in the left tail of the distribution, and 2.5% of the most extreme values in the right tail of the distribution. Together, they make up 5% of the most extreme mean differences we would expect to observe, given our number of observations, when the true mean difference is exactly 0. When a mean difference in the red area is observed, the corresponding statistical test will be statistically significant at a 5% alpha level. In other words, not more than 5% of the observed mean differences will be far enough away from 0 to be considered surprising. Because the null hypothesis is true, observing a ‘surprising’ mean difference in the red areas is a Type 1 error.</p>
 <p>Let’s assume that the null model in the Figure above is true, and that we observe a mean difference of 0.5 between the two groups. This observed difference falls in the red area in the right tail of the distribution. This means that the observed mean difference is relatively surprising, under the assumption that the true mean difference is 0. If the true mean difference is 0, the probability density functions shows that we should not expect a mean difference of 0.5 very often. If we calculate a <em>p</em>-value for this observation, it would be lower than 5%. The probability of observing a mean difference that is at least far away from 0 as 0.5 (either to the left from the mean, or to the right, when we do a two-tailed test) is less than 5%.</p>
 <p>One reason why I prefer to plot the null model in raw scores instead of <em>t</em>-values is that you can see how the null model changes when the sample size increases. When we collect 5000 instead of 50 observations, we see the null model is still centered on 0 – but in our null model we now expect most values will fall very close around 0.</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:fig132"></span>
 <img src="01-pvalue_files/figure-html/fig132-1.png" alt="Distribution of observed Cohen's d effect sizes when collecting 5000 observations per group in an independent t-test when d = 0." width="100%"><p class="caption">
-Figure 1.7: Distribution of observed Cohen's d effect sizes when collecting 5000 observations per group in an independent t-test when d = 0.
+Figure 1.7: Distribution of observed Cohen's <em>d</em> effect sizes when collecting 5000 observations per group in an independent <em>t</em>-test when <em>d</em> = 0.
 </p>
 </div>
 <p>The distribution is much narrower because the distribution of mean differences is based on the standard error of the difference between means. This value is calculated based on the standard deviation and the sample size, as follows:</p>
@@ -397,20 +404,23 @@ Figure 1.7: Distribution of observed Cohen's d effect sizes when collecting 5000
 <p><span class="math display">\[\sqrt{\frac{1^{2}}{50}+\frac{1^{2}}{50}}\]</span></p>
 <p>The standard error of the differences between means is thus 0.2 for n = 50 in each group, and for n = 5000 it is 0.02. Assuming a normal distribution 95% of the observations fall between 1.96 SE. So for 50 samples per group, the mean differences should fall between -1.96 * 0.2 = -0.392, and +1.96 * 0.2 = 0.392, and we can see the red areas start from approximately -0.392 to 0.392 for n = 50. For 5000 samples per group, the mean differences should fall between -1.96 * 0.02, and +1.96 * 0.02; in other words between -0.0392 to 0.0392 for n = 5000. Due to the larger sample size with n = 5000 observations per group, we should expect to observe mean differences in our sample closer to 0 compared to our null model when we had only 50 observations.</p>
 <p>If we collected n = 5000, and we would again observe a mean difference of 0.5, it should be clear that this same difference is even more surprising than it was when we collected 50 observations. We are now almost ready to address common misconceptions about <em>p</em>-values, but before we can do this, we need to introduce a model of the data when the null is not true. If we are not sampling data from a model where the true mean difference is 0, what does our alternative model look like? Some software (such as G*power, see Figure <a href="pvalue.html#fig:gpower-screenshot">1.8</a>) will visualize both the null model (red curve) and the alternative model (blue curve) in their output:</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:gpower-screenshot"></span>
-<img src="images/1.3.3.png" alt="Screenshot from G*power software" width="100%"><p class="caption">
-Figure 1.8: Screenshot from G*power software
+<img src="images/1.3.3.png" alt="ref:gpower-screenshotlab" width="100%"><p class="caption">
+Figure 1.8: ref:gpower-screenshotlab
 </p>
 </div>
 <p>When we do a study, we rarely already know what the true mean difference is (if we already knew, why would we do the study?). But let’s assume there is an all-knowing entity. Following Paul Meehl, we will call this all-knowing entity ‘Omniscient Jones’. Before we collect our sample of 50 observations, Omniscient Jones already knows that the true mean difference in the population is 0.5. Again, we should expect some variation around 0.5 in this alternative model. The figure below shows the expected data pattern when the null hypothesis is true (now indicated by a grey line) and it shows an alternative model, assuming a true mean difference of 0.5 exists in the population (indicated by a black line).</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:fig134"></span>
 <img src="01-pvalue_files/figure-html/fig134-1.png" alt="Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test when d = 0." width="100%"><p class="caption">
-Figure 1.9: Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test when d = 0.
+Figure 1.9: Distribution of observed Cohen's <em>d</em> effect sizes when collecting 50 observations per group in an independent <em>t</em>-test when <em>d</em> = 0.
 </p>
 </div>
 <p>But Omniscient Jones could have said the true difference was much larger. Let’s assume we do another study, but now before we collect our 50 observations, Omniscient Jones tells us that the true mean difference is 1.5. The null model does not change, but the alternative model now moves over to the right.</p>
+
 <p>You can play around with the alternative and null models in this online app: <a href="http://shiny.ieis.tue.nl/d_p_power/" class="uri">http://shiny.ieis.tue.nl/d_p_power/</a>. The app allows you to specify the sample size in each group of an independent <em>t</em>-test (from 2 to infinity), the mean difference (from 0 to 2), and the alpha level. In the plot, the red areas visualize Type 1 errors. The blue area visualizes the Type 2 error rate (which we will discuss below). The app also tells you the critical value: There is a vertical line (with n = 50 this line falls at a mean difference of 0.4) and a sentence that says: “Effects larger than 0.4 will be statistically significant”. Note that the same is true for effects smaller than -0.4, even though there is no second label there, but the app shows the situation for a two-sided independent <em>t</em>-test.</p>
 <p>You can see that on the left of the vertical line that indicates the critical mean difference there is a blue area that is part of the alternative model. This is the Type 2 error rate (or 1 - the power of the study). If a study has 80% power, 80% of the mean differences we will observe should fall on the right of the critical value indicated by the line. If the alternative model is true, but we observe an effect smaller than the critical value, the observed <em>p</em>-value will be larger than 0.05, even when there is a true effect. You can check in the app that the larger the sample size, the further to the right the entire alternative distribution falls, and thus the higher the power. You can also see that the larger the sample size, the narrower the distribution, and the less of the distribution will fall below the critical value (as long as the true population mean is larger than the critical value). Finally, the larger the alpha level, the further to the left the critical mean difference moves, and the smaller the area of the alternative distribution that falls below the critical value.</p>
 <p>The app also plots 3 graphs that illustrate the power curves as a function of different alpha levels, sample sizes, or true mean differences. Play around in the app by changing the values. Get a feel for how each variable impacts the null and alternative models, the mean difference that will be statistically significant, and the Type 1 and Type 2 error rates.</p>
@@ -425,10 +435,11 @@ Figure 1.9: Distribution of observed Cohen's d effect sizes when collecting 50 o
 <p>When you conclude that ‘there is no effect’ or that ‘there is no difference’ you are similarly claiming that it is 100% probable that the null hypothesis is true. But since <em>p</em>-values are statements about the probability of data, you should refrain from making statements about the probability of a theory solely based on a <em>p</em>-value. That’s ok. <em>p</em>-values were designed to help you identify surprising results from a noisy data generation process (aka the real world). They were not designed to quantify the probability that a hypothesis is true.</p>
 <p>Let’s take a concrete example that will illustrate why a non-significant result does not mean that the null hypothesis is true. In the figure below, Omniscient Jones tells us the true mean difference is 0.5. We can see this, because the alternative distribution which visualizes the probability of the mean differences we should expect when the alternative hypothesis is true is centered on 0.5. We have observed a mean difference of 0.35. This value is not extreme enough to be statistically different from 0. We can see this, because the value does not fall within the red area of the null model (and hence, the <em>p</em>-value is not smaller than our alpha level).</p>
 <p>Nevertheless, we see that observing a mean difference of 0.35 is not only quite likely given that the true mean difference is 0.5, but observing a mean difference of 0.35 is much more likely under the alternative model, than under the null model. You can see this by comparing the height of the density curve at a difference of 0.35 for the null model, which is approximately 0.5, and the height of the density curve for the alternative model, which is approximately 1.5. See the chapter on <a href="likelihoods.html#likettest">likelihoods</a> for further details.</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:fig136"></span>
 <img src="01-pvalue_files/figure-html/fig136-1.png" alt="Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test for d = 0 and d = 0.5 when observing d = 0.35." width="100%"><p class="caption">
-Figure 1.10: Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test for d = 0 and d = 0.5 when observing d = 0.35.
+Figure 1.10: Distribution of observed Cohen's <em>d</em> effect sizes when collecting 50 observations per group in an independent t-test for <em>d</em> = 0 and <em>d</em> = 0.5 when observing <em>d</em> = 0.35.
 </p>
 </div>
 <p>All the <em>p</em>-value tells us is that a mean difference of 0.35 is not extremely surprising, if we assume the null hypothesis is true. There can be many reasons for this. In the real world, where we have no Omniscient Jones to tell us about the true mean difference, it is possible that there is a true effect, as illustrated in the figure above.</p>
@@ -444,20 +455,22 @@ Figure 1.10: Distribution of observed Cohen's d effect sizes when collecting 50 
 <p>As a simple example of why such extreme statements are incorrect, imagine we generate a series of numbers in R using the following command:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">50</span>, mean <span class="op">=</span> <span class="fl">0</span>, sd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
-<pre><code>##  [1] -0.30341566 -0.79540461  0.41700021 -0.37754987 -0.23595732 -0.57647228
-##  [7]  0.59251204  0.20269682 -0.42276472 -0.29610013 -1.68765171 -0.70247725
-## [13] -0.73180198 -0.36778298  0.80717312  0.27440081  0.82948360 -1.47549345
-## [19] -1.06538421  0.44524078  0.81984272 -1.22905140  0.45644672 -0.26328642
-## [25] -0.25601109  0.63374764 -2.29635172  1.17662998  0.50127258 -0.09356896
-## [31]  0.54697551 -0.73736309 -1.71741117 -0.47421159 -0.40958114  0.71538235
-## [37] -1.10966453  0.19759589 -0.12758919 -0.20209402  0.35977111 -0.81047237
-## [43] -0.22869961  0.87143529 -1.29990820  1.17899530 -2.53552369  0.88001710
-## [49] -0.34280086 -0.85715531</code></pre>
+<pre><code>##  [1]  0.167905119 -0.002579725 -0.804598058 -0.149615557  1.008286011
+##  [6]  1.072648129 -1.116376722 -1.346635809  0.656286246 -0.562386333
+## [11] -0.347310208  0.342683692  0.021035060  0.606088300  0.447632061
+## [16] -1.426915907 -0.937391461 -0.569710659  1.539303295  0.453715740
+## [21]  0.390099400 -0.541694467  0.306978169 -2.007658548 -0.465218195
+## [26] -1.713660875 -0.281160938  2.430621507 -0.285111785 -0.483030856
+## [31]  1.641521892 -1.266388061  0.469343024 -0.403982605 -0.775408350
+## [36]  1.180816575 -0.424346032  0.359736738  2.671621437  0.157601533
+## [41] -1.777202020 -0.176670865 -0.437307269  1.148605037  0.369486560
+## [46] -1.101219548 -2.438256954  0.088061599  0.264877485 -1.191222124</code></pre>
 <p>This command generates 50 random observations from a distribution with a mean of 0 and a standard deviation of 1 (in the long run – the mean and standard deviation will vary in each sample that is generated). Imagine we run this command once, and we observe a mean of 0.5. The figure below visualizes this scenario. We can perform a one-sample <em>t</em>-test against 0, and this test tells us, with a <em>p</em> &lt; .05, that the data we have observed is surprisingly different from 0, assuming the random number generator in R functions as it should and generates data with a true mean of 0.</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:fig137"></span>
 <img src="01-pvalue_files/figure-html/fig137-1.png" alt="Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test when d = 0 and observing d = 0.5." width="100%"><p class="caption">
-Figure 1.11: Distribution of observed Cohen's d effect sizes when collecting 50 observations per group in an independent t-test when d = 0 and observing d = 0.5.
+Figure 1.11: Distribution of observed Cohen's <em>d</em> effect sizes when collecting 50 observations per group in an independent <em>t</em>-test when <em>d</em> = 0 and observing <em>d</em> = 0.5.
 </p>
 </div>
 <p>The significant <em>p</em>-value does not allow us to conclude that the null hypothesis (“the random number generator works”) is false. It is true that the mean of the 50 samples we generated was surprisingly extreme. But a low <em>p</em>-value simply tells us that an observation is surprising. We should observe such surprising observations with a low probability when the null hypothesis is true – but they still happen. Therefore, a significant result does not mean an alternative hypothesis is true – the result can also be a Type 1 error, and in the example above, Omniscient Jones knows that this is the case.</p>
@@ -480,10 +493,11 @@ Figure 1.11: Distribution of observed Cohen's d effect sizes when collecting 50 
 <span class="header-section-number">1.7.4</span> Misunderstanding 4: If you have observed a significant finding, the probability that you have made a Type 1 error (a false positive) is 5%.<a class="anchor" aria-label="anchor" href="#misconception4"><i class="fas fa-link"></i></a>
 </h3>
 <p>This misinterpretation is one possible explanation of the incorrect statement that a <em>p</em>-value is ‘the probability that the data are observed by chance.’ Assume we collect 20 observations, and Omniscient Jones tells us the null hypothesis is true (as in the example above where we generated random numbers in R). This means we are sampling from the distribution in the figure below.</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:fig138"></span>
 <img src="01-pvalue_files/figure-html/fig138-1.png" alt="Distribution of observed Cohen's d effect sizes when collecting 20 observations per group in an independent t-test when d = 0." width="100%"><p class="caption">
-Figure 1.12: Distribution of observed Cohen's d effect sizes when collecting 20 observations per group in an independent t-test when d = 0.
+Figure 1.12: Distribution of observed Cohen's <em>d</em> effect sizes when collecting 20 observations per group in an independent <em>t</em>-test when <em>d</em> = 0.
 </p>
 </div>
 <p>If this is our reality, it means that 100% of the time that we observe a significant result, it is a false positive (or Type I error). Thus, 100% of our significant results are Type 1 errors.</p>
@@ -683,10 +697,11 @@ observations (see Figure <a href="pvalue.html#fig:fig131">1.6</a>), which statem
 <li>The probability that a replication study will yield a significant result is equal to the statistical power of the replication study + the alpha level.</li>
 </ol>
 <p>This question is conceptually very similar to that asked by Tversky and Kahneman <span class="citation">(<a href="references.html#ref-tversky_belief_1971" role="doc-biblioref">1971</a>)</span> in article 'Belief in the law of small numbers':</p>
+
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:smallnumbers"></span>
-<img src="images/belieflawsmallnumers.png" alt="Screenshot of first paragraph in Tversky and Kahneman, 1971" width="100%"><p class="caption">
-Figure 1.13: Screenshot of first paragraph in Tversky and Kahneman, 1971
+<img src="images/belieflawsmallnumers.png" alt="ref:smallnumberslab" width="100%"><p class="caption">
+Figure 1.13: ref:smallnumberslab
 </p>
 </div>
 <blockquote>
@@ -814,11 +829,11 @@ $( document ).ready(function() {
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Improving Your Statistical Inferences</strong>" was written by Daniël Lakens. It was last built on 2022-04-12.</p>
+    <p>Lakens, D. (2022). Improving Your Statistical Inferences. https://doi.org/10.5281/zenodo.6409077. Built on 2022-04-12.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
-    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+    <p><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"></a></p>
   </div>
 
 </div></div>
