@@ -41,7 +41,7 @@ where *B($\alpha$, $\beta$)* is the beta function. Understanding the mathematica
 (ref:bayes1lab) Four examples of Bayesian priors
 
 <div class="figure" style="text-align: center">
-<img src="04-bayes_files/figure-epub3/bayes1-1.png" alt="(ref:bayes1lab)" width="100%" />
+<img src="04-bayes_files/figure-html/bayes1-1.png" alt="(ref:bayes1lab)" width="100%" />
 <p class="caption">(\#fig:bayes1)(ref:bayes1lab)</p>
 </div>
 
@@ -71,7 +71,7 @@ Take a look at the Figure below. Given 10 heads out of 20 coin flips, we see the
 (ref:bayes2lab) Four examples of how different priors are updated based on data to the posterior.
 
 <div class="figure" style="text-align: center">
-<img src="04-bayes_files/figure-epub3/bayes2-1.png" alt="(ref:bayes2lab)" width="100%" />
+<img src="04-bayes_files/figure-html/bayes2-1.png" alt="(ref:bayes2lab)" width="100%" />
 <p class="caption">(\#fig:bayes2)(ref:bayes2lab)</p>
 </div>
 
@@ -86,7 +86,7 @@ Now that we have a distribution for the prior, and a distribution for the poster
 (ref:bayes4lab) Plot for the prior, likelihood, and posterior.
 
 <div class="figure" style="text-align: center">
-<img src="04-bayes_files/figure-epub3/bayes4-1.png" alt="(ref:bayes4lab)" width="100%" />
+<img src="04-bayes_files/figure-html/bayes4-1.png" alt="(ref:bayes4lab)" width="100%" />
 <p class="caption">(\#fig:bayes4)(ref:bayes4lab)</p>
 </div>
 
@@ -112,7 +112,7 @@ We can calculate and plot the Bayes Factor, and show the prior (grey), likelihoo
 (ref:bayes6lab) Plot for the prior, likelihood, and posterior.
 
 <div class="figure" style="text-align: center">
-<img src="04-bayes_files/figure-epub3/bayes6-1.png" alt="(ref:bayes6lab)" width="100%" />
+<img src="04-bayes_files/figure-html/bayes6-1.png" alt="(ref:bayes6lab)" width="100%" />
 <p class="caption">(\#fig:bayes6)(ref:bayes6lab)</p>
 </div>
 
@@ -123,7 +123,7 @@ We see that for the newborn, *p* = 0.5 has become more probable, but so has *p* 
 (ref:bayes7lab) Plot for the prior, likelihood, and posterior.
 
 <div class="figure" style="text-align: center">
-<img src="04-bayes_files/figure-epub3/bayes7-1.png" alt="(ref:bayes7lab)" width="100%" />
+<img src="04-bayes_files/figure-html/bayes7-1.png" alt="(ref:bayes7lab)" width="100%" />
 <p class="caption">(\#fig:bayes7)(ref:bayes7lab)</p>
 </div>
 
@@ -148,7 +148,7 @@ We can plot the mean for the posterior when 10 heads out of 20 coin flips are ob
 (ref:bayes8lab) Plot for the mean of the posterior when 10 out of 20 heads are observed given a uniform prior.
 
 <div class="figure" style="text-align: center">
-<img src="04-bayes_files/figure-epub3/bayes8-1.png" alt="(ref:bayes8lab)" width="100%" />
+<img src="04-bayes_files/figure-html/bayes8-1.png" alt="(ref:bayes8lab)" width="100%" />
 <p class="caption">(\#fig:bayes8)(ref:bayes8lab)</p>
 </div>
 
@@ -166,19 +166,25 @@ bprior <- 1 # Set the beta for the Beta distribution for the prior
 binom.bayes(x, n, type = "central", prior.shape1 = aprior, prior.shape2 = bprior)
 ```
 
-```
-##   method  x  n shape1 shape2 mean     lower     upper  sig
-## 1  bayes 10 20     11     11  0.5 0.2978068 0.7021932 0.05
-```
+<div class="kable-table">
+
+|method |  x|  n| shape1| shape2| mean|     lower|     upper|  sig|
+|:------|--:|--:|------:|------:|----:|---------:|---------:|----:|
+|bayes  | 10| 20|     11|     11|  0.5| 0.2978068| 0.7021932| 0.05|
+
+</div>
 
 ```r
 binom.bayes(x, n, type = "highest", prior.shape1 = aprior, prior.shape2 = bprior)
 ```
 
-```
-##   method  x  n shape1 shape2 mean     lower     upper  sig
-## 1  bayes 10 20     11     11  0.5 0.2978068 0.7021932 0.05
-```
+<div class="kable-table">
+
+|method |  x|  n| shape1| shape2| mean|     lower|     upper|  sig|
+|:------|--:|--:|------:|------:|----:|---------:|---------:|----:|
+|bayes  | 10| 20|     11|     11|  0.5| 0.2978068| 0.7021932| 0.05|
+
+</div>
 
 
 The posterior mean is identical to the Frequentist mean, but this is only the case when the mean of the prior equals the mean of the likelihood [@albers_credible_2018]. This chapter shows the essence of Bayesian inference, where we decide upon a prior distribution, collect data and calculate a marginal likelihood, and use these to calculate a posterior distribution. From this posterior distribution, we can estimate the mean and the 95% credible interval. For any specific hypothesis, we can calculate the relative evidence for a posterior model, compared to a prior model, through the Bayes Factor. There are many different flavors of Bayesian statistics, and the disagreements between Bayesians about what the best approach to statistical inferences is, is at least as great as the disagreements between frequentists and Bayesians, and many Bayesians dislike Bayes factors [@mcelreath_statistical_2016]. For example, some Bayesians dislike subjective priors as used in **subjective Bayesian analysis**, and instead prefer what is known as **objective Bayesian analysis** [@berger_interplay_2004]. In your research, you will most likely need other calculations than the binomial example we have used here, and a lot of Bayesian tests are now available in the free open source software package [JASP](https://jasp-stats.org/). The math and the priors become more complex, but the basic idea remains the same. You can use Bayesian statistics to quantify relative evidence, which can inform you how much we should believe, or update our beliefs, in theories.
@@ -230,7 +236,7 @@ segments(H0, dbeta(H0, aposterior, bposterior), H0, dbeta(H0, aprior, bprior), l
 title(paste("Bayes Factor:", round(BF10, digits = 2)))
 ```
 
-<img src="04-bayes_files/figure-epub3/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="04-bayes_files/figure-html/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;" />
 
 We see that for the newborn, *p* = 0.5 has become more probable, but so has *p* = 0.4.
 
@@ -281,7 +287,7 @@ polygon(c(theta[theta > UL], rev(theta[theta > UL])), c(posterior[theta > UL], r
 title(paste("Mean posterior:", round((aposterior / (aposterior + bposterior)), digits = 5), ", 95% Credible Interval:", round(LL, digits = 2), ";", round(UL, digits = 2)))
 ```
 
-<img src="04-bayes_files/figure-epub3/unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="04-bayes_files/figure-html/unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;" />
 
 ```r
 if (!require(binom)) {
@@ -291,19 +297,25 @@ library(binom)
 binom.bayes(x, n, type = "central", prior.shape1 = aprior, prior.shape2 = bprior)
 ```
 
-```
-##   method  x  n shape1 shape2 mean     lower     upper  sig
-## 1  bayes 10 20     11     11  0.5 0.2978068 0.7021932 0.05
-```
+<div class="kable-table">
+
+|method |  x|  n| shape1| shape2| mean|     lower|     upper|  sig|
+|:------|--:|--:|------:|------:|----:|---------:|---------:|----:|
+|bayes  | 10| 20|     11|     11|  0.5| 0.2978068| 0.7021932| 0.05|
+
+</div>
 
 ```r
 binom.bayes(x, n, type = "highest", prior.shape1 = aprior, prior.shape2 = bprior)
 ```
 
-```
-##   method  x  n shape1 shape2 mean     lower     upper  sig
-## 1  bayes 10 20     11     11  0.5 0.2978068 0.7021932 0.05
-```
+<div class="kable-table">
+
+|method |  x|  n| shape1| shape2| mean|     lower|     upper|  sig|
+|:------|--:|--:|------:|------:|----:|---------:|---------:|----:|
+|bayes  | 10| 20|     11|     11|  0.5| 0.2978068| 0.7021932| 0.05|
+
+</div>
 
 
 The posterior mean is identical to the Frequentist mean, but this is only the case when the mean of the prior equals the mean of the likelihood.

@@ -227,7 +227,7 @@ Start by running the simulation without changing any values, so simulating 100 p
 (ref:optionalstopfiglab) Simulation of 500000 studies performing 5 interim analyses at an alpha level of 5%
 
 <div class="figure" style="text-align: center">
-<img src="02-errorcontrol_files/figure-epub3/optionalstopfig-1.png" alt="(ref:optionalstopfiglab)" width="100%" />
+<img src="02-errorcontrol_files/figure-html/optionalstopfig-1.png" alt="(ref:optionalstopfiglab)" width="100%" />
 <p class="caption">(\#fig:optionalstopfig)(ref:optionalstopfiglab)</p>
 </div>
 
@@ -256,7 +256,7 @@ There are two main reasons to abandon the universal use of a 5% alpha level. The
 For example, imagine a researcher plans to collect 64 participants per condition to detect a d = 0.5 effect, and weighs the cost of Type 1 errors 4 times as much as Type 2 errors. This is exactly the scenario Cohen (1988) described, and with 64 participants per condition the relative weight of Type 1 and Type 2 errors yields a 5% Type 1 error rate and a 20% Type 2 error rate. Now imagine this researcher realizes they have the resources to collect 80 observations instead of just 64. With an interest in an effect size of d = 0.5, the relative weight of Type 1 and Type 2 errors of 4 would be satisfied when they set the alpha level to 0.037 as then the Type 2 error rate is 0.147. Alternatively, the researcher might have decided to collect 64 observations, but not balance the error rates, but set the alpha level such that the weighted combined error rate is minimized, which is achieved when the alpha level is set to 0.033, as visualized in Figure \@ref(fig:minimizeerror) (for further information, see @maier_justify_2022).
 
 <div class="figure" style="text-align: center">
-<img src="02-errorcontrol_files/figure-epub3/minimizeerror-1.png" alt="Weighted combined error rate, minimized at alpha = 0.037." width="100%" />
+<img src="02-errorcontrol_files/figure-html/minimizeerror-1.png" alt="Weighted combined error rate, minimized at alpha = 0.037." width="100%" />
 <p class="caption">(\#fig:minimizeerror)Weighted combined error rate, minimized at alpha = 0.037.</p>
 </div>
 
@@ -270,7 +270,7 @@ One should also carefully reflect on the choice of the alpha level when an exper
 
 The second reason is most relevant for large data sets, and is related to [Lindley's paradox](#lindley). As the statistical power increases, some *p*-values below 0.05 (e.g., *p* = 0.04) can be more likely when there is *no* effect than when there *is* an effect. To prevent situations where a frequentist rejects the null hypothesis based on *p* < 0.05, when the evidence in the test favors the null hypothesis over the alternative hypothesis, it is recommended to lower the alpha level as a function of the sample size. The need to do so is discussed by @leamer_specification_1978, who writes "The rule of thumb quite popular now, that is, setting the significance level arbitrarily to .05, is shown to be deficient in the sense that from every reasonable viewpoint the significance level should be a decreasing function of sample size." The idea of this approach is to reduce the alpha level such that a Bayes factor or likelihood computed for the a significant results would never be evidence *for* the null hypothesis (for an online Shiny app to perform such calculations, see [here](https://shiny.ieis.tue.nl/JustifyAlpha/).
 
-<a href="https://shiny.ieis.tue.nl/JustifyAlpha/" target="_blank"><img src="02-errorcontrol_files/figure-epub3/unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;" /></a>
+<iframe src="https://shiny.ieis.tue.nl/JustifyAlpha/" width="100%" height="400px" data-external="1"></iframe>
 
 ## Why you don't need to adjust your alpha level for all tests you'll do in your lifetime.
 
@@ -291,7 +291,7 @@ In Figure \@ref(fig:powerd) we see the expected distribution of observed standar
 (ref:powerdlab) Distribution of *d* = 0 and *d* = 0.5 for an independent *t*-test with *n* = 50.
 
 <div class="figure" style="text-align: center">
-<img src="02-errorcontrol_files/figure-epub3/powerd-1.png" alt="(ref:powerdlab)" width="100%" />
+<img src="02-errorcontrol_files/figure-html/powerd-1.png" alt="(ref:powerdlab)" width="100%" />
 <p class="caption">(\#fig:powerd)(ref:powerdlab)</p>
 </div>
 

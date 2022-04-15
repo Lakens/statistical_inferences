@@ -23,7 +23,7 @@ Indeed, one of the most widely suggested improvements that mitigates the most im
 (ref:intervaltestlab) Two-sided null hypothesis test (A), interval hypothesis test (B), equivalence test (C) and minimum effect test (D).
 
 <div class="figure" style="text-align: center">
-<img src="09-equivalencetest_files/figure-epub3/intervaltest-1.png" alt="(ref:intervaltestlab)" width="100%" />
+<img src="09-equivalencetest_files/figure-html/intervaltest-1.png" alt="(ref:intervaltestlab)" width="100%" />
 <p class="caption">(\#fig:intervaltest)(ref:intervaltestlab)</p>
 </div>
 
@@ -62,12 +62,10 @@ In a study where researchers are manipulating fatigue by asking participants to 
 
 The TOSTER package (originally created by myself but recently redesigned by [Aaron Caldwell](https://aaroncaldwell.us/)) can be used to plot two *t*-distributions and their critical regions indicating when we can reject the presence of effects smaller than -0.5 and larger than 0.5. It can take some time to get used to the idea that we are rejecting values more extreme than the equivalence bounds. Try to consistently ask in any hypothesis test: Which values can the test reject? In a nil null hypothesis test, we can reject an effect of 0, and in the equivalence test in the Figure below, we can reject values lower than -0.5 and higher than 0.5. In Figure \@ref(fig:tdistequivalence) we see two *t*-distributions centered on the upper and lower bound of the specified equivalence range (-0.5 and 0.5). 
 
-
-
 (ref:tdistequivalencelab) The mean difference and its confidence interval plotted below the *t*-distributions used to perform the two-one-sided tests against -0.5 and 0.5.
 
 <div class="figure" style="text-align: center">
-<img src="09-equivalencetest_files/figure-epub3/tdistequivalence-1.png" alt="(ref:tdistequivalencelab)" width="100%" />
+<img src="09-equivalencetest_files/figure-html/tdistequivalence-1.png" alt="(ref:tdistequivalencelab)" width="100%" />
 <p class="caption">(\#fig:tdistequivalence)(ref:tdistequivalencelab)</p>
 </div>
 
@@ -116,14 +114,16 @@ We also see a test indicated by TOST Lower. This is the first one-sided test exa
 
 Note that because we fail to reject the one-sided test against the lower equivalence bound, the possibility remains that there is a true effect size that is large enough to be considered meaningful. This statement is true, even when the effect size we have observed (-0.32) is closer to zero than to the equivalence bound of -0.5. One might think the observed effect size needs to be more extreme (i.e., < -0.5 or > 0.5) than the equivalence bound to maintain the possibility that there is an effect that is large enough to be considered meaningful. But that is not required. The 90% CI indicates that some values below -0.5 can not be rejected. As we can expect that 90% of confidence intervals in the long run capture the true population parameter, it is perfectly possible that the true effect size is more extreme than -0.5. And, the effect might even be more extreme than the values captured by this confidence interval, as 10% of the time, the computed confidence interval is expected to not contain the true effect size. Therefore, when we fail to reject the smallest effect size of interest, we retain the possibility that an effect of interest exists. If we can reject the nil null hypothesis, but fail to reject values more extreme than the equivalence bounds, then we can claim there is an effect, and it might be large enough to be meaningful. 
 
-One way to reduce the probability of an inconclusive effect is to collect sufficient data. Let's imagine the researchers had not collected 15 participants in each condition, but 200 participants. They otherwise observe exactly the same data. As explained in the chapter on [confidence intervals](#confint), as the sample size increases, the confidence interval becomes more narrow. For a TOST equivalence test to be able to reject both the upper and lower bound of the equivalence range, the confidence interval needs to fall completely within the equivalence range. In Figure \@ref(fig:ciequivalence2) we see the same result as in Figure \@ref(fig:tdistequivalence), but now if we had collected 200 observations. Because of the larger sample size, the confidence is more narrow than when we collected 15 participants. We see that the 90% confidence interval around the observed mean difference now excludes both the upper and lower equivalence bound. This means that we can now reject effects outside of the equivalence range (even though barely, with a *p* = 0.326 as the one-sided test against the lower equivalence bound is only just statistically significant).    
 
+
+
+One way to reduce the probability of an inconclusive effect is to collect sufficient data. Let's imagine the researchers had not collected 15 participants in each condition, but 200 participants. They otherwise observe exactly the same data. As explained in the chapter on [confidence intervals](#confint), as the sample size increases, the confidence interval becomes more narrow. For a TOST equivalence test to be able to reject both the upper and lower bound of the equivalence range, the confidence interval needs to fall completely within the equivalence range. In Figure \@ref(fig:ciequivalence2) we see the same result as in Figure \@ref(fig:tdistequivalence), but now if we had collected 200 observations. Because of the larger sample size, the confidence is more narrow than when we collected 15 participants. We see that the 90% confidence interval around the observed mean difference now excludes both the upper and lower equivalence bound. This means that we can now reject effects outside of the equivalence range (even though barely, with a *p* = 0.048 as the one-sided test against the lower equivalence bound is only just statistically significant).    
 
 
 (ref:ciequivalence1lab) The mean difference and its confidence interval for an equivalence test with an equivalence range of -0.5 and 0.5.
 
 <div class="figure" style="text-align: center">
-<img src="09-equivalencetest_files/figure-epub3/ciequivalence1-1.png" alt="(ref:ciequivalence1lab)" width="100%" />
+<img src="09-equivalencetest_files/figure-html/ciequivalence1-1.png" alt="(ref:ciequivalence1lab)" width="100%" />
 <p class="caption">(\#fig:ciequivalence1)(ref:ciequivalence1lab)</p>
 </div>
 
@@ -159,7 +159,7 @@ In Figure \@ref(fig:ciequivalence2) we see the the same results, but now visuali
 (ref:ciequivalence2lab) The mean difference and its confidence interval for an equivalence test with an equivalence range of -0.5 and 0.5.
 
 <div class="figure" style="text-align: center">
-<img src="09-equivalencetest_files/figure-epub3/ciequivalence2-1.png" alt="(ref:ciequivalence2lab)" width="100%" />
+<img src="09-equivalencetest_files/figure-html/ciequivalence2-1.png" alt="(ref:ciequivalence2lab)" width="100%" />
 <p class="caption">(\#fig:ciequivalence2)(ref:ciequivalence2lab)</p>
 </div>
 
@@ -182,7 +182,7 @@ If a researcher has specified a smallest effect size of interest, and is interes
 (ref:tmetlab) The mean difference and its confidence interval plotted below the *t*-distributions used to perform the two-one-sided tests against -0.5 and 0.5 when performing a minimum effect test.
 
 <div class="figure" style="text-align: center">
-<img src="09-equivalencetest_files/figure-epub3/tmet-1.png" alt="(ref:tmetlab)" width="100%" />
+<img src="09-equivalencetest_files/figure-html/tmet-1.png" alt="(ref:tmetlab)" width="100%" />
 <p class="caption">(\#fig:tmet)(ref:tmetlab)</p>
 </div>
 
@@ -303,7 +303,7 @@ In Bayesian estimation, one way to argue for the absence of a meaningful effect 
 
 If the prior used by Kruschke was perfectly uniform, and the ROPE procedure and an equivalence test used the same confidence interval (e.g., 90%), the two tests would yield  identical results. There would only be philosophical differences in how the numbers are interpreted. The `BEST` package in R that can be used to perform the ROPE procedure by default uses a ‘broad’ prior, and therefore results of the ROPE procedure and an equivalence test are not exactly the same, but they are very close. One might even argue the two tests are 'practically equivalent'. In the R code below random normally distributed data for two conditions is generated (with means of 0 and a standard deviation of 1) and the ROPE procedure and a TOST equivalence test are performed. 
 
-<img src="09-equivalencetest_files/figure-epub3/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;" /><img src="09-equivalencetest_files/figure-epub3/unnamed-chunk-6-2.png" width="100%" style="display: block; margin: auto;" />
+<img src="09-equivalencetest_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;" /><img src="09-equivalencetest_files/figure-html/unnamed-chunk-6-2.png" width="100%" style="display: block; margin: auto;" />
 
 The 90% HDI ranges from -0.06 to 0.39, with an estimated mean based on the prior and the data of 0.164. The HDI falls completely between the upper and the lower bound of the equivalence range, and therefore values more extreme than -0.5 or 0.5 are deemed implausible. The 95% CI ranges from -0.07 to 0.36 with an observed mean difference of 0.15. We see that the numbers are not identical, because in Bayesian estimation the observed values are combined with a prior, and the mean estimate is not purely based on the data. But the results are very similar, and will in most cases lead to similar inferences. The BEST R package also enables researchers to perform simulation based power analyses, which take a long time but, when using a broad prior, yield a result that is basically identical to the sample size from a power analysis for an equivalence test. The biggest benefit of ROPE over TOST is that it allows you to incorporate prior information. If you have reliable prior information, ROPE can use this information, which is especially useful if you don’t have a lot of data. If you use informed priors, check the robustness of the posterior against reasonable changes in the prior in sensitivity analyses.
 

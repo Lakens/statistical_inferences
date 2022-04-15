@@ -101,7 +101,7 @@ Assume I ask two groups of 10 people how much they liked the extended directors 
 </tbody>
 </table>
 
-<img src="01-pvalue_files/figure-epub3/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="01-pvalue_files/figure-html/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;" />
 
 We can see the groups overlap but the mean ratings differ by 1 whole point. The question we are no faced with is the following: Is the difference between the two groups just random variation, or can we claim that my friends like the extended directors cut of the Lord of the Rings (LOTR) trilogy more than my wife’s friends?
 
@@ -141,7 +141,7 @@ We can graph the *t*-distribution (for df = 18) and highlight the two tail areas
 (ref:tdistlab) A *t*-distribution with 18 degrees of freedom.
 
 <div class="figure" style="text-align: center">
-<img src="01-pvalue_files/figure-epub3/tdist-1.png" alt="(ref:tdistlab)" width="100%" />
+<img src="01-pvalue_files/figure-html/tdist-1.png" alt="(ref:tdistlab)" width="100%" />
 <p class="caption">(\#fig:tdist)(ref:tdistlab)</p>
 </div>
 
@@ -173,7 +173,7 @@ In the simulation, we generate n = 71 normally distributed IQ scores with a mean
 (ref:pdist1lab) Distribution of *p*-values when power = 50%. 
 
 <div class="figure" style="text-align: center">
-<img src="01-pvalue_files/figure-epub3/pdistr1-1.png" alt="(ref:pdist1lab)" width="100%" />
+<img src="01-pvalue_files/figure-html/pdistr1-1.png" alt="(ref:pdist1lab)" width="100%" />
 <p class="caption">(\#fig:pdistr1)(ref:pdist1lab)</p>
 </div>
 
@@ -184,7 +184,7 @@ The simulation result illustrates the **probability density function** of *p*-va
 (ref:pdftlab) Probability density function for *p*-values from a two-sided *t*-test. 
 
 <div class="figure" style="text-align: center">
-<img src="01-pvalue_files/figure-epub3/pdft-1.png" alt="(ref:pdftlab)" width="100%" />
+<img src="01-pvalue_files/figure-html/pdft-1.png" alt="(ref:pdftlab)" width="100%" />
 <p class="caption">(\#fig:pdft)(ref:pdftlab)</p>
 </div>
 
@@ -193,7 +193,7 @@ When there is no true effect, *p*-values are **uniformly distributed**. This mea
 (ref:pdist2lab) Distribution of *p*-values when the null hypothesis is true. 
 
 <div class="figure" style="text-align: center">
-<img src="01-pvalue_files/figure-epub3/pdistr2-1.png" alt="(ref:pdist2lab)" width="100%" />
+<img src="01-pvalue_files/figure-html/pdistr2-1.png" alt="(ref:pdist2lab)" width="100%" />
 <p class="caption">(\#fig:pdistr2)(ref:pdist2lab)</p>
 </div>
 
@@ -206,7 +206,7 @@ Yet perhaps surprisingly, observing a *p*-value of 0.04 is more likely when the 
 (ref:paradoxlab) *P*-value distribution for 0 (grey horizontal line, 50 percent power (black solid curve), and 99 percent power (black dotted curve, where *p*-values just below 0.05 are more likely when $H_0$ is true than when $H_1$ is true). 
 
 <div class="figure" style="text-align: center">
-<img src="01-pvalue_files/figure-epub3/paradox-1.png" alt="(ref:paradoxlab)" width="100%" />
+<img src="01-pvalue_files/figure-html/paradox-1.png" alt="(ref:paradoxlab)" width="100%" />
 <p class="caption">(\#fig:paradox)(ref:paradoxlab)</p>
 </div>
 
@@ -237,7 +237,7 @@ I personally find things become a lot clearer if you plot the null model as mean
 (ref:fig131lab) Distribution of observed Cohen's *d* effect sizes when collecting 50 observations per group in an independent *t*-test.
 
 <div class="figure" style="text-align: center">
-<img src="01-pvalue_files/figure-epub3/fig131-1.png" alt="(ref:fig131lab)" width="100%" />
+<img src="01-pvalue_files/figure-html/fig131-1.png" alt="(ref:fig131lab)" width="100%" />
 <p class="caption">(\#fig:fig131)(ref:fig131lab)</p>
 </div>
 
@@ -252,7 +252,7 @@ One reason why I prefer to plot the null model in raw scores instead of *t*-valu
 (ref:fig132lab) Distribution of observed Cohen's *d* effect sizes when collecting 5000 observations per group in an independent *t*-test when *d* = 0. 
 
 <div class="figure" style="text-align: center">
-<img src="01-pvalue_files/figure-epub3/fig132-1.png" alt="(ref:fig132lab)" width="100%" />
+<img src="01-pvalue_files/figure-html/fig132-1.png" alt="(ref:fig132lab)" width="100%" />
 <p class="caption">(\#fig:fig132)(ref:fig132lab)</p>
 </div>
 
@@ -282,7 +282,7 @@ When we do a study, we rarely already know what the true mean difference is (if 
 (ref:fig134lab) Distribution of observed Cohen's *d* effect sizes when collecting 50 observations per group in an independent *t*-test when *d* = 0.
 
 <div class="figure" style="text-align: center">
-<img src="01-pvalue_files/figure-epub3/fig134-1.png" alt="(ref:fig134lab)" width="100%" />
+<img src="01-pvalue_files/figure-html/fig134-1.png" alt="(ref:fig134lab)" width="100%" />
 <p class="caption">(\#fig:fig134)(ref:fig134lab)</p>
 </div>
 
@@ -317,7 +317,7 @@ Nevertheless, we see that observing a mean difference of 0.35 is not only quite 
 (ref:fig136lab) Distribution of observed Cohen's *d* effect sizes when collecting 50 observations per group in an independent t-test for *d* = 0 and *d* = 0.5 when observing *d* = 0.35.
 
 <div class="figure" style="text-align: center">
-<img src="01-pvalue_files/figure-epub3/fig136-1.png" alt="(ref:fig136lab)" width="100%" />
+<img src="01-pvalue_files/figure-html/fig136-1.png" alt="(ref:fig136lab)" width="100%" />
 <p class="caption">(\#fig:fig136)(ref:fig136lab)</p>
 </div>
 
@@ -341,16 +341,15 @@ rnorm(n = 50, mean = 0, sd = 1)
 ```
 
 ```
-##  [1] -0.896879933  0.262956329 -0.201086862  0.444182500  0.615192194
-##  [6]  0.485252223 -0.582888802 -0.271337988  0.763408520 -1.285687940
-## [11] -0.100130268  1.702531266 -2.066182865  0.419938781 -1.432844230
-## [16]  1.872280650 -1.499963081  2.098949104  0.861542265  0.805122303
-## [21]  0.009692324 -0.192863487  2.245563721  0.810514588  1.778356245
-## [26]  0.838814060 -2.315965456  1.198871373  0.271719619  1.468954376
-## [31]  0.212602526  0.606323806 -0.112673206  0.470266140  0.815938897
-## [36]  0.682794920  0.522795475  0.733320018  0.449486678 -0.462672949
-## [41] -0.973998265  1.051364041 -1.415278154 -1.749602198  0.058750966
-## [46] -1.128202647 -0.300806067 -2.371748763 -0.154925751 -1.365135399
+##  [1] -1.04396813  1.10115166  0.45608084 -0.85809239  0.14520076  0.86578141
+##  [7] -0.20242694  0.14653381 -0.81423676  0.70141755  0.81620062 -0.87596039
+## [13] -0.79566333  1.46365910  0.78688166  0.86992470  0.09379357  0.63403649
+## [19] -0.06500372 -1.60764313  2.68575534 -2.09356160 -0.53644596  1.66485887
+## [25] -0.89261295 -2.02499074  1.12970707 -0.28091975 -0.52851824 -2.84403701
+## [31] -1.00232083 -0.13044351 -1.59210721  0.11144131  1.98494786  0.82552512
+## [37] -0.96270632 -0.91143296 -0.76812569 -0.41911992 -0.57637229 -0.75520350
+## [43] -0.37274496  0.78306075  2.57876919 -0.09242498  1.71902386  1.36577893
+## [49]  0.12640191  1.32477686
 ```
 
 This command generates 50 random observations from a distribution with a mean of 0 and a standard deviation of 1 (in the long run – the mean and standard deviation will vary in each sample that is generated). Imagine we run this command once, and we observe a mean of 0.5. The figure below visualizes this scenario. We can perform a one-sample *t*-test against 0, and this test tells us, with a *p* < .05, that the data we have observed is surprisingly different from 0, assuming the random number generator in R functions as it should and generates data with a true mean of 0. 
@@ -358,7 +357,7 @@ This command generates 50 random observations from a distribution with a mean of
 (ref:fig137lab) Distribution of observed Cohen's *d* effect sizes when collecting 50 observations per group in an independent *t*-test when *d* = 0 and observing *d* = 0.5.
 
 <div class="figure" style="text-align: center">
-<img src="01-pvalue_files/figure-epub3/fig137-1.png" alt="(ref:fig137lab)" width="100%" />
+<img src="01-pvalue_files/figure-html/fig137-1.png" alt="(ref:fig137lab)" width="100%" />
 <p class="caption">(\#fig:fig137)(ref:fig137lab)</p>
 </div>
 
@@ -389,7 +388,7 @@ This misinterpretation is one possible explanation of the incorrect statement th
 (ref:fig138lab) Distribution of observed Cohen's *d* effect sizes when collecting 20 observations per group in an independent *t*-test when *d* = 0.
 
 <div class="figure" style="text-align: center">
-<img src="01-pvalue_files/figure-epub3/fig138-1.png" alt="(ref:fig138lab)" width="100%" />
+<img src="01-pvalue_files/figure-html/fig138-1.png" alt="(ref:fig138lab)" width="100%" />
 <p class="caption">(\#fig:fig138)(ref:fig138lab)</p>
 </div>
 
@@ -439,7 +438,7 @@ axis(side = 2, at = seq(0, nsims, nsims / 4),
 abline(h = nsims / bars, col = "red", lty = 3)
 ```
 
-<img src="01-pvalue_files/figure-epub3/q1-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="01-pvalue_files/figure-html/q1-1.png" width="100%" style="display: block; margin: auto;" />
 
 On the x-axis we see *p*-values from 0 to 1 in 20 bars, and on the y-axis we see how frequently these *p*-values were observed. There is a horizontal red dotted line that indicates an alpha of 5% (located at a frequency of 100.000\*0.05 = 5000) – but you can ignore this line for now. In the title of the graph, the statistical power that is achieved in the simulated studies is given (assuming an alpha of 0.05): The studies have 50% power (with minor variations for each simulation).
 

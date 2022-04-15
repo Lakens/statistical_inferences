@@ -41,13 +41,13 @@ ggplot(as.data.frame(x), aes(x)) +
 ```
 
 <div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-epub3/plot-hist-iq-1-1.png" alt="(ref:plot-hist-iq-1lab)" width="100%" />
+<img src="11-meta_files/figure-html/plot-hist-iq-1-1.png" alt="(ref:plot-hist-iq-1lab)" width="100%" />
 <p class="caption">(\#fig:plot-hist-iq-1)(ref:plot-hist-iq-1lab)</p>
 </div>
 
 The plot above provides one example of a randomly simulated dataset of 10 points drawn from a normal distribution with a mean of 100 and a standard deviation of 15. The grey bars indicate the frequency with which each IQ score was observed. The red dotted line illustrates the normal distribution based on the mean and sd of the population. Both the observed mean (97), as well as the observed standard deviation (14), differ from the true population values. If we simulate 4 additional datasets, we see both the mean and the standard deviation vary.
 
-<img src="11-meta_files/figure-epub3/sim-4-iq-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="11-meta_files/figure-html/sim-4-iq-1.png" width="100%" style="display: block; margin: auto;" />
 
 Imagine we did not yet know what the mean IQ was in our population (where *M* = 100), or the standard deviation (where *SD* = 15), and that we would only have access to one dataset. Our estimate might be rather far off. This type of variation is to be expected in small samples of 10 participants, given the true standard deviation. The variability in the mean is determined by the standard deviation of the measurement. In real life, the standard deviation can be reduced by for example using multiple and reliable measurements (which is why an IQ test has not just one question, but many different questions). But we can also make sure our sample mean is closer to the population mean by increasing the sample size.
 
@@ -59,7 +59,7 @@ bell shaped curve that represents the distribution of many variables in scientif
 (ref:plot-hist-iq-2lab) 100 random datapoints with mean = 100 and sd = 15 in the population.
 
 <div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-epub3/plot-hist-iq-2-1.png" alt="(ref:plot-hist-iq-2lab)" width="100%" />
+<img src="11-meta_files/figure-html/plot-hist-iq-2-1.png" alt="(ref:plot-hist-iq-2lab)" width="100%" />
 <p class="caption">(\#fig:plot-hist-iq-2)(ref:plot-hist-iq-2lab)</p>
 </div>
 
@@ -70,7 +70,7 @@ If we simulate a really large sample of 1000 observation, we will see the benefi
 (ref:plot-hist-iq-3lab) 1000 random datapoints with mean = 100 and sd = 15 in the population.
 
 <div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-epub3/plot-hist-iq-3-1.png" alt="(ref:plot-hist-iq-3lab)" width="100%" />
+<img src="11-meta_files/figure-html/plot-hist-iq-3-1.png" alt="(ref:plot-hist-iq-3lab)" width="100%" />
 <p class="caption">(\#fig:plot-hist-iq-3)(ref:plot-hist-iq-3lab)</p>
 </div>
 
@@ -81,7 +81,7 @@ So far we have simulated only a single group of observations, but it is also inf
 (ref:plot-group1lab) Simulation of 10 observations in two independent groups.
 
 <div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-epub3/plot-group1-1.png" alt="(ref:plot-group1lab)" width="100%" />
+<img src="11-meta_files/figure-html/plot-group1-1.png" alt="(ref:plot-group1lab)" width="100%" />
 <p class="caption">(\#fig:plot-group1)(ref:plot-group1lab)</p>
 </div>
 
@@ -92,7 +92,7 @@ The two groups differ in how close they are to their true means, and as a conseq
 (ref:plot-group2lab) Four simulated samples of independent groups.
 
 <div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-epub3/plot-group2-1.png" alt="(ref:plot-group2lab)" width="100%" />
+<img src="11-meta_files/figure-html/plot-group2-1.png" alt="(ref:plot-group2lab)" width="100%" />
 <p class="caption">(\#fig:plot-group2)(ref:plot-group2lab)</p>
 </div>
 
@@ -103,7 +103,7 @@ We see that there is quite some variation, up to the point that in one simulatio
 (ref:plotgroup3lab) Simulated sample of 250 independent observations
 
 <div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-epub3/plotgroup3-1.png" alt="(ref:plotgroup3lab)" width="100%" />
+<img src="11-meta_files/figure-html/plotgroup3-1.png" alt="(ref:plotgroup3lab)" width="100%" />
 <p class="caption">(\#fig:plotgroup3)(ref:plotgroup3lab)</p>
 </div>
 
@@ -124,7 +124,7 @@ When we randomly simulate observations for 30 twins, we get the following result
 (ref:plot-cor1lab) Correlation based on 30 pairs.
 
 <div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-epub3/plot-cor1-1.png" alt="(ref:plot-cor1lab)" width="100%" />
+<img src="11-meta_files/figure-html/plot-cor1-1.png" alt="(ref:plot-cor1lab)" width="100%" />
 <p class="caption">(\#fig:plot-cor1)(ref:plot-cor1lab)</p>
 </div>
 
@@ -137,7 +137,7 @@ $$SE_{r_{xy}} = \frac{1 - r^2_{xy}}{\sqrt{(n - 2)}}$$
 (ref:plot-cor2lab) Correlation based on 300 pairs.
 
 <div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-epub3/plot-cor2-1.png" alt="(ref:plot-cor2lab)" width="100%" />
+<img src="11-meta_files/figure-html/plot-cor2-1.png" alt="(ref:plot-cor2lab)" width="100%" />
 <p class="caption">(\#fig:plot-cor2)(ref:plot-cor2lab)</p>
 </div>
 
@@ -168,10 +168,13 @@ g <- escalc(measure = "SMD",
 g
 ```
 
-```
-##       yi     vi 
-## 1 0.5553 0.0415
-```
+<div class="kable-table">
+
+|        yi|        vi|
+|---------:|---------:|
+| 0.5552575| 0.0415416|
+
+</div>
 
 The output gives you Hedge’s *g* (under the `yi` column, which always returns the effect size, in this case the standardized mean difference) and the variance of the effect size estimate (under `vi`). As explained in Borenstein, Hedges, Higgins, and Rothstein formula 4.18 to 4.24 -@borenstein_introduction_2009 the standardized mean difference Hedges’ *g* is calculated by dividing the difference between means by the pooled standard deviation, multiplied by a correction factor, J:
 
@@ -247,7 +250,7 @@ In Figure \@ref(fig:metaforest) we see a modern version of a forest plot, with t
 (ref:metaforestlab) Forest plot for a single study.
 
 <div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-epub3/metaforest-1.png" alt="(ref:metaforestlab)" width="100%" />
+<img src="11-meta_files/figure-html/metaforest-1.png" alt="(ref:metaforestlab)" width="100%" />
 <p class="caption">(\#fig:metaforest)(ref:metaforestlab)</p>
 </div>
 
@@ -284,7 +287,7 @@ metafor::forest(result)
 ```
 
 <div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-epub3/meta-sim-1.png" alt="(ref:meta-simlab)" width="100%" />
+<img src="11-meta_files/figure-html/meta-sim-1.png" alt="(ref:meta-simlab)" width="100%" />
 <p class="caption">(\#fig:meta-sim)(ref:meta-simlab)</p>
 </div>
 
@@ -395,7 +398,7 @@ forest(result,
 text(c(-7,-6,-5,-4), 14.7, c("E+", "E-", "C+", "C-"), font = 2, cex = .8)
 ```
 
-<img src="11-meta_files/figure-epub3/unnamed-chunk-2-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="11-meta_files/figure-html/unnamed-chunk-2-1.png" width="100%" style="display: block; margin: auto;" />
 
 The forest plot presents the studies and four columns of data after the study label, which contain the number of successes and failures in the experimental groups (E+ and E-), and the number of successes and failures in the control group (C+ and C-). Imagine we study the percentage of people who get a job within 6 months after a job training program, compared to a control condition. In Study 1, which had 50 participants in each condition, 29 people in the job training condition got a job within 6 months, and 21 did not get a job. In the control condition, 23 people got a job, but 27 did not. The effect size estimate for the random effects model is 0.65. Feel free to play around with the script, adjusting the number of studies, or the sample sizes in each study, to examine the effect it has on the meta-analytic effect size estimate.
 
@@ -604,7 +607,7 @@ D) It is generally recommended to compute a **random effects** model, as this re
 (ref:meta-sim-randlab) Simulated studies under a random effects model
 
 <div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-epub3/meta-sim-rand-1.png" alt="(ref:meta-sim-randlab)" width="100%" />
+<img src="11-meta_files/figure-html/meta-sim-rand-1.png" alt="(ref:meta-sim-randlab)" width="100%" />
 <p class="caption">(\#fig:meta-sim-rand)(ref:meta-sim-randlab)</p>
 </div>
 
@@ -613,7 +616,7 @@ D) It is generally recommended to compute a **random effects** model, as this re
 (ref:meta-sim-fixedlab) Simulated studies under a fixed effect model
 
 <div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-epub3/meta-sim-fixed-1.png" alt="(ref:meta-sim-fixedlab)" width="100%" />
+<img src="11-meta_files/figure-html/meta-sim-fixed-1.png" alt="(ref:meta-sim-fixedlab)" width="100%" />
 <p class="caption">(\#fig:meta-sim-fixed)(ref:meta-sim-fixedlab)</p>
 </div>
 

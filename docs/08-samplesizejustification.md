@@ -110,7 +110,7 @@ Although it is common to set the Type I error rate to 5% and aim for 80% power, 
 (ref:power-2lab) Power curve for an independent *t* test with an effect of *d* = 0.5 and α = 0.05 as a function of the sample size.
 
 <div class="figure" style="text-align: center">
-<img src="08-samplesizejustification_files/figure-epub3/power-2-1.png" alt="(ref:power-2lab)" width="100%" />
+<img src="08-samplesizejustification_files/figure-html/power-2-1.png" alt="(ref:power-2lab)" width="100%" />
 <p class="caption">(\#fig:power-2)(ref:power-2lab)</p>
 </div>
 
@@ -121,7 +121,7 @@ Figure \@ref(fig:power-3) visualizes two distributions. The left distribution (d
 (ref:echolab) Null (*d* = 0, grey dashed line) and alternative (*d* = 0.5, solid black line) hypothesis, with α = 0.05 and n = 80 per group.
 
 <div class="figure" style="text-align: center">
-<img src="08-samplesizejustification_files/figure-epub3/power-3-1.png" alt="(ref:echolab)" width="100%" />
+<img src="08-samplesizejustification_files/figure-html/power-3-1.png" alt="(ref:echolab)" width="100%" />
 <p class="caption">(\#fig:power-3)(ref:echolab)</p>
 </div>
 
@@ -237,7 +237,7 @@ In Figure \@ref(fig:power-effect1) the distribution of Cohen’s *d* is plotted 
 (ref:power-effect1lab) Critical effect size for an independent *t* test with n = 15 per group and $\alpha$ = 0.05.
 
 <div class="figure" style="text-align: center">
-<img src="08-samplesizejustification_files/figure-epub3/power-effect1-1.png" alt="(ref:power-effect1lab)" width="100%" />
+<img src="08-samplesizejustification_files/figure-html/power-effect1-1.png" alt="(ref:power-effect1lab)" width="100%" />
 <p class="caption">(\#fig:power-effect1)(ref:power-effect1lab)</p>
 </div>
 
@@ -300,7 +300,7 @@ But even if we had access to all effect sizes (e.g., from pilot studies you have
 (ref:follow-up-biaslab) Distribution of partial eta squared under the null hypothesis (dotted grey curve) and a medium true effect of 0.0588 (solid black curve) for 3 groups with 25 observations.
 
 <div class="figure" style="text-align: center">
-<img src="08-samplesizejustification_files/figure-epub3/follow-up-bias-1.png" alt="(ref:follow-up-biaslab" width="100%" />
+<img src="08-samplesizejustification_files/figure-html/follow-up-bias-1.png" alt="(ref:follow-up-biaslab" width="100%" />
 <p class="caption">(\#fig:follow-up-bias)(ref:follow-up-biaslab</p>
 </div>
 
@@ -344,7 +344,7 @@ We see that the margin of error is almost, but not exactly, the same as the mini
 (ref:noncentraltlab) Central (black) and 2 non-central (darkgrey and lightgrey) *t* distributions.
 
 <div class="figure" style="text-align: center">
-<img src="08-samplesizejustification_files/figure-epub3/noncentralt-1.png" alt="(ref:noncentraltlab)" width="100%" />
+<img src="08-samplesizejustification_files/figure-html/noncentralt-1.png" alt="(ref:noncentraltlab)" width="100%" />
 <p class="caption">(\#fig:noncentralt)(ref:noncentraltlab)</p>
 </div>
 
@@ -510,7 +510,7 @@ For other statistical tests, where the alternative distribution is not symmetric
 (ref:obs-power-plot-2lab) Relationship between *p* values and power for an independent *t* test with α = 0.05 and n = 10.
 
 <div class="figure" style="text-align: center">
-<img src="08-samplesizejustification_files/figure-epub3/obs-power-plot-2-1.png" alt="(ref:obs-power-plot-2lab)" width="100%" />
+<img src="08-samplesizejustification_files/figure-html/obs-power-plot-2-1.png" alt="(ref:obs-power-plot-2lab)" width="100%" />
 <p class="caption">(\#fig:obs-power-plot-2)(ref:obs-power-plot-2lab)</p>
 </div>
 
@@ -544,7 +544,7 @@ In Figure \@ref(fig:plot-1) we see two normally distributed scores with a mean d
 (ref:plot-1lab) Distributions of two dependent groups with means 100 and 106 and a standard deviation of 15, distribution of the differences, and correlation of 0.
 
 <div class="figure" style="text-align: center">
-<img src="08-samplesizejustification_files/figure-epub3/plot-1-1.png" alt="(ref:plot-1lab)" width="100%" />
+<img src="08-samplesizejustification_files/figure-html/plot-1-1.png" alt="(ref:plot-1lab)" width="100%" />
 <p class="caption">(\#fig:plot-1)(ref:plot-1lab)</p>
 </div>
 
@@ -555,7 +555,7 @@ In Figure \@ref(fig:plot-4) we can see what happens when the two variables are c
 (ref:plot-4lab) Distributions of two independent groups with means 100 and 106 and a standard deviation of 15, distribution of the differences, and correlation of 0.7.
 
 <div class="figure" style="text-align: center">
-<img src="08-samplesizejustification_files/figure-epub3/plot-4-1.png" alt="(ref:plot-4lab)" width="100%" />
+<img src="08-samplesizejustification_files/figure-html/plot-4-1.png" alt="(ref:plot-4lab)" width="100%" />
 <p class="caption">(\#fig:plot-4)(ref:plot-4lab)</p>
 </div>
 

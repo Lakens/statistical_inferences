@@ -94,7 +94,7 @@ We can check the output against the [Wikipedia page for the Pocock correction](h
 (ref:boundplot1lab) Plot of critical boundaries at each look for a 2 look design with a Pocock correction.
 
 <div class="figure" style="text-align: center">
-<img src="10-sequential_files/figure-epub3/boundplot1-1.png" alt="(ref:boundplot1lab)" width="100%" />
+<img src="10-sequential_files/figure-html/boundplot1-1.png" alt="(ref:boundplot1lab)" width="100%" />
 <p class="caption">(\#fig:boundplot1)(ref:boundplot1lab)</p>
 </div>
 
@@ -118,7 +118,7 @@ We can vizualize the corrections for different types of designs for each of 3 lo
 (ref:fourspendingfunctionslab) Four different alpha spending functions (O'Brien-Fleming, Pocock, Haybittle-Peto, Wang-Tsiatis) for 3 looks.
 
 <div class="figure" style="text-align: center">
-<img src="10-sequential_files/figure-epub3/fourspendingfunctions-1.png" alt="(ref:fourspendingfunctionslab)" width="100%" />
+<img src="10-sequential_files/figure-html/fourspendingfunctions-1.png" alt="(ref:fourspendingfunctionslab)" width="100%" />
 <p class="caption">(\#fig:fourspendingfunctions)(ref:fourspendingfunctionslab)</p>
 </div>
 
@@ -140,7 +140,7 @@ The main benefit of these alpha spending functions is that error rates at interi
 (ref:seq-comparisonlab) Comparison of Pocock and O'Brien-Fleming correction, and Pocock-like and O'Brien-Fleming like alpha spending function, for 5 looks.
 
 <div class="figure" style="text-align: center">
-<img src="10-sequential_files/figure-epub3/seq-comparison-1.png" alt="(ref:seq-comparisonlab)" width="100%" />
+<img src="10-sequential_files/figure-html/seq-comparison-1.png" alt="(ref:seq-comparisonlab)" width="100%" />
 <p class="caption">(\#fig:seq-comparison)(ref:seq-comparisonlab)</p>
 </div>
 
@@ -376,7 +376,7 @@ plot(sample_res, type = 6)
 ```
 
 <div class="figure" style="text-align: center">
-<img src="10-sequential_files/figure-epub3/powerseq-1.png" alt="(ref:powerseqlab)" width="100%" />
+<img src="10-sequential_files/figure-html/powerseq-1.png" alt="(ref:powerseqlab)" width="100%" />
 <p class="caption">(\#fig:powerseq)(ref:powerseqlab)</p>
 </div>
 
@@ -460,7 +460,7 @@ In Figure \@ref(fig:futility1) we see a sequential design where data collection 
 (ref:futility1lab) Pocock-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) when the observed effect is in the opposite direction.
 
 <div class="figure" style="text-align: center">
-<img src="10-sequential_files/figure-epub3/futility1-1.png" alt="(ref:futility1lab)" width="100%" />
+<img src="10-sequential_files/figure-html/futility1-1.png" alt="(ref:futility1lab)" width="100%" />
 <p class="caption">(\#fig:futility1)(ref:futility1lab)</p>
 </div>
 
@@ -478,7 +478,7 @@ If the true effect size is (close to) 0, sequential designs that stop for futili
 (ref:futility2lab) Pocock-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) based on a Pocock-type beta-spending function.
 
 <div class="figure" style="text-align: center">
-<img src="10-sequential_files/figure-epub3/futility2-1.png" alt="(ref:futility2lab)" width="100%" />
+<img src="10-sequential_files/figure-html/futility2-1.png" alt="(ref:futility2lab)" width="100%" />
 <p class="caption">(\#fig:futility2)(ref:futility2lab)</p>
 </div>
 
@@ -489,7 +489,7 @@ With a beta-spending function the expected number of subjects under $H_1$ will i
 (ref:powerseq2lab) Power curve for a sequential design with 2 looks with stopping for futility.
 
 <div class="figure" style="text-align: center">
-<img src="10-sequential_files/figure-epub3/powerseq2-1.png" alt="(ref:powerseq2lab)" width="100%" />
+<img src="10-sequential_files/figure-html/powerseq2-1.png" alt="(ref:powerseq2lab)" width="100%" />
 <p class="caption">(\#fig:powerseq2)(ref:powerseq2lab)</p>
 </div>
 ## Reporting the results of a sequential analysis
@@ -534,19 +534,17 @@ res
 
 
 ```
-## [PROGRESS] Stage results calculated [0.0449 secs] 
-## [PROGRESS] Conditional power calculated [0.0259 secs] 
-## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.001 secs] 
-## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.5536 secs] 
-## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.5106 secs] 
-## [PROGRESS] Repeated confidence interval calculated [1.06 secs] 
-## [PROGRESS] Repeated p-values of stage 1 calculated [0.2084 secs] 
-## [PROGRESS] Repeated p-values of stage 2 calculated [0.2284 secs] 
-## [PROGRESS] Repeated p-values calculated [0.4378 secs] 
-## [PROGRESS] Final p-value calculated [0.001 secs] 
-## [PROGRESS] Final confidence interval calculated [0.0698 secs]
-
-
+## [PROGRESS] Stage results calculated [0.0454 secs] 
+## [PROGRESS] Conditional power calculated [0.0383 secs] 
+## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.0021 secs] 
+## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.867 secs] 
+## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.9457 secs] 
+## [PROGRESS] Repeated confidence interval calculated [1.81 secs] 
+## [PROGRESS] Repeated p-values of stage 1 calculated [0.321 secs] 
+## [PROGRESS] Repeated p-values of stage 2 calculated [0.3637 secs] 
+## [PROGRESS] Repeated p-values calculated [0.6857 secs] 
+## [PROGRESS] Final p-value calculated [0.002 secs] 
+## [PROGRESS] Final confidence interval calculated [0.1081 secs]
 ```
 
 
@@ -722,7 +720,7 @@ D) The Type 1 error rate will not inflate, and the Type 2 error rate will not in
 (ref:futilityq13lab) Example of O'Brien-Fleming-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) with a 5% Type 1 and Type 2 error.
 
 <div class="figure" style="text-align: center">
-<img src="10-sequential_files/figure-epub3/futilityq13-1.png" alt="(ref:futilityq13lab)" width="100%" />
+<img src="10-sequential_files/figure-html/futilityq13-1.png" alt="(ref:futilityq13lab)" width="100%" />
 <p class="caption">(\#fig:futilityq13)(ref:futilityq13lab)</p>
 </div>
 

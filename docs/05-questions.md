@@ -106,7 +106,7 @@ First, it is clear that a directional test provides a clear advantage in statist
 (ref:onesidedtwosidedratiolab) Ratio of the required sample size for a one-sample *t*-test for a non-directional/directional test to achieve 50%, 80% or 95% power.
 
 <div class="figure" style="text-align: center">
-<img src="05-questions_files/figure-epub3/onesidedtwosidedratio-1.png" alt="(ref:onesidedtwosidedratiolab)" width="100%" />
+<img src="05-questions_files/figure-html/onesidedtwosidedratio-1.png" alt="(ref:onesidedtwosidedratiolab)" width="100%" />
 <p class="caption">(\#fig:onesidedtwosidedratio)(ref:onesidedtwosidedratiolab)</p>
 </div>
 
@@ -119,7 +119,7 @@ Note that there is a subtle distinction between a directional and a one-sided te
 (ref:fandtlab) Distribution and rejection areas for a two-sided t-test and the corresponding F-test with df1 = 1 and df2 = 100.
 
 <div class="figure" style="text-align: center">
-<img src="05-questions_files/figure-epub3/fandt-1.png" alt="(ref:fandtlab)" width="100%" />
+<img src="05-questions_files/figure-html/fandt-1.png" alt="(ref:fandtlab)" width="100%" />
 <p class="caption">(\#fig:fandt)(ref:fandtlab)</p>
 </div>
 
