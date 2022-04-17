@@ -38,70 +38,30 @@ Thus, in a Neyman-Pearson approach, *p*-values form the basis of decisions about
 
 Assume I ask two groups of 10 people how much they liked the extended directors cut of the Lord of the Rings (LOTR) trilogy. This means our **total sample size** (*N*) is 20, and the sample size in each group (*n*) is 10. The first group consists of my friends, and the second groups consists of friends of my wife. Our friends rate the trilogy on a score from 1 to 10. We can calculate the average rating by my friends, which is 8.7, and the average rating by my wife’s friends, which is 7.7. We can compare the scores in both groups by looking at the raw data, and by plotting the data.
 
-<table class="table table-striped" style="width: auto !important; ">
-<caption>(\#tab:friends)Ratings for the Lord of the Rings extended trilogy by two groups of friends.</caption>
- <thead>
-  <tr>
-   <th style="text-align:left;">  </th>
-   <th style="text-align:center;"> Friends Daniel </th>
-   <th style="text-align:center;"> Friends Kyra </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> friend_1 </td>
-   <td style="text-align:center;"> 9 </td>
-   <td style="text-align:center;"> 9 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> friend_2 </td>
-   <td style="text-align:center;"> 7 </td>
-   <td style="text-align:center;"> 6 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> friend_3 </td>
-   <td style="text-align:center;"> 8 </td>
-   <td style="text-align:center;"> 7 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> friend_4 </td>
-   <td style="text-align:center;"> 9 </td>
-   <td style="text-align:center;"> 8 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> friend_5 </td>
-   <td style="text-align:center;"> 8 </td>
-   <td style="text-align:center;"> 7 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> friend_6 </td>
-   <td style="text-align:center;"> 9 </td>
-   <td style="text-align:center;"> 9 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> friend_7 </td>
-   <td style="text-align:center;"> 9 </td>
-   <td style="text-align:center;"> 8 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> friend_8 </td>
-   <td style="text-align:center;"> 10 </td>
-   <td style="text-align:center;"> 8 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> friend_9 </td>
-   <td style="text-align:center;"> 9 </td>
-   <td style="text-align:center;"> 8 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> friend_10 </td>
-   <td style="text-align:center;"> 9 </td>
-   <td style="text-align:center;"> 7 </td>
-  </tr>
-</tbody>
-</table>
+\begin{table}
 
-<img src="01-pvalue_files/figure-epub3/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;" />
+\caption{(\#tab:friends)Ratings for the Lord of the Rings extended trilogy by two groups of friends.}
+\begin{tabular}[t]{lcc}
+\toprule
+ & Friends Daniel & Friends Kyra\\
+\midrule
+friend\_1 & 9 & 9\\
+friend\_2 & 7 & 6\\
+friend\_3 & 8 & 7\\
+friend\_4 & 9 & 8\\
+friend\_5 & 8 & 7\\
+\addlinespace
+friend\_6 & 9 & 9\\
+friend\_7 & 9 & 8\\
+friend\_8 & 10 & 8\\
+friend\_9 & 9 & 8\\
+friend\_10 & 9 & 7\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\begin{center}\includegraphics[width=1\linewidth]{01-pvalue_files/figure-latex/unnamed-chunk-3-1} \end{center}
 
 We can see the groups overlap but the mean ratings differ by 1 whole point. The question we are no faced with is the following: Is the difference between the two groups just random variation, or can we claim that my friends like the extended directors cut of the Lord of the Rings (LOTR) trilogy more than my wife’s friends?
 
@@ -140,10 +100,14 @@ We can graph the *t*-distribution (for df = 18) and highlight the two tail areas
 
 (ref:tdistlab) A *t*-distribution with 18 degrees of freedom.
 
-<div class="figure" style="text-align: center">
-<img src="01-pvalue_files/figure-epub3/tdist-1.png" alt="(ref:tdistlab)" width="100%" />
-<p class="caption">(\#fig:tdist)(ref:tdistlab)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{01-pvalue_files/figure-latex/tdist-1} 
+
+}
+
+\caption{(ref:tdistlab)}(\#fig:tdist)
+\end{figure}
 
 ## Which *p*-values can you expect?
 
@@ -172,10 +136,14 @@ In the simulation, we generate n = 71 normally distributed IQ scores with a mean
 
 (ref:pdist1lab) Distribution of *p*-values when power = 50%. 
 
-<div class="figure" style="text-align: center">
-<img src="01-pvalue_files/figure-epub3/pdistr1-1.png" alt="(ref:pdist1lab)" width="100%" />
-<p class="caption">(\#fig:pdistr1)(ref:pdist1lab)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{01-pvalue_files/figure-latex/pdistr1-1} 
+
+}
+
+\caption{(ref:pdist1lab)}(\#fig:pdistr1)
+\end{figure}
 
 On the x-axis we see *p*-values from 0 to 1 in 20 bars, and on the y-axis we see how frequently these *p*-values were observed. There is a horizontal red dotted line that indicates an alpha of 5% (located at a frequency of 100.000*0.05 = 5000) – but you can ignore this line for now. In the title of the graph, the statistical power that is achieved in the simulated studies is given (assuming an alpha of 0.05): The studies have 50% power. 
 
@@ -183,19 +151,27 @@ The simulation result illustrates the **probability density function** of *p*-va
 
 (ref:pdftlab) Probability density function for *p*-values from a two-sided *t*-test. 
 
-<div class="figure" style="text-align: center">
-<img src="01-pvalue_files/figure-epub3/pdft-1.png" alt="(ref:pdftlab)" width="100%" />
-<p class="caption">(\#fig:pdft)(ref:pdftlab)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{01-pvalue_files/figure-latex/pdft-1} 
+
+}
+
+\caption{(ref:pdftlab)}(\#fig:pdft)
+\end{figure}
 
 When there is no true effect, *p*-values are **uniformly distributed**. This means that every *p*-value is equally likely to be observed when the null hypothesis is true. In other words, when there is no true effect, a *p*-value of 0.08 is just as likely as a *p*-value of 0.98. I remember thinking this was very counterintuitive when I first learned it (well after completing a PhD), but it makes sense when we think of the goal to guarantee that when $H_0$ is true, alpha % of the *p*-values fall below the alpha level. If we set alpha to 0.01, 1% of the observed *p*-values should fall below 0.01, and if we set alpha to 0.12, 12% of the observed *p*-values should fall below 0.12. This can only happen if *p*-values are uniformly distributed when the null hypothesis is true.   
 
 (ref:pdist2lab) Distribution of *p*-values when the null hypothesis is true. 
 
-<div class="figure" style="text-align: center">
-<img src="01-pvalue_files/figure-epub3/pdistr2-1.png" alt="(ref:pdist2lab)" width="100%" />
-<p class="caption">(\#fig:pdistr2)(ref:pdist2lab)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{01-pvalue_files/figure-latex/pdistr2-1} 
+
+}
+
+\caption{(ref:pdist2lab)}(\#fig:pdistr2)
+\end{figure}
 
 ## Lindley's paradox {#lindley}
 
@@ -205,10 +181,14 @@ Yet perhaps surprisingly, observing a *p*-value of 0.04 is more likely when the 
 
 (ref:paradoxlab) *P*-value distribution for 0 (grey horizontal line, 50 percent power (black solid curve), and 99 percent power (black dotted curve, where *p*-values just below 0.05 are more likely when $H_0$ is true than when $H_1$ is true). 
 
-<div class="figure" style="text-align: center">
-<img src="01-pvalue_files/figure-epub3/paradox-1.png" alt="(ref:paradoxlab)" width="100%" />
-<p class="caption">(\#fig:paradox)(ref:paradoxlab)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{01-pvalue_files/figure-latex/paradox-1} 
+
+}
+
+\caption{(ref:paradoxlab)}(\#fig:paradox)
+\end{figure}
 
 ## Correctly reporting and interpreting *p*-values
 
@@ -236,10 +216,14 @@ I personally find things become a lot clearer if you plot the null model as mean
 
 (ref:fig131lab) Distribution of observed Cohen's *d* effect sizes when collecting 50 observations per group in an independent *t*-test.
 
-<div class="figure" style="text-align: center">
-<img src="01-pvalue_files/figure-epub3/fig131-1.png" alt="(ref:fig131lab)" width="100%" />
-<p class="caption">(\#fig:fig131)(ref:fig131lab)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{01-pvalue_files/figure-latex/fig131-1} 
+
+}
+
+\caption{(ref:fig131lab)}(\#fig:fig131)
+\end{figure}
 
 The first thing to notice is that we expect that the mean of the null model is 0. Looking at the x-axis, we see the plotted distribution is centered on 0. But even if the mean difference in the population is 0 that does not imply every sample we draw from the population will give a mean difference of exactly zero. There is variation around the population value, as a function of the standard deviation and the sample size.
 
@@ -251,10 +235,14 @@ One reason why I prefer to plot the null model in raw scores instead of *t*-valu
 
 (ref:fig132lab) Distribution of observed Cohen's *d* effect sizes when collecting 5000 observations per group in an independent *t*-test when *d* = 0. 
 
-<div class="figure" style="text-align: center">
-<img src="01-pvalue_files/figure-epub3/fig132-1.png" alt="(ref:fig132lab)" width="100%" />
-<p class="caption">(\#fig:fig132)(ref:fig132lab)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{01-pvalue_files/figure-latex/fig132-1} 
+
+}
+
+\caption{(ref:fig132lab)}(\#fig:fig132)
+\end{figure}
 
 The distribution is much narrower because the distribution of mean differences is based on the standard error of the difference between means. This value is calculated based on the standard deviation and the sample size, as follows:
 
@@ -272,19 +260,27 @@ If we collected n = 5000, and we would again observe a mean difference of 0.5, i
 
 (ref:gpower-screenshotlab) Screenshot from G*Power software
 
-<div class="figure" style="text-align: center">
-<img src="images/1.3.3.png" alt="ref:gpower-screenshotlab" width="100%" />
-<p class="caption">(\#fig:gpower-screenshot)ref:gpower-screenshotlab</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/1.3.3} 
+
+}
+
+\caption{ref:gpower-screenshotlab}(\#fig:gpower-screenshot)
+\end{figure}
 
 When we do a study, we rarely already know what the true mean difference is (if we already knew, why would we do the study?). But let’s assume there is an all-knowing entity. Following Paul Meehl, we will call this all-knowing entity ‘Omniscient Jones’. Before we collect our sample of 50 observations, Omniscient Jones already knows that the true mean difference in the population is 0.5. Again, we should expect some variation around 0.5 in this alternative model. The figure below shows the expected data pattern when the null hypothesis is true (now indicated by a grey line) and it shows an alternative model, assuming a true mean difference of 0.5 exists in the population (indicated by a black line).
 
 (ref:fig134lab) Distribution of observed Cohen's *d* effect sizes when collecting 50 observations per group in an independent *t*-test when *d* = 0.
 
-<div class="figure" style="text-align: center">
-<img src="01-pvalue_files/figure-epub3/fig134-1.png" alt="(ref:fig134lab)" width="100%" />
-<p class="caption">(\#fig:fig134)(ref:fig134lab)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{01-pvalue_files/figure-latex/fig134-1} 
+
+}
+
+\caption{(ref:fig134lab)}(\#fig:fig134)
+\end{figure}
 
 But Omniscient Jones could have said the true difference was much larger. Let’s assume we do another study, but now before we collect our 50 observations, Omniscient Jones tells us that the true mean difference is 1.5. The null model does not change, but the alternative model now moves over to the right. 
 
@@ -316,10 +312,14 @@ Nevertheless, we see that observing a mean difference of 0.35 is not only quite 
 
 (ref:fig136lab) Distribution of observed Cohen's *d* effect sizes when collecting 50 observations per group in an independent t-test for *d* = 0 and *d* = 0.5 when observing *d* = 0.35.
 
-<div class="figure" style="text-align: center">
-<img src="01-pvalue_files/figure-epub3/fig136-1.png" alt="(ref:fig136lab)" width="100%" />
-<p class="caption">(\#fig:fig136)(ref:fig136lab)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{01-pvalue_files/figure-latex/fig136-1} 
+
+}
+
+\caption{(ref:fig136lab)}(\#fig:fig136)
+\end{figure}
 
 All the *p*-value tells us is that a mean difference of 0.35 is not extremely surprising, if we assume the null hypothesis is true. There can be many reasons for this. In the real world, where we have no Omniscient Jones to tell us about the true mean difference, it is possible that there is a true effect, as illustrated in the figure above. 
 
@@ -341,25 +341,30 @@ rnorm(n = 50, mean = 0, sd = 1)
 ```
 
 ```
-##  [1] -0.14573967 -0.30558564 -1.41455219 -1.01871069  1.53465605  0.43140957
-##  [7]  0.40169292 -0.29694592 -0.70953685  0.58495299  0.08669087  0.19080881
-## [13] -0.89711120 -0.11106905  0.71989079 -0.07917052  1.71965471 -0.14415888
-## [19] -0.46629236  0.43240538 -0.33718064 -0.31740223  0.31508279  0.93545208
-## [25]  0.41469608  0.06139202 -1.02067566  0.23194751  0.27909631 -1.19670153
-## [31]  1.94791454  0.50348293  1.39239989  0.89007535 -0.59125349 -2.05205383
-## [37]  0.72757797  0.81343329 -0.67500067  0.61540611 -1.06121805 -0.18397022
-## [43] -0.42844681 -0.11250831 -0.48603648 -0.45232030 -1.90300975  0.45777017
-## [49]  0.13890074 -0.85856713
+##  [1]  0.697093673  1.624187014 -2.093085228  1.351716813 -0.625010065
+##  [6]  0.212312658  0.001848825  0.116011141 -2.056799573  0.969489422
+## [11] -0.058103148  0.569025219 -0.592723618  1.036946332 -1.101773021
+## [16] -1.472880118  0.863403720  1.120554736 -1.033088315  0.473359578
+## [21]  0.517802552 -0.784412582 -0.630858226 -0.680875659  1.005099684
+## [26]  1.136837868  0.413913289 -0.312639544  1.376028632 -1.615286820
+## [31]  1.186828082 -1.806486283 -0.415354991  0.228986645  0.001318075
+## [36] -0.915658561 -1.443251291  0.593261509 -0.298648809  0.284522195
+## [41]  0.492195976 -1.865602167  0.031208610 -0.699717683  0.711240723
+## [46]  1.353377616  1.674821567 -1.248604340 -0.529842429 -1.199532276
 ```
 
 This command generates 50 random observations from a distribution with a mean of 0 and a standard deviation of 1 (in the long run – the mean and standard deviation will vary in each sample that is generated). Imagine we run this command once, and we observe a mean of 0.5. The figure below visualizes this scenario. We can perform a one-sample *t*-test against 0, and this test tells us, with a *p* < .05, that the data we have observed is surprisingly different from 0, assuming the random number generator in R functions as it should and generates data with a true mean of 0. 
 
 (ref:fig137lab) Distribution of observed Cohen's *d* effect sizes when collecting 50 observations per group in an independent *t*-test when *d* = 0 and observing *d* = 0.5.
 
-<div class="figure" style="text-align: center">
-<img src="01-pvalue_files/figure-epub3/fig137-1.png" alt="(ref:fig137lab)" width="100%" />
-<p class="caption">(\#fig:fig137)(ref:fig137lab)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{01-pvalue_files/figure-latex/fig137-1} 
+
+}
+
+\caption{(ref:fig137lab)}(\#fig:fig137)
+\end{figure}
 
 The significant *p*-value does not allow us to conclude that the null hypothesis (“the random number generator works”) is false. It is true that the mean of the 50 samples we generated was surprisingly extreme. But a low *p*-value simply tells us that an observation is surprising. We should observe such surprising observations with a low probability when the null hypothesis is true – but they still happen. Therefore, a significant result does not mean an alternative hypothesis is true – the result can also be a Type 1 error, and in the example above, Omniscient Jones knows that this is the case. 
 
@@ -387,10 +392,14 @@ This misinterpretation is one possible explanation of the incorrect statement th
 
 (ref:fig138lab) Distribution of observed Cohen's *d* effect sizes when collecting 20 observations per group in an independent *t*-test when *d* = 0.
 
-<div class="figure" style="text-align: center">
-<img src="01-pvalue_files/figure-epub3/fig138-1.png" alt="(ref:fig138lab)" width="100%" />
-<p class="caption">(\#fig:fig138)(ref:fig138lab)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{01-pvalue_files/figure-latex/fig138-1} 
+
+}
+
+\caption{(ref:fig138lab)}(\#fig:fig138)
+\end{figure}
 
 If this is our reality, it means that 100% of the time that we observe a significant result, it is a false positive (or Type I error). Thus, 100% of our significant results are Type 1 errors. 
 
@@ -438,7 +447,9 @@ axis(side = 2, at = seq(0, nsims, nsims / 4),
 abline(h = nsims / bars, col = "red", lty = 3)
 ```
 
-<img src="01-pvalue_files/figure-epub3/q1-1.png" width="100%" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics[width=1\linewidth]{01-pvalue_files/figure-latex/q1-1} \end{center}
 
 On the x-axis we see *p*-values from 0 to 1 in 20 bars, and on the y-axis we see how frequently these *p*-values were observed. There is a horizontal red dotted line that indicates an alpha of 5% (located at a frequency of 100.000\*0.05 = 5000) – but you can ignore this line for now. In the title of the graph, the statistical power that is achieved in the simulated studies is given (assuming an alpha of 0.05): The studies have 50% power (with minor variations for each simulation).
 
@@ -607,10 +618,14 @@ This question is conceptually very similar to that asked by Tversky and Kahneman
 
 (ref:smallnumberslab) Screenshot of first paragraph in Tversky and Kahneman, 1971
 
-<div class="figure" style="text-align: center">
-<img src="images/belieflawsmallnumers.png" alt="ref:smallnumberslab" width="100%" />
-<p class="caption">(\#fig:smallnumbers)ref:smallnumberslab</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/belieflawsmallnumers} 
+
+}
+
+\caption{ref:smallnumberslab}(\#fig:smallnumbers)
+\end{figure}
 
 > Suppose you have run an experiment on 20 subjects, and have obtained a significant result which confirms your theory (*z* = 2.23, *p* < .05, two-tailed). You now have cause to run an additional group of 10 subjects. What do you think the probability is that the results will be significant, by a one-tailed test, separately for this group?
 
