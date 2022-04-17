@@ -256,7 +256,7 @@ Now we have the basis to look at interaction effects. Different patterns of mean
 (ref:interactionslab) Schematic illustration of a disordinal (or cross-over) and ordinal interaction
 
 <div class="figure" style="text-align: center">
-<img src="06-effectsize_files/figure-html/interactions-1.png" alt="(ref:interactionslab)" width="100%" />
+<img src="06-effectsize_files/figure-epub3/interactions-1.png" alt="(ref:interactionslab)" width="100%" />
 <p class="caption">(\#fig:interactions)(ref:interactionslab)</p>
 </div>
 
@@ -269,7 +269,7 @@ Let's consider two cases, one where we have a perfect disordinal interaction (th
 (ref:interactionplotslab) Disordinal (or cross-over) and ordinal interaction with means of 0 and 1, n = 50 per group, and an sd of 2.
 
 <div class="figure" style="text-align: center">
-<img src="06-effectsize_files/figure-html/interactionplots-1.png" alt="(ref:interactionplotslab)" width="100%" />
+<img src="06-effectsize_files/figure-epub3/interactionplots-1.png" alt="(ref:interactionplotslab)" width="100%" />
 <p class="caption">(\#fig:interactionplots)(ref:interactionplotslab)</p>
 </div>
 

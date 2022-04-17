@@ -45,7 +45,7 @@ When computing a probability, we assume the model to be known, and compute the p
 (ref:like1lab) Binomial likelihood function for 8 successes in 10 trials.
 
 <div class="figure" style="text-align: center">
-<img src="03-likelihoods_files/figure-html/like1-1.png" alt="(ref:like1lab)" width="100%" />
+<img src="03-likelihoods_files/figure-epub3/like1-1.png" alt="(ref:like1lab)" width="100%" />
 <p class="caption">(\#fig:like1)(ref:like1lab)</p>
 </div>
 
@@ -63,7 +63,7 @@ When a mix of heads and tails has been observed, the likelihood curve rises and 
 (ref:like2lab) Binomial likelihood function for 0 successes in 10 trials.
 
 <div class="figure" style="text-align: center">
-<img src="03-likelihoods_files/figure-html/like2-1.png" alt="(ref:like2lab)" width="100%" />
+<img src="03-likelihoods_files/figure-epub3/like2-1.png" alt="(ref:like2lab)" width="100%" />
 <p class="caption">(\#fig:like2)(ref:like2lab)</p>
 </div>
 
@@ -74,7 +74,7 @@ Likelihoods can easily be combined. Imagine we have two people flipping the same
 (ref:like3lab) Combining likelihoods.
 
 <div class="figure" style="text-align: center">
-<img src="03-likelihoods_files/figure-html/like3-1.png" alt="(ref:like3lab)" width="100%" />
+<img src="03-likelihoods_files/figure-epub3/like3-1.png" alt="(ref:like3lab)" width="100%" />
 <p class="caption">(\#fig:like3)(ref:like3lab)</p>
 </div>
 
@@ -87,7 +87,7 @@ In Figure \@ref(fig:like4) we see likelihood curves for 10, 100, and 1000 coin f
 (ref:like4lab) Likelihood function for 5/10, 50/100 and 500/1000 heads in coin flips.
 
 <div class="figure" style="text-align: center">
-<img src="03-likelihoods_files/figure-html/like4-1.png" alt="(ref:like4lab)" width="100%" />
+<img src="03-likelihoods_files/figure-epub3/like4-1.png" alt="(ref:like4lab)" width="100%" />
 <p class="caption">(\#fig:like4)(ref:like4lab)</p>
 </div>
 
@@ -110,7 +110,7 @@ the likelihood curve for L(*p* = 0.5) and L(*p* = 0.8).
 (ref:like5lab) Computing a likelihood ratio for *p* = 0.5 relative to *p* = 0.8 when observing *p* = 0.8.
 
 <div class="figure" style="text-align: center">
-<img src="03-likelihoods_files/figure-html/like5-1.png" alt="(ref:like5lab)" width="100%" />
+<img src="03-likelihoods_files/figure-epub3/like5-1.png" alt="(ref:like5lab)" width="100%" />
 <p class="caption">(\#fig:like5)(ref:like5lab)</p>
 </div>
 
@@ -123,7 +123,7 @@ Note that likelihood ratios give us the relative evidence for one specified hypo
 (ref:like6lab) Computing a likelihood ratio for *p* = 0.5 relative to *p* = 0.8 when observing *p* = 0.4.
 
 <div class="figure" style="text-align: center">
-<img src="03-likelihoods_files/figure-html/like6-1.png" alt="(ref:like6lab)" width="100%" />
+<img src="03-likelihoods_files/figure-epub3/like6-1.png" alt="(ref:like6lab)" width="100%" />
 <p class="caption">(\#fig:like6)(ref:like6lab)</p>
 </div>
 
@@ -136,7 +136,7 @@ Likelihoods are relative evidence. Just because the data are more likely under o
 (ref:like7lab) Computing a likelihood ratio for *p* = 0.3 relative to *p* = 0.8 when observing *p* = 0.5 in 100 coin flips.
 
 <div class="figure" style="text-align: center">
-<img src="03-likelihoods_files/figure-html/like7-1.png" alt="(ref:like7lab)" width="100%" />
+<img src="03-likelihoods_files/figure-epub3/like7-1.png" alt="(ref:like7lab)" width="100%" />
 <p class="caption">(\#fig:like7)(ref:like7lab)</p>
 </div>
 
@@ -158,7 +158,7 @@ Both likelihoods at *p* = .05 and *p* = .80 are highlighted in Figure \@ref(fig:
 (ref:like8lab) Computing a likelihood ratio for 2 out of three significant results, assuming an alpha of 5% and 80% power.
 
 <div class="figure" style="text-align: center">
-<img src="03-likelihoods_files/figure-html/like8-1.png" alt="(ref:like8lab)" width="100%" />
+<img src="03-likelihoods_files/figure-epub3/like8-1.png" alt="(ref:like8lab)" width="100%" />
 <p class="caption">(\#fig:like8)(ref:like8lab)</p>
 </div>
 
@@ -176,7 +176,7 @@ So far we have computed likelihoods for binomial probabilities, but likelihoods 
 (ref:like9lab) Likelihood ratio for observed *t*-value under H0 and H1.
 
 <div class="figure" style="text-align: center">
-<img src="03-likelihoods_files/figure-html/like9-1.png" alt="(ref:like9lab)" width="100%" />
+<img src="03-likelihoods_files/figure-epub3/like9-1.png" alt="(ref:like9lab)" width="100%" />
 <p class="caption">(\#fig:like9)(ref:like9lab)</p>
 </div>
 

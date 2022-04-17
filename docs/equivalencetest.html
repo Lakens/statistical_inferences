@@ -503,8 +503,7 @@ theoretical prediction). But informing peers that given the sample size commonly
 </li>
 <li>We conclude there is no effect when the equivalence test is non-significant, not when the equivalence test is significant.</li>
 </ol>
-<p><strong>Q3</strong>: Researchers are interested in showing that students who use an online textbook perform just as well as students who use a paper textbook. If so, they can recommend teachers to allow students to choose their preferred medium, but if there is a benefit, they would recommend the medium that leads to better student performance. They randomly assign students to use an online textbook or a paper textbook, and compare their grades on the exam for the course (from the worst possible grade, 1, to the best possible grade, 10). They find that the both groups of students perform similarly, with for the paper textbook condition <em>m</em> = 7.35, <em>sd</em> = 1.15, <em>n</em> = 50, and the online textbook <em>m</em> = 7.13, <em>sd</em> = 1.21, <em>n</em> = 50). Let’s assume we consider any effect as large or larger than
-half a grade point (0.5) worthwhile, but any difference smaller than 0.5 too small to matter, and the alpha level is set at 0.05. What would the authors conclude? Copy the code below into R, replacing all zeroes with the correct numbers. Type <code>?tsum_TOST</code> for help with the function.</p>
+<p><strong>Q3</strong>: Researchers are interested in showing that students who use an online textbook perform just as well as students who use a paper textbook. If so, they can recommend teachers to allow students to choose their preferred medium, but if there is a benefit, they would recommend the medium that leads to better student performance. They randomly assign students to use an online textbook or a paper textbook, and compare their grades on the exam for the course (from the worst possible grade, 1, to the best possible grade, 10). They find that the both groups of students perform similarly, with for the paper textbook condition <em>m</em> = 7.35, <em>sd</em> = 1.15, <em>n</em> = 50, and the online textbook <em>m</em> = 7.13, <em>sd</em> = 1.21, <em>n</em> = 50). Let’s assume we consider any effect as large or larger than half a grade point (0.5) worthwhile, but any difference smaller than 0.5 too small to matter, and the alpha level is set at 0.05. What would the authors conclude? Copy the code below into R, replacing all zeroes with the correct numbers. Type <code>?tsum_TOST</code> for help with the function.</p>
 <!-- ```{r eval = FALSE} -->
 <!-- TOSTER::tsum_TOST(m1 = 7.35, -->
 <!--                   sd1 = 1.15, -->
@@ -586,7 +585,7 @@ half a grade point (0.5) worthwhile, but any difference smaller than 0.5 too sma
 <li>0.33</li>
 <li>0.40</li>
 </ol>
-<p><strong>Q8</strong>: You might remember from discussions on statistical power for a null hypothesis significance test that the statistical power id never smaller than 5% (if the true effect size is 0, power is formally undefined, but we will observe at least 5% Type 1 errors, and the power increases when introducing a true effect). In a two-sided equivalence tests, power can be lower than the alpha level. Why?</p>
+<p><strong>Q8</strong>: You might remember from discussions on statistical power for a null hypothesis significance test that the statistical power is never smaller than 5% (if the true effect size is 0, power is formally undefined, but we will observe at least 5% Type 1 errors, and the power increases when introducing a true effect). In a two-sided equivalence tests, power can be lower than the alpha level. Why?</p>
 <ol style="list-style-type: upper-alpha">
 <li>Because in an equivalence test the Type 1 error rate is not bounded at 5%.</li>
 <li>Because in an equivalence test the null hypothesis and alternative hypothesis are reversed, and therefore the Type 2 error rate does not have a lower bound (just as the Type 1 error rate in NHST has no lower bound).</li>
@@ -621,7 +620,7 @@ half a grade point (0.5) worthwhile, but any difference smaller than 0.5 too sma
 <li>200</li>
 <li>252</li>
 </ol>
-<p><strong>Q10</strong>: Assume that when performing the power analysis for Q9 we did not expect the true effect size to be 0, but actually a mean difference of 0.1 grade point. Which sample size would we need to collect for the equivalence test, now that we expect a true effect size of 0.1?</p>
+<p><strong>Q10</strong>: Assume that when performing the power analysis for Q9 we did not expect the true effect size to be 0, but we actually expected a mean difference of 0.1 grade point. Which sample size in <strong>each group</strong> would we need to collect for the equivalence test, now that we expect a true effect size of 0.1? Change the variable <code>delta</code> in <code>power_t_TOST</code> to answer this question.</p>
 <!-- ```{r eval = FALSE} -->
 <!-- TOSTER::power_t_TOST( -->
 <!--   power = 0.90, -->
@@ -639,7 +638,7 @@ half a grade point (0.5) worthwhile, but any difference smaller than 0.5 too sma
 <li>314</li>
 <li>3118</li>
 </ol>
-<p><strong>Q11</strong>: Change the equivalence range to -0.1 and 0.1 for Q9 (and leave the expected effect size to 0). To be able to reject effects outside such a very narrow equivalence range, you’ll need a large sample size. With an alpha of 0.05, and a desired power of 0.9 (or 90%), how many participants would you need in each group?</p>
+<p><strong>Q11</strong>: Change the equivalence range to -0.1 and 0.1 for Q9 (and set the expected effect size of <code>delta</code> to 0). To be able to reject effects outside such a very narrow equivalence range, you’ll need a large sample size. With an alpha of 0.05, and a desired power of 0.9 (or 90%), how many participants would you need in <strong>each group</strong>?</p>
 <!-- ```{r eval = FALSE} -->
 <!-- TOSTER::power_t_TOST( -->
 <!--   power = 0.90, -->
@@ -711,10 +710,10 @@ in mathematics tests across the 7 million students in the US represent trivial d
 <p>For grade 2, when we perform an equivalence test with boundaries of <em>d</em> =-0.1 and <em>d</em> =0.1, using an alpha of 0.01, which conclusion can we draw? Use the TOSTER function TOSTmeta, and enter the alpha, effect size (ES), standard error (se), and equivalence bounds.</p>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/TOSTmeta.html">TOSTmeta</a></span><span class="op">(</span>
-  ES <span class="op">=</span> <span class="fl">0.06</span>,
-  se <span class="op">=</span> <span class="fl">0.003</span>,
-  low_eqbound_d <span class="op">=</span> <span class="op">-</span><span class="fl">0.1</span>,
-  high_eqbound_d <span class="op">=</span> <span class="fl">0.1</span>,
+  ES <span class="op">=</span> <span class="fl">0.00</span>,
+  se <span class="op">=</span> <span class="fl">0.000</span>,
+  low_eqbound_d <span class="op">=</span> <span class="op">-</span><span class="fl">0.0</span>,
+  high_eqbound_d <span class="op">=</span> <span class="fl">0.0</span>,
   alpha <span class="op">=</span> <span class="fl">0.05</span>
 <span class="op">)</span></code></pre></div>
 <ol style="list-style-type: upper-alpha">

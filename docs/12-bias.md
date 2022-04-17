@@ -172,7 +172,7 @@ If we examine the funnel plot in Figure \@ref(fig:funnel1) we see each study rep
 (ref:funnel1lab) Funnel plot of unbiased null results.
 
 <div class="figure" style="text-align: center">
-<img src="12-bias_files/figure-html/funnel1-1.png" alt="(ref:funnel1lab)" width="100%" />
+<img src="12-bias_files/figure-epub3/funnel1-1.png" alt="(ref:funnel1lab)" width="100%" />
 <p class="caption">(\#fig:funnel1)(ref:funnel1lab)</p>
 </div>
 
@@ -207,7 +207,7 @@ The biased nature of the set of studies we have analyzed becomes clear if we exa
 (ref:funnel2lab) Funnel plot of biased null results with mostly significant results.
 
 <div class="figure" style="text-align: center">
-<img src="12-bias_files/figure-html/funnel2-1.png" alt="(ref:funnel2lab)" width="100%" />
+<img src="12-bias_files/figure-epub3/funnel2-1.png" alt="(ref:funnel2lab)" width="100%" />
 <p class="caption">(\#fig:funnel2)(ref:funnel2lab)</p>
 </div>
 
@@ -229,7 +229,7 @@ We can also see signs of bias in the forest plot for a meta-analysis. In Figure 
 (ref:twoforestplotlab) Forest plot of unbiased meta-analysis (left) and biased meta-analysies (right).
 
 <div class="figure" style="text-align: center">
-<img src="12-bias_files/figure-html/twoforestplot-1.png" alt="(ref:twoforestplotlab)" width="100%" />
+<img src="12-bias_files/figure-epub3/twoforestplot-1.png" alt="(ref:twoforestplotlab)" width="100%" />
 <p class="caption">(\#fig:twoforestplot)(ref:twoforestplotlab)</p>
 </div>
 
@@ -244,7 +244,7 @@ Trim and fill is a technique that aims to augment a dataset by adding hypothetic
 (ref:trimfill1lab) Funnel plot with assumed missing effects added through trim-and-fill.
 
 <div class="figure" style="text-align: center">
-<img src="12-bias_files/figure-html/trimfill1-1.png" alt="(ref:trimfill1lab)" width="100%" />
+<img src="12-bias_files/figure-epub3/trimfill1-1.png" alt="(ref:trimfill1lab)" width="100%" />
 <p class="caption">(\#fig:trimfill1)(ref:trimfill1lab)</p>
 </div>
 
@@ -265,7 +265,7 @@ Let’s explore how PET-PEESE meta-regression attempts to give us an unbiased ef
 (ref:petpeeselab) Funnel plot with PETPEESE regression lines.
 
 <div class="figure" style="text-align: center">
-<img src="12-bias_files/figure-html/petpeese-1.png" alt="(ref:petpeeselab)" width="100%" />
+<img src="12-bias_files/figure-epub3/petpeese-1.png" alt="(ref:petpeeselab)" width="100%" />
 <p class="caption">(\#fig:petpeese)(ref:petpeeselab)</p>
 </div>
 
@@ -379,7 +379,7 @@ par(bg = backgroundcolor)
 plot(z_res, annotation = TRUE, CI = TRUE)
 ```
 
-<img src="12-bias_files/figure-html/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="12-bias_files/figure-epub3/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;" />
 
 We see that 96 out of 100 studies were significant, which makes the observed discovery rate (ODR), or observed power (across all these studies with different sample sizes) 0.96, 95% CI[0.89;0.99]. The expected discovery rate (EDR) is only 0.053, which differs statistically from the observed discovery rate, as indicated by the fact that the confidence interval of the EDR does not overlap with the ODR of 0.96. This means there is clear indication of selection bias based on the *z*-curve analysis. The expected replicability rate for these studies is only 0.052, which is in line with the expectation that we will only observe 5% Type 1 errors. Thus, even though we only entered significant *p*-values, *z*-curve analysis correctly suggests that we should not expect these results to replicate.
 
@@ -404,7 +404,7 @@ D) The meta-analytic effect size estimate is **lower** when there is publication
 
 **Q2**: The forest plot in the figure below looks quite peculiar. What do you notice?
 
-<img src="12-bias_files/figure-html/metasimq2-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="12-bias_files/figure-epub3/metasimq2-1.png" width="100%" style="display: block; margin: auto;" />
 
 A) All effect sizes are quite similar, suggesting large sample sizes and highly accurate effect size measures.
 B) The studies look as if they were designed based on perfect a-priori power analyses, all yielding just significant results.
@@ -426,7 +426,7 @@ D) Regardless of whether there is publication bias, the meta-analytic effect siz
 (ref:petpeeseq4lab) Funnel plot with PETPEESE regression lines for the same studies as in Q2.
 
 <div class="figure" style="text-align: center">
-<img src="12-bias_files/figure-html/petpeeseq4-1.png" alt="(ref:petpeeseq4lab)" width="100%" />
+<img src="12-bias_files/figure-epub3/petpeeseq4-1.png" alt="(ref:petpeeseq4lab)" width="100%" />
 <p class="caption">(\#fig:petpeeseq4)(ref:petpeeseq4lab)</p>
 </div>
 
@@ -461,7 +461,7 @@ would expect if the studies had 33% power, and therefore, we can conclude these 
 
 **Q6**: The true effect size in the studies simulated in Q2 is 0 - there is no true effect. Which statement about the *z*-curve analysis below is true? 
 
-<img src="12-bias_files/figure-html/zcurveq6-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="12-bias_files/figure-epub3/zcurveq6-1.png" width="100%" style="display: block; margin: auto;" />
 
 A) The expected discovery rate and the expected replicability rate are both statistically significant, and therefore we can expect the observed effects to successfully replicate in future studies. 
 B) Despite the fact that the average observed power (the observed discovery rate) is 100%, *z*-curve correctly predicts the expected replicability rate (which is 5%, as only Type 1 errors will be statistically significant). 

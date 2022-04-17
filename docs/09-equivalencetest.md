@@ -23,7 +23,7 @@ Indeed, one of the most widely suggested improvements that mitigates the most im
 (ref:intervaltestlab) Two-sided null hypothesis test (A), interval hypothesis test (B), equivalence test (C) and minimum effect test (D).
 
 <div class="figure" style="text-align: center">
-<img src="09-equivalencetest_files/figure-html/intervaltest-1.png" alt="(ref:intervaltestlab)" width="100%" />
+<img src="09-equivalencetest_files/figure-epub3/intervaltest-1.png" alt="(ref:intervaltestlab)" width="100%" />
 <p class="caption">(\#fig:intervaltest)(ref:intervaltestlab)</p>
 </div>
 
@@ -65,7 +65,7 @@ The TOSTER package (originally created by myself but recently redesigned by [Aar
 (ref:tdistequivalencelab) The mean difference and its confidence interval plotted below the *t*-distributions used to perform the two-one-sided tests against -0.5 and 0.5.
 
 <div class="figure" style="text-align: center">
-<img src="09-equivalencetest_files/figure-html/tdistequivalence-1.png" alt="(ref:tdistequivalencelab)" width="100%" />
+<img src="09-equivalencetest_files/figure-epub3/tdistequivalence-1.png" alt="(ref:tdistequivalencelab)" width="100%" />
 <p class="caption">(\#fig:tdistequivalence)(ref:tdistequivalencelab)</p>
 </div>
 
@@ -123,7 +123,7 @@ One way to reduce the probability of an inconclusive effect is to collect suffic
 (ref:ciequivalence1lab) The mean difference and its confidence interval for an equivalence test with an equivalence range of -0.5 and 0.5.
 
 <div class="figure" style="text-align: center">
-<img src="09-equivalencetest_files/figure-html/ciequivalence1-1.png" alt="(ref:ciequivalence1lab)" width="100%" />
+<img src="09-equivalencetest_files/figure-epub3/ciequivalence1-1.png" alt="(ref:ciequivalence1lab)" width="100%" />
 <p class="caption">(\#fig:ciequivalence1)(ref:ciequivalence1lab)</p>
 </div>
 
@@ -159,7 +159,7 @@ In Figure \@ref(fig:ciequivalence2) we see the the same results, but now visuali
 (ref:ciequivalence2lab) The mean difference and its confidence interval for an equivalence test with an equivalence range of -0.5 and 0.5.
 
 <div class="figure" style="text-align: center">
-<img src="09-equivalencetest_files/figure-html/ciequivalence2-1.png" alt="(ref:ciequivalence2lab)" width="100%" />
+<img src="09-equivalencetest_files/figure-epub3/ciequivalence2-1.png" alt="(ref:ciequivalence2lab)" width="100%" />
 <p class="caption">(\#fig:ciequivalence2)(ref:ciequivalence2lab)</p>
 </div>
 
@@ -182,7 +182,7 @@ If a researcher has specified a smallest effect size of interest, and is interes
 (ref:tmetlab) The mean difference and its confidence interval plotted below the *t*-distributions used to perform the two-one-sided tests against -0.5 and 0.5 when performing a minimum effect test.
 
 <div class="figure" style="text-align: center">
-<img src="09-equivalencetest_files/figure-html/tmet-1.png" alt="(ref:tmetlab)" width="100%" />
+<img src="09-equivalencetest_files/figure-epub3/tmet-1.png" alt="(ref:tmetlab)" width="100%" />
 <p class="caption">(\#fig:tmet)(ref:tmetlab)</p>
 </div>
 
@@ -303,7 +303,7 @@ In Bayesian estimation, one way to argue for the absence of a meaningful effect 
 
 If the prior used by Kruschke was perfectly uniform, and the ROPE procedure and an equivalence test used the same confidence interval (e.g., 90%), the two tests would yield  identical results. There would only be philosophical differences in how the numbers are interpreted. The `BEST` package in R that can be used to perform the ROPE procedure by default uses a ‘broad’ prior, and therefore results of the ROPE procedure and an equivalence test are not exactly the same, but they are very close. One might even argue the two tests are 'practically equivalent'. In the R code below random normally distributed data for two conditions is generated (with means of 0 and a standard deviation of 1) and the ROPE procedure and a TOST equivalence test are performed. 
 
-<img src="09-equivalencetest_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;" /><img src="09-equivalencetest_files/figure-html/unnamed-chunk-6-2.png" width="100%" style="display: block; margin: auto;" />
+<img src="09-equivalencetest_files/figure-epub3/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;" /><img src="09-equivalencetest_files/figure-epub3/unnamed-chunk-6-2.png" width="100%" style="display: block; margin: auto;" />
 
 The 90% HDI ranges from -0.06 to 0.39, with an estimated mean based on the prior and the data of 0.164. The HDI falls completely between the upper and the lower bound of the equivalence range, and therefore values more extreme than -0.5 or 0.5 are deemed implausible. The 95% CI ranges from -0.07 to 0.36 with an observed mean difference of 0.15. We see that the numbers are not identical, because in Bayesian estimation the observed values are combined with a prior, and the mean estimate is not purely based on the data. But the results are very similar, and will in most cases lead to similar inferences. The BEST R package also enables researchers to perform simulation based power analyses, which take a long time but, when using a broad prior, yield a result that is basically identical to the sample size from a power analysis for an equivalence test. The biggest benefit of ROPE over TOST is that it allows you to incorporate prior information. If you have reliable prior information, ROPE can use this information, which is especially useful if you don’t have a lot of data. If you use informed priors, check the robustness of the posterior against reasonable changes in the prior in sensitivity analyses.
 
@@ -486,8 +486,7 @@ B) The result of an equivalence test could be a Type 1 error, and therefore, one
 C) An equivalence test rejects values as large or larger than the smallest effect size of interest, so the possibility that there is a small non-zero effect cannot be rejected.  
 D) We conclude there is no effect when the equivalence test is non-significant, not when the equivalence test is significant.  
 
-**Q3**: Researchers are interested in showing that students who use an online textbook perform just as well as students who use a paper textbook. If so, they can recommend teachers to allow students to choose their preferred medium, but if there is a benefit, they would recommend the medium that leads to better student performance. They randomly assign students to use an online textbook or a paper textbook, and compare their grades on the exam for the course (from the worst possible grade, 1, to the best possible grade, 10). They find that the both groups of students perform similarly, with for the paper textbook condition *m* = 7.35, *sd* = 1.15, *n* = 50, and the online textbook *m* = 7.13, *sd* = 1.21, *n* = 50). Let’s assume we consider any effect as large or larger than
-half a grade point (0.5) worthwhile, but any difference smaller than 0.5 too small to matter, and the alpha level is set at 0.05. What would the authors conclude? Copy the code below into R, replacing all zeroes with the correct numbers. Type `?tsum_TOST` for help with the function.
+**Q3**: Researchers are interested in showing that students who use an online textbook perform just as well as students who use a paper textbook. If so, they can recommend teachers to allow students to choose their preferred medium, but if there is a benefit, they would recommend the medium that leads to better student performance. They randomly assign students to use an online textbook or a paper textbook, and compare their grades on the exam for the course (from the worst possible grade, 1, to the best possible grade, 10). They find that the both groups of students perform similarly, with for the paper textbook condition *m* = 7.35, *sd* = 1.15, *n* = 50, and the online textbook *m* = 7.13, *sd* = 1.21, *n* = 50). Let’s assume we consider any effect as large or larger than half a grade point (0.5) worthwhile, but any difference smaller than 0.5 too small to matter, and the alpha level is set at 0.05. What would the authors conclude? Copy the code below into R, replacing all zeroes with the correct numbers. Type `?tsum_TOST` for help with the function.
 
 <!-- ```{r eval = FALSE} -->
 
@@ -582,7 +581,7 @@ B) 0.05
 C) 0.33
 D) 0.40
 
-**Q8**: You might remember from discussions on statistical power for a null hypothesis significance test that the statistical power id never smaller than 5% (if the true effect size is 0, power is formally undefined, but we will observe at least 5% Type 1 errors, and the power increases when introducing a true effect). In a two-sided equivalence tests, power can be lower than the alpha level. Why? 
+**Q8**: You might remember from discussions on statistical power for a null hypothesis significance test that the statistical power is never smaller than 5% (if the true effect size is 0, power is formally undefined, but we will observe at least 5% Type 1 errors, and the power increases when introducing a true effect). In a two-sided equivalence tests, power can be lower than the alpha level. Why? 
 
 A) Because in an equivalence test the Type 1 error rate is not bounded at 5%.
 B) Because in an equivalence test the null hypothesis and alternative hypothesis are reversed, and therefore the Type 2 error rate does not have a lower bound (just as the Type 1 error rate in NHST has no lower bound).
@@ -623,7 +622,7 @@ B) 126
 C) 200
 D) 252
 
-**Q10**: Assume that when performing the power analysis for Q9 we did not expect the true effect size to be 0, but actually a mean difference of 0.1 grade point. Which sample size would we need to collect for the equivalence test, now that we expect a true effect size of 0.1?
+**Q10**: Assume that when performing the power analysis for Q9 we did not expect the true effect size to be 0, but we actually expected a mean difference of 0.1 grade point. Which sample size in **each group** would we need to collect for the equivalence test, now that we expect a true effect size of 0.1? Change the variable `delta` in `power_t_TOST` to answer this question.
 
 <!-- ```{r eval = FALSE} -->
 <!-- TOSTER::power_t_TOST( -->
@@ -642,7 +641,7 @@ B) 157
 C) 314
 D) 3118
 
-**Q11**: Change the equivalence range to -0.1 and 0.1 for Q9 (and leave the expected effect size to 0). To be able to reject effects outside such a very narrow equivalence range, you’ll need a large sample size. With an alpha of 0.05, and a desired power of 0.9 (or 90%), how many participants would you need in each group?
+**Q11**: Change the equivalence range to -0.1 and 0.1 for Q9 (and set the expected effect size of `delta` to 0). To be able to reject effects outside such a very narrow equivalence range, you’ll need a large sample size. With an alpha of 0.05, and a desired power of 0.9 (or 90%), how many participants would you need in **each group**?
 
 <!-- ```{r eval = FALSE} -->
 <!-- TOSTER::power_t_TOST( -->
@@ -685,13 +684,14 @@ For grade 2, when we perform an equivalence test with boundaries of *d* =-0.1 an
 
 ```r
 TOSTER::TOSTmeta(
-  ES = 0.06,
-  se = 0.003,
-  low_eqbound_d = -0.1,
-  high_eqbound_d = 0.1,
+  ES = 0.00,
+  se = 0.000,
+  low_eqbound_d = -0.0,
+  high_eqbound_d = 0.0,
   alpha = 0.05
 )
 ```
+
 A) We can **reject** an effect size of zero, and we can **reject** the presence of effects as large or larger than the smallest effect size of interest. 
 B) We can **not reject** an effect size of zero, and we can **reject** the presence of effects as large or larger than the smallest effect size of interest. 
 C) We can **reject** an effect size of zero, and we can **not reject** the presence of effects as large or larger than the smallest effect size of interest. 
