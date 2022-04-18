@@ -605,7 +605,7 @@ At the same time, the conclusions from meta-analyses are often open for debate a
 
 \caption{(\#tab:table-rec1)Six practical recommendations to improve the quality and reproducibility of meta-analyses.}
 \centering
-\begin{tabular}[t]{l|l}
+\begin{tabular}[t]{>{\raggedright\arraybackslash}p{5cm}|>{\raggedright\arraybackslash}p{10cm}}
 \hline
 What? & How?\\
 \hline

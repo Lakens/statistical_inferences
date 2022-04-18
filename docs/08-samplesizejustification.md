@@ -10,22 +10,18 @@ Scientists perform empirical studies to collect data that helps to answer a rese
 
 \caption{(\#tab:table-pow-just)Overview of possible justifications for the sample size in a study.}
 \centering
-\begin{tabular}[t]{l|l}
-\hline
+\begin{tabular}[t]{>{\raggedright\arraybackslash}p{5cm}>{\raggedright\arraybackslash}p{10cm}}
+\toprule
 Type of justification & When is this justification applicable?\\
-\hline
+\midrule
 Measure entire population & A researcher can specify the entire population, it is finite, and it is possible to measure (almost) every entity in the population.\\
-\hline
 Resource constraints & Limited resources are the primary reason for the choice of the sample size a researcher can collect.\\
-\hline
 Accuracy & The research question focusses on the size of a parameter, and a researcher collects sufficient data to have an estimate with a desired level of accuracy.\\
-\hline
 A-priori power analysis & The research question has the aim to test whether certain effect sizes can be statistically rejected with a desired statistical power.\\
-\hline
 Heuristics & A researcher decides upon the sample size based on a heuristic, general rule or norm that is described in the literature, or communicated orally.\\
-\hline
+\addlinespace
 No justification & A researcher has no reason to choose a specific sample size, or does not have a clearly specified inferential goal and wants to communicate this honestly.\\
-\hline
+\bottomrule
 \end{tabular}
 \end{table}
 
@@ -47,7 +43,7 @@ To start, researchers should consider what their smallest effect size of interes
 
 \caption{(\#tab:table-effect-eval)Overview of possible ways to evaluate which effect sizes are interesting.}
 \centering
-\begin{tabular}[t]{l|l}
+\begin{tabular}[t]{>{\raggedright\arraybackslash}p{5cm}|>{\raggedright\arraybackslash}p{10cm}}
 \hline
 Type of evaluation & Which question should a researcher ask?\\
 \hline
@@ -106,7 +102,7 @@ Even if a researcher believes it is worth collecting data because a future meta-
 
 \caption{(\#tab:table-pow-rec)Overview of recommendations when reporting a sample size justification based on resource constraints.}
 \centering
-\begin{tabular}[t]{l|l}
+\begin{tabular}[t]{>{\raggedright\arraybackslash}p{5cm}|>{\raggedright\arraybackslash}p{10cm}}
 \hline
 What to address & How to address it?\\
 \hline
@@ -151,8 +147,6 @@ Although it is common to set the Type I error rate to 5% and aim for 80% power, 
 \end{figure}
 
 Figure \@ref(fig:power-3) visualizes two distributions. The left distribution (dashed line) is centered at 0. This is a model for the null hypothesis. If the null hypothesis is true a statistically significant result will be observed if the effect size is extreme enough (in a two-sided test either in the positive or negative direction), but any significant result would be a Type I error (the dark grey areas under the curve). If there is no true effect, formally statistical power for a null hypothesis significance test is undefined. Any significant effects observed if the null hypothesis is true are Type I errors, or false positives, which occur at the chosen alpha level. The right distribution (solid line) is centered on an effect of *d* = 0.5. This is the specified model for the alternative hypothesis in this study, illustrating the expectation of an effect of *d* = 0.5 if the alternative hypothesis is true. Even though there is a true effect, studies will not always find a statistically significant result. This happens when, due to random variation, the observed effect size is too close to 0 to be statistically significant. Such results are false negatives (the light grey area under the curve on the right). To increase power, we can collect a larger sample size. As the sample size increases, the distributions become more narrow, reducing the probability of a Type II error. These figures can be reproduced and adapted in an online shiny app: http://shiny.ieis.tue.nl/d_p_power/.
-
-
 
 (ref:echolab) Null (*d* = 0, grey dashed line) and alternative (*d* = 0.5, solid black line) hypothesis, with α = 0.05 and n = 80 per group.
 
@@ -212,7 +206,7 @@ The reproducible report needs to be accompanied by justifications for the choice
 
 \caption{(\#tab:table-pow-rec-2)Overview of recommendations when reporting an a-priori power analysis.}
 \centering
-\begin{tabular}[t]{l|l}
+\begin{tabular}[t]{>{\raggedright\arraybackslash}p{5cm}|>{\raggedright\arraybackslash}p{10cm}}
 \hline
 What to take into account? & How to take it into account?\\
 \hline
@@ -341,7 +335,7 @@ Third, the meta-analytic effect size estimate should not be biased. Check if the
 
 \caption{(\#tab:tablemetajust)Overview of recommendations when justifying the use of a meta-analytic effect size estimate for a power analysis.}
 \centering
-\begin{tabular}[t]{l|l}
+\begin{tabular}[t]{>{\raggedright\arraybackslash}p{5cm}|>{\raggedright\arraybackslash}p{10cm}}
 \hline
 What to take into account & How to take it into account?\\
 \hline
@@ -366,8 +360,6 @@ The two main reasons researchers should be careful when using effect sizes from 
 
 But even if we had access to all effect sizes (e.g., from pilot studies you have performed yourself) due to random variation the observed effect size will sometimes be quite small. Figure \@ref(fig:follow-up-bias) shows it is quite likely to observe an effect of $\eta_p^2$ = 0.01 in a small pilot study, even when the true effect size is 0.0588. Entering an effect size estimate of $\eta_p^2$ = 0.01 in an a-priori power analysis would suggest a total sample size of 957 observations to achieve 80% power in a follow-up study. If researchers only follow up on pilot studies when they observe an effect size in the pilot study that, when entered into a power analysis, yields a sample size that is feasible to collect for the follow-up study, these effect size estimates will be upwardly biased, and power in the follow-up study will be systematically lower than desired [@albers_when_2018]. 
 
-
-
 (ref:follow-up-biaslab) Distribution of partial eta squared under the null hypothesis (dotted grey curve) and a medium true effect of 0.0588 (solid black curve) for 3 groups with 25 observations.
 
 \begin{figure}
@@ -391,7 +383,7 @@ To summarize, an effect size from a previous study in an a-priori power analysis
 
 \caption{(\#tab:table-es-just)Overview of recommendations when justifying the use of an effect size estimate from a single study.}
 \centering
-\begin{tabular}[t]{l|l}
+\begin{tabular}[t]{>{\raggedright\arraybackslash}p{5cm}|>{\raggedright\arraybackslash}p{10cm}}
 \hline
 What to take into account & How to take it into account?\\
 \hline
@@ -422,8 +414,6 @@ One useful way of interpreting the width of the confidence interval is based on 
 
 We see that the margin of error is almost, but not exactly, the same as the minimal statistically detectable effect (*d* = 0.748). The small variation is due to the fact that the 95% confidence interval is calculated based on the *t* distribution. If the true effect size is not zero, the confidence interval is calculated based on the non-central *t* distribution, and the 95% CI is asymmetric. Figure \@ref(fig:noncentralt) visualizes three *t* distributions, one symmetric at 0, and two asymmetric distributions with a noncentrality parameter (the normalized difference between the means) of 2 and 3. The asymmetry is most clearly visible in very small samples (the distributions in the plot have 5 degrees of freedom) but remains noticeable in larger samples when calculating confidence intervals and statistical power. For example, for a true effect size of *d* = 0.5 observed with 15 observations per group would yield $d_s$ = 0.50, 95\% CI [-0.23, 1.22]. If we compute the 95% CI around the critical effect size, we would get $d_s$ = 0.75, 95\% CI [0.00, 1.48]. We see the 95% CI ranges from exactly 0 to 1.484, in line with the relation between a confidence interval and a *p* value, where the 95% CI excludes zero if the test is statistically significant. As noted before, the different approaches recommended here to evaluate how informative a study is are often based on the same information.
 
-
-
 (ref:noncentraltlab) Central (black) and 2 non-central (darkgrey and lightgrey) *t* distributions.
 
 \begin{figure}
@@ -444,8 +434,6 @@ A sensitivity power analysis fixes the sample size, desired power, and alpha lev
 
 Assume a researcher plans to perform a study where 30 observations will be collected in total, 15 in each between participant condition. Figure \@ref(fig:gsens0) shows how to perform a sensitivity power analysis in G\*Power for a study where we have decided to use an alpha level of 5%, and desire 90% power. The sensitivity power analysis reveals the designed study has 90% power to detect effects of at least *d* = 1.23. Perhaps a researcher believes that a desired power of 90% is quite high, and is of the opinion that it would still be interesting to perform a study if the statistical power was lower. It can then be useful to plot a sensitivity curve across a range of smaller effect sizes.
 
-
-
 (ref:gsens0lab) Sensitivity power analysis in G*Power software.
 
 \begin{figure}
@@ -458,8 +446,6 @@ Assume a researcher plans to perform a study where 30 observations will be colle
 \end{figure}
 
 The two dimensions of interest in a sensitivity power analysis are the effect sizes, and the power to observe a significant effect assuming a specific effect size. These two dimensions can be plotted against each other to create a sensitivity curve. For example, a sensitivity curve can be plotted in G\*Power by clicking the 'X-Y plot for a range of values' button, as illustrated in Figure \@ref(fig:gsens1). Researchers can examine which power they would have for an a-priori plausible range of effect sizes, or they can examine which effect sizes would provide reasonable levels of power. In simulation-based approaches to power analysis, sensitivity curves can be created by performing the power analysis for a range of possible effect sizes. Even if 50% power is deemed acceptable (in which case deciding to act as if the null hypothesis is true after a non-significant result is a relatively noisy decision procedure), Figure \@ref(fig:gsens1) shows a study design where power is extremely low for a large range of effect sizes that are reasonable to expect in most fields. Thus, a sensitivity power analysis provides an additional approach to evaluate how informative the planned study is, and can inform researchers that a specific design is unlikely to yield a significant effect for a range of effects that one might realistically expect. 
-
-
 
 (ref:gsens1lab) Plot of the effect size against the desired power when n = 15 per group and alpha = 0.05.
 
@@ -543,7 +529,7 @@ A compromise power analysis requires a researcher to specify the sample size. Th
 
 \caption{(\#tab:table-compromise-just)Overview of recommendations when justifying error rates based on a compromise power analysis.}
 \centering
-\begin{tabular}[t]{l|l}
+\begin{tabular}[t]{>{\raggedright\arraybackslash}p{5cm}|>{\raggedright\arraybackslash}p{10cm}}
 \hline
 What to take into account & How to take it into account?\\
 \hline
@@ -562,57 +548,7 @@ Post-hoc, retrospective, or observed power is used to describe the statistical p
 
 Post-hoc power is directly related to the *p* value of the statistical test [@hoenig_abuse_2001]. For a *z* test where the *p* value is exactly 0.05, post-hoc power is always 50%. The reason for this relationship is that when a *p* value is observed that equals the alpha level of the test (e.g., 0.05), the observed *z* score of the test is exactly equal to the critical value of the test (e.g., *z* = 1.96 in a two-sided test with a 5% alpha level). Whenever the alternative hypothesis is centered on the critical value half the values we expect to observe if this alternative hypothesis is true fall below the critical value, and half fall above the critical value. Therefore, a test where we observed a *p* value identical to the alpha level will have exactly 50% power in a post-hoc power analysis, as the analysis assumes the observed effect size is true.
 
-<!-- ```{r obs-power-plot-1, echo = FALSE, fig.width = 8, fig.height = 8, fig.cap="(Relationship between p-values and power for a Z-test.)"} -->
-<!-- # For simplicity, take a one-sided test -->
-<!-- # compute z value from p: -->
-<!-- # p_val = 0.05 -->
-<!-- # z <- qnorm(1-p_val) -->
-<!-- # z -->
-<!-- #  -->
-<!-- # # compute p-value from z -->
-<!-- # 1-pnorm(z) -->
-
-<!-- # computing the Type I error rate: -->
-<!-- # old, two-sided: 1-pnorm(q = 1.959964) + pnorm(q = -1.959964) -->
-
-<!-- # Moving the mean from 0.  -->
-<!-- # Because the normal distribution is symmetric, if we observe a p-value on top of the critical value (p = 0.05) we have 50% power. -->
-
-<!-- # pnorm(q = 1.644854, mean = 1.644854) -->
-
-<!-- # We can plot this across a range of observe p-values -->
-
-<!-- plot_obs_pow <- (function(alpha_level, p_val) { -->
-<!--   1 - pnorm(q = qnorm(1-alpha_level), mean = qnorm(1-p_val)) -->
-<!-- }) -->
-
-
-<!-- par(bg = "aliceblue", pty = "s") -->
-<!-- plot(-10, -->
-<!--   xlab = "p-value", ylab = "Observed power", axes = FALSE, -->
-<!--   main = substitute(paste("Relationship between p-value and observed power")), xlim = c(0, 1), ylim = c(0, 1) -->
-<!-- ) -->
-<!-- abline(v = seq(0, 1, 0.1), h = seq(0, 1, 0.1), col = "lightgrey", lty = 1) -->
-<!-- axis(side = 1, at = seq(0, 1, 0.1), labels = seq(0, 1, 0.1)) -->
-<!-- axis(side = 2, at = seq(0, 1, 0.1), labels = seq(0, 1, 0.1)) -->
-<!-- curve(plot_obs_pow(alpha_level = 0.05, p_val = x), 0, 1, add = TRUE, lwd = 3) -->
-<!-- points(x = 0.05, y = 0.5, cex = 2, pch = 19, col = rgb(1, 0, 0, 0.5)) -->
-<!-- abline(v = 0.05, h = 0.5, col = rgb(1, 0, 0, 0.5), lty = 1) -->
-
-
-<!-- ``` -->
-
 For other statistical tests, where the alternative distribution is not symmetric (such as for the *t* test, where the alternative hypothesis follows a non-central *t* distribution, see Figure \@ref(fig:noncentralt)), a *p* = 0.05 does not directly translate to an observed power of 50%, but by plotting post-hoc power against the observed *p* value we see that the two statistics are always directly related. As Figure \@ref(fig:obs-power-plot-2) shows, if the *p* value is non-significant (i.e., larger than 0.05) the observed power will be less than approximately 50% in a *t* test. Lenth [-@lenth_post_2007] explains how observed power is also completely determined by the observed *p* value for *F* tests, although the statement that a non-significant *p* value implies a power less than 50% no longer holds. 
-
-<!-- We can compute observe power in R based on the formula below, where `alpha_level` is the alpha level, `n`is the sample size in each group, and `p_val` is the observed *p* value. In Figure \@ref(fig:obs-power-plot-2) we see that for a *p* = 0.05 observed power is ever so slightly larger than 50%, but the observed power value is very close.  -->
-
-<!-- ```{r obs_power-plot-2, echo = TRUE, eval = FALSE} -->
-<!-- 1 - pt(q = qt(1 - alpha_level/2, 2 * n - 2),  -->
-<!--        df = 2 * n - 2,  -->
-<!--        ncp = qt(1 - p_val/2, 2 * n - 2)) -->
-<!-- ``` -->
-
-
 
 (ref:obs-power-plot-2lab) Relationship between *p* values and power for an independent *t* test with α = 0.05 and n = 10.
 

@@ -248,8 +248,6 @@ One might wonder if such extreme bias ever really emerges in scientific research
 
 We can also see signs of bias in the forest plot for a meta-analysis. In Figure \@ref(fig:twoforestplot) two forest plots are plotted side by side. The left forest plot is based on unbiased data, the right forest plot is based on biased data. The forest plots are a bit big with 100 studies, but we see that in the left forest plot effects randomly vary around 0 as they should. On the right,  beyond the first four studies, all confidence intervals magically just exclude an effect of 0.  
 
-
-
 (ref:twoforestplotlab) Forest plot of unbiased meta-analysis (left) and biased meta-analysies (right).
 
 \begin{figure}
@@ -439,11 +437,9 @@ For another open educational resource on tests for publication bias, see [Doing 
 
 ## Test Yourself
 
-**Q1**: What happens when there is publication bias because researchers only
-publish statistically significant results (*p* \< $\alpha$), and you calculate the effect size in a meta-analysis? 
+**Q1**: What happens when there is publication bias because researchers only publish statistically significant results (*p* \< $\alpha$), and you calculate the effect size in a meta-analysis? 
 
-A) The meta-analytic effect size estimate is **identical** whether there is
-publication bias (where researchers publish only effects with *p* \< $\alpha$) or no publication bias.
+A) The meta-analytic effect size estimate is **identical** whether there is publication bias (where researchers publish only effects with *p* \< $\alpha$) or no publication bias.
 B) The meta-analytic effect size estimate is **closer to the true effect size** when there is publication bias (where researchers publish only effects with *p* \< $\alpha$) compared to when there is no publication bias.
 C) The meta-analytic effect size estimate is **inflated** when there is publication bias (where researchers publish only effects with *p* \< $\alpha$) compared to when there is no publication bias.
 D) The meta-analytic effect size estimate is **lower** when there is publication bias (where researchers publish only effects with *p* \< $\alpha$) compared to when there is no publication bias.
@@ -468,8 +464,6 @@ D) Regardless of whether there is publication bias, the meta-analytic effect siz
 
 **Q4**: Which statement is true based on the plot below, visualizing a PET-PEESE meta-regression?
 
-
-
 (ref:petpeeseq4lab) Funnel plot with PETPEESE regression lines for the same studies as in Q2.
 
 \begin{figure}
@@ -484,7 +478,7 @@ D) Regardless of whether there is publication bias, the meta-analytic effect siz
 A) Using PET-PEESE meta-regression we can show that the true effect size is d = 0 (based on the PET estimate).
 B) Using PET-PEESE meta-regression we can show that the true effect size is d = 0.23 (based on the PEESE estimate).
 C) Using PET-PEESE meta-regression we can show that the true effect size is d = 0.34 (based on the normal meta-analytic effect size estimate).
-D) The small sample size (8 studies) means PET has very low power to reject the null, and therefore it is not a reliable indicator of bias - but there might be reason to worry. 
+D) The small sample size (10 studies) means PET has very low power to reject the null, and therefore it is not a reliable indicator of bias - but there might be reason to worry. 
 
 **Q5**: Take a look at the figure and output table of the *p*-curve app below, which gives the results for the studies in Q2. Which interpretation of the output is correct?
 
