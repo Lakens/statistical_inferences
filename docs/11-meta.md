@@ -41,14 +41,19 @@ ggplot(as.data.frame(x), aes(x)) +
   theme(panel.background = element_rect(fill = backgroundcolor))
 ```
 
-<div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-html/plot-hist-iq-1-1.png" alt="(ref:plot-hist-iq-1lab)" width="100%" />
-<p class="caption">(\#fig:plot-hist-iq-1)(ref:plot-hist-iq-1lab)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{11-meta_files/figure-latex/plot-hist-iq-1-1} 
+
+}
+
+\caption{(ref:plot-hist-iq-1lab)}(\#fig:plot-hist-iq-1)
+\end{figure}
 
 The plot above provides one example of a randomly simulated dataset of 10 points drawn from a normal distribution with a mean of 100 and a standard deviation of 15. The grey bars indicate the frequency with which each IQ score was observed. The red dotted line illustrates the normal distribution based on the mean and sd of the population. Both the observed mean (97), as well as the observed standard deviation (14), differ from the true population values. If we simulate 4 additional datasets, we see both the mean and the standard deviation vary.
 
-<img src="11-meta_files/figure-html/sim-4-iq-1.png" width="100%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=1\linewidth]{11-meta_files/figure-latex/sim-4-iq-1} \end{center}
 
 Imagine we did not yet know what the mean IQ was in our population (where *M* = 100), or the standard deviation (where *SD* = 15), and that we would only have access to one dataset. Our estimate might be rather far off. This type of variation is to be expected in small samples of 10 participants, given the true standard deviation. The variability in the mean is determined by the standard deviation of the measurement. In real life, the standard deviation can be reduced by for example using multiple and reliable measurements (which is why an IQ test has not just one question, but many different questions). But we can also make sure our sample mean is closer to the population mean by increasing the sample size.
 
@@ -59,10 +64,14 @@ bell shaped curve that represents the distribution of many variables in scientif
 
 (ref:plot-hist-iq-2lab) 100 random datapoints with mean = 100 and sd = 15 in the population.
 
-<div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-html/plot-hist-iq-2-1.png" alt="(ref:plot-hist-iq-2lab)" width="100%" />
-<p class="caption">(\#fig:plot-hist-iq-2)(ref:plot-hist-iq-2lab)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{11-meta_files/figure-latex/plot-hist-iq-2-1} 
+
+}
+
+\caption{(ref:plot-hist-iq-2lab)}(\#fig:plot-hist-iq-2)
+\end{figure}
 
 If we simulate a really large sample of 1000 observation, we will see the benefits of collecting a large sample size in terms of accuracy of the measurement. Not every simulated study of 1000 people will yield the true mean and standard deviation, but it will happen quite often. And note how although the distribution is very close to a normal distribution, even with 1000 people it is not perfect.
 
@@ -70,10 +79,14 @@ If we simulate a really large sample of 1000 observation, we will see the benefi
 
 (ref:plot-hist-iq-3lab) 1000 random datapoints with mean = 100 and sd = 15 in the population.
 
-<div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-html/plot-hist-iq-3-1.png" alt="(ref:plot-hist-iq-3lab)" width="100%" />
-<p class="caption">(\#fig:plot-hist-iq-3)(ref:plot-hist-iq-3lab)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{11-meta_files/figure-latex/plot-hist-iq-3-1} 
+
+}
+
+\caption{(ref:plot-hist-iq-3lab)}(\#fig:plot-hist-iq-3)
+\end{figure}
 
 So far we have simulated only a single group of observations, but it is also informative to examine the variation we will observe when we compare the means in two independent groups. Assume we have a new IQ training program that will increase peoples IQ score with 6 points. People in condition 1 are in the control condition – they do not get IQ training. People in condition 2 get IQ training. Let’s simulate 10 people in each group, assuming the IQ in the control condition is 100, and in the experimental group is 106 (the SD is still 15 in each group).
 
@@ -81,10 +94,14 @@ So far we have simulated only a single group of observations, but it is also inf
 
 (ref:plot-group1lab) Simulation of 10 observations in two independent groups.
 
-<div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-html/plot-group1-1.png" alt="(ref:plot-group1lab)" width="100%" />
-<p class="caption">(\#fig:plot-group1)(ref:plot-group1lab)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{11-meta_files/figure-latex/plot-group1-1} 
+
+}
+
+\caption{(ref:plot-group1lab)}(\#fig:plot-group1)
+\end{figure}
 
 The two groups differ in how close they are to their true means, and as a consequence, the difference between groups varies as well. Note that this difference is the main variable in statistical analyses when comparing two groups in for example a *t*-test. In this specific simulation, we got quite extreme results, with a score of 96 (when the population mean is 100) and a score of 111 (when the population mean is 106). So in this sample, due to random variation, we would lead to an effect size estimate that is quite a bit larger than the true effect size. Let's simulate 4 additional datasets to see the variation. 
 
@@ -92,10 +109,14 @@ The two groups differ in how close they are to their true means, and as a conseq
 
 (ref:plot-group2lab) Four simulated samples of independent groups.
 
-<div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-html/plot-group2-1.png" alt="(ref:plot-group2lab)" width="100%" />
-<p class="caption">(\#fig:plot-group2)(ref:plot-group2lab)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{11-meta_files/figure-latex/plot-group2-1} 
+
+}
+
+\caption{(ref:plot-group2lab)}(\#fig:plot-group2)
+\end{figure}
 
 We see that there is quite some variation, up to the point that in one simulation the sample means are in the opposite direction of the population means. Again, increasing the sample size will mean that, in the long run, the sample means will get closer to the population means, and that we are more accurately estimation the difference between conditions. With 250 observations in each group, a randomly simulated set of observations for the two groups might look like Figure \@ref(fig:plotgroup3). Note that this difference might not look impressive. Yet, an independent *t*-test, the difference would pass a significance test with a very low alpha level. 
 
@@ -103,10 +124,14 @@ We see that there is quite some variation, up to the point that in one simulatio
 
 (ref:plotgroup3lab) Simulated sample of 250 independent observations
 
-<div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-html/plotgroup3-1.png" alt="(ref:plotgroup3lab)" width="100%" />
-<p class="caption">(\#fig:plotgroup3)(ref:plotgroup3lab)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{11-meta_files/figure-latex/plotgroup3-1} 
+
+}
+
+\caption{(ref:plotgroup3lab)}(\#fig:plotgroup3)
+\end{figure}
 
 The variation in the estimate of the mean decreases as the sample size increases. The larger the sample size, the more precise the estimate of the mean becomes. The **standard deviation of the sample** ($\sigma_x$) of single IQ scores is 15, irrespective of the sample size, and the larger the sample size, the more accurately we can measure the true standard deviation. But the **standard deviation of the sampling distribution of the sample mean** ($\sigma_{\overline{x}}$) decreases, as the sample size increases, and is referred to as the **standard error (SE)**. The estimated standard deviation of the sample mean, or the standard error, calculated based on the observed standard deviation of the sample ($\sigma_x$) is:
 
@@ -124,10 +149,14 @@ When we randomly simulate observations for 30 twins, we get the following result
 
 (ref:plot-cor1lab) Correlation based on 30 pairs.
 
-<div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-html/plot-cor1-1.png" alt="(ref:plot-cor1lab)" width="100%" />
-<p class="caption">(\#fig:plot-cor1)(ref:plot-cor1lab)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{11-meta_files/figure-latex/plot-cor1-1} 
+
+}
+
+\caption{(ref:plot-cor1lab)}(\#fig:plot-cor1)
+\end{figure}
 
 On the x-axis, we see the IQ score of one twin, and one the y-axis we see the IQ score of the second twin. The black dotted diagonal line illustrates the true correlation (0.55), while the yellow line shows the observed correlation (in this case, *r* = 0.43). The slope of the yellow line is determined by the observed correlation, but the position of the line is influenced by the mean IQ scores in both groups (in this simulation, the mean on the y-axis is 105, somewhat below 100, and the mean on the x-axis is 102, also slightly above 100. The blue area is the 95% confidence interval around the observed correlation. As we saw in the chapter on [confidence intervals](#confint), 95% of the time (in the long run) the blue area will contain the true correlation (the dotted black line). As in the examples based on means, increasing the sample size to 300 narrows the confidence interval considerably, and will mean the most of the time the correlation in the sample is much closer to the correlation in the population. As the sample size increases, the estimate of the correlation becomes more precise, following the formula of the standard error of a correlation:
 
@@ -137,10 +166,14 @@ $$SE_{r_{xy}} = \frac{1 - r^2_{xy}}{\sqrt{(n - 2)}}$$
 
 (ref:plot-cor2lab) Correlation based on 300 pairs.
 
-<div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-html/plot-cor2-1.png" alt="(ref:plot-cor2lab)" width="100%" />
-<p class="caption">(\#fig:plot-cor2)(ref:plot-cor2lab)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{11-meta_files/figure-latex/plot-cor2-1} 
+
+}
+
+\caption{(ref:plot-cor2lab)}(\#fig:plot-cor2)
+\end{figure}
 
 Because estimates of means, standard deviations, or correlations based on small samples have relatively large uncertainty, it is preferable to collect larger samples. However, this is not always possible, and often the goal of a study is not to provide an accurate estimate, but to test a hypothesis. A study often requires less observations to achieve sufficient power for a hypothesis test, than are required to be able to accurately estimate a parameter [@maxwell_sample_2008]. Therefore, scientists often rely on meta-analyses, where data from multiple studies are combined, to provide accurate estimates.
 
@@ -169,13 +202,10 @@ g <- escalc(measure = "SMD",
 g
 ```
 
-<div class="kable-table">
-
-|        yi|        vi|
-|---------:|---------:|
-| 0.5552575| 0.0415416|
-
-</div>
+```
+##       yi     vi 
+## 1 0.5553 0.0415
+```
 
 The output gives you Hedge’s *g* (under the `yi` column, which always returns the effect size, in this case the standardized mean difference) and the variance of the effect size estimate (under `vi`). As explained in Borenstein, Hedges, Higgins, and Rothstein formula 4.18 to 4.24 -@borenstein_introduction_2009 the standardized mean difference Hedges’ *g* is calculated by dividing the difference between means by the pooled standard deviation, multiplied by a correction factor, J:
 
@@ -239,10 +269,14 @@ It is now common to visualize the results of a meta-analysis using a forest plot
 
 (ref:freiman1978lab) First version of a forest plot by Freiman and colleagues, 1978 (image from https://www.jameslindlibrary.org/freiman-ja-chalmers-tc-smith-h-kuebler-rr-1978/)
 
-<div class="figure" style="text-align: center">
-<img src="images/freiman1978.jpg" alt="(ref:freiman1978lab)" width="100%" />
-<p class="caption">(\#fig:freiman1978)(ref:freiman1978lab)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/freiman1978} 
+
+}
+
+\caption{(ref:freiman1978lab)}(\#fig:freiman1978)
+\end{figure}
 
 In Figure \@ref(fig:metaforest) we see a modern version of a forest plot, with the effect size for Study 1 marked by the black square at 0.56, and the confidence interval visualized by lines extending to 0.16 on the left and 0.95 on the right. The numbers printed on the right-hand side of the forest plot provide the exact values for the effect size estimate and the lower and upper bound of the confidence interval. On the lower half of the forest plot, we see a stretched-out diamond, in a row labeled 'RE Model', for 'Random Effects model'. The diamond summarizes the meta-analytic effect size estimate, with the center being at the meta-analytic effect size estimate, and the left and right endpoints at the 95% confidence interval of the meta-analytic effect size estimate. Because we only have a single study, the meta-analytic effect size estimate is the same as the effect size estimate for our single study.
 
@@ -250,10 +284,14 @@ In Figure \@ref(fig:metaforest) we see a modern version of a forest plot, with t
 
 (ref:metaforestlab) Forest plot for a single study.
 
-<div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-html/metaforest-1.png" alt="(ref:metaforestlab)" width="100%" />
-<p class="caption">(\#fig:metaforest)(ref:metaforestlab)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{11-meta_files/figure-latex/metaforest-1} 
+
+}
+
+\caption{(ref:metaforestlab)}(\#fig:metaforest)
+\end{figure}
 
 ## Simulating meta-analyses of mean standardized differences
 
@@ -287,10 +325,14 @@ par(bg = backgroundcolor)
 metafor::forest(result)
 ```
 
-<div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-html/meta-sim-1.png" alt="(ref:meta-simlab)" width="100%" />
-<p class="caption">(\#fig:meta-sim)(ref:meta-simlab)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{11-meta_files/figure-latex/meta-sim-1} 
+
+}
+
+\caption{(ref:meta-simlab)}(\#fig:meta-sim)
+\end{figure}
 
 We see 12 rows, one for each study, each with their own effect size and confidence interval. If you look closely, you can see the squares that indicate the effect size estimate for each study differ in size. The larger the sample size, the bigger the square. Study 5 had a relatively small sample size, which can be seen both by the small square, and the relatively wide confidence interval. Study 9 had a larger sample size, and thus a slightly larger square and narrower confidence interval. At the bottom of the graph we find the meta-analytic effect size and its confidence interval, both visualized by a diamond and numerically. The model is referred to as a FE Model, or **Fixed Effect (FE) model**. The alternative approach is a RE Model, or **Random Effects (RE) model** (the difference is discussed below).
 
@@ -399,7 +441,9 @@ forest(result,
 text(c(-7,-6,-5,-4), 14.7, c("E+", "E-", "C+", "C-"), font = 2, cex = .8)
 ```
 
-<img src="11-meta_files/figure-html/unnamed-chunk-2-1.png" width="100%" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics[width=1\linewidth]{11-meta_files/figure-latex/unnamed-chunk-2-1} \end{center}
 
 The forest plot presents the studies and four columns of data after the study label, which contain the number of successes and failures in the experimental groups (E+ and E-), and the number of successes and failures in the control group (C+ and C-). Imagine we study the percentage of people who get a job within 6 months after a job training program, compared to a control condition. In Study 1, which had 50 participants in each condition, 29 people in the job training condition got a job within 6 months, and 21 did not get a job. In the control condition, 23 people got a job, but 27 did not. The effect size estimate for the random effects model is 0.65. Feel free to play around with the script, adjusting the number of studies, or the sample sizes in each study, to examine the effect it has on the meta-analytic effect size estimate.
 
@@ -557,17 +601,28 @@ Although meta-analyses do not provide definitive conclusions, they are typically
 
 At the same time, the conclusions from meta-analyses are often open for debate and are subject to change as new data becomes available. We recently proposed practical recommendations to increase the reproducibility of meta-analyses to facilitate quality control, improve reporting guidelines, allow researchers to re-analyze meta-analyses based on alternative inclusion criteria, and future-proof meta-analyses by making sure the collected meta-analytic data is shared so that continuously accumulating meta-analyses can be performed, and so that novel statistical techniques can be applied on the collected data as they become available [@lakens_reproducibility_2016]. The need for the improvement in reproducibility of meta-analysis is clear - a recent review of 150 meta-analyses in Psychological Bulletin revealed that only 1 meta-analysis shared the statistical code [@polanin_transparency_2020]. This is unacceptable in the current day and age. In addition to inspecting how well your meta-analysis adheres to the [JARS Quantitative Meta-Analysis Reporting Standards](https://apastyle.apa.org/jars/quant-table-9.pdf), following the recommendations summarized in Table \@ref(tab:table-rec1) should substantially improve the state-of-the-art in meta-analyses.
 
+\begin{table}
 
-Table: (\#tab:table-rec1)Six practical recommendations to improve the quality and reproducibility of meta-analyses.
-
-|What?                         |How?                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-|:-----------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|Facilitate cumulative science |Disclose all meta-analytic data (effect sizes, sample sizes for each condition, test statistics and degrees of freedom, means, standard deviations, and correlations between dependent observations) for each data point. Quote relevant text from studies that describe the meta-analytic data to prevent confusion, such as when one effect size is selected from a large number of tests reported in a study. When analyzing subgroups, include quotes from the original study that underlie this classification, and specify any subjective decisions. |
-|Facilitate quality control    |Specify which effect size calculations are used and which assumptions are made for missing data (e.g., assuming equal sample sizes in each condition, imputed values for unreported effect sizes), if necessary for each effect size extracted from the literature. Specify who extracted and coded the data, knowing it is preferable that two researchers independently extract effect sizes from the literature.                                                                                                                                        |
-|Use reporting guidelines      |A minimal requirement when reporting meta-analyses is to adhere to one of the reporting standards (e.g., PRISMA). The reporting guidelines ask authors of meta-analyses to report essential information that should be made available either in the main text of the article, or by providing a completed checklist as supplementary material during review and after publication.                                                                                                                                                                         |
-|Preregister                   |Whenever possible, pre-register the meta-analysis research protocol (e.g., using PROSPERO) to distinguish between confirmatory and exploratory analyses. Perform a prospective meta-analysis where possible.                                                                                                                                                                                                                                                                                                                                               |
-|Facilitate reproducibility    |Allow others to re-analyze the data to examine how sensitive the results are to subjective choices such as inclusion criteria. Always include a link to data files that can be directly analyzed with statistical software, either by providing completely reproducible scripts containing both the data and the reported analyses in free software (e.g., R), or at the very minimum a spreadsheet that contains all meta-analytic data that can easily analyzed in any statistical program.                                                              |
-|Recruit expertise             |Consider consulting a librarian before you start the literature search, and a statistician before coding the effect sizes, for advice on how make the literature search and effect size calculations reproducible.                                                                                                                                                                                                                                                                                                                                         |
+\caption{(\#tab:table-rec1)Six practical recommendations to improve the quality and reproducibility of meta-analyses.}
+\centering
+\begin{tabular}[t]{>{\raggedright\arraybackslash}p{5cm}|>{\raggedright\arraybackslash}p{10cm}}
+\hline
+What? & How?\\
+\hline
+Facilitate cumulative science & Disclose all meta-analytic data (effect sizes, sample sizes for each condition, test statistics and degrees of freedom, means, standard deviations, and correlations between dependent observations) for each data point. Quote relevant text from studies that describe the meta-analytic data to prevent confusion, such as when one effect size is selected from a large number of tests reported in a study. When analyzing subgroups, include quotes from the original study that underlie this classification, and specify any subjective decisions.\\
+\hline
+Facilitate quality control & Specify which effect size calculations are used and which assumptions are made for missing data (e.g., assuming equal sample sizes in each condition, imputed values for unreported effect sizes), if necessary for each effect size extracted from the literature. Specify who extracted and coded the data, knowing it is preferable that two researchers independently extract effect sizes from the literature.\\
+\hline
+Use reporting guidelines & A minimal requirement when reporting meta-analyses is to adhere to one of the reporting standards (e.g., PRISMA). The reporting guidelines ask authors of meta-analyses to report essential information that should be made available either in the main text of the article, or by providing a completed checklist as supplementary material during review and after publication.\\
+\hline
+Preregister & Whenever possible, pre-register the meta-analysis research protocol (e.g., using PROSPERO) to distinguish between confirmatory and exploratory analyses. Perform a prospective meta-analysis where possible.\\
+\hline
+Facilitate reproducibility & Allow others to re-analyze the data to examine how sensitive the results are to subjective choices such as inclusion criteria. Always include a link to data files that can be directly analyzed with statistical software, either by providing completely reproducible scripts containing both the data and the reported analyses in free software (e.g., R), or at the very minimum a spreadsheet that contains all meta-analytic data that can easily analyzed in any statistical program.\\
+\hline
+Recruit expertise & Consider consulting a librarian before you start the literature search, and a statistician before coding the effect sizes, for advice on how make the literature search and effect size calculations reproducible.\\
+\hline
+\end{tabular}
+\end{table}
 
 For another open educational resource on meta-analysis in R, see [Doing Meta-Analysis in R](https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R).
 
@@ -607,19 +662,27 @@ D) It is generally recommended to compute a **random effects** model, as this re
 
 (ref:meta-sim-randlab) Simulated studies under a random effects model
 
-<div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-html/meta-sim-rand-1.png" alt="(ref:meta-sim-randlab)" width="100%" />
-<p class="caption">(\#fig:meta-sim-rand)(ref:meta-sim-randlab)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{11-meta_files/figure-latex/meta-sim-rand-1} 
+
+}
+
+\caption{(ref:meta-sim-randlab)}(\#fig:meta-sim-rand)
+\end{figure}
 
 
 
 (ref:meta-sim-fixedlab) Simulated studies under a fixed effect model
 
-<div class="figure" style="text-align: center">
-<img src="11-meta_files/figure-html/meta-sim-fixed-1.png" alt="(ref:meta-sim-fixedlab)" width="100%" />
-<p class="caption">(\#fig:meta-sim-fixed)(ref:meta-sim-fixedlab)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{11-meta_files/figure-latex/meta-sim-fixed-1} 
+
+}
+
+\caption{(ref:meta-sim-fixedlab)}(\#fig:meta-sim-fixed)
+\end{figure}
 
 A) There is no difference in the meta-analytic effect size estimate between the plots, as each effect size estimate from the 5 studies is identical. 
 B) The effect size in the random effects model is identical to the estimate from the fixed effect model, but the confidence interval is larger. 
