@@ -410,7 +410,7 @@ Figure 10.6: Power curve for a sequential design with 2 looks.
 <p>The Pocock correction leads to a substantially lower alpha level at the last look, which requires an increase in sample size to compensate. As we saw before, the O'Brien-Fleming spending function does not require such a severe reduction in the alpha level at the last look. As the power analysis below shows, with 2 looks, this design would not need an increase in sample size at all in practice.</p>
 <div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">seq_design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignGroupSequential.html">getDesignGroupSequential</a></span><span class="op">(</span>
-  kMax <span class="op">=</span> <span class="fl">4</span>,
+  kMax <span class="op">=</span> <span class="fl">2</span>,
   typeOfDesign <span class="op">=</span> <span class="st">"asOF"</span>,
   sided <span class="op">=</span> <span class="fl">2</span>,
   alpha <span class="op">=</span> <span class="fl">0.05</span>,
@@ -429,27 +429,27 @@ Figure 10.6: Power curve for a sequential design with 2 looks.
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">power_res_seq</span><span class="op">)</span></code></pre></div>
 <pre><code>## Sample size calculation for a continuous endpoint
 ## 
-## Sequential analysis with a maximum of 4 looks (group sequential design), overall 
+## Sequential analysis with a maximum of 2 looks (group sequential design), overall 
 ## significance level 5% (two-sided).
 ## The sample size was calculated for a two-sample t-test, H0: mu(1) - mu(2) = 0, 
 ## H1: effect = 0.5, standard deviation = 1, power 90%.
 ## 
-## Stage                                          1       2       3       4 
-## Information rate                             25%     50%     75%    100% 
-## Efficacy boundary (z-value scale)          4.333   2.963   2.359   2.014 
-## Overall power                             0.0035  0.2579  0.6853  0.9000 
-## Expected number of subjects                132.2 
-## Number of subjects                          43.3    86.6   129.9   173.2 
-## Cumulative alpha spent                   &lt;0.0001  0.0031  0.0193  0.0500 
-## Two-sided local significance level       &lt;0.0001  0.0030  0.0183  0.0440 
-## Lower efficacy boundary (t)               -1.493  -0.656  -0.419  -0.308 
-## Upper efficacy boundary (t)                1.493   0.656   0.419   0.308 
-## Exit probability for efficacy (under H0) &lt;0.0001  0.0030  0.0162 
-## Exit probability for efficacy (under H1)  0.0035  0.2544  0.4274 
+## Stage                                         1      2 
+## Information rate                            50%   100% 
+## Efficacy boundary (z-value scale)         2.963  1.969 
+## Overall power                            0.2525 0.9000 
+## Expected number of subjects               149.1 
+## Number of subjects                         85.3  170.6 
+## Cumulative alpha spent                   0.0031 0.0500 
+## Two-sided local significance level       0.0031 0.0490 
+## Lower efficacy boundary (t)              -0.661 -0.304 
+## Upper efficacy boundary (t)               0.661  0.304 
+## Exit probability for efficacy (under H0) 0.0031 
+## Exit probability for efficacy (under H1) 0.2525 
 ## 
 ## Legend:
 ##   (t): treatment effect scale</code></pre>
-<p>This design meets the desired power when we collect 88 participants - exactly as many as when we would <em>not</em> look at the data once. We basically get a free look at the data, with the expected number of participants (assuming <em>d</em> = 0.5) dropping to 132.19. Increasing the number of looks to 4 comes at only a very small required increase in the number of participants to maintain the same statistical power, but further descreases the expected sample size. Especially for a conservative a-priori power analysis, or when performing an a-priori power analysis for a smallest effect size of interest, and there is a decent probability that the true effect size is larger, using sequential analysis is a very attractive option.</p>
+<p>This design meets the desired power when we collect 172 participants - exactly as many as when we would <em>not</em> look at the data once. We basically get a free look at the data, with the expected number of participants (assuming <em>d</em> = 0.5) dropping to 149.1. Increasing the number of looks to 4 comes at only a very small required increase in the number of participants to maintain the same statistical power, but further descreases the expected sample size. Especially for a conservative a-priori power analysis, or when performing an a-priori power analysis for a smallest effect size of interest, and there is a decent probability that the true effect size is larger, using sequential analysis is a very attractive option.</p>
 </div>
 <div id="stopping-for-futility" class="section level2" number="10.7">
 <h2>
@@ -528,17 +528,17 @@ Figure 10.9: Power curve for a sequential design with 2 looks with stopping for 
   <span class="op">)</span>
 
 <span class="va">res</span></code></pre></div>
-<pre><code>## [PROGRESS] Stage results calculated [0.0754 secs] 
-## [PROGRESS] Conditional power calculated [0.0591 secs] 
-## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.0024 secs] 
-## [PROGRESS] Repeated confidence interval of stage 1 calculated [1.23 secs] 
-## [PROGRESS] Repeated confidence interval of stage 2 calculated [1.22 secs] 
-## [PROGRESS] Repeated confidence interval calculated [2.45 secs] 
-## [PROGRESS] Repeated p-values of stage 1 calculated [0.4918 secs] 
-## [PROGRESS] Repeated p-values of stage 2 calculated [0.5199 secs] 
-## [PROGRESS] Repeated p-values calculated [1.02 secs] 
-## [PROGRESS] Final p-value calculated [0.006 secs] 
-## [PROGRESS] Final confidence interval calculated [0.1914 secs]</code></pre>
+<pre><code>## [PROGRESS] Stage results calculated [0.0374 secs] 
+## [PROGRESS] Conditional power calculated [0.0186 secs] 
+## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0 secs] 
+## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.6799 secs] 
+## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.7109 secs] 
+## [PROGRESS] Repeated confidence interval calculated [1.39 secs] 
+## [PROGRESS] Repeated p-values of stage 1 calculated [0.2995 secs] 
+## [PROGRESS] Repeated p-values of stage 2 calculated [0.317 secs] 
+## [PROGRESS] Repeated p-values calculated [0.6196 secs] 
+## [PROGRESS] Final p-value calculated [0.002 secs] 
+## [PROGRESS] Final confidence interval calculated [0.0942 secs]</code></pre>
 <pre><code>## Analysis results (means of 2 groups, group sequential design):
 ## 
 ## Design parameters:

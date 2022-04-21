@@ -294,8 +294,7 @@ for (i in 1:nsims*(1-pub.bias)) { # for each simulated experiment
 }}
 
 # Combine significant and non-significant effects
-metadata <- rbind(metadata.nonsig[complete.cases(metadata.nonsig),],
-                  metadata.sig[complete.cases(metadata.sig),])
+metadata <- rbind(metadata.nonsig[complete.cases(metadata.nonsig),], metadata.sig[complete.cases(metadata.sig),])
 
 # Use escalc to compute effect sizes
 metadata <- metafor::escalc(n1i = n1, n2i = n2, m1i = m1, m2i = m2, sd1i = sd1, 
@@ -380,8 +379,6 @@ PET-PEESE has limitations, as all bias detection techniques have. The biggest li
 
 Let’s explore how PET-PEESE meta-regression attempts to give us an unbiased effect size estimate, under specific assumptions of how publication bias is caused. In Figure \@ref(fig:petpeese) we once again see the funnel plot, not complemented with 2 additional lines through the plots. The vertical line at *d* = 0.27 is the meta-analytic effect size estimate, which is upwardly biased because we are averaging over statistically significant studies only. There are 2 additional lines, which are the meta-regression lines for PET-PEESE based on the formulas detailed previously. The straight diagonal line gives us the PET estimate at a SE of 0 (an infinite sample, at the top of the plot), indicated by the circle. The dotted line around this PET estimate is the 95% confidence interval for the estimate. In this case, the 95% CI contains 0, which means that based on the PET estimate of *d* = 0.02, we cannot reject a meta-analytic effect size of 0. Note that even with 100 studies, the 95% CI is quite wide. Meta-regression is, just like normal regression, only as accurate as the data we have data. This is one limitation of PET-PEESE meta-regression: With small numbers of studies in the meta-analysis, it has low accuracy. If we had been able to reject the null based on the PET estimate, we would then have used the PEESE estimate of *d* = 0.17 for the meta-analytic effect size, corrected for bias (while never knowing whether the model underlying the PEESE estimate corresponded to the true bias generating mechanisms in the meta-analysis, and thus if the meta-analytic estimate was accurate).  
 
-
-
 (ref:petpeeselab) Funnel plot with PETPEESE regression lines.
 
 ```{r petpeese, echo = FALSE, fig.cap="(ref:petpeeselab)"}
@@ -454,19 +451,237 @@ puniform::puniform(m1i = metadata$m1, m2i = metadata$m2, n1i = metadata$n1,
   n2i = metadata$n2, sd1i = metadata$sd1, sd2i = metadata$sd2, side = "right")
 ```
 
-An even more novel technique that also meta-analyzes the *p*-values from individual studies is *z*-curve, which is basically a meta-analysis of observed power [@bartos_z-curve20_2020; @brunner_estimating_2020]; for an example, see [@sotola_garbage_2022]. Like a traditional meta-analysis, *z*-curve transforms observed test results (*p*-values) into *z*-scores. The technical details are a bit complex, but *z*-curve analysis uses mixtures of normal distributions centered at means 0 to 6 to fit a model of the underlying effect sizes that best represents the observed results in the studies. *Z*-curve then aims to estimate the average power of the studies. The newest version of *z*-curve then calculates the *observed discovery rate* (ODR: the percentage of significant results, or the observed power), the *expected discovery rate* (EDR: the proportion of the area under the curve on the right side of the significance criterion) and the expected replication rate (ERR: the expected proportion of successfully replicated significant studies from all significant studies). *Z*-curve is able to correct for selection bias for positive results (under specific assumptions), and can estimate the EDR and ERR using only the significant *p*-values.
+An alternative technique that also meta-analyzes the *p*-values from individual studies is *z*-curve, which is a meta-analysis of observed power ([@bartos_z-curve20_2020; @brunner_estimating_2020]; for an example, see [@sotola_garbage_2022]). Like a traditional meta-analysis, *z*-curve transforms observed test results (*p*-values) into *z*-scores. In an unbiased literature where the null hypothesis is true, we should observe approximately $\alpha$% significant results. If the null is true, the distribution of *z*-scores is centered on 0. *Z*-curve computes absolute *z*-values, and therefore $\alpha$% of *z*-scores should be larger than the critical value (1.96 for a 5% alpha level). In Figure \@ref(fig:zcurveunbiasednull) *z*-scores for 1000 studies are plotted, with a true effect size of 0, where exactly 5% of the observed results are statistically significant. 
 
-To examine the presence of bias, it is preferable to submit non-significant and significant *p*-values to a *z*-curve analysis, even if only the significant *p*-values are used to produce estimates. Publication bias can then be examined by comparing the ODR to the EDR. Since our simulated studies have bias, the *z*-curve analysis should be able to indicate this. 
+(ref:zcurveunbiasednull) *Z*-curve analysis for 1000 studies with a true effect size of 0 without publication bias.
 
-```{r, cache = TRUE}
+
+```{r zcurveunbiasednull, echo = FALSE, cache = TRUE, fig.cap="(ref:zcurveunbiasednull)"}
+set.seed(1)
+
+nsims <- 1000 # number of simulated experiments
+pub.bias <- 0.05 # set percentage of significant results in the literature
+
+m1 <- 0 # too large effects will make non-significant results extremely rare
+sd1 <- 1
+m2 <- 0
+sd2 <- 1
+metadata.sig <- data.frame(m1 = NA, m2 = NA, sd1 = NA, sd2 = NA, 
+                           n1 = NA, n2 = NA, pvalues = NA, pcurve = NA)
+metadata.nonsig <- data.frame(m1 = NA, m2 = NA, sd1 = NA, sd2 = NA, 
+                              n1 = NA, n2 = NA, pvalues = NA, pcurve = NA)
+
+# simulate significant effects in the expected direction
+if(pub.bias > 0){
+  for (i in 1:nsims*pub.bias) { # for each simulated experiment
+    p <- 1 # reset p to 1
+    n <- 100 # n based on truncated normal
+    while (p > 0.025) { # continue simulating as along as p is not significant
+      x <- rnorm(n = n, mean = m1, sd = sd1) 
+      y <- rnorm(n = n, mean = m2, sd = sd2) 
+      p <- t.test(x, y, alternative = "greater", var.equal = TRUE)$p.value
+    }
+    metadata.sig[i, 1] <- mean(x)
+    metadata.sig[i, 2] <- mean(y)
+    metadata.sig[i, 3] <- sd(x)
+    metadata.sig[i, 4] <- sd(y)
+    metadata.sig[i, 5] <- n
+    metadata.sig[i, 6] <- n
+    out <- t.test(x, y, var.equal = TRUE)
+    metadata.sig[i, 7] <- out$p.value
+    metadata.sig[i, 8] <- paste0("t(", out$parameter, ")=", out$statistic)
+  }}
+
+# simulate non-significant effects (two-sided)
+if(pub.bias < 1){
+  for (i in 1:nsims*(1-pub.bias)) { # for each simulated experiment
+    p <- 0 # reset p to 1
+    n <- 100
+    while (p < 0.05) { # continue simulating as along as p is significant
+      x <- rnorm(n = n, mean = m1, sd = sd1) # produce  simulated participants
+      y <- rnorm(n = n, mean = m2, sd = sd2) # produce  simulated participants
+      p <- t.test(x, y, var.equal = TRUE)$p.value
+    }
+    metadata.nonsig[i, 1] <- mean(x)
+    metadata.nonsig[i, 2] <- mean(y)
+    metadata.nonsig[i, 3] <- sd(x)
+    metadata.nonsig[i, 4] <- sd(y)
+    metadata.nonsig[i, 5] <- n
+    metadata.nonsig[i, 6] <- n
+    out <- t.test(x, y, var.equal = TRUE)
+    metadata.nonsig[i, 7] <- out$p.value
+    metadata.nonsig[i, 8] <- paste0("t(", out$parameter, ")=", out$statistic)
+  }}
+
+# Combine significant and non-significant effects
+metadata <- rbind(metadata.nonsig, metadata.sig)
+
+# Use escalc to compute effect sizes
+metadata <- escalc(n1i = n1, n2i = n2, m1i = m1, m2i = m2, sd1i = sd1, 
+                   sd2i = sd2, measure = "SMD", data = metadata[complete.cases(metadata),])
+
 # Perform the z-curve analysis using the z-curve package
+z_res <- zcurve::zcurve(p = metadata$pvalues, method = "EM", bootstrap = 1000)
+par(bg = backgroundcolor)
+plot(z_res, annotation = TRUE, CI = TRUE)
+
+```
+
+If there is a true effect, the distribution of *z*-scores shifts away from 0, as a function of the statistical power of the test. The higher the power, the further to the right the distribution of *z*-scores will be located. For example, when examining an effect with 66% power, an unbiased distribution of *z*-scores, computed from observed *p*-values, looks like the distribution in Figure \@ref(fig:zcurveunbiasedalternative). 
+
+(ref:zcurveunbiasedalternative) *Z*-curve analysis for 1000 studies with a true effect size of *d* = 0.37 and *n* = 100 per condition in an independent *t*-test without publication bias.
+
+```{r zcurveunbiasedalternative, echo = FALSE, cache = TRUE, fig.cap="(ref:zcurveunbiasedalternative)"}
+set.seed(5)
+
+nsims <- 1000 # number of simulated experiments
+pub.bias <- 0.66 # set percentage of significant results in the literature
+
+m1 <- 0.37 # too large effects will make non-significant results extremely rare
+sd1 <- 1
+m2 <- 0
+sd2 <- 1
+metadata.sig <- data.frame(m1 = NA, m2 = NA, sd1 = NA, sd2 = NA, 
+                           n1 = NA, n2 = NA, pvalues = NA, pcurve = NA)
+metadata.nonsig <- data.frame(m1 = NA, m2 = NA, sd1 = NA, sd2 = NA, 
+                              n1 = NA, n2 = NA, pvalues = NA, pcurve = NA)
+
+# simulate significant effects in the expected direction
+if(pub.bias > 0){
+  for (i in 1:nsims*pub.bias) { # for each simulated experiment
+    p <- 1 # reset p to 1
+    n <- 100 # n based on truncated normal
+    while (p > 0.025) { # continue simulating as along as p is not significant
+      x <- rnorm(n = n, mean = m1, sd = sd1) 
+      y <- rnorm(n = n, mean = m2, sd = sd2) 
+      p <- t.test(x, y, alternative = "greater", var.equal = TRUE)$p.value
+    }
+    metadata.sig[i, 1] <- mean(x)
+    metadata.sig[i, 2] <- mean(y)
+    metadata.sig[i, 3] <- sd(x)
+    metadata.sig[i, 4] <- sd(y)
+    metadata.sig[i, 5] <- n
+    metadata.sig[i, 6] <- n
+    out <- t.test(x, y, var.equal = TRUE)
+    metadata.sig[i, 7] <- out$p.value
+    metadata.sig[i, 8] <- paste0("t(", out$parameter, ")=", out$statistic)
+  }}
+
+# simulate non-significant effects (two-sided)
+if(pub.bias < 1){
+  for (i in 1:nsims*(1-pub.bias)) { # for each simulated experiment
+    p <- 0 # reset p to 1
+    n <- 100
+    while (p < 0.05) { # continue simulating as along as p is significant
+      x <- rnorm(n = n, mean = m1, sd = sd1) # produce  simulated participants
+      y <- rnorm(n = n, mean = m2, sd = sd2) # produce  simulated participants
+      p <- t.test(x, y, var.equal = TRUE)$p.value
+    }
+    metadata.nonsig[i, 1] <- mean(x)
+    metadata.nonsig[i, 2] <- mean(y)
+    metadata.nonsig[i, 3] <- sd(x)
+    metadata.nonsig[i, 4] <- sd(y)
+    metadata.nonsig[i, 5] <- n
+    metadata.nonsig[i, 6] <- n
+    out <- t.test(x, y, var.equal = TRUE)
+    metadata.nonsig[i, 7] <- out$p.value
+    metadata.nonsig[i, 8] <- paste0("t(", out$parameter, ")=", out$statistic)
+  }}
+
+# Combine significant and non-significant effects
+metadata <- rbind(metadata.nonsig, metadata.sig)
+
+# Use escalc to compute effect sizes
+metadata <- escalc(n1i = n1, n2i = n2, m1i = m1, m2i = m2, sd1i = sd1, 
+                   sd2i = sd2, measure = "SMD", data = metadata[complete.cases(metadata),])
+
+# Perform the z-curve analysis using the z-curve package
+z_res <- zcurve::zcurve(p = metadata$pvalues, method = "EM", bootstrap = 1000)
+par(bg = backgroundcolor)
+plot(z_res, annotation = TRUE, CI = TRUE)
+
+```
+
+In any meta-analysis the studies that are included will differ in their statistical power, and their true effect size (due to heterogeneity). *Z*-curve analysis uses mixtures of normal distributions centered at means 0 to 6 to fit a model of the underlying effect sizes that best represents the observed results in the included studies (for the technical details, see @bartos_z-curve20_2020. *Z*-curve then aims to estimate the average power of the set of studies, and then calculates the *observed discovery rate* (ODR: the percentage of significant results, or the observed power), the *expected discovery rate* (EDR: the proportion of the area under the curve on the right side of the significance criterion) and the expected replication rate (ERR: the expected proportion of successfully replicated significant studies from all significant studies). *Z*-curve is able to correct for selection bias for positive results (under specific assumptions), and can estimate the EDR and ERR using only the significant *p*-values.
+
+To examine the presence of bias, it is preferable to submit non-significant and significant *p*-values to a *z*-curve analysis, even if only the significant *p*-values are used to produce estimates. Publication bias can then be examined by comparing the ODR to the EDR. If the percentage of significant results in the set of studies (ODR) is much higher than the expected discovery rate (EDR), this is a sign of bias. If we analyze the same set of biased studies as we used to illustrate the bias detection techniques discussed above, *z*-curve analysis should be able to indicate the presence of bias. We can perform the *z*-curve with the following code: 
+
+```{r, eval = FALSE}
+z_res <- zcurve::zcurve(p = metadata$pvalues, method = "EM", bootstrap = 1000)
+summary(z_res, all = TRUE)
+plot(z_res, annotation = TRUE, CI = TRUE)
+
+```
+
+
+```{r, cache = TRUE, echo = FALSE}
+# Perform the z-curve analysis using the z-curve package
+
+set.seed(5)
+nsims <- 100 # number of simulated experiments
+pub.bias <- 0.96 # set percentage of significant results in the literature
+
+m1 <- 0 # too large effects will make non-significant results extremely rare
+sd1 <- 1
+m2 <- 0
+sd2 <- 1
+metadata.sig <- data.frame(m1 = NA, m2 = NA, sd1 = NA, sd2 = NA, 
+                           n1 = NA, n2 = NA, pvalues = NA, pcurve = NA)
+metadata.nonsig <- data.frame(m1 = NA, m2 = NA, sd1 = NA, sd2 = NA, 
+                              n1 = NA, n2 = NA, pvalues = NA, pcurve = NA)
+
+# simulate significant effects in the expected direction
+if(pub.bias > 0){
+for (i in 1:nsims*pub.bias) { # for each simulated experiment
+  p <- 1 # reset p to 1
+  n <- round(truncnorm::rtruncnorm(1, 20, 1000, 100, 100)) # n based on truncated normal
+  while (p > 0.025) { # continue simulating as along as p is not significant
+    x <- rnorm(n = n, mean = m1, sd = sd1) 
+    y <- rnorm(n = n, mean = m2, sd = sd2) 
+    p <- t.test(x, y, alternative = "greater", var.equal = TRUE)$p.value
+  }
+  metadata.sig[i, 1] <- mean(x)
+  metadata.sig[i, 2] <- mean(y)
+  metadata.sig[i, 3] <- sd(x)
+  metadata.sig[i, 4] <- sd(y)
+  metadata.sig[i, 5] <- n
+  metadata.sig[i, 6] <- n
+  out <- t.test(x, y, var.equal = TRUE)
+  metadata.sig[i, 7] <- out$p.value
+  metadata.sig[i, 8] <- paste0("t(", out$parameter, ")=", out$statistic)
+}}
+
+# simulate non-significant effects (two-sided)
+if(pub.bias < 1){
+for (i in 1:nsims*(1-pub.bias)) { # for each simulated experiment
+  p <- 0 # reset p to 1
+  n <- round(truncnorm::rtruncnorm(1, 20, 1000, 100, 100))
+  while (p < 0.05) { # continue simulating as along as p is significant
+    x <- rnorm(n = n, mean = m1, sd = sd1) # produce  simulated participants
+    y <- rnorm(n = n, mean = m2, sd = sd2) # produce  simulated participants
+    p <- t.test(x, y, var.equal = TRUE)$p.value
+  }
+  metadata.nonsig[i, 1] <- mean(x)
+  metadata.nonsig[i, 2] <- mean(y)
+  metadata.nonsig[i, 3] <- sd(x)
+  metadata.nonsig[i, 4] <- sd(y)
+  metadata.nonsig[i, 5] <- n
+  metadata.nonsig[i, 6] <- n
+  out <- t.test(x, y, var.equal = TRUE)
+  metadata.nonsig[i, 7] <- out$p.value
+  metadata.nonsig[i, 8] <- paste0("t(", out$parameter, ")=", out$statistic)
+}}
+
+# Combine significant and non-significant effects
+metadata <- rbind(metadata.nonsig[complete.cases(metadata.nonsig),], metadata.sig[complete.cases(metadata.sig),])
+
 z_res <- zcurve::zcurve(p = metadata$pvalues, method = "EM", bootstrap = 1000)
 summary(z_res, all = TRUE)
 par(bg = backgroundcolor)
 plot(z_res, annotation = TRUE, CI = TRUE)
 ```
 
-We see that 96 out of 100 studies were significant, which makes the observed discovery rate (ODR), or observed power (across all these studies with different sample sizes) 0.96, 95% CI[0.89;0.99]. The expected discovery rate (EDR) is only `r round(z_res$coefficients[2], 3)`, which differs statistically from the observed discovery rate, as indicated by the fact that the confidence interval of the EDR does not overlap with the ODR of 0.96. This means there is clear indication of selection bias based on the *z*-curve analysis. The expected replicability rate for these studies is only `r round(z_res$coefficients[1], 3)`, which is in line with the expectation that we will only observe 5% Type 1 errors. Thus, even though we only entered significant *p*-values, *z*-curve analysis correctly suggests that we should not expect these results to replicate.
+We see that the distribution of *z*-scores looks peculiar. Most expected *z*-scores between 0 and 1.96 are missing. 96 out of 100 studies were significant, which makes the observed discovery rate (ODR), or observed power (across all these studies with different sample sizes) 0.96, 95% CI[0.89; 0.99]. The expected discovery rate (EDR) is only `r round(z_res$coefficients[2], 3)`, which differs statistically from the observed discovery rate, as indicated by the fact that the confidence interval of the EDR does not overlap with the ODR of 0.96. This means there is clear indication of selection bias based on the *z*-curve analysis. The expected replicability rate for these studies is only `r round(z_res$coefficients[1], 3)`, which is in line with the expectation that we will only observe 5% Type 1 errors, as there was no true effect in this simulation. Thus, even though we only entered significant *p*-values, *z*-curve analysis correctly suggests that we should not expect these results to replicate at a higher frequency than the Type 1 error rate.
 
 ## Conclusion  
 
