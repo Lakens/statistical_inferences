@@ -8,4 +8,8 @@ knitr::opts_chunk$set(error = FALSE,
                       fig.height = 5,
                       fig.align  = 'center')
 
-backgroundcolor <- "#fffafa"
+if (knitr:::is_latex_output()) {
+  backgroundcolor <- "#ffffff"
+} else {
+  backgroundcolor <- "#fffafa"
+}
