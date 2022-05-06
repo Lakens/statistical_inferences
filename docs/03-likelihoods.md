@@ -44,14 +44,10 @@ When computing a probability, we assume the model to be known, and compute the p
 
 (ref:like1lab) Binomial likelihood function for 8 successes in 10 trials.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{03-likelihoods_files/figure-latex/like1-1} 
-
-}
-
-\caption{(ref:like1lab)}(\#fig:like1)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="03-likelihoods_files/figure-html/like1-1.png" alt="(ref:like1lab)" width="100%" />
+<p class="caption">(\#fig:like1)(ref:like1lab)</p>
+</div>
 
 
 The likelihood is plotted for all possible values of *p* (from 0 to 1). It should not be surprising that given the data we have observed, the most likely value for the true parameter is 8 out of 10, or *p* = 0.8, with a likelihood of 0.30 (the highest point on the y-axis). In this example, *p* = 0.8 is called the **maximum likelihood estimator**. It is important to know that the likelihood itself has no meaning in isolation. In this sense, it differs from a probability. But we can compare likelihoods of the same function across different values of *p*. You can read off any other value for any other p, and see that given the observed data, low values of *p* (e.g., 0.2) are not very likely.
@@ -66,14 +62,10 @@ When a mix of heads and tails has been observed, the likelihood curve rises and 
 
 (ref:like2lab) Binomial likelihood function for 0 successes in 10 trials.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{03-likelihoods_files/figure-latex/like2-1} 
-
-}
-
-\caption{(ref:like2lab)}(\#fig:like2)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="03-likelihoods_files/figure-html/like2-1.png" alt="(ref:like2lab)" width="100%" />
+<p class="caption">(\#fig:like2)(ref:like2lab)</p>
+</div>
 
 Likelihoods can easily be combined. Imagine we have two people flipping the same coin independently. One person observes eight heads out of 10 flips, and the other observes 4 heads out of 10 flips. You might believe that this should give the same likelihood curve as one person flipping a coin 20 times, and observing 12 heads, and indeed, it does. In the plot below, all likelihood curves are standardized by dividing the curve by the maximum of each likelihood curve. This is why all curves now have a maximum of 1, and we can more easily compare different likelihood curves.
 
@@ -81,14 +73,10 @@ Likelihoods can easily be combined. Imagine we have two people flipping the same
 
 (ref:like3lab) Combining likelihoods.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{03-likelihoods_files/figure-latex/like3-1} 
-
-}
-
-\caption{(ref:like3lab)}(\#fig:like3)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="03-likelihoods_files/figure-html/like3-1.png" alt="(ref:like3lab)" width="100%" />
+<p class="caption">(\#fig:like3)(ref:like3lab)</p>
+</div>
 
 The curve on left is for 4 out of 10 heads, the one on the right is for 8 out of 10 heads. The black dotted curve in the middle is for 12 out of 20 heads. The grey curve, exactly underneath the 12 out of 20 heads curve, is calculated by multiplying the likelihood curves: L(p_combined) *=* L(p = 0.8) \* L(p = 0.4).
 
@@ -98,14 +86,10 @@ In Figure \@ref(fig:like4) we see likelihood curves for 10, 100, and 1000 coin f
 
 (ref:like4lab) Likelihood function for 5/10, 50/100 and 500/1000 heads in coin flips.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{03-likelihoods_files/figure-latex/like4-1} 
-
-}
-
-\caption{(ref:like4lab)}(\#fig:like4)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="03-likelihoods_files/figure-html/like4-1.png" alt="(ref:like4lab)" width="100%" />
+<p class="caption">(\#fig:like4)(ref:like4lab)</p>
+</div>
 
 ## Likelihood ratios
 
@@ -125,14 +109,10 @@ the likelihood curve for L(*p* = 0.5) and L(*p* = 0.8).
 
 (ref:like5lab) Computing a likelihood ratio for *p* = 0.5 relative to *p* = 0.8 when observing *p* = 0.8.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{03-likelihoods_files/figure-latex/like5-1} 
-
-}
-
-\caption{(ref:like5lab)}(\#fig:like5)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="03-likelihoods_files/figure-html/like5-1.png" alt="(ref:like5lab)" width="100%" />
+<p class="caption">(\#fig:like5)(ref:like5lab)</p>
+</div>
 
 We can subjectively interpret this likelihood ratio, which tells us an unfair coin that our observed data is 6.87 times more likely under the hypothesis that this coin will turn up heads 80% of the time, than under the hypothesis that this is a fair coin. How convincing is this? Let’s round the likelihood ratio to 7, and imagine two bags of marbles. One bag contains 7 blue marbles. The second contains 7 marbles, each one a different color of the rainbow, so violet, indigo, blue, green, yellow, orange, and red. Someone randomly picks one of the two bags, draws a marble, and shows it to you. The marble is blue: How certain are you this marble came from the bag with all blue marbles, compared to the bag with rainbow coloured marbles? This is how strong the likelihood ratio tells us to believe our data were generated by an unfair coin that turns up heads 80% of the time, relative to a fair coin, given that we have observed 8 heads in 10 tosses. After this explanation intended to not make you rely too much on benchmarks, it might still be useful to know that @royall_statistical_1997 considered likelihood ratios of 8 moderately strong evidence, and likelihood ratios of 32 strong evidence.
 
@@ -142,14 +122,10 @@ Note that likelihood ratios give us the relative evidence for one specified hypo
 
 (ref:like6lab) Computing a likelihood ratio for *p* = 0.5 relative to *p* = 0.8 when observing *p* = 0.4.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{03-likelihoods_files/figure-latex/like6-1} 
-
-}
-
-\caption{(ref:like6lab)}(\#fig:like6)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="03-likelihoods_files/figure-html/like6-1.png" alt="(ref:like6lab)" width="100%" />
+<p class="caption">(\#fig:like6)(ref:like6lab)</p>
+</div>
 
 A likelihood ratio of 1 means the data are equally likely under both hypotheses. Values further away from 1 indicate that the data are more likely under one hypothesis than the other. The ratio can be expressed in favor of one hypothesis over the other (for example L(*p* = 0.5)/L(*p* = 0.8) or vice versa (L(*p* = 0.8)/L(*p* = 0.5). This means the likelihood ratio of 37.25 for $H_0$ relative to $H_1$ is equivalent to a likelihood ratio of 1/37.25 = 0.02685 for $H_1$ relative to $H_0$. Likelihood ratios range from 0 to infinity, and the closer to zero or infinity, the stronger the relative evidence for one hypothesis over the other. We will see in the chapter on [Bayesian statistics](#bayes) that likelihood ratios are in this sense very similar (and a special case of) a Bayes Factor.
 
@@ -159,14 +135,10 @@ Likelihoods are relative evidence. Just because the data are more likely under o
 
 (ref:like7lab) Computing a likelihood ratio for *p* = 0.3 relative to *p* = 0.8 when observing *p* = 0.5 in 100 coin flips.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{03-likelihoods_files/figure-latex/like7-1} 
-
-}
-
-\caption{(ref:like7lab)}(\#fig:like7)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="03-likelihoods_files/figure-html/like7-1.png" alt="(ref:like7lab)" width="100%" />
+<p class="caption">(\#fig:like7)(ref:like7lab)</p>
+</div>
 
 ## Likelihood of mixed results in sets of studies
 
@@ -185,14 +157,10 @@ Both likelihoods at *p* = .05 and *p* = .80 are highlighted in Figure \@ref(fig:
 
 (ref:like8lab) Computing a likelihood ratio for 2 out of three significant results, assuming an alpha of 5% and 80% power.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{03-likelihoods_files/figure-latex/like8-1} 
-
-}
-
-\caption{(ref:like8lab)}(\#fig:like8)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="03-likelihoods_files/figure-html/like8-1.png" alt="(ref:like8lab)" width="100%" />
+<p class="caption">(\#fig:like8)(ref:like8lab)</p>
+</div>
 
 In sets of studies, the likelihood ratio in favor of $H_1$ versus H0 after observing a mix of significant and nonsignificant findings can become surprisingly large. Even though the evidence appears to be mixed, there is actually strong evidence in favor of a true effect. For example, when a researcher performs six studies with 80% power and a 5% a level and finds three significant outcomes and three nonsignificant outcomes, the cumulative likelihood ratio is convincingly large at 38-to-1 in favor of $H_1$ to consider the set of studies strong evidence for a true effect. Intuitively, researchers
 might not feel convinced by a set of studies where three out of six results were statistically significant. But if we do the math, we see that such a set of studies can be very strong evidence in favor of a true effect. A better understanding of these probabilities might be an important step in mitigating the negative effects of publication bias. 
@@ -207,14 +175,10 @@ So far we have computed likelihoods for binomial probabilities, but likelihoods 
 
 (ref:like9lab) Likelihood ratio for observed *t*-value under H0 and H1.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{03-likelihoods_files/figure-latex/like9-1} 
-
-}
-
-\caption{(ref:like9lab)}(\#fig:like9)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="03-likelihoods_files/figure-html/like9-1.png" alt="(ref:like9lab)" width="100%" />
+<p class="caption">(\#fig:like9)(ref:like9lab)</p>
+</div>
 
 ## Test Yourself
 

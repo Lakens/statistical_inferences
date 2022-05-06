@@ -8,14 +8,10 @@ At the most extreme end of practices that introduce bias into scientific researc
 
 (ref:outlierlab) Scene in The Dropout about the company Theranos that falsely claimed to have devices that could perform blood tests on very small amounts of blood. In the scene, two whistelblowers confront their bosses when they are pressured to remove datapoints that do not show the desired results.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/dropout_outlier} 
-
-}
-
-\caption{(ref:outlierlab)}(\#fig:outliers)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/dropout_outlier_small.gif" alt="(ref:outlierlab)" width="100%" />
+<p class="caption">(\#fig:outliers)(ref:outlierlab)</p>
+</div>
 
 
 A different category of mistakes are statistical reporting errors, which range from reporting incorrect degrees of freedom, to reporting *p* = 0.056 as *p* < 0.05 [@nuijten_prevalence_2015]. Although we should do our best to prevent errors, everyone makes them, and data and code sharing become more common, it will become easier to detect errors in the work of other researchers. As Dorothy Bishop [-@bishop_fallibility_2018] writes: "As open science becomes increasingly the norm, we will find that everyone is fallible. The reputations of scientists will depend not on whether there are flaws in their research, but on how they respond when those flaws are noted."
@@ -26,14 +22,10 @@ Some inconsistencies in data are less easy to automatically detect, but can be i
 
 (ref:festingerlab) Screenshot of the table reporting the main results from Festinger and Carlsmith, 1959
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/festinger_carlsmith} 
-
-}
-
-\caption{(ref:festingerlab)}(\#fig:festinger)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/festinger_carlsmith.png" alt="(ref:festingerlab)" width="100%" />
+<p class="caption">(\#fig:festinger)(ref:festingerlab)</p>
+</div>
 
 ## Publication bias
 
@@ -43,14 +35,10 @@ Publication bias is one of the biggest challenges that science faces. **Publicat
 
 (ref:greenwaldlab) Screenshot of the final sentences of Greenwald, A. G. (1975). Consequences of prejudice against the null hypothesis. Psychological Bulletin, 82(1), 1–20.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/greenwald} 
-
-}
-
-\caption{(ref:greenwaldlab)}(\#fig:greenwald)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/greenwald.png" alt="(ref:greenwaldlab)" width="100%" />
+<p class="caption">(\#fig:greenwald)(ref:greenwaldlab)</p>
+</div>
 
 Publication bias can only be fixed by making all your research results available to fellow scientists, irrespective of the *p*-value of the main hypothesis test. Registered Reports are one way to combat publication bias, as this type of scientific article is reviewed based on the introduction, method, and statistical analysis plan, before the data is collected [@chambers_past_2022; @nosek_registered_2014]. After peer review by experts in the field, who might suggest improvements to the design and analysis, the article can get an 'in principle acceptance', which means that as long as the research plan is followed, the article will be published, regardless of the results. This should facilitate the publication of null results, and as shown in Figure \@ref(fig:scheel), an analysis of the first published Registered Reports in psychology revealed that 31 out of 71 (44%) articles observed positive results, compared to 146 out of 152 (96%) of comparable standard scientific articles published during the same time period [@scheel_excess_2021].
 
@@ -58,14 +46,10 @@ Publication bias can only be fixed by making all your research results available
 
 (ref:scheellab) Positive result rates for standard reports and Registered Reports. Error bars indicate 95% confidence intervals around the observed positive result rate.
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.75\linewidth]{images/scheel} 
-
-}
-
-\caption{(ref:scheellab)}(\#fig:scheel)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/scheel.png" alt="(ref:scheellab)" width="75%" />
+<p class="caption">(\#fig:scheel)(ref:scheellab)</p>
+</div>
 
 In the past, Registered Reports did not exist, and scientists did not share all results [@franco_publication_2014; @greenwald_consequences_1975; @sterling_publication_1959], and as a consequence, we have to try to detect the extent to which publication bias impacts our ability to accurately evaluate the literature. Meta-analyses should always carefully examine the impact of publication bias on the meta-analytic effect size estimate - even though only an estimated 57% of meta-analyses published in Psychological Bulletin between 1990 to 2017 report that they assessed publication bias [@polanin_transparency_2020]. In more recent meta-analyses published in educational research 82% used bias detection tests, but the methods used were typically far from the state-of-the-art [@ropovik_neglect_2021]. Several techniques to detect publication bias have been developed, and this continues to be a very active field of research. All techniques are based on specific assumptions, which you should consider before applying a test [@carter_correcting_2019]. There is no silver bullet: None of these techniques can fix publication bias. None of them can tell you with certainty what the true meta-analytic effect size is corrected for publication bias. The best these methods can do is detect publication bias caused by specific mechanisms, under specific conditions. Publication bias can be detected, but it can not be corrected. 
 
@@ -193,14 +177,10 @@ If we examine the funnel plot in Figure \@ref(fig:funnel1) we see each study rep
 
 (ref:funnel1lab) Funnel plot of unbiased null results.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{12-bias_files/figure-latex/funnel1-1} 
-
-}
-
-\caption{(ref:funnel1lab)}(\#fig:funnel1)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="12-bias_files/figure-html/funnel1-1.png" alt="(ref:funnel1lab)" width="100%" />
+<p class="caption">(\#fig:funnel1)(ref:funnel1lab)</p>
+</div>
 
 We can now compare the unbiased meta-analysis above with a biased meta-analysis. We can simulate a situation with extreme publication bias. Building on the estimate by @scheel_excess_2021, let's assume 96% of the studies show positive results. We set `pub.bias <- 0.96` in the code. We keep both means at 0, so there still is not real effect, but we will end up with mainly Type 1 errors in the predicted direction in the final set of studies. After simulating biased results, we can perform the meta-analysis to see if the statistical inference based on the meta-analysis is misleading. 
 
@@ -232,14 +212,10 @@ The biased nature of the set of studies we have analyzed becomes clear if we exa
 
 (ref:funnel2lab) Funnel plot of biased null results with mostly significant results.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{12-bias_files/figure-latex/funnel2-1} 
-
-}
-
-\caption{(ref:funnel2lab)}(\#fig:funnel2)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="12-bias_files/figure-html/funnel2-1.png" alt="(ref:funnel2lab)" width="100%" />
+<p class="caption">(\#fig:funnel2)(ref:funnel2lab)</p>
+</div>
 
 One might wonder if such extreme bias ever really emerges in scientific research. It does. In Figure \@ref(fig:carterbias) we see a funnel plot by @carter_publication_2014 who examined bias in 198 published studies testing the 'ego-depletion' effect, the idea that self-control relies on a limited resource. Do you notice any similarities to the extremely biased meta-analysis we simulated above? You might not be surprised that, even though before 2015 researchers thought there was a large and reliable literature demonstrating ego-depletion effects, a Registered Replication report yielded a non-significant effect size estimate [@hagger_multilab_2016], and even when the original researchers tried to replicate their own work, they failed to observe a significant effect of ego-depletion [@vohs_multisite_2021]. Imagine the huge amount of wasted time, effort, and money on a literature that was completely based on bias in scientific research. Obviously, such research waste has ethical implications, and researchers need to take their responsibility to prevent such waste in the future.
 
@@ -247,27 +223,19 @@ One might wonder if such extreme bias ever really emerges in scientific research
 
 (ref:carterbiaslab) Funnel plot from Carter and McCullough (2014) vizualizing bias in 198 published tests of the ego-depletion effect.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/carterfunnel} 
-
-}
-
-\caption{(ref:carterbiaslab)}(\#fig:carterbias)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/carterfunnel.png" alt="(ref:carterbiaslab)" width="100%" />
+<p class="caption">(\#fig:carterbias)(ref:carterbiaslab)</p>
+</div>
 
 We can also see signs of bias in the forest plot for a meta-analysis. In Figure \@ref(fig:twoforestplot) two forest plots are plotted side by side. The left forest plot is based on unbiased data, the right forest plot is based on biased data. The forest plots are a bit big with 100 studies, but we see that in the left forest plot effects randomly vary around 0 as they should. On the right,  beyond the first four studies, all confidence intervals magically just exclude an effect of 0.  
 
 (ref:twoforestplotlab) Forest plot of unbiased meta-analysis (left) and biased meta-analysies (right).
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{12-bias_files/figure-latex/twoforestplot-1} 
-
-}
-
-\caption{(ref:twoforestplotlab)}(\#fig:twoforestplot)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="12-bias_files/figure-html/twoforestplot-1.png" alt="(ref:twoforestplotlab)" width="100%" />
+<p class="caption">(\#fig:twoforestplot)(ref:twoforestplotlab)</p>
+</div>
 
 When there is publication bias because researchers only publish statistically significant results (*p* \< $\alpha$), and you calculate the effect size in a meta-analysis, the meta-analytic effect size estimate is **higher** when there is publication bias (where researchers publish only effects with *p* \< $\alpha$) compared to when there is no publication bias. This is because publication bias filters out the smaller (non-significant) effect sizes. which are then not included in the computation of the meta-analytic effect size. This leads to a meta-analytic effect size estimate that is larger than the true population effect size. With strong publication bias, we know the meta-analytic effect size is inflated, but we don't know by how much. The true effect size could just be a bit smaller, but the true effect size could also be 0, such as in the case of the ego-depletion literature.
 
@@ -279,14 +247,10 @@ Trim and fill is a technique that aims to augment a dataset by adding hypothetic
 
 (ref:trimfill1lab) Funnel plot with assumed missing effects added through trim-and-fill.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{12-bias_files/figure-latex/trimfill1-1} 
-
-}
-
-\caption{(ref:trimfill1lab)}(\#fig:trimfill1)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="12-bias_files/figure-html/trimfill1-1.png" alt="(ref:trimfill1lab)" width="100%" />
+<p class="caption">(\#fig:trimfill1)(ref:trimfill1lab)</p>
+</div>
 
 Trim-and-fill is not very good under many realistic publication bias scenarios. The method is criticized for its reliance on the strong assumption of symmetry in the funnel plot. When publication bias is based on the *p*-value of the study (arguably the most important source of publication bias in many fields) the trim-and-fill method does not perform well enough to yield a corrected meta-analytic effect size estimate that is close to the true effect size [@peters_performance_2007; @terrin_adjusting_2003]. When the assumptions are met, it can be used as a **sensitivity analysis.** Researchers should not report the trim-and-fill corrected effect size estimate as a realistic estimate of the unbiased effect size. If other bias-detection tests (like *p*-curve or *z*-curve discussed below) have already indicating the presence of bias, the trim-and-fill procedure might not provide additional insights. 
 
@@ -302,14 +266,10 @@ Let’s explore how PET-PEESE meta-regression attempts to give us an unbiased ef
 
 (ref:petpeeselab) Funnel plot with PETPEESE regression lines.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{12-bias_files/figure-latex/petpeese-1} 
-
-}
-
-\caption{(ref:petpeeselab)}(\#fig:petpeese)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="12-bias_files/figure-html/petpeese-1.png" alt="(ref:petpeeselab)" width="100%" />
+<p class="caption">(\#fig:petpeese)(ref:petpeeselab)</p>
+</div>
 
 ## *P*-value meta-analysis  
 
@@ -321,14 +281,10 @@ The second test examines whether the *p*-value distribution is sufficiently righ
 
 (ref:pcurvelab) Figure 3 from Simonsohn et al (2014) showing a *p*-curve with and without bias.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/pcurve} 
-
-}
-
-\caption{(ref:pcurvelab)}(\#fig:pcurve)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/pcurve.png" alt="(ref:pcurvelab)" width="100%" />
+<p class="caption">(\#fig:pcurve)(ref:pcurvelab)</p>
+</div>
 
 The *p*-curve distribution of the observed *p*-values is represented by five points in the blue line. *P*-curve analysis is performed *only* on statistically significant results, based on the assumption that these are always published, and thus that this part of the *p*-value distribution contains all studies that were performed. The 5 points illustrate the percentage of *p*-values between 0 and 0.01, 0.01 and 0.02, 0.02 and 0.03, 0.03 and 0.04, and 0.04 and 0.05. In the figure on the right, you see a relatively normal right-skewed *p*-value distribution, with more low than high *p*-values. The *p*-curve analysis shows the blue line in the right figure is more right-skewed than the uniform red line (where the red line is the uniform *p*-value distribution expected if there was no effect). Simonsohn and colleagues summarize this pattern as an indication the set of studies has 'evidential value', but this terminology is somewhat misleading. The formally correct interpretation is that we can reject a *p*-value distribution as expected when the null hypothesis was true in all studies included in the *p*-curve analysis. Rejecting a uniform *p*-value distribution does not automatically mean there is evidence for the theorized effect (e.g., the pattern could be caused by a mix of null effects and a small subset of studies that show an effect due to a methodological confound). 
 
@@ -349,14 +305,10 @@ Print all test results with `cat(metadata$pcurve, sep = "\n")`, and go to the on
 
 (ref:pcurveresultlab) Result of the *p*-curve analysis of the biased studies.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/pcurveresult} 
-
-}
-
-\caption{(ref:pcurveresultlab)}(\#fig:pcurveresult)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/pcurveresult.png" alt="(ref:pcurveresultlab)" width="100%" />
+<p class="caption">(\#fig:pcurveresult)(ref:pcurveresultlab)</p>
+</div>
 
 The distribution of *p*-values clearly looks like it comes from a uniform distribution (as it indeed does), and the statistical test indicates we can reject a *p*-value distribution as steep or steeper as would be generated by a set of studies with 33% power, *p* < 0.0001. The app also provides an estimate of the average power of the tests that generated the observed *p*-value distribution, 5%, which is indeed correct. Therefore, we can conclude these studies, even though many effects are statistically significant, are more in line with selective reporting of Type 1 errors, than with a *p*-value distribution that should be expected if there was a true effect that was studied with sufficient statistical power. The theory might still be true, but the set of studies we have analyzed here do not provide support for the theory.
 
@@ -397,27 +349,19 @@ An alternative technique that also meta-analyzes the *p*-values from individual 
 (ref:zcurveunbiasednull) *Z*-curve analysis for 1000 studies with a true effect size of 0 without publication bias.
 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{12-bias_files/figure-latex/zcurveunbiasednull-1} 
-
-}
-
-\caption{(ref:zcurveunbiasednull)}(\#fig:zcurveunbiasednull)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="12-bias_files/figure-html/zcurveunbiasednull-1.png" alt="(ref:zcurveunbiasednull)" width="100%" />
+<p class="caption">(\#fig:zcurveunbiasednull)(ref:zcurveunbiasednull)</p>
+</div>
 
 If there is a true effect, the distribution of *z*-scores shifts away from 0, as a function of the statistical power of the test. The higher the power, the further to the right the distribution of *z*-scores will be located. For example, when examining an effect with 66% power, an unbiased distribution of *z*-scores, computed from observed *p*-values, looks like the distribution in Figure \@ref(fig:zcurveunbiasedalternative). 
 
 (ref:zcurveunbiasedalternative) *Z*-curve analysis for 1000 studies with a true effect size of *d* = 0.37 and *n* = 100 per condition in an independent *t*-test without publication bias.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{12-bias_files/figure-latex/zcurveunbiasedalternative-1} 
-
-}
-
-\caption{(ref:zcurveunbiasedalternative)}(\#fig:zcurveunbiasedalternative)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="12-bias_files/figure-html/zcurveunbiasedalternative-1.png" alt="(ref:zcurveunbiasedalternative)" width="100%" />
+<p class="caption">(\#fig:zcurveunbiasedalternative)(ref:zcurveunbiasedalternative)</p>
+</div>
 
 In any meta-analysis the studies that are included will differ in their statistical power, and their true effect size (due to heterogeneity). *Z*-curve analysis uses mixtures of normal distributions centered at means 0 to 6 to fit a model of the underlying effect sizes that best represents the observed results in the included studies (for the technical details, see @bartos_z-curve20_2020. *Z*-curve then aims to estimate the average power of the set of studies, and then calculates the *observed discovery rate* (ODR: the percentage of significant results, or the observed power), the *expected discovery rate* (EDR: the proportion of the area under the curve on the right side of the significance criterion) and the expected replication rate (ERR: the expected proportion of successfully replicated significant studies from all significant studies). *Z*-curve is able to correct for selection bias for positive results (under specific assumptions), and can estimate the EDR and ERR using only the significant *p*-values.
 
@@ -451,9 +395,7 @@ plot(z_res, annotation = TRUE, CI = TRUE)
 ## Q = -6.69, 95% CI[-23.63, 11.25]
 ```
 
-
-
-\begin{center}\includegraphics[width=1\linewidth]{12-bias_files/figure-latex/unnamed-chunk-4-1} \end{center}
+<img src="12-bias_files/figure-html/unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;" />
 
 We see that the distribution of *z*-scores looks peculiar. Most expected *z*-scores between 0 and 1.96 are missing. 96 out of 100 studies were significant, which makes the observed discovery rate (ODR), or observed power (across all these studies with different sample sizes) 0.96, 95% CI[0.89; 0.99]. The expected discovery rate (EDR) is only 0.053, which differs statistically from the observed discovery rate, as indicated by the fact that the confidence interval of the EDR does not overlap with the ODR of 0.96. This means there is clear indication of selection bias based on the *z*-curve analysis. The expected replicability rate for these studies is only 0.052, which is in line with the expectation that we will only observe 5% Type 1 errors, as there was no true effect in this simulation. Thus, even though we only entered significant *p*-values, *z*-curve analysis correctly suggests that we should not expect these results to replicate at a higher frequency than the Type 1 error rate.
 
@@ -476,8 +418,7 @@ D) The meta-analytic effect size estimate is **lower** when there is publication
 
 **Q2**: The forest plot in the figure below looks quite peculiar. What do you notice?
 
-
-\begin{center}\includegraphics[width=1\linewidth]{12-bias_files/figure-latex/metasimq2-1} \end{center}
+<img src="12-bias_files/figure-html/metasimq2-1.png" width="100%" style="display: block; margin: auto;" />
 
 A) All effect sizes are quite similar, suggesting large sample sizes and highly accurate effect size measures.
 B) The studies look as if they were designed based on perfect a-priori power analyses, all yielding just significant results.
@@ -496,14 +437,10 @@ D) Regardless of whether there is publication bias, the meta-analytic effect siz
 
 (ref:petpeeseq4lab) Funnel plot with PETPEESE regression lines for the same studies as in Q2.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{12-bias_files/figure-latex/petpeeseq4-1} 
-
-}
-
-\caption{(ref:petpeeseq4lab)}(\#fig:petpeeseq4)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="12-bias_files/figure-html/petpeeseq4-1.png" alt="(ref:petpeeseq4lab)" width="100%" />
+<p class="caption">(\#fig:petpeeseq4)(ref:petpeeseq4lab)</p>
+</div>
 
 A) Using PET-PEESE meta-regression we can show that the true effect size is d = 0 (based on the PET estimate).
 B) Using PET-PEESE meta-regression we can show that the true effect size is d = 0.23 (based on the PEESE estimate).
@@ -518,14 +455,10 @@ D) The small sample size (10 studies) means PET has very low power to reject the
 
 (ref:pcurveresultq5lab) Result of the p-curve analysis of the biased studies in Q2.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/pcurveresultq5} 
-
-}
-
-\caption{(ref:pcurveresultq5lab)}(\#fig:pcurveresultq5)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/pcurveresultq5.png" alt="(ref:pcurveresultq5lab)" width="100%" />
+<p class="caption">(\#fig:pcurveresultq5)(ref:pcurveresultq5lab)</p>
+</div>
 
 A) Based on the continuous Stouffer’s test for the full *p*-curve, we can not reject a *p*-value distribution expected under $H_0$, and we can reject a *p*-value distribution as expected if $H_1$ is true and studies had 33% power.
 B) Based on the continuous Stouffer’s test for the full *p*-curve, we can
@@ -540,8 +473,7 @@ would expect if the studies had 33% power, and therefore, we can conclude these 
 
 **Q6**: The true effect size in the studies simulated in Q2 is 0 - there is no true effect. Which statement about the *z*-curve analysis below is true? 
 
-
-\begin{center}\includegraphics[width=1\linewidth]{12-bias_files/figure-latex/zcurveq6-1} \end{center}
+<img src="12-bias_files/figure-html/zcurveq6-1.png" width="100%" style="display: block; margin: auto;" />
 
 A) The expected discovery rate and the expected replicability rate are both statistically significant, and therefore we can expect the observed effects to successfully replicate in future studies. 
 B) Despite the fact that the average observed power (the observed discovery rate) is 100%, *z*-curve correctly predicts the expected replicability rate (which is 5%, as only Type 1 errors will be statistically significant). 
