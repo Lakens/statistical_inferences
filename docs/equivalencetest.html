@@ -156,7 +156,7 @@ Figure 9.2: The mean difference and its confidence interval plotted below the <e
 </p>
 </div>
 <p>Below the two curves we see a line that represents the confidence interval ranging from -0.99 to 0.35, and a dot on the line that indicates the observed mean difference of -0.32. Let's first look at the left curve. We see the green highlighted area in the tails that highlights which observed mean differences would be extreme enough to statistically reject an effect of -0.5. Our observed mean difference of -0.32 lies very close to 0.5, and if we look at the left distribution, the mean is not far enough away from 0.5 to fall in the green area that indicates when observed differences would be statistically significant. We can also perform the equivalence test using the TOSTER package, and look at the results.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/tsum_TOST.html">tsum_TOST</a></span><span class="op">(</span>m1 <span class="op">=</span> <span class="fl">4.55</span>, 
                   m2 <span class="op">=</span> <span class="fl">4.87</span>, 
                   sd1 <span class="op">=</span> <span class="fl">1.05</span>, 
@@ -282,7 +282,7 @@ Figure 9.5: The mean difference and its confidence interval plotted below the <e
 <p>When designing a study it is a sensible strategy to always plan for both the presence, as the absence, of an effect. Several scientific journals require a sample size justification for Registered Reports where the statistical power to reject the null hypothesis is high, but where the study is also capable of demonstrating the absence of an effect, for example by also performing a power analysis for an equivalence test. As we saw in the chapter on <a href="errorcontrol.html#errorcontrol">error control</a> and <a href="likelihoods.html#likelihoods">likelihoods</a> null results are to be expected, and if you only think about the possibility of observing a null effect when the data has been collected, it is often too late.</p>
 <p>The statistical power for interval hypotheses depend on the alpha level, the sample size, the smallest effect of interest you decide to test against, and the true effect size. For an equivalence test, it is common to perform a power analysis assuming the true effect size is 0, but this might not always be realistic. The closer the expected effect size is to the smallest effect size of interest, the larger the sample size needed to reach a desired power. Don't be tempted to assume a true effect size of 0, if you have good reason to expect a small but non-zero true effect size. The sample size that the power analysis indicates you need to collect might be smaller, but in reality you also have a higher probability of an inconclusive result. Earlier versions of TOSTER only enabled researchers to perform power analyses for equivalence tests assuming a true effect size of 0, but a new power function by Aaron Caldwell allows users to specify <code>delta</code>, the expected effect size.</p>
 <p>Assume a researchers desired to achieve 90% power for an equivalence test with an equivalence range from -0.5 to 0.5, with an alpha level of 0.05, and assuming a population effect size of 0. A power analysis for an equivalence test can be performed to examine the required sample size.</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/power_t_TOST.html">power_t_TOST</a></span><span class="op">(</span>power <span class="op">=</span> <span class="fl">0.9</span>, delta <span class="op">=</span> <span class="fl">0</span>,
                      alpha <span class="op">=</span> <span class="fl">0.05</span>, type <span class="op">=</span> <span class="st">"two.sample"</span>,
                      low_eqbound <span class="op">=</span> <span class="op">-</span><span class="fl">0.5</span>, high_eqbound <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
@@ -299,7 +299,7 @@ Figure 9.5: The mean difference and its confidence interval plotted below the <e
 ## 
 ## NOTE: n is number in *each* group</code></pre>
 <p>We see that the required sample size is 88 participants in each condition for the independent <em>t</em>-test, Let's compare this power analysis to a situation where the researcher expects a true effect of <em>d</em> =0.1, instead of a true effect of 0. To be able to reliable reject effects larger than 0.5, we will need a larger sample size, just as how we need a larger sample size for a null hypothesis test powered to detect a <em>d</em> =0.4 than a null hypothesis test powered to detect a <em>d</em> =0.5.</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/power_t_TOST.html">power_t_TOST</a></span><span class="op">(</span>power <span class="op">=</span> <span class="fl">0.9</span>, delta <span class="op">=</span> <span class="fl">0.1</span>,
                      alpha <span class="op">=</span> <span class="fl">0.05</span>, type <span class="op">=</span> <span class="st">"two.sample"</span>,
                      low_eqbound <span class="op">=</span> <span class="op">-</span><span class="fl">0.5</span>, high_eqbound <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
@@ -317,7 +317,7 @@ Figure 9.5: The mean difference and its confidence interval plotted below the <e
 ## NOTE: n is number in *each* group</code></pre>
 <p>We see the sample size has now increased to 109 participants in each condition. As mentioned before, it is not necessary to perform a two-sided equivalence test. It is also possible to perform a one-sided equivalence test. An example of a situation where such a directional test is appropriate is a replication study. If a previous study observed an effect of <em>d</em> =0.48, and you perform a replication study, you might decide to consider any effect smaller than <em>d</em> =0.2 a failure to replicate - including any effect in the opposite direction, such as an effect of <em>d</em> =-0.3. Although most software for equivalence tests requires you to specify an upper and lower bound for an equivalence range, you can mimic a one-sided test by setting the equivalence bound in the direction you want to ignore to a low value so that the one-sided test against this value will always be statistically significant. This can also be used to perform a power analysis for a minimum effect test, where one bound is the minimum effect of interest, and the other bound is set to an extreme value on the other side of the expected effect size.</p>
 <p>In the power analysis for an equivalence test example below, the lower bound is set to -5 (it should be set low enough such that lowering it even further has no noticeable effect). We see that the new power function in the TOSTER package takes the directional prediction into account, and just as with directional predictions in a nil null hypothesis test, a directional prediction in an equivalence test is more efficient, and only 70 observations are needed to achieve 90% power.</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># New TOSTER power functions allows power for expected non-zero effect.</span>
 <span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/power_t_TOST.html">power_t_TOST</a></span><span class="op">(</span>power <span class="op">=</span> <span class="fl">0.9</span>, delta <span class="op">=</span> <span class="fl">0</span>,
                      alpha <span class="op">=</span> <span class="fl">0.05</span>, type <span class="op">=</span> <span class="st">"two.sample"</span>,
@@ -397,7 +397,7 @@ conclude the original study is contradicted by the new data? Observing a mean of
 <p>Although this approach to setting a smallest effect size of interest (SESOI) is arbitrary (why not 30% power, or 35%?) it suffices for practical purposes (and you are free to choose a power level you think is too low). The nice thing about this definition of a SESOI is that if you know the sample size of the original study, you can always calculate the effect size that study had 33% power to detect. You can thus always use this approach to set a smallest effect size of interest. If you fail to find support for an effect size the original study has 33% power to detect, it does not mean there is no true effect, and not even that the effect is too small to be of any theoretical or practical interest. But using the small telescopes approach is a good first step, since it will get the conversation started about which effects are meaningful and allows researchers who want to replicate a study to specify when they would consider the original claim falsified.</p>
 <p>With the small telescopes approach, the SESOI is based only on the sample size in the original study. A smallest effect size of interest is set only for effects in the same direction. All effects smaller than this effect (including large effects in the opposite direction) are interpreted as a failure to replicate the original results. We see that the small telescopes approach is a <strong>one-sided equivalence test</strong>, where only the upper bound is specified, and the smallest effect size of interest is determined based on the sample size of the original study. The test examines if we can reject effects as large or larger than the effect the original study has 33% power to detect. It is a simple one-sided test, not against 0, but against a SESOI.</p>
 <p>For example, consider our study above in which 20 guessers tried to estimate the number of coins. The results were analyzed with a two-sided one-sample <em>t</em>-test, using an alpha level of 0.05. To determine the effect size that this study had 33% power for, we can perform a sensitivity analysis. In a sensitivity analysis we compute the required effect size given the alpha, sample size, and desired statistical power. Note that Simonsohn uses a two-sided test in his power analyses, which we will follow here – if the original study reported a pre-registered directional prediction, the power analysis should be based on a one-sided test. In this case, the alpha level is 0.05, the total sample size is 20, and the desired power is 33%. We compute the effect size that gives us 33% power and see that it is a Cohen’s <em>d</em> of 0.358. This means we can set our smallest effect size of interest for the replication study to <em>d</em> = 0.358. If we can reject effects as large or larger than <em>d</em> = 0.358, we can conclude that the effect is smaller than anything the original study had 33% power for. The screenshot below illustrates the correct settings in G*Power, and the code in R is:</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/heliosdrm/pwr">"pwr"</a></span><span class="op">)</span>
 
 <span class="fu">pwr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.t.test.html">pwr.t.test</a></span><span class="op">(</span>
@@ -424,7 +424,7 @@ Figure 9.6: Screenshot illustrating a sensitivity power analysis in G*Power to c
 </div>
 <p>Determining the SESOI based on the effect size the original study had 33% power to detect has an additional convenient property. Imagine the true effect size is actually 0, and you perform a statistical test to see if the data is statistically smaller than the SESOI based on the small telescopes approach (which is called an inferiority test). If you increase the sample size by 2.5 times, you will have approximately 80% power for this one-sided equivalence test, assuming the true effect size is exactly 0 (e.g., <em>d</em> = 0). People who do a replication study can follow the small telescope recommendations, and very easily determine both the smallest effect size of interest, and the sample size needed to design an informative replication study, assuming the true effect size is 0 (but see the section above for a-priori power analyses where you want to test for equivalence, but do not expect a true effect size of 0).</p>
 <p>The figure below, from Simonsohn (2015) illustrates the small telescopes approach using a real-life example. The original study by Zhong and Liljenquist (2006) had a tiny sample size of 30 participants in each condition and observed an effect size of <em>d</em> = 0.53, which was barely statistically different from zero. Given a sample size of 30 per condition, the study had 33% power to detect effects larger than <em>d</em> = 0.401. This “small effect” is indicated by the green dashed line. In R, the smallest effect size of interest is calculated using:</p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">pwr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.t.test.html">pwr.t.test</a></span><span class="op">(</span>
   n <span class="op">=</span> <span class="fl">30</span>, 
   sig.level <span class="op">=</span> <span class="fl">0.05</span>, 
@@ -516,7 +516,7 @@ theoretical prediction). But informing peers that given the sample size commonly
 <!--                   eqbound_type = "raw", -->
 <!--                   alpha = 0.05) -->
 <!-- ``` -->
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/tsum_TOST.html">tsum_TOST</a></span><span class="op">(</span>
   m1 <span class="op">=</span> <span class="fl">0.00</span>,
   sd1 <span class="op">=</span> <span class="fl">0.00</span>,
@@ -562,7 +562,7 @@ theoretical prediction). But informing peers that given the sample size commonly
 <!--   type = "two.sample" -->
 <!-- ) -->
 <!-- ``` -->
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/power_t_TOST.html">power_t_TOST</a></span><span class="op">(</span>
   n <span class="op">=</span> <span class="fl">00</span>,
   delta <span class="op">=</span> <span class="fl">0.0</span>,
@@ -604,7 +604,7 @@ theoretical prediction). But informing peers that given the sample size commonly
 <!--   type = "two.sample" -->
 <!-- ) -->
 <!-- ``` -->
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/power_t_TOST.html">power_t_TOST</a></span><span class="op">(</span>
   power <span class="op">=</span> <span class="fl">0.00</span>,
   delta <span class="op">=</span> <span class="fl">0.0</span>,
@@ -708,7 +708,7 @@ in mathematics tests across the 7 million students in the US represent trivial d
 </tbody>
 </table></div>
 <p>For grade 2, when we perform an equivalence test with boundaries of <em>d</em> =-0.1 and <em>d</em> =0.1, using an alpha of 0.01, which conclusion can we draw? Use the TOSTER function TOSTmeta, and enter the alpha, effect size (ES), standard error (se), and equivalence bounds.</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/TOSTmeta.html">TOSTmeta</a></span><span class="op">(</span>
   ES <span class="op">=</span> <span class="fl">0.00</span>,
   se <span class="op">=</span> <span class="fl">0.000</span>,
@@ -737,7 +737,7 @@ in mathematics tests across the 7 million students in the US represent trivial d
 <!--   alternative = "two.sided" -->
 <!-- ) -->
 <!-- ``` -->
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">pwr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.t.test.html">pwr.t.test</a></span><span class="op">(</span>
   n <span class="op">=</span> <span class="fl">0</span>, 
   sig.level <span class="op">=</span> <span class="fl">0.00</span>, 
@@ -763,7 +763,7 @@ in mathematics tests across the 7 million students in the US represent trivial d
 <!--   power = 1/3,  -->
 <!--   alternative = "two.sided") -->
 <!-- ``` -->
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">pwr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.r.test.html">pwr.r.test</a></span><span class="op">(</span>
   n <span class="op">=</span> <span class="fl">0</span>, 
   sig.level <span class="op">=</span> <span class="fl">0</span>, 
