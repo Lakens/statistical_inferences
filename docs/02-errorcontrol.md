@@ -145,19 +145,14 @@ cat("The p-value dropped below 0.05 for the first time at sample size:",
     
 For example, in the Figure below, you see the *p*-value plotted on the y-axis (from 0 to 1) and the sample size plotted on the x-axis (from 0 to 200). For this simulation, the true effect size was d = 0, meaning there is no true effect. We can thus only observe true negatives or false positives. As the sample size increases, the *p*-value slowly moves up and down (remember from the chapter on [*p*-values](#pvalues) that when there is no true effect, *p*-values are uniformly distributed). In Figure \@ref(fig:animatep), the *p*-value drops below the grey line (indicating an alpha level 0.05) after collecting 83 participants in each condition, only to drift back upwards to larger *p*-values. From this figure, if becomes clear that the more often we look at the data, and the larger the total sample size, the higher the probability that one of the analyses will yield a p < $\alpha$. If resources are infinite, the Type 1 error rate will be 1, and a researcher can always find a significant result through optional stopping.  
 
-
-
 (ref:animateplab) Simulated *p*-values for each additional observation when the null is true.
 
-
-```
-## NULL
-```
-
+<div class="figure" style="text-align: center">
+<img src="images/animatep.gif" alt="(ref:animateplab)" width="100%" />
+<p class="caption">(\#fig:animatep)(ref:animateplab)</p>
+</div>
 
 When there *is* a true effect, we see that *p*-values also vary, but they will eventually drop to below the alpha level. Due to the variation, we just do not know exactly when. When we perform an a-priori power analysis, we can compute the probability that looking at a specific sample size will yield a significant *p*-value. In Figure \@ref(fig:animatep2) we see the same simulation, but now when there is a true but small effect of d = 0.3. With 200 observations per condition, a sensitivity power analysis reveals that we have 85% power. If we would analyze the data at an interim analysis (e.g., after 150 observations) we would often already find a statistically significant effect (as we would have 74% power). This illustrates a benefit of sequential analyses, where we control error rates, but can stop early at an interim analysis. Sequential analyses are especially useful in large or expensive studies where there is uncertainty about the true effect size. 
-
-
 
 (ref:animatep2lab) Simulated *p*-values for each additional observation when d = 0.3.
 
