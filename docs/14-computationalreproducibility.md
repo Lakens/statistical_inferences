@@ -714,7 +714,7 @@ available and share it with your published paper.
 
 <img src="images/f8904ae8e964bd88b2c21078ea9e81f9.png" width="100%" style="display: block; margin: auto;" />
 
-There is now a completely reproducible analysis file online. Anyone can not just
+There is now a completely reproducible analysis file online. Anyone cannot just
 reproduce your data analysis – they can go into the main_analysis.Rmd file, and
 change anything they want in your code, and run it again. For example, let’s say
 you dislike the black straight line in the first scatterplot, and you want it to

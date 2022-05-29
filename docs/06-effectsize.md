@@ -134,7 +134,7 @@ $$d_z = \frac{t}{\sqrt{n}}$$
 
 Given the direct relationship between the *t*-value of a paired-samples *t*-test and Cohen’s $d_z$, it will not be surprising that software that performs power analyses for within-subjects designs (e.g., G*Power) relies on Cohen’s $d_z$ as input. 
 
-Maxwell & Delaney [-@maxwell_designing_2004] remark: ‘a major goal of developing effect size measures is to provide a standard metric that meta-analysts and others can interpret across studies that vary in their dependent variables as well as types of designs.’ Because Cohen's $d_z$ takes the correlation between the dependent measures into account, it can not be directly compared with Cohen's $d_s$. Some researchers prefer to use the average standard deviation of both groups of observations as a standardizer (which ignores the correlation between the observations), because this allows for a more direct comparison with Cohen’s $d_s$. This effect size is referred to as Cohen’s $d_av$ [@cumming_understanding_2013], and is simply:
+Maxwell & Delaney [-@maxwell_designing_2004] remark: ‘a major goal of developing effect size measures is to provide a standard metric that meta-analysts and others can interpret across studies that vary in their dependent variables as well as types of designs.’ Because Cohen's $d_z$ takes the correlation between the dependent measures into account, it cannot be directly compared with Cohen's $d_s$. Some researchers prefer to use the average standard deviation of both groups of observations as a standardizer (which ignores the correlation between the observations), because this allows for a more direct comparison with Cohen’s $d_s$. This effect size is referred to as Cohen’s $d_av$ [@cumming_understanding_2013], and is simply:
 
 $$d_{av} = \frac{M_{dif}}{\frac{SD_1+SD_2}{2}}$$
 
@@ -223,7 +223,7 @@ $$
 $$
 \varepsilon_{p}^{2} = \frac{F - 1}{F + \ \frac{\text{df}_{\text{error}}}{\text{df}_{\text{effect}}}}
 $$
-Partial effect sizes $\eta_{p}^{2}$, $\varepsilon_{p}^{2}$ and $\omega_{p}^{2}$ can not be generalized across different designs. For this reason, generalized eta-squared ($\eta_{G}^{2}$) and generalized omega-squared ($\omega_{G}^{2}$) have been proposed [@olejnik_generalized_2003], although they are not very popular. In part, this might be because summarizing the effect size in an ANOVA design with a single index has limitations, and perhaps it makes more sense to describe the pattern of results, as we will see in the section below. 
+Partial effect sizes $\eta_{p}^{2}$, $\varepsilon_{p}^{2}$ and $\omega_{p}^{2}$ cannot be generalized across different designs. For this reason, generalized eta-squared ($\eta_{G}^{2}$) and generalized omega-squared ($\omega_{G}^{2}$) have been proposed [@olejnik_generalized_2003], although they are not very popular. In part, this might be because summarizing the effect size in an ANOVA design with a single index has limitations, and perhaps it makes more sense to describe the pattern of results, as we will see in the section below. 
 
 ## Effect Sizes for Interactions
 

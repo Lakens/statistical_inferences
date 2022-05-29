@@ -227,7 +227,7 @@ And click APPROVE
 
 <img src="images/6c3b919ae37f5dfed14761209592f337.png" width="100%" style="display: block; margin: auto;" />
 
-And click OK for the pop- up indicating this can not be undone. We will make the
+And click OK for the pop- up indicating this cannot be undone. We will make the
 pre-registration public. If you do research, you don’t have to make your
 pre-registrations public immediately, but in this assignment, we will do so.
 Once again, click:
@@ -238,7 +238,7 @@ Scroll down, and click:
 
 <img src="images/94a843f900ec4dcbb75f60686edac510.png" width="20%" style="display: block; margin: auto;" />
 
-Click OK on the pop-up warning you that this can not be undone.
+Click OK on the pop-up warning you that this cannot be undone.
 
 Now you can download the .pdf file with your pre-registration:
 
@@ -378,7 +378,7 @@ The final result should look like the screenshot below:
 
 <img src="images/dec08b890995634acf624123962ed970.png" width="100%" style="display: block; margin: auto;" />
 
-Go back to the main page of your OSF project by clicking on the name of your project in the top left of the screen. **The final thing that we need to do is make it possible for others to access our files by making the project page public**. By default, the project is private, and you can use the OSF to privately store your research data. But you can also make the page public, whenever you are ready. **If the page is not public, it can not be graded for a class assignment!**
+Go back to the main page of your OSF project by clicking on the name of your project in the top left of the screen. **The final thing that we need to do is make it possible for others to access our files by making the project page public**. By default, the project is private, and you can use the OSF to privately store your research data. But you can also make the page public, whenever you are ready. **If the page is not public, it cannot be graded for a class assignment!**
 
 Click the ‘Make Public’ button (highlighted by the red square in the picture below)
 
