@@ -534,17 +534,17 @@ res
 
 
 ```
-## [PROGRESS] Stage results calculated [0.0425 secs] 
-## [PROGRESS] Conditional power calculated [0.0309 secs] 
+## [PROGRESS] Stage results calculated [0.0512 secs] 
+## [PROGRESS] Conditional power calculated [0.0335 secs] 
 ## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.002 secs] 
-## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.7252 secs] 
-## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.9574 secs] 
-## [PROGRESS] Repeated confidence interval calculated [1.68 secs] 
-## [PROGRESS] Repeated p-values of stage 1 calculated [0.4129 secs] 
-## [PROGRESS] Repeated p-values of stage 2 calculated [0.4069 secs] 
-## [PROGRESS] Repeated p-values calculated [0.8228 secs] 
-## [PROGRESS] Final p-value calculated [0.003 secs] 
-## [PROGRESS] Final confidence interval calculated [0.1416 secs]
+## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.5581 secs] 
+## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.6911 secs] 
+## [PROGRESS] Repeated confidence interval calculated [1.25 secs] 
+## [PROGRESS] Repeated p-values of stage 1 calculated [0.2831 secs] 
+## [PROGRESS] Repeated p-values of stage 2 calculated [0.2445 secs] 
+## [PROGRESS] Repeated p-values calculated [0.5286 secs] 
+## [PROGRESS] Final p-value calculated [0.002 secs] 
+## [PROGRESS] Final confidence interval calculated [0.0685 secs]
 ```
 
 
@@ -739,7 +739,7 @@ D) You fail to reject both $H_0$ and $H_1$ and continue data collection.
 
 4. What is the difference in the philosophy of how the alpha is spent across looks between the Pocock and O’Brien-Fleming approaches?
 
-5. What is the benefit of the fat that the alpha level at the final look when using an O’Brien-Fleming correction is close to the uncorrected alpha level?
+5. What is the benefit of the fact that the alpha level at the final look when using an O’Brien-Fleming correction is close to the uncorrected alpha level?
 
 6. What is the difference between the Pocock and O’Brien-Fleming correction, and the corresponding Pocock and O’Brien-Fleming alpha spending functions developed by Lan and DeMets? 
 

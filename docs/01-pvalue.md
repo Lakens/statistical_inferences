@@ -168,7 +168,7 @@ par(bg = backgroundcolor)
 hist(p, breaks = 20) # plot a histogram
 ```
 
-In the simulation, we generate n = 71 normally distributed IQ scores with a mean of M (106 by default) and a standard deviation of 15. We then perform a one-sample *t*-test, store the *p*-value, and generate a plot of the *p*-value distribution.
+In the simulation, we generate n = 71 normally distributed IQ scores with a mean of M (105 by default) and a standard deviation of 15. We then perform a one-sample *t*-test, store the *p*-value, and generate a plot of the *p*-value distribution.
 
 (ref:pdist1lab) Distribution of *p*-values when power = 50%. 
 
