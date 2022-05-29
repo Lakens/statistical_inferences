@@ -134,7 +134,7 @@ $$d_z = \frac{t}{\sqrt{n}}$$
 
 Given the direct relationship between the *t*-value of a paired-samples *t*-test and Cohen’s $d_z$, it will not be surprising that software that performs power analyses for within-subjects designs (e.g., G*Power) relies on Cohen’s $d_z$ as input. 
 
-Maxwell & Delaney [-@maxwell_designing_2004] remark: ‘a major goal of developing effect size measures is to provide a standard metric that meta-analysts and others can interpret across studies that vary in their dependent variables as well as types of designs.’ Because Cohen's $d_z$ takes the correlation between the dependent measures into account, it cannot be directly compared with Cohen's $d_s$. Some researchers prefer to use the average standard deviation of both groups of observations as a standardizer (which ignores the correlation between the observations), because this allows for a more direct comparison with Cohen’s $d_s$. This effect size is referred to as Cohen’s $d_av$ [@cumming_understanding_2013], and is simply:
+Maxwell & Delaney [-@maxwell_designing_2004] remark: ‘a major goal of developing effect size measures is to provide a standard metric that meta-analysts and others can interpret across studies that vary in their dependent variables as well as types of designs.’ Because Cohen's $d_z$ takes the correlation between the dependent measures into account, it cannot be directly compared with Cohen's $d_s$. Some researchers prefer to use the average standard deviation of both groups of observations as a standardizer (which ignores the correlation between the observations), because this allows for a more direct comparison with Cohen’s $d_s$. This effect size is referred to as Cohen’s $d_{av}$ [@cumming_understanding_2013], and is simply:
 
 $$d_{av} = \frac{M_{dif}}{\frac{SD_1+SD_2}{2}}$$
 
@@ -187,7 +187,7 @@ Then they collected data:
 
 And they concluded:
 
->A significant zero-order correlation was found between white suicide rates and country music (r = .54, p \< .05). The greater the airtime given to country music, the greater the white suicide rate.
+>A significant zero-order correlation was found between white suicide rates and country music (*r* = .54, *p* \< .05). The greater the airtime given to country music, the greater the white suicide rate.
 
 We can again compare the size of this effect with other known effects in psychology. In the database by Richard and colleagues, there are very few effects this large, but some examples are: that leaders are most effective if they have charisma (*r* = 0.54), good leader–subordinate relations promote subordinate satisfaction (*r* = 0.53), and people can recognize emotions across cultures (*r* = 0.53). These effects are all large and obvious, which should raise some doubts about whether the relationship between listening to country music and suicides can be of the same size. Is country music really that bad? If we search the literature, we find that [other researchers were not able to reproduce the analysis of the original authors](http://sf.oxfordjournals.org/content/74/1/327.short). It is likely that the results are spurious, or a Type 1 error.
 
