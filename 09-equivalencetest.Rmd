@@ -29,8 +29,6 @@ Equivalence tests are a specific implementation of **interval hypothesis tests**
 
 Indeed, one of the most widely suggested improvements that mitigates the most important limitations of null hypothesis significance testing is to replace the nil null hypothesis with the test of a range prediction (by specifying a non-nil null hypothesis) in an interval hypothesis test [@lakens_practical_2021]. To illustrate the difference, panel A in Figure \@ref(fig:intervaltest) visualizes the results that are predicted in a two-sided null hypothesis test with a nil hypothesis, where the test examines whether an effect of 0 can be rejected. Panel B shows an interval hypothesis where an effect between 0.5 and 2.5 is predicted, where the non-nill null hypothesis consists of values smaller than 0.5 or larger than 2.5, and the interval hypothesis test examines whether values in these ranges can be rejected. Panel C illustrates an equivalence test, which is basically identical to an interval hypothesis test, but the predicted effects are located in a range around 0, and contain effects that are deemed too small to be meaningful. 
 
-
-
 (ref:intervaltestlab) Two-sided null hypothesis test (A), interval hypothesis test (B), equivalence test (C) and minimum effect test (D).
 
 ```{r, intervaltest, echo = FALSE, fig.height = 8, fig.cap="(ref:intervaltestlab)"}
@@ -108,7 +106,7 @@ One benefit of a minimum effect test compared to a null hypothesis test is that 
 
 Figure \@ref(fig:intervaltest) illustrates two-sided tests, but it is often more intuitive and logical to perform one-sided tests. In that case, a minimum effect test would, for example, aim to reject effects smaller than 0.1, and an equivalence test would aim to reject effects larger than for example 0.1. Instead of specifying an upper and lower bound of a range, it is sufficient to specify a single value for one-sided tests. A final variation of a one-sided non-nil null hypothesis test is known as a test for **non-inferiority**, which examines if an effect is larger than the lower bound of an equivalence range. Such a test is for example performed when a novel intervention should not be noticeably worse than an existing intervention, but it can be a tiny bit worse. For example, if a difference between a novel and existing intervention is not smaller than -0.1, and effects smaller than -0.1 can be rejected, one can conclude an effect is non-inferior [@schumi_through_2011; @mazzolari_myths_2022]. We see that extending nil null hypothesis tests to non-nil null hypotheses allow researchers to ask questions that might be more interesting.
  
-## Equivalence tests THIS PASSAGE SEEMS TO BE DESCRIBING THE MINIMUM EFFECT TEST ACCORDING TO FIGURE 9.1
+## Equivalence tests
 
 Equivalence tests were first developed in pharmaceutical sciences [@hauck_new_1984; @westlake_use_1972] and later formalized as the **two one-sided tests (TOST)** approach to equivalence testing [@schuirmann_comparison_1987; @seaman_equivalence_1998; @wellek_testing_2010]. The TOST procedure entails performing two one-sided tests to examine whether the observed data is surprisingly larger than a lower equivalence boundary ($\Delta_{L}$), or surprisingly smaller than an upper equivalence boundary ($\Delta_{U}$):
 
@@ -172,7 +170,7 @@ res <- TOSTER::tsum_TOST(m1 = 4.55, m2 = 4.87, sd1 = 1.05, sd2 = 1.11,
 ```
 
 
-One way to reduce the probability of an inconclusive effect is to collect sufficient data. Let's imagine the researchers had not collected 15 participants in each condition, but 200 participants. They otherwise observe exactly the same data. As explained in the chapter on [confidence intervals](#confint), as the sample size increases, the confidence interval becomes more narrow. For a TOST equivalence test to be able to reject both the upper and lower bound of the equivalence range, the confidence interval needs to fall completely within the equivalence range. In Figure \@ref(fig:ciequivalence2) we see the same result as in Figure \@ref(fig:tdistequivalence), but now if we had collected 200 observations. Because of the larger sample size, the confidence is more narrow than when we collected 15 participants. We see that the 90% confidence interval around the observed mean difference now excludes both the upper and lower equivalence bound. This means that we can now reject effects outside of the equivalence range (even though barely, with a *p* = `r round(res$TOST$p[2],3)` as the one-sided test against the lower equivalence bound is only just statistically significant).    [I DON'T THINK FIGURE 9.3 IS CITED IN THE TEXT]
+One way to reduce the probability of an inconclusive effect is to collect sufficient data. Let's imagine the researchers had not collected 15 participants in each condition, but 200 participants. They otherwise observe exactly the same data. As explained in the chapter on [confidence intervals](#confint), as the sample size increases, the confidence interval becomes more narrow. For a TOST equivalence test to be able to reject both the upper and lower bound of the equivalence range, the confidence interval needs to fall completely within the equivalence range. In Figure \@ref(fig:ciequivalence1) we see the same result as in Figure \@ref(fig:tdistequivalence), but now if we had collected 200 observations. Because of the larger sample size, the confidence is more narrow than when we collected 15 participants. We see that the 90% confidence interval around the observed mean difference now excludes both the upper and lower equivalence bound. This means that we can now reject effects outside of the equivalence range (even though barely, with a *p* = `r round(res$TOST$p[2],3)` as the one-sided test against the lower equivalence bound is only just statistically significant).
 
 
 (ref:ciequivalence1lab) The mean difference and its confidence interval for an equivalence test with an equivalence range of -0.5 and 0.5.
@@ -185,8 +183,6 @@ print(res)
 ```
 
 In Figure \@ref(fig:ciequivalence2) we see the the same results, but now visualized as a confidence density plot [@schweder_confidence_2016], which is a graphical summary of the distribution of confidence. A confidence density plot allows you to see which effects can be rejected with difference confidence interval widths. We see the bounds of the green area (corresponding to a 90% confidence interval) fall inside the equivalence bounds. Thus, the equivalence test is statistically significant, and we can statistically reject the presence of effects outside the equivalence range. We can also see that the 95% confidence interval excludes 0, and therefore, a traditional null hypothesis significance test is also statistically significant. 
-
-
 
 (ref:ciequivalence2lab) The mean difference and its confidence interval for an equivalence test with an equivalence range of -0.5 and 0.5.
 
