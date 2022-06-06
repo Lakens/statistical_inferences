@@ -26,9 +26,7 @@ People find it difficult to think about random variation. Our mind is more stron
 
 Intelligence tests have been designed such that the mean Intelligence Quotient of the entire population of adults is 100, with a standard deviation of 15. This will not be true for every sample we draw from the population. Let’s get a feel for what the IQ scores from a sample look like. Which IQ scores will people in our sample have?
 
-We will start by manually calculating the mean and standard deviation of a random sample of 10 individuals. Their IQ scores are: 91.15, 86.52, 75.64, 115.72, 95.83, 105.44, 87.10, 100.81, 82.63, and 106.22. If we sum these 10 scores and divide them by 10, we get the mean of our sample: 94.71. We can also calculate the standard deviation from our sample. First, we subtract the overall mean (94.71) from each individual IQ score. Then, we square these differences and then sum these squared differences (giving 1374.79). We divide this sum of the squared difference by the sample size minus 1 (10-1=9), and finally take the square root of this value, which gives the standard deviation: 12.36. Copy the code below, remove the `set.seed(3190)` line (which makes the code reproducible but create the same data as in the plot below each time) and run it to randomly simulate 10 IQ scores and plot them.
-
-
+We will start by manually calculating the mean and standard deviation of a random sample of 10 individuals. Their IQ scores are: 91.15, 86.52, 75.64, 115.72, 95.83, 105.44, 87.10, 100.81, 82.63, and 106.22. If we sum these 10 scores and divide them by 10, we get the mean of our sample: 94.71. We can also calculate the standard deviation from our sample. First, we subtract the overall mean (94.71) from each individual IQ score. Then, we square these differences and then sum these squared differences (giving 1374.79). We divide this sum of the squared difference by the sample size minus 1 (10-1=9), and finally take the square root of this value, which gives the standard deviation: 12.36. Copy the code below, remove the `set.seed(3190)` line (which makes the code reproducible but creates the same data as in the plot below each time) and run it to randomly simulate 10 IQ scores and plot them.
 
 (ref:plot-hist-iq-1lab) Simulation of 10 random datapoints with mean = 100 and sd = 15 in the population.
 
@@ -49,14 +47,11 @@ ggplot(as.data.frame(x), aes(x)) +
   coord_cartesian(xlim = c(50, 150)) +
   scale_x_continuous(breaks = seq(50, 150, 10)) +
   annotate("text", x = mean(x), y = 0.02, label = paste("Mean = ", round(mean(x)), "\n", "SD = ", round(sd(x)), sep = ""), size = 8) + 
-  theme(plot.background = element_rect(fill = backgroundcolor))  + 
-  theme(panel.background = element_rect(fill = backgroundcolor))
+  theme(plot.background = element_rect(fill = "#fffafa"))  + 
+  theme(panel.background = element_rect(fill = "#fffafa"))
 
 
 ```
-
-FOR ME, RUNNING THE ABOVE CODE RETURNS THE FOLLOWING ERROR: Error in structure(list(fill = fill, colour = colour, size = size, linetype = linetype,  : 
-  object 'backgroundcolor' not found
 
 The plot above provides one example of a randomly simulated dataset of 10 points drawn from a normal distribution with a mean of 100 and a standard deviation of 15. The grey bars indicate the frequency with which each IQ score was observed. The red dotted line illustrates the normal distribution based on the mean and sd of the population. Both the observed mean (97; thin vertical dashed line), as well as the observed standard deviation (14), differ from the true population values. If we simulate 4 additional datasets, we see both the mean and the standard deviation vary.
 
@@ -147,8 +142,6 @@ Imagine we did not yet know what the mean IQ was in our population (where *M* = 
 
 A new simulated sample with 100 participants is plotted below. We are slowly seeing what is known as the **normal distribution** (and the frequency scores start to resemble the red dotted line illustrating the normal distribution of the population). This is the well-known
 bell shaped curve that represents the distribution of many variables in scientific research (although some other types of distributions are quite common as well). The mean and standard deviation are much closer to the true mean and standard deviation, and this is true for most of the simulated samples if you set n <- 100 in the code above and run additional simulations.
-
-
 
 (ref:plot-hist-iq-2lab) 100 random datapoints with mean = 100 and sd = 15 in the population.
 
@@ -251,8 +244,6 @@ ggplot(dataset, aes(DV, fill = as.factor(IV))) +
 ```
 
 The two groups differ in how close they are to their true means, and as a consequence, the difference between groups varies as well. Note that this difference is the main variable in statistical analyses when comparing two groups in for example a *t*-test. In this specific simulation, we got quite extreme results, with a score of 96 (when the population mean is 100) and a score of 111 (when the population mean is 106). So in this sample, due to random variation, we calculate an effect size estimate that is quite a bit larger than the true effect size. Let's simulate 4 additional datasets to see the variation. 
-
-
 
 (ref:plot-group2lab) Four simulated samples of independent groups.
 
@@ -393,8 +384,6 @@ combined + plot_layout(guides = "collect")
 
 We see that there is quite some variation, up to the point that in one simulation the sample means are in the opposite direction of the population means. Again, increasing the sample size will mean that, in the long run, the sample means will get closer to the population means, and that we are more accurately estimating the difference between conditions. With 250 observations in each group, a randomly simulated set of observations for the two groups might look like Figure \@ref(fig:plotgroup3). Note that this difference might not look impressive. However, the difference would pass a significance test (an independent *t*-test) with a very low alpha level. 
 
-
-
 (ref:plotgroup3lab) Simulated sample of 250 independent observations
 
 ```{r plotgroup3, warning=FALSE, fig.margin = FALSE, echo = FALSE, fig.cap="(ref:plotgroup3lab)"}
@@ -452,8 +441,6 @@ The correlation is calculated based on the IQ scores of one fraternal twin (x) a
 $$r=\frac{n \Sigma x y-(\Sigma x )(\Sigma y)}{\sqrt{[n \Sigma x^{2}-(\Sigma x)^{2}][n \Sigma y^{2}-(\Sigma y)^{2}]}}$$
 When we randomly simulate observations for 30 twins, we get the following result.
 
-
-
 (ref:plot-cor1lab) Correlation based on 30 pairs.
 
 ```{r, plot-cor1, warning=FALSE, fig.margin = FALSE, echo = FALSE, fig.cap="(ref:plot-cor1lab)"}
@@ -493,8 +480,6 @@ ggplot(dataset, aes(x = x, y = y)) +
 On the x-axis, we see the IQ score of one twin, and on the y-axis we see the IQ score of the second twin, for each pair. The black dotted diagonal line illustrates the true correlation (0.55), while the yellow line shows the observed correlation (in this case, *r* = 0.43). The slope of the yellow line is determined by the observed correlation, but the position of the line is influenced by the mean IQ scores in both groups (in this simulation, the mean on the y-axis is `r round(mean(x),0)`, somewhat above 100, and the mean on the x-axis is `r round(mean(y),0)`, also slightly above 100. The blue area is the 95% confidence interval around the observed correlation. As we saw in the chapter on [confidence intervals](#confint), 95% of the time (in the long run) the blue area will contain the true correlation (the dotted black line). As in the examples based on means, increasing the sample size to 300 narrows the confidence interval considerably, and will mean that most of the time the correlation in the sample is much closer to the correlation in the population. As the sample size increases, the estimate of the correlation becomes more precise, following the formula of the standard error of a correlation:
 
 $$SE_{r_{xy}} = \frac{1 - r^2_{xy}}{\sqrt{(n - 2)}}$$
-
-
 
 (ref:plot-cor2lab) Correlation based on 300 pairs.
 
@@ -614,8 +599,6 @@ knitr::include_graphics("images/freiman1978.jpg")
 
 In Figure \@ref(fig:metaforest) we see a modern version of a forest plot, with the effect size for Study 1 marked by the black square at `r round(meta_res$b[1], 2)`, and the confidence interval visualized by lines extending to `r round(meta_res$ci.lb, 2)` on the left and `r round(meta_res$ci.ub, 2)` on the right. The numbers printed on the right-hand side of the forest plot provide the exact values for the effect size estimate and the lower and upper bound of the confidence interval. On the lower half of the forest plot, we see a stretched-out diamond, in a row labeled 'RE Model', for 'Random Effects model'. The diamond summarizes the meta-analytic effect size estimate, being centred on that effect size estimate with the left and right endpoints at the 95% confidence interval of the estimate. Because we only have a single study, the meta-analytic effect size estimate is the same as the effect size estimate for our single study.
 
-
-
 (ref:metaforestlab) Forest plot for a single study.
 
 ```{r metaforest, fig.margin = FALSE, echo = FALSE, fig.cap="(ref:metaforestlab)"}
@@ -629,8 +612,6 @@ metafor::forest(meta_res)
 Meta-analyses get a bit more exciting when we are using them to analyze results from multiple studies. When multiple studies are combined in a meta-analysis, effect size estimates are not simply averaged, but they are **weighed** by the **precision** of the effect size estimate, which is determined by the sample size of the study EARLIER IT SAYS WEIGHED BY THE STANDARD ERROR (WHICH I APPRECIATE IS RELATED TO N). Thus, the larger the sample size of an individual study, the more weight it gets in the meta-analysis, meaning that it has more influence on the meta-analytic effect size estimate.
 
 One intuitive way to learn about meta-analyses is to simulate studies and meta-analyze them. The code below simulates 12 studies. There is a true effect in the simulated studies, as the difference in means in the population is 0.4 (and given the standard deviation of 1, Cohen's *d* = 0.4 as well). The studies vary in their sample size between 30 observations and 100 observations per condition. The meta-analysis is performed, and a forest plot is created. 
-
-
 
 (ref:meta-simlab) Forest plot for 12 simulated studies.
 
@@ -651,7 +632,7 @@ for (i in 1:nSims) { # for each simulated study
        m2i = mean(y), sd1i = sd(x), sd2i = sd(y), measure = "SMD")
 }
 result <- metafor::rma(yi, vi, data = metadata, method = "FE")
-par(bg = backgroundcolor)
+par(bg = "#fffafa")
 metafor::forest(result)
 ```
 
@@ -737,7 +718,7 @@ metadata <- escalc(measure = "OR",
 result <- rma(yi, vi, data = metadata)
 # Create forest plot. Using ilab and ilab.xpos arguments to add counts
 par(mar=c(5,4,0,2))
-par(bg = backgroundcolor)
+par(bg = "#fffafa")
 forest(result, 
        ilab = cbind(metadata$ai, metadata$bi, metadata$ci, metadata$di), 
        xlim = c(-10, 8), 
