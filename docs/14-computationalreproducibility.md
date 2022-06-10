@@ -162,7 +162,7 @@ You can close the window. Still under the RStudio options, click the blue
 hyperlink ‘View public key’. A window will appear, telling you that you can use
 CTRL+C to copy the key. Do so.
 
-Go to GitHub, and got to settings and then select the option SSH and GPG keys:
+Go to GitHub, and go to settings and then select the option SSH and GPG keys:
 
 <img src="images/e2c7d8cad7b8127e20ad6caf6d2b84ea.png" width="50%" style="display: block; margin: auto;" />
 
@@ -173,7 +173,7 @@ Click ‘New SSH key’
 <img src="images/02ee9504ceacd79b3706f18e8497ed43.png" width="100%" style="display: block; margin: auto;" />
 
 Enter a name (e.g., RStudio) and paste the key in the correct window. Click ‘Add
-SSH Key’. This will allow you to send code to from R Studio to your GitHub
+SSH Key’. This will allow you to send code from R Studio to your GitHub
 repositories without having to enter your GitHub login name and password every
 time. In other words, R Studio is now connected to your GitHub account and
 repository. You are now ready to create a **version controlled project** in R
@@ -288,7 +288,7 @@ determines how the final document is rendered. This section is sensitive, in the
 sense that it needs to be programmed exactly right – including spaces and tabs –
 so it is not recommended to change it too much without looking up detailed
 documentation on how to change this section. If you want the technical details:
-A R Markdown file is fed to knitr software, which creates a normal markdown
+An R Markdown file is fed to knitr software, which creates a normal markdown
 file, which then uses pandoc software to generate the specific document you
 requested. All of this happens automatically.
 
@@ -346,7 +346,7 @@ manually typing in these two lines.
 
 Copy-paste the code below – make sure to get all the text – and paste it between
 the start line and the end line of the R code chunk. Note that
-there is not hard return between 'str' and 'oop.txt' – when copy-pasting this,
+there is no hard return between 'str' and 'oop.txt' – when copy-pasting this,
 you probably need to correct this.
 
 
@@ -478,11 +478,11 @@ Congratulations on your first GitHub push! If you want to read a more extensive 
 
 ## Step 6: Reproducible Data Analysis
 
-So far, we have only read in data. The goal of an R Markdown file is to create a manuscript that contains a fully **reproducible data analysis**. In this assignment, I cannot teach you how to analyze data in R (but I can highly recommend learning it – there are plenty of excellent online resources). Instead of programming from scratch, visit [this raw text version of the R Markdown  file](https://raw.githubusercontent.com/Lakens/reproducibility_assignment/master/main_analysis.Rmd) that will analyze the Stroop data. In the website, select all text (CTRL+A), copy it (CTRL+C). Then go to your main_analysis.Rmd file in R Studio. Select all text (CTRL+A) and hit delete. That’s right – delete everything. You don’t need to worry about losing anything – you have a **version controlled file** in your GitHub repository, which means you can always go back to a previous version! In the (now empty) main_analysis.Rmd file, press CTRL+V and paste all text. The file should look like the screenshot below. 
+So far, we have only read in data. The goal of an R Markdown file is to create a manuscript that contains a fully **reproducible data analysis**. In this chapter, I cannot teach you how to analyze data in R (but I can highly recommend learning it – there are plenty of excellent online resources). Instead of programming from scratch, visit [this raw text version of the R Markdown  file](https://raw.githubusercontent.com/Lakens/reproducibility_assignment/master/main_analysis.Rmd) that will analyze the Stroop data. In the website, select all text (CTRL+A), copy it (CTRL+C). Then go to your main_analysis.Rmd file in R Studio. Select all text (CTRL+A) and press delete. That’s right – delete everything. You don’t need to worry about losing anything – you have a **version controlled file** in your GitHub repository, which means you can always go back to a previous version! In the (now empty) main_analysis.Rmd file, press CTRL+V and paste all text. The file should look like the first screenshot below. 
 
 This R Markdown file does a number of things, which we will explain in detail
 below. For example, it will automatically install libraries it needs, load the
-data, and create a report in HTML. You can hit the Knit button, and the HTML
+data, and create a report in HTML. You can press the Knit button, and the HTML
 document should load. You should see output as in the second screenshot below.
 
 <img src="images/23a19f01f3a23b3673656ee78860caf5.png" width="100%" style="display: block; margin: auto;" />
@@ -533,7 +533,7 @@ example when sharing with collaborators.
 
 If you scroll down, you can see the introduction text, the code that generates
 the first figure, and the code that performs the analyses. These variables are
-used in the Result section. Let’s look at this section:
+used in the Results section. Let’s look at this section:
 
 <img src="images/aab442e8c104cb1444a88b7a3a987de5.png" width="100%" style="display: block; margin: auto;" />
 
@@ -599,7 +599,7 @@ Whenever you collect personal data, make sure you [handle this data responsibly]
 ## Step 8: Archiving Your Data and Code
 
 Although we have uploaded our data and code to GitHub, when you publish your article and want to **share your data and code**, it is important to remember that GitHub is not a data repository that guarantees long term data storage.
-GitHub is currently owned by Microsoft, and companies can choose to do with their free service whatever they want. This makes it less suitable to link to GitHub in scientific articles, because articles be around decades from now. For scientific publications, you will want to link to a stable long-term data repository. For a **list of data repositories**, click [HERE](http://journals.plos.org/plosone/s/data-availability#loc-recommended-repositories).
+GitHub is currently owned by Microsoft, and companies can choose to do with their free service whatever they want. This makes it less suitable to link to GitHub in scientific articles, because articles could be around for decades from now. For scientific publications, you will want to link to a stable long-term data repository. For a **list of data repositories**, click [HERE](http://journals.plos.org/plosone/s/data-availability#loc-recommended-repositories).
 We will use the Open Science Framework (OSF) in this assignment as a stable data storage, because it is very easy to just integrate our GitHub repository within an OSF project.
 
 Log in to the OSF at <https://osf.io/> (create an account if you haven’t already  done so). Click ‘Create new project’. Give your project a name (for example ‘Stroop Reproducible Analysis Assignment’).
@@ -741,7 +741,7 @@ Finally, remember that most code in R relies on specific libraries (also called 
 
 ## Conclusion
 
-In this assignment, we used a number of platforms and software solutions, such as GitHub, the Open Science Framework, R Studio, R, and R Markdown. Following through the example here is not the same as being able to use these tools in your research. Learning to use these tools will take time. There will be many frustrations when the code or software doesn’t work as you want, or when you have gotten your local and remote GitHub repositories so much out of sync you just need to delete everything on your local computer and re-download all files from GitHub (git reset --hard [HEAD] is your friend). There are a lot of resources available online to find answers, or to ask for help. In my experience, it is some work, but it is doable, even if you have very limited knowledge of programming. You can get a basic reproducible workflow up and running by simply using all the steps described here, and then learn new skills as you need them. Learning these skills is appreciated both within and outside of academia (which is useful for PhD students) and will quickly save you time (e.g., when recreating figures for a revision, or when analyzing very similar datasets in the future). A reproducible workflow also improves the quality of your scientific work, and makes it easier for other scientists to re-use your work in the future.
+In this chapter, we used a number of platforms and software solutions, such as GitHub, the Open Science Framework, R Studio, R, and R Markdown. Following through the example here is not the same as being able to use these tools in your research. Learning to use these tools will take time. There will be many frustrations when the code or software doesn’t work as you want, or when you have gotten your local and remote GitHub repositories so much out of sync you just need to delete everything on your local computer and re-download all files from GitHub (git reset --hard [HEAD] is your friend). There are a lot of resources available online to find answers, or to ask for help. In my experience, it is some work, but it is doable, even if you have very limited knowledge of programming. You can get a basic reproducible workflow up and running by simply using all the steps described here, and then learn new skills as you need them. Learning these skills is appreciated both within and outside of academia (which is useful for PhD students) and will quickly save you time (e.g., when recreating figures for a revision, or when analyzing very similar datasets in the future). A reproducible workflow also improves the quality of your scientific work, and makes it easier for other scientists to re-use your work in the future.
 
 For another open educational resource on making your scientific research accessible and reproducible, see [The Open Science Manual](https://arca-dpss.github.io/manual-open-science/) by Claudio Zandonella Callegher and Davide Massidda.
 
