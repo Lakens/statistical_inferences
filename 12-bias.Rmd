@@ -72,7 +72,7 @@ New methods to detect publication bias are continuously developed, and old metho
 
 Before we can explain a second method (Trim-and-Fill), it’s useful to explain a common way to visualize meta-analyses, known as a **funnel plot**. In a funnel plot, the x-axis is used to plot the effect size of each study, and the y-axis is used to plot the ‘precision’ of each effect size. Typically, the y-axis is used to plot the standard error of each effect size estimate. The larger the number of observations in a study, the more precise the effect size estimate, the smaller the standard error, and thus the higher up in the funnel plot the study will be. An infinitely precise study (with a standard error of 0) would be at the top of y-axis. 
 
-The script below simulates meta-analyses for `nsims` studies, and stores all the results needed to examine bias detection. In the first section of the script, statistically significant results in the desired direction are simulated, and in the second part null results are generated. The script generates a percentage of significant results as indicated by `pub.bias` - when set to 1, all results are significant. In the code below, `pub.bias` is set to 0.05. Because there is no true effect in the simulation (`m1` and `m2` are equal, so there is no difference between the groups), the only significant results that should be expected are the 5% false positives. Finally, the meta-analysis is performed, the results are printed, and a funnel plot is created. UNFORTUNATELY, THE PACKAGE TRUNCNORM APPEARS TO NO LONGER EXIST.
+The script below simulates meta-analyses for `nsims` studies, and stores all the results needed to examine bias detection. In the first section of the script, statistically significant results in the desired direction are simulated, and in the second part null results are generated. The script generates a percentage of significant results as indicated by `pub.bias` - when set to 1, all results are significant. In the code below, `pub.bias` is set to 0.05. Because there is no true effect in the simulation (`m1` and `m2` are equal, so there is no difference between the groups), the only significant results that should be expected are the 5% false positives. Finally, the meta-analysis is performed, the results are printed, and a funnel plot is created. 
 
 ```{r metasim, eval = FALSE}
 library(metafor)
@@ -232,8 +232,6 @@ When we examine the results of the meta-analysis we see there are 100 studies in
 
 If we examine the funnel plot in Figure \@ref(fig:funnel1) we see each study represented as a dot. The larger the sample size, the higher up in the plot, and the smaller the sample size, the lower in the plot. The white pyramid represents the area within which a study is not statistically significant, because the observed effect size (x-axis) is not far enough removed from 0 such that the confidence interval around the observed effect size would exclude 0. The lower the standard error, the more narrow the confidence interval, and the smaller the effect sizes needs to be in order to be statistically significant. At the same time, the smaller the standard error, the closer the effect size will be to the true effect size, so the less likely we will see effects far away from 0. We should expect 95% of the effect size estimates to fall within the funnel, if it is centered on the true effect size. We see only a few studies (five, to be exact) fall outside the white pyramid on the right side of the plot. These are the 5% significant results that we programmed in the simulation. Note that all 5 of these studies are false positives, as there is no true effect. If there was a true effect (you can re-run the simulation and set *d* to 0.5 by changing `m1 <- 0` in the simulation to `m1 <- 0.5`) the pyramid cloud of points would move to the right, and be centered on 0.5 instead of 0.  
 
-
-
 (ref:funnel1lab) Funnel plot of unbiased null results.
 
 ```{r funnel1, echo = FALSE, fig.cap="(ref:funnel1lab)"}
@@ -244,7 +242,7 @@ abline(v = result$b[1], lty = "dashed") #  vertical line at meta-analytic ES
 points(x = result$b[1], y = 0, cex = 1.5, pch = 17) # add point
 
 ```
-BACKGROUNDCOLOR ISSUE AGAIN IN THE ABOVE CODE.
+
 We can now compare the unbiased meta-analysis above with a biased meta-analysis. We can simulate a situation with extreme publication bias. Building on the estimate by @scheel_excess_2021, let's assume 96% of the studies show positive results. We set `pub.bias <- 0.96` in the code. We keep both means at 0, so there still is not real effect, but we will end up with mainly Type 1 errors in the predicted direction in the final set of studies. After simulating biased results, we can perform the meta-analysis to see if the statistical inference based on the meta-analysis is misleading. 
 
 ```{r metasim2, echo = FALSE}
@@ -461,10 +459,9 @@ puniform::puniform(m1i = metadata$m1, m2i = metadata$m2, n1i = metadata$n1,
   n2i = metadata$n2, sd1i = metadata$sd1, sd2i = metadata$sd2, side = "right")
 ```
 
-An alternative technique that also meta-analyzes the *p*-values from individual studies is the *z*-curve, which is a meta-analysis of observed power ([@bartos_z-curve20_2020; @brunner_estimating_2020]; for an example, see [@sotola_garbage_2022]). Like a traditional meta-analysis, *z*-curves transform observed test results (*p*-values) into *z*-scores. In an unbiased literature where the null hypothesis is true, we should observe approximately $\alpha$% significant results. If the null is true, the distribution of *z*-scores is centered on 0. The *z*-curve computes absolute *z*-values, and therefore $\alpha$% of *z*-scores should be larger than the critical value (1.96 for a 5% alpha level). In Figure \@ref(fig:zcurveunbiasednull) *z*-scores for 1000 studies are plotted, with a true effect size of 0, where exactly 5% of the observed results are statistically significant. 
+An alternative technique that also meta-analyzes the *p*-values from individual studies is a *z*-curve analysis, which is a meta-analysis of observed power ([@bartos_z-curve20_2020; @brunner_estimating_2020]; for an example, see [@sotola_garbage_2022]). Like a traditional meta-analysis, *z*-curve analysis transform observed test results (*p*-values) into *z*-scores. In an unbiased literature where the null hypothesis is true, we should observe approximately $\alpha$% significant results. If the null is true, the distribution of *z*-scores is centered on 0. *Z*-curve analysis computes absolute *z*-values, and therefore $\alpha$% of *z*-scores should be larger than the critical value (1.96 for a 5% alpha level). In Figure \@ref(fig:zcurveunbiasednull) *z*-scores for 1000 studies are plotted, with a true effect size of 0, where exactly 5% of the observed results are statistically significant. 
 
 (ref:zcurveunbiasednull) *Z*-curve analysis for 1000 studies with a true effect size of 0 without publication bias.
-
 
 ```{r zcurveunbiasednull, echo = FALSE, cache = TRUE, fig.cap="(ref:zcurveunbiasednull)"}
 set.seed(1)
