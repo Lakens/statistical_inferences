@@ -141,7 +141,7 @@ In a very educational video about the '[Dance of the *p*-values](https://www.you
 
 Take a moment to try to answer the following two questions. Which *p*-values can you expect to observe if there is a true effect, and you repeat the same study one-hundred thousand times? And which *p*-values can you expect if there is no true effect, and you repeat the same study one-hundred thousand times? If you don't know the answer, don't worry - you will learn it now. But if you don't know the answer, it is worth reflecting on why you don't know the answer about such an essential aspect of *p*-values. If you are like me, you were simply never taught this. But as we will see, it is essential to a solid understanding of how to interpret *p*-values. 
 
-Which *p*-values you can expect is completely determined by the statistical power of the study, or the probability that you will observe a significant effect, if there is a true effect. The statistical power ranges from 0 to 1. We can illustrate this by simulating one-sample *t*-tests. The idea is that we simulate IQ scores for a group of people. We know the standard deviation of IQ scores is 15. For now, we will set the mean IQ score in the simulated group to 105, which we will compare to the average IQ score of all people (which is known to be 100 – that’s how IQ tests are normalized). We are testing if the people in our simulated sample have an IQ that differs from the average (and we know the correct answer is ‘yes’, because we made it so in the simulation).
+Which *p*-values you can expect is completely determined by the statistical power of the study, or the probability that you will observe a significant effect, if there is a true effect. The statistical power ranges from 0 to 1. We can illustrate this by simulating independent *t*-tests. The idea is that we simulate IQ scores for a group of people. We know the standard deviation of IQ scores is 15. For now, we will set the mean IQ score in one simulated group to 100, and in the oher simulated group to 105. We are testing if the people in in one group have an IQ that differs from the other group (and we know the correct answer is ‘yes’, because we made it so in the simulation).
 
 ```{r, eval = FALSE, cache = TRUE}
 p <- numeric(100000) # store all simulated *p*-values
@@ -153,11 +153,11 @@ for (i in 1:100000) { # for each simulated experiment
 }
 
 (sum(p < 0.05) / 100000) # compute power
-par(bg = backgroundcolor)
+
 hist(p, breaks = 20) # plot a histogram
 ```
 
-In the simulation, we generate n = 71 normally distributed IQ scores with a mean of M (105 by default) and a standard deviation of 15. We then perform a one-sample *t*-test, store the *p*-value, and generate a plot of the *p*-value distribution.   IS IT REALLY A ONE-SAMPLE T TEST THAT IS PERFORMED HERE?
+In the simulation, we generate n = 71 normally distributed IQ scores with means of M (100 and 105 by default) and a standard deviation of 15. We then perform an independent *t*-test, store the *p*-value, and generate a plot of the *p*-value distribution.
 
 (ref:pdist1lab) Distribution of *p*-values when power = 50%. 
 
@@ -175,6 +175,7 @@ for (i in 1:nSims) { # for each simulated experiment
 }
   
 #Plot figure
+par(bg = backgroundcolor)
 op <- par(mar = c(5,7,4,4)) #change white-space around graph
 hist(p, breaks=bars, xlab="P-values", ylab="number of p-values\n", axes=FALSE,
      main=paste("P-value Distribution with 50% power"),
@@ -351,8 +352,6 @@ add_type1_error(N, "left")
 
 ```
 
-FOR THE ABOVE CODE, IS THERE A PACKAGE USED? (FOR calc_d_dist AND FOR add_type1_error).
-
 The first thing to notice is that we expect that the mean of the null model is 0. Looking at the x-axis, we see the plotted distribution is centered on 0. But even if the mean difference in the population is 0 that does not imply every sample we draw from the population will give a mean difference of exactly zero. There is variation around the population value, as a function of the standard deviation and the sample size.
 
 The y-axis of the graph represents the density, which provides an indication of the relative likelihood of measuring a particular value of a continuous distribution. We can see that the most likely mean difference is the true population value of zero, and that larger differences from zero become increasingly less likely. The graph has two areas that are colored red. These areas represent 2.5% of the most extreme values in the left tail of the distribution, and 2.5% of the most extreme values in the right tail of the distribution. Together, they make up 5% of the most extreme mean differences we would expect to observe, given our number of observations, when the true mean difference is exactly 0. When a mean difference in the red area is observed, the corresponding statistical test will be statistically significant at a 5% alpha level. In other words, not more than 5% of the observed mean differences will be far enough away from 0 to be considered surprising. Because the null hypothesis is true, observing a ‘surprising’ mean difference in the red areas is a Type 1 error.
@@ -406,12 +405,12 @@ The standard error of the differences between means is thus 0.2 for n = 50 in ea
 
 If we collected n = 5000, and we would again observe a mean difference of 0.5, it should be clear that this same difference is even more surprising than it was when we collected 50 observations. We are now almost ready to address common misconceptions about *p*-values, but before we can do this, we need to introduce a model of the data when the null is not true. If we are not sampling data from a model where the true mean difference is 0, what does our alternative model look like? Some software (such as G\*power, see Figure \@ref(fig:gpowerscreenshot)) will visualize both the null model (red curve) and the alternative model (blue curve) in their output:
 
-(ref:gpowerscreenshotlab) Screenshot from G*Power software
+(ref:gpowerscreenshotlab) Screenshot from G\*Power software visualizing the null model (red distribution) and alternative model (blue distribution) and the critical *t*-value (1.66055) that is the threshold distinguishing significant and non-significant results.
 
 ```{r gpowerscreenshot, echo = FALSE, fig.cap = '(ref:gpowerscreenshotlab)'}
 knitr::include_graphics("images/1.3.3.png")
 ```
-FOR ME, I THINK THE FIGURE CAPTION COULD SAY MORE HERE. FOR EXAMPLE, WHAT IS MEANT BY THE T VALUE ANNOTATION WITHIN THE FIGURE?
+
 When we do a study, we rarely already know what the true mean difference is (if we already knew, why would we do the study?). But let’s assume there is an all-knowing entity. Following Paul Meehl, we will call this all-knowing entity ‘Omniscient Jones’. Before we collect our sample of 50 observations, Omniscient Jones already knows that the true mean difference in the population is 0.5. Again, we should expect some variation around 0.5 in this alternative model. The figure below shows the expected data pattern when the null hypothesis is true (now indicated by a grey line) and it shows an alternative model, assuming a true mean difference of 0.5 exists in the population (indicated by a black line).
 
 (ref:fig134lab) Distribution of observed Cohen's *d* effect sizes when collecting 50 observations per group in an independent *t*-test when *d* = 0.
@@ -671,7 +670,7 @@ It is important to distinguish probabilities before collecting the data and anal
 
 It is impossible to calculate the probability that an effect will replicate, based on only the *p*-value. The main reason for this is that we do not know the true mean difference. If we were Omniscient Jones, and we knew the true mean difference (e.g., a difference between the two groups of 0.5 scale points) we would know the statistical power of our test. The statistical power is the probability that we will find a significant result, if the alternative model is true (i.e. if there is a true effect). For example, reading the text in the left bar in the app, we see that with N = 50 per group, alpha level of 0.05, and a true mean difference of 0.5, the probability of finding a significant result (or the statistical power) is 69.69%. If we would observe a significant effect in this scenario (e.g., *p* = 0.03) it is not true that there is a 97% probability that an exact replication of the study (with the same sample size) would again yield a significant effect. The probability that a study yields a significant effect is determined by the statistical power - not by the *p*-value in a previous study.
 
-What we can generally take away from this last misunderstanding is the fact that the probability of replication depends on the presence versus the absence of a true effect. In other words, as stated above, if a true effect exists then the level of statistical power informs us about how frequently we should yield a significant result (e.g., 80% power means we should observe significant result 80% of the time). On the other hand, if the effect is null (or non-existent) then significant results will be observed only 5% of the time in the long run (i.e. the Type 1 error rate given an alpha of 0.05). Therefore, either the statistical power or the alpha level equals the probability of replication, depending on if there is or isn’t a true effect I THINK THIS ASSUMES THAT THE FIRST REPLICATION REFLECTS ACCURATELY WHETHER THERE IS OR ISN'T A TRUE EFFECT?. 
+What we can generally take away from this last misunderstanding is the fact that the probability of replication depends on the presence versus the absence of a true effect. In other words, as stated above, if a true effect exists then the level of statistical power informs us about how frequently we should observe a significant result (e.g., 80% power means we should observe significant result 80% of the time). On the other hand, if the null hypothesis is true (e.g., the effect is 0) then significant results will be observed only with a frequency approaching the chosen alpha level in the long run (i.e. a 5% Type 1 error rate if an an alpha of 0.05 is chosen). Therefore, if the original study correctly observed an effect, the probability of a significant result in a replication study is determined by the statistical power, and if the original study correctly observed no significant effect, the probability of a significant effect in a replication study is determined by the alpha level. 
 
 ## Test Yourself
 
