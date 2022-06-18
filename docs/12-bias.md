@@ -158,7 +158,7 @@ Let’s start by looking at what unbiased research looks like, by running the co
 ## 
 ## Model Results:
 ## 
-## estimate      se     zval    pval    ci.lb   ci.ub   <U+200B> 
+## estimate      se     zval    pval    ci.lb   ci.ub   ​ 
 ##  -0.0021  0.0121  -0.1775  0.8591  -0.0258  0.0215    
 ## 
 ## ---
@@ -193,7 +193,7 @@ We can now compare the unbiased meta-analysis above with a biased meta-analysis.
 ## 
 ## Model Results:
 ## 
-## estimate      se     zval    pval   ci.lb   ci.ub     <U+200B> 
+## estimate      se     zval    pval   ci.lb   ci.ub     ​ 
 ##   0.2701  0.0125  21.6075  <.0001  0.2456  0.2946  *** 
 ## 
 ## ---
