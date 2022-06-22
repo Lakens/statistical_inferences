@@ -456,7 +456,7 @@ Figure 10.6: Power curve for a sequential design with 2 looks.
 <span class="header-section-number">10.7</span> Stopping for futility<a class="anchor" aria-label="anchor" href="#stopping-for-futility"><i class="fas fa-link"></i></a>
 </h2>
 <p>So far, the sequential designs we have discussed would only stop at an interim analysis if we can reject <span class="math inline">\(H_0\)</span>. A well-designed study also takes into account the possibility that there is no effect, as we discussed in the chapter on <a href="equivalencetest.html#equivalencetest">equivalence testing</a>. In the sequential analysis literature, stopping to reject the presence of the smallest effect size of interest is called <strong>stopping for futility</strong>. In the most extreme case, it could be impossible after an interim analysis that the final analysis will yield a statistically significant result. To illustrate this in a hypothetical scenario, imagine that after collecting 182 out of 192 observations, the observed mean difference between two independent conditions is 0.1, while the study was designed with the idea that the smallest effect deemed worthwhile is a mean difference of 0.5. If the primary dependent variable is measured on a 7 point Likert scale, it might be that even if every of the remaining 5 participants in the control condition answers 1, and every of the remaining participants in the experimental condition answers 7, the effect size after 192 observations will not yield <em>p</em> &lt; <span class="math inline">\(\alpha\)</span>. If the goal of your study was to detect whether there was an effect of at least a mean difference of 0.5, at this point a researcher knows that goal will not be reached. Stopping a study at an interim analysis because the final result cannot yield a significant effect is called <em>non-stochastic curtailment</em>.</p>
-<p>In less extreme but more common situations, it might still be possible for the study to observe a significant effect, but the probability might be very small. The probability of finding a significant result, given the data that have been observed up to an interim analysis, is called <strong>conditional power</strong>. Performing the conditional power analysis on the effect size that was originally expected might be too optimistic, but it is also undesirable to use the observed effect size, which typically has quite some uncertainty. One proposal is to update the expected effect size based on the observed data. If a Bayesian updating procedure is used, this is called <strong>predictive power</strong> <span class="citation">(<a href="references.html#ref-spiegelhalter_monitoring_1986" role="doc-biblioref">Spiegelhalter et al., 1986</a>)</span>. It is possible to use <strong>adaptive designs</strong> that allow researchers to increase the final number of observations based on an interim analysis without inflating the Type 1 error rate (see <span class="citation">Wassmer &amp; Brannath (<a href="references.html#ref-wassmer_group_2016" role="doc-biblioref">2016</a>)</span>).</p>
+<p>In less extreme but more common situations, it might still be possible for the study to observe a significant effect, but the probability might be very small. The probability of finding a significant result, given the data that have been observed up to an interim analysis, is called <strong>conditional power</strong>. Performing the conditional power analysis on the effect size that was originally expected might be too optimistic, but it is also undesirable to use the observed effect size, which typically has quite some uncertainty. One proposal is to update the expected effect size based on the observed data. If a Bayesian updating procedure is used, this is called <strong>predictive power</strong> <span class="citation">(<a href="references.html#ref-spiegelhalter_monitoring_1986" role="doc-biblioref">D. J. Spiegelhalter et al., 1986</a>)</span>. It is possible to use <strong>adaptive designs</strong> that allow researchers to increase the final number of observations based on an interim analysis without inflating the Type 1 error rate (see <span class="citation">Wassmer &amp; Brannath (<a href="references.html#ref-wassmer_group_2016" role="doc-biblioref">2016</a>)</span>).</p>
 <p>Alternatively, if the observed effect size is smaller than expected, one might want to stop for futility. As an illustration of a simple stopping rule for futility, imagine a researcher who will stop for futility whenever the observed effect size is is either zero, or in the opposite direction as was predicted. In Figure <a href="sequential.html#fig:futility1">10.7</a> the red line indicates critical values to declare a significant effect. In essence, this means that if the observed <em>z</em>-score for the interim test is either 0 or negative, data collection will be terminated. This can be specified by adding <code>futilityBounds = c(0, 0)</code> to the specification of the sequential design. One can choose in advance to stop whenever the criteria to stop for futility have been met, (i.e., a binding futility rule), but it is typically recommended to allow the possibility to continue data collection (i.e., a non-binding futility rule, specified by setting <code>bindingFutility = FALSE</code>).</p>
 <div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignGroupSequential.html">getDesignGroupSequential</a></span><span class="op">(</span>
@@ -528,17 +528,17 @@ Figure 10.9: Power curve for a sequential design with 2 looks with stopping for 
   <span class="op">)</span>
 
 <span class="va">res</span></code></pre></div>
-<pre><code>## [PROGRESS] Stage results calculated [0.042 secs] 
-## [PROGRESS] Conditional power calculated [0.0332 secs] 
-## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.0012 secs] 
-## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.6973 secs] 
-## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.651 secs] 
-## [PROGRESS] Repeated confidence interval calculated [1.35 secs] 
-## [PROGRESS] Repeated p-values of stage 1 calculated [0.2614 secs] 
-## [PROGRESS] Repeated p-values of stage 2 calculated [0.2573 secs] 
-## [PROGRESS] Repeated p-values calculated [0.5201 secs] 
-## [PROGRESS] Final p-value calculated [0.0015 secs] 
-## [PROGRESS] Final confidence interval calculated [0.0725 secs]</code></pre>
+<pre><code>## [PROGRESS] Stage results calculated [0.0918 secs] 
+## [PROGRESS] Conditional power calculated [0.0652 secs] 
+## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.0023 secs] 
+## [PROGRESS] Repeated confidence interval of stage 1 calculated [1.48 secs] 
+## [PROGRESS] Repeated confidence interval of stage 2 calculated [1.67 secs] 
+## [PROGRESS] Repeated confidence interval calculated [3.15 secs] 
+## [PROGRESS] Repeated p-values of stage 1 calculated [0.5223 secs] 
+## [PROGRESS] Repeated p-values of stage 2 calculated [0.6362 secs] 
+## [PROGRESS] Repeated p-values calculated [1.16 secs] 
+## [PROGRESS] Final p-value calculated [0.004 secs] 
+## [PROGRESS] Final confidence interval calculated [0.2194 secs]</code></pre>
 <pre><code>## Analysis results (means of 2 groups, group sequential design):
 ## 
 ## Design parameters:
@@ -776,7 +776,7 @@ $( document ).ready(function() {
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Improving Your Statistical Inferences</strong>" was written by Daniël Lakens. It was last built on 2022-06-18.</p>
+    <p>"<strong>Improving Your Statistical Inferences</strong>" was written by Daniël Lakens. It was last built on 2022-06-21.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
