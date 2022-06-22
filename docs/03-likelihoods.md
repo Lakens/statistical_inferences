@@ -2,7 +2,7 @@
 
 # Likelihoods{#likelihoods}
 
-In addition to frequentist and Bayesian approaches to statistical inferences, likelihoods provide a third approach to statistical inferences [@pawitan_all_2001; @dienes_understanding_2008]. Like [Bayesian approaches](bayes), which will be discussed in the next chapter, likelihoodists are interested quantifying a measure of relative evidence when comparing two models or hypotheses. Unlike Bayesians, likelihoodists are not too enthusiastic about the idea of incorporating prior information into their statistical inferences. As the likelihoodists Taper and Lele [-@taper_philosophy_2011] write:
+In addition to frequentist and Bayesian approaches to statistical inferences, likelihoods provide a third approach to statistical inferences [@pawitan_all_2001; @dienes_understanding_2008]. Like [Bayesian approaches](bayes), which will be discussed in the next chapter, likelihoodists are interested in quantifying a measure of relative evidence when comparing two models or hypotheses. Unlike Bayesians, likelihoodists are not too enthusiastic about the idea of incorporating prior information into their statistical inferences. As the likelihoodists Taper and Lele [-@taper_philosophy_2011] write:
 
 >It is not that we believe that Bayes' rule or Bayesian mathematics is flawed, but that from the axiomatic foundational definition of probability Bayesianism is doomed to answer questions irrelevant to science. We do not care what you believe, we barely care what we believe, what we are interested in is what you can show.
 
