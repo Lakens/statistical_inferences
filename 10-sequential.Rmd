@@ -116,7 +116,7 @@ The approaches to specify the shape of decision boundaries across looks discusse
 The main benefit of these alpha spending functions is that error rates at interim analyses can be controlled, while neither the number nor the timing of the looks needs to be specified in advance. This makes alpha spending approaches much more flexible than earlier approaches to controlling the Type 1 error in group sequential designs. When using an alpha spending function it is important that the decision to perform an interim analysis is not based on collected data, as this can still increase the Type I error rate. As long as this assumption is met, it is possible to update the alpha levels at each look during a study.
 
 
-(ref:seq-comparisonlab) Comparison of Pocock and O'Brien-Fleming correction, and Pocock-like and O'Brien-Fleming like alpha spending functions, for 5 looks.
+(ref:seq-comparisonlab) Comparison of Pocock (P) and O'Brien-Fleming correction (OF), Pocock-like (asP) and O'Brien-Fleming like (asOF) alpha spending functions, for 5 looks.
 
 ```{r seq-comparison, echo = FALSE, fig.cap="(ref:seq-comparisonlab)"}
 d1 <- getDesignGroupSequential(typeOfDesign = "P", kMax = 5)
@@ -151,7 +151,7 @@ sampleSizeResult <- getSampleSizeMeans(
 )
 ```
 
-Now imagine that due to logistical issues, we do not manage to analyze the data until we have collected data from 76 observations (38 in each condition) instead of the planned 66 observations. Such logistical issues are common in practice and one of the main reasons alpha spending functions for group sequential designs were developed. Our first look at the data does not occur at the planned time of collecting 33.3% of the total sample, but at 76/198 = 38.4% of the planned sample. We can recalculate the alpha level we should use for each look at the data, based on the current look, and planned future looks. Instead of using the alpha levels 0.0226, 0.0217, and 0.0217 at the three respective looks (as calculated above, and note how in the Pocock-style alpha spending function the alpha levels are almost, but not exactly, the same at each look, unlike the Pocock correction where they are identical at each look). We can adjust the information rates by explicitly specifying them using `informationRates` in the code below. The first look now occurs at 76/198 of the planned sample. The second look is still planned to occur at 2/3 of the sample, and the final look at the planned maximum sample size.  
+Now imagine that due to logistical issues, we do not manage to analyze the data until we have collected data from 76 observations (38 in each condition) instead of the planned 66 observations. Such logistical issues are common in practice and one of the main reasons alpha spending functions for group sequential designs were developed. Our first look at the data does not occur at the planned time of collecting 33.3% of the total sample, but at 76/198 = 38.4% of the planned sample. We can recalculate the alpha level we should use for each look at the data, based on the current look, and planned future looks. Instead of using the alpha levels 0.0226, 0.0217, and 0.0217 at the three respective looks (as calculated above, and note how in the Pocock-like alpha spending function the alpha levels are almost, but not exactly, the same at each look, unlike the Pocock correction where they are identical at each look). We can adjust the information rates by explicitly specifying them using `informationRates` in the code below. The first look now occurs at 76/198 of the planned sample. The second look is still planned to occur at 2/3 of the sample, and the final look at the planned maximum sample size.  
 
 ```{r, echo = TRUE}
 design <- getDesignGroupSequential(
@@ -192,7 +192,7 @@ The alpha levels for looks in the past do not correspond with the alpha levels w
 
 ## Sample Size for Sequential Designs
 
-Sequential designs require somewhat more participants than a fixed design at the final look, depending on how much the alpha level at this look is lowered due to the correction for multiple comparisons. Due to early stopping, sequential designs will on average require less participants. Let's first examine how many participants we would need in a fixed design, where we only analyze our data once. We have an alpha level of 0.05, and a Type 2 (beta) error of 0.1 - in other words, the desired power is 90%. We will perform one test, and assuming a normal distribution our critical Z-score would be 1.96, for an alpha level of 5%. 
+At the final look, sequential designs require somewhat more participants than a fixed design, depending on how much the alpha level at this look is lowered due to the correction for multiple comparisons. That said, due to early stopping, sequential designs will on average require less participants. Let's first examine how many participants we would need in a fixed design, where we only analyze our data once. We have an alpha level of 0.05, and a Type 2 (beta) error of 0.1 - in other words, the desired power is 90%. We will perform one test, and assuming a normal distribution our critical Z-score would be 1.96, for an alpha level of 5%. 
 
 ```{r}
 design <- getDesignGroupSequential(
@@ -286,7 +286,7 @@ power_res_seq <- getSampleSizeMeans(
 summary(power_res_seq)
 ```
 
-This design meets the desired power when we collect `r ceiling(power_res_seq$numberOfSubjects1[2]) * 2` participants - exactly as many as when we would *not* look at the data once. We basically get a free look at the data, with the expected number of participants (assuming *d* = 0.5) dropping to `r round(power_res_seq$expectedNumberOfSubjectsH1, 2)`. Increasing the number of looks to 4 comes at only a very small required increase in the number of participants to maintain the same statistical power, but further descreases the expected sample size. Especially for a conservative a-priori power analysis, or when performing an a-priori power analysis for a smallest effect size of interest, and there is a decent probability that the true effect size is larger, using sequential analysis is a very attractive option.
+This design meets the desired power when we collect `r ceiling(power_res_seq$numberOfSubjects1[2]) * 2` participants - exactly as many as when we would *not* look at the data once. We basically get a free look at the data, with the expected number of participants (assuming *d* = 0.5) dropping to `r round(power_res_seq$expectedNumberOfSubjectsH1, 2)`. Increasing the number of looks to 4 comes at only a very small required increase in the number of participants to maintain the same statistical power, but further decreases the expected sample size. Especially for a conservative a-priori power analysis, or when performing an a-priori power analysis for a smallest effect size of interest, and there is a decent probability that the true effect size is larger, using sequential analysis is a very attractive option.
 
 ## Stopping for futility
 
