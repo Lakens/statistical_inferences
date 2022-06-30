@@ -4,30 +4,26 @@
 
 Repeatedly analyzing incoming data while data collection is in progress has many advantages. Researchers can stop the data collection at an interim analysis when they can reject the null hypothesis or the smallest effect size of interest, even if they would be willing to collect more data if needed, or if the results show there is an unexpected problem with the study (e.g., participants misunderstand the instructions or questions). One could easily argue that psychological researchers have an ethical obligation to repeatedly analyze accumulating data, given that continuing data collection whenever the desired level of confidence is reached, or whenever it is sufficiently clear that the expected effects are not present, is a waste of the time of participants and the money provided by taxpayers. In addition to this ethical argument, designing studies that make use of sequential analyses can be more efficient than when data is only analyzed a single time, when the maximum sample size a researcher is willing to collect has been reached. 
 
-Sequential analyses should not be confused with [**optional stopping**](#optionalstopping), which was discussed in the chapter on error control. In optional stopping, researchers use an unadjusted alpha level (e.g., 5%) to repeatedly analyze the data as it comes in, which can substantially inflate the Type 1 error rate. The critical difference with **sequential analysis** is that the Type 1 error rate is controlled. By lowering the alpha level at each look at the data, the overall Type I error rate can be controlled, much like a Bonferroni correction is used to prevent inflation of the Type 1 error rate for multiple comparisons. Indeed, the Bonferroni correction is a valid (but conservative) approach to control the error rate in sequential analyses [@wassmer_group_2016]. 
+Sequential analyses should not be confused with [**optional stopping**](#optionalstopping), which was discussed in the chapter on error control. In optional stopping, researchers use an unadjusted alpha level (e.g., 5%) to repeatedly analyze the data as it comes in, which can substantially inflate the Type 1 error rate. The critical difference with **sequential analysis** is that the Type 1 error rate is controlled. By lowering the alpha level at each interim analysis, the overall Type I error rate can be controlled, much like a Bonferroni correction is used to prevent inflation of the Type 1 error rate for multiple comparisons. Indeed, the Bonferroni correction is a valid (but conservative) approach to control the error rate in sequential analyses [@wassmer_group_2016]. 
 
 In sequential analysis a researcher designs a study such that they are able to perform **interim analyses**, say when 25%, 50%, and 75% of the data is collected. At each interim analysis a test is performed at a corrected alpha level, so that over all planned analyses the desired Type 1 error rate is maintained. Sequential analyses are commonly used in medical trials, where quickly discovering an effective treatment can be a matter of life and death. If at an interim analysis, researchers decide that a new drug is effective, in turn they may well want to terminate the trial and give the working drug to patients in the control condition to improve their health, or even save their lives. For example, the safety and efficacy of the Pfizer–BioNTech COVID-19 vaccine used an experimental design where they planned to analyze the data 5 times, and controlled the overall Type 1 error rate by lowering the alpha level for each [interim analysis](https://www.nejm.org/doi/suppl/10.1056/NEJMoa2034577/suppl_file/nejmoa2034577_protocol.pdf). 
     
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/vaccinetrial} 
-
-}
-
-\caption{Screenshot of the planned interim analyses examining the safety and Efficacy of the BNT162b2 mRNA Covid-19 Vaccine.}(\#fig:interim)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/vaccinetrial.png" alt="Screenshot of the planned interim analyses examining the safety and Efficacy of the BNT162b2 mRNA Covid-19 Vaccine." width="100%" />
+<p class="caption">(\#fig:interim)Screenshot of the planned interim analyses examining the safety and Efficacy of the BNT162b2 mRNA Covid-19 Vaccine.</p>
+</div>
     
-The use of sequential analyses is only slowly becoming more popular in many scientific disciplines, but sequential analysis techniques have a long history. As early as 1929, Dodge and Romig realized that analyzing the data sequentially was more efficient than doing so once [@dodge_method_1929]. Wald, who popularized the idea of sequential tests of hypotheses in [-@wald_sequential_1945], performed his work during the second world war. He was only allowed to publish his findings after the war had ended, as he explains in a historical note: 
+The use of sequential analyses is only slowly becoming more popular in many scientific disciplines, but sequential analysis techniques have a long history. As early as 1929, Dodge and Romig realized that analyzing the data sequentially was more efficient than doing so once [@dodge_method_1929]. @wald_sequential_1945, who popularized the idea of sequential tests of hypotheses in 1945, performed his work during the second world war. He was only allowed to publish his findings after the war had ended, as he explains in a historical note: 
 
 >Because of the substantial savings in the expected number of observations effected by the sequential probability ratio test, and because of the simplicity of this test procedure in practical applications, the National Defense Research Committee considered these developments sufficiently useful for the war effort to make it desirable to keep the results out of the reach of the enemy, at least for a certain period of time. The author was, therefore, requested to submit his findings in a restricted report which was dated September, 1943.
 
-Sequential analyses are well-established procedures, and have been developed in great detail over the last decades [@proschan_statistical_2006; @jennison_group_2000; @wassmer_group_2016]. Here, we will explain the basics of how to control error rates in group sequential analyses, and perform a-priori power analysis and compare when sequential designs will be more or less efficient than fixed designs. Before we discuss these topics, it is useful to clarify some terminology. A **look** means analyzing all the data collected up to a specific point. E.g., you look after 50, 100, and 150 observations, and analyze all the data that has been collected up to that point. After 50 and 100 observations we perform an **interim analysis**, and after 150 observations we perform the **final analysis**, after which we always stop. Not all looks have to occur in practice. If the analysis reveals a statistically significant result at look 1, data collection can be terminated. We can stop because we reject $H_0$ (e.g., in a null hypothesis significance test), or because we reject $H_1$ (e.g., in an equivalence test). We can also stop for **curtailment** or for **futility**: It is either impossible, or very unlikely for the final analysis to yield p < alpha. The **overall alpha level** in a sequential design differs from the alpha level at each look (also called **stage**). For example, if we want an overall Type I error rate of 5% for a two-sided test with 3 looks, the alpha level for each look could be 0.0221 (if we decide to use the correction for the alpha level proposed by Pocock [@pocock_group_1977]). In this chapter we will focus on group sequential designs, where data is collected in multiple groups, but other sequential approaches exist, as explained in the chapter on [sample size justification](#sequentialsamplesize).
+Sequential analyses are well-established procedures, and have been developed in great detail over the last decades [@proschan_statistical_2006; @jennison_group_2000; @wassmer_group_2016]. Here, we will explain the basics of how to control error rates in group sequential analyses, perform a-priori power analysis and compare when sequential designs will be more or less efficient than fixed designs. Before we discuss these topics, it is useful to clarify some terminology. A **look** (also called **stage**) means analyzing all the data collected up to a specific point; that is, you look after 50, 100, and 150 observations, and analyze all the data that has been collected up to that point. After 50 and 100 observations we perform an **interim analysis**, and after 150 observations we perform the **final analysis**, after which we always stop. Not all looks have to occur in practice. If the analysis reveals a statistically significant result at look 1, data collection can be terminated. We can stop because we reject $H_0$ (e.g., in a null hypothesis significance test), or because we reject $H_1$ (e.g., in an equivalence test). We can also stop for **curtailment** or for **futility**: It is either impossible, or very unlikely for the final analysis to yield p < alpha. The **overall alpha level** in a sequential design differs from the alpha level at each look. For example, if we want an overall Type I error rate of 5% for a two-sided test with 3 looks, the alpha level for each look could be 0.0221 (if we decide to use the correction for the alpha level proposed by @pocock_group_1977). In this chapter we will focus on group sequential designs, where data is collected in multiple groups, but other sequential approaches exist, as explained in the chapter on [sample size justification](#sequentialsamplesize).
 
 ## Choosing alpha levels for sequential analyses.
 
 If one would analyze the data at multiple looks without correcting the alpha level, the Type 1 error rate would inflate [@armitage_repeated_1969]. As Armitage and colleagues show, with equally spaced looks, the alpha level inflates to 0.142 after 5 looks, 0.374 after 100 looks, and 0.530 after 1000 looks. Looking at the data twice is conceptually similar to deciding if a result is significant if one of two dependent variables shows a statistically significant effect. However, an important difference is that in the case of sequential analyses the multiple tests are not independent, but dependent. A test at look 2 combines the old data collected at look 1 with the new data at look 2. This means the Type 1 error rate inflates less quickly compared to independent tests, and we will see below this enables more efficient and flexible solutions to controlling error rates.
 
-When controlling the Type 1 error rate in sequential analyses, a decision needs to be made about how to spend the alpha level across all looks at the data. For example, when a researcher plans a study with one interim look and one final look at the data, boundary critical Z-values need to be set for the first look (at *n* out of *N* observations) and the second look (at *N* observations). These two critical values, $c_1$ and $c_2$ (for the first and the second analysis) need to be chosen such that the probability (Pr) that the null hypothesis is rejected, either when in the first analysis the observed Z-score is larger than the critical value for the first look, $Z_n$ ≥ $c_1$, or (when we did not reject the hypothesis in the first analysis, so $Z_n$ < c1, and we continue data collection) when in the second analysis the observed Z-score is larger than the critical value for the second look, $Z_N$ ≥ $c_2$. In formal terms, for a directional test:
+When controlling the Type 1 error rate in sequential analyses, a decision needs to be made about how to spend the alpha level across all looks at the data. For example, when a researcher plans a study with one interim look and one final look at the data, boundary critical Z-values need to be set for the first look (at *n* out of *N* observations) and the second look (at *N* observations). These two critical values, $c_1$ and $c_2$ (for the first and the second analysis) need to be chosen such that the overall probability (Pr) that the null hypothesis is rejected – when in the first analysis the observed Z-score is larger than the critical value for the first look, $Z_n$ ≥ $c_1$, and (if we did not reject the hypothesis in the first analysis, so $Z_n$ < c1, and we continue data collection) when in the second analysis the observed Z-score is larger than the critical value for the second look, $Z_N$ ≥ $c_2$ – equals the desired overall alpha level when the null hypothesis is true. In formal terms, for a directional test:
 
 $$
 Pr\{Z_n \geq c_1\} + Pr\{Zn < c_1, Z_N \geq c_2\} = \alpha
@@ -37,7 +33,7 @@ With more than one interim analysis, additional critical values have to be deter
 
 ## The Pocock correction
 
-The first decision researchers need to make is how they want to correct the Type I error rate across looks. Four common approaches are the Pocock correction, the O'Brien-Fleming correction, The Haybittle & Peto correction, and the Wang and Tsiatis approach. Users are also free to specify their own preferred way to spend the alpha level across looks. 
+The first decision researchers need to make is how they want to correct the Type I error rate across looks. Four common approaches are the Pocock correction, the O'Brien-Fleming correction, the Haybittle & Peto correction, and the Wang and Tsiatis approach. Users are also free to specify their own preferred way to spend the alpha level across looks. 
 
 The Pocock correction is the simplest way to correct the alpha level for multiple looks. Conceptually, it is very similar to the Bonferroni correction. The Pocock correction has been created such that the alpha level is identical for each look at the data, resulting in constant critical values (expressed as *z* values) $u_k = c$ to reject the null hypothesis, $H_0$, at look $k$. The following code uses the package `rpact` to design a study for a sequential analysis:
 
@@ -79,7 +75,7 @@ design
 ##   Stage levels (one-sided)                     : 0.01469, 0.01469
 ```
 
-The output tells us we have designed a study with 2 looks (one interim, one final) using the Pocock spending function. The last line returns one-sided alpha levels. The `rpact` package focuses on Confirmatory Adaptive Clinical Trial Design and Analysis. In clinical trials, researchers mostly test directional predictions, and thus, the default setting is to perform a one-sided test. In clinical trials it is common to use a 0.025 significance level for one-sided tests, but in many other fields, 0.05 is a more common default. We can get the two-sided alpha levels by multilpying the one-sided alpha levels by two: 
+The output tells us we have designed a study with 2 looks (one interim, one final) using the Pocock spending function. The last line returns one-sided alpha levels. The `rpact` package focuses on Confirmatory Adaptive Clinical Trial Design and Analysis. In clinical trials, researchers mostly test directional predictions, and thus, the default setting is to perform a one-sided test. In clinical trials it is common to use a 0.025 significance level for one-sided tests, but in many other fields, 0.05 is a more common default. We can get the two-sided alpha levels by multiplying the one-sided alpha levels by two: 
 
 
 
@@ -93,48 +89,36 @@ design$stageLevels * 2
 
 We can check the output against the [Wikipedia page for the Pocock correction](https://en.wikipedia.org/wiki/Pocock_boundary) where we indeed see that with 2 looks at the data the alpha level for each look is 0.0294. The Pocock correction is slightly more efficient than using a Bonferroni correction (in which case the alpha levels would be 0.025), because of the dependency in the data (at the second look, the data analyzed at the first look is again part of the analysis). 
 
-`rpact` makes it easy to plot the boundaries (based on the critical values) for each look. Looks are plotted as a function of the 'Information Rate', which is the percentage of the total data that has been collected at a look. In Figure \@ref(fig:boundplot1) there are two equally spaced looks, so when 50% of the data has been collected (Information Rate 0.5) and when 100% of the data has been collected (Information Rate 1). We see the critical values are larger than the 1.96 we would use for a fixed design with a 5% alpha level, namely *Z* = 2.178. Whenever we observe a test statistic that is more extreme than these critical values at the first or second look, we can reject the null hypothesis. 
+`rpact` makes it easy to plot the boundaries (based on the critical values) for each look. Looks are plotted as a function of the 'Information Rate', which is the percentage of the total data that has been collected at a look. In Figure \@ref(fig:boundplot1) there are two equally spaced looks, so when 50% of the data has been collected (Information Rate 0.5) and when 100% of the data has been collected (Information Rate 1). We see the critical values (solid black lines) are larger than the 1.96 we would use for a fixed design with a 5% alpha level, namely *Z* = 2.178 (black dashed line). Whenever we observe a test statistic that is more extreme than these critical values at the first or second look, we can reject the null hypothesis. 
 
 (ref:boundplot1lab) Plot of critical boundaries at each look for a 2 look design with a Pocock correction.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{10-sequential_files/figure-latex/boundplot1-1} 
-
-}
-
-\caption{(ref:boundplot1lab)}(\#fig:boundplot1)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="10-sequential_files/figure-html/boundplot1-1.png" alt="(ref:boundplot1lab)" width="100%" />
+<p class="caption">(\#fig:boundplot1)(ref:boundplot1lab)</p>
+</div>
 
 The analysis can also be performed in the `rpact` [shiny app](https://rpact.shinyapps.io/public/) which also allows users to create all plots through simple menu options, and download a complete report of the analyses (e.g., for a preregistration document). 
 
 (ref:rpactshinylab) Screenshot of rpact Shiny app.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/RPact1} 
-
-}
-
-\caption{(ref:rpactshinylab)}(\#fig:rpactshiny)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/RPact1.png" alt="(ref:rpactshinylab)" width="100%" />
+<p class="caption">(\#fig:rpactshiny)(ref:rpactshinylab)</p>
+</div>
 
 ## Comparing Spending Functions
 
 We can vizualize the corrections for different types of designs for each of 3 looks (2 interim looks and one final look) in the same plot (see Figure \@ref(fig:fourspendingfunctions)). The plot below shows the Pocock, O’Brien-Fleming, Haybittle-Peto, and Wang-Tsiatis correction with $\Delta$ = 0.25. We see that researchers can choose different approaches to spend their alpha level across looks. Researchers can choose to spend their alpha conservatively (keeping most of the alpha for the last look), or more liberally (spending more alpha at the earlier looks, which increases the probability of stopping early for many true effect sizes). 
 
-(ref:fourspendingfunctionslab) Four different alpha spending functions (O'Brien-Fleming, Pocock, Haybittle-Peto, Wang-Tsiatis) for 3 looks.
+(ref:fourspendingfunctionslab) Four different spending functions for 3 looks: O'Brien-Fleming (OF), Pocock (P), Haybittle-Peto (HP), Wang-Tsiatis (WT).
 
-\begin{figure}
+<div class="figure" style="text-align: center">
+<img src="10-sequential_files/figure-html/fourspendingfunctions-1.png" alt="(ref:fourspendingfunctionslab)" width="100%" />
+<p class="caption">(\#fig:fourspendingfunctions)(ref:fourspendingfunctionslab)</p>
+</div>
 
-{\centering \includegraphics[width=1\linewidth]{10-sequential_files/figure-latex/fourspendingfunctions-1} 
-
-}
-
-\caption{(ref:fourspendingfunctionslab)}(\#fig:fourspendingfunctions)
-\end{figure}
-
-We can see that the O'Brien and Fleming correction is much more conservative at the first look and, at the last look, close to the uncorrected critical value of 1.96 (the black dashed line - for two-sided tests all critical values are mirrored in the negative direction): 3.471, 2.454, and 2.004. The Pocock correction has the same critical value at each look (2.289, 2.289, and 2.289), the Haybittle and Peto correction has the same critical value at each look but the last (3, 3, and 1.975), while the critical values decrease for each look with the Wang and Tsiatis correction (2.741, 2.305, and 2.083).
+We can see that the O'Brien and Fleming correction is much more conservative at the first look but is close to the uncorrected critical value of 1.96 at the last look (the black dashed line - for two-sided tests all critical values are mirrored in the negative direction): 3.471, 2.454, and 2.004. The Pocock correction has the same critical value at each look (2.289, 2.289, and 2.289). The Haybittle and Peto correction has the same critical value at each look but the last (3, 3, and 1.975). With the Wang and Tsiatis correction, critical values decrease with each look (2.741, 2.305, and 2.083).
 
 Being conservative during early looks is sensible if you mainly want to monitor the results for unexpected developments. A Pocock correction is more useful when there is substantial uncertainty both in whether an effect is present and how large the effect size is, as it gives a higher probability of stopping the experiment early if the effects are large. Because the statistical power of a test depends on the alpha level, lowering the alpha level at the final look means that the statistical power is lower compared to a fixed design, and that to achieve a desired power, the sample size of a study needs to be increased to maintain the same statistical power at the last look. This increase in sample size can be compensated by stopping data collection early, in which case a sequential design is more efficient than a fixed design. Because the alpha at the last look for O’Brien-Fleming or Haybittle-Peto designs are very similar to the statistical power for a fixed design with only one look, the required sample size is also very similar. The Pocock correction requires a larger increase in the maximum sample size to achieve the desired power compared to a fixed design. 
 
@@ -147,16 +131,12 @@ The approaches to specify the shape of decision boundaries across looks discusse
 The main benefit of these alpha spending functions is that error rates at interim analyses can be controlled, while neither the number nor the timing of the looks needs to be specified in advance. This makes alpha spending approaches much more flexible than earlier approaches to controlling the Type 1 error in group sequential designs. When using an alpha spending function it is important that the decision to perform an interim analysis is not based on collected data, as this can still increase the Type I error rate. As long as this assumption is met, it is possible to update the alpha levels at each look during a study.
 
 
-(ref:seq-comparisonlab) Comparison of Pocock and O'Brien-Fleming correction, and Pocock-like and O'Brien-Fleming like alpha spending functions, for 5 looks.
+(ref:seq-comparisonlab) Comparison of Pocock (P) and O'Brien-Fleming correction (OF), Pocock-like (asP) and O'Brien-Fleming like (asOF) alpha spending functions, for 5 looks.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{10-sequential_files/figure-latex/seq-comparison-1} 
-
-}
-
-\caption{(ref:seq-comparisonlab)}(\#fig:seq-comparison)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="10-sequential_files/figure-html/seq-comparison-1.png" alt="(ref:seq-comparisonlab)" width="100%" />
+<p class="caption">(\#fig:seq-comparison)(ref:seq-comparisonlab)</p>
+</div>
 
 ## Updating boundaries during a study
 
@@ -178,7 +158,7 @@ design$stageLevels * 2
 
 
 
-Now imagine that due to logistical issues, we do not manage to analyze the data until we have collected data from 76 observations (38 in each condition) instead of the planned 66 observations. Such logistical issues are common in practice and one of the main reasons alpha spending functions for group sequential designs were developed. Our first look at the data does not occur at the planned time of collecting 33.3% of the total sample, but at 76/198 = 38.4% of the planned sample. We can recalculate the alpha level we should use for each look at the data, based on the current look, and planned future looks. Instead of using the alpha levels 0.0226, 0.0217, and 0.0217 at the three respective looks (as calculated above, and note how in the Pocock-style alpha spending function the alpha levels are almost, but not exactly, the same at each look, unlike the Pocock correction where they are identical at each look). We can adjust the information rates by explicitly specifying them using `informationRates` in the code below. The first look now occurs at 76/198 of the planned sample. The second look is still planned to occur at 2/3 of the sample, and the final look at the planned maximum sample size.  
+Now imagine that due to logistical issues, we do not manage to analyze the data until we have collected data from 76 observations (38 in each condition) instead of the planned 66 observations. Such logistical issues are common in practice and one of the main reasons alpha spending functions for group sequential designs were developed. Our first look at the data does not occur at the planned time of collecting 33.3% of the total sample, but at 76/198 = 38.4% of the planned sample. We can recalculate the alpha level we should use for each look at the data, based on the current look, and planned future looks. Instead of using the alpha levels 0.0226, 0.0217, and 0.0217 at the three respective looks (as calculated above, and note how in the Pocock-like alpha spending function the alpha levels are almost, but not exactly, the same at each look, unlike the Pocock correction where they are identical at each look). We can adjust the information rates by explicitly specifying them using `informationRates` in the code below. The first look now occurs at 76/198 of the planned sample. The second look is still planned to occur at 2/3 of the sample, and the final look at the planned maximum sample size.  
 
 
 ```r
@@ -234,7 +214,7 @@ The alpha levels for looks in the past do not correspond with the alpha levels w
 
 ## Sample Size for Sequential Designs
 
-Sequential designs require somewhat more participants than a fixed design at the final look, depending on how much the alpha level at this look is lowered due to the correction for multiple comparisons. Due to early stopping, sequential designs will on average require less participants. Let's first examine how many participants we would need in a fixed design, where we only analyze our data once. We have an alpha level of 0.05, and a Type 2 (beta) error of 0.1 - in other words, the desired power is 90%. We will perform one test, and assuming a normal distribution our critical Z-score would be 1.96, for an alpha level of 5%. 
+At the final look, sequential designs require somewhat more participants than a fixed design, depending on how much the alpha level at this look is lowered due to the correction for multiple comparisons. That said, due to early stopping, sequential designs will on average require less participants. Let's first examine how many participants we would need in a fixed design, where we only analyze our data once. We have an alpha level of 0.05, and a Type 2 (beta) error of 0.1 - in other words, the desired power is 90%. We will perform one test, and assuming a normal distribution our critical Z-score would be 1.96, for an alpha level of 5%. 
 
 
 ```r
@@ -388,14 +368,10 @@ sample_res <- getPowerMeans(
 plot(sample_res, type = 6)
 ```
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{10-sequential_files/figure-latex/powerseq-1} 
-
-}
-
-\caption{(ref:powerseqlab)}(\#fig:powerseq)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="10-sequential_files/figure-html/powerseq-1.png" alt="(ref:powerseqlab)" width="100%" />
+<p class="caption">(\#fig:powerseq)(ref:powerseqlab)</p>
+</div>
 
 The blue line in Figure \@ref(fig:powerseq) indicates the expected number of observations we need to collect. Not surprisingly, when the true effect size is 0, we will almost always continue data collection to the end. We will only stop if we observe a Type 1 error, which is rare, and thus the expected number of observations is very close to the maximum sample size we are willing to collect. On the other side of the graph we see the scenario for when the true effect size is *d* = 1. With such a large effect size, we will have high power at our first look, and we will almost always be able to stop at the first look. The red line indicates the power at the final look, and the green line indicates the probability of stopping early. 
 
@@ -448,7 +424,7 @@ summary(power_res_seq)
 ##   (t): treatment effect scale
 ```
 
-This design meets the desired power when we collect 172 participants - exactly as many as when we would *not* look at the data once. We basically get a free look at the data, with the expected number of participants (assuming *d* = 0.5) dropping to 149.1. Increasing the number of looks to 4 comes at only a very small required increase in the number of participants to maintain the same statistical power, but further descreases the expected sample size. Especially for a conservative a-priori power analysis, or when performing an a-priori power analysis for a smallest effect size of interest, and there is a decent probability that the true effect size is larger, using sequential analysis is a very attractive option.
+This design meets the desired power when we collect 172 participants - exactly as many as when we would *not* look at the data once. We basically get a free look at the data, with the expected number of participants (assuming *d* = 0.5) dropping to 149.1. Increasing the number of looks to 4 comes at only a very small required increase in the number of participants to maintain the same statistical power, but further decreases the expected sample size. Especially for a conservative a-priori power analysis, or when performing an a-priori power analysis for a smallest effect size of interest, and there is a decent probability that the true effect size is larger, using sequential analysis is a very attractive option.
 
 ## Stopping for futility
 
@@ -476,14 +452,10 @@ In Figure \@ref(fig:futility1) we see a sequential design where data collection 
 
 (ref:futility1lab) Pocock-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) when the observed effect is in the opposite direction.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{10-sequential_files/figure-latex/futility1-1} 
-
-}
-
-\caption{(ref:futility1lab)}(\#fig:futility1)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="10-sequential_files/figure-html/futility1-1.png" alt="(ref:futility1lab)" width="100%" />
+<p class="caption">(\#fig:futility1)(ref:futility1lab)</p>
+</div>
 
 Manually specifying the futility bounds is not ideal, as we risk stopping data collection because we fail to reject $H_0$, when there is a high probability of a Type 2 error. It is better to set the futility bounds by directly controlling the Type 2 error across looks at the data. Just as we are willing to distribute our Type I error rate across interim analyses, we can distribute our Type II error rate across looks, and decide to stop for futility when we fail to reject the effect size of interest with a desired Type 2 error rate. 
 
@@ -498,14 +470,10 @@ If the true effect size is (close to) 0, sequential designs that stop for futili
 
 (ref:futility2lab) Pocock-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) based on a Pocock-type beta-spending function.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{10-sequential_files/figure-latex/futility2-1} 
-
-}
-
-\caption{(ref:futility2lab)}(\#fig:futility2)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="10-sequential_files/figure-html/futility2-1.png" alt="(ref:futility2lab)" width="100%" />
+<p class="caption">(\#fig:futility2)(ref:futility2lab)</p>
+</div>
 
 With a beta-spending function, the expected number of subjects under $H_1$ will increase, so if the alternative hypothesis is true, designing a study to be able to stop for futility comes at a cost. However, it is possible that $H_0$ is true, and when it is, stopping for futility reduces the expected sample size. In Figure \@ref(fig:powerseq2) you can see that the probability of stopping (the green line) is now also high when the true effect size is 0, as we will now stop for futility, and if we do, the expected sample size (the blue line) is lower compared to \@ref(fig:powerseq). It is important to design studies that have a high informational value to reject the presence of a meaningful effect at the final analysis, but whether stopping for futility early is an option you want to build into a study is a choice that requires considering the probability that the null hypothesis is true and a (perhaps small) increase in the sample size. 
 
@@ -513,14 +481,10 @@ With a beta-spending function, the expected number of subjects under $H_1$ will 
 
 (ref:powerseq2lab) Power curve for a sequential design with 2 looks with stopping for futility.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{10-sequential_files/figure-latex/powerseq2-1} 
-
-}
-
-\caption{(ref:powerseq2lab)}(\#fig:powerseq2)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="10-sequential_files/figure-html/powerseq2-1.png" alt="(ref:powerseq2lab)" width="100%" />
+<p class="caption">(\#fig:powerseq2)(ref:powerseq2lab)</p>
+</div>
 ## Reporting the results of a sequential analysis
 
 Group sequential designs have been developed to efficiently test hypotheses using the Neyman-Pearson approach for statistical inference, where the goal is to decide how to act, while controlling error rates in the long run. Group sequential designs do not have the goal to quantify the strength of evidence, or provide accurate estimates of the effect size [@proschan_statistical_2006]. Nevertheless, after having reached a conclusion about whether a hypothesis can be rejected or not, researchers will often want to also interpret the effect size estimate when reporting results. 
@@ -563,17 +527,17 @@ res
 
 
 ```
-## [PROGRESS] Stage results calculated [0.0728 secs] 
-## [PROGRESS] Conditional power calculated [0.0678 secs] 
-## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.0022 secs] 
-## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.9242 secs] 
-## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.9084 secs] 
-## [PROGRESS] Repeated confidence interval calculated [1.83 secs] 
-## [PROGRESS] Repeated p-values of stage 1 calculated [0.3519 secs] 
-## [PROGRESS] Repeated p-values of stage 2 calculated [0.3433 secs] 
-## [PROGRESS] Repeated p-values calculated [0.6969 secs] 
-## [PROGRESS] Final p-value calculated [0.0018 secs] 
-## [PROGRESS] Final confidence interval calculated [0.0994 secs]
+## [PROGRESS] Stage results calculated [0.0469 secs] 
+## [PROGRESS] Conditional power calculated [0.0367 secs] 
+## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.0012 secs] 
+## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.7923 secs] 
+## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.8278 secs] 
+## [PROGRESS] Repeated confidence interval calculated [1.62 secs] 
+## [PROGRESS] Repeated p-values of stage 1 calculated [0.314 secs] 
+## [PROGRESS] Repeated p-values of stage 2 calculated [0.2816 secs] 
+## [PROGRESS] Repeated p-values calculated [0.5971 secs] 
+## [PROGRESS] Final p-value calculated [0.0021 secs] 
+## [PROGRESS] Final confidence interval calculated [0.0863 secs]
 ```
 
 
@@ -748,14 +712,10 @@ D) The Type 1 error rate will not inflate, and the Type 2 error rate will not in
 
 (ref:futilityq13lab) Example of O'Brien-Fleming-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) with a 5% Type 1 and Type 2 error.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{10-sequential_files/figure-latex/futilityq13-1} 
-
-}
-
-\caption{(ref:futilityq13lab)}(\#fig:futilityq13)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="10-sequential_files/figure-html/futilityq13-1.png" alt="(ref:futilityq13lab)" width="100%" />
+<p class="caption">(\#fig:futilityq13)(ref:futilityq13lab)</p>
+</div>
 
 A) You can reject $H_0$ and stop data collection.
 B) You can reject $H_1$ and stop data collection.

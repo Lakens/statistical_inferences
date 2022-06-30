@@ -20,14 +20,10 @@ If you perform a study and plan to make a claim based on the statistical test yo
   
 The probability of observing a true positive when there is a true effect is, in the long run, equal to the **statistical power** of your study. The probability of observing a false positive when the null hypothesis is true is, in the long run, equal to the **alpha level** you have set, or the **Type 1 error rate**.
   
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/type1type2error} 
-
-}
-
-\caption{Difference between Type 1 and Type 2 errors. Figure made by <a href="https://effectsizefaq.com/2010/05/31/i-always-get-confused-about-type-i-and-ii-errors-can-you-show-me-something-to-help-me-remember-the-difference/">Paul Ellis</a>}(\#fig:errortypes)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/type1type2error.jpg" alt="Difference between Type 1 and Type 2 errors. Figure made by &lt;a href=&quot;https://effectsizefaq.com/2010/05/31/i-always-get-confused-about-type-i-and-ii-errors-can-you-show-me-something-to-help-me-remember-the-difference/&quot;&gt;Paul Ellis&lt;/a&gt;" width="100%" />
+<p class="caption">(\#fig:errortypes)Difference between Type 1 and Type 2 errors. Figure made by <a href="https://effectsizefaq.com/2010/05/31/i-always-get-confused-about-type-i-and-ii-errors-can-you-show-me-something-to-help-me-remember-the-difference/">Paul Ellis</a></p>
+</div>
   
 So, for the next study you will perform, which of the four possible outcomes is most likely? First, let's assume you have set the alpha level to 5%. Furthermore, let's assume you have designed a study so that it will have 80% power (and for this example, let's assume Omniscient Jones knows you indeed have exactly 80% power). The last thing to specify is the probability that the null hypothesis is true. Let’s assume for this next study you have no idea if the null hypothesis is true or not, and that it is equally likely that the null hypothesis is true, or the alternative hypothesis is true (both have a probability of 50%). We can now calculate what the most likely outcome of such a study is. 
 
@@ -54,14 +50,10 @@ A real-life example where it was useful to understand the concept of the positiv
 
 (ref:ppvhospitallab) Why there are more vaccinated people in the hospital. OKAY BUT THE ABOVE PARAGRAPH TALKS ABOUT *EQUAL* NUMBERS OF EACH CATEGORY.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/hospitalvaccinated} 
-
-}
-
-\caption{(ref:ppvhospitallab)}(\#fig:ppvhospital)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/hospitalvaccinated.jpg" alt="(ref:ppvhospitallab)" width="100%" />
+<p class="caption">(\#fig:ppvhospital)(ref:ppvhospitallab)</p>
+</div>
 
 
 It is useful to understand what the probability is that, if you have observed a significant result in an experiment, the result is actually a true positive. In other words, in the long run, how many *true positives* can we expect, among all positive results (both true positives and false positives)? This is known as the Positive Predictive Value (PPV). We can also calculate how many *false positives* we can expect, among all positive results (again, both true positives and false positives). This is known as the **False Positive Report Probability** [@wacholder_assessing_2004], sometimes also referred to as the False Positive Risk [@colquhoun_false_2019].
@@ -78,14 +70,10 @@ When you perform studies, you will be aware of all outcomes of your studies (bot
 
 If we continue the example above, we see there are 85 positive results (80 + 5) in the 200 studies. The false positive report probability is 5/85 = 0.0588. At the same time, the alpha of 5% guarantees that (in the long run) 5% of the 100 studies where the null hypothesis is true are Type 1 errors: 5%\*100 = 5. This is also true. When we do 200 studies, at most 0.05\*200 = 10 could possibly be false positives (if $H_0$ was true in all experiments). In the 200 studies we performed (and where $H_0$ was true in only 50% of the studies), the **proportion of false positives for all experiments** is only 2.5%. Thus, for all experiments you do, the proportion of false positives will, in the long run, never be higher than the Type I error rate set by the researcher (e.g., 5% when $H_0$ is true in all experiments), but it can be lower (when $H_0$ is true in less than 100% of the experiments).
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/PPVexample} 
-
-}
-
-\caption{Screenshot of the output of the results of the PPV Shiny app by <a href="http://shinyapps.org/apps/PPV/">Michael Zehetleitner and Felix Schönbrodt </a>}(\#fig:ppvexample)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PPVexample.png" alt="Screenshot of the output of the results of the PPV Shiny app by &lt;a href=&quot;http://shinyapps.org/apps/PPV/&quot;&gt;Michael Zehetleitner and Felix Schönbrodt &lt;/a&gt;" width="100%" />
+<p class="caption">(\#fig:ppvexample)Screenshot of the output of the results of the PPV Shiny app by <a href="http://shinyapps.org/apps/PPV/">Michael Zehetleitner and Felix Schönbrodt </a></p>
+</div>
 
 *(Note: The FDR and FPRP are different abbreviations for the same thing)*
   
@@ -94,14 +82,10 @@ People often say something like: “*Well, we all know 1 in 20 results in the pu
     
 ## Type 1 error inflation 
     
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/babbagecooking} 
-
-}
-
-\caption{Quote from the 1830 book by Babbage Reflections on the Decline of Science in England And on Some of Its Causes}(\#fig:cooking)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/babbagecooking.jpg" alt="Quote from the 1830 book by Babbage Reflections on the Decline of Science in England And on Some of Its Causes" width="100%" />
+<p class="caption">(\#fig:cooking)Quote from the 1830 book by Babbage Reflections on the Decline of Science in England And on Some of Its Causes</p>
+</div>
     
 If you perform multiple comparisons, there is a risk that the Type 1 error rate inflates. When multiple comparisons are planned, in some cases it is possible to control the Type 1 error rate by lowering the alpha level for each individual analysis. The most widely known approach to control for multiple comparisons is the Bonferroni correction where the alpha level is divided by the number of tests that is performed [@dunn_multiple_1961]. However, researchers also often use informal data analysis strategies that inflate the Type 1 error rate. Babbage [-@babbage_reflections_1830] already complained about these problematic practices in 1830, and two centuries later, they are still common. Barber [-@barber_pitfalls_1976] provides an in depth discussion of a range of approaches, such as eyeballing the data to decide which hypotheses to test (sometimes called 'double dipping'), selectively reporting only those analyses that confirm predictions, and ignoring non-significant results, collecting many variables and performing multitudes of tests, or performing sub-group analyses when the planned analysis yields nonsignificant results, or after a nonsignificant prediction derive a new hypothesis that is supported by the data, and test the hypothesis on the data that the hypothesis was derived from (sometimes called HARKing [@kerr_harking_1998]). Many researchers admit to having used practices that inflate error rates [@fiedler_questionable_2015; @john_measuring_2012; @van_de_schoot_use_2021; @chin_questionable_2021; @makel_both_2021]. I myself have used such practices in the first scientific article I published, before I was fully aware of how problematic this was - for an article we published several years later in which we reflect on this, see @jostmann_short_2016. 
     
@@ -109,27 +93,19 @@ For some paradigms, researchers have a lot of flexibility in how to compute the 
 
 (ref:flexiblemeasurelab) Plot of publications using CRTT (blue) and unique quantifications of the measure (red). Figure from FlexibleMeasures.com by <a href="https://www.flexiblemeasures.com/crtt/index.php?menu=quantifications">Malte Elson</a>
     
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/flexiblemeasure} 
-
-}
-
-\caption{(ref:flexiblemeasurelab)}(\#fig:flexiblemeasure)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/flexiblemeasure.png" alt="(ref:flexiblemeasurelab)" width="100%" />
+<p class="caption">(\#fig:flexiblemeasure)(ref:flexiblemeasurelab)</p>
+</div>
     
 ## Optional stopping{#optionalstopping}
 
 (ref:optionalstoppingexamplelab) Screenshot a scientific paper explicitly admitting to using optional stopping
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/optionalstoppingexample} 
-
-}
-
-\caption{(ref:optionalstoppingexamplelab)}(\#fig:optionalstoppingexample)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/optionalstoppingexample.png" alt="(ref:optionalstoppingexamplelab)" width="100%" />
+<p class="caption">(\#fig:optionalstoppingexample)(ref:optionalstoppingexamplelab)</p>
+</div>
     
 One practice that inflates the Type 1 error rate is known as **optional stopping**. In optional stopping, a researcher repeatedly analyzes the data, continues the data collection when the test result is not statistically significant, but stops when a significant effect is observed. The quote from a published article in the figure above is an example where researchers transparently report they used optional stopping, but more commonly people do not disclose the use of optional stopping in their methods sections. In recent years, many researchers have learned that optional stopping is problematic. This has lead some to the general idea that you should not collect data, look at whether the results are significant, and stop data collection when the result is significant, or if not, continue data collection. That is not the correct conclusion, and is an example of becoming too inflexible. The correct approach - to collect data in batches, called **sequential analysis** - has been extensively developed by statisticians, and is used in many medical trials. We will discuss [sequential analyses in a dedicated chapter](#sequential). The main lesson is that certain research practices can increase the flexibility and efficiency of studies you perform, when done right, but the same practices can inflate the Type 1 error rate when done wrong. Let’s therefore try to get a better understanding when we are inflating our Type 1 error rate with optional stopping, and how to do this correctly using sequential analysis. 
     
@@ -171,27 +147,19 @@ For example, in the Figure below, you see the *p*-value plotted on the y-axis (f
 
 (ref:animateplab) Simulated *p*-values for each additional observation when the null is true.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/animatep} 
-
-}
-
-\caption{(ref:animateplab)}(\#fig:animatep)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/animatep.gif" alt="(ref:animateplab)" width="100%" />
+<p class="caption">(\#fig:animatep)(ref:animateplab)</p>
+</div>
 
 When there *is* a true effect, we see that *p*-values also vary, but they will eventually drop to below the alpha level. Due to the variation, we just do not know exactly when. When we perform an a-priori power analysis, we can compute the probability that looking at a specific sample size will yield a significant *p*-value. In Figure \@ref(fig:animatep2) we see the same simulation, but now when there is a true but small effect of d = 0.3. With 200 observations per condition, a sensitivity power analysis reveals that we have 85% power. If we would analyze the data at an interim analysis (e.g., after 150 observations) we would often already find a statistically significant effect (as we would have 74% power). This illustrates a benefit of sequential analyses, where we control error rates, but can stop early at an interim analysis. Sequential analyses are especially useful in large or expensive studies where there is uncertainty about the true effect size. 
 
 (ref:animatep2lab) Simulated *p*-values for each additional observation when d = 0.3.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/animatep2} 
-
-}
-
-\caption{(ref:animatep2lab)}(\#fig:animatep2)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/animatep2.gif" alt="(ref:animatep2lab)" width="100%" />
+<p class="caption">(\#fig:animatep2)(ref:animatep2lab)</p>
+</div>
 
 Let's more formally examine the inflation of the Type 1 error rate through optional stopping in a **simulation study**. Copy the code below into R and run the code. Note that the 50000 simulations (needed to get the error rates reasonably accurate) take some time to run. 
 
@@ -249,14 +217,10 @@ Start by running the simulation without changing any values, so simulating 100 p
 
 (ref:optionalstopfiglab) Simulation of 500000 studies performing 5 interim analyses at an alpha level of 5%
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{02-errorcontrol_files/figure-latex/optionalstopfig-1} 
-
-}
-
-\caption{(ref:optionalstopfiglab)}(\#fig:optionalstopfig)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="02-errorcontrol_files/figure-html/optionalstopfig-1.png" alt="(ref:optionalstopfiglab)" width="100%" />
+<p class="caption">(\#fig:optionalstopfig)(ref:optionalstopfiglab)</p>
+</div>
 
 We see 100 bars, one for each % (so one for all *p*-values between 0.00 and 0.01, one for *p*-values between 0.01 and 0.02, etc.). There is a horizontal line that indicates where all *p*-values should fall, if they would be uniformly distributed (as they should be when there is no true effect, as explained in the chapter on [*p*-values](#pvalues)). 
 
@@ -282,14 +246,10 @@ There are two main reasons to abandon the universal use of a 5% alpha level. The
 
 For example, imagine a researcher plans to collect 64 participants per condition to detect a d = 0.5 effect, and weighs the cost of Type 1 errors 4 times as much as Type 2 errors. This is exactly the scenario Cohen (1988) described, and with 64 participants per condition the relative weight of Type 1 and Type 2 errors yields a 5% Type 1 error rate and a 20% Type 2 error rate. Now imagine this researcher realizes they have the resources to collect 80 observations instead of just 64. With an interest in an effect size of d = 0.5, the relative weight of Type 1 and Type 2 errors of 4 would be satisfied when they set the alpha level to 0.037 as then the Type 2 error rate is 0.147. Alternatively, the researcher might have decided to collect 64 observations, but not balance the error rates, but set the alpha level such that the weighted combined error rate is minimized, which is achieved when the alpha level is set to 0.033, as visualized in Figure \@ref(fig:minimizeerror) (for further information, see @maier_justify_2022).
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{02-errorcontrol_files/figure-latex/minimizeerror-1} 
-
-}
-
-\caption{Weighted combined error rate, minimized at alpha = 0.037.}(\#fig:minimizeerror)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="02-errorcontrol_files/figure-html/minimizeerror-1.png" alt="Weighted combined error rate, minimized at alpha = 0.037." width="100%" />
+<p class="caption">(\#fig:minimizeerror)Weighted combined error rate, minimized at alpha = 0.037.</p>
+</div>
 
 Justifying error rates can lead to situations where the alpha level is increased above 0.05, because this leads to more optimal decision making. Winer (1962) writes: 
 
@@ -301,10 +261,7 @@ One should also carefully reflect on the choice of the alpha level when an exper
 
 The second reason is most relevant for large data sets, and is related to [Lindley's paradox](#lindley). As the statistical power increases, some *p*-values below 0.05 (e.g., *p* = 0.04) can be more likely when there is *no* effect than when there *is* an effect. To prevent situations where a frequentist rejects the null hypothesis based on *p* < 0.05, when the evidence in the test favors the null hypothesis over the alternative hypothesis, it is recommended to lower the alpha level as a function of the sample size. The need to do so is discussed by @leamer_specification_1978, who writes "The rule of thumb quite popular now, that is, setting the significance level arbitrarily to .05, is shown to be deficient in the sense that from every reasonable viewpoint the significance level should be a decreasing function of sample size." The idea of this approach is to reduce the alpha level such that a Bayes factor or likelihood computed for a significant result would never be evidence *for* the null hypothesis (for an online Shiny app to perform such calculations, see [here](https://shiny.ieis.tue.nl/JustifyAlpha/).
 
-
-```
-## NULL
-```
+<iframe src="https://shiny.ieis.tue.nl/JustifyAlpha/" width="100%" height="400px" data-external="1"></iframe>
 
 ## Why you don't need to adjust your alpha level for all tests you'll do in your lifetime.
 
@@ -332,14 +289,10 @@ In Figure \@ref(fig:powerd) we see the expected distribution of observed standar
 
 (ref:powerdlab) Distribution of *d* = 0 and *d* = 0.5 for an independent *t*-test with *n* = 50.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{02-errorcontrol_files/figure-latex/powerd-1} 
-
-}
-
-\caption{(ref:powerdlab)}(\#fig:powerd)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="02-errorcontrol_files/figure-html/powerd-1.png" alt="(ref:powerdlab)" width="100%" />
+<p class="caption">(\#fig:powerd)(ref:powerdlab)</p>
+</div>
 
 The issue of Type 2 error control will be discussed in more detail in the chapter on [sample size justification](#aprioripower). Even though the topic of Type 2 error control is only briefly discussed here, it is at least as important as Type 1 error control. An informative study should have a high probability of observing an effect if there is an effect. Indeed, the default recommendation to aim for 80% power leaves a surprisingly large (20%) probability of a Type 2 error. If a researcher only cares about not making a decision error, but the researcher does not care about whether this decision error is a false positive or a false negative, an argument could be made that Type 1 and Type 2 errors are weighed equally. Therefore, desiging a study with balanced error rates (e.g., a 5% Type 1 error and 95% power) would make sense. 
 
