@@ -131,7 +131,7 @@ for (i in 10:n) { # for each simulated participants after the first 10
 p <- p[10:n] # Remove first 10 empty p-values
 
 # Create the plot
-par(bg = backgroundcolor) PROBLEM AS BEFORE
+par(bg = "#fffafa")
 plot(0, col = "red", lty = 1, lwd = 3, ylim = c(0, 1), xlim = c(10, n), 
      type = "l", xlab = "sample size", ylab = "p-value")
 lines(p, lwd = 2)
