@@ -19,7 +19,7 @@ If you perform a study and plan to make a claim based on the statistical test yo
   
 **False Negative (FN)**: Concluding there is a no true effect, when there is a true effect ($H_1$ is true). This is also referred to as a **Type 2 error**, and indicated by **$\beta$**.
   
-**True Negative (TN)**: Concluding there is no true effect, when there is no true effect ($H_0$ is true). This is the complement of False Positives, and is thus indicated by**1-$\alpha$**.
+**True Negative (TN)**: Concluding there is no true effect, when there is no true effect ($H_0$ is true). This is the complement of False Positives, and is thus indicated by **1-$\alpha$**.
   
 **True Positive (TP)**: Concluding there is a true effect, when there is a true effect ($H_1$ is true). This is the complement of False Negatives, and is thus indicated by **1-$\beta$**.
   
@@ -78,14 +78,14 @@ If we continue the example above, we see there are 85 positive results (80 + 5) 
 knitr::include_graphics("images/PPVexample.png")
 ```
 
-*(Note: The FDR and FPRP are different abbreviations for the same thing)*
+*(Note: The FDR and FPRP are different abbreviations for the same thing.)*
   
 People often say something like: “*Well, we all know 1 in 20 results in the published literature are Type 1 errors*”. You should be able to understand this is not true in practice, after learning about the positive predictive value. When in 100% of the studies you perform, the null hypothesis is true, and all studies are published, only *then* are 1 in 20 studies, in the long run, false positives (and the rest correctly reveal no statistically significant difference). It also explains why the common *p*-value [misconception](#misconception4) "If you have observed a significant finding, the probability that you have made a Type 1 error (a false positive) is 5%." is not correct, because in practice the null hypothesis is not true in all tests that are performed (sometimes the alternative hypothesis is true). Importantly, as long as there is [publication bias](#bias) (where findings with desired results end up in the scientific literature, and for example non-significant results are not shared) then even if researchers use a 5% alpha level, it is quite reasonable to assume much more than 5% of significant findings in the published literature are false positives. In the scientific literature, the positive predictive value can be quite high, and under specific circumstances, it might even be so high that most published research findings are false. This will happen when researchers examine mostly studies where the null hypothesis is true, with low power, or when the Type 1 error rate is inflated due to *p*-hacking or other types of bias.
     
     
 ## Type 1 error inflation 
     
-```{r, cooking, echo = FALSE, fig.cap='Quote from the 1830 book by Babbage Reflections on the Decline of Science in England And on Some of Its Causes'}
+```{r, cooking, echo = FALSE, fig.cap='Quote from the 1830 book by Babbage Reflections on the Decline of Science in England And on Some of Its Causes.'}
 knitr::include_graphics("images/babbagecooking.jpg")
 
 ```
@@ -103,7 +103,7 @@ For some paradigms, researchers have a lot of flexibility in how to compute the 
     
 ## Optional stopping{#optionalstopping}
 
-(ref:optionalstoppingexamplelab) Screenshot a scientific paper explicitly admitting to using optional stopping
+(ref:optionalstoppingexamplelab) Screenshot a scientific paper explicitly admitting to using optional stopping.
 
 ```{r optionalstoppingexample, echo = FALSE, fig.cap="(ref:optionalstoppingexamplelab)"}
 knitr::include_graphics("images/optionalstoppingexample.png")
@@ -224,12 +224,12 @@ nsims <- 50000 # number of simulated studies
 alphalevel <- 0.05 # set alphalevel
 
 if(looks > 1){
-  look_at_n <- ceiling(seq(N / looks, N, (N - (N / looks)) / (looks-1)))
+  look_at_n <- ceiling(seq(N / looks, N, (N - (N / looks)) / (looks - 1)))
 }  else {
   look_at_n <- N
 }
-look_at_n<-look_at_n[look_at_n > 2] #Remove looks at N of 1 or 2
-looks<-length(look_at_n) #if looks are removed, update number of looks
+look_at_n <- look_at_n[look_at_n > 2] # Remove looks at N of 1 or 2
+looks<-length(look_at_n) # if looks are removed, update number of looks
 
 matp <- matrix(NA, nrow = nsims, ncol = looks) # Matrix for p-values l tests
 p <- numeric(nsims) # Variable to save pvalues
@@ -269,7 +269,7 @@ So how much does optional stopping inflate the Type 1 error rate? And which *p*-
 
 Start by running the simulation without changing any values, so simulating 100 participants in each condition, looking 5 times at your data, with an alpha of 0.05. Note the 50.000 simulations take a while! You should see something similar to Figure \@ref(fig:optionalstopfig) below (which is based on 500.000 simulations to make the pattern very clear).
 
-(ref:optionalstopfiglab) Simulation of 500000 studies performing 5 interim analyses at an alpha level of 5%
+(ref:optionalstopfiglab) Simulation of 500000 studies performing 5 interim analyses at an alpha level of 5%.
 
 ```{r, optionalstopfig, eval=TRUE, echo=FALSE, cache=TRUE, fig.cap = '(ref:optionalstopfiglab)'}
 N <- 100 # total datapoints (per condition)
@@ -278,8 +278,8 @@ nsims <- 500000 # number of simulated studies
 alphalevel <- 0.05 # set alphalevel
 
 look_at_n <- ceiling(seq(N / looks, N, (N - (N / looks)) / (looks-1))) # looks
-look_at_n<-look_at_n[look_at_n > 2] #Remove looks at N of 1 or 2
-looks<-length(look_at_n) #if looks are removed, update number of looks
+look_at_n <- look_at_n[look_at_n > 2] # Remove looks at N of 1 or 2
+looks <- length(look_at_n) # if looks are removed, update number of looks
 
 matp <- matrix(NA, nrow = nsims, ncol = looks) # Matrix for p-values l tests
 p <- numeric(nsims) # Variable to save pvalues
