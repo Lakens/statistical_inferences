@@ -29,24 +29,25 @@ and could not exactly reproduce the original results. Sometimes, ‘data rot’ 
 eaten away at either my data or my analysis code, and it no longer worked.
 
 Obviously, there is no such thing as ‘data rot’. The problem was I did not use a
-reproducible workflow. In this assignment, we will learn what a computationally
+reproducible workflow. In this chapter, we will learn what a computationally
 reproducible workflow looks like, and how you can share computationally
-reproducible results with your published paper. The goal in this assignment is
-for someone else (or for yourself, one year from now) to be able to take your
-data, run your code, and get exactly the same results as you reported in your
-work.
+reproducible results with your published paper. The goal of applying a 
+computationally reproducible workflow to your projects is to allow
+someone else (or yourself, one year from now) to take your data, run your code, 
+and get exactly the same results as you reported in your work.
 
 Although there are multiple ways to achieve a fully reproducible workflow, in
-this assignment I aim to introduce you to what I believe might be one emerging
-standard for a fully reproducible workflow. You learn to work with a version
-control system (such as GitHub, which integrates nicely with the Open Science
-Framework) as you are programming in R, which stores previous versions of files.
-You will then learn how to write a completely reproducible data analysis script
-(including figures), that you can save as an HTML file or a PDF file, using
-RMarkdown. Finally, we will take a look at Code Ocean, a novel online platform
+this chapter I aim to introduce you to what I believe might be one emerging
+standard for a fully reproducible workflow. Through an example, you will learn 
+to work with a version control system (such as GitHub, which integrates nicely 
+with the Open Science Framework) as you are programming in R, 
+which stores previous versions of files. You will then learn how to write a 
+completely reproducible data analysis script(including figures), 
+that you can save as an HTML file or a PDF file, using RMarkdown. 
+Finally, we will take a look at Code Ocean, a novel online platform
 that allows you to share computationally reproducible code online, making it
-extremely easy for others to run (small variations of) your code. You will not
-learn how to become an experienced programmer in this assignment, but you will
+extremely easy for others to run (small variations of) your code. While you will not
+learn how to become an experienced programmer by the end of this chapter, you will
 see what a fully reproducible workflow would look like, and get some initial
 experience with tools you will most likely want to explore more in the future.
 
@@ -55,8 +56,8 @@ regrettably, I can’t offer ICT support. Differences between Windows, Linux, an
 Apple operating systems means you might need to search the internet for
 solutions to problems you run into – this is very normal, and even experienced
 programmers do this all the time. If you get stuck, you can check what you did
-against what the assignment should look like by visiting the public versions of
-part of this assignment:
+against what the code should look like by visiting the public versions of
+part of this example:
 
 GitHub repository: <https://github.com/Lakens/reproducibility_assignment>
 
@@ -135,7 +136,7 @@ The idea is that you use other software to interact with your GitHub repository.
 
 ## Step 2: Cloning your GitHub repository into RStudio
 
-R Studio can communicate with GitHub. To allow R Studio to work together with
+R Studio can communicate with GitHub. To allow RStudio to work together with
 GitHub, you first need to set up the system. A detailed explanation for
 different operating systems is provided
 [here](https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN).
@@ -270,7 +271,7 @@ document and an author name. Enter the title ‘Main Analysis’, and feel free 
 change the Author subfield to anything you prefer. RMarkdown files can be
 compiled (also referred to as ‘knitted’) into an HTML file, a PDF document, or a
 word document. To generate PDF files you need to install MiKTex which we won’t
-do for this assignment ([a good tutorial how to install MiKTeX is available
+do for this example ([a good tutorial how to install MiKTeX is available
 here](https://medium.com/@sorenlind/create-pdf-reports-using-r-r-markdown-latex-and-knitr-on-windows-10-952b0c48bfa9)).
 So leave the default output format to HTML and click OK.
 
@@ -345,9 +346,7 @@ three backticks followed by {r} and ends with three backticks. You can also just
 manually typing in these two lines.
 
 Copy-paste the code below – make sure to get all the text – and paste it between
-the start line and the end line of the R code chunk. Note that
-there is no hard return between 'str' and 'oop.txt' – when copy-pasting this,
-you probably need to correct this.
+the start line and the end line of the R code chunk.
 
 
 ```r
@@ -357,17 +356,16 @@ sep = "\\t", header = TRUE)`
 write.table(stroop_data, file = "stroop.csv", quote = F, row.names = F)
 ```
 
-After copy-pasting the text, the code section should look like this (again, be
-aware of any difficulties when copy-pasting text from a PDF file into RStudio):
+After copy-pasting the text, the code section should look like this:
 
 <img src="images/6d87836ecdcc9b06891059acc43930a2.png" width="100%" style="display: block; margin: auto;" />
 
 This code creates a data.frame called ‘stroop_data” that contains data, and then
-saves this data in a .csv file called ‘stroop.csv’. Click the Knit button:
+saves this data in a .csv file called ‘stroop.csv’. Click the Knit button to look at the document:
 
 <img src="images/270645a5be86fa1d9d534f78b8ca0724.png" width="20%" style="display: block; margin: auto;" />
 
-to look at the document. You should see something like:
+You should see something like:
 
 <img src="images/5bad7d8cde23291c2d67ff65897d60c4.png" width="100%" style="display: block; margin: auto;" />
 
@@ -383,16 +381,16 @@ downloaded from the internet and saved to our project folder, using R code.
 There is really no need to keep downloading the file from the internet when we
 can also just load it from the local folder. So let’s change the code. We won’t
 completely delete this code – we will just **comment it out** by placing a \# in
-front of it. This way, we can still remember where we downloaded the code from,
+front of it. This way, we can still remember where we downloaded the file from,
 but we won’t use the code.
 
 Because it is always important to **provide comments in the code you write**,
-add the explanation:
+add this explanation above the line where we downloaded the code:
 
 \#run only once to download the data
 
-above the line where we downloaded the code. Then, select the lines of code in
-the chunk, and click (on windows) CTRL+SHIFT+C (or click ‘Code’ in the toolbar
+Then, select the lines of code in
+the chunk, and press (on Windows) CTRL+SHIFT+C (or click ‘Code’ in the toolbar
 and then ‘comment/uncomment lines’). This should add \# in front of all lines,
 making it comments instead of code that is executed every time. You should end
 up with:
@@ -524,7 +522,7 @@ header:
 
 <img src="images/5be3bc1c3f5a2ebf2d16d19430312057.png" width="100%" style="display: block; margin: auto;" />
 
-This sets general options for the code chunks in the R Markdown file. The echo,
+This sets general (global) options for the code chunks in the R Markdown file. The echo,
 warning, and message = FALSE hide the code chunks, warning messages, and other
 messages, where the ‘include=true’ will make all figures appear in the text. You
 can set some of these variables to TRUE, and hit Knit to see what they change.
@@ -600,7 +598,7 @@ Whenever you collect personal data, make sure you [handle this data responsibly]
 
 Although we have uploaded our data and code to GitHub, when you publish your article and want to **share your data and code**, it is important to remember that GitHub is not a data repository that guarantees long term data storage.
 GitHub is currently owned by Microsoft, and companies can choose to do with their free service whatever they want. This makes it less suitable to link to GitHub in scientific articles, because articles could be around for decades from now. For scientific publications, you will want to link to a stable long-term data repository. For a **list of data repositories**, click [HERE](http://journals.plos.org/plosone/s/data-availability#loc-recommended-repositories).
-We will use the Open Science Framework (OSF) in this assignment as a stable data storage, because it is very easy to just integrate our GitHub repository within an OSF project.
+We will use the Open Science Framework (OSF) in this example as a stable data storage, because it is very easy to just integrate our GitHub repository within an OSF project.
 
 Log in to the OSF at <https://osf.io/> (create an account if you haven’t already  done so). Click ‘Create new project’. Give your project a name (for example ‘Stroop Reproducible Analysis Assignment’).
 
@@ -645,7 +643,7 @@ You can use a view-only link to share access to your files only with reviewers. 
 
 The OSF page now just links to the files on the GitHub page. It does not independently store them. This means we do not yet have a **long term stable data storage solution**.
 
-To create a snapshot of all files in the GitHub repository that will be stored for a long time, you have to create a **Registration** of your project. We will not create a Registration of your project in this assignment. Creating a registration starts several formal procedures: data in linked repositories (such as GitHub) are stored by the OSF, and the project appears in the list of registrations. You should only register when you want to create a stable copy of your work. Below you see an example of the files in an OSF project that has been registered. You see that the GitHub repository that was linked to the project has been turned into an Archive of GitHub – this creates a stable version of the project, as it was at the moment you registered.
+To create a snapshot of all files in the GitHub repository that will be stored for a long time, you have to create a **Registration** of your project. We will not create a Registration of your project in this example. Creating a registration starts several formal procedures: data in linked repositories (such as GitHub) are stored by the OSF, and the project appears in the list of registrations. You should only register when you want to create a stable copy of your work. Below you see an example of the files in an OSF project that has been registered. You see that the GitHub repository that was linked to the project has been turned into an Archive of GitHub – this creates a stable version of the project, as it was at the moment you registered.
 
 <img src="images/e0b28289fbe42988cbe04111e4aee6ad.png" width="100%" style="display: block; margin: auto;" />
 
@@ -709,7 +707,7 @@ will get output:
 
 Click on the ‘main_analysis.html’. You will see the script has generated our
 reproducible results. Commit the changes. You could (in principle – for this
-assignment we won’t) make this completely reproducible container openly
+example we won’t) make this completely reproducible container openly
 available and share it with your published paper.
 
 <img src="images/f8904ae8e964bd88b2c21078ea9e81f9.png" width="100%" style="display: block; margin: auto;" />
@@ -737,7 +735,7 @@ Second, annotate code so it is clear what the code does. Well-annotated code mak
 
 Third, check whether the code you shared still reproduces all analyses after revisions - researchers often make changes during the peer review process, but forget to update their analysis files. 
 
-Finally, remember that most code in R relies on specific libraries (also called packages). List all the packages that the code needs to run at the top of the script. Because packages update, it is necessary to report the version numbers of packages that were used (for example using packrat, or copying the output of the sessionInfo() function as a comment in the script). Remember that folder names and folder structures differ between computers, and therefore you should use relative locations (and not “c:/user/myfolder/code”). RStudio projects and the 'here' package provide an easy way to use relative paths. When multiple scripts are used in the analysis, include the order in which scripts should be performed on the data in a README file. 
+Finally, remember that most code in R relies on specific libraries (also called packages). List all the packages that the code needs to run at the top of the script. Because packages update, it is necessary to report the version numbers of packages that were used (for example using packrat, or copying the output of the sessionInfo() function as a comment in the script). Remember that folder names and folder structures differ between computers, and therefore you should use relative locations (and not absolute paths like “c:/user/myfolder/code”). RStudio projects and the 'here' package provide an easy way to use relative paths. When multiple scripts are used in the analysis, include the order in which scripts should be performed on the data in a README file. 
 
 ## Conclusion
 

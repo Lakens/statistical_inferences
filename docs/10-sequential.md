@@ -359,7 +359,7 @@ Because power is a curve, and the true effect size is unknown, it is useful to p
 sample_res <- getPowerMeans(
   design = seq_design,
   groups = 2,
-  alternative = seq(0,1,0.01), 
+  alternative = seq(0, 1, 0.01), 
   stDev = 1, 
   allocationRatioPlanned = 1,
   maxNumberOfSubjects = 190, 
@@ -493,7 +493,7 @@ A challenge when interpreting the observed effect size in sequential designs is 
 
 A similar issue is at play when reporting *p* values and confidence intervals. When a sequential design is used, the distribution of a *p* value that does not account for the sequential nature of the design is no longer uniform when $H_0$ is true. A *p* value is the probability of observing a result *at least as extreme* as the result that was observed, given that $H_0$ is true. It is no longer straightforward to determine what 'at least as extreme' means a sequential design [@cook_p-value_2002]. The most widely recommended procedure to determine what "at least as extreme" means is to order the outcomes of a series of sequential analyses in terms of the look at which the study was stopped, where earlier stopping is more extreme than later stopping, and where studies with higher *z* values are more extreme, when different studies are stopped at the same time [@proschan_statistical_2006]. This is referred to as *stagewise ordering*, which treats rejections at earlier looks as stronger evidence against $H_0$ than rejections later in the study [@wassmer_group_2016]. Given the direct relationship between a *p* value and a confidence interval, confidence intervals for sequential designs have also been developed.
 
-Reporting adjusted *p* values and confidence intervals, however, might be criticized. After a sequential design, a correct interpretation from a Neyman-Pearson framework is to conclude that $H_0$ is rejected, the alternative hypothesis is rejected, or that the results are inconclusive. The reason that adjusted *p* values are reported after sequential designs is to allow readers to interpret them as a measure of evidence. @dupont_sequential_1983 provides good arguments to doubt that adjusted *p* values provide a valid measure of the strength of evidence. Furthermore, a strict interpretation of the Neyman-Pearson approach to statistical inferences also provides an argument against interpreting *p* values as measures of evidence [@lakens_why_2022]. Therefore, it is recommended, if researchers are interested in communicating the evidence in the data for $H_0$ relative to the alternative hypothesis, to report likelihoods or Bayes factors, which can always be reported and interpreted after the data collection has been completed. Reporting the unadjusted *p*-value in relation to the alpha level communicates the basis to reject hypotheses, although it might be important for researchers performing a meta-analysis based on *p*-values (e.g., a *p*-curve or *z*-curve analysis, as explained in the chapter on [bias detection](#bias)) that these are sequential *p*-values. Adjusted confidence intervals are useful tools to evaluate the observed effect estimate relative to its variability at an interim or the final look at the data. Note that the adjusted parameter estimates are only available in statistical software for a few commonly used designs in pharmaceutical trials, such as comparisons of mean differences between groups, or survuval analysis
+Reporting adjusted *p* values and confidence intervals, however, might be criticized. After a sequential design, a correct interpretation from a Neyman-Pearson framework is to conclude that $H_0$ is rejected, the alternative hypothesis is rejected, or that the results are inconclusive. The reason that adjusted *p* values are reported after sequential designs is to allow readers to interpret them as a measure of evidence. @dupont_sequential_1983 provides good arguments to doubt that adjusted *p* values provide a valid measure of the strength of evidence. Furthermore, a strict interpretation of the Neyman-Pearson approach to statistical inferences also provides an argument against interpreting *p* values as measures of evidence [@lakens_why_2022]. Therefore, it is recommended, if researchers are interested in communicating the evidence in the data for $H_0$ relative to the alternative hypothesis, to report likelihoods or Bayes factors, which can always be reported and interpreted after the data collection has been completed. Reporting the unadjusted *p*-value in relation to the alpha level communicates the basis to reject hypotheses, although it might be important for researchers performing a meta-analysis based on *p*-values (e.g., a *p*-curve or *z*-curve analysis, as explained in the chapter on [bias detection](#bias)) that these are sequential *p*-values. Adjusted confidence intervals are useful tools to evaluate the observed effect estimate relative to its variability at an interim or the final look at the data. Note that the adjusted parameter estimates are only available in statistical software for a few commonly used designs in pharmaceutical trials, such as comparisons of mean differences between groups, or survuval analysis.
 
 Below, we see the same sequential design we started with, with 2 looks and a Pocock-type alpha spending function. After completing the study with the planned sample size of 95 participants per condition (where we collect 48 participants at look 1, and the remaining 47 at look 2), we can now enter the observed data using the function `getDataset`. The means and standard deviations are entered for each stage, so at the second look, only the data from the second 95 participants in each condition are used to compute the means (1.51 and 1.01) and standard deviations (1.03 and 0.96). 
 
@@ -510,7 +510,7 @@ seq_design <- getDesignGroupSequential(
 dataMeans <- getDataset(
   n1 = c(48, 47), 
   n2 = c(48, 47), 
-  means1 = c(1.12, 1.51), #for directional test, means 1 > means 2
+  means1 = c(1.12, 1.51), # for directional test, means 1 > means 2
   means2 = c(1.03, 1.01),
   stDevs1 = c(0.98, 1.03), 
   stDevs2 = c(1.06, 0.96)
@@ -527,17 +527,17 @@ res
 
 
 ```
-## [PROGRESS] Stage results calculated [0.0751 secs] 
-## [PROGRESS] Conditional power calculated [0.0669 secs] 
-## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.0019 secs] 
-## [PROGRESS] Repeated confidence interval of stage 1 calculated [1.23 secs] 
-## [PROGRESS] Repeated confidence interval of stage 2 calculated [1.32 secs] 
-## [PROGRESS] Repeated confidence interval calculated [2.55 secs] 
-## [PROGRESS] Repeated p-values of stage 1 calculated [0.7228 secs] 
-## [PROGRESS] Repeated p-values of stage 2 calculated [0.606 secs] 
-## [PROGRESS] Repeated p-values calculated [1.33 secs] 
-## [PROGRESS] Final p-value calculated [0.0036 secs] 
-## [PROGRESS] Final confidence interval calculated [0.1771 secs]
+## [PROGRESS] Stage results calculated [0.0434 secs] 
+## [PROGRESS] Conditional power calculated [0.0344 secs] 
+## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.0015 secs] 
+## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.7735 secs] 
+## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.7212 secs] 
+## [PROGRESS] Repeated confidence interval calculated [1.5 secs] 
+## [PROGRESS] Repeated p-values of stage 1 calculated [0.7981 secs] 
+## [PROGRESS] Repeated p-values of stage 2 calculated [1.46 secs] 
+## [PROGRESS] Repeated p-values calculated [2.26 secs] 
+## [PROGRESS] Final p-value calculated [0.0048 secs] 
+## [PROGRESS] Final confidence interval calculated [0.1934 secs]
 ```
 
 

@@ -145,7 +145,7 @@ When designing a study where the goal is to test whether a statistically signifi
 3. A true negative, determined by 1-$\alpha$. A test yields a non-significant result when the null hypothesis is true.
 4. A true positive, determined by 1-$\beta$. A test yields a significant result when the alternative hypothesis is true.
 
-Given a specified effect size, alpha level, and power, an a-priori power analysis can be used to calculate the number of observations required to achieve the desired error rates, given the effect size. Power analyses can be performed based on standardized effect sizes or effect sizes expressed on the original scale. It is important to know the standard deviation of the effect (see the 'Know Your Measure' section) but I find it slightly more convenient to talk about standardized effects in the context of sample size justifications. Figure \@ref(fig:power-2) illustrates how the statistical power increases as the number of observations (per group) increases in an independent *t* test with a two-sided alpha level of 0.05. If we are interested in detecting an effect of *d* = 0.5, a sample size of 90 per condition would give us more than 90% power. Statistical power can be computed to determine the number of participants, or the number of items [@westfall_statistical_2014] but can also be performed for single case studies [@ferron_power_1996; @mcintosh_power_2020]
+Given a specified effect size, alpha level, and power, an a-priori power analysis can be used to calculate the number of observations required to achieve the desired error rates, given the effect size. Power analyses can be performed based on standardized effect sizes or effect sizes expressed on the original scale. It is important to know the standard deviation of the effect (see the 'Know Your Measure' section) but I find it slightly more convenient to talk about standardized effects in the context of sample size justifications. Figure \@ref(fig:power-2) illustrates how the statistical power increases as the number of observations (per group) increases in an independent *t* test with a two-sided alpha level of 0.05. If we are interested in detecting an effect of *d* = 0.5, a sample size of 90 per condition would give us more than 90% power. Statistical power can be computed to determine the number of participants, or the number of items [@westfall_statistical_2014] but can also be performed for single case studies [@ferron_power_1996; @mcintosh_power_2020].
 
 
 Although it is common to set the Type I error rate to 5% and aim for 80% power, error rates should be justified [@lakens_justify_2018]. As explained in the section on compromise power analysis, the default recommendation to aim for 80% power lacks a solid justification. In general, the lower the error rates (and thus the higher the power), the more informative a study will be, but the more resources are required. Researchers should carefully weigh the costs of increasing the sample size against the benefits of lower error rates, which would probably make studies designed to achieve a power of 90% or 95% more common for articles reporting a single study. An additional consideration is whether the researcher plans to publish an article consisting of a set of replication and extension studies, in which case the probability of observing multiple Type I errors will be very low, but the probability of observing mixed results even when there is a true effect increases [@lakens_too_2017], which would also be a reason to aim for studies with low Type II error rates, perhaps even by slightly increasing the alpha level for each individual study.
@@ -185,7 +185,7 @@ An a-priori power analysis can be performed analytically or by performing comput
 
 ```r
 p <- numeric(10000)   # to store p-values
-for (i in 1:10000) {  #simulate 10k tests
+for (i in 1:10000) {  # simulate 10k tests
   x <- rnorm(n = 20, mean = 0.5, sd = 1)
   p[i] <- t.test(x)$p.value # store p-value
 }
@@ -221,7 +221,7 @@ The reproducible report needs to be accompanied by justifications for the choice
    <td style="text-align:left;width: 10cm; "> Specify all planned primary analyses that test hypotheses for which Type I and Type II error rates should be controlled. </td>
   </tr>
   <tr>
-   <td style="text-align:left;width: 5cm; "> Specify the alpha level for each analysis </td>
+   <td style="text-align:left;width: 5cm; "> Specify the alpha level for each analysis. </td>
    <td style="text-align:left;width: 10cm; "> List and justify the Type I error rate for each analysis. Make sure to correct for multiple comparisons where needed. </td>
   </tr>
   <tr>
@@ -434,7 +434,7 @@ One useful way of interpreting the width of the confidence interval is based on 
 
 We see that the margin of error is almost, but not exactly, the same as the minimal statistically detectable effect (*d* = 0.748). The small variation is due to the fact that the 95% confidence interval is calculated based on the *t* distribution. If the true effect size is not zero, the confidence interval is calculated based on the non-central *t* distribution, and the 95% CI is asymmetric. Figure \@ref(fig:noncentralt) visualizes three *t* distributions, one symmetric at 0, and two asymmetric distributions with a noncentrality parameter (the normalized difference between the means) of 2 and 3. The asymmetry is most clearly visible in very small samples (the distributions in the plot have 5 degrees of freedom) but remains noticeable in larger samples when calculating confidence intervals and statistical power. For example, for a true effect size of *d* = 0.5 observed with 15 observations per group would yield $d_s$ = 0.50, 95\% CI [-0.23, 1.22]. If we compute the 95% CI around the critical effect size, we would get $d_s$ = 0.75, 95\% CI [0.00, 1.48]. We see the 95% CI ranges from exactly 0 to 1.484, in line with the relation between a confidence interval and a *p* value, where the 95% CI excludes zero if the test is statistically significant. As noted before, the different approaches recommended here to evaluate how informative a study is are often based on the same information.
 
-(ref:noncentraltlab) Central (black dashed line) and 2 non-central (dark grey and light grey dashed lines) *t* distributions; ncp = noncentrality parameter
+(ref:noncentraltlab) Central (black dashed line) and 2 non-central (dark grey and light grey dashed lines) *t* distributions; ncp = noncentrality parameter.
 
 <div class="figure" style="text-align: center">
 <img src="08-samplesizejustification_files/figure-html/noncentralt-1.png" alt="(ref:noncentraltlab)" width="100%" />

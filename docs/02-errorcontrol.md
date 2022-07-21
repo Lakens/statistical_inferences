@@ -14,7 +14,7 @@ If you perform a study and plan to make a claim based on the statistical test yo
   
 **False Negative (FN)**: Concluding there is a no true effect, when there is a true effect ($H_1$ is true). This is also referred to as a **Type 2 error**, and indicated by **$\beta$**.
   
-**True Negative (TN)**: Concluding there is no true effect, when there is no true effect ($H_0$ is true). This is the complement of False Positives, and is thus indicated by**1-$\alpha$**.
+**True Negative (TN)**: Concluding there is no true effect, when there is no true effect ($H_0$ is true). This is the complement of False Positives, and is thus indicated by **1-$\alpha$**.
   
 **True Positive (TP)**: Concluding there is a true effect, when there is a true effect ($H_1$ is true). This is the complement of False Negatives, and is thus indicated by **1-$\beta$**.
   
@@ -75,7 +75,7 @@ If we continue the example above, we see there are 85 positive results (80 + 5) 
 <p class="caption">(\#fig:ppvexample)Screenshot of the output of the results of the PPV Shiny app by <a href="http://shinyapps.org/apps/PPV/">Michael Zehetleitner and Felix Schönbrodt </a></p>
 </div>
 
-*(Note: The FDR and FPRP are different abbreviations for the same thing)*
+*(Note: The FDR and FPRP are different abbreviations for the same thing.)*
   
 People often say something like: “*Well, we all know 1 in 20 results in the published literature are Type 1 errors*”. You should be able to understand this is not true in practice, after learning about the positive predictive value. When in 100% of the studies you perform, the null hypothesis is true, and all studies are published, only *then* are 1 in 20 studies, in the long run, false positives (and the rest correctly reveal no statistically significant difference). It also explains why the common *p*-value [misconception](#misconception4) "If you have observed a significant finding, the probability that you have made a Type 1 error (a false positive) is 5%." is not correct, because in practice the null hypothesis is not true in all tests that are performed (sometimes the alternative hypothesis is true). Importantly, as long as there is [publication bias](#bias) (where findings with desired results end up in the scientific literature, and for example non-significant results are not shared) then even if researchers use a 5% alpha level, it is quite reasonable to assume much more than 5% of significant findings in the published literature are false positives. In the scientific literature, the positive predictive value can be quite high, and under specific circumstances, it might even be so high that most published research findings are false. This will happen when researchers examine mostly studies where the null hypothesis is true, with low power, or when the Type 1 error rate is inflated due to *p*-hacking or other types of bias.
     
@@ -83,8 +83,8 @@ People often say something like: “*Well, we all know 1 in 20 results in the pu
 ## Type 1 error inflation 
     
 <div class="figure" style="text-align: center">
-<img src="images/babbagecooking.jpg" alt="Quote from the 1830 book by Babbage Reflections on the Decline of Science in England And on Some of Its Causes" width="100%" />
-<p class="caption">(\#fig:cooking)Quote from the 1830 book by Babbage Reflections on the Decline of Science in England And on Some of Its Causes</p>
+<img src="images/babbagecooking.jpg" alt="Quote from the 1830 book by Babbage Reflections on the Decline of Science in England And on Some of Its Causes." width="100%" />
+<p class="caption">(\#fig:cooking)Quote from the 1830 book by Babbage Reflections on the Decline of Science in England And on Some of Its Causes.</p>
 </div>
     
 If you perform multiple comparisons, there is a risk that the Type 1 error rate inflates. When multiple comparisons are planned, in some cases it is possible to control the Type 1 error rate by lowering the alpha level for each individual analysis. The most widely known approach to control for multiple comparisons is the Bonferroni correction where the alpha level is divided by the number of tests that is performed [@dunn_multiple_1961]. However, researchers also often use informal data analysis strategies that inflate the Type 1 error rate. Babbage [-@babbage_reflections_1830] already complained about these problematic practices in 1830, and two centuries later, they are still common. Barber [-@barber_pitfalls_1976] provides an in depth discussion of a range of approaches, such as eyeballing the data to decide which hypotheses to test (sometimes called 'double dipping'), selectively reporting only those analyses that confirm predictions, and ignoring non-significant results, collecting many variables and performing multitudes of tests, or performing sub-group analyses when the planned analysis yields nonsignificant results, or after a nonsignificant prediction derive a new hypothesis that is supported by the data, and test the hypothesis on the data that the hypothesis was derived from (sometimes called HARKing [@kerr_harking_1998]). Many researchers admit to having used practices that inflate error rates [@fiedler_questionable_2015; @john_measuring_2012; @van_de_schoot_use_2021; @chin_questionable_2021; @makel_both_2021]. I myself have used such practices in the first scientific article I published, before I was fully aware of how problematic this was - for an article we published several years later in which we reflect on this, see @jostmann_short_2016. 
@@ -100,7 +100,7 @@ For some paradigms, researchers have a lot of flexibility in how to compute the 
     
 ## Optional stopping{#optionalstopping}
 
-(ref:optionalstoppingexamplelab) Screenshot a scientific paper explicitly admitting to using optional stopping
+(ref:optionalstoppingexamplelab) Screenshot a scientific paper explicitly admitting to using optional stopping.
 
 <div class="figure" style="text-align: center">
 <img src="images/optionalstoppingexample.png" alt="(ref:optionalstoppingexamplelab)" width="100%" />
@@ -171,12 +171,12 @@ nsims <- 50000 # number of simulated studies
 alphalevel <- 0.05 # set alphalevel
 
 if(looks > 1){
-  look_at_n <- ceiling(seq(N / looks, N, (N - (N / looks)) / (looks-1)))
+  look_at_n <- ceiling(seq(N / looks, N, (N - (N / looks)) / (looks - 1)))
 }  else {
   look_at_n <- N
 }
-look_at_n<-look_at_n[look_at_n > 2] #Remove looks at N of 1 or 2
-looks<-length(look_at_n) #if looks are removed, update number of looks
+look_at_n <- look_at_n[look_at_n > 2] # Remove looks at N of 1 or 2
+looks<-length(look_at_n) # if looks are removed, update number of looks
 
 matp <- matrix(NA, nrow = nsims, ncol = looks) # Matrix for p-values l tests
 p <- numeric(nsims) # Variable to save pvalues
@@ -215,7 +215,7 @@ So how much does optional stopping inflate the Type 1 error rate? And which *p*-
 
 Start by running the simulation without changing any values, so simulating 100 participants in each condition, looking 5 times at your data, with an alpha of 0.05. Note the 50.000 simulations take a while! You should see something similar to Figure \@ref(fig:optionalstopfig) below (which is based on 500.000 simulations to make the pattern very clear).
 
-(ref:optionalstopfiglab) Simulation of 500000 studies performing 5 interim analyses at an alpha level of 5%
+(ref:optionalstopfiglab) Simulation of 500000 studies performing 5 interim analyses at an alpha level of 5%.
 
 <div class="figure" style="text-align: center">
 <img src="02-errorcontrol_files/figure-html/optionalstopfig-1.png" alt="(ref:optionalstopfiglab)" width="100%" />

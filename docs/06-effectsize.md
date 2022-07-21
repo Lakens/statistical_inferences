@@ -168,7 +168,7 @@ $$r = \frac{d_s}{\sqrt{{d_s^{2}}^{+}\frac{N^{2} - 2N}{n_{1} \times n_{2}}}}$$
 
 
 
-(ref:sharedvariancelab) Screenshot from correation effect size vizualization by Kristoffer Magnusson for r - 0.21.
+(ref:sharedvariancelab) Screenshot from correlation effect size vizualization by Kristoffer Magnusson for r = 0.21.
 
 <div class="figure" style="text-align: center">
 <img src="images/sharedvariance.png" alt="(ref:sharedvariancelab)" width="100%" />
@@ -253,7 +253,7 @@ Now we have the basis to look at interaction effects. Different patterns of mean
 
 
 
-(ref:interactionslab) Schematic illustration of a disordinal (or cross-over) and ordinal interaction
+(ref:interactionslab) Schematic illustration of a disordinal (or cross-over) and ordinal interaction.
 
 <div class="figure" style="text-align: center">
 <img src="06-effectsize_files/figure-html/interactions-1.png" alt="(ref:interactionslab)" width="100%" />

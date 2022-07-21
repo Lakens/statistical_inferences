@@ -93,7 +93,7 @@ The two groups differ in how close they are to their true means, and as a conseq
 
 We see that there is quite some variation, up to the point that in one simulation the sample means are in the opposite direction of the population means. Again, increasing the sample size will mean that, in the long run, the sample means will get closer to the population means, and that we are more accurately estimating the difference between conditions. With 250 observations in each group, a randomly simulated set of observations for the two groups might look like Figure \@ref(fig:plotgroup3). Note that this difference might not look impressive. However, the difference would pass a significance test (an independent *t*-test) with a very low alpha level. 
 
-(ref:plotgroup3lab) Simulated sample of 250 independent observations
+(ref:plotgroup3lab) Simulated sample of 250 independent observations.
 
 <div class="figure" style="text-align: center">
 <img src="11-meta_files/figure-html/plotgroup3-1.png" alt="(ref:plotgroup3lab)" width="100%" />
@@ -142,12 +142,12 @@ A difference between an independent *t*-test and a meta-analysis is that a *t*-t
 ```r
 library(metafor)
 g <- escalc(measure = "SMD",
-            n1i = 50, # sample size in group 1
-            m1i = 5.6, # observed mean in group 1
-            sd1i = 1.2, # observed standard deviation in group 1
-            n2i = 50, # sample size in group 2
-            m2i = 4.9, # observed mean in group 2
-            sd2i = 1.3) # observed standard deviation in group 2
+            n1i = 50, # sample size in Group 1
+            m1i = 5.6, # observed mean in Group 1
+            sd1i = 1.2, # observed standard deviation in Group 1
+            n2i = 50, # sample size in Group 2
+            m2i = 4.9, # observed mean in Group 2
+            sd2i = 1.3) # observed standard deviation in Group 2
 g
 ```
 
@@ -218,7 +218,7 @@ It is now common to visualize the results of a meta-analysis using a forest plot
 
 
 
-(ref:freiman1978lab) First version of a forest plot by Freiman and colleagues, 1978 (image from https://www.jameslindlibrary.org/freiman-ja-chalmers-tc-smith-h-kuebler-rr-1978/)
+(ref:freiman1978lab) First version of a forest plot by Freiman and colleagues, 1978 (image from https://www.jameslindlibrary.org/freiman-ja-chalmers-tc-smith-h-kuebler-rr-1978/).
 
 <div class="figure" style="text-align: center">
 <img src="images/freiman1978.jpg" alt="(ref:freiman1978lab)" width="100%" />
@@ -246,10 +246,10 @@ One intuitive way to learn about meta-analyses is to simulate studies and meta-a
 ```r
 set.seed(94)
 nSims <- 12 # number of simulated studies
-m1 <- 0.4 # population mean group 1
-sd1 <- 1 # standard deviation group 1
-m2 <- 0 # population mean group 2
-sd2 <- 1 # standard deviation group 1
+m1 <- 0.4 # population mean Group 1
+sd1 <- 1 # standard deviation Group 1
+m2 <- 0 # population mean Group 2
+sd2 <- 1 # standard deviation Group 1
 metadata <- data.frame(yi = numeric(0), vi = numeric(0)) # create dataframe
 
 for (i in 1:nSims) { # for each simulated study
@@ -338,24 +338,24 @@ failures in the experimental and control condition. In the script below, by defa
 ```r
 library(metafor)
 set.seed(5333)
-nSims <- 12 #number of simulated experiments
+nSims <- 12 # Number of simulated experiments
 
 pr1 <- 0.7 # Set percentage of successes in Group 1
 pr2 <- 0.5 # Set percentage of successes in Group 2
 
-ai <- numeric(nSims) # set up empty vector for successes group 1
-bi <- numeric(nSims) # set up empty vector for failures group 1
-ci <- numeric(nSims) # set up empty vector for successes group 2
-di <- numeric(nSims) # set up empty vector for failures group 2
+ai <- numeric(nSims) # set up empty vector for successes Group 1
+bi <- numeric(nSims) # set up empty vector for failures Group 1
+ci <- numeric(nSims) # set up empty vector for successes Group 2
+di <- numeric(nSims) # set up empty vector for failures Group 2
 
-for (i in 1:nSims) { #for each simulated experiment
+for (i in 1:nSims) { # for each simulated experiment
   n <- sample(30:80, 1)
   x <- rbinom(n, 1, pr1) # participants (1 = success, 0 is failure)
   y <- rbinom(n, 1, pr2) # participants (1 = success, 0 is failure)
-  ai[i] <- sum(x == 1) #Successes Group 1
-  bi[i] <- sum(x == 0) #Failures Group 1
-  ci[i] <- sum(y == 1) #Successes Group 2
-  di[i] <- sum(y == 0) #Failures Group 2
+  ai[i] <- sum(x == 1) # Successes Group 1
+  bi[i] <- sum(x == 0) # Failures Group 1
+  ci[i] <- sum(y == 1) # Successes Group 2
+  di[i] <- sum(y == 0) # Failures Group 2
 }
 
 # Combine data into dataframe
@@ -430,10 +430,10 @@ nSims <- 12 # Number of simulated experiments
 pr1 <- 0.7 # Set percentage of successes in Group 1
 pr2 <- 0.2 # Set percentage of successes in Group 2
 
-ai <- numeric(nSims) # set up empty vector for successes group 1
-bi <- numeric(nSims) # set up empty vector for failures group 1
-ci <- numeric(nSims) # set up empty vector for successes group 2
-di <- numeric(nSims) # set up empty vector for failures group 2
+ai <- numeric(nSims) # set up empty vector for successes Group 1
+bi <- numeric(nSims) # set up empty vector for failures Group 1
+ci <- numeric(nSims) # set up empty vector for successes Group 2
+di <- numeric(nSims) # set up empty vector for failures Group 2
 
 for (i in 1:nSims/2) { # for half (/2) of the simulated studies
   n <- sample(30:80, 1)
@@ -445,10 +445,10 @@ for (i in 1:nSims/2) { # for half (/2) of the simulated studies
   di[i] <- sum(y == 0) # Failures Group 2
 }
 
-pr1 <- 0.9 #Set percentage of successes in Group 1
-pr2 <- 0.7 #Set percentage of successes in Group 2
+pr1 <- 0.9 # Set percentage of successes in Group 1
+pr2 <- 0.7 # Set percentage of successes in Group 2
 
-for (i in (nSims/2 + 1):(nSims)) { #for the other half (/2) of each simulated study
+for (i in (nSims/2 + 1):(nSims)) { # for the other half (/2) of each simulated study
   n <- sample(30:80, 1)
   x <- rbinom(n, 1, pr1) # produce simulated participants (1 = success, 0 is failure)
   y <- rbinom(n, 1, pr2) # produce simulated participants (1 = success, 0 is failure)

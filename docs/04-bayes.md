@@ -38,7 +38,7 @@ where *B($\alpha$, $\beta$)* is the beta function. Understanding the mathematica
 
 
 
-(ref:bayes1lab) Four examples of Bayesian priors
+(ref:bayes1lab) Four examples of Bayesian priors.
 
 <div class="figure" style="text-align: center">
 <img src="04-bayes_files/figure-html/bayes1-1.png" alt="(ref:bayes1lab)" width="100%" />
@@ -94,7 +94,7 @@ BF10 = Beta(*p* = 0.5, 11, 11)/Beta(*p* = 0.5, 1, 1) = 3.70/1 = 3.70
 
 You can check this in an [online Bayes Factor calculator](http://pcl.missouri.edu/bf-binomial) [@rouder_bayesian_2009]. At successes, fill in 10, at trials, fill in 20. We want to calculate the Bayes Factor for the point null value of *p* = 0.5, so fill in 0.5. The $\alpha$ and $\beta$ for the prior are both 1, given the newborns prior of Beta(1,1). Clicking ‘submit query’ will give you the Bayes factor of 3.70. 
 
-(ref:gpower-screenshot-bayeslab) Screenshot of the online calculator for binomially distributed observations
+(ref:gpower-screenshot-bayeslab) Screenshot of the online calculator for binomially distributed observations.
 
 <div class="figure" style="text-align: center">
 <img src="images/binombayesonline.png" alt="(ref:gpower-screenshot-bayeslab)" width="100%" />
@@ -212,7 +212,7 @@ blikelihood <- n - x + 1 # Calculate the beta for the Beta distribution for the 
 aposterior <- aprior + alikelihood - 1 # Calculate the alpha for the Beta distribution for the posterior
 bposterior <- bprior + blikelihood - 1 # Calculate the beta for the Beta distribution for the posterior
 
-theta <- seq(0, 1, 0.001) #create probability range p from 0 to 1
+theta <- seq(0, 1, 0.001) # create probability range p from 0 to 1
 prior <- dbeta(theta, aprior, bprior)
 likelihood <- dbeta(theta, alikelihood, blikelihood)
 posterior <- dbeta(theta, aposterior, bposterior)
