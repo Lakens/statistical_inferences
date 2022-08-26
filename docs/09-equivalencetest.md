@@ -20,14 +20,10 @@ Equivalence tests are a specific implementation of **interval hypothesis tests**
 
 (ref:intervaltestlab) Two-sided null hypothesis test (A), interval hypothesis test (B), equivalence test (C) and minimum effect test (D).
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{09-equivalencetest_files/figure-latex/intervaltest-1} 
-
-}
-
-\caption{(ref:intervaltestlab)}(\#fig:intervaltest)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="09-equivalencetest_files/figure-html/intervaltest-1.png" alt="(ref:intervaltestlab)" width="100%" />
+<p class="caption">(\#fig:intervaltest)(ref:intervaltestlab)</p>
+</div>
 
 When an equivalence test is reversed, a researcher designs a study to reject effects less extreme than a smallest effect size of interest (see Panel D in Figure \@ref(fig:intervaltest)), it is called a **minimum effect test** [@murphy_testing_1999]. A researcher might not just be interested in rejecting an effect of 0 (as in a null hypothesis significance test) but in rejecting a range of effects that are too small to be meaningful. All else equal, a study designed to have high power for a minimum effect requires more observations than if the goal had been to reject an effect of zero. As the confidence interval needs to reject a value that is closer to the observed effect size (e.g., 0.1 instead of 0) it needs to be more narrow, which requires more observations. 
 
@@ -66,14 +62,10 @@ The TOSTER package (originally created by myself but recently redesigned by [Aar
 
 (ref:tdistequivalencelab) The mean difference and its confidence interval plotted below the *t*-distributions used to perform the two-one-sided tests against -0.5 and 0.5.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{09-equivalencetest_files/figure-latex/tdistequivalence-1} 
-
-}
-
-\caption{(ref:tdistequivalencelab)}(\#fig:tdistequivalence)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="09-equivalencetest_files/figure-html/tdistequivalence-1.png" alt="(ref:tdistequivalencelab)" width="100%" />
+<p class="caption">(\#fig:tdistequivalence)(ref:tdistequivalencelab)</p>
+</div>
 
 Below the two curves we see a line that represents the confidence interval ranging from -0.99 to 0.35, and a dot on the line that indicates the observed mean difference of -0.32. Let's first look at the left curve. We see the green highlighted area in the tails that highlights which observed mean differences would be extreme enough to statistically reject an effect of -0.5. Our observed mean difference of -0.32 lies very close to -0.5, and if we look at the left distribution, the mean is not far enough away from -0.5 to fall in the green area that indicates when observed differences would be statistically significant. We can also perform the equivalence test using the TOSTER package, and look at the results. 
 
@@ -128,14 +120,10 @@ One way to reduce the probability of an inconclusive effect is to collect suffic
 
 (ref:ciequivalence1lab) The mean difference and its confidence interval for an equivalence test with an equivalence range of -0.5 and 0.5.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{09-equivalencetest_files/figure-latex/ciequivalence1-1} 
-
-}
-
-\caption{(ref:ciequivalence1lab)}(\#fig:ciequivalence1)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="09-equivalencetest_files/figure-html/ciequivalence1-1.png" alt="(ref:ciequivalence1lab)" width="100%" />
+<p class="caption">(\#fig:ciequivalence1)(ref:ciequivalence1lab)</p>
+</div>
 
 ```
 ## 
@@ -166,14 +154,10 @@ In Figure \@ref(fig:ciequivalence2) we see the the same results, but now visuali
 
 (ref:ciequivalence2lab) The mean difference and its confidence interval for an equivalence test with an equivalence range of -0.5 and 0.5.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{09-equivalencetest_files/figure-latex/ciequivalence2-1} 
-
-}
-
-\caption{(ref:ciequivalence2lab)}(\#fig:ciequivalence2)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="09-equivalencetest_files/figure-html/ciequivalence2-1.png" alt="(ref:ciequivalence2lab)" width="100%" />
+<p class="caption">(\#fig:ciequivalence2)(ref:ciequivalence2lab)</p>
+</div>
 
 In other words, both the null hypothesis test and the equivalence test have yielded significant results. This means we can claim that the observed effect is statistically different from zero, and that the effect is statistically smaller than effects we deemed large enough to matter when we specified the equivalence range from -0.5 to 0.5. This illustrates how combining equivalence tests and nil null hypothesis tests can prevent us from mistaking statistically significant effects for practically significant effects. In this case, with 200 participants, we can reject an effect of 0, but the effect, if any, is not large enough to be meaningful.
 
@@ -191,14 +175,10 @@ If a researcher has specified a smallest effect size of interest, and is interes
 
 (ref:tmetlab) The mean difference and its confidence interval plotted below the *t*-distributions used to perform the two-one-sided tests against -0.5 and 0.5 when performing a minimum effect test.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{09-equivalencetest_files/figure-latex/tmet-1} 
-
-}
-
-\caption{(ref:tmetlab)}(\#fig:tmet)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="09-equivalencetest_files/figure-html/tmet-1.png" alt="(ref:tmetlab)" width="100%" />
+<p class="caption">(\#fig:tmet)(ref:tmetlab)</p>
+</div>
 
 ```
 ## 
@@ -318,12 +298,7 @@ In Bayesian estimation, one way to argue for the absence of a meaningful effect 
 
 If the prior used by Kruschke was perfectly uniform, and the ROPE procedure and an equivalence test used the same confidence interval (e.g., 90%), the two tests would yield  identical results. There would only be philosophical differences in how the numbers are interpreted. The `BEST` package in R that can be used to perform the ROPE procedure by default uses a ‘broad’ prior, and therefore results of the ROPE procedure and an equivalence test are not exactly the same, but they are very close. One might even argue the two tests are 'practically equivalent'. In the R code below, random normally distributed data for two conditions is generated (with means of 0 and a standard deviation of 1) and the ROPE procedure and a TOST equivalence test are performed. 
 
-
-\begin{center}\includegraphics[width=1\linewidth]{09-equivalencetest_files/figure-latex/unnamed-chunk-6-1} \end{center}
-
-
-
-\begin{center}\includegraphics[width=1\linewidth]{09-equivalencetest_files/figure-latex/unnamed-chunk-6-2} \end{center}
+<img src="09-equivalencetest_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;" /><img src="09-equivalencetest_files/figure-html/unnamed-chunk-6-2.png" width="100%" style="display: block; margin: auto;" />
 
 The 90% HDI ranges from -0.06 to 0.39, with an estimated mean based on the prior and the data of 0.164. The HDI falls completely between the upper and the lower bound of the equivalence range, and therefore values more extreme than -0.5 or 0.5 are deemed implausible. The 95% CI ranges from -0.07 to 0.36 with an observed mean difference of 0.15. We see that the numbers are not identical, because in Bayesian estimation the observed values are combined with a prior, and the mean estimate is not purely based on the data. But the results are very similar, and will in most cases lead to similar inferences. The BEST R package also enables researchers to perform simulation based power analyses, which take a long time but, when using a broad prior, yield a result that is basically identical to the sample size from a power analysis for an equivalence test. The biggest benefit of ROPE over TOST is that it allows you to incorporate prior information. If you have reliable prior information, ROPE can use this information, which is especially useful if you don’t have a lot of data. If you use informed priors, check the robustness of the posterior against reasonable changes in the prior in sensitivity analyses.
 
@@ -405,14 +380,10 @@ pwr::pwr.t.test(
 
 (ref:smalltelpowerlab) Screenshot illustrating a sensitivity power analysis in G*Power to compute the effect size an original study had 33% power to detect.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/0deabffd850f7b63c16e41e0af9ae0b6} 
-
-}
-
-\caption{(ref:smalltelpowerlab)}(\#fig:smalltelpower)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/0deabffd850f7b63c16e41e0af9ae0b6.png" alt="(ref:smalltelpowerlab)" width="100%" />
+<p class="caption">(\#fig:smalltelpower)(ref:smalltelpowerlab)</p>
+</div>
 
 Determining the SESOI based on the effect size the original study had 33% power to detect has an additional convenient property. Imagine the true effect size is actually 0, and you perform a statistical test to see if the data is statistically smaller than the SESOI based on the small telescopes approach (which is called an inferiority test). If you increase the sample size by 2.5 times, you will have approximately 80% power for this one-sided equivalence test, assuming the true effect size is exactly 0 (e.g., *d* = 0). People who do a replication study can follow the small telescope recommendations, and very easily determine both the smallest effect size of interest, and the sample size needed to design an informative replication study, assuming the true effect size is 0 (but see the section above for a-priori power analyses where you want to test for equivalence, but do not expect a true effect size of 0).
 
@@ -448,14 +419,10 @@ Note that 33% power is a rounded value, and the calculation uses 1/3 (or 0.33333
 
 (ref:simonsohnexamplelab) Example used in Simonsohn 2015 of an original study and two replication studies.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/a4aa20a6e2dadfbaa82bc614d40693c7} 
-
-}
-
-\caption{(ref:simonsohnexamplelab)}(\#fig:simonsohnexample)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/a4aa20a6e2dadfbaa82bc614d40693c7.png" alt="(ref:simonsohnexamplelab)" width="100%" />
+<p class="caption">(\#fig:simonsohnexample)(ref:simonsohnexamplelab)</p>
+</div>
 
 We can see that the first replication by Gámez and colleagues also had a relatively small sample size (N = 47, compared to N = 60 in the original study), and was not designed to yield informative results when interpreted with a small telescopes approach. The confidence interval is very wide and includes the null effect (*d* = 0) and the smallest effect size of interest (*d* = 0.401). Thus, this study is inconclusive. We can’t reject the null, but we can also not reject effect sizes of 0.401 or larger that are still considered to be in line with the original result. The second replication has a much larger sample size, and tells us that we can’t reject the null, but we can reject the smallest effect size of interest, suggesting that the effect is smaller than what is considered an interesting effect based on the small telescopes approach.
 
@@ -470,14 +437,10 @@ Given a sample size and alpha level, every test has a [minimal statistically det
 
 (ref:distpowerplot1lab) Null and alternative distribution with Type 1 and Type 2 error indicating the smallest effect size that will be statistically significant with n = 50 per condition.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/dpplot50} 
-
-}
-
-\caption{(ref:distpowerplot1lab)}(\#fig:distpowerplot1)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/dpplot50.png" alt="(ref:distpowerplot1lab)" width="100%" />
+<p class="caption">(\#fig:distpowerplot1)(ref:distpowerplot1lab)</p>
+</div>
 
 It is possible to observe a statistically significant test result if the true effect size is *smaller* than the critical effect size. Due to random variation, it is possible to observe a larger value in a *sample* than is the true value in the population. This is the reason the statistical power of a test is never 0 in a null hypothesis significance test. As illustrated in Figure \@ref(fig:distpowerplot2), even if the true effect size is smaller than the critical value (i.e., if the true effect size is 0.2) we see from the distribution that we can expect some *observed effect sizes* to be larger than 0.4 when the *true population effect size* is *d* = 0.2 – if we compute the statistical power for this test, it turns out we can expect 16.77% of the *observed effect sizes* will be larger than 0.4, in the long run. That is not a lot, but it is something. This is also the reason why publication bias combined with underpowered research is problematic: It leads to a large **overestimation of the true effect size** when only observed effect sizes from statistically significant findings in underpowered studies end up in the scientific literature.
 
@@ -485,14 +448,10 @@ It is possible to observe a statistically significant test result if the true ef
 
 (ref:distpowerplot2lab) Null and alternative distribution with Type 1 and Type 2 error indicating the smallest effect size that will be statistically significant with n = 50 per condition.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/dpplot502} 
-
-}
-
-\caption{(ref:distpowerplot2lab)}(\#fig:distpowerplot2)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/dpplot502.png" alt="(ref:distpowerplot2lab)" width="100%" />
+<p class="caption">(\#fig:distpowerplot2)(ref:distpowerplot2lab)</p>
+</div>
 
 We can use the minimal statistically detectable effect to set the SESOI for replication studies. If you attempt to replicate a study, one justifiable option when choosing the smallest effect size of interest (SESOI) is to use the smallest observed effect size that could have been statistically significant in the study you are replicating. In other words, you decide that effects that could not have yielded a *p*-value less than α in an original study will not be considered meaningful in the replication study. The assumption here is that the original authors were interested in observing a significant effect, and thus were not interested in observed effect sizes that could not have yielded a significant result. It might be likely that the original authors did not consider which effect sizes their study had good statistical power to detect, or that they were interested in smaller effects but gambled on observing an especially large effect in the sample purely as a result of random variation. Even then, when building on earlier research that does not specify a SESOI, a justifiable starting point might be to set the SESOI to the smallest effect size that, when observed in the original study, **could have been statistically significant**. Not all researchers might agree with this (e.g., the original authors might say they actually cared just as much about an effect of *d* =0.001). However, as we try to change the field from the current situation where no one specifies what would falsify their hypothesis, or what their smallest effect size of interest is, this approach is one way to get started. In practice, as explained in the section on [post-hoc power](#posthoc), due to the relation between *p* = 0.05 and 50% power for the observed effect size, this justification for a SESOI will mean that the SESOI is set to the effect size the original study had 50% power to detect for an independent *t*test. This approach is in some ways similar to the small telescopes approach by Simonsohn (2015), except that it will lead to a somewhat larger SESOI.
 
@@ -834,14 +793,10 @@ The distribution for eta-squared looks slightly different from the distribution 
 
 (ref:critflab) Illustration of the criticial F-value for two groups, 50 observations per group, and an alpha level of 0.05.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/7f6d17dc07bdc9e95ea8944d78b16d7c} 
-
-}
-
-\caption{(ref:critflab)}(\#fig:critf)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/7f6d17dc07bdc9e95ea8944d78b16d7c.png" alt="(ref:critflab)" width="100%" />
+<p class="caption">(\#fig:critf)(ref:critflab)</p>
+</div>
 
 **Q20**: Set the number of participants (per condition) to 14, and the number of groups to 3. Using the Shiny app at <http://shiny.ieis.tue.nl/f_p_power/> which effect sizes (expressed in partial eta-squared, as indicated on the vertical axis) can be statistically significant with n = 14 per group, and 3 groups?
 

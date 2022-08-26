@@ -9,14 +9,10 @@ For as long as data has been used to support scientific claims, people have trie
 
 (ref:babbagelab) Excerpt from Babbage, 1830.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/babbage} 
-
-}
-
-\caption{(ref:babbagelab)}(\#fig:babbage)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/babbage.jpg" alt="(ref:babbagelab)" width="100%" />
+<p class="caption">(\#fig:babbage)(ref:babbagelab)</p>
+</div>
 
 The practice Babbage describes is still a problem, almost 200 years later. Researchers still make 'multitudes of observations' only to present those that support the story they want to tell. An example of a scientist who does this is Daryl Bem, a parapsychologist who studies whether people have extra-sensory perception that allows them to predict the future. In Figure \@ref(fig:bem) you can see the results and discussion from a study he performed [@bem_feeling_2011]. In this study, participants pressed a left or right button to predict whether a picture was hidden behind a left or right curtain. At the moment they made the decision, not even the computer had randomly determined where this picture would appear, so any performance better than average would be very surprising.
 
@@ -24,14 +20,10 @@ The practice Babbage describes is still a problem, almost 200 years later. Resea
 
 (ref:bemlab) Screenshot from the Results and Discussion section of Bem, 2011.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/bem} 
-
-}
-
-\caption{(ref:bemlab)}(\#fig:bem)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/bem.png" alt="(ref:bemlab)" width="100%" />
+<p class="caption">(\#fig:bem)(ref:bemlab)</p>
+</div>
 
 If we take this study as it is (without pre-registration) it is clear there are 5 tests against guessing average (for erotic, neutral, negative, positive, and ‘romantic but non-erotic’ pictures). A Bonferroni correction would lead us to use an alpha level of 0.01 (an alpha of 0.05/5 tests) and the main result, that participants guessed the future position of erotic pictures above guessing average, with a *p*-value of 0.013, would not have allowed Bem to reject the null hypothesis, given the pre-specified alpha level.
 
@@ -73,14 +65,10 @@ The more detail a preregistration document has, the easier it is for others to t
 
 (ref:preregcheclistlab) Screenshot of Table 1 in Wicherts et al., 2016, which depicts the checklist for preregistrations.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/preregchecklist} 
-
-}
-
-\caption{(ref:preregcheclistlab)}(\#fig:preregcheclist)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/preregchecklist.png" alt="(ref:preregcheclistlab)" width="100%" />
+<p class="caption">(\#fig:preregcheclist)(ref:preregcheclistlab)</p>
+</div>
 
 Personally, I think that the 2018 update of the Journal Article Reporting Standards (JARS) [@appelbaum_journal_2018] should be used more widely. The reporting guidelines encompass more suggestions than needed for a preregistration document, but I would recommend using JARS both for your preregistration document and when writing up the final report, as it is a very well-thought through set of recommendations. Taking JARS into account when planning or reporting your research is likely to improve your research.
 
@@ -164,14 +152,10 @@ To be able to test a theoretical hypothesis, we will need to operationalize how 
 
 (ref:imdbratinglab) Screenshot of a IMDB and metacritic rating.
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.4\linewidth]{images/imdbrating} 
-
-}
-
-\caption{(ref:imdbratinglab)}(\#fig:imdbrating)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/imdbrating.png" alt="(ref:imdbratinglab)" width="40%" />
+<p class="caption">(\#fig:imdbrating)(ref:imdbratinglab)</p>
+</div>
 
 Which rating will you use? Or do you predict an effect on both ratings? I’ll just focus on the IMDB scores. In addition to operationalizing our measure, we need to explain in more detail which data will be used to test our prediction. What is the population of movies we are examining? Will we use all Marvel superheroes movies, or only those movies in the [Marvel Cinematic Universe](https://en.wikipedia.org/wiki/List_of_Marvel_Cinematic_Universe_films)? Will we randomly sample X movies from all the hits our IMDB search will give? Will we sort the search results based on the release date, and only use the X most recent movies? In my case, I will use the last 34 movies Edward Norton and Brad Pitt starred in from today, the moment I did the IMDB search.
 
@@ -204,13 +188,11 @@ formally pre-register on the OSF, as explained below.
 
 Go to <https://aspredicted.org/> and create a new AsPredicted pre-registration:
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/9fafdf4597839aeb44b3882aace1133e} \end{center}
+<img src="images/9fafdf4597839aeb44b3882aace1133e.png" width="100%" style="display: block; margin: auto;" />
 
 Click the ‘create’ button. Fill in your name, e-mail, and institution.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/1308ce9af6a5ebe700b8ff58542bdab2} \end{center}
+<img src="images/1308ce9af6a5ebe700b8ff58542bdab2.png" width="100%" style="display: block; margin: auto;" />
 
 Scroll down, and answer questions 1 to 9. At 2) paste your answer to Q1, at 3)
 paste your answer to Q2, at 4) explain how many groups you will compare (e.g.,
@@ -218,54 +200,45 @@ paste your answer to Q2, at 4) explain how many groups you will compare (e.g.,
 the answer from Q3. Answer the remaining questions. Please indicate you are
 using AsPredicted for a ‘Class project or assignment’.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/aedb89e7e45561843864302129f6cbd6} \end{center}
+<img src="images/aedb89e7e45561843864302129f6cbd6.jpg" width="100%" style="display: block; margin: auto;" />
 
 Preview your pre-registration:
 
-
-\begin{center}\includegraphics[width=0.2\linewidth]{images/4fbbec922f482e27aef0dd7f0714afad} \end{center}
+<img src="images/4fbbec922f482e27aef0dd7f0714afad.png" width="20%" style="display: block; margin: auto;" />
 
 hit ‘pre-register’. If everything looks OK, hit the ‘SUBMIT’ button.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/7aa826d5b815c5aa18b66cfb6bcd30fe} \end{center}
+<img src="images/7aa826d5b815c5aa18b66cfb6bcd30fe.png" width="100%" style="display: block; margin: auto;" />
 
 Then, you need to approve the submission (and if you had co-authors, they would
 also need to approve the submission). Click the link:
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/c7691954684e51c29afa2aead98414c5} \end{center}
+<img src="images/c7691954684e51c29afa2aead98414c5.png" width="100%" style="display: block; margin: auto;" />
 
 Click the button to see your new pre-registration:
 
-
-\begin{center}\includegraphics[width=0.2\linewidth]{images/5623f5d1b8144f8cdc09d955eaf4a3b7} \end{center}
+<img src="images/5623f5d1b8144f8cdc09d955eaf4a3b7.png" width="20%" style="display: block; margin: auto;" />
 
 And click APPROVE
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/6c3b919ae37f5dfed14761209592f337} \end{center}
+<img src="images/6c3b919ae37f5dfed14761209592f337.png" width="100%" style="display: block; margin: auto;" />
 
 And click OK for the pop- up indicating this cannot be undone. We will make the
 pre-registration public. If you do research, you don’t have to make your
 pre-registrations public immediately, but in this assignment, we will do so.
 Once again, click:
 
-
-\begin{center}\includegraphics[width=0.2\linewidth]{images/5623f5d1b8144f8cdc09d955eaf4a3b7} \end{center}
+<img src="images/5623f5d1b8144f8cdc09d955eaf4a3b7.png" width="20%" style="display: block; margin: auto;" />
 
 Scroll down, and click:
 
-
-\begin{center}\includegraphics[width=0.2\linewidth]{images/94a843f900ec4dcbb75f60686edac510} \end{center}
+<img src="images/94a843f900ec4dcbb75f60686edac510.png" width="20%" style="display: block; margin: auto;" />
 
 Click OK on the pop-up warning you that this cannot be undone.
 
 Now you can download the .pdf file with your pre-registration:
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/87e9befad90809fbccf7be6898f5d183} \end{center}
+<img src="images/87e9befad90809fbccf7be6898f5d183.png" width="100%" style="display: block; margin: auto;" />
 
 **Download the pdf file and save it** – you have to share it as part of this
 assignment.
@@ -274,19 +247,16 @@ assignment.
 
 If you could not use AsPredicted, or if you prefer to use the same platform for preregistering your study, as we will use to share the results and the data, go to [www.osf.io](http://www.osf.io) and create an account:
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/7d6b26f83fee88df8bd46f30f4441844} \end{center}
+<img src="images/7d6b26f83fee88df8bd46f30f4441844.png" width="100%" style="display: block; margin: auto;" />
 
 Then create a new project:
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/2319f53e025e2b9c707f1062f478dc1a} \end{center}
+<img src="images/2319f53e025e2b9c707f1062f478dc1a.png" width="100%" style="display: block; margin: auto;" />
 
 As a title, enter anything you will remember, for example Assignment 7.1 Open
 Science. Click ‘create’ and then ‘Go to new project’.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/34c3f0068911af6749513b1584c4cac7} \end{center}
+<img src="images/34c3f0068911af6749513b1584c4cac7.png" width="100%" style="display: block; margin: auto;" />
 
 After you have created your new project, make your project public. To do so,
 click the **Make public** button in the top right of the project.
@@ -298,8 +268,7 @@ onto your computer.
 Open the AsPredicted Registration template as a Word Doc, and the file will
 appear in a file viewer.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/895c7caf7508910ae52cc2d09e06f31c} \end{center}
+<img src="images/895c7caf7508910ae52cc2d09e06f31c.png" width="100%" style="display: block; margin: auto;" />
 
 On this page, click the **Download** button in the top right. Then open the
 AsPredicted template on your computer.
@@ -377,52 +346,43 @@ Now you have completed your research project, let’s share the results and the 
 Create a (free) account on the Open Science Framework (if you did not already do
 so).
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/7d6b26f83fee88df8bd46f30f4441844} \end{center}
+<img src="images/7d6b26f83fee88df8bd46f30f4441844.png" width="100%" style="display: block; margin: auto;" />
 
 Then create a new project (if you did not yet do so to pre-register on the OSF directly). As a title, enter anything you will remember, but also something that other people will understand. Your file will be publicly available, so other researchers might want to know this is not a real research project, but an assignment for a course. For example, enter the title "Course Assignment Open Science". You can choose the storage location. General Data Protection Regulations in the European Union might require you to store the data on a server in the European Union. Click on the 'More' button and enter a short description. The title communicates this is likely a class assignment, but in the description, make this clear. Enter for example "This is a class assignment for course number XXXX at university YYYY". If you already created the project to preregister, click the 'Add a brief description to your project' field on the project page, below the title. You can also click on your name behind 'Contributors' and add some information to your profile. For a real research project, this will make it easier for people who want to use your data or code to contact you.  
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/newosfproject} \end{center}
+<img src="images/newosfproject.png" width="100%" style="display: block; margin: auto;" />
 
 Click ‘create’ and then ‘Go to new project’.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/34c3f0068911af6749513b1584c4cac7} \end{center}
+<img src="images/34c3f0068911af6749513b1584c4cac7.png" width="100%" style="display: block; margin: auto;" />
 
 You will see your new project page:
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/661cad8c112cd6c52562bed3cf6a5cd5} \end{center}
+<img src="images/661cad8c112cd6c52562bed3cf6a5cd5.png" width="100%" style="display: block; margin: auto;" />
 
 Click on the ‘Files’ tab in the menu bar at the top of the screen. You can upload files to the OSF. There are two options. You can either zip the Project folder, and upload a single .zip file, or you can recreate the folder structure on the OSF.  To upload the zip file, just drag the zipped folder from your computer to the browser, and drop it onto the OSF Storage line, as shown in the picture below.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/8b43efb2aa9c69d3e8786473113660ba} \end{center}
+<img src="images/8b43efb2aa9c69d3e8786473113660ba.png" width="100%" style="display: block; margin: auto;" />
 
 Alternatively, you can recreate the folder structure. That’s what I’ll do, even though it is a bit more work, but it will allow people to preview all the files on the OSF. Click on the ‘OSF Storage’ line. Buttons will appear that allow you to +Create Folder. See below.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/380c79d73f62591732aafcd0a045ea2b} \end{center}
+<img src="images/380c79d73f62591732aafcd0a045ea2b.png" width="100%" style="display: block; margin: auto;" />
 
 Upload the **original data, the importable data, the analysis files, the research report, and the pre-registration file**. You can, but don’t have to, upload a meta-data document and a codebook. Uploading these in real research is important, but they are not the most important learning objective in this assignment.
 
 The final result should look like the screenshot below:
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/dec08b890995634acf624123962ed970} \end{center}
+<img src="images/dec08b890995634acf624123962ed970.png" width="100%" style="display: block; margin: auto;" />
 
 Go back to the main page of your OSF project by clicking on the name of your project in the top left of the screen. **The final thing that we need to do is make it possible for others to access our files by making the project page public**. By default, the project is private, and you can use the OSF to privately store your research data. But you can also make the page public, whenever you are ready. **If the page is not public, it cannot be graded for a class assignment!**
 
 Click the ‘Make Public’ button (highlighted by the red square in the picture below)
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/791bc1160787ae06a961761fb260b687} \end{center}
+<img src="images/791bc1160787ae06a961761fb260b687.png" width="100%" style="display: block; margin: auto;" />
 
 You will get a warning that you need to make sure there is no confidential information that is being shared, and that making data public can’t be undone.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/ae3d492ab7249bafc5969ba8345d58ca} \end{center}
+<img src="images/ae3d492ab7249bafc5969ba8345d58ca.png" width="100%" style="display: block; margin: auto;" />
 
 Click ‘Confirm’. Your research project is now publicly available. My example for this assignment is available here: <https://osf.io/r4hab/>.
 

@@ -36,18 +36,12 @@ $$
 
 where *B($\alpha$, $\beta$)* is the beta function. Understanding the mathematical basis of this function is beyond the scope of this chapter, but you can read more on [Wikipedia](https://en.wikipedia.org/wiki/Beta_distribution) or Kruschke's book on Doing Bayesian Data Analysis [@kruschke_doing_2014]. The beta-prior for a variety of values for $\alpha$ and $\beta$ can be seen in the figure below.
 
-
-
 (ref:bayes1lab) Four examples of Bayesian priors.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{04-bayes_files/figure-latex/bayes1-1} 
-
-}
-
-\caption{(ref:bayes1lab)}(\#fig:bayes1)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="04-bayes_files/figure-html/bayes1-1.png" alt="(ref:bayes1lab)" width="100%" />
+<p class="caption">(\#fig:bayes1)(ref:bayes1lab)</p>
+</div>
 
 These beta densities reflect different types of priors. Let’s assume you are approached by a street merchant who tries to sell you a special coin with heads and tails that, when flipped, will almost always turn up heads. The $\alpha$ = 1, $\beta$ = 1 prior is what a newborn baby would have as a prior, without any idea of what to expect when you flip a coin, and thus every value of *p* is equally likely. The $\alpha$ = 1, $\beta$ = 1/2 prior is what a true believer would have as a prior. The sales merchant tells you the coin will turn up heads almost every time, and thus, you believe it will turn up heads almost every time. The $\alpha$ = 4, $\beta$ = 4, and the $\alpha$ = 100, $\beta$ = 100 priors are for slightly and extremely skeptical people. With an $\alpha$ = 4, $\beta$ = 4 prior, you expect the coin will be fair, but you are willing to believe a wide range of other true values is possible (the curve is centered on 0.5, but the curve is wide, allowing for very high and low values of *p*). With the $\alpha$ = 100, $\beta$ = 100 prior you are really convinced coins are fair, and believe there will be only a very slight bias, at most (the curve is again centered on 0.5, and a skeptic believes the *p* will lie between 0.4 and 0.6 – a much narrower range compared to the slightly skeptic individual).
 
@@ -70,18 +64,12 @@ Thus, the posterior distribution for the newborn is a Beta(11,11) distribution. 
 
 Take a look at the Figure below. Given 10 heads out of 20 coin flips, we see the prior distribution of the newborn (the horizontal grey line), the likelihood (the blue dotted line) and the posterior (the black line).
 
-
-
 (ref:bayes2lab) Four examples of how different priors are updated based on data to the posterior.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{04-bayes_files/figure-latex/bayes2-1} 
-
-}
-
-\caption{(ref:bayes2lab)}(\#fig:bayes2)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="04-bayes_files/figure-html/bayes2-1.png" alt="(ref:bayes2lab)" width="100%" />
+<p class="caption">(\#fig:bayes2)(ref:bayes2lab)</p>
+</div>
 
 For the true believer the posterior distribution is not centered on the maximum likelihood of the observed data, but just a bit in the direction of the prior. The slightly skeptic and the strong skeptic end up with a much stronger belief in a fair coin after observing the data, but mainly because they already had a stronger prior that the coin was fair.
 
@@ -91,14 +79,10 @@ Now that we have a distribution for the prior, and a distribution for the poster
 
 (ref:bayes4lab) Plot for the prior, likelihood, and posterior.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{04-bayes_files/figure-latex/bayes4-1} 
-
-}
-
-\caption{(ref:bayes4lab)}(\#fig:bayes4)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="04-bayes_files/figure-html/bayes4-1.png" alt="(ref:bayes4lab)" width="100%" />
+<p class="caption">(\#fig:bayes4)(ref:bayes4lab)</p>
+</div>
 
 The Bayes Factor is used to quantify this increase in relative evidence. Let’s calculate the Bayes Factor for the hypothesis that the coin is fair for the newborn. The Bayes Factor is simply the value of the posterior distribution at *p* = 0.5, divided by the value of the prior distribution at *p* = 0.5:
 
@@ -108,40 +92,28 @@ You can check this in an [online Bayes Factor calculator](http://pcl.missouri.ed
 
 (ref:gpower-screenshot-bayeslab) Screenshot of the online calculator for binomially distributed observations.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/binombayesonline} 
-
-}
-
-\caption{(ref:gpower-screenshot-bayeslab)}(\#fig:gpower-screenshot-bayes)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/binombayesonline.png" alt="(ref:gpower-screenshot-bayeslab)" width="100%" />
+<p class="caption">(\#fig:gpower-screenshot-bayes)(ref:gpower-screenshot-bayeslab)</p>
+</div>
 
 We can calculate and plot the Bayes Factor, and show the prior (grey), likelihood (dashed blue) and posterior (black). For the example of 20 flips, 10 heads, and the newborn prior, the plot looks like this:
 
 (ref:bayes6lab) Plot for the prior, likelihood, and posterior.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{04-bayes_files/figure-latex/bayes6-1} 
-
-}
-
-\caption{(ref:bayes6lab)}(\#fig:bayes6)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="04-bayes_files/figure-html/bayes6-1.png" alt="(ref:bayes6lab)" width="100%" />
+<p class="caption">(\#fig:bayes6)(ref:bayes6lab)</p>
+</div>
 
 We see that for the newborn, *p* = 0.5 has become more probable, but so has *p* = 0.4. Now let’s assume the strong skeptic, who believes the coin is fair with a prior of Beta(100, 100), buys the coin and flips it 100 times. Surprisingly, the coin comes up heads 90 out of 100 flips. The plot of the prior, likelihood, and posterior now looks much more extreme, because we had a very informed prior, and extremely different data. We see the grey prior distribution, the dashed blue likelihood based on the data, and the posterior distribution in black. The Bayes Factor of 0 (note that the value is rounded, and is extremely small, but not exactly zero) - represents the substantial drop in belief that the coin is fair – indeed, this now seems an untenable hypothesis, even for the strong skeptic. It shows how data can update your belief. Where a newborn would now completely believe that the true *p* for the coin is somewhere around 0.9, the strong skeptic has more reason to believe the *p* is around 0.65, due to the strong prior conviction that the coin is fair. Given enough data, even this strong skeptic will become convinced that the coin will return heads most of the time as well.
 
 (ref:bayes7lab) Plot for the prior, likelihood, and posterior.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{04-bayes_files/figure-latex/bayes7-1} 
-
-}
-
-\caption{(ref:bayes7lab)}(\#fig:bayes7)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="04-bayes_files/figure-html/bayes7-1.png" alt="(ref:bayes7lab)" width="100%" />
+<p class="caption">(\#fig:bayes7)(ref:bayes7lab)</p>
+</div>
 
 We can now also see the difference between a likelihood inference approach, and a Bayesian inference approach. In likelihood inference, you can compare different values of *p* for the same likelihood curve (e.g., *p* = 0.5 vs *p* = 0.8) and calculate the likelihood ratio. In Bayesian inference, you can compare the difference between the prior and the posterior for the same value of *p*, and calculate the Bayes Factor.
 
@@ -159,18 +131,12 @@ A credible interval and a confidence interval are the same, when a uniform prior
 
 We can plot the mean for the posterior when 10 heads out of 20 coin flips are observed, given a uniform prior. 
 
-
-
 (ref:bayes8lab) Plot for the mean of the posterior when 10 out of 20 heads are observed given a uniform prior.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{04-bayes_files/figure-latex/bayes8-1} 
-
-}
-
-\caption{(ref:bayes8lab)}(\#fig:bayes8)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="04-bayes_files/figure-html/bayes8-1.png" alt="(ref:bayes8lab)" width="100%" />
+<p class="caption">(\#fig:bayes8)(ref:bayes8lab)</p>
+</div>
 
 We can also use the ‘binom’ package to calculate the posterior mean, credible interval, and **highest density interval (HDI)**. The highest density interval is an alternative to the credible interval that works better when the posterior beta distribution is skewed (and is identical when the posterior distribution is symmetrical. We won’t go into the calculations of the HDI here.
 
@@ -186,22 +152,30 @@ bprior <- 1 # Set the beta for the Beta distribution for the prior
 binom.bayes(x, n, type = "central", prior.shape1 = aprior, prior.shape2 = bprior)
 ```
 
-```
-##   method  x  n shape1 shape2 mean     lower     upper  sig
-## 1  bayes 10 20     11     11  0.5 0.2978068 0.7021932 0.05
-```
+<div class="kable-table">
+
+|method |  x|  n| shape1| shape2| mean|     lower|     upper|  sig|
+|:------|--:|--:|------:|------:|----:|---------:|---------:|----:|
+|bayes  | 10| 20|     11|     11|  0.5| 0.2978068| 0.7021932| 0.05|
+
+</div>
 
 ```r
 binom.bayes(x, n, type = "highest", prior.shape1 = aprior, prior.shape2 = bprior)
 ```
 
-```
-##   method  x  n shape1 shape2 mean     lower     upper  sig
-## 1  bayes 10 20     11     11  0.5 0.2978068 0.7021932 0.05
-```
+<div class="kable-table">
+
+|method |  x|  n| shape1| shape2| mean|     lower|     upper|  sig|
+|:------|--:|--:|------:|------:|----:|---------:|---------:|----:|
+|bayes  | 10| 20|     11|     11|  0.5| 0.2978068| 0.7021932| 0.05|
+
+</div>
 
 
-The posterior mean is identical to the Frequentist mean, but this is only the case when the mean of the prior equals the mean of the likelihood [@albers_credible_2018]. This chapter shows the essence of Bayesian inference, where we decide upon a prior distribution, collect data and calculate a marginal likelihood, and use these to calculate a posterior distribution. From this posterior distribution, we can estimate the mean and the 95% credible interval. For any specific hypothesis, we can calculate the relative evidence for a posterior model, compared to a prior model, through the Bayes Factor. There are many different flavors of Bayesian statistics, and the disagreements between Bayesians about what the best approach to statistical inferences is, is at least as great as the disagreements between frequentists and Bayesians, and many Bayesians dislike Bayes factors [@mcelreath_statistical_2016]. For example, some Bayesians dislike subjective priors as used in **subjective Bayesian analysis**, and instead prefer what is known as **objective Bayesian analysis** [@berger_interplay_2004]. In your research, you will most likely need other calculations than the binomial example we have used here, and a lot of Bayesian tests are now available in the free open source software package [JASP](https://jasp-stats.org/). The math and the priors become more complex, but the basic idea remains the same. You can use Bayesian statistics to quantify relative evidence, which can inform you how much we should believe, or update our beliefs, in theories.
+The posterior mean is identical to the Frequentist mean, but this is only the case when the mean of the prior equals the mean of the likelihood [@albers_credible_2018]. In your research, you will most likely need other calculations than the binomial example we have used here, and a lot of Bayesian tests are now available in the free open source software package [JASP](https://jasp-stats.org/). The math and the priors become more complex, but the basic idea remains the same. You can use Bayesian statistics to quantify relative evidence, which can inform you how much we should believe, or update our beliefs, in theories. 
+
+This chapter showed the essence of Bayesian inference, where we decide upon a prior distribution, collect data and calculate a marginal likelihood, and use these to calculate a posterior distribution. From this posterior distribution, we can estimate the mean and the 95% credible interval. For any specific hypothesis, we can calculate the relative evidence for a posterior model, compared to a prior model, through the Bayes Factor. There are many different flavors of Bayesian statistics. This means there are disagreements among Bayesians about what the best approach to statistical inferences is, which are at least as vehement as the disagreements between frequentists and Bayesians. For example, many Bayesians dislike Bayes factors [@mcelreath_statistical_2016]. Some Bayesians dislike subjective priors as used in **subjective Bayesian analysis**, and instead prefer what is known as **objective Bayesian analysis** [@berger_interplay_2004]. Teaching material on Bayesian statistics will often present it as superior to frequentist statistics. For a more balanced educational lecture on Bayesian vs. frequentist statistics that more honestly highlights the strengths and weaknesses of both approach, see the first 50 minutes of [this lecture by Michael I. Jordan](https://www.youtube.com/watch?v=HUAE26lNDuE). 
 
 ## Test Yourself
 
@@ -250,9 +224,7 @@ segments(H0, dbeta(H0, aposterior, bposterior), H0, dbeta(H0, aprior, bprior), l
 title(paste("Bayes Factor:", round(BF10, digits = 2)))
 ```
 
-
-
-\begin{center}\includegraphics[width=1\linewidth]{04-bayes_files/figure-latex/unnamed-chunk-3-1} \end{center}
+<img src="04-bayes_files/figure-html/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;" />
 
 We see that for the newborn, *p* = 0.5 has become more probable, but so has *p* = 0.4.
 
@@ -303,9 +275,7 @@ polygon(c(theta[theta > UL], rev(theta[theta > UL])), c(posterior[theta > UL], r
 title(paste("Mean posterior:", round((aposterior / (aposterior + bposterior)), digits = 5), ", 95% Credible Interval:", round(LL, digits = 2), ";", round(UL, digits = 2)))
 ```
 
-
-
-\begin{center}\includegraphics[width=1\linewidth]{04-bayes_files/figure-latex/unnamed-chunk-4-1} \end{center}
+<img src="04-bayes_files/figure-html/unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;" />
 
 ```r
 if (!require(binom)) {
@@ -315,19 +285,25 @@ library(binom)
 binom.bayes(x, n, type = "central", prior.shape1 = aprior, prior.shape2 = bprior)
 ```
 
-```
-##   method  x  n shape1 shape2 mean     lower     upper  sig
-## 1  bayes 10 20     11     11  0.5 0.2978068 0.7021932 0.05
-```
+<div class="kable-table">
+
+|method |  x|  n| shape1| shape2| mean|     lower|     upper|  sig|
+|:------|--:|--:|------:|------:|----:|---------:|---------:|----:|
+|bayes  | 10| 20|     11|     11|  0.5| 0.2978068| 0.7021932| 0.05|
+
+</div>
 
 ```r
 binom.bayes(x, n, type = "highest", prior.shape1 = aprior, prior.shape2 = bprior)
 ```
 
-```
-##   method  x  n shape1 shape2 mean     lower     upper  sig
-## 1  bayes 10 20     11     11  0.5 0.2978068 0.7021932 0.05
-```
+<div class="kable-table">
+
+|method |  x|  n| shape1| shape2| mean|     lower|     upper|  sig|
+|:------|--:|--:|------:|------:|----:|---------:|---------:|----:|
+|bayes  | 10| 20|     11|     11|  0.5| 0.2978068| 0.7021932| 0.05|
+
+</div>
 
 
 The posterior mean is identical to the Frequentist mean, but this is only the case when the mean of the prior equals the mean of the likelihood.
