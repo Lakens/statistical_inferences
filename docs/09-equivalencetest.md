@@ -785,7 +785,7 @@ B) You have sufficient (i.e., \> 80%) power for all effect sizes you are interes
 C) Observed effect sizes of *d* = 0.5 will never be statistically significant.
 D) Observed effect sizes of *d* = 0.5 will be statistically significant.
 
-The example we have used so far was based on performing an independent *t*-test, but the idea can be generalized. A shiny app for an *F*-test is available here: <http://shiny.ieis.tue.nl/f_p_power/>. The effect size associated to the power of an *F*-test is partial eta squared ($\eta_{p}^{2})$, which for a One-Way ANOVA (visualized in the Shiny app) equals eta-squared.
+The example we have used so far was based on performing an independent *t*-test, but the idea can be generalized. A shiny app for an *F*-test is available here: <https://shiny.ieis.tue.nl/f_p_power/>. The effect size associated to the power of an *F*-test is partial eta squared ($\eta_{p}^{2})$, which for a One-Way ANOVA (visualized in the Shiny app) equals eta-squared.
 
 The distribution for eta-squared looks slightly different from the distribution of Cohen’s *d*, primarily because an *F*-test is a one-directional test (and because of this, eta-squared values are all positive, while Cohen’s *d* can be positive or negative). The light grey line plots the expected distribution of eta-squared when the null is true, with the red area under the curve indicating Type 1 errors, and the black line plots the expected distribution of eta-squared when the true effect size is η = 0.059. The blue area indicates the expected effect sizes smaller that the critical η of 0.04, which will not be statistically significant, and thus will be Type 2 errors.
 
@@ -798,7 +798,7 @@ The distribution for eta-squared looks slightly different from the distribution 
 <p class="caption">(\#fig:critf)(ref:critflab)</p>
 </div>
 
-**Q20**: Set the number of participants (per condition) to 14, and the number of groups to 3. Using the Shiny app at <http://shiny.ieis.tue.nl/f_p_power/> which effect sizes (expressed in partial eta-squared, as indicated on the vertical axis) can be statistically significant with n = 14 per group, and 3 groups?
+**Q20**: Set the number of participants (per condition) to 14, and the number of groups to 3. Using the Shiny app at <https://shiny.ieis.tue.nl/f_p_power/> which effect sizes (expressed in partial eta-squared, as indicated on the vertical axis) can be statistically significant with n = 14 per group, and 3 groups?
 
 A) Only effects larger than 0.11
 B) Only effects larger than 0.13
@@ -826,7 +826,7 @@ D) We can statistically reject (using an alpha of 0.05) effects that could have 
 4. What is a minimal effect test? 
 
 5. What conclusion can we draw if a null-hypothesis significance test and equivalence test 
-are performed for the same data, an neither test is statistically significant? 
+are performed for the same data, and neither test is statistically significant? 
 
 6. When designing equivalence tests to have a desired statistical power, why do you need a 
 larger sample size, the narrower the equivalence range is? 
