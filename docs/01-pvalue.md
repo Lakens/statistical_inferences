@@ -339,15 +339,16 @@ rnorm(n = 50, mean = 0, sd = 1)
 ```
 
 ```
-##  [1] -0.21571707  1.55884188 -0.98408844  0.89547121  1.43334502 -1.39858308
-##  [7] -0.44361902  0.74335870  1.64025516 -2.46691596  0.71728555  1.11593480
-## [13] -0.86528750  0.83676755  0.56454532  0.09375784 -1.02239742  0.29094203
-## [19]  0.01031477 -0.95906641  0.89489898  0.96006116  0.80753091  0.04718522
-## [25] -0.31054266  0.46440642  0.08540137  0.19880034  0.94055525 -1.54507563
-## [31]  0.75380273  2.17682938 -1.13130543  0.54559720  0.07704680  2.02950205
-## [37]  0.67217910 -0.72970563  0.74204075 -0.32398059  1.34500285  2.06817715
-## [43] -1.51921644  0.24151931  0.36568931 -0.88295070 -1.86715947  0.34991735
-## [49]  1.99218058  1.21788212
+##  [1]  0.368269723 -0.156377695  0.616474939  0.891580065  2.129257097
+##  [6]  1.452765820 -0.371848028 -0.716311802 -0.572340194  0.220586938
+## [11] -0.237445908  0.021607492 -0.203797691 -1.038001440  1.712214976
+## [16] -0.779853693  1.980755098  0.003352426 -0.574994319  3.016517492
+## [21] -1.372467170 -1.233813944  0.106312219 -0.787739757  0.532553411
+## [26]  1.806532997 -0.537994340 -0.598688811  0.077920524  0.239845314
+## [31]  0.793207078  0.040327198  0.628850579 -1.084505446 -1.045830223
+## [36] -3.026489777 -0.712574809 -0.420644550  0.495136283 -0.044453037
+## [41]  0.301620724  0.130323689 -0.051586584 -1.399402743 -0.629285186
+## [46]  1.348365737 -1.635393955 -0.429652494 -1.197913687 -0.883861927
 ```
 
 This command generates 50 random observations from a distribution with a mean of 0 and a standard deviation of 1 (in the long run – the mean and standard deviation will vary in each sample that is generated). Imagine we run this command once, and we observe a mean of 0.5. The figure below visualizes this scenario. We can perform a one-sample *t*-test against 0, and this test tells us, with a *p* < .05, that the data we have observed is surprisingly different from 0, assuming the random number generator in R functions as it should and generates data with a true mean of 0. 
@@ -427,8 +428,8 @@ power <- round((sum(p < 0.05) / nsims), 2) # power
 # Plot figure
 hist(p,
   breaks = bars, xlab = "P-values", ylab = "number of p-values\n", 
-  axes = FALSE,  main = paste("P-value Distribution with", 
-                              round(power * 100, digits = 1), "% Power"),
+  axes = FALSE, main = paste("P-value Distribution with", 
+                             round(power * 100, digits = 1), "% Power"),
   col = "grey", xlim = c(0, 1), ylim = c(0, nsims))
 axis(side = 1, at = seq(0, 1, 0.1), labels = seq(0, 1, 0.1))
 axis(side = 2, at = seq(0, nsims, nsims / 4), 

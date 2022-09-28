@@ -35,7 +35,7 @@ ggplot(as.data.frame(x), aes(x)) +
   coord_cartesian(xlim = c(50, 150)) +
   scale_x_continuous(breaks = seq(50, 150, 10)) +
   annotate("text", x = mean(x), y = 0.02, label = paste("Mean = ", round(mean(x)), "\n", "SD = ", round(sd(x)), sep = ""), size = 8) + 
-  theme(plot.background = element_rect(fill = "#fffafa"))  + 
+  theme(plot.background = element_rect(fill = "#fffafa")) + 
   theme(panel.background = element_rect(fill = "#fffafa"))
 ```
 
@@ -102,7 +102,7 @@ We see that there is quite some variation, up to the point that in one simulatio
 
 The variation in the estimate of the mean decreases as the sample size increases. The larger the sample size, the more precise the estimate of the mean becomes. The **standard deviation of the sample** ($\sigma_x$) of single IQ scores is 15, irrespective of the sample size, and the larger the sample size, the more accurately we can measure the true standard deviation. But the **standard deviation of the sampling distribution of the sample mean** ($\sigma_{\overline{x}}$) decreases, as the sample size increases, and is referred to as the **standard error (SE)**. The estimated standard deviation of the sample mean, or the standard error, calculated based on the observed standard deviation of the sample ($\sigma_x$) is:
 
-$$SE = \sigma_{\overline{x}} =  \frac{\sigma_x}{\sqrt{n}}$$
+$$SE = \sigma_{\overline{x}} = \frac{\sigma_x}{\sqrt{n}}$$
 Based on this formula, and assuming an observed standard deviation of the sample of 15, the standard error of the mean is 4.74 for a sample size of 10, and 0.95 for a sample size of 250. Because estimates with a lower standard error are more precise, the effect size estimates in a meta-analysis are weighed based on the standard error, with the more precise estimates getting more weight. 
 
 So far we have seen random variation in means, but correlations will show similar variation as a function of the sample size. We will continue with our example of measuring IQ scores, but now we search for fraternal (so not identical) twins, and measure their IQ. Estimates from the literature suggest the true correlation of IQ scores between fraternal twins is around *r* = 0.55. We find 30 fraternal twins, measure their IQ scores, and plot the relation between the IQ of both individuals. In this simulation, we assume all twins have a mean IQ of 100 with a standard deviation of 15. 
@@ -295,7 +295,7 @@ Let's also look at the statistical results of the meta-analysis, which is a bit 
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
-We see a test for **heterogeneity**, a topic we will return to [below](#heterogeneity). We see the model results, which in this specific simulation yielded a meta-analytic effect size estimate of 0.4. The confidence interval around the effect size estimate [0.3 ; 0.51] is much narrower than we saw before for a single study. This is because the 12 studies we simulated together have quite a large sample size, and the larger the sample size, the smaller the standard error, and thus the narrower the confidence interval is. The meta-analytic effect size estimate is statistically different from 0 (*p* \< 0.0001) so we can reject the null hypothesis even if we use a stringent alpha level, such as 0.001. Note that, as discussed in the chapter on sample size justification and in line with the section on justifying error rates in the chapter on error control, it seems sensible to use a much lower alpha level than 5% in meta-analyses. It is possible to set the alpha level in `metafor`, e.g using `level = 0.999` (for an alpha level of 0.001), but this adjusts all confidence intervals, including those of the individual studies, which will mostly have used an alpha level of 0.05, so it is easier to just manually check if the test is significant at your chosen alpha level (e.g., 0.001).
+We see a test for **heterogeneity**, a topic we will return to [below](#heterogeneity). We see the model results, which in this specific simulation yielded a meta-analytic effect size estimate of 0.4. The confidence interval around the effect size estimate [0.3 ; 0.51] is much narrower than we saw before for a single study. This is because the 12 studies we simulated together have quite a large sample size, and the larger the sample size, the smaller the standard error, and thus the narrower the confidence interval is. The meta-analytic effect size estimate is statistically different from 0 (*p* \< 0.0001) so we can reject the null hypothesis even if we use a stringent alpha level, such as 0.001. Note that, as discussed in the chapter on sample size justification and in line with the section on justifying error rates in the chapter on error control, it seems sensible to use a much lower alpha level than 5% in meta-analyses. It is possible to set the alpha level in `metafor`, e.g. using `level = 0.999` (for an alpha level of 0.001), but this adjusts all confidence intervals, including those of the individual studies, which will mostly have used an alpha level of 0.05, so it is easier to just manually check if the test is significant at your chosen alpha level (e.g., 0.001).
 
 ## Fixed Effect vs Random Effects
 
@@ -350,8 +350,8 @@ di <- numeric(nSims) # set up empty vector for failures Group 2
 
 for (i in 1:nSims) { # for each simulated experiment
   n <- sample(30:80, 1)
-  x <- rbinom(n, 1, pr1) # participants (1 = success, 0 is failure)
-  y <- rbinom(n, 1, pr2) # participants (1 = success, 0 is failure)
+  x <- rbinom(n, 1, pr1) # participants (1 = success, 0 = failure)
+  y <- rbinom(n, 1, pr2) # participants (1 = success, 0 = failure)
   ai[i] <- sum(x == 1) # Successes Group 1
   bi[i] <- sum(x == 0) # Failures Group 1
   ci[i] <- sum(y == 1) # Successes Group 2
@@ -367,13 +367,13 @@ metadata <- escalc(measure = "OR",
 # Perform Meta-analysis
 result <- rma(yi, vi, data = metadata)
 # Create forest plot. Using ilab and ilab.xpos arguments to add counts
-par(mar=c(5,4,0,2))
+par(mar=c(5, 4, 0, 2))
 par(bg = "#fffafa")
 forest(result, 
        ilab = cbind(metadata$ai, metadata$bi, metadata$ci, metadata$di), 
        xlim = c(-10, 8), 
        ilab.xpos = c(-7, -6, -5, -4))
-text(c(-7,-6,-5,-4), 14.7, c("E+", "E-", "C+", "C-"), font = 2, cex = .8)
+text(c(-7, -6, -5, -4), 14.7, c("E+", "E-", "C+", "C-"), font = 2, cex = .8)
 ```
 
 <img src="11-meta_files/figure-html/unnamed-chunk-2-1.png" width="100%" style="display: block; margin: auto;" />
@@ -437,8 +437,8 @@ di <- numeric(nSims) # set up empty vector for failures Group 2
 
 for (i in 1:nSims/2) { # for half (/2) of the simulated studies
   n <- sample(30:80, 1)
-  x <- rbinom(n, 1, pr1) # produce simulated participants (1 = success, 0 is failure)
-  y <- rbinom(n, 1, pr2) # produce simulated participants (1 = success, 0 is failure)
+  x <- rbinom(n, 1, pr1) # produce simulated participants (1 = success, 0 = failure)
+  y <- rbinom(n, 1, pr2) # produce simulated participants (1 = success, 0 = failure)
   ai[i] <- sum(x == 1) # Successes Group 1
   bi[i] <- sum(x == 0) # Failures Group 1
   ci[i] <- sum(y == 1) # Successes Group 2
@@ -450,8 +450,8 @@ pr2 <- 0.7 # Set percentage of successes in Group 2
 
 for (i in (nSims/2 + 1):(nSims)) { # for the other half (/2) of each simulated study
   n <- sample(30:80, 1)
-  x <- rbinom(n, 1, pr1) # produce simulated participants (1 = success, 0 is failure)
-  y <- rbinom(n, 1, pr2) # produce simulated participants (1 = success, 0 is failure)
+  x <- rbinom(n, 1, pr1) # produce simulated participants (1 = success, 0 = failure)
+  y <- rbinom(n, 1, pr2) # produce simulated participants (1 = success, 0 = failure)
   ai[i] <- sum(x == 1) # Successes Group 1
   bi[i] <- sum(x == 0) # Failures Group 1
   ci[i] <- sum(y == 1) # Successes Group 2
@@ -520,7 +520,7 @@ The problem of 'garbage in, garbage out' remains one of the most common, and dif
 
 A strength of meta-analysis is that combining highly similar studies into a single analysis increases the statistical power of the test, as well as the accuracy of the effect size estimate. Whenever it is not possible, or it is efficient, to perform studies with a large number of observations in each study, an unbiased meta-analysis can provide better statistical inferences. Furthermore, including an **internal meta-analysis** in a multi-study paper (when all studies are sufficiently similar) can be a way to reduce the file-drawer problem, by allowing researchers to publish mixed results. At the same time, researchers have raised the concern that if researchers selectively report studies when they perform an internal meta-analysis they simply increase the flexibility in the data analysis, and are more likely to erroneously claim support for their hypothesis [@vosgerau_99_2019]. Researchers should publish all well-designed studies they have performed in a research line, and if the studies are similar and unbiased, a meta-analysis will improve inferences. At the same time, the result of a meta-analysis may be biased, and should not be interpreted as the final answer. For this reason, an analysis of the heterogeneity of effect size estimates, and the use of statistical techniques to detect bias, are an essential part of any meta-analysis.
 
-## Which results should you report to be included in a future meta-analysis?
+## Which results should you report to be included in a future meta-analysis?{#reportmeta}
 
 It would be a useful educational exercise for any researcher who publishes quantitative studies to code a dozen studies for a meta-analysis. A notorious problem when performing a meta-analysis is that researchers do not report all the results a meta-analyst needs in order to include the study in their meta-analysis. Sometimes the original researcher can be contacted and the missing information can be provided, but as every single study is just a data-point in a future meta-analysis, it is best to report all the required results to be included in a future meta-analysis. 
 
@@ -582,7 +582,7 @@ D) It is generally recommended to compute a **random effects** model, as this re
 
 
 
-(ref:meta-sim-randlab) Simulated studies under a random effects model
+(ref:meta-sim-randlab) Simulated studies under a random effects model.
 
 <div class="figure" style="text-align: center">
 <img src="11-meta_files/figure-html/meta-sim-rand-1.png" alt="(ref:meta-sim-randlab)" width="100%" />
@@ -591,7 +591,7 @@ D) It is generally recommended to compute a **random effects** model, as this re
 
 
 
-(ref:meta-sim-fixedlab) Simulated studies under a fixed effect model
+(ref:meta-sim-fixedlab) Simulated studies under a fixed effect model.
 
 <div class="figure" style="text-align: center">
 <img src="11-meta_files/figure-html/meta-sim-fixed-1.png" alt="(ref:meta-sim-fixedlab)" width="100%" />

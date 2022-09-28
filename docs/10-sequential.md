@@ -23,7 +23,7 @@ Sequential analyses are well-established procedures, and have been developed in 
 
 If one would analyze the data at multiple looks without correcting the alpha level, the Type 1 error rate would inflate [@armitage_repeated_1969]. As Armitage and colleagues show, with equally spaced looks, the alpha level inflates to 0.142 after 5 looks, 0.374 after 100 looks, and 0.530 after 1000 looks. Looking at the data twice is conceptually similar to deciding if a result is significant if one of two dependent variables shows a statistically significant effect. However, an important difference is that in the case of sequential analyses the multiple tests are not independent, but dependent. A test at look 2 combines the old data collected at look 1 with the new data at look 2. This means the Type 1 error rate inflates less quickly compared to independent tests, and we will see below this enables more efficient and flexible solutions to controlling error rates.
 
-When controlling the Type 1 error rate in sequential analyses, a decision needs to be made about how to spend the alpha level across all looks at the data. For example, when a researcher plans a study with one interim look and one final look at the data, boundary critical Z-values need to be set for the first look (at *n* out of *N* observations) and the second look (at *N* observations). These two critical values, $c_1$ and $c_2$ (for the first and the second analysis) need to be chosen such that the overall probability (Pr) that the null hypothesis is rejected – when in the first analysis the observed Z-score is larger than the critical value for the first look, $Z_n$ ≥ $c_1$, and (if we did not reject the hypothesis in the first analysis, so $Z_n$ < c1, and we continue data collection) when in the second analysis the observed Z-score is larger than the critical value for the second look, $Z_N$ ≥ $c_2$ – equals the desired overall alpha level when the null hypothesis is true. In formal terms, for a directional test:
+When controlling the Type 1 error rate in sequential analyses, a decision needs to be made about how to spend the alpha level across all looks at the data. For example, when a researcher plans a study with one interim look and one final look at the data, boundary critical Z-values need to be set for the first look (at *n* out of *N* observations) and the second look (at *N* observations). These two critical values, $c_1$ and $c_2$ (for the first and the second analysis) need to be chosen such that the overall probability (Pr) that the null hypothesis is rejected – when in the first analysis the observed Z-score is larger than the critical value for the first look, $Z_n$ ≥ $c_1$, and (if we did not reject the hypothesis in the first analysis, so $Z_n$ < $c_1$, and we continue data collection) when in the second analysis the observed Z-score is larger than the critical value for the second look, $Z_N$ ≥ $c_2$ – equals the desired overall alpha level when the null hypothesis is true. In formal terms, for a directional test:
 
 $$
 Pr\{Z_n \geq c_1\} + Pr\{Zn < c_1, Z_N \geq c_2\} = \alpha
@@ -527,17 +527,17 @@ res
 
 
 ```
-## [PROGRESS] Stage results calculated [0.0437 secs] 
-## [PROGRESS] Conditional power calculated [0.034 secs] 
-## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.0011 secs] 
-## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.6385 secs] 
-## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.7292 secs] 
-## [PROGRESS] Repeated confidence interval calculated [1.37 secs] 
-## [PROGRESS] Repeated p-values of stage 1 calculated [0.251 secs] 
-## [PROGRESS] Repeated p-values of stage 2 calculated [0.2758 secs] 
-## [PROGRESS] Repeated p-values calculated [0.5282 secs] 
-## [PROGRESS] Final p-value calculated [0.0015 secs] 
-## [PROGRESS] Final confidence interval calculated [0.0906 secs]
+## [PROGRESS] Stage results calculated [0.0386 secs] 
+## [PROGRESS] Conditional power calculated [0.0283 secs] 
+## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.001 secs] 
+## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.5759 secs] 
+## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.7087 secs] 
+## [PROGRESS] Repeated confidence interval calculated [1.29 secs] 
+## [PROGRESS] Repeated p-values of stage 1 calculated [0.221 secs] 
+## [PROGRESS] Repeated p-values of stage 2 calculated [0.2383 secs] 
+## [PROGRESS] Repeated p-values calculated [0.4605 secs] 
+## [PROGRESS] Final p-value calculated [0.0014 secs] 
+## [PROGRESS] Final confidence interval calculated [0.0647 secs]
 ```
 
 

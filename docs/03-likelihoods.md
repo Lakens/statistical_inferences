@@ -152,7 +152,7 @@ Hopefully, researchers become more inclined to submit nonsignificant findings fo
 
 So far we have computed likelihoods for binomial probabilities, but likelihoods can be computed for any statistical model [@glover_likelihood_2004; @pawitan_all_2001]. For example, we can compute the relative likelihood of observing a *t*-value under the null and an alternative hypothesis (Figure \@ref(fig:like9)). Of course, the observed data is most likely if we assume the observed effect equals the true effect, but examining the likelihood reveals that there are many alternative hypotheses that are relatively more likely than the null hypothesis. This also holds when observing nonsignificant results, which can be more likely under an alternative hypothesis of interest, than under the null hypothesis. This is a reason why it is incorrect to say that there is no effect when *p* > $\alpha$ (see [*p*-value misconception 1](#misconception1)). 
 
-(ref:like9lab) Likelihood ratio for observed *t*-value under H0 and H1.
+(ref:like9lab) Likelihood ratio for observed *t*-value under $H_0$ and $H_1$.
 
 <div class="figure" style="text-align: center">
 <img src="03-likelihoods_files/figure-html/like9-1.png" alt="(ref:like9lab)" width="100%" />
@@ -200,9 +200,7 @@ D) The curve starts at its lowest point at p = 0, and then the likelihood increa
 
 **Q3**: Get a coin out of your wallet. Flip it 13 times, and count the number of heads. Using the code above, calculate the likelihood of your observed results under the hypothesis that your coin is fair, compared to the hypothesis that the coin is not fair. Set the number of successes (x) to the number of heads you observed. Change $H_1$ to the number of heads you have observed (or leave it to 0 if you didn’t observe any heads at all!). You can just use 4/13, or enter 0.3038. Leave $H_0$ at 0.5. Run the script to calculate the likelihood ratio. What is the likelihood ratio of a fair compared to a non-fair coin (or $H_0$/$H_1$) that flips heads as often as you have observed, based on the observed data? Round your answer to 2 digits after the decimal.
 
-Earlier we mentioned that with increasing sample sizes, we had collected stronger relative evidence. Let’s say we would want to compare L(p = 0.4) with L(p = 0.5). 
-
-**Q4**: What is the likelihood ratio if $H_1$ is 0.4, $H_0$ is 0.5, and you flip 5 heads in 10 trials? From the two possible ways to calculate the likelihood ratio ($H_1$/$H_0$ and $H_0$/$H_1$), report the likelihood that is ≥ 1, and round to 2 digits after the decimal point.
+**Q4**: Earlier we mentioned that with increasing sample sizes, we had collected stronger relative evidence. Let’s say we would want to compare L(p = 0.4) with L(p = 0.5). What is the likelihood ratio if $H_1$ is 0.4, $H_0$ is 0.5, and you flip 5 heads in 10 trials? From the two possible ways to calculate the likelihood ratio ($H_1$/$H_0$ and $H_0$/$H_1$), report the likelihood that is ≥ 1, and round to 2 digits after the decimal point.
 
 **Q5**: What is the likelihood ratio if $H_1$ is 0.4, $H_0$ is 0.5, and you flip 50 heads in 100 trials? From the two possible ways to calculate the likelihood ratio ($H_1$/$H_0$ and $H_0$/$H_1$), report the likelihood that is ≥ 1, and round to 2 digits after the decimal point.
 
