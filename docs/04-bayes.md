@@ -88,14 +88,13 @@ The Bayes Factor is used to quantify this increase in relative evidence. Let’s
 
 BF10 = Beta(*p* = 0.5, 11, 11)/Beta(*p* = 0.5, 1, 1) = 3.70/1 = 3.70
 
-You can check this in an [online Bayes Factor calculator](http://pcl.missouri.edu/bf-binomial) [@rouder_bayesian_2009]. At successes, fill in 10, at trials, fill in 20. We want to calculate the Bayes Factor for the point null value of *p* = 0.5, so fill in 0.5. The $\alpha$ and $\beta$ for the prior are both 1, given the newborns prior of Beta(1,1). Clicking ‘submit query’ will give you the Bayes factor of 3.70. 
+<!-- You can check this in an [online Bayes Factor calculator](http://pcl.missouri.edu/bf-binomial) [@rouder_bayesian_2009]. At successes, fill in 10, at trials, fill in 20. We want to calculate the Bayes Factor for the point null value of *p* = 0.5, so fill in 0.5. The $\alpha$ and $\beta$ for the prior are both 1, given the newborns prior of Beta(1,1). Clicking ‘submit query’ will give you the Bayes factor of 3.70.  -->
 
-(ref:gpower-screenshot-bayeslab) Screenshot of the online calculator for binomially distributed observations.
+<!-- (ref:gpower-screenshot-bayeslab) Screenshot of the online calculator for binomially distributed observations. -->
 
-<div class="figure" style="text-align: center">
-<img src="images/binombayesonline.png" alt="(ref:gpower-screenshot-bayeslab)" width="100%" />
-<p class="caption">(\#fig:gpower-screenshot-bayes)(ref:gpower-screenshot-bayeslab)</p>
-</div>
+<!-- ```{r gpower-screenshot-bayes, echo=FALSE, fig.cap="(ref:gpower-screenshot-bayeslab)"} -->
+<!-- knitr::include_graphics("images/binombayesonline.png") -->
+<!-- ``` -->
 
 We can calculate and plot the Bayes Factor, and show the prior (grey), likelihood (dashed blue) and posterior (black). For the example of 20 flips, 10 heads, and the newborn prior, the plot looks like this:
 
