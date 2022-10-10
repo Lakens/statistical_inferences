@@ -158,7 +158,7 @@ Figure 9.2: The mean difference and its confidence interval plotted below the <e
 </div>
 <p>Below the two curves we see a line that represents the confidence interval ranging from -0.99 to 0.35, and a dot on the line that indicates the observed mean difference of -0.32. Let's first look at the left curve. We see the green highlighted area in the tails that highlights which observed mean differences would be extreme enough to statistically reject an effect of -0.5. Our observed mean difference of -0.32 lies very close to -0.5, and if we look at the left distribution, the mean is not far enough away from -0.5 to fall in the green area that indicates when observed differences would be statistically significant. We can also perform the equivalence test using the TOSTER package, and look at the results.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/TOSTER/man/tsum_TOST.html">tsum_TOST</a></span><span class="op">(</span>m1 <span class="op">=</span> <span class="fl">4.55</span>, 
+<code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/tsum_TOST.html">tsum_TOST</a></span><span class="op">(</span>m1 <span class="op">=</span> <span class="fl">4.55</span>, 
                   m2 <span class="op">=</span> <span class="fl">4.87</span>, 
                   sd1 <span class="op">=</span> <span class="fl">1.05</span>, 
                   sd2 <span class="op">=</span> <span class="fl">1.11</span>,
@@ -284,7 +284,7 @@ Figure 9.5: The mean difference and its confidence interval plotted below the <e
 <p>The statistical power for interval hypotheses depend on the alpha level, the sample size, the smallest effect of interest you decide to test against, and the true effect size. For an equivalence test, it is common to perform a power analysis assuming the true effect size is 0, but this might not always be realistic. The closer the expected effect size is to the smallest effect size of interest, the larger the sample size needed to reach a desired power. Don't be tempted to assume a true effect size of 0, if you have good reason to expect a small but non-zero true effect size. The sample size that the power analysis indicates you need to collect might be smaller, but in reality you also have a higher probability of an inconclusive result. Earlier versions of TOSTER only enabled researchers to perform power analyses for equivalence tests assuming a true effect size of 0, but a new power function by Aaron Caldwell allows users to specify <code>delta</code>, the expected effect size.</p>
 <p>Assume a researchers desired to achieve 90% power for an equivalence test with an equivalence range from -0.5 to 0.5, with an alpha level of 0.05, and assuming a population effect size of 0. A power analysis for an equivalence test can be performed to examine the required sample size.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/TOSTER/man/power_t_TOST.html">power_t_TOST</a></span><span class="op">(</span>power <span class="op">=</span> <span class="fl">0.9</span>, delta <span class="op">=</span> <span class="fl">0</span>,
+<code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/power_t_TOST.html">power_t_TOST</a></span><span class="op">(</span>power <span class="op">=</span> <span class="fl">0.9</span>, delta <span class="op">=</span> <span class="fl">0</span>,
                      alpha <span class="op">=</span> <span class="fl">0.05</span>, type <span class="op">=</span> <span class="st">"two.sample"</span>,
                      low_eqbound <span class="op">=</span> <span class="op">-</span><span class="fl">0.5</span>, high_eqbound <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
@@ -301,7 +301,7 @@ Figure 9.5: The mean difference and its confidence interval plotted below the <e
 ## NOTE: n is number in *each* group</code></pre>
 <p>We see that the required sample size is 88 participants in each condition for the independent <em>t</em>-test. Let's compare this power analysis to a situation where the researcher expects a true effect of <em>d</em> = 0.1, instead of a true effect of 0. To be able to reliably reject effects larger than 0.5, we will need a larger sample size, just as how we need a larger sample size for a null hypothesis test powered to detect <em>d</em> = 0.4 than a null hypothesis test powered to detect <em>d</em> = 0.5.</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/TOSTER/man/power_t_TOST.html">power_t_TOST</a></span><span class="op">(</span>power <span class="op">=</span> <span class="fl">0.9</span>, delta <span class="op">=</span> <span class="fl">0.1</span>,
+<code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/power_t_TOST.html">power_t_TOST</a></span><span class="op">(</span>power <span class="op">=</span> <span class="fl">0.9</span>, delta <span class="op">=</span> <span class="fl">0.1</span>,
                      alpha <span class="op">=</span> <span class="fl">0.05</span>, type <span class="op">=</span> <span class="st">"two.sample"</span>,
                      low_eqbound <span class="op">=</span> <span class="op">-</span><span class="fl">0.5</span>, high_eqbound <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
@@ -320,7 +320,7 @@ Figure 9.5: The mean difference and its confidence interval plotted below the <e
 <p>In the power analysis for an equivalence test example below, the lower bound is set to -5 (it should be set low enough such that lowering it even further has no noticeable effect). We see that the new power function in the TOSTER package takes the directional prediction into account, and just as with directional predictions in a nil null hypothesis test, a directional prediction in an equivalence test is more efficient, and only 70 observations are needed to achieve 90% power.</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># New TOSTER power functions allows power for expected non-zero effect.</span>
-<span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/TOSTER/man/power_t_TOST.html">power_t_TOST</a></span><span class="op">(</span>power <span class="op">=</span> <span class="fl">0.9</span>, delta <span class="op">=</span> <span class="fl">0</span>,
+<span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/power_t_TOST.html">power_t_TOST</a></span><span class="op">(</span>power <span class="op">=</span> <span class="fl">0.9</span>, delta <span class="op">=</span> <span class="fl">0</span>,
                      alpha <span class="op">=</span> <span class="fl">0.05</span>, type <span class="op">=</span> <span class="st">"two.sample"</span>,
                      low_eqbound <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>, high_eqbound <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
@@ -516,7 +516,7 @@ been tested by performing a one-sample <em>t</em>-test, and where the sample siz
 <!--                   alpha = 0.05) -->
 <!-- ``` -->
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/TOSTER/man/tsum_TOST.html">tsum_TOST</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/tsum_TOST.html">tsum_TOST</a></span><span class="op">(</span>
   m1 <span class="op">=</span> <span class="fl">0.00</span>,
   sd1 <span class="op">=</span> <span class="fl">0.00</span>,
   n1 <span class="op">=</span> <span class="fl">0</span>,
@@ -562,7 +562,7 @@ been tested by performing a one-sample <em>t</em>-test, and where the sample siz
 <!-- ) -->
 <!-- ``` -->
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/TOSTER/man/power_t_TOST.html">power_t_TOST</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/power_t_TOST.html">power_t_TOST</a></span><span class="op">(</span>
   n <span class="op">=</span> <span class="fl">00</span>,
   delta <span class="op">=</span> <span class="fl">0.0</span>,
   sd <span class="op">=</span> <span class="fl">0.0</span>,
@@ -604,7 +604,7 @@ been tested by performing a one-sample <em>t</em>-test, and where the sample siz
 <!-- ) -->
 <!-- ``` -->
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/TOSTER/man/power_t_TOST.html">power_t_TOST</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/power_t_TOST.html">power_t_TOST</a></span><span class="op">(</span>
   power <span class="op">=</span> <span class="fl">0.00</span>,
   delta <span class="op">=</span> <span class="fl">0.0</span>,
   sd <span class="op">=</span> <span class="fl">0.0</span>,
@@ -708,7 +708,7 @@ in mathematics tests across the 7 million students in the US represent trivial d
 </table></div>
 <p>For grade 2, when we perform an equivalence test with boundaries of <em>d</em> =-0.1 and <em>d</em> =0.1, using an alpha of 0.01, which conclusion can we draw? Use the TOSTER function TOSTmeta, and enter the alpha, effect size (ES), standard error (se), and equivalence bounds.</p>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/TOSTER/man/TOSTmeta.html">TOSTmeta</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/TOSTmeta.html">TOSTmeta</a></span><span class="op">(</span>
   ES <span class="op">=</span> <span class="fl">0.00</span>,
   se <span class="op">=</span> <span class="fl">0.000</span>,
   low_eqbound_d <span class="op">=</span> <span class="op">-</span><span class="fl">0.0</span>,
@@ -938,7 +938,7 @@ $( document ).ready(function() {
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Improving Your Statistical Inferences</strong>" was written by Daniël Lakens. It was last built on 2022-09-28.</p>
+    <p>"<strong>Improving Your Statistical Inferences</strong>" was written by Daniël Lakens. It was last built on 2022-10-10.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
