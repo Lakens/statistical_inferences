@@ -13,13 +13,11 @@ library(ggplot2)
 
 # Confidence Intervals{#confint}
 
-When we report point estimates, we should acknowledge and quantify the uncertainty in these estimates. Confidence intervals provide a way to quantify the precision of an estimate. By reporting an estimate with a confidence interval, results are reported within a range of values that contain the true value of the parameter with a desired percentage. For example, when we report an effect size estimate with a 95% confidence interval, the expectation is that the interval is wide enough such that 95% of the time the range of values around the estimate contains the true parameter value.
+When we report point estimates, we should acknowledge and quantify the uncertainty in these estimates. Confidence intervals provide a way to quantify the precision of an estimate. By reporting an estimate with a confidence interval, results are reported within a range of values that contain the true value of the parameter with a desired percentage. For example, when we report an effect size estimate with a 95% confidence interval, the expectation is that the interval is wide enough such that 95% of the time the range of values around the estimate contains the true parameter value (if all test assumptions are met).
 
 ## Population vs. Sample
 
 In statistics, we differentiate between the population and the sample. The population is everyone you are interested in, such as all people in the world, elderly who are depressed, or people who buy innovative products. Your sample is everyone you were able to measure from the population you are interested in. We similarly distinguish between a parameter and a statistic. A parameter is a characteristic of the population, while a statistic is a characteristic of a sample. Sometimes, you have data about your entire population. For example, we have measured the height of all the people who have ever walked on the moon. We can calculate the average height of these twelve individuals, and so we know the true parameter. We do not need inferential statistics. However, we do not know the average height of all people who have ever walked on the earth. Therefore, we need to estimate this parameter, using a statistic based on a sample. Although it is rare that a study includes the entire population, it is not impossible, as illustrated in Figure \@ref(fig:population). 
-
-
 
 (ref:populationlab) Example of a registry-based study in which the entire population was included in the study. From https://doi.org/10.1093/ije/dyab066
 
@@ -41,7 +39,15 @@ Confidence intervals are a statement about the percentage of confidence interval
 knitr::include_graphics("images/cisim.png")
 ```
 
-We can now see what is meant by the sentence “Confidence intervals are a statement about the percentage of confidence intervals that contain the true parameter value“. In the long run, for 95% of the samples, the orange dashed line (the population parameter) is contained within the 95% confidence interval around the sample mean, and in 5% of the confidence intervals this is not true. As we will see when we turn to the formula for confidence intervals, the width of a confidence interval depends on the sample size and the standard deviation. The larger the sample size, the smaller the confidence intervals. 
+We can now see what is meant by the sentence “Confidence intervals are a statement about the percentage of confidence intervals that contain the true parameter value“. In the long run, for 95% of the samples, the orange dashed line (the population parameter) is contained within the 95% confidence interval around the sample mean, and in 5% of the confidence intervals this is not true. As we will see when we turn to the formula for confidence intervals, the width of a confidence interval depends on the sample size and the standard deviation. The larger the sample size, the smaller the confidence intervals.
+
+## Interpreting a single confidence interval {#singleCI}
+
+Whenever we compute or encounter a single confidence interval it is important to realize that someone else performing exactly the same experiment would, purely due to random variation, have observed a different confidence interval, effect size, and *p*-value. Because of this random variation a single confidence interval is difficult to interpret. Misinterpretations are common. For example, Cumming [-@cumming_new_2014] writes "We can be 95% confident that our interval includes μ and can think of the lower and upper limits as likely lower and upper bounds for μ." Both these statements are incorrect [@morey_fallacy_2016]. It is incorrect to claim we can be 95% confident that our interval includes the true population mean, because if we study whether our friend can predict whether a coin comes up heads or tails in 100 flips, and they correctly predict the coin flip in 61 out of 100 flips with a 95% confidence interval from `r round(binom.test(61, 100, p = 0.5, alternative = c("two.sided"), conf.level = 0.95)$conf.int[1],3)` to `r round(binom.test(61, 100, p = 0.5, alternative = c("two.sided"), conf.level = 0.95)$conf.int[2],3)`, it is perfectly reasonable to use some Bayesian reasoning and assume (with more than the remaining 5% confidence) it was just a fluke, and the true success rate when guessing the outcome of coin flips is 50%. It is also incorrect to believe the lower and upper limits are likely lower and upper bounds for μ, as anyone else performing the same experiment would have observed a different confidence interval, with a different upper and lower bound, when analyzing a single sample drawn from the same population. If a lot of data has been collected (say thousands of observations) this problem practically disappears, because the remaining uncertainty is too small to matter.
+
+One useful way to think of a confidence interval is as an indication of the resolution with which an effect is estimated. If the resolution is low, it is difficult to get a clear picture, but if the resolution is extremely high, the picture is clear enough for all practical use cases. If we have estimated an effect in a very narrow range, say a *M* = 0.52, 95% CI [0.49; 0.55], and we feel warranted to assume that no one cares about differences less than 0.05 on the measure, a confidence interval communicates that the data have been estimated with sufficient [precision](#planprecision). Similarly, if the sample size is small, and the confidence is very wide, say a *M* = 0.52, 95% CI [0.09; 0.95], and we feel warranted to assume that differences of almost 1 on the measure matter for situations in which the estimate would be used, the confidence interval communicates that the effect size estimate is not precise enough. This evaluation of the resolution of the estimate can be useful, and is missing if only a *p*-value or effect size are reported. For this reason, it is recommended to report confidence intervals around estimates. Confidence intervals are often reported within brackets, but an interesting alternative (especially for tables) is to use subscripts: $_{0.09}0.52_{0.95}$ [@louis_effective_2009].
+
+It is tempting to use a Bayesian interpretation of a single confidence interval, where one would say "I believe there is a 95% probability that this interval contains the true population parameter". A Bayesian interpretation has lost frequentist error control which means that depending on the prior this belief might be misguided in much more than 5% of the studies. This is not something a Bayesian worries about, as the focus of their inferences is not on limiting errors in the long run, but on quantifying beliefs. A frequentist can not make probability claims for single observations. After the data has been collected, a frequentist can only state that the current confidence interval either contains the true population parameter, or it does not. In the long run, $\alpha$% of the confidence intervals will not include the true population parameter, and this single confidence interval could be one of these flukes. Even though a frequentist and Bayesian confidence interval can be identical under certain priors [@albers_credible_2018], the different definitions of probability lead to different interpretations of a single confidence interval. A frequentist can easily interpret a confidence *procedure*, but it is not so easy to interpret a single confidence interval [@morey_fallacy_2016]. This should not surprise us, because it is difficult to interpret any single study (which is why we need to perform replication studies). When confidence intervals are interpreted as a long-run procedure, they are directly related to *p*-values. 
 
 ## The relation between confidence intervals and *p*-values {#relatCIp}
 
@@ -52,9 +58,6 @@ In order to maintain the direct relationship between a confidence interval and a
 To maintain a direct relationship between an *F*-test and its confidence interval, a 90% CI for effect sizes from an *F*-test should be provided. The reason for this is explained by [Karl Wuensch](http://core.ecu.edu/psyc/wuenschk/docs30/CI-Eta2-Alpha.doc). Where Cohen’s d can take both positive and negative values, r² or η² are squared, and can therefore only take positive values. This is related to the fact that *F*-tests (as commonly used in ANOVA) are one-sided. If you calculate a 95% CI, you can get situations where the confidence interval includes 0, but the test reveals a statistical difference with a *p* < .05 (for a more mathematical explanation, see @steiger_beyond_2004). This means that a 95% CI around Cohen's *d* in an independent *t*-test equals a 90% CI around η² for exactly the same test performed as an ANOVA. As a final detail, because eta-squared cannot be smaller than zero, the lower bound for the confidence interval cannot be smaller than 0. This means that a confidence interval for an effect that is not statistically different from 0 has to start at 0. You report such a CI as 90% CI [.00; .XX] where the XX is the upper limit of the CI.
 
 Confidence intervals are often used in forest plots that communicate the results from a meta-analysis. In the plot below, we see 4 rows. Each row shows the effect size estimate from one study (in Hedges’ g). For example, study 1 yielded an effect size estimate of 0.44, with a confidence interval around the effect size from 0.08 to 0.8. The horizontal black line, similarly to the visualization we played around with before, is the width of the confidence interval. When it does not touch the effect size 0 (indicated by a black vertical dotted line) the effect is statistically significant.
-
-
-
 
 (ref:metalab) Meta-analysis of 4 studies.
 
@@ -106,14 +109,11 @@ $$
 \mu \pm t_{df, 1-(\alpha/2)} SE
 $$
 
-
 With a 95% confidence interval, the $\alpha$ = 0.05, and thus the critical *t*-value for the degrees of freedom for 1- $\alpha$ /2, or the 0.975th quantile is calculated. Remember that a *t*-distribution has slightly thicker tails than a Z-distribution. Where the 0.975th quantile for a Z-distribution is 1.96, the value for a *t*-distribution with for example df = 19 is 2.093. This value is multiplied by the standard error, and added (for the upper limit of the confidence interval) or subtracted (for the lower limit of the confidence interval) from the mean.
 
 ## Overlapping Confidence Intervals
 
 Confidence intervals are often used in plots. In Figure \@ref(fig:cioverlap) below, three estimates are visualized (the dots), surrounded by three lines (the 95% confidence intervals). The left two dots (X and Y) represent the *means* of the independent groups X and Y on a scale from 0 to 8 (see the axis from 0-8 on the left side of the plot). The dotted lines between the two confidence intervals visualize the overlap between the confidence intervals around the means. The two confidence intervals around the means of X and Y are commonly shown in a figure in a scientific article. The third dot, slightly larger, is the *mean difference* between X and Y, and the slightly thicker line visualizes the confidence interval of this mean difference. The difference score is expressed using the axis on the right (from -3 to 5). In the plot below, the mean of group X is 3, the mean of group Y is 5.6, and the difference is 2.6. The plot is based on 50 observations per group, and the confidence interval around the mean difference ranges from 0.49 to 4.68, which is quite wide. 
-
-
 
 (ref:cioverlaplab) Means and 95% confidence intervals of two independent groups and the mean difference between the two groups and its 95% confidence interval.
 
@@ -155,8 +155,6 @@ As mentioned earlier, when a 95% confidence interval does not contain 0, the eff
 Even though 95% of confidence intervals will contain the true parameter in the long run, a 95% confidence interval will not contain 95% of future individual observations (or 95% of future means; this will be discussed in the next section). Sometimes, researchers want to predict the interval within which a single value will fall. This is called the prediction interval. It is always much wider than a confidence interval. The reason is that individual observations can vary substantially, but means of future samples (which fall within a normal confidence interval 95% of the time) will vary much less.
 
 In Figure \@ref(fig:predictioninterval), the orange background illustrates the 95% confidence interval around the mean, and the yellow background illustrates the 95% prediction interval (PI). 
-
-
 
 (ref:predictionintervallab) A comparison of a 95% confidence interval (orange) and 95% prediction interval (yellow).
 
@@ -209,8 +207,6 @@ When we rewrite the formula used for the confidence interval to $\sigma/\sqrt(1/
 ## Capture Percentages
 
 It can be difficult to understand why a 95% confidence interval does not provide us with the interval where 95% of future means will fall. The percentage of means that falls within a single confidence interval is called the **capture percentage**. A capture percentage is not something we would ever use to make inferences about data, but it is useful to learn about capture percentages to prevent misinterpreting confidence intervals. In Figure \@ref(fig:metaci) we see two randomly simulated studies with the same sample size from the same population. The true effect size in both studies is 0, and we see that the 95% confidence intervals for both studies contain the true population value of 0. However, the two confidence intervals cover quite different ranges of effect sizes, with the confidence interval in Study 1 ranging from -0.07 to 0.48, and the confidence interval in Study 2 ranging from -0.50 to 0.06. It cannot be true that in the future, we should expect 95% of the effect sizes to fall between -0.07 to 0.48 **and** 95% of the effect sizes to fall between -0.50 to 0.06. 
-
-
 
 (ref:metacilab) Meta-analysis of two simulated studies from the same population.
 
@@ -290,8 +286,6 @@ Free statistical software [jamovi](https://www.jamovi.org/) and [JASP](https://j
 
 For jamovi, the ESCI module allows users to compute effect sizes and confidence intervals, and is accompanied by educational material that focuses more on estimation and less on testing [@cumming_introduction_2016]. 
 
-
-
 (ref:escijamovilab) Output from ESCI module in jamovi.
 
 ```{r escijamovi, echo = FALSE, fig.cap="(ref:escijamovilab)"}
@@ -300,15 +294,11 @@ knitr::include_graphics("images/escijamovi.png")
 
 JASP offers a wide range of frequentist and Bayesian analyses, and in addition to Cohen's *d* also allows users to compute omega squared $\omega^{2}$, the less biased version of $\eta^{2}$ [@okada_is_2013; @albers_when_2018].
 
-
-
 (ref:jasp1lab) JASP menu option allows you to select Cohen's d and a CI around it.
 
 ```{r jasp1, fig.margin = FALSE, echo = FALSE, fig.cap="(ref:jasp1lab)"}
 knitr::include_graphics("images/jaspeffectci1.png")
 ```
-
-
 
 (ref:jasp2lab) JASP output returns Cohen's d and the confidence interval around it.
 
@@ -335,8 +325,6 @@ C) The larger the sample size, the larger the confidence intervals, and the clos
 D) The larger the sample size, the smaller the confidence intervals, and the closer the sample means are to the true population mean.
 
 **Q3**: In the forest plot below, we see the effect size (indicated by the square) and the confidence interval of the effect size (indicated by the line around the effect). Which of the studies 1 to 4 in the forest plot below were statistically significant?
-
-
 
 (ref:metaQlab) Meta-analysis of 4 studies.
 
@@ -379,6 +367,7 @@ B) The confidence interval for a fixed effect meta-analytic effect size estimate
 C) The confidence interval for a fixed effect meta-analytic effect size estimate does not become wider or more narrow compared to the confidence interval of a single study, it just becomes closer to the true population parameter.
 
 **Q5**: Let’s assume a researcher calculates a mean of 7.5, and a standard deviation of 6.3, in a sample of 20 people. The critical value for a *t*-distribution with df = 19 is 2.093. Calculate the upper limit of the confidence interval around the mean using the formula below. Is it:
+
 $$
 \mu \pm t_{df, 1-(\alpha/2)} SE
 $$

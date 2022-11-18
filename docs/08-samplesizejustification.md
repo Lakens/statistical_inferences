@@ -196,8 +196,6 @@ There is a wide range of tools available to perform power analyses. Whichever to
 
 When reporting an a-priori power analysis, make sure that the power analysis is completely reproducible. If power analyses are performed in R it is possible to share the analysis script and information about the version of the package. In many software packages it is possible to export the power analysis that is performed as a PDF file. For example, in G\*Power analyses can be exported under the 'protocol of power analysis' tab. If the software package provides no way to export the analysis, add a screenshot of the power analysis to the supplementary files.
 
-
-
 (ref:gpowprotocollab) All details about the power analysis that is performed can be exported in G*Power.
 
 <div class="figure" style="text-align: center">
@@ -243,7 +241,7 @@ The reproducible report needs to be accompanied by justifications for the choice
 </tbody>
 </table>
 
-## Planning for Precision
+## Planning for Precision{#planprecision}
 
 Some researchers have suggested to justify sample sizes based on a desired level of precision of the estimate [@cumming_introduction_2016; @maxwell_sample_2008; @kruschke_rejecting_2018]. The goal when justifying a sample size based on precision is to collect data to achieve a desired width of the confidence interval around a parameter estimate. The width of the confidence interval around the parameter estimate depends on the standard deviation and the number of observations. The only aspect a researcher needs to justify for a sample size justification based on accuracy is the desired width of the confidence interval with respect to their inferential goal, and their assumption about the population standard deviation of the measure.
 
