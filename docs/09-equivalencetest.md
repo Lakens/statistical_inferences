@@ -417,7 +417,7 @@ Note that 33% power is a rounded value, and the calculation uses 1/3 (or 0.33333
 
 
 
-(ref:simonsohnexamplelab) Example used in Simonsohn 2015 of an original study and two replication studies.
+(ref:simonsohnexamplelab) Example used in Simonsohn (2015) of an original study and two replication studies.
 
 <div class="figure" style="text-align: center">
 <img src="images/a4aa20a6e2dadfbaa82bc614d40693c7.png" alt="(ref:simonsohnexamplelab)" width="100%" />
@@ -791,7 +791,7 @@ The distribution for eta-squared looks slightly different from the distribution 
 
 
 
-(ref:critflab) Illustration of the criticial F-value for two groups, 50 observations per group, and an alpha level of 0.05.
+(ref:critflab) Illustration of the criticial *F*-value for two groups, 50 observations per group, and an alpha level of 0.05.
 
 <div class="figure" style="text-align: center">
 <img src="images/7f6d17dc07bdc9e95ea8944d78b16d7c.png" alt="(ref:critflab)" width="100%" />
