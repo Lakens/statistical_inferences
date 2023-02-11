@@ -14,7 +14,7 @@ alpha spending function: A specification of how to total alpha level will be dis
 
 a-priori power analysis: A calculation of the sample size that is required to achieve a desired statistical power (or Type 2 error rate) when testing a hypothesis with a specific statistical test, given the alpha level and an effect size of interest.
 
-auxiliary hypotheses
+auxiliary hypotheses: Premisses or assumptions that are taken for granted and relied upon when testing a hypothesis. A a negative test result therefore only means that our hypotheses or one of the auxiliary hypotheses must be false. Source: Hempel. (1966). Philosophy of Natural Science. Pearson.
 
 Bayes factor
 

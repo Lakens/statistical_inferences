@@ -26,7 +26,7 @@ If one would analyze the data at multiple looks without correcting the alpha lev
 When controlling the Type 1 error rate in sequential analyses, a decision needs to be made about how to spend the alpha level across all looks at the data. For example, when a researcher plans a study with one interim look and one final look at the data, boundary critical Z-values need to be set for the first look (at *n* out of *N* observations) and the second look (at *N* observations). These two critical values, $c_1$ and $c_2$ (for the first and the second analysis) need to be chosen such that the overall probability (Pr) that the null hypothesis is rejected – when in the first analysis the observed Z-score is larger than the critical value for the first look, $Z_n$ ≥ $c_1$, and (if we did not reject the hypothesis in the first analysis, so $Z_n$ < $c_1$, and we continue data collection) when in the second analysis the observed Z-score is larger than the critical value for the second look, $Z_N$ ≥ $c_2$ – equals the desired overall alpha level when the null hypothesis is true. In formal terms, for a directional test:
 
 $$
-Pr\{Z_n \geq c_1\} + Pr\{Zn < c_1, Z_N \geq c_2\} = \alpha
+Pr\{Z_n \geq c_1\} + Pr\{Z_n < c_1, Z_N \geq c_2\} = \alpha
 $$
 
 With more than one interim analysis, additional critical values have to be determined following the same rationale. If you combine multiple looks at the data with multiple comparisons, you would  correct the alpha level twice, once for multiple comparisons, and then for multiple looks. Because the alpha level is corrected, it does not matter which statistical test you perform at each look, all that matters is that the *p*-value is compared to the corrected alpha level. The corrections discussed below are valid for any design where the data is normally distributed, and where each group of observations is independent of the previous group.
@@ -270,7 +270,7 @@ power_res
 ##   (i): values of treatment arm i
 ```
 
-We see that we need 85 participants in each group, (or 86, since the sample size is actually 85.03 and the required number of observations is rounded up, and so we need 172 participants in total. Other power analysis software, such as G\*Power, sould yield the same required sample size. We can now examine our design above with 2 looks and a Pocock-like alpha spending function for a 2 sided test with an alpha of 0.05. We will look 2 times, and expect a true effect of *d* = 0.5 (which we enter by specifying an alternative of 0.5, and a stDev of 1).
+We see that we need 85 participants in each group, (or 86, since the sample size is actually 85.03 and the required number of observations is rounded up, and so we need 172 participants in total. Other power analysis software, such as G\*Power, should yield the same required sample size. We can now examine our design above with 2 looks and a Pocock-like alpha spending function for a 2 sided test with an alpha of 0.05. We will look 2 times, and expect a true effect of *d* = 0.5 (which we enter by specifying an alternative of 0.5, and a stDev of 1).
 
 
 ```r
@@ -527,17 +527,17 @@ res
 
 
 ```
-## [PROGRESS] Stage results calculated [0.0405 secs] 
-## [PROGRESS] Conditional power calculated [0.0372 secs] 
+## [PROGRESS] Stage results calculated [0.0437 secs] 
+## [PROGRESS] Conditional power calculated [0.042 secs] 
 ## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.0013 secs] 
-## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.6951 secs] 
-## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.6963 secs] 
-## [PROGRESS] Repeated confidence interval calculated [1.39 secs] 
-## [PROGRESS] Repeated p-values of stage 1 calculated [0.4128 secs] 
-## [PROGRESS] Repeated p-values of stage 2 calculated [0.2554 secs] 
-## [PROGRESS] Repeated p-values calculated [0.6694 secs] 
-## [PROGRESS] Final p-value calculated [0.0029 secs] 
-## [PROGRESS] Final confidence interval calculated [0.0938 secs]
+## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.9214 secs] 
+## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.9148 secs] 
+## [PROGRESS] Repeated confidence interval calculated [1.84 secs] 
+## [PROGRESS] Repeated p-values of stage 1 calculated [0.3743 secs] 
+## [PROGRESS] Repeated p-values of stage 2 calculated [0.9038 secs] 
+## [PROGRESS] Repeated p-values calculated [1.28 secs] 
+## [PROGRESS] Final p-value calculated [0.0037 secs] 
+## [PROGRESS] Final confidence interval calculated [0.1731 secs]
 ```
 
 

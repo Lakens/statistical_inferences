@@ -24,9 +24,7 @@ The goal in predictive modeling is to apply an algorithm or a statistical model 
 The use of statistical models concerns tests of explanatory theories. In this case, statistical models are used to test causal assumptions, or explanations that we derive from theories.
 Meehl [-@meehl_appraising_1990] reminds us of the important distinction between a substantive theory, a statistical hypothesis, and observations. Statistical inference is only involved in drawing conclusions about the statistical hypothesis. Observations can lead to the conclusion that the statistical hypothesis is confirmed (or not), but this conclusion does not directly translate into corroboration for the theory. 
 
-We never test a theory in isolation, but always include auxiliary hypotheses about the measures and instruments that are used in a study, conditions realized in the experiment, to the **ceteris paribus** clause that assumes all other things are equal. Therefore, it is never clear if a failure to corroborate a theoretical prediction should be blamed on the theory or the auxiliary hypotheses. To generate reliable explanatory theories, researchers therefore have to perform lines of research in which auxiliary hypotheses are systematically tested  [@uygun_tunc_falsificationist_2022].
-
-
+We never test a theory in isolation, but always include auxiliary hypotheses about the measures and instruments that are used in a study, the conditions realized in the experiment, up to the **ceteris paribus** clause that assumes "all other things are equal". The best experimental set-up can rarely by 'deduced' from theory, and requires premisses that are tacitly taken for granted. As Hempel [-@hempel_philosophy_1966] states: "Reliance on auxiliary hypotheses, as we shall see, is the rule rather than the exception in the testing of scientific hypotheses; and it has an important consequence for the question whether an unfavorable test finding, i.e., one that shows I to be false, can be held to disprove the hypothesis under investigation." Therefore, it is never clear if a failure to corroborate a theoretical prediction should be blamed on the theory or the auxiliary hypotheses. To generate reliable explanatory theories, researchers therefore have to perform lines of research in which auxiliary hypotheses are systematically tested  [@uygun_tunc_falsificationist_2022].
 
 (ref:meehl1990lab) Distinction between a theoretical hypothesis, a statistical hypothesis, and observations. Figure based on Meehl, 1990.
 
@@ -112,7 +110,7 @@ Note that there is a subtle distinction between a directional and a one-sided te
 
 
 
-(ref:fandtlab) Distribution and rejection areas for a two-sided t-test and the corresponding F-test with df1 = 1 and df2 = 100.
+(ref:fandtlab) Distribution and rejection areas for a two-sided *t*-test and the corresponding *F*-test with df1 = 1 and df2 = 100.
 
 <div class="figure" style="text-align: center">
 <img src="05-questions_files/figure-html/fandt-1.png" alt="(ref:fandtlab)" width="100%" />
