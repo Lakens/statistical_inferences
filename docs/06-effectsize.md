@@ -89,7 +89,7 @@ $$
 t = \frac{{\overline{M}}_{1}{- \overline{M}}_{2}}{\text{SD}_{\text{pooled}} \times \sqrt{\frac{1}{n_{1}} + \frac{1}{n_{2}}}}
 $$
 
-Here ${\overline{M}}_{1}{- \overline{M}}_{2}$ is the difference between the means, and $\text{SD}_{\text{pooled}}$ is the pooled standard deviation [@lakens_calculating_2013], and n1 and n2 are the sample sizes of the two groups that are being compared. The *t*-value is used to determine whether the difference between two groups in a *t*-test is statistically significant (as explained in the chapter on [*p*-values](#pvalue). The formula for Cohen’s *d*_ is very similar:
+Here ${\overline{M}}_{1}{- \overline{M}}_{2}$ is the difference between the means, and $\text{SD}_{\text{pooled}}$ is the pooled standard deviation [@lakens_calculating_2013], and n1 and n2 are the sample sizes of the two groups that are being compared. The *t*-value is used to determine whether the difference between two groups in a *t*-test is statistically significant (as explained in the chapter on [*p*-values](#pvalue). The formula for Cohen’s *d* is very similar:
 
 $$d_s = \frac{{\overline{M}}_{1}{-\overline{M}}_{2}}{\text{SD}_{\text{pooled}}}$$
 
@@ -148,7 +148,7 @@ To not just *report* but *interpret* an effect size, nothing is gained by the co
 
 ## Correlations and Variance Explained 
 
-The *r* family effect sizes are based on the proportion of variance that is explained by group membership (e.g., a correlation of *r* = 0.5 indicates 25% of the variance ($r^2$ is explained by the difference between groups). You might remember that *r* is used to refer to a correlation. The correlation of two continuous variables can range from 0 (completely unrelated) to 1 (perfect positive relationship) or -1 (perfect negative relationship). To get a better feel of correlations, play the game [guess the correlation](http://guessthecorrelation.com/) where you will see a scatterplot, and have to guess the correlation between the variables (see figure \@ref(fig:guesscorrelation). 
+The *r* family effect sizes are based on the proportion of variance that is explained by group membership (e.g., a correlation of *r* = 0.5 indicates 25% of the variance ($r^2$ is explained by the difference between groups). You might remember that *r* is used to refer to a correlation. The correlation of two continuous variables can range from 0 (completely unrelated) to 1 (perfect positive relationship) or -1 (perfect negative relationship). To get a better feel of correlations, play the game [guess the correlation](http://guessthecorrelation.com/) where you will see a scatterplot, and have to guess the correlation between the variables (see Figure \@ref(fig:guesscorrelation)). 
 
 
 
