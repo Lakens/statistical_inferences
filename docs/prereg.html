@@ -299,29 +299,35 @@ Figure 13.5: Screenshot of a IMDB and metacritic rating.
 </ol>
 <p>The smallest effect size of interest is always a matter of discussion among peers. In this case, I personally believe a difference in movie ratings that is less than 0.5 on a 10 point scale (as used on the IMDB) is sufficiently small to support my prediction that movies with Brad Pitt and Edward Norton are equally good. In other words, if the raw difference is larger than -0.5 and smaller than 0.5, I will conclude the two sets of movies are rated equally well.</p>
 <p>The minimal statistically detectable effect given the number of movies (62 and 39) can be computed by examining the effect we have 50% power for in an independent <em>t</em>-test, for example as computed by G*Power. Before we can compute the minimal statistically detectable effect, we need to specify our alpha level. We know our sample size is limited, and statistical power will be an issue. At the same time, we need to make a decision based on the available data, as it will take many years before we have a larger sample size. In such a context where the sample size is fixed, and a decision must be made, it is sensible to balance the Type 1 and Type 2 error in a compromise power analysis. Below, we determine an alpha level of 0.15 is a defensible decision. That means we have a rather high probability of incorrectly concluding the two groups of movies have the same rating, but we do so to reduce the probability of incorrectly concluding the two movies do not have the same rating, when they actually have.</p>
-<p>-- Sunday, March 05, 2023 -- 12:19:19
-t tests - Means: Difference between two independent means (two groups)
-Analysis: Sensitivity: Compute required effect size
-Input: Tail(s) = Two
-α err prob = 0.15
-Power (1-β err prob) = 0.5
-Sample size group 1 = 62
-Sample size group 2 = 39
-Output: Noncentrality parameter δ = 1.4420104
-Critical t = 1.4507883
-Df = 99
-Effect size d = 0.2947141</p>
+<p>-- Sunday, March 05, 2023 -- 12:19:19</p>
+<p>t tests - Means: Difference between two independent means (two groups)</p>
+<p>Analysis: Sensitivity: Compute required effect size</p>
+<p>Input: Tail(s) = Two</p>
+<pre><code>α err prob  =   0.15
+
+Power (1-β err prob)    =   0.5
+
+Sample size group 1 =   62
+
+Sample size group 2 =   39</code></pre>
+<p>Output: Noncentrality parameter δ = 1.4420104</p>
+<pre><code>Critical t  =   1.4507883
+
+Df  =   99
+
+Effect size d   =   0.2947141</code></pre>
 <p>The Minimal Statistically Detectable Effect is thus d = 0.295.</p>
 <p>A sensitivity analysis shows that given the sample size we can collect (n = 62 and 39), and the smallest effect size of interest (half a scale point), and assuming a standard deviation of movie ratings of sd = 0.9 (an estimate based on pilot data), statistical power is 91% is we assume the difference in movie ratings is exactly 0. It is possible that movie ratings actually differ slightly, and the difference is not exactly 0. If we assume the true difference in movie ratings is 0.1 power is still 86%. This decent statistical power is a direct consequence of increasing the alpha level. With a 5% Type 1 error rate, power would be 64% (assuming a true difference between movies of 0.1), and the combined error rate would be ((100 - 64) + 5) = 41% , but by increasing the alpha level to 15% the combined error rate has dropped to ((100 - 86) + 15) = 29%, which means the probability of making an error, assuming H0 and H1 are equally likely to be true, has been reduced.</p>
-<p>TOSTER::power_t_TOST(
-n = c(62, 39),
-delta = 0.1,
-sd = 0.9,
-low_eqbound = -0.5,
-high_eqbound = 0.5,
-alpha = 0.05,
-type = "two.sample"
-)</p>
+<div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/power_t_TOST.html">power_t_TOST</a></span><span class="op">(</span>
+  n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">62</span>, <span class="fl">39</span><span class="op">)</span>,
+  delta <span class="op">=</span> <span class="fl">0.1</span>,
+  sd <span class="op">=</span> <span class="fl">0.9</span>,
+  low_eqbound <span class="op">=</span> <span class="op">-</span><span class="fl">0.5</span>,
+  high_eqbound <span class="op">=</span> <span class="fl">0.5</span>,
+  alpha <span class="op">=</span> <span class="fl">0.05</span>,
+  type <span class="op">=</span> <span class="st">"two.sample"</span>
+<span class="op">)</span></code></pre></div>
 <p>We can conclude that we will decent power for our planned test, given our smallest effect size of interest and our high alpha level.</p>
 <ol start="3" style="list-style-type: decimal">
 <li>Inferential goal</li>
@@ -333,14 +339,16 @@ type = "two.sample"
 <p>Finally, we evaluate the informational value of our study. First, we are using all available data, and we have tried to reduce the combined Type 1 and Type 2 error rate by somewhat balancing the two error rates. Our goal is to make a decision based on the available data. Our decision has a relatively high probability to be wrong, but the value of our study is that is allows us to make a decision as well as possible, given the available data. Therefore, if anyone else wants to know the answer to the question if movies starring Brad Pitt and Edward Norton are indeed equally good, our results will give the best possible answer we currently have available, even if there is substantial remaining uncertainty after the study.</p>
 <p><strong>Q4</strong>: Write down your hypothesis on a <em>statistical level</em> and specify the code for this analysis. Be as specific as possible. Look through the JARS recommendations above, and the checklist by <span class="citation">Wicherts et al. (<a href="references.html#ref-wicherts_degrees_2016" role="doc-biblioref">2016</a>)</span>, to make sure you did not miss any details you need to specify (e.g., how will you pre-process the data, which software version will you use, etc.).</p>
 <p>We can now specify the test we plan to perform on a statistical level. We do not expect any missing data or outliers, and will analyze all movie ratings in an equivalence test with equivalence bounds of -0.5 and 0.5, and alpha level of 0.15, and as group sizes are unequal Welch's <em>t</em>-test (which does not assume equal variances) will be performed <span class="citation">Delacre et al. (<a href="references.html#ref-delacre_why_2017" role="doc-biblioref">2017</a>)</span>. The following analysis code (which I will run in R version 4.2.0, and TOSTER package version 0.4.1) assumes the data will be stored in the imdb_ratings dataframe with a column for the movie ratings for Brad Pitt (with the column name brad_pitt_score) and a column for the movie ratings for Edward Norton (with the column name edward_norton_score)</p>
-<p>TOSTER::t_TOST(
-x = imdb_ratings<span class="math inline">\(brad_pitt_score,  y = imdb_ratings\)</span>edward_norton_score,
-low_eqbound = -0.5,
-high_eqbound = 0.5,
-eqbound_type = "raw",
-alpha = 0.15,
-var.equal = FALSE
-)</p>
+<div class="sourceCode" id="cb100"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">TOSTER</span><span class="fu">::</span><span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/t_TOST.html">t_TOST</a></span><span class="op">(</span>
+  x <span class="op">=</span> <span class="va">imdb_ratings</span><span class="op">$</span><span class="va">brad_pitt_score</span>,
+  y <span class="op">=</span> <span class="va">imdb_ratings</span><span class="op">$</span><span class="va">edward_norton_score</span>,
+  low_eqbound <span class="op">=</span> <span class="op">-</span><span class="fl">0.5</span>,
+  high_eqbound <span class="op">=</span> <span class="fl">0.5</span>,
+  eqbound_type <span class="op">=</span> <span class="st">"raw"</span>,
+  alpha <span class="op">=</span> <span class="fl">0.15</span>,
+  var.equal <span class="op">=</span> <span class="cn">FALSE</span>
+<span class="op">)</span></code></pre></div>
 <p>Finally, we need to specify our criteria and how we will evaluate the results. The t_TOST function will also perform a null-hypothesis significance test, which is convenient, because we can now consider our hypothesis supported if the equivalence test is significant at <em>p</em> &lt; 0.15, or when the 70% confidence interval falls completely within the equivalence bounds. We can consider our hypothesis falsified if the null hypothesis significance test is significant at <em>p</em> &lt; 0.15. If neither of the two tests is significant, our results are inconclusive. If both tests are significant, our hypothesis is also falsified, as there is an effect, but it is too small to matter. So more formally, our hypothesis is corroborated if the TOST <em>p</em> &lt; 0.015 &amp; NHST <em>p</em> &gt; 0.015, it is falsified if NHST <em>p</em> &lt; 0.015, and inconclusive otherwise.</p>
 <p>We have now completed a preregistration of a very simple study. In real studies, the preregistration process is often not this easy. A sample size justification often requires some <a href="power.html#knowyourmeasure">knowledge about the variables in your analysis</a>, power analyses become more uncertain the more complex the analysis, and it might be challenging to make decisions about data pre-processing and how to deal with outliers. If you struggle with your preregistration, you might simply not be <a href="prereg.html#readytopreregister">ready to preregister</a>. You might not be in the <em><a href="questions.html#looseningtightening">tightening phase</a></em> or your research, or the equivalent of a phase 3 trial in clinical trials, and need to perform more descriptive research before you can perform a <a href="questions.html#reallytest">real test</a> of your hypothesis.</p>
 <div id="practical-aspects-of-an-online-preregistration" class="section level3" number="13.7.1">
@@ -356,13 +364,13 @@ var.equal = FALSE
 </h3>
 <p>Go to <a href="https://pasa.psycharchives.org" class="uri">https://pasa.psycharchives.org</a>. Log in with your ORCID if you have one or can make one (which should be available to most people working or studying at a research institution), or make a dedicated Leibniz Psychology account.</p>
 <p>Click ‘Start a new submission’</p>
-<div class="inline-figure"><img src="images/psycharchives1.png" width="100%" style="display: block; margin: auto;"></div>
+<div class="inline-figure"><img src="images/psycharchives1.png" width="40%" style="display: block; margin: auto;"></div>
 <div class="inline-figure">and scroll down to the preregistration option and click it.
 <img src="images/psycharchives2.png" width="100%" style="display: block; margin: auto;">
 </div>
 <p>You will see a recommendation to submit your preregistration in a PDF/A file, which is a PDF which does not allow certain restrictions that hinder long-term archiving. This already reveals how PsychArchives will ask you to meet certain standards that they deem best practices, that you might not think about yourself. This is a good thing!</p>
 <p>In Microsoft word, you can save a file as a PDF/A compliant pdf file by choosing ‘File’&gt; ‘Save As’, choose PDF from the dropdown menu, click on ‘More options…’ below the dropdown menu:</p>
-<div class="inline-figure"><img src="images/psycharchives3.png" width="100%" style="display: block; margin: auto;"></div>
+<div class="inline-figure"><img src="images/psycharchives3.png" width="40%" style="display: block; margin: auto;"></div>
 <p>Click the ‘Options…’ button:</p>
 <div class="inline-figure"><img src="images/psycharchives4.png" width="100%" style="display: block; margin: auto;"></div>
 <p>And check the box: PDF/A compliant</p>
@@ -383,7 +391,7 @@ var.equal = FALSE
 <p>Go to <a href="http://www.osf.io">www.osf.io</a>, create an account or log in, and click the button 'Create new project'. Enter a title. If you are from Europe, and you want to adhere to the GDPR privacy regulations, make sure to select 'Germany' as the storage location. Click 'Create', and click 'Go to project'.</p>
 <div class="inline-figure"><img src="images/osf1.png" width="100%" style="display: block; margin: auto;"></div>
 <p>Add a description, so that others will understand what this project is about, and a license, so that others know how they can re-use any material you are sharing.</p>
-<p>You can choose to make your project public now, or to make it public later. It is common for researchers to make the project public upon publication, but if you are not worried about others re-using your content (and any ideas in it) you can make the project open immediately. To do so, click the <strong>Make public</strong> button in the top right of the project.</p>
+<p>You can choose to make your project public now, or to make it public later. It is common for researchers to make the project public upon publication, but if you are not worried about others re-using your content (and any ideas in it) you can make the project open immediately. To do so, click the 'Make public' button in the top right of the project.</p>
 <p>To preregister a study, click the 'Registrations' button in the top bar, and click 'new registration'.</p>
 <p><strong>Reminder: You should not use the OSF to preregister just to practice how to preregister. The OSF registries website is intended to be a searchable database of all official scientific registrations and preregistrations. When you complete a registration, it will remain in <a href="https://osf.io/registries/">OSF Registries</a> for ever, and there is no way to remove it. This costs money and reduces the usefulness of the database. Only register real studies.</strong></p>
 <p>For hypothesis testing research the default OSF preregistration template will provide a useful structure to your preregistration. It will also allow you to upload supplementary files (such as the html file detailing our sample size justification that we created above).</p>

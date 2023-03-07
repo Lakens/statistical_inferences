@@ -200,22 +200,34 @@ The smallest effect size of interest is always a matter of discussion among peer
 The minimal statistically detectable effect given the number of movies (62 and 39) can be computed by examining the effect we have 50% power for in an independent *t*-test, for example as computed by G\*Power. Before we can compute the minimal statistically detectable effect, we need to specify our alpha level. We know our sample size is limited, and statistical power will be an issue. At the same time, we need to make a decision based on the available data, as it will take many years before we have a larger sample size. In such a context where the sample size is fixed, and a decision must be made, it is sensible to balance the Type 1 and Type 2 error in a compromise power analysis. Below, we determine an alpha level of 0.15 is a defensible decision. That means we have a rather high probability of incorrectly concluding the two groups of movies have the same rating, but we do so to reduce the probability of incorrectly concluding the two movies do not have the same rating, when they actually have. 
 
 -- Sunday, March 05, 2023 -- 12:19:19
+
 t tests - Means: Difference between two independent means (two groups)
+
 Analysis:	Sensitivity: Compute required effect size 
+
 Input:	Tail(s)	=	Two
+
 	α err prob	=	0.15
+
 	Power (1-β err prob)	=	0.5
+
 	Sample size group 1	=	62
+
 	Sample size group 2	=	39
+
 Output:	Noncentrality parameter δ	=	1.4420104
+
 	Critical t	=	1.4507883
+
 	Df	=	99
+
 	Effect size d	=	0.2947141
 
 The Minimal Statistically Detectable Effect is thus d = 0.295.
 
 A sensitivity analysis shows that given the sample size we can collect (n = 62 and 39), and the smallest effect size of interest (half a scale point), and assuming a standard deviation of movie ratings of sd = 0.9 (an estimate based on pilot data), statistical power is 91% is we assume the difference in movie ratings is exactly 0. It is possible that movie ratings actually differ slightly, and the difference is not exactly 0. If we assume the true difference in movie ratings is 0.1 power is still 86%. This decent statistical power is a direct consequence of increasing the alpha level. With a 5% Type 1 error rate, power would be 64% (assuming a true difference between movies of 0.1), and the combined error rate would be ((100 - 64) + 5) = 41% , but by increasing the alpha level to 15% the combined error rate has dropped to ((100 - 86) + 15) = 29%, which means the probability of making an error, assuming H0 and H1 are equally likely to be true, has been reduced. 
 
+```{r, eval=FALSE}
 TOSTER::power_t_TOST(
   n = c(62, 39),
   delta = 0.1,
@@ -225,6 +237,8 @@ TOSTER::power_t_TOST(
   alpha = 0.05,
   type = "two.sample"
 )
+```
+
 
 We can conclude that we will decent power for our planned test, given our smallest effect size of interest and our high alpha level.
 
@@ -240,6 +254,7 @@ Finally, we evaluate the informational value of our study. First, we are using a
 
 We can now specify the test we plan to perform on a statistical level. We do not expect any missing data or outliers, and will analyze all movie ratings in an equivalence test with equivalence bounds of -0.5 and 0.5, and alpha level of 0.15, and as group sizes are unequal Welch's *t*-test (which does not assume equal variances) will be performed @delacre_why_2017. The following analysis code (which I will run in R version 4.2.0, and TOSTER package version 0.4.1) assumes the data will be stored in the imdb_ratings dataframe with a column for the movie ratings for Brad Pitt (with the column name brad_pitt_score) and a column for the movie ratings for Edward Norton (with the column name edward_norton_score)
 
+```{r, eval=FALSE}
 TOSTER::t_TOST(
   x = imdb_ratings$brad_pitt_score,
   y = imdb_ratings$edward_norton_score,
@@ -249,6 +264,7 @@ TOSTER::t_TOST(
   alpha = 0.15,
   var.equal = FALSE
 )
+```
 
 Finally, we need to specify our criteria and how we will evaluate the results. The t_TOST function will also perform a null-hypothesis significance test, which is convenient, because we can now consider our hypothesis supported if the equivalence test is significant at *p* < 0.15, or when the 70% confidence interval falls completely within the equivalence bounds. We can consider our hypothesis falsified if the null hypothesis significance test is significant at *p* < 0.15. If neither of the two tests is significant, our results are inconclusive. If both tests are significant, our hypothesis is also falsified, as there is an effect, but it is too small to matter. So more formally, our hypothesis is corroborated if the TOST *p* < 0.015 & NHST *p* > 0.015, it is falsified if NHST *p* < 0.015, and inconclusive otherwise. 
 
@@ -266,7 +282,7 @@ Go to https://pasa.psycharchives.org. Log in with your ORCID if you have one or 
 
 Click ‘Start a new submission’
 
-```{r psycharchives1, echo = FALSE}
+```{r psycharchives1, out.width  = '40%', echo = FALSE}
 knitr::include_graphics("images/psycharchives1.png")
 ```
 
@@ -279,7 +295,7 @@ You will see a recommendation to submit your preregistration in a PDF/A file, wh
 
 In Microsoft word, you can save a file as a PDF/A compliant pdf file by choosing ‘File’> ‘Save As’, choose PDF from the dropdown menu, click on ‘More options…’ below the dropdown menu:
 
-```{r psycharchives3, echo = FALSE}
+```{r psycharchives3, out.width  = '40%', echo = FALSE}
 knitr::include_graphics("images/psycharchives3.png")
 ```
  
@@ -327,7 +343,7 @@ knitr::include_graphics("images/osf1.png")
 
 Add a description, so that others will understand what this project is about, and a license, so that others know how they can re-use any material you are sharing.
 
-You can choose to make your project public now, or to make it public later. It is common for researchers to make the project public upon publication, but if you are not worried about others re-using your content (and any ideas in it) you can make the project open immediately. To do so, click the **Make public** button in the top right of the project.
+You can choose to make your project public now, or to make it public later. It is common for researchers to make the project public upon publication, but if you are not worried about others re-using your content (and any ideas in it) you can make the project open immediately. To do so, click the 'Make public' button in the top right of the project.
 
 To preregister a study, click the 'Registrations' button in the top bar, and click 'new registration'. 
 
