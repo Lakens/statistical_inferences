@@ -40,7 +40,9 @@ This open educational resource integrates information from my [blog](https://dan
 
 I have re-used and adapted (parts of) my own open access articles, without adding quotation marks. Immense gratitude to my collaborators Casper Albers, Farid Anvari, Aaron Caldwell, Harlan Cambell, Nicholas Coles, Lisa DeBruine, Marie Delacre, Zoltan Dienes, Noah van Dongen, Alexander Etz, Ellen Evers, Jaroslav Gottfriend, Seth Green, Christopher Harms, Arianne Herrera-Bennett, Joe Hilgard, Peder Isager, Maximilian Maier, Neil McLatchie, Brian Nosek, Friedrich Pahlke, Pepijn Obels, Amy Orben, Anne Scheel, Janneke Staaks, Leo Tiokhin, Mehmet Tunç, Duygu Uygun Tunç, and Gernot Wassmer, who have contributed substantially to the ideas in this open educational resource. I would also like to thank Zeki Akyol, Emrah Er, Lewis Halsey, Kyle Hamilton, David Lane, Jeremiah Lewis, and Leong Utek who gave comments on GitHub or Twitter to improve this textbook. This resource was created during a sabbatical at Padova University, with thanks to the Advanced Data Analysis for Psychological Science students, and Gianmarco Altoè and Ughetta Moscardino for their hospitality. 
 
-If you find any mistakes, or have suggestions for improvement, you can [submit an issue on the GitHub page](https://github.com/Lakens/statistical_inferences/issues) of this open educational resource. This work is shared under a [CC-BY-NC-SA License](https://creativecommons.org/licenses/by-nc-sa/4.0).
+If you find any mistakes, or have suggestions for improvement, you can [submit an issue on the GitHub page](https://github.com/Lakens/statistical_inferences/issues) of this open educational resource. This work is shared under a [CC-BY-NC-SA License](https://creativecommons.org/licenses/by-nc-sa/4.0). You can cite this resource as:
+
+Lakens, D. (2022). Improving Your Statistical Inferences. Retrieved from https://lakens.github.io/statistical_inferences/. https://doi.org/10.5281/zenodo.6409077
 
 This work is dedicated to Kyra, the love of my life.
 

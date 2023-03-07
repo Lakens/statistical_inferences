@@ -31,7 +31,7 @@ We never test a theory in isolation, but always include auxiliary hypotheses abo
 <p class="caption">(\#fig:meehl1990)(ref:meehl1990lab)</p>
 </div>
 
-## Loosening and Tightening
+## Loosening and Tightening{#looseningtightening}
 
 For each of the three questions above, we can ask questions about description, prediction, and explanation during a **loosening** phase when doing research, or during a **tightening** phase [@fiedler_tools_2004]. The distinction is relative. During the loosening stage, the focus is on creating variation that provides the source for new ideas. During the tightening stage, selection takes place with the goal to distinguish useful variants from less useful variants. In descriptive research, an unstructured interview is more aligned with the loosening phase, while a structured interview is more aligned with the tightening phase. In prediction, building a prediction model based on the training set is the loosening phase, while evaluation the prediction error in the holdout dataset is the tightening phase. In explanation, exploratory experimentation functions to generate hypotheses, while hypothesis tests function to distinguish theories that make predictions that are corroborated from those theories which predictions are not corroborated. 
 
@@ -63,7 +63,7 @@ fallacy** — a declaration of what they believe researchers really “want to k
 
 Different statisticians will argue what you actually "want to know" is the posterior probability of a hypothesis, the false-positive risk, the effect size and its confidence interval, the likelihood, the Bayes factor, or the severity with which a hypothesis has been tested. However, it is up to you to choose a statistical strategy that matches the question you want the ask [@hand_deconstructing_1994].  
 
-## Do You Really Want to Test a Hypothesis?
+## Do You Really Want to Test a Hypothesis?{#reallytest}
 
 ::: {.small_right}
 <img src="images/worship.jpg" alt="Stick figure worshipping a p-value"/>

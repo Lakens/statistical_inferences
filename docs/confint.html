@@ -246,15 +246,15 @@ estimate of the true value in the population. In small samples, this estimate ca
 <iframe width="560" height="315" src="https://www.youtube.com/embed/kH3UOoFh9Ng?start=9" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
 </iframe>
 <p>MOTE is also available as an R package <span class="citation">(<a href="references.html#ref-buchanan_mote_2017" role="doc-biblioref">Buchanan et al., 2017</a>)</span>. Although many solutions exists to compute Cohen's <em>d</em>, MOTE sets itself apart by allowing researchers to compute effect sizes and confidence intervals for many additional effect sizes, such as (partial) omega squared for between subjects ANOVA (<span class="math inline">\(\omega^{2}\)</span> and <span class="math inline">\(\omega^{2}_p\)</span>), generalized omega squared for ANOVA (<span class="math inline">\(\omega^{2}_G\)</span>), epsilon squared for ANOVA (<span class="math inline">\(\varepsilon^{2}\)</span>) and (partial) generalized eta squared for ANOVA (<span class="math inline">\(\eta^{2}_G\)</span>).</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">MOTE</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MOTE/man/d.ind.t.html">d.ind.t</a></span><span class="op">(</span>m1 <span class="op">=</span> <span class="fl">1.7</span>, m2 <span class="op">=</span> <span class="fl">2.1</span>, sd1 <span class="op">=</span> <span class="fl">1.01</span>, sd2 <span class="op">=</span> <span class="fl">0.96</span>, n1 <span class="op">=</span> <span class="fl">77</span>, n2 <span class="op">=</span> <span class="fl">78</span>, a <span class="op">=</span> <span class="fl">.05</span><span class="op">)</span><span class="op">$</span><span class="va">estimate</span></code></pre></div>
 <pre><code>## [1] "$d_s$ = -0.41, 95\\% CI [-0.72, -0.09]"</code></pre>
 <p>MBESS is another R package that has a range of options to compute effect sizes and their confidence intervals <span class="citation">(<a href="references.html#ref-kelley_confidence_2007" role="doc-biblioref">Kelley, 2007</a>)</span>. The code below reproduces the example for MOTE above.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">MBESS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MBESS/man/smd.html">smd</a></span><span class="op">(</span>Mean.1 <span class="op">=</span> <span class="fl">1.7</span>, Mean.2 <span class="op">=</span> <span class="fl">2.1</span>, s.1 <span class="op">=</span> <span class="fl">1.01</span>, s.2 <span class="op">=</span> <span class="fl">0.96</span>, n.1 <span class="op">=</span> <span class="fl">77</span>, n.2 <span class="op">=</span> <span class="fl">78</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] -0.406028</code></pre>
 <p>If you feel comfortable analyzing your data in R, the <code>effectsize</code> package offers a complete set of convenient solutions to compute effect sizes and confidence intervals <span class="citation">(<a href="references.html#ref-ben-shachar_effectsize_2020" role="doc-biblioref">Ben-Shachar et al., 2020a</a>)</span>.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">33</span><span class="op">)</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">20</span>, mean <span class="op">=</span> <span class="fl">0</span>, sd <span class="op">=</span> <span class="fl">2.5</span><span class="op">)</span> <span class="co"># create sample from normal distribution</span>
 <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">200</span>, mean <span class="op">=</span> <span class="fl">1.5</span>, sd <span class="op">=</span> <span class="fl">3.5</span><span class="op">)</span> <span class="co"># create sample from normal distribution</span>
@@ -277,7 +277,7 @@ estimate of the true value in the population. In small samples, this estimate ca
 </table></div>
 </div>
 <p>I am personally impressed by the way the <code>effectsize</code> package incorporates the state of the art (although I might be a bit biased). For example, after our recommendation to, by default, use Welch's <em>t</em>-test instead of students <em>t</em>-test <span class="citation">(<a href="references.html#ref-delacre_why_2017" role="doc-biblioref">Delacre et al., 2017</a>)</span>, and based on a recent simulation study recommended to report Hedges’ <span class="math inline">\(g_s^*\)</span> as the effect size for Welch's <em>t</em>-test <span class="citation">(<a href="references.html#ref-delacre_why_2021" role="doc-biblioref">Delacre et al., 2021</a>)</span>, the <code>effectsize</code> package was the first to incorporate it.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">effectsize</span><span class="fu">::</span><span class="fu"><a href="https://easystats.github.io/effectsize/reference/cohens_d.html">cohens_d</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, pooled_sd <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <div class="kable-table">
 <div class="inline-table"><table class="table table-sm">
@@ -370,7 +370,7 @@ Figure 7.10: Meta-analysis of 4 studies.
 <li>10.45</li>
 </ol>
 <p>Copy the code below into R and run the code. It will generate plots like the one in Figure <a href="confint.html#fig:cioverlap">7.4</a>. Run the entire script as often as you want (notice the variability in the <em>p</em>-values due to the relatively low power in the test!), to answer the following question. The <em>p</em>-value in the plot will tell you if the difference is statistically significant, and what the <em>p</em>-value is. Run the simulation until you find a <em>p</em>-value close to <em>p</em> = 0.05.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">50</span>, mean <span class="op">=</span> <span class="fl">3</span>, sd <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="co"># get sample group 1</span>
 <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">50</span>, mean <span class="op">=</span> <span class="fl">5</span>, sd <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="co"># get sample group 2</span>
 
@@ -405,7 +405,7 @@ Figure 7.10: Meta-analysis of 4 studies.
 </ol>
 <p>Note that this visual overlap rule can only be used when the comparison is made between independent groups, not between dependent groups! The 95% confidence interval around effect sizes is therefore typically more easily interpretable in relation to the significance of a test.</p>
 <p>Let’s experience this through simulation. The simulation in the R script below generates a large number of additional samples, after the initial one that was plotted. The simulation returns the number of CI that contains the mean (which should be 95% in the long run). The simulation also returns the % of means from future studies that fall within the 95% of the original study, or the capture percentage. It differs from (and is often lower, but sometimes higher, than) the confidence interval.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
 
 <span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">20</span> <span class="co"># set sample size</span>
@@ -477,7 +477,7 @@ Figure 7.10: Meta-analysis of 4 studies.
 </ol>
 <p>Capture percentages are rarely directly used to make statistical inferences. The main reason we discuss them here is really to prevent the common misunderstanding that 95% of future means fall within a single confidence interval: Capture percentages clearly show that is not true. Prediction intervals are also rarely used in psychology, but are more common in data science.</p>
 <p><strong>Q9</strong>: If you run lines the first lines of the code below, you will see that with an alpha level of 0.05, 100 observations, and a true standard deviation of 1, the 95% CI is [0.88; 1.16]. Change the assumed population standard deviation from 1 to 2 (st_dev &lt;- 2). Keep all other settings the same. What is the 95% CI around the standard deviation of 2 with 100 observations?</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">alpha_level</span> <span class="op">&lt;-</span> <span class="fl">0.05</span> <span class="co"># set alpha level</span>
 <span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">100</span> <span class="co"># set number of observations</span>
 <span class="va">st_dev</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="co"># set true standard deviation</span>
@@ -619,11 +619,11 @@ $( document ).ready(function() {
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Improving Your Statistical Inferences</strong>" was written by Daniël Lakens. It was last built on 2023-02-01.</p>
+     <p>Lakens, D. (2022). Improving Your Statistical Inferences. https://doi.org/10.5281/zenodo.6409077. Built on 2023-02-01</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
-    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+    <p><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"></a></p>
   </div>
 
 </div></div>

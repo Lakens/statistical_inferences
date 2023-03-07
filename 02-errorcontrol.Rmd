@@ -82,7 +82,6 @@ knitr::include_graphics("images/PPVexample.png")
   
 People often say something like: “*Well, we all know 1 in 20 results in the published literature are Type 1 errors*”. You should be able to understand this is not true in practice, after learning about the positive predictive value. When in 100% of the studies you perform, the null hypothesis is true, and all studies are published, only *then* are 1 in 20 studies, in the long run, false positives (and the rest correctly reveal no statistically significant difference). It also explains why the common *p*-value [misconception](#misconception4) "If you have observed a significant finding, the probability that you have made a Type 1 error (a false positive) is 5%." is not correct, because in practice the null hypothesis is not true in all tests that are performed (sometimes the alternative hypothesis is true). Importantly, as long as there is [publication bias](#bias) (where findings with desired results end up in the scientific literature, and for example non-significant results are not shared) then even if researchers use a 5% alpha level, it is quite reasonable to assume much more than 5% of significant findings in the published literature are false positives. In the scientific literature, the false positive report probability can be quite high, and under specific circumstances, it might even be so high that most published research findings are false. This will happen when researchers examine mostly studies where the null hypothesis is true, with low power, or when the Type 1 error rate is inflated due to *p*-hacking or other types of bias.
     
-    
 ## Type 1 error inflation 
     
 ```{r, cooking, echo = FALSE, fig.cap='Quote from the 1830 book by Babbage Reflections on the Decline of Science in England And on Some of Its Causes.'}
@@ -478,9 +477,43 @@ D) regardless of the power, the proportion of false positives for all experiment
 
 ### Questions about optional stopping
 
-**Q1**: Run the script that plots the *p*-value as the sample size increases 20 times, and count how often the lowest *p*-value ends up below 0.05 (we will calculate the long run probability of this happening through more extensive simulations later). Remember that you can click the 'clipboard' icon on the top right of the code section to copy all the code to your clipboard, and paste it in RStudio.
+For Questions 1 to 4, use the script below:
+    
+```{r, eval=FALSE}
+n <- 200 # total number of datapoints (per condition) after initial 10
+d <- 0.0 # effect size d
 
-**Q2**: If there is a true effect, we can only observe a true positive or a false negative. Change the effect size from d \<- 0.0 to d \<- 0.3. This is a relatively small true effect, and with 200 participants in each condition, we have 85% power (or an 85% probability of finding a significant effect). Run the script again. Below is one possible example of the trajectory of *p*-values as the sample size increases. Run the script 20 times. Take a good look at the variation in the *p*-value trajectory. Remember that at N = 200, 85% of the times the *p*-value should have ended up below 0.05. The script returns the sample size the *p*-value is the lowest (which is often, but not always, at the maximum sample size, when there is a true effect) and the sample size at which the *p*-value drops below 0.05 for the first time. Which statement is true?
+p <- numeric(n) # store p-values
+x <- numeric(n) # store x-values
+y <- numeric(n) # store y-values
+
+n <- n + 10 # add 10 to number of datapoints
+
+for (i in 10:n) { # for each simulated participants after the first 10
+  x[i] <- rnorm(n = 1, mean = 0, sd = 1)
+  y[i] <- rnorm(n = 1, mean = d, sd = 1)
+  p[i] <- t.test(x[1:i], y[1:i], var.equal = TRUE)$p.value
+}
+
+p <- p[10:n] # Remove first 10 empty p-values
+
+# Create the plot
+par(bg = "#fffafa")
+plot(0, col = "red", lty = 1, lwd = 3, ylim = c(0, 1), xlim = c(10, n), 
+     type = "l", xlab = "sample size", ylab = "p-value")
+lines(p, lwd = 2)
+abline(h = 0.05, col = "darkgrey", lty = 2, lwd = 2) # draw line at p = 0.05
+
+min(p) # Return lowest p-value from all looks
+cat("The lowest p-value was observed at sample size", which.min(p) + 10) 
+cat("The p-value dropped below 0.05 for the first time at sample size:", 
+    ifelse(is.na(which(p < 0.05)[1] + 10), "NEVER", which(p < 0.05)[1] + 10)) 
+
+```
+
+**Q1**: Run the script above that plots the *p*-value as the sample size increases 20 times, and count how often the lowest *p*-value ends up below 0.05 (we will calculate the long run probability of this happening through more extensive simulations later). Remember that you can click the 'clipboard' icon on the top right of the code section to copy all the code to your clipboard, and paste it in RStudio.
+
+**Q2**: If there is a true effect, we can only observe a true positive or a false negative. Change the effect size in the second line in the script from d \<- 0.0 to d \<- 0.3. This is a relatively small true effect, and with 200 participants in each condition, we have 85% power (or an 85% probability of finding a significant effect). Run the script again. Below is one possible example of the trajectory of *p*-values as the sample size increases. Run the script 20 times. Take a good look at the variation in the *p*-value trajectory. Remember that at N = 200, 85% of the times the *p*-value should have ended up below 0.05. The script returns the sample size the *p*-value is the lowest (which is often, but not always, at the maximum sample size, when there is a true effect) and the sample size at which the *p*-value drops below 0.05 for the first time. Which statement is true?
 
 A) If the *p*-value drops below 0.05, it stays below 0.05.
 B) The *p*-value randomly moves between 0 and 1, and will every now and then end up below 0.05.
@@ -489,7 +522,7 @@ condition. In around 50% of the simulations, this already happens at N = 100.
 D) The *p*-value will typically move below 0.05 and stay there for some time,
 but given a large enough sample, it will always move back up to *p* \> 0.05.
 
-**Q3**: Change the effect size d \<- 0.8, which can be regarded as a large effect. Run the script 20 times. Take a good look at the variation in the *p*-value trajectory. Which statement is true?
+**Q3**: Change the effect size in the second line of the script to d \<- 0.8, which can be regarded as a large effect. Run the script 20 times. Take a good look at the variation in the *p*-value trajectory. Which statement is true?
 
 A) The *p*-value randomly moves between 0 and 1, and will every now and then end up below 0.05.
 B) The *p*-values drop below and stay below 0.05 much earlier than when the true effect size is 0.3.
@@ -501,6 +534,52 @@ D) When you examine a large effect, whenever a *p*-value drops below 0.05, it wi
 A) Optional stopping does not impact the Type 1 error rate.
 B) Optional stopping inflates the Type 1 error rate. We can see this in the first five bars (*p*-values between 0.00 and 0.05), which are substantially higher than the horizontal line.
 C) Optional stopping inflates the Type 1 error rate. We can see this in the bars just above 0.05, which dip substantially below the uniform distribution that should be present if there is no true effect.
+
+For Questions 5 to 8, use the script below:
+
+```{r, eval=FALSE}
+N <- 100 # total datapoints (per condition)
+looks <- 5 # set number of looks at the data
+nsims <- 50000 # number of simulated studies
+alphalevel <- 0.05 # set alphalevel
+
+if(looks > 1){
+  look_at_n <- ceiling(seq(N / looks, N, (N - (N / looks)) / (looks - 1)))
+}  else {
+  look_at_n <- N
+}
+look_at_n <- look_at_n[look_at_n > 2] # Remove looks at N of 1 or 2
+looks<-length(look_at_n) # if looks are removed, update number of looks
+
+matp <- matrix(NA, nrow = nsims, ncol = looks) # Matrix for p-values l tests
+p <- numeric(nsims) # Variable to save pvalues
+
+# Loop data generation for each study, then loop to perform a test for each N
+for (i in 1:nsims) {
+  x <- rnorm(n = N, mean = 0, sd = 1)
+  y <- rnorm(n = N, mean = 0, sd = 1)
+  for (j in 1:looks) {
+    matp[i, j] <- t.test(x[1:look_at_n[j]], y[1:look_at_n[j]], 
+                         var.equal = TRUE)$p.value # perform the t-test, store
+  }
+  cat("Loop", i, "of", nsims, "\n")
+}
+
+# Save Type 1 error rate smallest p at all looks
+for (i in 1:nsims) {
+  p[i] <- ifelse(length(matp[i,which(matp[i,] < alphalevel)]) == 0, 
+                 matp[i,looks], matp[i,which(matp[i,] < alphalevel)])
+}
+
+hist(p, breaks = 100, col = "grey") # create plot
+abline(h = nsims / 100, col = "red", lty = 3)
+
+cat("Type 1 error rates for look 1 to", looks, ":", 
+    colSums(matp < alphalevel) / nsims)
+cat("Type 1 error rate when only the lowest p-value for all looks is reported:", 
+    sum(p < alphalevel) / nsims)
+
+```
 
 **Q5**: The script to simulate optional stopping provides written output. One summary gives you the Type 1 error rate for each individual look. One summary gives the Type 1 error rate when optional stopping is used. When running the script with the default values, which statement is true?
 
@@ -535,8 +614,7 @@ D) 0.41
 
 The Pocock boundary provides a very easy way to control the type 1 error rate in sequential analyses. Sequential analysis is the formal way to do optional stopping. Researchers should use a slightly lower alpha level for each look, the make sure the overall alpha level (after all looks) is not larger than 5%.
 
-Set the number of participants to **100**, the number of looks to **5**, and
-the number of simulations to **50000** (so back to the original script). In the Wikipedia article on the Pocock boundary, find the corrected alpha level for 5 looks at the data. Change the alpha level in the simulation to this value. Run the simulation. Which of the following statements is true?
+Set the number of participants to **100**, the number of looks to **5**, and the number of simulations to **50000** (so back to the original script). In the Wikipedia article on the Pocock boundary, find the corrected alpha level for 5 looks at the data. Change the alpha level in the simulation to this value. Run the simulation. Which of the following statements is true?
 
 A) The Type 1 error rate at each look is approximately 0.03, and the overall alpha level is approximately 0.05.
 B) The Type 1 error rate at each look is approximately 0.03, and the overall alpha level is approximately 0.15.

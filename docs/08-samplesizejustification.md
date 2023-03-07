@@ -624,7 +624,7 @@ In general, the smaller the variation, the larger the standardized effect size (
 
 It is important to consider if these ways to reduce the variation in the data do not come at too large a cost for external validity. For example, in an *intention-to-treat* analysis in randomized controlled trials participants who do not comply with the protocol are maintained in the analysis such that the effect size from the study accurately represents the effect of implementing the intervention in the population, and not the effect of the intervention only on those people who perfectly follow the protocol [@gupta_intention_2011]. Similar trade-offs between reducing the variance and external validity exist in other research areas.
 
-## Know Your Measure
+## Know Your Measure{#knowyourmeasure}
 
 Although it is convenient to talk about standardized effect sizes, it is generally preferable if researchers can interpret effects in the raw (unstandardized) scores, and have knowledge about the standard deviation of their measures [@baguley_standardized_2009; @lenth_practical_2001]. To make it possible for a research community to have realistic expectations about the standard deviation of measures they collect, it is beneficial if researchers within a research area use the same validated measures. This provides a reliable knowledge base that makes it easier to plan for a desired accuracy, and to use a smallest effect size of interest on the unstandardized scale in an a-priori power analysis.
 
