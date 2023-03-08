@@ -355,7 +355,7 @@ Because power is a curve, and the true effect size is unknown, it is useful to p
 
 
 ```r
-# Use getPowerMeans and set max N to 188 based on analysis above
+# Use getPowerMeans and set max N to 190 based on analysis above
 sample_res <- getPowerMeans(
   design = seq_design,
   groups = 2,
@@ -448,8 +448,6 @@ design <- getDesignGroupSequential(
 
 In Figure \@ref(fig:futility1) we see a sequential design where data collection is stopped to reject $H_0$ when the observed *z*-score is larger than the values indicated by the red line, computed based on a Pocock-like alpha spending function (as in Figure \@ref(fig:fourspendingfunctions). In addition, data collection will stop when at an interim analysis a *z*-score lower than or equal to 0 is observed, as indicated by the blue line. At the last look, the red and blue lines meet, because we will either reject $H_0$ at the critical value, or fail to reject $H_0$. 
 
-
-
 (ref:futility1lab) Pocock-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) when the observed effect is in the opposite direction.
 
 <div class="figure" style="text-align: center">
@@ -461,14 +459,24 @@ Manually specifying the futility bounds is not ideal, as we risk stopping data c
 
 When a study is designed such that the null hypothesis significance test has 90% power to detect an effect of *d* = 0.5, 10% of the time $H_0$ will not be rejected when it should. In these 10% of cases where we make a Type 2 error, the conclusion will be that an effect of 0.5 is not present, when in reality, there is an effect of *d* = 0.5 (or larger). In an equivalence against a smallest effect size of interest of *d* = 0.5, the conclusion that an effect of 0.5 or larger is not present, when in reality there is an effect of *d* = 0.5 (or larger), is called a Type 1 error: We incorrectly conclude the effect is practically equivalent to zero. Therefore, what is a Type 2 error in NHST when $H_0$ is *d* = 0 and $H_1$ = *d* = 0.5 is a Type 1 error in an equivalence test where $H_0$ is *d* = 0.5 and $H_1$ is *d* = 0 [@jennison_group_2000]. Controlling the Type 2 error in a sequential design can therefore be seen as controlling the Type 1 error for an equivalence test against the effect size the study is powered for. If we design a study to have a 5% Type 1 error rate and equally low Type 2 error rate (e.g., 5%, or 95% power), the study is an informative test for the presence or the absence of an effect of interest.  
 
-If the true effect size is (close to) 0, sequential designs that stop for futility are more efficient than designs that do not stop for futility. Adding futility bounds based on beta-spending functions reduces power, which needs to be compensated by increasing the sample size, but this can be compensated by the fact that studies can stop earlier for futility, which can make designs more efficient. When specifying a smallest effect size of interest is not possible, researchers might not want to incorporate stopping for futility into the study design. To control the Type 2 error rate across looks, a **beta-spending function** needs to be chosen, such as a Pocock type beta spending function, an O'Brien-Fleming type beta spending function, or a user defined beta spending function (the beta-spending function does not need to be the same as the alpha-spending function). In `rpact` beta-spending functions can only be chosen for directional (one-sided) tests.  
-
-
-
-
-
+If the true effect size is (close to) 0, sequential designs that stop for futility are more efficient than designs that do not stop for futility. Adding futility bounds based on beta-spending functions reduces power, which needs to be compensated by increasing the sample size, but this can be compensated by the fact that studies can stop earlier for futility, which can make designs more efficient. When specifying a smallest effect size of interest is not possible, researchers might not want to incorporate stopping for futility into the study design. To control the Type 2 error rate across looks, a **beta-spending function** needs to be chosen, such as a Pocock type beta spending function, an O'Brien-Fleming type beta spending function, or a user defined beta spending function. For example, a Pocock-like beta-spending function is added through *typeBetaSpending = "bsP"*. The beta-spending function does not need to be the same as the alpha-spending function. In `rpact` beta-spending functions can only be chosen for directional (one-sided) tests. After all, you can consider an effect in both directions support for your hypothesis, and an effect in the opposite direction as a reason to reject the alternative hypothesis.
 
 (ref:futility2lab) Pocock-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) based on a Pocock-type beta-spending function.
+
+
+```r
+design <- getDesignGroupSequential(
+  kMax = 2,
+  typeOfDesign = "asP",
+  sided = 1,
+  alpha = 0.05,
+  beta = 0.1,
+  typeBetaSpending = "bsP",
+  bindingFutility = FALSE
+  )
+
+plot(design)
+```
 
 <div class="figure" style="text-align: center">
 <img src="10-sequential_files/figure-html/futility2-1.png" alt="(ref:futility2lab)" width="100%" />
@@ -477,14 +485,13 @@ If the true effect size is (close to) 0, sequential designs that stop for futili
 
 With a beta-spending function, the expected number of subjects under $H_1$ will increase, so if the alternative hypothesis is true, designing a study to be able to stop for futility comes at a cost. However, it is possible that $H_0$ is true, and when it is, stopping for futility reduces the expected sample size. In Figure \@ref(fig:powerseq2) you can see that the probability of stopping (the green line) is now also high when the true effect size is 0, as we will now stop for futility, and if we do, the expected sample size (the blue line) is lower compared to \@ref(fig:powerseq). It is important to design studies that have a high informational value to reject the presence of a meaningful effect at the final analysis, but whether stopping for futility early is an option you want to build into a study is a choice that requires considering the probability that the null hypothesis is true and a (perhaps small) increase in the sample size. 
 
-
-
 (ref:powerseq2lab) Power curve for a sequential design with 2 looks with stopping for futility.
 
 <div class="figure" style="text-align: center">
 <img src="10-sequential_files/figure-html/powerseq2-1.png" alt="(ref:powerseq2lab)" width="100%" />
 <p class="caption">(\#fig:powerseq2)(ref:powerseq2lab)</p>
 </div>
+
 ## Reporting the results of a sequential analysis
 
 Group sequential designs have been developed to efficiently test hypotheses using the Neyman-Pearson approach for statistical inference, where the goal is to decide how to act, while controlling error rates in the long run. Group sequential designs do not have the goal to quantify the strength of evidence, or provide accurate estimates of the effect size [@proschan_statistical_2006]. Nevertheless, after having reached a conclusion about whether a hypothesis can be rejected or not, researchers will often want to also interpret the effect size estimate when reporting results. 
@@ -499,7 +506,7 @@ Below, we see the same sequential design we started with, with 2 looks and a Poc
 
 
 ```r
-seq_design <- getDesignGroupSequential(
+design <- getDesignGroupSequential(
   kMax = 2,
   typeOfDesign = "asP",
   sided = 2,
@@ -517,7 +524,7 @@ dataMeans <- getDataset(
   )
 
 res <- getAnalysisResults(
-  seq_design, 
+  design, 
   equalVariances = TRUE,
   dataInput = dataMeans
   )
@@ -527,17 +534,17 @@ res
 
 
 ```
-## [PROGRESS] Stage results calculated [0.0371 secs] 
-## [PROGRESS] Conditional power calculated [0.0293 secs] 
-## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.0011 secs] 
-## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.5491 secs] 
-## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.535 secs] 
-## [PROGRESS] Repeated confidence interval calculated [1.09 secs] 
-## [PROGRESS] Repeated p-values of stage 1 calculated [0.2111 secs] 
-## [PROGRESS] Repeated p-values of stage 2 calculated [0.3502 secs] 
-## [PROGRESS] Repeated p-values calculated [0.5624 secs] 
-## [PROGRESS] Final p-value calculated [0.0013 secs] 
-## [PROGRESS] Final confidence interval calculated [0.0603 secs]
+## [PROGRESS] Stage results calculated [0.0729 secs] 
+## [PROGRESS] Conditional power calculated [0.0633 secs] 
+## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.0031 secs] 
+## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.9609 secs] 
+## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.8541 secs] 
+## [PROGRESS] Repeated confidence interval calculated [1.82 secs] 
+## [PROGRESS] Repeated p-values of stage 1 calculated [0.3193 secs] 
+## [PROGRESS] Repeated p-values of stage 2 calculated [0.5028 secs] 
+## [PROGRESS] Repeated p-values calculated [0.8235 secs] 
+## [PROGRESS] Final p-value calculated [0.0017 secs] 
+## [PROGRESS] Final confidence interval calculated [0.084 secs]
 ```
 
 
@@ -584,8 +591,7 @@ res
 ##   Median unbiased estimate                     : NA, 0.2814
 ```
 
-Imagine we have performed a study planned to have at most 2 equally spaced looks at the data, where we perform a two-sided test with an alpha of 0.05, and we use a Pocock type alpha spending function, and we observe mean differences between the two conditions at the last look. Based on a Pocock-like alpha spending function with two equally spaced looks the alpha level for a two-sided *t*-test is 0.03101, and 0.02774. We can thus reject $H_0$ after look 2. But we would also like to report an effect size, and adjusted *p* values and confidence intervals. 
-
+Imagine we have performed a study planned to have at most 2 equally spaced looks at the data, where we perform a two-sided test with an alpha of 0.05, and we use a Pocock type alpha spending function, and we observe mean differences between the two conditions at the last look. Based on a Pocock-like alpha spending function with two equally spaced looks the alpha level for a two-sided *t*-test is 0.003051, and 0.0490. We can thus reject $H_0$ after look 2. But we would also like to report an effect size, and adjusted *p* values and confidence intervals. 
 
 The results show that the action after look 1 was to continue data collection, and that we could reject $H_0$ at the second look. The unadjusted mean difference is provided in the row "Overall effect size" and at the final look this was 0.293. The adjusted mean difference is provided in the row "Median unbiased estimate" and is lower, and the adjusted confidence interval is in the row "Final confidence interval", giving the result 0.281, 95% CI [-0.02, 0.573]. 
 

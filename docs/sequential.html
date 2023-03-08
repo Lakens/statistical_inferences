@@ -391,7 +391,7 @@ Figure 10.5: Comparison of Pocock (P) and O'Brien-Fleming correction (OF), Pococ
 <p>Because power is a curve, and the true effect size is unknown, it is useful to plot power across a range of possible effect sizes, so that we can explore the expected sample size, in the long run, if we use a sequential design, for different true effect sizes.</p>
 
 <div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Use getPowerMeans and set max N to 188 based on analysis above</span>
+<code class="sourceCode R"><span class="co"># Use getPowerMeans and set max N to 190 based on analysis above</span>
 <span class="va">sample_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getPowerMeans.html">getPowerMeans</a></span><span class="op">(</span>
   design <span class="op">=</span> <span class="va">seq_design</span>,
   groups <span class="op">=</span> <span class="fl">2</span>,
@@ -479,8 +479,20 @@ Figure 10.7: Pocock-type boundaries for 3 looks to stop when rejecting <span cla
 </div>
 <p>Manually specifying the futility bounds is not ideal, as we risk stopping data collection because we fail to reject <span class="math inline">\(H_0\)</span>, when there is a high probability of a Type 2 error. It is better to set the futility bounds by directly controlling the Type 2 error across looks at the data. Just as we are willing to distribute our Type I error rate across interim analyses, we can distribute our Type II error rate across looks, and decide to stop for futility when we fail to reject the effect size of interest with a desired Type 2 error rate.</p>
 <p>When a study is designed such that the null hypothesis significance test has 90% power to detect an effect of <em>d</em> = 0.5, 10% of the time <span class="math inline">\(H_0\)</span> will not be rejected when it should. In these 10% of cases where we make a Type 2 error, the conclusion will be that an effect of 0.5 is not present, when in reality, there is an effect of <em>d</em> = 0.5 (or larger). In an equivalence against a smallest effect size of interest of <em>d</em> = 0.5, the conclusion that an effect of 0.5 or larger is not present, when in reality there is an effect of <em>d</em> = 0.5 (or larger), is called a Type 1 error: We incorrectly conclude the effect is practically equivalent to zero. Therefore, what is a Type 2 error in NHST when <span class="math inline">\(H_0\)</span> is <em>d</em> = 0 and <span class="math inline">\(H_1\)</span> = <em>d</em> = 0.5 is a Type 1 error in an equivalence test where <span class="math inline">\(H_0\)</span> is <em>d</em> = 0.5 and <span class="math inline">\(H_1\)</span> is <em>d</em> = 0 <span class="citation">(<a href="references.html#ref-jennison_group_2000" role="doc-biblioref">Jennison &amp; Turnbull, 2000</a>)</span>. Controlling the Type 2 error in a sequential design can therefore be seen as controlling the Type 1 error for an equivalence test against the effect size the study is powered for. If we design a study to have a 5% Type 1 error rate and equally low Type 2 error rate (e.g., 5%, or 95% power), the study is an informative test for the presence or the absence of an effect of interest.</p>
-<p>If the true effect size is (close to) 0, sequential designs that stop for futility are more efficient than designs that do not stop for futility. Adding futility bounds based on beta-spending functions reduces power, which needs to be compensated by increasing the sample size, but this can be compensated by the fact that studies can stop earlier for futility, which can make designs more efficient. When specifying a smallest effect size of interest is not possible, researchers might not want to incorporate stopping for futility into the study design. To control the Type 2 error rate across looks, a <strong>beta-spending function</strong> needs to be chosen, such as a Pocock type beta spending function, an O'Brien-Fleming type beta spending function, or a user defined beta spending function (the beta-spending function does not need to be the same as the alpha-spending function). In <code>rpact</code> beta-spending functions can only be chosen for directional (one-sided) tests.</p>
+<p>If the true effect size is (close to) 0, sequential designs that stop for futility are more efficient than designs that do not stop for futility. Adding futility bounds based on beta-spending functions reduces power, which needs to be compensated by increasing the sample size, but this can be compensated by the fact that studies can stop earlier for futility, which can make designs more efficient. When specifying a smallest effect size of interest is not possible, researchers might not want to incorporate stopping for futility into the study design. To control the Type 2 error rate across looks, a <strong>beta-spending function</strong> needs to be chosen, such as a Pocock type beta spending function, an O'Brien-Fleming type beta spending function, or a user defined beta spending function. For example, a Pocock-like beta-spending function is added through <em>typeBetaSpending = "bsP"</em>. The beta-spending function does not need to be the same as the alpha-spending function. In <code>rpact</code> beta-spending functions can only be chosen for directional (one-sided) tests. After all, you can consider an effect in both directions support for your hypothesis, and an effect in the opposite direction as a reason to reject the alternative hypothesis.</p>
 
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignGroupSequential.html">getDesignGroupSequential</a></span><span class="op">(</span>
+  kMax <span class="op">=</span> <span class="fl">2</span>,
+  typeOfDesign <span class="op">=</span> <span class="st">"asP"</span>,
+  sided <span class="op">=</span> <span class="fl">1</span>,
+  alpha <span class="op">=</span> <span class="fl">0.05</span>,
+  beta <span class="op">=</span> <span class="fl">0.1</span>,
+  typeBetaSpending <span class="op">=</span> <span class="st">"bsP"</span>,
+  bindingFutility <span class="op">=</span> <span class="cn">FALSE</span>
+  <span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">design</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:futility2"></span>
 <img src="10-sequential_files/figure-html/futility2-1.png" alt="Pocock-type boundaries for 3 looks to stop when rejecting \(H_0\) (red line) or to stop for futility (blue line) based on a Pocock-type beta-spending function." width="100%"><p class="caption">
@@ -505,8 +517,8 @@ Figure 10.9: Power curve for a sequential design with 2 looks with stopping for 
 <p>A similar issue is at play when reporting <em>p</em> values and confidence intervals. When a sequential design is used, the distribution of a <em>p</em> value that does not account for the sequential nature of the design is no longer uniform when <span class="math inline">\(H_0\)</span> is true. A <em>p</em> value is the probability of observing a result <em>at least as extreme</em> as the result that was observed, given that <span class="math inline">\(H_0\)</span> is true. It is no longer straightforward to determine what 'at least as extreme' means a sequential design <span class="citation">(<a href="references.html#ref-cook_p-value_2002" role="doc-biblioref">T. D. Cook, 2002</a>)</span>. The most widely recommended procedure to determine what "at least as extreme" means is to order the outcomes of a series of sequential analyses in terms of the look at which the study was stopped, where earlier stopping is more extreme than later stopping, and where studies with higher <em>z</em> values are more extreme, when different studies are stopped at the same time <span class="citation">(<a href="references.html#ref-proschan_statistical_2006" role="doc-biblioref">Proschan et al., 2006</a>)</span>. This is referred to as <em>stagewise ordering</em>, which treats rejections at earlier looks as stronger evidence against <span class="math inline">\(H_0\)</span> than rejections later in the study <span class="citation">(<a href="references.html#ref-wassmer_group_2016" role="doc-biblioref">Wassmer &amp; Brannath, 2016</a>)</span>. Given the direct relationship between a <em>p</em> value and a confidence interval, confidence intervals for sequential designs have also been developed.</p>
 <p>Reporting adjusted <em>p</em> values and confidence intervals, however, might be criticized. After a sequential design, a correct interpretation from a Neyman-Pearson framework is to conclude that <span class="math inline">\(H_0\)</span> is rejected, the alternative hypothesis is rejected, or that the results are inconclusive. The reason that adjusted <em>p</em> values are reported after sequential designs is to allow readers to interpret them as a measure of evidence. <span class="citation">Dupont (<a href="references.html#ref-dupont_sequential_1983" role="doc-biblioref">1983</a>)</span> provides good arguments to doubt that adjusted <em>p</em> values provide a valid measure of the strength of evidence. Furthermore, a strict interpretation of the Neyman-Pearson approach to statistical inferences also provides an argument against interpreting <em>p</em> values as measures of evidence <span class="citation">(<a href="references.html#ref-lakens_why_2022" role="doc-biblioref">Lakens, 2022a</a>)</span>. Therefore, it is recommended, if researchers are interested in communicating the evidence in the data for <span class="math inline">\(H_0\)</span> relative to the alternative hypothesis, to report likelihoods or Bayes factors, which can always be reported and interpreted after the data collection has been completed. Reporting the unadjusted <em>p</em>-value in relation to the alpha level communicates the basis to reject hypotheses, although it might be important for researchers performing a meta-analysis based on <em>p</em>-values (e.g., a <em>p</em>-curve or <em>z</em>-curve analysis, as explained in the chapter on <a href="bias.html#bias">bias detection</a>) that these are sequential <em>p</em>-values. Adjusted confidence intervals are useful tools to evaluate the observed effect estimate relative to its variability at an interim or the final look at the data. Note that the adjusted parameter estimates are only available in statistical software for a few commonly used designs in pharmaceutical trials, such as comparisons of mean differences between groups, or survuval analysis.</p>
 <p>Below, we see the same sequential design we started with, with 2 looks and a Pocock-type alpha spending function. After completing the study with the planned sample size of 95 participants per condition (where we collect 48 participants at look 1, and the remaining 47 at look 2), we can now enter the observed data using the function <code>getDataset</code>. The means and standard deviations are entered for each stage, so at the second look, only the data from the second 95 participants in each condition are used to compute the means (1.51 and 1.01) and standard deviations (1.03 and 0.96).</p>
-<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">seq_design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignGroupSequential.html">getDesignGroupSequential</a></span><span class="op">(</span>
+<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignGroupSequential.html">getDesignGroupSequential</a></span><span class="op">(</span>
   kMax <span class="op">=</span> <span class="fl">2</span>,
   typeOfDesign <span class="op">=</span> <span class="st">"asP"</span>,
   sided <span class="op">=</span> <span class="fl">2</span>,
@@ -524,23 +536,23 @@ Figure 10.9: Power curve for a sequential design with 2 looks with stopping for 
   <span class="op">)</span>
 
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getAnalysisResults.html">getAnalysisResults</a></span><span class="op">(</span>
-  <span class="va">seq_design</span>, 
+  <span class="va">design</span>, 
   equalVariances <span class="op">=</span> <span class="cn">TRUE</span>,
   dataInput <span class="op">=</span> <span class="va">dataMeans</span>
   <span class="op">)</span>
 
 <span class="va">res</span></code></pre></div>
-<pre><code>## [PROGRESS] Stage results calculated [0.0371 secs] 
-## [PROGRESS] Conditional power calculated [0.0293 secs] 
-## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.0011 secs] 
-## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.5491 secs] 
-## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.535 secs] 
-## [PROGRESS] Repeated confidence interval calculated [1.09 secs] 
-## [PROGRESS] Repeated p-values of stage 1 calculated [0.2111 secs] 
-## [PROGRESS] Repeated p-values of stage 2 calculated [0.3502 secs] 
-## [PROGRESS] Repeated p-values calculated [0.5624 secs] 
-## [PROGRESS] Final p-value calculated [0.0013 secs] 
-## [PROGRESS] Final confidence interval calculated [0.0603 secs]</code></pre>
+<pre><code>## [PROGRESS] Stage results calculated [0.0729 secs] 
+## [PROGRESS] Conditional power calculated [0.0633 secs] 
+## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.0031 secs] 
+## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.9609 secs] 
+## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.8541 secs] 
+## [PROGRESS] Repeated confidence interval calculated [1.82 secs] 
+## [PROGRESS] Repeated p-values of stage 1 calculated [0.3193 secs] 
+## [PROGRESS] Repeated p-values of stage 2 calculated [0.5028 secs] 
+## [PROGRESS] Repeated p-values calculated [0.8235 secs] 
+## [PROGRESS] Final p-value calculated [0.0017 secs] 
+## [PROGRESS] Final confidence interval calculated [0.084 secs]</code></pre>
 <pre><code>## Analysis results (means of 2 groups, group sequential design):
 ## 
 ## Design parameters:
@@ -581,7 +593,7 @@ Figure 10.9: Power curve for a sequential design with 2 looks with stopping for 
 ##   Final CIs (lower)                            : NA, -0.02007 
 ##   Final CIs (upper)                            : NA, 0.5734 
 ##   Median unbiased estimate                     : NA, 0.2814</code></pre>
-<p>Imagine we have performed a study planned to have at most 2 equally spaced looks at the data, where we perform a two-sided test with an alpha of 0.05, and we use a Pocock type alpha spending function, and we observe mean differences between the two conditions at the last look. Based on a Pocock-like alpha spending function with two equally spaced looks the alpha level for a two-sided <em>t</em>-test is 0.03101, and 0.02774. We can thus reject <span class="math inline">\(H_0\)</span> after look 2. But we would also like to report an effect size, and adjusted <em>p</em> values and confidence intervals.</p>
+<p>Imagine we have performed a study planned to have at most 2 equally spaced looks at the data, where we perform a two-sided test with an alpha of 0.05, and we use a Pocock type alpha spending function, and we observe mean differences between the two conditions at the last look. Based on a Pocock-like alpha spending function with two equally spaced looks the alpha level for a two-sided <em>t</em>-test is 0.003051, and 0.0490. We can thus reject <span class="math inline">\(H_0\)</span> after look 2. But we would also like to report an effect size, and adjusted <em>p</em> values and confidence intervals.</p>
 <p>The results show that the action after look 1 was to continue data collection, and that we could reject <span class="math inline">\(H_0\)</span> at the second look. The unadjusted mean difference is provided in the row "Overall effect size" and at the final look this was 0.293. The adjusted mean difference is provided in the row "Median unbiased estimate" and is lower, and the adjusted confidence interval is in the row "Final confidence interval", giving the result 0.281, 95% CI [-0.02, 0.573].</p>
 <p>The unadjusted <em>p</em> values for a one-sided test are reported in the row "Overall <em>p</em>-value". The actual <em>p</em> values for our two-sided test would be twice as large, so 0.6668, 0.0477. The adjusted <em>p</em>-value at the final look is provided in the row "Final <em>p</em>-value" and it is 0.06662.</p>
 </div>
@@ -618,7 +630,7 @@ Figure 10.9: Power curve for a sequential design with 2 looks with stopping for 
 <li>It means that the sample size based on an a-priori power analysis (which depends on the alpha level) is always identical to the sample size in a fixed design, while allowing additional looks at the data.</li>
 </ol>
 <p><strong>Q5</strong>: A researcher uses a sequential design for a study with 5 looks at the data, with a desired overall alpha level of 0.05 for a two-sided test, and chooses a <strong>Pocock correction</strong>. After continuing data collect to the third look, the researcher observes a <em>p</em>-value of 0.011. Which statement is true? Note: remember that <code>rpact</code> returns one-sided alpha levels. You can use the following code by replacing 0 and specifying the typeOfDesign:</p>
-<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">design</span> <span class="op">&lt;-</span> <span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignGroupSequential.html">getDesignGroupSequential</a></span><span class="op">(</span>
   kMax <span class="op">=</span> <span class="fl">0</span>,
   typeOfDesign <span class="op">=</span> <span class="st">""</span>,
@@ -636,7 +648,7 @@ Figure 10.9: Power curve for a sequential design with 2 looks with stopping for 
 <li>The researcher fails to reject the null hypothesis and needs to continue the data collection.</li>
 </ol>
 <p><strong>Q7</strong>: For the design in Q5 (using the Pocock correction), what is the sample size required to achieve 80% power (the default – you can change the default by specifying a different value than <code>beta = 0.2</code> in the <code>getDesignGroupSequential</code> function) for an effect size of <em>d</em> = 0.5 (which equals a mean difference of 0.5 with a standard deviation of 1). You can use the code below.</p>
-<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">power_res</span> <span class="op">&lt;-</span> <span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getSampleSizeMeans.html">getSampleSizeMeans</a></span><span class="op">(</span>
   design <span class="op">=</span> <span class="va">design</span>,
   groups <span class="op">=</span> <span class="fl">2</span>,
@@ -661,7 +673,7 @@ Figure 10.9: Power curve for a sequential design with 2 looks with stopping for 
 </ol>
 <p>We see the sample size increases quite a bit because of the choice for the Pocock correction, and the number of looks (5, which lead to a low alpha level at the final look). The ratio of the maximum sample size for a sequential design and the sample size for a fixed design is known as the <strong>inflation factor</strong>, which is independent of the effect size. Although a-priori power analyses have not been programmed for all types of tests, the inflation factor can be used to compute the increased number of observations that is required relative to a fixed design for any test. Researchers can perform an a-priori power analysis for a fixed design with any tool they would normally use, and multiply the total number of observations with the inflation factor to determine the required sample size for a sequential design. The inflation factor can be retrieved using the <code>getDesignCharacteristics</code> function.</p>
 <p><strong>Q9</strong>: First, re-run the code to create a sequential design with 5 looks at the data used in Q5. Then, run the code below, and find the inflation factor. What is the inflation factor, or the required increase in the sample size for a sequential design with 5 looks using the Pocock correction, compared to a fixed design? Note that <code>rpact</code> does not round up the number of observations for per group to whole numbers when calculating the inflation factor.</p>
-<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignCharacteristics.html">getDesignCharacteristics</a></span><span class="op">(</span><span class="va">design</span><span class="op">)</span></code></pre></div>
 <ol style="list-style-type: upper-alpha">
 <li>The inflation factor is 1</li>
