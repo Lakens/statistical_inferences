@@ -197,7 +197,7 @@ meta_res
 ## 
 ## Model Results:
 ## 
-## estimate      se    zval    pval   ci.lb   ci.ub    ​ 
+## estimate      se    zval    pval   ci.lb   ci.ub     
 ##   0.5553  0.2038  2.7243  0.0064  0.1558  0.9547  ** 
 ## 
 ## ---
@@ -288,7 +288,7 @@ Let's also look at the statistical results of the meta-analysis, which is a bit 
 ## 
 ## Model Results:
 ## 
-## estimate      se    zval    pval   ci.lb   ci.ub     ​ 
+## estimate      se    zval    pval   ci.lb   ci.ub      
 ##   0.4038  0.0538  7.5015  <.0001  0.2983  0.5093  *** 
 ## 
 ## ---
@@ -402,7 +402,7 @@ result
 ## 
 ## Model Results:
 ## 
-## estimate      se    zval    pval   ci.lb   ci.ub     ​ 
+## estimate      se    zval    pval   ci.lb   ci.ub      
 ##   0.6548  0.1132  5.7824  <.0001  0.4328  0.8767  *** 
 ## 
 ## ---
@@ -484,7 +484,7 @@ result
 ## 
 ## Model Results:
 ## 
-## estimate      se    zval    pval   ci.lb   ci.ub     ​ 
+## estimate      se    zval    pval   ci.lb   ci.ub      
 ##   1.8125  0.2190  8.2764  <.0001  1.3833  2.2417  *** 
 ## 
 ## ---

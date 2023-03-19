@@ -7,7 +7,7 @@
 <title>Chapter 10 Sequential Analysis | Improving Your Statistical Inferences</title>
 <meta name="author" content="Daniël Lakens">
 <meta name="description" content="Repeatedly analyzing incoming data while data collection is in progress has many advantages. Researchers can stop the data collection at an interim analysis when they can reject the null...">
-<meta name="generator" content="bookdown 0.26 with bs4_book()">
+<meta name="generator" content="bookdown 0.33 with bs4_book()">
 <meta property="og:title" content="Chapter 10 Sequential Analysis | Improving Your Statistical Inferences">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://lakens.github.io/statistical_inferences/sequential.html">
@@ -19,10 +19,10 @@
 <meta name="twitter:image" content="https://lakens.github.io/statistical_inferences/images/logo.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><link href="libs/Open_Sans-0.4.2/font.css" rel="stylesheet">
-<link href="libs/Fira_Code-0.4.2/font.css" rel="stylesheet">
-<link href="libs/Montserrat-0.4.2/font.css" rel="stylesheet">
-<script src="libs/bs3compat-0.4.0/transition.js"></script><script src="libs/bs3compat-0.4.0/tabs.js"></script><script src="libs/bs3compat-0.4.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><link href="libs/Open_Sans-0.4.5/font.css" rel="stylesheet">
+<link href="libs/Fira_Code-0.4.5/font.css" rel="stylesheet">
+<link href="libs/Montserrat-0.4.5/font.css" rel="stylesheet">
+<script src="libs/bs3compat-0.4.2/transition.js"></script><script src="libs/bs3compat-0.4.2/tabs.js"></script><script src="libs/bs3compat-0.4.2/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/kePrint-0.0.1/kePrint.js"></script><link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 <!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0MK2WTGRM3"></script><script>
       window.dataLayer = window.dataLayer || [];
@@ -141,15 +141,15 @@ Pr\{Z_n \geq c_1\} + Pr\{Z_n &lt; c_1, Z_N \geq c_2\} = \alpha
 <p>The first decision researchers need to make is how they want to correct the Type I error rate across looks. Four common approaches are the Pocock correction, the O'Brien-Fleming correction, the Haybittle &amp; Peto correction, and the Wang and Tsiatis approach. Users are also free to specify their own preferred way to spend the alpha level across looks.</p>
 <p>The Pocock correction is the simplest way to correct the alpha level for multiple looks. Conceptually, it is very similar to the Bonferroni correction. The Pocock correction has been created such that the alpha level is identical for each look at the data, resulting in constant critical values (expressed as <em>z</em> values) <span class="math inline">\(u_k = c\)</span> to reject the null hypothesis, <span class="math inline">\(H_0\)</span>, at look <span class="math inline">\(k\)</span>. The following code uses the package <code>rpact</code> to design a study for a sequential analysis:</p>
 <div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.rpact.org">rpact</a></span><span class="op">)</span>
-<span class="va">design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignGroupSequential.html">getDesignGroupSequential</a></span><span class="op">(</span>
-  kMax <span class="op">=</span> <span class="fl">2</span>,
-  typeOfDesign <span class="op">=</span> <span class="st">"P"</span>,
-  sided <span class="op">=</span> <span class="fl">2</span>,
-  alpha <span class="op">=</span> <span class="fl">0.05</span>,
-  beta <span class="op">=</span> <span class="fl">0.1</span>
-<span class="op">)</span>
-<span class="va">design</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.rpact.org">rpact</a></span><span class="op">)</span></span>
+<span><span class="va">design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignGroupSequential.html">getDesignGroupSequential</a></span><span class="op">(</span></span>
+<span>  kMax <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  typeOfDesign <span class="op">=</span> <span class="st">"P"</span>,</span>
+<span>  sided <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  beta <span class="op">=</span> <span class="fl">0.1</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">design</span></span></code></pre></div>
 <pre><code>## Design parameters and output of group sequential design:
 ## 
 ## User defined parameters:
@@ -173,7 +173,7 @@ Pr\{Z_n \geq c_1\} + Pr\{Z_n &lt; c_1, Z_N \geq c_2\} = \alpha
 ##   Stage levels (one-sided)                     : 0.01469, 0.01469</code></pre>
 <p>The output tells us we have designed a study with 2 looks (one interim, one final) using the Pocock spending function. The last line returns one-sided alpha levels. The <code>rpact</code> package focuses on Confirmatory Adaptive Clinical Trial Design and Analysis. In clinical trials, researchers mostly test directional predictions, and thus, the default setting is to perform a one-sided test. In clinical trials it is common to use a 0.025 significance level for one-sided tests, but in many other fields, 0.05 is a more common default. We can get the two-sided alpha levels by multiplying the one-sided alpha levels by two:</p>
 <div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">design</span><span class="op">$</span><span class="va">stageLevels</span> <span class="op">*</span> <span class="fl">2</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">design</span><span class="op">$</span><span class="va">stageLevels</span> <span class="op">*</span> <span class="fl">2</span></span></code></pre></div>
 <pre><code>## [1] 0.02938579 0.02938579</code></pre>
 <p>We can check the output against the <a href="https://en.wikipedia.org/wiki/Pocock_boundary">Wikipedia page for the Pocock correction</a> where we indeed see that with 2 looks at the data the alpha level for each look is 0.0294. The Pocock correction is slightly more efficient than using a Bonferroni correction (in which case the alpha levels would be 0.025), because of the dependency in the data (at the second look, the data analyzed at the first look is again part of the analysis).</p>
 <p><code>rpact</code> makes it easy to plot the boundaries (based on the critical values) for each look. Looks are plotted as a function of the 'Information Rate', which is the percentage of the total data that has been collected at a look. In Figure <a href="sequential.html#fig:boundplot1">10.2</a> there are two equally spaced looks, so when 50% of the data has been collected (Information Rate 0.5) and when 100% of the data has been collected (Information Rate 1). We see the critical values (solid black lines) are larger than the 1.96 we would use for a fixed design with a 5% alpha level, namely <em>Z</em> = 2.178 (black dashed line). Whenever we observe a test statistic that is more extreme than these critical values at the first or second look, we can reject the null hypothesis.</p>
@@ -188,7 +188,7 @@ Figure 10.2: Plot of critical boundaries at each look for a 2 look design with a
 
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:rpactshiny"></span>
-<img src="images/rpact1.png" alt="Screenshot of rpact Shiny app." width="100%"><p class="caption">
+<img src="images/RPact1.png" alt="Screenshot of rpact Shiny app." width="100%"><p class="caption">
 Figure 10.3: Screenshot of rpact Shiny app.
 </p>
 </div>
@@ -229,40 +229,40 @@ Figure 10.5: Comparison of Pocock (P) and O'Brien-Fleming correction (OF), Pococ
 </h2>
 <p>Although alpha spending functions control the Type I error rate even when there are deviations from the pre-planned number of looks, or their timing, this does require recalculating the boundaries used in the statistical test based on the amount of information that has been observed. Let us assume a researcher designs a study with three equally spaced looks at the data (two interim looks, one final look), using a Pocock-type alpha spending function, where results will be analyzed in a two-sided <em>t</em>-test with an overall desired Type I error rate of 0.05, and a desired power of 0.9 for a Cohen’s <em>d</em> of 0.5. An a-priori power analysis (which we will explain in the next section) shows that we achieve the desired power in our sequential design if we plan to look after 65.4, 130.9, and 196.3 observations in each condition. Since we cannot collect partial participants, we should round these numbers up, and because we have 2 independent groups, we will collect 66 observations for look 1 (33 in each condition), 132 at the second look (66 in each condition) and 198 at the third look (99 in each condition). The code below computes the alpha levels at each look (or stage) for a two-sided test:</p>
 <div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignGroupSequential.html">getDesignGroupSequential</a></span><span class="op">(</span>kMax <span class="op">=</span> <span class="fl">3</span>, 
-                                   typeOfDesign <span class="op">=</span> <span class="st">"asP"</span>,
-                                   sided <span class="op">=</span> <span class="fl">2</span>, 
-                                   alpha <span class="op">=</span> <span class="fl">0.05</span>, 
-                                   beta <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>
-<span class="va">design</span><span class="op">$</span><span class="va">stageLevels</span> <span class="op">*</span> <span class="fl">2</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignGroupSequential.html">getDesignGroupSequential</a></span><span class="op">(</span>kMax <span class="op">=</span> <span class="fl">3</span>, </span>
+<span>                                   typeOfDesign <span class="op">=</span> <span class="st">"asP"</span>,</span>
+<span>                                   sided <span class="op">=</span> <span class="fl">2</span>, </span>
+<span>                                   alpha <span class="op">=</span> <span class="fl">0.05</span>, </span>
+<span>                                   beta <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
+<span><span class="va">design</span><span class="op">$</span><span class="va">stageLevels</span> <span class="op">*</span> <span class="fl">2</span></span></code></pre></div>
 <pre><code>## [1] 0.02264162 0.02173822 0.02167941</code></pre>
 <p>Now imagine that due to logistical issues, we do not manage to analyze the data until we have collected data from 76 observations (38 in each condition) instead of the planned 66 observations. Such logistical issues are common in practice and one of the main reasons alpha spending functions for group sequential designs were developed. Our first look at the data does not occur at the planned time of collecting 33.3% of the total sample, but at 76/198 = 38.4% of the planned sample. We can recalculate the alpha level we should use for each look at the data, based on the current look, and planned future looks. Instead of using the alpha levels 0.0226, 0.0217, and 0.0217 at the three respective looks (as calculated above, and note how in the Pocock-like alpha spending function the alpha levels are almost, but not exactly, the same at each look, unlike the Pocock correction where they are identical at each look). We can adjust the information rates by explicitly specifying them using <code>informationRates</code> in the code below. The first look now occurs at 76/198 of the planned sample. The second look is still planned to occur at 2/3 of the sample, and the final look at the planned maximum sample size.</p>
 <div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignGroupSequential.html">getDesignGroupSequential</a></span><span class="op">(</span>
-  typeOfDesign <span class="op">=</span> <span class="st">"asP"</span>, 
-  informationRates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">76</span><span class="op">/</span><span class="fl">198</span>, <span class="fl">2</span><span class="op">/</span><span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span>, 
-  alpha <span class="op">=</span> <span class="fl">0.05</span>, 
-  sided <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-<span class="va">design</span><span class="op">$</span><span class="va">stageLevels</span> <span class="op">*</span> <span class="fl">2</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignGroupSequential.html">getDesignGroupSequential</a></span><span class="op">(</span></span>
+<span>  typeOfDesign <span class="op">=</span> <span class="st">"asP"</span>, </span>
+<span>  informationRates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">76</span><span class="op">/</span><span class="fl">198</span>, <span class="fl">2</span><span class="op">/</span><span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span>, </span>
+<span>  alpha <span class="op">=</span> <span class="fl">0.05</span>, </span>
+<span>  sided <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">design</span><span class="op">$</span><span class="va">stageLevels</span> <span class="op">*</span> <span class="fl">2</span></span></code></pre></div>
 <pre><code>## [1] 0.02532710 0.02043978 0.02164755</code></pre>
 <p>The updated alpha levels are 0.0253 for the current look, 0.0204 for the second look, and 0.0216 for the final look. The alpha level we will use for the first look is therefore not 0.0226 (as originally planned) but the slightly higher 0.0253. The second look will now use a slightly lower alpha of 0.0204 instead of 0.0217. The differences are small, but the fact that there is a formal method to control the alpha level that provides the flexibility to look at different times than originally planned is extremely useful.</p>
 <p>It is also possible to correct the alpha level if the final look at the data changes, for example because you are not able to collect the intended sample size, or because due to unforeseen circumstances you collect more data than planned. This is nowadays increasingly common as people preregister their studies, or publish using Registered Reports. Sometimes they end up with slightly more data than planned, which raises the question is they should analyze the planned sample size, or all the data. Analyzing all the collected data prevents wasting responses from participants, and uses all the information available, but it increases the flexibility in the data analysis (as researchers can now choose to analyze either the data from the planned sample, or all the data they have collected). Alpha spending functions solve this conundrum by allowing researchers to analyze all the data, while updating the alpha level that is used to control the overall alpha level.</p>
 <p>If more data is collected than was planned, we can no longer use the alpha spending function that was chosen (i.e., the Pocock spending function), and instead have to provide a <strong>user-defined alpha spending function</strong> by updating the timing and alpha spending function to reflect the data collection as it actually occurred up to the final look. Assuming the second look in our earlier example occurred as originally planned at 2/3 of the data we planned to collect, but the last look occurred at 206 participants instead of 198, we can compute an updated alpha level for the last look. Given the current total sample size, we need to recompute the alpha levels for the earlier looks, which now occurred at 76/206 = 0.369, 132/206 = 0.641, and for the last look at 206/206 = 1.</p>
 <p>The first and second look occurred with the adjusted alpha levels we computed after the first adjustment (alpha levels of 0.0253 and 0.0204). We have already spent part of our total alpha at the first two looks. We can look at the "Cumulative alpha spent' in the results from the design we specified above, and see how much of our Type I error rate we spent so far:</p>
 <div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">design</span><span class="op">$</span><span class="va">alphaSpent</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">design</span><span class="op">$</span><span class="va">alphaSpent</span></span></code></pre></div>
 <pre><code>## [1] 0.02532710 0.03816913 0.05000000</code></pre>
 <p>We see that we have spent 0.0253 after look 1, and 0.0382 after look 2. We also know we want to spend the remainder of our Type I error rate at the last look, for a total of 0.05.</p>
 <p>Our actual alpha spending function is no longer captured by the Pocock spending function after collecting more data than planned, so instead we specify a user defined spending function. We can perform these calculations using the code below by specifying the <code>userAlphaSpending</code> information, after choosing the <code>asUser</code> design:</p>
 <div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignGroupSequential.html">getDesignGroupSequential</a></span><span class="op">(</span>
-  typeOfDesign <span class="op">=</span> <span class="st">"asUser"</span>, 
-  informationRates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">72</span><span class="op">/</span><span class="fl">206</span>, <span class="fl">132</span><span class="op">/</span><span class="fl">206</span>, <span class="fl">1</span><span class="op">)</span>, 
-  alpha <span class="op">=</span> <span class="fl">0.05</span>, 
-  sided <span class="op">=</span> <span class="fl">2</span>, 
-  userAlphaSpending <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.0253</span>, <span class="fl">0.0382</span>, <span class="fl">0.05</span><span class="op">)</span>
-<span class="op">)</span>
-<span class="va">design</span><span class="op">$</span><span class="va">stageLevels</span> <span class="op">*</span> <span class="fl">2</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignGroupSequential.html">getDesignGroupSequential</a></span><span class="op">(</span></span>
+<span>  typeOfDesign <span class="op">=</span> <span class="st">"asUser"</span>, </span>
+<span>  informationRates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">72</span><span class="op">/</span><span class="fl">206</span>, <span class="fl">132</span><span class="op">/</span><span class="fl">206</span>, <span class="fl">1</span><span class="op">)</span>, </span>
+<span>  alpha <span class="op">=</span> <span class="fl">0.05</span>, </span>
+<span>  sided <span class="op">=</span> <span class="fl">2</span>, </span>
+<span>  userAlphaSpending <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.0253</span>, <span class="fl">0.0382</span>, <span class="fl">0.05</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">design</span><span class="op">$</span><span class="va">stageLevels</span> <span class="op">*</span> <span class="fl">2</span></span></code></pre></div>
 <pre><code>## [1] 0.02530000 0.01987072 0.02075796</code></pre>
 <p>The alpha levels for looks in the past do not correspond with the alpha levels we used, but the final alpha level (0.0208) gives the alpha level we should use for our final analysis based on a sample size that is larger than what we planned to collect. The difference with the alpha level we would have used if we collected the planned sample size is really small (0.0216 vs. 0.0208), in part because we did not miss the planned sample size by a lot. Such small differences in alpha levels will not really be noticeable in practice, but it is very useful that there is a formally correct solution to deal with collecting more data than planned, while controlling the Type 1 error rate. If you use sequential designs, you can use these corrections whenever you overshoot the sample size you planned to collect in a preregistration.</p>
 </div>
@@ -272,23 +272,23 @@ Figure 10.5: Comparison of Pocock (P) and O'Brien-Fleming correction (OF), Pococ
 </h2>
 <p>At the final look, sequential designs require somewhat more participants than a fixed design, depending on how much the alpha level at this look is lowered due to the correction for multiple comparisons. That said, due to early stopping, sequential designs will on average require less participants. Let's first examine how many participants we would need in a fixed design, where we only analyze our data once. We have an alpha level of 0.05, and a Type 2 (beta) error of 0.1 - in other words, the desired power is 90%. We will perform one test, and assuming a normal distribution our critical Z-score would be 1.96, for an alpha level of 5%.</p>
 <div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignGroupSequential.html">getDesignGroupSequential</a></span><span class="op">(</span>
-  kMax <span class="op">=</span> <span class="fl">1</span>,
-  typeOfDesign <span class="op">=</span> <span class="st">"P"</span>,
-  sided <span class="op">=</span> <span class="fl">2</span>,
-  alpha <span class="op">=</span> <span class="fl">0.05</span>,
-  beta <span class="op">=</span> <span class="fl">0.1</span>
-<span class="op">)</span>
-
-<span class="va">power_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getSampleSizeMeans.html">getSampleSizeMeans</a></span><span class="op">(</span>
-  design <span class="op">=</span> <span class="va">design</span>,
-  groups <span class="op">=</span> <span class="fl">2</span>,
-  alternative <span class="op">=</span> <span class="fl">0.5</span>, 
-  stDev <span class="op">=</span> <span class="fl">1</span>, 
-  allocationRatioPlanned <span class="op">=</span> <span class="fl">1</span>,
-  normalApproximation <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="va">power_res</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignGroupSequential.html">getDesignGroupSequential</a></span><span class="op">(</span></span>
+<span>  kMax <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  typeOfDesign <span class="op">=</span> <span class="st">"P"</span>,</span>
+<span>  sided <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  beta <span class="op">=</span> <span class="fl">0.1</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">power_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getSampleSizeMeans.html">getSampleSizeMeans</a></span><span class="op">(</span></span>
+<span>  design <span class="op">=</span> <span class="va">design</span>,</span>
+<span>  groups <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  alternative <span class="op">=</span> <span class="fl">0.5</span>, </span>
+<span>  stDev <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>  allocationRatioPlanned <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  normalApproximation <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">power_res</span></span></code></pre></div>
 <pre><code>## Design plan parameters and output for means:
 ## 
 ## Design parameters:
@@ -321,24 +321,24 @@ Figure 10.5: Comparison of Pocock (P) and O'Brien-Fleming correction (OF), Pococ
 ##   (i): values of treatment arm i</code></pre>
 <p>We see that we need 85 participants in each group, (or 86, since the sample size is actually 85.03 and the required number of observations is rounded up, and so we need 172 participants in total. Other power analysis software, such as G*Power, should yield the same required sample size. We can now examine our design above with 2 looks and a Pocock-like alpha spending function for a 2 sided test with an alpha of 0.05. We will look 2 times, and expect a true effect of <em>d</em> = 0.5 (which we enter by specifying an alternative of 0.5, and a stDev of 1).</p>
 <div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">seq_design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignGroupSequential.html">getDesignGroupSequential</a></span><span class="op">(</span>
-  kMax <span class="op">=</span> <span class="fl">2</span>,
-  typeOfDesign <span class="op">=</span> <span class="st">"asP"</span>,
-  sided <span class="op">=</span> <span class="fl">2</span>,
-  alpha <span class="op">=</span> <span class="fl">0.05</span>,
-  beta <span class="op">=</span> <span class="fl">0.1</span>
-  <span class="op">)</span>
-
-<span class="co"># Compute the sample size we need</span>
-<span class="va">power_res_seq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getSampleSizeMeans.html">getSampleSizeMeans</a></span><span class="op">(</span>
-  design <span class="op">=</span> <span class="va">seq_design</span>,
-  groups <span class="op">=</span> <span class="fl">2</span>,
-  alternative <span class="op">=</span> <span class="fl">0.5</span>, 
-  stDev <span class="op">=</span> <span class="fl">1</span>, 
-  allocationRatioPlanned <span class="op">=</span> <span class="fl">1</span>,
-  normalApproximation <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="va">power_res_seq</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">seq_design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignGroupSequential.html">getDesignGroupSequential</a></span><span class="op">(</span></span>
+<span>  kMax <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  typeOfDesign <span class="op">=</span> <span class="st">"asP"</span>,</span>
+<span>  sided <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  beta <span class="op">=</span> <span class="fl">0.1</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Compute the sample size we need</span></span>
+<span><span class="va">power_res_seq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getSampleSizeMeans.html">getSampleSizeMeans</a></span><span class="op">(</span></span>
+<span>  design <span class="op">=</span> <span class="va">seq_design</span>,</span>
+<span>  groups <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  alternative <span class="op">=</span> <span class="fl">0.5</span>, </span>
+<span>  stDev <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>  allocationRatioPlanned <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  normalApproximation <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">power_res_seq</span></span></code></pre></div>
 <pre><code>## Design plan parameters and output for means:
 ## 
 ## Design parameters:
@@ -391,17 +391,17 @@ Figure 10.5: Comparison of Pocock (P) and O'Brien-Fleming correction (OF), Pococ
 <p>Because power is a curve, and the true effect size is unknown, it is useful to plot power across a range of possible effect sizes, so that we can explore the expected sample size, in the long run, if we use a sequential design, for different true effect sizes.</p>
 
 <div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Use getPowerMeans and set max N to 190 based on analysis above</span>
-<span class="va">sample_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getPowerMeans.html">getPowerMeans</a></span><span class="op">(</span>
-  design <span class="op">=</span> <span class="va">seq_design</span>,
-  groups <span class="op">=</span> <span class="fl">2</span>,
-  alternative <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0.01</span><span class="op">)</span>, 
-  stDev <span class="op">=</span> <span class="fl">1</span>, 
-  allocationRatioPlanned <span class="op">=</span> <span class="fl">1</span>,
-  maxNumberOfSubjects <span class="op">=</span> <span class="fl">190</span>, 
-  normalApproximation <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sample_res</span>, type <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Use getPowerMeans and set max N to 190 based on analysis above</span></span>
+<span><span class="va">sample_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getPowerMeans.html">getPowerMeans</a></span><span class="op">(</span></span>
+<span>  design <span class="op">=</span> <span class="va">seq_design</span>,</span>
+<span>  groups <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  alternative <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0.01</span><span class="op">)</span>, </span>
+<span>  stDev <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>  allocationRatioPlanned <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  maxNumberOfSubjects <span class="op">=</span> <span class="fl">190</span>, </span>
+<span>  normalApproximation <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sample_res</span>, type <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:powerseq"></span>
 <img src="10-sequential_files/figure-html/powerseq-1.png" alt="Power curve for a sequential design with 2 looks." width="100%"><p class="caption">
@@ -411,24 +411,24 @@ Figure 10.6: Power curve for a sequential design with 2 looks.
 <p>The blue line in Figure <a href="sequential.html#fig:powerseq">10.6</a> indicates the expected number of observations we need to collect. Not surprisingly, when the true effect size is 0, we will almost always continue data collection to the end. We will only stop if we observe a Type 1 error, which is rare, and thus the expected number of observations is very close to the maximum sample size we are willing to collect. On the other side of the graph we see the scenario for when the true effect size is <em>d</em> = 1. With such a large effect size, we will have high power at our first look, and we will almost always be able to stop at the first look. The red line indicates the power at the final look, and the green line indicates the probability of stopping early.</p>
 <p>The Pocock correction leads to a substantially lower alpha level at the last look, which requires an increase in sample size to compensate. As we saw before, the O'Brien-Fleming spending function does not require such a severe reduction in the alpha level at the last look. As the power analysis below shows, with 2 looks, this design would not need an increase in sample size at all in practice.</p>
 <div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">seq_design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignGroupSequential.html">getDesignGroupSequential</a></span><span class="op">(</span>
-  kMax <span class="op">=</span> <span class="fl">2</span>,
-  typeOfDesign <span class="op">=</span> <span class="st">"asOF"</span>,
-  sided <span class="op">=</span> <span class="fl">2</span>,
-  alpha <span class="op">=</span> <span class="fl">0.05</span>,
-  beta <span class="op">=</span> <span class="fl">0.1</span>
-  <span class="op">)</span>
-
-<span class="co"># Compute the sample size we need</span>
-<span class="va">power_res_seq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getSampleSizeMeans.html">getSampleSizeMeans</a></span><span class="op">(</span>
-  design <span class="op">=</span> <span class="va">seq_design</span>,
-  groups <span class="op">=</span> <span class="fl">2</span>,
-  alternative <span class="op">=</span> <span class="fl">0.5</span>, 
-  stDev <span class="op">=</span> <span class="fl">1</span>, 
-  allocationRatioPlanned <span class="op">=</span> <span class="fl">1</span>,
-  normalApproximation <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">power_res_seq</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">seq_design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignGroupSequential.html">getDesignGroupSequential</a></span><span class="op">(</span></span>
+<span>  kMax <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  typeOfDesign <span class="op">=</span> <span class="st">"asOF"</span>,</span>
+<span>  sided <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  beta <span class="op">=</span> <span class="fl">0.1</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Compute the sample size we need</span></span>
+<span><span class="va">power_res_seq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getSampleSizeMeans.html">getSampleSizeMeans</a></span><span class="op">(</span></span>
+<span>  design <span class="op">=</span> <span class="va">seq_design</span>,</span>
+<span>  groups <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  alternative <span class="op">=</span> <span class="fl">0.5</span>, </span>
+<span>  stDev <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>  allocationRatioPlanned <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  normalApproximation <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">power_res_seq</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## Sample size calculation for a continuous endpoint
 ## 
 ## Sequential analysis with a maximum of 2 looks (group sequential design), overall 
@@ -461,14 +461,14 @@ Figure 10.6: Power curve for a sequential design with 2 looks.
 <p>In less extreme but more common situations, it might still be possible for the study to observe a significant effect, but the probability might be very small. The probability of finding a significant result, given the data that have been observed up to an interim analysis, is called <strong>conditional power</strong>. Performing the conditional power analysis on the effect size that was originally expected might be too optimistic, but it is also undesirable to use the observed effect size, which typically has quite some uncertainty. One proposal is to update the expected effect size based on the observed data. If a Bayesian updating procedure is used, this is called <strong>predictive power</strong> <span class="citation">(<a href="references.html#ref-spiegelhalter_monitoring_1986" role="doc-biblioref">D. J. Spiegelhalter et al., 1986</a>)</span>. It is possible to use <strong>adaptive designs</strong> that allow researchers to increase the final number of observations based on an interim analysis without inflating the Type 1 error rate (see <span class="citation">Wassmer &amp; Brannath (<a href="references.html#ref-wassmer_group_2016" role="doc-biblioref">2016</a>)</span>).</p>
 <p>Alternatively, if the observed effect size is smaller than expected, one might want to stop for futility. As an illustration of a simple stopping rule for futility, imagine a researcher who will stop for futility whenever the observed effect size is is either zero, or in the opposite direction as was predicted. In Figure <a href="sequential.html#fig:futility1">10.7</a> the red line indicates critical values to declare a significant effect. In essence, this means that if the observed <em>z</em>-score for the interim test is either 0 or negative, data collection will be terminated. This can be specified by adding <code>futilityBounds = c(0, 0)</code> to the specification of the sequential design. One can choose in advance to stop whenever the criteria to stop for futility have been met, (i.e., a binding futility rule), but it is typically recommended to allow the possibility to continue data collection (i.e., a non-binding futility rule, specified by setting <code>bindingFutility = FALSE</code>).</p>
 <div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignGroupSequential.html">getDesignGroupSequential</a></span><span class="op">(</span>
-  sided <span class="op">=</span> <span class="fl">1</span>,
-  alpha <span class="op">=</span> <span class="fl">0.05</span>,
-  beta <span class="op">=</span> <span class="fl">0.1</span>,
-  typeOfDesign <span class="op">=</span> <span class="st">"asP"</span>,
-  futilityBounds <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,
-  bindingFutility <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignGroupSequential.html">getDesignGroupSequential</a></span><span class="op">(</span></span>
+<span>  sided <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  beta <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>  typeOfDesign <span class="op">=</span> <span class="st">"asP"</span>,</span>
+<span>  futilityBounds <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,</span>
+<span>  bindingFutility <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>In Figure <a href="sequential.html#fig:futility1">10.7</a> we see a sequential design where data collection is stopped to reject <span class="math inline">\(H_0\)</span> when the observed <em>z</em>-score is larger than the values indicated by the red line, computed based on a Pocock-like alpha spending function (as in Figure <a href="sequential.html#fig:fourspendingfunctions">10.4</a>. In addition, data collection will stop when at an interim analysis a <em>z</em>-score lower than or equal to 0 is observed, as indicated by the blue line. At the last look, the red and blue lines meet, because we will either reject <span class="math inline">\(H_0\)</span> at the critical value, or fail to reject <span class="math inline">\(H_0\)</span>.</p>
 
 <div class="figure" style="text-align: center">
@@ -482,17 +482,17 @@ Figure 10.7: Pocock-type boundaries for 3 looks to stop when rejecting <span cla
 <p>If the true effect size is (close to) 0, sequential designs that stop for futility are more efficient than designs that do not stop for futility. Adding futility bounds based on beta-spending functions reduces power, which needs to be compensated by increasing the sample size, but this can be compensated by the fact that studies can stop earlier for futility, which can make designs more efficient. When specifying a smallest effect size of interest is not possible, researchers might not want to incorporate stopping for futility into the study design. To control the Type 2 error rate across looks, a <strong>beta-spending function</strong> needs to be chosen, such as a Pocock type beta spending function, an O'Brien-Fleming type beta spending function, or a user defined beta spending function. For example, a Pocock-like beta-spending function is added through <em>typeBetaSpending = "bsP"</em>. The beta-spending function does not need to be the same as the alpha-spending function. In <code>rpact</code> beta-spending functions can only be chosen for directional (one-sided) tests. After all, you can consider an effect in both directions support for your hypothesis, and an effect in the opposite direction as a reason to reject the alternative hypothesis.</p>
 
 <div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignGroupSequential.html">getDesignGroupSequential</a></span><span class="op">(</span>
-  kMax <span class="op">=</span> <span class="fl">2</span>,
-  typeOfDesign <span class="op">=</span> <span class="st">"asP"</span>,
-  sided <span class="op">=</span> <span class="fl">1</span>,
-  alpha <span class="op">=</span> <span class="fl">0.05</span>,
-  beta <span class="op">=</span> <span class="fl">0.1</span>,
-  typeBetaSpending <span class="op">=</span> <span class="st">"bsP"</span>,
-  bindingFutility <span class="op">=</span> <span class="cn">FALSE</span>
-  <span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">design</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignGroupSequential.html">getDesignGroupSequential</a></span><span class="op">(</span></span>
+<span>  kMax <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  typeOfDesign <span class="op">=</span> <span class="st">"asP"</span>,</span>
+<span>  sided <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  beta <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>  typeBetaSpending <span class="op">=</span> <span class="st">"bsP"</span>,</span>
+<span>  bindingFutility <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">design</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:futility2"></span>
 <img src="10-sequential_files/figure-html/futility2-1.png" alt="Pocock-type boundaries for 3 looks to stop when rejecting \(H_0\) (red line) or to stop for futility (blue line) based on a Pocock-type beta-spending function." width="100%"><p class="caption">
@@ -518,41 +518,41 @@ Figure 10.9: Power curve for a sequential design with 2 looks with stopping for 
 <p>Reporting adjusted <em>p</em> values and confidence intervals, however, might be criticized. After a sequential design, a correct interpretation from a Neyman-Pearson framework is to conclude that <span class="math inline">\(H_0\)</span> is rejected, the alternative hypothesis is rejected, or that the results are inconclusive. The reason that adjusted <em>p</em> values are reported after sequential designs is to allow readers to interpret them as a measure of evidence. <span class="citation">Dupont (<a href="references.html#ref-dupont_sequential_1983" role="doc-biblioref">1983</a>)</span> provides good arguments to doubt that adjusted <em>p</em> values provide a valid measure of the strength of evidence. Furthermore, a strict interpretation of the Neyman-Pearson approach to statistical inferences also provides an argument against interpreting <em>p</em> values as measures of evidence <span class="citation">(<a href="references.html#ref-lakens_why_2022" role="doc-biblioref">Lakens, 2022a</a>)</span>. Therefore, it is recommended, if researchers are interested in communicating the evidence in the data for <span class="math inline">\(H_0\)</span> relative to the alternative hypothesis, to report likelihoods or Bayes factors, which can always be reported and interpreted after the data collection has been completed. Reporting the unadjusted <em>p</em>-value in relation to the alpha level communicates the basis to reject hypotheses, although it might be important for researchers performing a meta-analysis based on <em>p</em>-values (e.g., a <em>p</em>-curve or <em>z</em>-curve analysis, as explained in the chapter on <a href="bias.html#bias">bias detection</a>) that these are sequential <em>p</em>-values. Adjusted confidence intervals are useful tools to evaluate the observed effect estimate relative to its variability at an interim or the final look at the data. Note that the adjusted parameter estimates are only available in statistical software for a few commonly used designs in pharmaceutical trials, such as comparisons of mean differences between groups, or survuval analysis.</p>
 <p>Below, we see the same sequential design we started with, with 2 looks and a Pocock-type alpha spending function. After completing the study with the planned sample size of 95 participants per condition (where we collect 48 participants at look 1, and the remaining 47 at look 2), we can now enter the observed data using the function <code>getDataset</code>. The means and standard deviations are entered for each stage, so at the second look, only the data from the second 95 participants in each condition are used to compute the means (1.51 and 1.01) and standard deviations (1.03 and 0.96).</p>
 <div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignGroupSequential.html">getDesignGroupSequential</a></span><span class="op">(</span>
-  kMax <span class="op">=</span> <span class="fl">2</span>,
-  typeOfDesign <span class="op">=</span> <span class="st">"asP"</span>,
-  sided <span class="op">=</span> <span class="fl">2</span>,
-  alpha <span class="op">=</span> <span class="fl">0.05</span>,
-  beta <span class="op">=</span> <span class="fl">0.1</span>
-<span class="op">)</span>
-
-<span class="va">dataMeans</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDataset.html">getDataset</a></span><span class="op">(</span>
-  n1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">48</span>, <span class="fl">47</span><span class="op">)</span>, 
-  n2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">48</span>, <span class="fl">47</span><span class="op">)</span>, 
-  means1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1.12</span>, <span class="fl">1.51</span><span class="op">)</span>, <span class="co"># for directional test, means 1 &gt; means 2</span>
-  means2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1.03</span>, <span class="fl">1.01</span><span class="op">)</span>,
-  stDevs1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.98</span>, <span class="fl">1.03</span><span class="op">)</span>, 
-  stDevs2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1.06</span>, <span class="fl">0.96</span><span class="op">)</span>
-  <span class="op">)</span>
-
-<span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getAnalysisResults.html">getAnalysisResults</a></span><span class="op">(</span>
-  <span class="va">design</span>, 
-  equalVariances <span class="op">=</span> <span class="cn">TRUE</span>,
-  dataInput <span class="op">=</span> <span class="va">dataMeans</span>
-  <span class="op">)</span>
-
-<span class="va">res</span></code></pre></div>
-<pre><code>## [PROGRESS] Stage results calculated [0.0434 secs] 
-## [PROGRESS] Conditional power calculated [0.0338 secs] 
-## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.0011 secs] 
-## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.5919 secs] 
-## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.5369 secs] 
-## [PROGRESS] Repeated confidence interval calculated [1.13 secs] 
-## [PROGRESS] Repeated p-values of stage 1 calculated [0.2047 secs] 
-## [PROGRESS] Repeated p-values of stage 2 calculated [0.3474 secs] 
-## [PROGRESS] Repeated p-values calculated [0.5532 secs] 
-## [PROGRESS] Final p-value calculated [0.0012 secs] 
-## [PROGRESS] Final confidence interval calculated [0.0571 secs]</code></pre>
+<code class="sourceCode R"><span><span class="va">design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignGroupSequential.html">getDesignGroupSequential</a></span><span class="op">(</span></span>
+<span>  kMax <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  typeOfDesign <span class="op">=</span> <span class="st">"asP"</span>,</span>
+<span>  sided <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  beta <span class="op">=</span> <span class="fl">0.1</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">dataMeans</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDataset.html">getDataset</a></span><span class="op">(</span></span>
+<span>  n1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">48</span>, <span class="fl">47</span><span class="op">)</span>, </span>
+<span>  n2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">48</span>, <span class="fl">47</span><span class="op">)</span>, </span>
+<span>  means1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1.12</span>, <span class="fl">1.51</span><span class="op">)</span>, <span class="co"># for directional test, means 1 &gt; means 2</span></span>
+<span>  means2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1.03</span>, <span class="fl">1.01</span><span class="op">)</span>,</span>
+<span>  stDevs1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.98</span>, <span class="fl">1.03</span><span class="op">)</span>, </span>
+<span>  stDevs2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1.06</span>, <span class="fl">0.96</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getAnalysisResults.html">getAnalysisResults</a></span><span class="op">(</span></span>
+<span>  <span class="va">design</span>, </span>
+<span>  equalVariances <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  dataInput <span class="op">=</span> <span class="va">dataMeans</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">res</span></span></code></pre></div>
+<pre><code>## [PROGRESS] Stage results calculated [0.0725 secs] 
+## [PROGRESS] Conditional power calculated [0.0569 secs] 
+## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.0027 secs] 
+## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.9737 secs] 
+## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.9076 secs] 
+## [PROGRESS] Repeated confidence interval calculated [1.88 secs] 
+## [PROGRESS] Repeated p-values of stage 1 calculated [0.3468 secs] 
+## [PROGRESS] Repeated p-values of stage 2 calculated [0.3384 secs] 
+## [PROGRESS] Repeated p-values calculated [0.687 secs] 
+## [PROGRESS] Final p-value calculated [0.0016 secs] 
+## [PROGRESS] Final confidence interval calculated [0.0949 secs]</code></pre>
 <pre><code>## Analysis results (means of 2 groups, group sequential design):
 ## 
 ## Design parameters:
@@ -631,13 +631,13 @@ Figure 10.9: Power curve for a sequential design with 2 looks with stopping for 
 </ol>
 <p><strong>Q5</strong>: A researcher uses a sequential design for a study with 5 looks at the data, with a desired overall alpha level of 0.05 for a two-sided test, and chooses a <strong>Pocock correction</strong>. After continuing data collect to the third look, the researcher observes a <em>p</em>-value of 0.011. Which statement is true? Note: remember that <code>rpact</code> returns one-sided alpha levels. You can use the following code by replacing 0 and specifying the typeOfDesign:</p>
 <div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">design</span> <span class="op">&lt;-</span> <span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignGroupSequential.html">getDesignGroupSequential</a></span><span class="op">(</span>
-  kMax <span class="op">=</span> <span class="fl">0</span>,
-  typeOfDesign <span class="op">=</span> <span class="st">""</span>,
-  sided <span class="op">=</span> <span class="fl">0</span>,
-  alpha <span class="op">=</span> <span class="fl">0.0</span>
-<span class="op">)</span>
-<span class="va">design</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">design</span> <span class="op">&lt;-</span> <span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignGroupSequential.html">getDesignGroupSequential</a></span><span class="op">(</span></span>
+<span>  kMax <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  typeOfDesign <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  sided <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">0.0</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">design</span></span></code></pre></div>
 <ol style="list-style-type: upper-alpha">
 <li>The researcher can reject the null hypothesis and can terminate data collection.</li>
 <li>The researcher fails to reject the null hypothesis and needs to continue the data collection.</li>
@@ -649,15 +649,15 @@ Figure 10.9: Power curve for a sequential design with 2 looks with stopping for 
 </ol>
 <p><strong>Q7</strong>: For the design in Q5 (using the Pocock correction), what is the sample size required to achieve 80% power (the default – you can change the default by specifying a different value than <code>beta = 0.2</code> in the <code>getDesignGroupSequential</code> function) for an effect size of <em>d</em> = 0.5 (which equals a mean difference of 0.5 with a standard deviation of 1). You can use the code below.</p>
 <div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">power_res</span> <span class="op">&lt;-</span> <span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getSampleSizeMeans.html">getSampleSizeMeans</a></span><span class="op">(</span>
-  design <span class="op">=</span> <span class="va">design</span>,
-  groups <span class="op">=</span> <span class="fl">2</span>,
-  alternative <span class="op">=</span> <span class="fl">0.5</span>, 
-  stDev <span class="op">=</span> <span class="fl">1</span>, 
-  allocationRatioPlanned <span class="op">=</span> <span class="fl">1</span>,
-  normalApproximation <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="va">power_res</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">power_res</span> <span class="op">&lt;-</span> <span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getSampleSizeMeans.html">getSampleSizeMeans</a></span><span class="op">(</span></span>
+<span>  design <span class="op">=</span> <span class="va">design</span>,</span>
+<span>  groups <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  alternative <span class="op">=</span> <span class="fl">0.5</span>, </span>
+<span>  stDev <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>  allocationRatioPlanned <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  normalApproximation <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">power_res</span></span></code></pre></div>
 <ol style="list-style-type: upper-alpha">
 <li>64 (32 in each independent group).</li>
 <li>128 (64 in each independent group)</li>
@@ -674,7 +674,7 @@ Figure 10.9: Power curve for a sequential design with 2 looks with stopping for 
 <p>We see the sample size increases quite a bit because of the choice for the Pocock correction, and the number of looks (5, which lead to a low alpha level at the final look). The ratio of the maximum sample size for a sequential design and the sample size for a fixed design is known as the <strong>inflation factor</strong>, which is independent of the effect size. Although a-priori power analyses have not been programmed for all types of tests, the inflation factor can be used to compute the increased number of observations that is required relative to a fixed design for any test. Researchers can perform an a-priori power analysis for a fixed design with any tool they would normally use, and multiply the total number of observations with the inflation factor to determine the required sample size for a sequential design. The inflation factor can be retrieved using the <code>getDesignCharacteristics</code> function.</p>
 <p><strong>Q9</strong>: First, re-run the code to create a sequential design with 5 looks at the data used in Q5. Then, run the code below, and find the inflation factor. What is the inflation factor, or the required increase in the sample size for a sequential design with 5 looks using the Pocock correction, compared to a fixed design? Note that <code>rpact</code> does not round up the number of observations for per group to whole numbers when calculating the inflation factor.</p>
 <div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignCharacteristics.html">getDesignCharacteristics</a></span><span class="op">(</span><span class="va">design</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rpact/man/getDesignCharacteristics.html">getDesignCharacteristics</a></span><span class="op">(</span><span class="va">design</span><span class="op">)</span></span></code></pre></div>
 <ol style="list-style-type: upper-alpha">
 <li>The inflation factor is 1</li>
 <li>The inflation factor is 1.0284</li>
@@ -790,11 +790,11 @@ $( document ).ready(function() {
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-     <p>Lakens, D. (2022). Improving Your Statistical Inferences. https://doi.org/10.5281/zenodo.6409077. Built on 2023-02-01</p>
+    <p>"<strong>Improving Your Statistical Inferences</strong>" was written by Daniël Lakens. It was last built on 2023-02-01.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
-    <p><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"></a></p>
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
   </div>
 
 </div></div>
@@ -803,7 +803,7 @@ $( document ).ready(function() {
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

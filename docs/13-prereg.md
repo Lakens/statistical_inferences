@@ -317,6 +317,8 @@ When you submit your preregistration, you will see that your preregistration wil
   
 <img src="images/psycharchives8.png" width="100%" style="display: block; margin: auto;" />
 
+You can find the PsychArchives preregistration at the following persistent identifier link: https://doi.org/10.23668/psycharchives.12575 
+
 ### Pre-registering on the Open Science Framework
 
 Go to [www.osf.io](http://www.osf.io), create an account or log in, and click the button 'Create new project'. Enter a title. If you are from Europe, and you want to adhere to the GDPR privacy regulations, make sure to select 'Germany' as the storage location. Click 'Create', and click 'Go to project'. 
@@ -335,7 +337,7 @@ For hypothesis testing research the default OSF preregistration template will pr
 
 <img src="images/895c7caf7508910ae52cc2d09e06f31c.png" width="100%" style="display: block; margin: auto;" />
 
-You will be asked a range of relevant questions to complete. For a completed preregistration related to the study comparing movie ratings of movies starring Brad Pitt and Edward Norton, see: https://osf.io/wk6xm. 
+You will be asked a range of relevant questions to complete. For a completed preregistration related to the study comparing movie ratings of movies starring Brad Pitt and Edward Norton, see: https://doi.org/10.17605/OSF.IO/RJYCP. Note that all pre-registrations on the OSF will become public after four years. This is the only platform where you will not be able to keep your preregistrations private indefinitely. 
 
 To share your preregistration during the review process, the OSF allows you to create a 'view-only. link. As long as you did not enter identifying information in any of the files in your project, peer reviewers will be able to see your preregistration, without revealing your identity: https://help.osf.io/article/201-create-a-view-only-link-for-a-project.
 

@@ -210,7 +210,7 @@ Yet perhaps surprisingly, observing a *p*-value of 0.04 is more likely when the 
 <p class="caption">(\#fig:paradox)(ref:paradoxlab)</p>
 </div>
 
-## Correctly reporting and interpreting *p*-values
+## Correctly reporting and interpreting *p*-values {#correctlyinterpreting}
 
 Although from a strict Neyman-Pearson perspective it is sufficient to report that *p* < $\alpha$ or that *p* > $\alpha$, researchers should report exact *p*-values. This facilitates the re-use of results for secondary analyses [@appelbaum_journal_2018], and allows other researchers to compare the *p*-value to an alpha level they would have preferred to use [@lehmann_testing_2005]. Because claims are made using a methodological procedure with known maximum error rates, a *p*-value never allows you state anything with certainty. Even if we set the alpha level to 0.000001 any single claim can be an error, Fisher [-@fisher_design_1935] reminds us, 'for the “one chance in a million” will undoubtedly occur, with no less and no more than its appropriate frequency, however surprised we may be that it should occur to *us*”. This uncertainty is sometimes not reflected in academic writing, where researchers can be seen using words as 'prove', 'show', or 'it is known'. A slightly longer but more accurate statement after a hypothesis test would read:  
 

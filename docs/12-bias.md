@@ -158,7 +158,7 @@ Let’s start by looking at what unbiased research looks like, by running the co
 ## 
 ## Model Results:
 ## 
-## estimate      se     zval    pval    ci.lb   ci.ub   ​ 
+## estimate      se     zval    pval    ci.lb   ci.ub    
 ##  -0.0021  0.0121  -0.1775  0.8591  -0.0258  0.0215    
 ## 
 ## ---
@@ -193,7 +193,7 @@ We can now compare the unbiased meta-analysis above with a biased meta-analysis.
 ## 
 ## Model Results:
 ## 
-## estimate      se     zval    pval   ci.lb   ci.ub     ​ 
+## estimate      se     zval    pval   ci.lb   ci.ub      
 ##   0.2701  0.0125  21.6075  <.0001  0.2456  0.2946  *** 
 ## 
 ## ---
@@ -338,7 +338,7 @@ puniform::puniform(m1i = metadata$m1, m2i = metadata$m2, n1i = metadata$n1,
 ##     0.2701    0.0125   21.6025   <.001    0.2456    0.2946   77.6031     0.945
 ```
 
-An alternative technique that also meta-analyzes the *p*-values from individual studies is a *z*-curve analysis, which is a meta-analysis of observed power ([@bartos_z-curve20_2020; @brunner_estimating_2020]; for an example, see [@sotola_garbage_2022]). Like a traditional meta-analysis, *z*-curve analysis transform observed test results (*p*-values) into *z*-scores. In an unbiased literature where the null hypothesis is true, we should observe approximately $\alpha$% significant results. If the null is true, the distribution of *z*-scores is centered on 0. *Z*-curve analysis computes absolute *z*-values, and therefore $\alpha$% of *z*-scores should be larger than the critical value (1.96 for a 5% alpha level). In Figure \@ref(fig:zcurveunbiasednull) *z*-scores for 1000 studies are plotted, with a true effect size of 0, where exactly 5% of the observed results are statistically significant. 
+An alternative technique that also meta-analyzes the *p*-values from individual studies is a *z*-curve analysis, which is a meta-analysis of observed power ([@bartos_z-curve20_2020; @brunner_estimating_2020]; for an example, see [@sotola_garbage_2022]). Like a traditional meta-analysis, *z*-curve analysis transforms observed test results (*p*-values) into *z*-scores. In an unbiased literature where the null hypothesis is true, we should observe approximately $\alpha$% significant results. If the null is true, the distribution of *z*-scores is centered on 0. *Z*-curve analysis computes absolute *z*-values, and therefore $\alpha$% of *z*-scores should be larger than the critical value (1.96 for a 5% alpha level). In Figure \@ref(fig:zcurveunbiasednull) *z*-scores for 1000 studies are plotted, with a true effect size of 0, where exactly 5% of the observed results are statistically significant. 
 
 (ref:zcurveunbiasednull) *Z*-curve analysis for 1000 studies with a true effect size of 0 without publication bias.
 

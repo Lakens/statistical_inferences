@@ -7,7 +7,7 @@
 <title>Chapter 1 Using p-values to test a hypothesis | Improving Your Statistical Inferences</title>
 <meta name="author" content="Daniël Lakens">
 <meta name="description" content="Scientists can attempt to answer a wide range of questions by collecting data. One question that interests scientists is whether measurements that have been collected under different conditions...">
-<meta name="generator" content="bookdown 0.26 with bs4_book()">
+<meta name="generator" content="bookdown 0.33 with bs4_book()">
 <meta property="og:title" content="Chapter 1 Using p-values to test a hypothesis | Improving Your Statistical Inferences">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://lakens.github.io/statistical_inferences/pvalue.html">
@@ -19,10 +19,10 @@
 <meta name="twitter:image" content="https://lakens.github.io/statistical_inferences/images/logo.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><link href="libs/Open_Sans-0.4.2/font.css" rel="stylesheet">
-<link href="libs/Fira_Code-0.4.2/font.css" rel="stylesheet">
-<link href="libs/Montserrat-0.4.2/font.css" rel="stylesheet">
-<script src="libs/bs3compat-0.4.0/transition.js"></script><script src="libs/bs3compat-0.4.0/tabs.js"></script><script src="libs/bs3compat-0.4.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><link href="libs/Open_Sans-0.4.5/font.css" rel="stylesheet">
+<link href="libs/Fira_Code-0.4.5/font.css" rel="stylesheet">
+<link href="libs/Montserrat-0.4.5/font.css" rel="stylesheet">
+<script src="libs/bs3compat-0.4.2/transition.js"></script><script src="libs/bs3compat-0.4.2/tabs.js"></script><script src="libs/bs3compat-0.4.2/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/kePrint-0.0.1/kePrint.js"></script><link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 <!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0MK2WTGRM3"></script><script>
       window.dataLayer = window.dataLayer || [];
@@ -281,7 +281,7 @@ friend_10
 </h2>
 <p>A <em>t</em>-value can be computed from the mean in the sample, the mean in the population, the standard deviation in the sample, and the sample size. By then computing the probability of observing a <em>t</em>-value as extreme or more extreme as the one observed, we get a <em>p</em>-value. For the comparison of the movie ratings for the two groups of friends above, performing a two-sided Student's <em>t</em>-test yields a <em>t</em>-value of 2.5175 and a <em>p</em>-value of 0.02151.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">df_long</span><span class="op">$</span><span class="va">rating</span> <span class="op">~</span> <span class="va">df_long</span><span class="op">$</span><span class="va">`Friend Group`</span>, var.equal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">df_long</span><span class="op">$</span><span class="va">rating</span> <span class="op">~</span> <span class="va">df_long</span><span class="op">$</span><span class="va">`Friend Group`</span>, var.equal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## 
 ##  Two Sample t-test
 ## 
@@ -310,17 +310,17 @@ Figure 1.1: A <em>t</em>-distribution with 18 degrees of freedom.
 <p>Take a moment to try to answer the following two questions. Which <em>p</em>-values can you expect to observe if there is a true effect, and you repeat the same study one-hundred thousand times? And which <em>p</em>-values can you expect if there is no true effect, and you repeat the same study one-hundred thousand times? If you don't know the answer, don't worry - you will learn it now. But if you don't know the answer, it is worth reflecting on why you don't know the answer about such an essential aspect of <em>p</em>-values. If you are like me, you were simply never taught this. But as we will see, it is essential to a solid understanding of how to interpret <em>p</em>-values.</p>
 <p>Which <em>p</em>-values you can expect is completely determined by the statistical power of the study, or the probability that you will observe a significant effect, if there is a true effect. The statistical power ranges from 0 to 1. We can illustrate this by simulating independent <em>t</em>-tests. The idea is that we simulate IQ scores for a group of people. We know the standard deviation of IQ scores is 15. For now, we will set the mean IQ score in one simulated group to 100, and in the other simulated group to 105. We are testing if the people in one group have an IQ that differs from the other group (and we know the correct answer is ‘yes’, because we made it so in the simulation).</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="fl">100000</span><span class="op">)</span> <span class="co"># store all simulated *p*-values</span>
-
-<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100000</span><span class="op">)</span> <span class="op">{</span> <span class="co"># for each simulated experiment</span>
-  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">71</span>, mean <span class="op">=</span> <span class="fl">100</span>, sd <span class="op">=</span> <span class="fl">15</span><span class="op">)</span> <span class="co"># Simulate data</span>
-  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">71</span>, mean <span class="op">=</span> <span class="fl">105</span>, sd <span class="op">=</span> <span class="fl">15</span><span class="op">)</span> <span class="co"># Simulate data</span>
-  <span class="va">p</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">$</span><span class="va">p.value</span> <span class="co"># store the *p*-value</span>
-<span class="op">}</span>
-
-<span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">p</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span> <span class="op">/</span> <span class="fl">100000</span><span class="op">)</span> <span class="co"># compute power</span>
-
-<span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">p</span>, breaks <span class="op">=</span> <span class="fl">20</span><span class="op">)</span> <span class="co"># plot a histogram</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="fl">100000</span><span class="op">)</span> <span class="co"># store all simulated *p*-values</span></span>
+<span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100000</span><span class="op">)</span> <span class="op">{</span> <span class="co"># for each simulated experiment</span></span>
+<span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">71</span>, mean <span class="op">=</span> <span class="fl">100</span>, sd <span class="op">=</span> <span class="fl">15</span><span class="op">)</span> <span class="co"># Simulate data</span></span>
+<span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">71</span>, mean <span class="op">=</span> <span class="fl">105</span>, sd <span class="op">=</span> <span class="fl">15</span><span class="op">)</span> <span class="co"># Simulate data</span></span>
+<span>  <span class="va">p</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">$</span><span class="va">p.value</span> <span class="co"># store the *p*-value</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">p</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span> <span class="op">/</span> <span class="fl">100000</span><span class="op">)</span> <span class="co"># compute power</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">p</span>, breaks <span class="op">=</span> <span class="fl">20</span><span class="op">)</span> <span class="co"># plot a histogram</span></span></code></pre></div>
 <p>In the simulation, we generate n = 71 normally distributed IQ scores with means of M (100 and 105 by default) and a standard deviation of 15. We then perform an independent <em>t</em>-test, store the <em>p</em>-value, and generate a plot of the <em>p</em>-value distribution.</p>
 
 <div class="figure" style="text-align: center">
@@ -361,9 +361,9 @@ Figure 1.5: <em>P</em>-value distribution for 0 (grey horizontal line, 50 percen
 </p>
 </div>
 </div>
-<div id="correctly-reporting-and-interpreting-p-values" class="section level2" number="1.6">
+<div id="correctlyinterpreting" class="section level2" number="1.6">
 <h2>
-<span class="header-section-number">1.6</span> Correctly reporting and interpreting <em>p</em>-values<a class="anchor" aria-label="anchor" href="#correctly-reporting-and-interpreting-p-values"><i class="fas fa-link"></i></a>
+<span class="header-section-number">1.6</span> Correctly reporting and interpreting <em>p</em>-values<a class="anchor" aria-label="anchor" href="#correctlyinterpreting"><i class="fas fa-link"></i></a>
 </h2>
 <p>Although from a strict Neyman-Pearson perspective it is sufficient to report that <em>p</em> &lt; <span class="math inline">\(\alpha\)</span> or that <em>p</em> &gt; <span class="math inline">\(\alpha\)</span>, researchers should report exact <em>p</em>-values. This facilitates the re-use of results for secondary analyses <span class="citation">(<a href="references.html#ref-appelbaum_journal_2018" role="doc-biblioref">Appelbaum et al., 2018</a>)</span>, and allows other researchers to compare the <em>p</em>-value to an alpha level they would have preferred to use <span class="citation">(<a href="references.html#ref-lehmann_testing_2005" role="doc-biblioref">Lehmann &amp; Romano, 2005</a>)</span>. Because claims are made using a methodological procedure with known maximum error rates, a <em>p</em>-value never allows you state anything with certainty. Even if we set the alpha level to 0.000001 any single claim can be an error, Fisher <span class="citation">(<a href="references.html#ref-fisher_design_1935" role="doc-biblioref">1935</a>)</span> reminds us, 'for the “one chance in a million” will undoubtedly occur, with no less and no more than its appropriate frequency, however surprised we may be that it should occur to <em>us</em>”. This uncertainty is sometimes not reflected in academic writing, where researchers can be seen using words as 'prove', 'show', or 'it is known'. A slightly longer but more accurate statement after a hypothesis test would read:</p>
 <blockquote>
@@ -456,7 +456,7 @@ Figure 1.10: Distribution of observed Cohen's <em>d</em> effect sizes when colle
 <p>This is the opposite misconception from the one we discussed previously. Examples of incorrect statements based on this misconception are ‘<em>p</em> &lt; .05, therefore there is an effect’, or ‘there is a difference between the two groups, <em>p</em> &lt; .05’. As before, both these statements imply it is 100% probable that the null model is false, and an alternative model is true.</p>
 <p>As a simple example of why such extreme statements are incorrect, imagine we generate a series of numbers in R using the following command:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">50</span>, mean <span class="op">=</span> <span class="fl">0</span>, sd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">50</span>, mean <span class="op">=</span> <span class="fl">0</span>, sd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##  [1]  0.368269723 -0.156377695  0.616474939  0.891580065  2.129257097
 ##  [6]  1.452765820 -0.371848028 -0.716311802 -0.572340194  0.220586938
 ## [11] -0.237445908  0.021607492 -0.203797691 -1.038001440  1.712214976
@@ -523,32 +523,32 @@ Figure 1.12: Distribution of observed Cohen's <em>d</em> effect sizes when colle
 </h3>
 <p>Copy the code below to R and run the code. You can click the 'clipboard' icon on the top right of the code section to copy all the code to your clipboard, so you can easily paste it into R.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">nsims</span> <span class="op">&lt;-</span> <span class="fl">100000</span> <span class="co"># number of simulations</span>
-
-<span class="va">m</span> <span class="op">&lt;-</span> <span class="fl">106</span> <span class="co"># mean sample</span>
-<span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">26</span> <span class="co"># set sample size</span>
-<span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">15</span> <span class="co"># SD of the simulated data</span>
-
-<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="va">nsims</span><span class="op">)</span> <span class="co"># set up empty vector</span>
-<span class="va">bars</span> <span class="op">&lt;-</span> <span class="fl">20</span>
-
-<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">nsims</span><span class="op">)</span> <span class="op">{</span> <span class="co"># for each simulated experiment</span>
-  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">n</span>, mean <span class="op">=</span> <span class="va">m</span>, sd <span class="op">=</span> <span class="va">sd</span><span class="op">)</span>
-  <span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">x</span>, mu <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="co"># perform the t-test</span>
-  <span class="va">p</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">z</span><span class="op">$</span><span class="va">p.value</span> <span class="co"># get the p-value</span>
-<span class="op">}</span>
-<span class="va">power</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">p</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span> <span class="op">/</span> <span class="va">nsims</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span> <span class="co"># power</span>
-
-<span class="co"># Plot figure</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">p</span>,
-  breaks <span class="op">=</span> <span class="va">bars</span>, xlab <span class="op">=</span> <span class="st">"P-values"</span>, ylab <span class="op">=</span> <span class="st">"number of p-values\n"</span>, 
-  axes <span class="op">=</span> <span class="cn">FALSE</span>, main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"P-value Distribution with"</span>, 
-                             <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">power</span> <span class="op">*</span> <span class="fl">100</span>, digits <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>, <span class="st">"% Power"</span><span class="op">)</span>,
-  col <span class="op">=</span> <span class="st">"grey"</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">nsims</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/axis.html">axis</a></span><span class="op">(</span>side <span class="op">=</span> <span class="fl">1</span>, at <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0.1</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/axis.html">axis</a></span><span class="op">(</span>side <span class="op">=</span> <span class="fl">2</span>, at <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">nsims</span>, <span class="va">nsims</span> <span class="op">/</span> <span class="fl">4</span><span class="op">)</span>, 
-     labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">nsims</span>, <span class="va">nsims</span> <span class="op">/</span> <span class="fl">4</span><span class="op">)</span>, las <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="va">nsims</span> <span class="op">/</span> <span class="va">bars</span>, col <span class="op">=</span> <span class="st">"red"</span>, lty <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">nsims</span> <span class="op">&lt;-</span> <span class="fl">100000</span> <span class="co"># number of simulations</span></span>
+<span></span>
+<span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fl">106</span> <span class="co"># mean sample</span></span>
+<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">26</span> <span class="co"># set sample size</span></span>
+<span><span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">15</span> <span class="co"># SD of the simulated data</span></span>
+<span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="va">nsims</span><span class="op">)</span> <span class="co"># set up empty vector</span></span>
+<span><span class="va">bars</span> <span class="op">&lt;-</span> <span class="fl">20</span></span>
+<span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">nsims</span><span class="op">)</span> <span class="op">{</span> <span class="co"># for each simulated experiment</span></span>
+<span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">n</span>, mean <span class="op">=</span> <span class="va">m</span>, sd <span class="op">=</span> <span class="va">sd</span><span class="op">)</span></span>
+<span>  <span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">x</span>, mu <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="co"># perform the t-test</span></span>
+<span>  <span class="va">p</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">z</span><span class="op">$</span><span class="va">p.value</span> <span class="co"># get the p-value</span></span>
+<span><span class="op">}</span></span>
+<span><span class="va">power</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">p</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span> <span class="op">/</span> <span class="va">nsims</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span> <span class="co"># power</span></span>
+<span></span>
+<span><span class="co"># Plot figure</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">p</span>,</span>
+<span>  breaks <span class="op">=</span> <span class="va">bars</span>, xlab <span class="op">=</span> <span class="st">"P-values"</span>, ylab <span class="op">=</span> <span class="st">"number of p-values\n"</span>, </span>
+<span>  axes <span class="op">=</span> <span class="cn">FALSE</span>, main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"P-value Distribution with"</span>, </span>
+<span>                             <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">power</span> <span class="op">*</span> <span class="fl">100</span>, digits <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>, <span class="st">"% Power"</span><span class="op">)</span>,</span>
+<span>  col <span class="op">=</span> <span class="st">"grey"</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">nsims</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/axis.html">axis</a></span><span class="op">(</span>side <span class="op">=</span> <span class="fl">1</span>, at <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0.1</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/axis.html">axis</a></span><span class="op">(</span>side <span class="op">=</span> <span class="fl">2</span>, at <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">nsims</span>, <span class="va">nsims</span> <span class="op">/</span> <span class="fl">4</span><span class="op">)</span>, </span>
+<span>     labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">nsims</span>, <span class="va">nsims</span> <span class="op">/</span> <span class="fl">4</span><span class="op">)</span>, las <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="va">nsims</span> <span class="op">/</span> <span class="va">bars</span>, col <span class="op">=</span> <span class="st">"red"</span>, lty <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="01-pvalue_files/figure-html/q1-1.png" width="100%" style="display: block; margin: auto;"></div>
 <p>On the x-axis we see <em>p</em>-values from 0 to 1 in 20 bars, and on the y-axis we see how frequently these <em>p</em>-values were observed. There is a horizontal red dotted line that indicates an alpha of 5% (located at a frequency of 100.000*0.05 = 5000) – but you can ignore this line for now. In the title of the graph, the statistical power that is achieved in the simulated studies is given (assuming an alpha of 0.05): The studies have 50% power (with minor variations for each simulation).</p>
 <p><strong>Q1</strong>: Since the statistical power is the probability of observing a statistically significant result, if there is a true effect, we can also see the power in the figure itself. Where?</p>
@@ -797,7 +797,7 @@ $( document ).ready(function() {
 <li><a class="nav-link" href="#calculating-a-p-value"><span class="header-section-number">1.3</span> Calculating a p-value</a></li>
 <li><a class="nav-link" href="#whichpexpect"><span class="header-section-number">1.4</span> Which p-values can you expect?</a></li>
 <li><a class="nav-link" href="#lindley"><span class="header-section-number">1.5</span> Lindley's paradox</a></li>
-<li><a class="nav-link" href="#correctly-reporting-and-interpreting-p-values"><span class="header-section-number">1.6</span> Correctly reporting and interpreting p-values</a></li>
+<li><a class="nav-link" href="#correctlyinterpreting"><span class="header-section-number">1.6</span> Correctly reporting and interpreting p-values</a></li>
 <li>
 <a class="nav-link" href="#misconceptions"><span class="header-section-number">1.7</span> Preventing common misconceptions about p-values</a><ul class="nav navbar-nav">
 <li><a class="nav-link" href="#misconception1"><span class="header-section-number">1.7.1</span> Misunderstanding 1: A non-significant p-value means that the null hypothesis is true.</a></li>
@@ -831,11 +831,11 @@ $( document ).ready(function() {
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-     <p>Lakens, D. (2022). Improving Your Statistical Inferences. https://doi.org/10.5281/zenodo.6409077. Built on 2023-02-01</p>
+    <p>"<strong>Improving Your Statistical Inferences</strong>" was written by Daniël Lakens. It was last built on 2023-02-01.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
-    <p><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"></a></p>
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
   </div>
 
 </div></div>
@@ -844,7 +844,7 @@ $( document ).ready(function() {
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

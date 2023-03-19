@@ -84,25 +84,22 @@ TOSTER::tsum_TOST(m1 = 4.55,
 ```
 ## 
 ## Welch Modified Two-Sample t-Test
-## Hypothesis Tested: Equivalence
-## Equivalence Bounds (raw):-0.500 & 0.500
-## Alpha Level:0.05
+## 
 ## The equivalence test was non-significant, t(27.91) = 0.456, p = 3.26e-01
 ## The null hypothesis test was non-significant, t(27.91) = -0.811, p = 4.24e-01
 ## NHST: don't reject null significance hypothesis that the effect is equal to zero 
 ## TOST: don't reject null equivalence hypothesis
 ## 
 ## TOST Results 
-##                     t        SE       df    p.value
-## t-test     -0.8111280 0.3945124 27.91398 0.42415467
-## TOST Lower  0.4562595 0.3945124 27.91398 0.32586680
-## TOST Upper -2.0785154 0.3945124 27.91398 0.02348582
+##                  t    df p.value
+## t-test     -0.8111 27.91   0.424
+## TOST Lower  0.4563 27.91   0.326
+## TOST Upper -2.0785 27.91   0.023
 ## 
 ## Effect Sizes 
-##                 estimate        SE   lower.ci  upper.ci conf.level
-## Raw           -0.3200000 0.3945124 -0.9911879 0.3511879        0.9
-## Hedges' g(av) -0.2881401 0.3812249 -0.9301965 0.3193638        0.9
-## 
+##                Estimate     SE              C.I. Conf. Level
+## Raw             -0.3200 0.3945 [-0.9912, 0.3512]         0.9
+## Hedges's g(av)  -0.2881 0.3930 [-0.8733, 0.3021]         0.9
 ## Note: SMD confidence intervals are an approximation. See vignette("SMD_calcs").
 ```
 
@@ -128,25 +125,22 @@ One way to reduce the probability of an inconclusive effect is to collect suffic
 ```
 ## 
 ## Welch Modified Two-Sample t-Test
-## Hypothesis Tested: Equivalence
-## Equivalence Bounds (raw):-0.500 & 0.500
-## Alpha Level:0.05
+## 
 ## The equivalence test was significant, t(396.78) = 1.666, p = 4.82e-02
 ## The null hypothesis test was significant, t(396.78) = -2.962, p = 3.24e-03
 ## NHST: reject null significance hypothesis that the effect is equal to zero 
 ## TOST: reject null equivalence hypothesis
 ## 
 ## TOST Results 
-##                    t        SE       df      p.value
-## t-test     -2.961821 0.1080417 396.7773 3.242190e-03
-## TOST Lower  1.666024 0.1080417 396.7773 4.824893e-02
-## TOST Upper -7.589665 0.1080417 396.7773 1.156039e-13
+##                 t    df p.value
+## t-test     -2.962 396.8   0.003
+## TOST Lower  1.666 396.8   0.048
+## TOST Upper -7.590 396.8 < 0.001
 ## 
 ## Effect Sizes 
-##                 estimate        SE   lower.ci   upper.ci conf.level
-## Raw           -0.3200000 0.1080417 -0.4981286 -0.1418714        0.9
-## Hedges' g(av) -0.2956218 0.1008059 -0.4625958 -0.1310411        0.9
-## 
+##                Estimate    SE               C.I. Conf. Level
+## Raw             -0.3200 0.108 [-0.4981, -0.1419]         0.9
+## Hedges's g(av)  -0.2956 0.104 [-0.4605, -0.1304]         0.9
 ## Note: SMD confidence intervals are an approximation. See vignette("SMD_calcs").
 ```
 
@@ -183,25 +177,22 @@ If a researcher has specified a smallest effect size of interest, and is interes
 ```
 ## 
 ## Welch Modified Two-Sample t-Test
-## Hypothesis Tested: Minimal Effect
-## Equivalence Bounds (raw):-0.500 & 0.500
-## Alpha Level:0.05
+## 
 ## The minimal effect test was significant, t(396.78) = 12.588, p = 4.71e-04
 ## The null hypothesis test was significant, t(396.78) = 7.960, p = 1.83e-14
 ## NHST: reject null significance hypothesis that the effect is equal to zero 
 ## TOST: reject null MET hypothesis
 ## 
 ## TOST Results 
-##                    t        SE       df      p.value
-## t-test      7.959893 0.1080417 396.7773 1.827800e-14
-## TOST Lower 12.587737 0.1080417 396.7773 1.000000e+00
-## TOST Upper  3.332048 0.1080417 396.7773 4.714941e-04
+##                 t    df p.value
+## t-test      7.960 396.8 < 0.001
+## TOST Lower 12.588 396.8       1
+## TOST Upper  3.332 396.8 < 0.001
 ## 
 ## Effect Sizes 
-##                estimate        SE  lower.ci  upper.ci conf.level
-## Raw           0.8600000 0.1080417 0.6818714 1.0381286        0.9
-## Hedges' g(av) 0.7944836 0.1041808 0.6263676 0.9689959        0.9
-## 
+##                Estimate    SE             C.I. Conf. Level
+## Raw              0.8600 0.108 [0.6819, 1.0381]         0.9
+## Hedges's g(av)   0.7945 0.125 [0.6234, 0.9646]         0.9
 ## Note: SMD confidence intervals are an approximation. See vignette("SMD_calcs").
 ```
 
