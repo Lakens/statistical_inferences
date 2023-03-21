@@ -26,14 +26,10 @@ We never test a theory in isolation, but always include auxiliary hypotheses abo
 
 (ref:meehl1990lab) Distinction between a theoretical hypothesis, a statistical hypothesis, and observations. Figure based on Meehl, 1990.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/meehl1990} 
-
-}
-
-\caption{(ref:meehl1990lab)}(\#fig:meehl1990)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/meehl1990.png" alt="(ref:meehl1990lab)" width="100%" />
+<p class="caption">(\#fig:meehl1990)(ref:meehl1990lab)</p>
+</div>
 
 ## Loosening and Tightening{#looseningtightening}
 
@@ -41,14 +37,10 @@ For each of the three questions above, we can ask questions about description, p
 
 It is important to realize whether your goal is to generate new ideas, or to test new ideas. Researchers are often not explicit about the stage their research is in, which runs the risk of trying to test hypotheses prematurely [@scheel_why_2021]. Clinical trials research is more explicit about the different phases of research, and distinguishes Phase 1, Phase 2, Phase 3, and Phase 4 trials. In a Phase 1 trial researchers evaluate the safety of a new drug or intervention in a small group of non-randomized (often healthy) volunteers, by examining how much of a drug is safe to give, while monitoring a range of possible side effects. A phase 2 trial are often performed with patients as participants, and can focus in more detail on finding the definite dose. The goal is to systematically explore a range of parameters (e.g., the intensity of a stimulus) to identify boundary conditions [@dubin_theory_1969]. A phase 3 trial is a large randomized controlled trial with the goal to test the effectiveness of the new intervention in practice. Phase 3 trials require a prespecified statistical analysis plan that strictly controls error rates. Finally, a Phase 4 trial examines long term safety and generalizability. Compared to a Phase 3 trial, there is more loosening, as researchers explore the possibility of interactions with other drugs, or moderating effects in certain subgroups of the population. In clinical trials, a Phase 3 trial requires a huge amount of preparation, and is not undertaken lightly. 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/trialphase} 
-
-}
-
-\caption{Four phases of clinical research. <a href="https://clinicalinfo.hiv.gov/en/glossary/phase-1-trial">Source</a>.}(\#fig:trialphase)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/trialphase.jpg" alt="Four phases of clinical research. &lt;a href=&quot;https://clinicalinfo.hiv.gov/en/glossary/phase-1-trial&quot;&gt;Source&lt;/a&gt;." width="100%" />
+<p class="caption">(\#fig:trialphase)Four phases of clinical research. <a href="https://clinicalinfo.hiv.gov/en/glossary/phase-1-trial">Source</a>.</p>
+</div>
 
 ## Three Statistical Philosophies
 
@@ -103,14 +95,10 @@ The most common division of states of the world that are predicted and that are 
 
 Take a look at the three circles below. Each circle represents all possible outcomes of an empirical test of a theory. The blue line illustrates the state of the world that was observed in a (hypothetical) perfectly accurate study. The line could have fallen anywhere on the circle. We performed a study and found one specific outcome. The black area in the circle represents the states of the world that will be interpreted as *falsifying* our prediction, whereas the white area illustrates the states in the world we predicted, and that will be interpreted as *corroborating* our prediction.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/risky1} 
-
-}
-
-\caption{Three circles vizualizing predictions that exclude different parts of the world.}(\#fig:risky1)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/risky1.png" alt="Three circles vizualizing predictions that exclude different parts of the world." width="100%" />
+<p class="caption">(\#fig:risky1)Three circles vizualizing predictions that exclude different parts of the world.</p>
+</div>
 
 In the figure on the left, only a tiny fraction of states of the world will falsify our prediction. This represents a hypothesis test where only an infinitely small portion of all possible states of the world is not in line with the prediction. A common example is a two-sided null-hypothesis significance test, which forbids (and tries to reject) only the state of the world where the true effect size is exactly zero.
 
@@ -141,14 +129,10 @@ In order to be impressed when a prediction is confirmed, the prediction must be 
 
 (ref:blackwhitelab) Some fields make black and white predictions about the presence or absence of observables, but in many sciences, predictions are probabilistic, and shades of grey.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/blackwhite} 
-
-}
-
-\caption{(ref:blackwhitelab)}(\#fig:blackwhite)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/blackwhite.png" alt="(ref:blackwhitelab)" width="100%" />
+<p class="caption">(\#fig:blackwhite)(ref:blackwhitelab)</p>
+</div>
 
 Just because a hypothesis test can be performed, does not mean it is interesting. A hypothesis test is most useful when 1) both data generating models that are decided between have some plausibility, and 2) it is possible to apply an informative methodological procedure. 
 
@@ -166,14 +150,10 @@ First, it is clear that a directional test provides a clear advantage in statist
 
 (ref:onesidedtwosidedratiolab) Ratio of the required sample size for a one-sample *t*-test for a non-directional/directional test to achieve 50%, 80% or 95% power.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{05-questions_files/figure-latex/onesidedtwosidedratio-1} 
-
-}
-
-\caption{(ref:onesidedtwosidedratiolab)}(\#fig:onesidedtwosidedratio)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="05-questions_files/figure-html/onesidedtwosidedratio-1.png" alt="(ref:onesidedtwosidedratiolab)" width="100%" />
+<p class="caption">(\#fig:onesidedtwosidedratio)(ref:onesidedtwosidedratiolab)</p>
+</div>
 
 Because in a directional test the alpha level is used for only one tail of the distribution, the critical test value is lower, and all else equal, power is higher. This reduction of the critical value required to declare a statistically significant effect has been criticized because it leads to weaker evidence. For example, @schulz_sample_2005 write: "Using a one-sided test in sample size calculations to reduce required sample sizes stretches credulity.". This is trivially true: Any change to the design of a study that requires a smaller sample size reduces the strength of the evidence you collect, since the strength of evidence is inherently tied to the total number of observations. However, it conflates two types of statistical philosophies, namely a likelihoodist approach, which aims to quantify relative evidence, and a frequentist approach, which aims to provide a procedure to make claims with a maximum error rate. There is a difference between designing a study that yields a certain level of evidence, and a study that adequately controls the error rates when performing a hypothesis test. If you desire a specific level of evidence, design a study that provides this desired level of evidence. If you desire to control the error rate of claims, then that error rate is at most 5% as long as the alpha level is 5%, regardless of whether a one-sided or two-sided test is performed.
 
@@ -181,14 +161,10 @@ Note that there is a subtle distinction between a directional and a one-sided te
 
 (ref:fandtlab) Distribution and rejection areas for a two-sided *t*-test and the corresponding *F*-test with df1 = 1 and df2 = 100.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{05-questions_files/figure-latex/fandt-1} 
-
-}
-
-\caption{(ref:fandtlab)}(\#fig:fandt)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="05-questions_files/figure-html/fandt-1.png" alt="(ref:fandtlab)" width="100%" />
+<p class="caption">(\#fig:fandt)(ref:fandtlab)</p>
+</div>
 
 A final concern raised against one-sided tests is that surprising findings in the opposite direction might be meaningful, and should not be ignored. I agree, but this is not an argument against one-sided testing. The goal in hypothesis testing is, not surprisingly, to test a hypothesis. If you have a directional hypothesis, a result in the opposite direction can never confirm your hypothesis. It can lead one to create a new hypothesis, but this new hypothesis should be tested on a new dataset [@de_groot_methodology_1969]. 
 It makes sense to *describe* an unexpected effect in the opposite direction of your prediction, but there is a difference between describing data, and testing a hypothesis. A one-sided hypothesis test does not prohibit researchers from describing unexpected data patterns. And if you really want to test if there is an effect in either direction, simply preregister a two-sided test. 
@@ -227,14 +203,10 @@ Other philosophers of science, such as Thomas Kuhn, viewed different paradigms i
 
 Harry Laudan aims to resolve these different views on whether scientists can or can not reach consensus by distinguishing disagreements on three levels [@laudan_science_1986]. The first level involves claims about theoretical or observable entities, where scientists can have factual disagreements or factual consensus. These can be resolved by methodological rules. However, scientists can also have disagreements about which methods or procedures should be used. These disagreements on the methodological level can only be resolve by discussing the aims of science, as the methods we use should be optimal techniques to achieve our aims in science. Laudan calls this the axiological level. According to Laudan, there is a mutual justification process between these three levels, and even though there are different aims, methods, and theories, scientists need to be able to justify how their approach is coherent. 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/laudantriadicnetwork} 
-
-}
-
-\caption{The interrelationship between the methdological level, theories that explain factual observation, and the aims of science according to Laudan's reticulated model of scientific rationality.}(\#fig:laudan)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/laudantriadicnetwork.png" alt="The interrelationship between the methdological level, theories that explain factual observation, and the aims of science according to Laudan's reticulated model of scientific rationality." width="100%" />
+<p class="caption">(\#fig:laudan)The interrelationship between the methdological level, theories that explain factual observation, and the aims of science according to Laudan's reticulated model of scientific rationality.</p>
+</div>
 
 Factual inconsistencies can emerge in different ways. First, the support for a specific scientific claim can be mixed, in that some studies show statistically significant results (*p* < .05), while other studies do not (*p* > 0.05). We have seen that [mixed results](#mixedresults) are expected in sets of studies. It is possible (and sometimes likely) that the statistical power of studies is low. If 60% of studies yield *p* < .05 and 40% of studies yield *p* > .05 this might seem inconsistent, but in reality the pattern of results would be perfectly consistent with the expected long run Type 2 error rates in a set of studies with low statistical power. We will see later that combining all studies in a [meta-analysis](#meta) can yield more clarity when individual studies have low statistical power.
 
@@ -248,14 +220,10 @@ A second type of inconsistency occurs when two conflicting claims have been supp
 
 (ref:moderation) Path model of a moderation effect where the effect of X on Y depends on Z, where the effect sizes a and b differ from each other depending on the level of Z.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/moderation} 
-
-}
-
-\caption{(ref:moderation)}(\#fig:moderation)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/moderation.png" alt="(ref:moderation)" width="100%" />
+<p class="caption">(\#fig:moderation)(ref:moderation)</p>
+</div>
 
 Some researchers strongly believe failures to replicate published findings can be explained by the presence of hitherto unidentified, or 'hidden', moderators [@stroebe_alleged_2014]. There has been at least one example of researchers who were able to provide modest support for the idea that a previous failure to replicate a finding was due to how personally relevant a message in the study was [@luttrell_replicating_2017]. It is difficult to reliably identify moderator variables that explain failures to replicate published findings, but easy to raise them as an explanation when replication studies do not observe the same effect as the original study. Especially in the social sciences it is easy to point to moderators that are practically impossible to test, such as the fact that society has changed over time, or that effects that work in one culture might not replicate in different cultures. This is an age-old problem, already identified by Galileo in [The Assayer](https://web.archive.org/web/https://web.stanford.edu/~jsabol/certainty/readings/Galileo-Assayer.pdf), one of the first books on the scientific method. In this book, Galileo discusses the claim that Babylonians cooked eggs by whirling them in a sling, which is impossible to replicate, and writes: 
 

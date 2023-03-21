@@ -28,8 +28,7 @@ In this assignment we will use github, but an open source alternative is to use 
 
 If you have an account, you can create a new repository. A **repository** is a collection of folders and files that make up your project. In the top-right of the GitHub page, click the + symbol, and select ‘New repository’ from the dropdown menu.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/7a1725550cadb293b13fe058631a24ba} \end{center}
+<img src="images/7a1725550cadb293b13fe058631a24ba.png" width="100%" style="display: block; margin: auto;" />
 
 The first thing to do is name your repository. When it comes to naming folders and files, it is important to follow **best practices for file naming**:
 
@@ -53,8 +52,7 @@ The first thing to do is name your repository. When it comes to naming folders a
 
 Let’s name our repository: reproducibility_assignment
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/5cddb5d5a5ef1b470b5d160857a71719} \end{center}
+<img src="images/5cddb5d5a5ef1b470b5d160857a71719.png" width="100%" style="display: block; margin: auto;" />
 
 You can add a short description (e.g., ‘This is an assignment to practice an  open and reproducible data analysis workflow’). If you are an academic or student, you can get an academic account, which gives some extra options, such as keeping repositories private: <https://education.github.com/pack>
 
@@ -65,8 +63,7 @@ licenses](https://creativecommons.org/choose/) that you can use when you are sha
 
 We are now ready to create the repository. Click
 
-
-\begin{center}\includegraphics[width=0.2\linewidth]{images/ccb66558822a17c4a3ec6511c9bf5a7b} \end{center}
+<img src="images/ccb66558822a17c4a3ec6511c9bf5a7b.png" width="20%" style="display: block; margin: auto;" />
 
 It might feel unintuitive, but it is important to remember that you are not expected to directly interact with your new GitHub repository through the GitHub website. The repository page will give you information about the contents of the repository, and the history of the files in the repository, but it is not particularly easy to add files or download files directly through the website.
 The idea is that you use other software to interact with your GitHub repository.
@@ -81,62 +78,51 @@ and install it (you can accept all defaults during the installation process). If
 
 In R Studio, go to Tools \> Global Options, and select the Git/SVN menu option.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/cfc1e6fc415fb90fad16f4856338b890} \end{center}
+<img src="images/cfc1e6fc415fb90fad16f4856338b890.png" width="100%" style="display: block; margin: auto;" />
 
 Check if the Git executable (“git.exe”) has been found automatically. If not, you will need to click the ‘ Browse…’ button and find it manually. It will always be in the location where you installed Git.
 
 Click the ‘Create RSA Key…’ button. A window will appear:
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/afd9d82e34e9fbff7e9d83c9b89e29c0} \end{center}
+<img src="images/afd9d82e34e9fbff7e9d83c9b89e29c0.png" width="100%" style="display: block; margin: auto;" />
 
 You can close the window. Still under the RStudio options, click the blue hyperlink ‘View public key’. A window will appear, telling you that you can use CTRL+C to copy the key. Do so.
 
 Go to GitHub, and go to settings and then select the option SSH and GPG keys:
 
+<img src="images/e2c7d8cad7b8127e20ad6caf6d2b84ea.png" width="50%" style="display: block; margin: auto;" />
 
-\begin{center}\includegraphics[width=0.5\linewidth]{images/e2c7d8cad7b8127e20ad6caf6d2b84ea} \end{center}
-
-
-\begin{center}\includegraphics[width=0.5\linewidth]{images/e949d47fdc97cef38499f82cb70f7e11} \end{center}
+<img src="images/e949d47fdc97cef38499f82cb70f7e11.png" width="50%" style="display: block; margin: auto;" />
 
 Click ‘New SSH key’
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/02ee9504ceacd79b3706f18e8497ed43} \end{center}
+<img src="images/02ee9504ceacd79b3706f18e8497ed43.png" width="100%" style="display: block; margin: auto;" />
 
 Enter a name (e.g., RStudio) and paste the key in the correct window. Click ‘Add SSH Key’. This will allow you to send code from R Studio to your GitHub repositories without having to enter your GitHub login name and password every time. In other words, R Studio is now connected to your GitHub account and repository. You are now ready to create a **version controlled project** in R Studio.
 
 **Restart RStudio**. In RStudio, go to File\>New Project:
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/7549d0317ad5f80afe7f3c6be4ad0ba3} \end{center}
+<img src="images/7549d0317ad5f80afe7f3c6be4ad0ba3.png" width="100%" style="display: block; margin: auto;" />
 
 You get three choices. Choose the ‘Version Control’ option:
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/5eff851f02909023dac665978c716a9d} \end{center}
+<img src="images/5eff851f02909023dac665978c716a9d.png" width="100%" style="display: block; margin: auto;" />
 
 Choose the ‘Git’ option:
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/a37a25fa7b6b9534d8f16154ce417be6} \end{center}
+<img src="images/a37a25fa7b6b9534d8f16154ce417be6.png" width="100%" style="display: block; margin: auto;" />
 
 We will be cloning the online GitHub repository we created. Cloning is a term used in Git that means creating a local copy of all files in your repository on your computer. You can copy-paste the URL from your GitHub repository (e.g.,  <https://github.com/Lakens/reproducibility_assignment>). If you copy-paste this URL in the top field, it will automatically create a Project directory name that is similar to the name you gave your project on GitHub. You can select a folder on your computer by clicking the ‘Browse’ button to indicate where you want to save the local copy of your repository.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/085ad47bd94f834aca501b87baa7c0eb} \end{center}
+<img src="images/085ad47bd94f834aca501b87baa7c0eb.png" width="100%" style="display: block; margin: auto;" />
 
 Click ‘Create Project’. R will quickly download the files from your repository, and open the new project. You will see that the project creation was successful because the ‘Files’ tab in the RStudio interface shows we have downloaded some files from our GitHub repository (the README.md and LICENSE files). RStudio also created a .Rproj file and a .gitignore file. The **project file** is used to store information about the project, and that is required to use GitHub.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/386831c4f089bbb56758718619859308} \end{center}
+<img src="images/386831c4f089bbb56758718619859308.png" width="100%" style="display: block; margin: auto;" />
 
 We can also see this is a version control project in the top right of the interface, where there is now a ‘Git’ tab. If we click it, we see:
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/16361987bd66eec35a5b82b2efb9617b} \end{center}
+<img src="images/16361987bd66eec35a5b82b2efb9617b.png" width="100%" style="display: block; margin: auto;" />
 
 We see a range of buttons, such as the Diff, Commit, Pull, and Push buttons. These will be used to interact with GitHub. Many computer programmers interact with GitHub through the command line, such as:
 
@@ -152,33 +138,28 @@ You can still make errors in the analysis if you use R Markdown files. The impor
 
 Let’s start by creating a new R Markdown document in R Studio by clicking New File \> R Markdown…
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/f13fad91521fb984d12577416fa1fa99} \end{center}
+<img src="images/f13fad91521fb984d12577416fa1fa99.png" width="100%" style="display: block; margin: auto;" />
 
 This gives you a new window where you can specify the title of your RMarkdown document and an author name. Enter the title ‘Main Analysis’, and feel free to change the Author subfield to anything you prefer. RMarkdown files can be compiled (also referred to as ‘knitted’) into an HTML file, a PDF document, or a word document. To generate PDF files you need to install MiKTex which we won’t do for this example ([a good tutorial how to install MiKTeX is available
 here](https://medium.com/@sorenlind/create-pdf-reports-using-r-r-markdown-latex-and-knitr-on-windows-10-952b0c48bfa9)). So leave the default output format to HTML and click OK.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/be373a55333121dee2669025ba9fff3d} \end{center}
+<img src="images/be373a55333121dee2669025ba9fff3d.png" width="100%" style="display: block; margin: auto;" />
 
 Let’s start by saving the new file: Click the save button, and save the file under the name ‘main_analysis.Rmd’. Because we are working in an R Studio project, the file will automatically be saved in the same folder as all other files in this project. If you look at the files tab in the bottom right pane, you will see the new file appear. Now let’s take a look at the R Markdown file.
 
 The R Markdown file by default includes several sections to get you started. First, there is a header section. In the header section, there is code that determines how the final document is rendered. This section is sensitive, in the sense that it needs to be programmed exactly right – including spaces and tabs – so it is not recommended to change it too much without looking up detailed documentation on how to change this section. If you want the technical details: An R Markdown file is fed to knitr software, which creates a normal markdown file, which then uses pandoc software to generate the specific document you requested. All of this happens automatically.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/fd284f329222582a56ecb4906f99afee} \end{center}
+<img src="images/fd284f329222582a56ecb4906f99afee.png" width="100%" style="display: block; margin: auto;" />
 
 The header is followed by a **set-up** section where you can define general options for the entire R Markdown file. Then, we see the two main sections: **Markdown code**, which is a markup language in plain text formatting syntax that can be easily converted into HTML or other formats. Then, we see **R code** that is used to analyze data or create figures. To see the final result of this code, hit the
 
-
-\begin{center}\includegraphics[width=0.2\linewidth]{images/270645a5be86fa1d9d534f78b8ca0724} \end{center}
+<img src="images/270645a5be86fa1d9d534f78b8ca0724.png" width="20%" style="display: block; margin: auto;" />
 
 Knit button in the toolbar at the top of the pane.
 
 Either a new window will appear that allows you to view the HTML file that was created, or your document will appear in the ‘viewer’ tab in RStudio. You see the formatted HTML document that combined both text and the output of R code.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/9405a78d629bc5abd36ba8b31c42cfd9} \end{center}
+<img src="images/9405a78d629bc5abd36ba8b31c42cfd9.png" width="100%" style="display: block; margin: auto;" />
 
 Close the window – we are now ready to analyze our data.
 
@@ -199,8 +180,7 @@ font) and incongruent trial (e.g., the word 'red' written in a green font). The 
 
 Click the button ‘+C Insert’ to insert code – a dropdown menu will be visible. Select R.
 
-
-\begin{center}\includegraphics[width=0.5\linewidth]{images/2f929ee323a9f222c85675f5fc45672f} \end{center}
+<img src="images/2f929ee323a9f222c85675f5fc45672f.png" width="50%" style="display: block; margin: auto;" />
 
 In the R Markdown file, you’ll see a new section of R code that starts with three backticks followed by {r} and ends with three backticks. You can also just create these sections by manually typing in these two lines.
 
@@ -216,23 +196,19 @@ write.table(stroop_data, file = "stroop.csv", quote = F, row.names = F)
 
 After copy-pasting the text, the code section should look like this:
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/6d87836ecdcc9b06891059acc43930a2} \end{center}
+<img src="images/6d87836ecdcc9b06891059acc43930a2.png" width="100%" style="display: block; margin: auto;" />
 
 This code creates a data.frame called ‘stroop_data” that contains data, and then saves this data in a .csv file called ‘stroop.csv’. Click the Knit button to look at the document:
 
-
-\begin{center}\includegraphics[width=0.2\linewidth]{images/270645a5be86fa1d9d534f78b8ca0724} \end{center}
+<img src="images/270645a5be86fa1d9d534f78b8ca0724.png" width="20%" style="display: block; margin: auto;" />
 
 You should see something like:
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/5bad7d8cde23291c2d67ff65897d60c4} \end{center}
+<img src="images/5bad7d8cde23291c2d67ff65897d60c4.png" width="100%" style="display: block; margin: auto;" />
 
 This might not look very impressive – but the real action is in the file pane in the bottom right part of the screen. Close the window showing the HTML output and look at the file pane. You should now see several files:
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/0ba38e2b99fd3e1a10f943d1ab45f156} \end{center}
+<img src="images/0ba38e2b99fd3e1a10f943d1ab45f156.png" width="100%" style="display: block; margin: auto;" />
 
 One file is stroop.csv – this is our data file of the Stroop data that we downloaded from the internet and saved to our project folder, using R code.
 
@@ -245,20 +221,17 @@ Because it is always important to **provide comments in the code you write**, ad
 
 Then, select the lines of code in the chunk, and press (on Windows) CTRL+SHIFT+C (or click ‘Code’ in the toolbar and then ‘comment/uncomment lines’). This should add \# in front of all lines, making it comments instead of code that is executed every time. You should end up with:
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/0061d311bf4819c08afde5f9b110f9b6} \end{center}
+<img src="images/0061d311bf4819c08afde5f9b110f9b6.png" width="100%" style="display: block; margin: auto;" />
 
 Now we need to add a line of code that we will run, and with which we will load the stroop.csv dataset from the local folder. Underneath the last commented out line of code, but within the R code block, add:
 
 `stroop_data <- read.csv("stroop.csv", sep = " ", header = TRUE)`
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/f14461f73699f865e4850e99990606f2} \end{center}
+<img src="images/f14461f73699f865e4850e99990606f2.png" width="100%" style="display: block; margin: auto;" />
 
 Click save, or press CTRL+S, to save the file. Knit the file. We see:
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/f860eea02424968a1c0ca4afc5b583df} \end{center}
+<img src="images/f860eea02424968a1c0ca4afc5b583df.png" width="100%" style="display: block; margin: auto;" />
 
 Close the HTML file. We’ve done quite a lot of work. It would be a shame if this work was lost. So this seems to be the perfect time to save a version of our R Markdown file, not just locally, but also on GitHub.
 
@@ -268,40 +241,33 @@ It is time to store our changes in the cloud, on GitHub. This process takes two 
 
 If we look at the Git tab in the top right pane in R Studio, we see the Commit button, the Push button, and we see a bunch of files. The status of these files is indicated by two question marks in yellow. These question marks indicate these files are not yet tracked by GitHub. Let’s change this.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/ca36fd42cb6d9189534590e5cfcb9411} \end{center}
+<img src="images/ca36fd42cb6d9189534590e5cfcb9411.png" width="100%" style="display: block; margin: auto;" />
 
 Click the commit button. A menu opens. You can choose to ‘stage’ the changes that have been made. Staging basically mean selecting which of the files you want to record, or **commit**. You can do this in several ways, such as double clicking each file, or selecting all files and clicking ‘Enter’. When staging all files, the yellow question marks change to a green ‘A’ symbol. Every commit should be accompanied by a **commit message** where you describe which changes you have made – after all, we are recording our changes. You can type in anything you want – it is common to write something like ‘initial commit’ the first time you commit changes. The menu should look like the screenshot below:
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/df26ee077662dda7148be10da4c410e8} \end{center}
+<img src="images/df26ee077662dda7148be10da4c410e8.png" width="100%" style="display: block; margin: auto;" />
 
 Now we are ready to **commit** these changes. Click the ‘Commit’ button. A new window opens that shows all changes that have been committed. We see that 5 files have changed. You can close this window and close the previous menu.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/bd217abdabf5cc4e81637d8d0eb7db9e} \end{center}
+<img src="images/bd217abdabf5cc4e81637d8d0eb7db9e.png" width="100%" style="display: block; margin: auto;" />
 
 R Studio now reminds you that there is a difference between the local copy of your repository, and the remote version of the repository on GitHub. In the Git tab you see a reminder: “Your branch is ahead of ‘origin/master’ by 1 commit.”.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/b3c606d72795bf88e1b7a04dbce381bb} \end{center}
+<img src="images/b3c606d72795bf88e1b7a04dbce381bb.png" width="100%" style="display: block; margin: auto;" />
 
 This means the files we have updated and recorded on our computer with a commit are not yet synchronized with the **remote repository** on GitHub. We can solve that by ‘pushing’ (aka synchronizing) the changes to the remote repository. Simply click the **push** button:
 
-
-\begin{center}\includegraphics[width=0.2\linewidth]{images/7a363782af473d6da3e79f3a088d527b} \end{center}
+<img src="images/7a363782af473d6da3e79f3a088d527b.png" width="20%" style="display: block; margin: auto;" />
 
 Another pop-up window appears:
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/8b77f09c9c2cad752ec90ecdfa42e566} \end{center}
+<img src="images/8b77f09c9c2cad752ec90ecdfa42e566.png" width="100%" style="display: block; margin: auto;" />
 
 This window informs us there were no errors, and we successfully pushed the changes to the remote version of the repository. You can close this window.
 
 You can check that you successfully pushed all files to GitHub by visiting the GitHub page for your repository in the browser. You should see something like:
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/9eb79724ec82b5a99d62938388c43d3a} \end{center}
+<img src="images/9eb79724ec82b5a99d62938388c43d3a.png" width="100%" style="display: block; margin: auto;" />
 
 Congratulations on your first GitHub push! If you want to read a more extensive introduction to Git, see @vuorre_curating_2018. 
 
@@ -311,40 +277,33 @@ So far, we have only read in data. The goal of an R Markdown file is to create a
 
 This R Markdown file does a number of things, which we will explain in detail below. For example, it will automatically install libraries it needs, load the data, and create a report in HTML. You can press the Knit button, and the HTML document should load. You should see output as in the second screenshot below.
 
+<img src="images/23a19f01f3a23b3673656ee78860caf5.png" width="100%" style="display: block; margin: auto;" />
 
-\begin{center}\includegraphics[width=1\linewidth]{images/23a19f01f3a23b3673656ee78860caf5} \end{center}
+<img src="images/79166b6bcc909e9e9e7fb0dd365fc8b2.png" width="100%" style="display: block; margin: auto;" />
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/79166b6bcc909e9e9e7fb0dd365fc8b2} \end{center}
-
-
-\begin{center}\includegraphics[width=1\linewidth]{images/dc72012da17d44752af4ab572c6c20d2} \end{center}
+<img src="images/dc72012da17d44752af4ab572c6c20d2.png" width="100%" style="display: block; margin: auto;" />
 
 It is important to note that none of the numbers that are in this text are static, or copy-pasted. They are all calculated at the moment that the document is created, directly from the raw data. The same is true for the figures, which are created from the raw data the moment the manuscript is compiled. If you have access to the .Rmd (RMarkdown) file, you can perfectly **reproduce** the reported data analysis.
 
 Since we have made substantial changes, this is the perfect moment to **commit** and **push** the changes to GitHub! Go to the Git tab in the top right pane. Click ‘Commit’. The window below will open. If the main_analysis.Rmd file is selected, you will see red and green chunks of text. These tell you what was old (red) and what is new (green).
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/045aa0f44f3615a30aeaac241042fa3a} \end{center}
+<img src="images/045aa0f44f3615a30aeaac241042fa3a.png" width="100%" style="display: block; margin: auto;" />
 
 Select all files that have changed, and ‘stage’ them (for example by pressing  enter). The checkboxes in front of the files, under the ‘Staged’ column, should be checked.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/3d314b695f0d424b8792e4d179f6f4d3} \end{center}
+<img src="images/3d314b695f0d424b8792e4d179f6f4d3.png" width="100%" style="display: block; margin: auto;" />
 
 Type in a commit message, such as ‘update mean analysis’ in the ‘commit message’ field. Press the ‘Commit’ button. Close the window that pops up to inform you about the result of the commit. Then click ‘push’. Close the window that informs you about the push command, and close the commit window. You can always visit the GitHub repository online and look at the full history of your document to see all changes that have been made.
 
 Let’s take a look at some sections of our new R Markdown document. First the header:
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/5be3bc1c3f5a2ebf2d16d19430312057} \end{center}
+<img src="images/5be3bc1c3f5a2ebf2d16d19430312057.png" width="100%" style="display: block; margin: auto;" />
 
 This sets general (global) options for the code chunks in the R Markdown file. The echo, warning, and message = FALSE hide the code chunks, warning messages, and other messages, where the ‘include=true’ will make all figures appear in the text. You can set some of these variables to TRUE, and hit Knit to see what they change. Sometimes you might want to share the HTML file with all code visible, for example when sharing with collaborators.
 
 If you scroll down, you can see the introduction text, the code that generates the first figure, and the code that performs the analyses. These variables are used in the Results section. Let’s look at this section:
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/aab442e8c104cb1444a88b7a3a987de5} \end{center}
+<img src="images/aab442e8c104cb1444a88b7a3a987de5.png" width="100%" style="display: block; margin: auto;" />
 
 This section shows how you can **mix text and R code**. The start of this code is normal text. The \*M\* is still normal text (the \* and \* make sure the M is italicized, just as further down the \~av\~ indicates these letters should be subscript), but then you see R code. In R Markdown you can embed R code within \`r\`. Any R code within the two backticks will be executed. In this case, the mea 
 of the Congruent reaction times is calculated, and rounded to 2 digits. You can see this number in the text.
@@ -365,14 +324,12 @@ is a lot of code to make sure the exact *p*-value is reported, unless this *p*-v
 
 If you want to write a reproducible manuscript in **APA style** (common in for example psychology) you might want to try out the R package [papaja](https://github.com/crsh/papaja) created by Frederik Aust. Install the papaja package. **Restart RStudio**.Then, create a new R Markdown document, but instead of selecting the document option, select the ‘From Template’ option, and select the template APA article (6th edition) provided by the papaja package.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/b4edc7f85821527cd6f98a1c76dfc47d} \end{center}
+<img src="images/b4edc7f85821527cd6f98a1c76dfc47d.png" width="100%" style="display: block; margin: auto;" />
 
 You will see a template with a lot of fields for you to fill in, such as the title, author names and affiliation, the author note, the abstract, etc. Papaja takes care that all this information ends up in a nice lay-out – exactly following the APA rules. This means that if you have installed MiKTeX (to be  able to convert to PDF), you can knit the document to a pdf, and submit an APA formatted document that is completely reproducible. For a tutorial covering all options in papaja, including how to add citations:
 <https://crsh.github.io/papaja_man/index.html>
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/50d0fc917605c24a8839a66437f9c18b} \end{center}
+<img src="images/50d0fc917605c24a8839a66437f9c18b.png" width="100%" style="display: block; margin: auto;" />
 
 ## Step 7: Organizing Your Data and Code
 
@@ -388,36 +345,30 @@ Log in to the OSF at <https://osf.io/> (create an account if you haven’t alrea
 
 It is again important to add a **license** to your work, also on your OSF project. After having created a project, you can click ‘Add a license’:
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/372c6ba890617ecf396d540bed85698c} \end{center}
+<img src="images/372c6ba890617ecf396d540bed85698c.png" width="100%" style="display: block; margin: auto;" />
 
 You can again choose an MIT license. You will have to fill in a year, and the copyright holders – in this case, that is you, so fill in your name (it will appear in the license text). Then click
 
-
-\begin{center}\includegraphics[width=0.2\linewidth]{images/e137b9bdf5f301150dc3c06b6f3eb5ca} \end{center}
+<img src="images/e137b9bdf5f301150dc3c06b6f3eb5ca.png" width="20%" style="display: block; margin: auto;" />
 
 Although we could upload all our files to the OSF, we can also simply link our GitHub project to the OSF. In the menu bar of the OSF project, click on ‘Add-ons’. In the list, scroll to GitHub:
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/e25382896d7b290ad6649a6f2d5c13a2} \end{center}
+<img src="images/e25382896d7b290ad6649a6f2d5c13a2.png" width="100%" style="display: block; margin: auto;" />
 
 Follow the step-by-step guide to connect to GitHub provided by the OSF:
 <https://help.osf.io/hc/en-us/articles/360019929813-Connect-GitHub-to-a-Project>
 
 Select your repository that contains the reproducibility assignment and click ‘Save’.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/7570fb87913b1d687a9b8a3a72948e24} \end{center}
+<img src="images/7570fb87913b1d687a9b8a3a72948e24.png" width="100%" style="display: block; margin: auto;" />
 
 Click the title of the OSF project page to go back to the main project page. You will now see in the ‘Files’ pane that the GitHub repository is linked:
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/4ecc8e0af472a95a3f01baf3af0538cf} \end{center}
+<img src="images/4ecc8e0af472a95a3f01baf3af0538cf.png" width="100%" style="display: block; margin: auto;" />
 
 This is a good moment to click the ‘Make Public’ button in the top right of your project. After making the project public, people will be able to find it on the OSF. If you don’t want to make your project public just yet, but you do want to give others access to your files, you can create a **‘View-only’ link** on the OSF. Go to ‘Contributors’ and click the +Add button next to View-only links. For a step-by-step guide, see [this tutorial](https://help.osf.io/hc/en-us/articles/360019930333-Create-a-View-only-Link-for-a-Project).
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/fd54022300a51d07de93673aac3fb508} \end{center}
+<img src="images/fd54022300a51d07de93673aac3fb508.png" width="100%" style="display: block; margin: auto;" />
 
 You can use a view-only link to share access to your files only with reviewers. You can create an anonymized view-only link to hide your contributor names in the project - this is particularly useful in **blinded peer review**. Giving access to the files during peer review greatly helps reviewers – it will be a lot easier for them to answer any questions they might have about your materials, data, or code. Be aware it means that people you don’t know will have access to your files. So far, I don’t know of any negative experiences with this process, but it is important to be aware that others have access to your files before they are published.
 
@@ -425,13 +376,11 @@ The OSF page now just links to the files on the GitHub page. It does not indepen
 
 To create a snapshot of all files in the GitHub repository that will be stored for a long time, you have to create a **Registration** of your project. **We will not create a Registration of your project in this example. Creating a registration starts several formal procedures: data in linked repositories (such as GitHub) are stored by the OSF, and the project appears in the list of registrations. You should only register when you want to create a stable copy of your work.** Below you see an example of the files in an OSF project that has been registered. You see that the GitHub repository that was linked to the project has been turned into an Archive of GitHub – this creates a stable version of the project, as it was at the moment you registered.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/e0b28289fbe42988cbe04111e4aee6ad} \end{center}
+<img src="images/e0b28289fbe42988cbe04111e4aee6ad.png" width="100%" style="display: block; margin: auto;" />
 
 A good moment to create a stable version of your project is when your manuscript is accepted for publication. You can create a Registration and use the Digital Object Identifier (DOI) to link to the code, data, and materials in the paper (you can add this link to the DOI to the manuscript as you check the proofs of your article before it is published). Note that it is recommended to link to the materials using the **DOI**. The DOI is a persistent link (meaning it will keep  working) where a website address might change. A registration does not automatically get a DOI. After creating the Registration, you need to click the ‘Create DOI’ link to create a persistent object identifier.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/502f57cf747457838ed0a0e2c5af0496} \end{center}
+<img src="images/502f57cf747457838ed0a0e2c5af0496.png" width="100%" style="display: block; margin: auto;" />
 
 If you are ready to create a Registration, follow the instructions on the OSF: <https://help.osf.io/article/158-create-a-preregistration>. As an example of a Registration that was made to store all work related to one of my scientific publications, see <https://doi.org//10.17605/OSF.IO/9Z6WB> (this link is itself an example of how to link to an OSF project using a DOI).
 
@@ -442,23 +391,19 @@ If you have used the workflow above to create a reproducible manuscript, you mig
 
 Here, I’ll focus on a software solution that is designed to be easier to use than Docker, but provides many of the same benefits, called [Code Ocean](https://codeocean.com/). Code Ocean is a cloud-based computational reproducibility platform. You can create a computing capsule that runs online and contains all packages your code needs to run. Although Code Ocean does not (yet) guarantee long term storage of data and code, it is an interesting way to make your reproducible code available to fellow researchers, and makes it very easy for researchers (or reviewers) to make small changes to your code, and examine the results. Create a (free) account on CodeOcean. Go to the dashboard. Click the ‘New Capsule’ button and choose the option ‘Import Git Repository.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/b27f6ddcc48c4b808418612be7efd929} \end{center}
+<img src="images/b27f6ddcc48c4b808418612be7efd929.png" width="100%" style="display: block; margin: auto;" />
 
 Enter the web address of your GitHub repository and click import.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/51f0dab67e96b317ef54a0affabe14d6} \end{center}
+<img src="images/51f0dab67e96b317ef54a0affabe14d6.png" width="100%" style="display: block; margin: auto;" />
 
 Click on ‘Environment’ in the left pane. In the middle pane, click the R icon to select the programming language. At the time of writing this part of the chapter, the default language is 3.5.3, but you can click on ‘2 more versions’ and select the newest R version.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/d6a90fd36fce0555b797e269cdd8c992} \end{center}
+<img src="images/d6a90fd36fce0555b797e269cdd8c992.png" width="100%" style="display: block; margin: auto;" />
 
 We need to set up the Code Ocean environment to contain the packages we need. Click +Add behind apt-get, and type pandoc and click the return key two times (no need to specify a version of pandoc). Click +Add behind R (CRAN) and type in ggplot2, and click return twice (no need to select a specific version). Click +Add again, and type reshape2, click return twice. Click add once more, and type rmarkdown and click return twice.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/7be787e67b7e874fa88cfc2daae850b4} \end{center}
+<img src="images/7be787e67b7e874fa88cfc2daae850b4.png" width="100%" style="display: block; margin: auto;" />
 
 In the left pane, drag and drop the main_analysis.Rmd file into the ‘code’ folder, and the ‘stroop.csv’ file into the ‘data’ folder. Select the code folder, and click the + button in the bar on the top of the left pane to add a file. Name the file ‘run.sh’. This file will tell Code Ocean what to run. Select the file. The middle pane will be empty. Add the following code:
 
@@ -478,13 +423,11 @@ to
 
 We are no all done! Click the ‘Reproducible Run’ button in the right pane. You will get output:
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/6c4278d56ff2d9101052c74a61783b43} \end{center}
+<img src="images/6c4278d56ff2d9101052c74a61783b43.png" width="100%" style="display: block; margin: auto;" />
 
 Click on the ‘main_analysis.html’. You will see the script has generated our reproducible results. Commit the changes. You could (in principle – for this example we won’t) make this completely reproducible container openly available and share it with your published paper.
 
-
-\begin{center}\includegraphics[width=1\linewidth]{images/f8904ae8e964bd88b2c21078ea9e81f9} \end{center}
+<img src="images/f8904ae8e964bd88b2c21078ea9e81f9.png" width="100%" style="display: block; margin: auto;" />
 
 There is now a completely reproducible analysis file online. Anyone cannot just reproduce your data analysis – they can go into the main_analysis.Rmd file, and change anything they want in your code, and run it again. For example, let’s say you dislike the black straight line in the first scatterplot, and you want it to be red. It is easy to change ‘black’ to ‘red’ in line 42, and re-run the analysis, and you will get a figure with a red line. Although that might in itself not be very exciting, the ability to easily re-analyze data might be useful in more realistic scenarios. For example, imagine you are reviewing a paper where the researchers do not plot the data. Without having to install any software, you can just type in hist(stroop_data\$Congruent) after the data has been read in (e.g., on line 30), run the code again, and you will see a histogram for the reaction times in the Congruent condition. Give it a try.
 

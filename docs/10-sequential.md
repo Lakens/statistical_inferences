@@ -8,14 +8,10 @@ Sequential analyses should not be confused with [**optional stopping**](#optiona
 
 In sequential analysis a researcher designs a study such that they are able to perform **interim analyses**, say when 25%, 50%, and 75% of the data is collected. At each interim analysis a test is performed at a corrected alpha level, so that over all planned analyses the desired Type 1 error rate is maintained. Sequential analyses are commonly used in medical trials, where quickly discovering an effective treatment can be a matter of life and death. If at an interim analysis, researchers decide that a new drug is effective, in turn they may well want to terminate the trial and give the working drug to patients in the control condition to improve their health, or even save their lives. For example, the safety and efficacy of the Pfizer–BioNTech COVID-19 vaccine used an experimental design where they planned to analyze the data 5 times, and controlled the overall Type 1 error rate by lowering the alpha level for each [interim analysis](https://www.nejm.org/doi/suppl/10.1056/NEJMoa2034577/suppl_file/nejmoa2034577_protocol.pdf). 
     
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/vaccinetrial} 
-
-}
-
-\caption{Screenshot of the planned interim analyses examining the safety and Efficacy of the BNT162b2 mRNA Covid-19 Vaccine.}(\#fig:interim)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/vaccinetrial.png" alt="Screenshot of the planned interim analyses examining the safety and Efficacy of the BNT162b2 mRNA Covid-19 Vaccine." width="100%" />
+<p class="caption">(\#fig:interim)Screenshot of the planned interim analyses examining the safety and Efficacy of the BNT162b2 mRNA Covid-19 Vaccine.</p>
+</div>
     
 The use of sequential analyses is only slowly becoming more popular in many scientific disciplines, but sequential analysis techniques have a long history. As early as 1929, Dodge and Romig realized that analyzing the data sequentially was more efficient than doing so once [@dodge_method_1929]. @wald_sequential_1945, who popularized the idea of sequential tests of hypotheses in 1945, performed his work during the second world war. He was only allowed to publish his findings after the war had ended, as he explains in a historical note: 
 
@@ -97,27 +93,19 @@ We can check the output against the [Wikipedia page for the Pocock correction](h
 
 (ref:boundplot1lab) Plot of critical boundaries at each look for a 2 look design with a Pocock correction.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{10-sequential_files/figure-latex/boundplot1-1} 
-
-}
-
-\caption{(ref:boundplot1lab)}(\#fig:boundplot1)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="10-sequential_files/figure-html/boundplot1-1.png" alt="(ref:boundplot1lab)" width="100%" />
+<p class="caption">(\#fig:boundplot1)(ref:boundplot1lab)</p>
+</div>
 
 The analysis can also be performed in the `rpact` [shiny app](https://rpact.shinyapps.io/public/) which also allows users to create all plots through simple menu options, and download a complete report of the analyses (e.g., for a preregistration document). 
 
 (ref:rpactshinylab) Screenshot of rpact Shiny app.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/RPact1} 
-
-}
-
-\caption{(ref:rpactshinylab)}(\#fig:rpactshiny)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/rpact1.png" alt="(ref:rpactshinylab)" width="100%" />
+<p class="caption">(\#fig:rpactshiny)(ref:rpactshinylab)</p>
+</div>
 
 ## Comparing Spending Functions
 
@@ -125,14 +113,10 @@ We can vizualize the corrections for different types of designs for each of 3 lo
 
 (ref:fourspendingfunctionslab) Four different spending functions for 3 looks: O'Brien-Fleming (OF), Pocock (P), Haybittle-Peto (HP), Wang-Tsiatis (WT).
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{10-sequential_files/figure-latex/fourspendingfunctions-1} 
-
-}
-
-\caption{(ref:fourspendingfunctionslab)}(\#fig:fourspendingfunctions)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="10-sequential_files/figure-html/fourspendingfunctions-1.png" alt="(ref:fourspendingfunctionslab)" width="100%" />
+<p class="caption">(\#fig:fourspendingfunctions)(ref:fourspendingfunctionslab)</p>
+</div>
 
 We can see that the O'Brien and Fleming correction is much more conservative at the first look but is close to the uncorrected critical value of 1.96 at the last look (the black dashed line - for two-sided tests all critical values are mirrored in the negative direction): 3.471, 2.454, and 2.004. The Pocock correction has the same critical value at each look (2.289, 2.289, and 2.289). The Haybittle and Peto correction has the same critical value at each look but the last (3, 3, and 1.975). With the Wang and Tsiatis correction, critical values decrease with each look (2.741, 2.305, and 2.083).
 
@@ -149,14 +133,10 @@ The main benefit of these alpha spending functions is that error rates at interi
 
 (ref:seq-comparisonlab) Comparison of Pocock (P) and O'Brien-Fleming correction (OF), Pocock-like (asP) and O'Brien-Fleming like (asOF) alpha spending functions, for 5 looks.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{10-sequential_files/figure-latex/seq-comparison-1} 
-
-}
-
-\caption{(ref:seq-comparisonlab)}(\#fig:seq-comparison)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="10-sequential_files/figure-html/seq-comparison-1.png" alt="(ref:seq-comparisonlab)" width="100%" />
+<p class="caption">(\#fig:seq-comparison)(ref:seq-comparisonlab)</p>
+</div>
 
 ## Updating boundaries during a study
 
@@ -388,14 +368,10 @@ sample_res <- getPowerMeans(
 plot(sample_res, type = 6)
 ```
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{10-sequential_files/figure-latex/powerseq-1} 
-
-}
-
-\caption{(ref:powerseqlab)}(\#fig:powerseq)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="10-sequential_files/figure-html/powerseq-1.png" alt="(ref:powerseqlab)" width="100%" />
+<p class="caption">(\#fig:powerseq)(ref:powerseqlab)</p>
+</div>
 
 The blue line in Figure \@ref(fig:powerseq) indicates the expected number of observations we need to collect. Not surprisingly, when the true effect size is 0, we will almost always continue data collection to the end. We will only stop if we observe a Type 1 error, which is rare, and thus the expected number of observations is very close to the maximum sample size we are willing to collect. On the other side of the graph we see the scenario for when the true effect size is *d* = 1. With such a large effect size, we will have high power at our first look, and we will almost always be able to stop at the first look. The red line indicates the power at the final look, and the green line indicates the probability of stopping early. 
 
@@ -474,14 +450,10 @@ In Figure \@ref(fig:futility1) we see a sequential design where data collection 
 
 (ref:futility1lab) Pocock-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) when the observed effect is in the opposite direction.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{10-sequential_files/figure-latex/futility1-1} 
-
-}
-
-\caption{(ref:futility1lab)}(\#fig:futility1)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="10-sequential_files/figure-html/futility1-1.png" alt="(ref:futility1lab)" width="100%" />
+<p class="caption">(\#fig:futility1)(ref:futility1lab)</p>
+</div>
 
 Manually specifying the futility bounds is not ideal, as we risk stopping data collection because we fail to reject $H_0$, when there is a high probability of a Type 2 error. It is better to set the futility bounds by directly controlling the Type 2 error across looks at the data. Just as we are willing to distribute our Type I error rate across interim analyses, we can distribute our Type II error rate across looks, and decide to stop for futility when we fail to reject the effect size of interest with a desired Type 2 error rate. 
 
@@ -506,27 +478,19 @@ design <- getDesignGroupSequential(
 plot(design)
 ```
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{10-sequential_files/figure-latex/futility2-1} 
-
-}
-
-\caption{(ref:futility2lab)}(\#fig:futility2)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="10-sequential_files/figure-html/futility2-1.png" alt="(ref:futility2lab)" width="100%" />
+<p class="caption">(\#fig:futility2)(ref:futility2lab)</p>
+</div>
 
 With a beta-spending function, the expected number of subjects under $H_1$ will increase, so if the alternative hypothesis is true, designing a study to be able to stop for futility comes at a cost. However, it is possible that $H_0$ is true, and when it is, stopping for futility reduces the expected sample size. In Figure \@ref(fig:powerseq2) you can see that the probability of stopping (the green line) is now also high when the true effect size is 0, as we will now stop for futility, and if we do, the expected sample size (the blue line) is lower compared to \@ref(fig:powerseq). It is important to design studies that have a high informational value to reject the presence of a meaningful effect at the final analysis, but whether stopping for futility early is an option you want to build into a study is a choice that requires considering the probability that the null hypothesis is true and a (perhaps small) increase in the sample size. 
 
 (ref:powerseq2lab) Power curve for a sequential design with 2 looks with stopping for futility.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{10-sequential_files/figure-latex/powerseq2-1} 
-
-}
-
-\caption{(ref:powerseq2lab)}(\#fig:powerseq2)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="10-sequential_files/figure-html/powerseq2-1.png" alt="(ref:powerseq2lab)" width="100%" />
+<p class="caption">(\#fig:powerseq2)(ref:powerseq2lab)</p>
+</div>
 
 ## Reporting the results of a sequential analysis
 
@@ -570,17 +534,17 @@ res
 
 
 ```
-## [PROGRESS] Stage results calculated [0.0339 secs] 
-## [PROGRESS] Conditional power calculated [0.0316 secs] 
-## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.0009 secs] 
-## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.7774 secs] 
-## [PROGRESS] Repeated confidence interval of stage 2 calculated [1.07 secs] 
-## [PROGRESS] Repeated confidence interval calculated [1.85 secs] 
-## [PROGRESS] Repeated p-values of stage 1 calculated [0.3075 secs] 
-## [PROGRESS] Repeated p-values of stage 2 calculated [0.2763 secs] 
-## [PROGRESS] Repeated p-values calculated [0.5854 secs] 
-## [PROGRESS] Final p-value calculated [0.0015 secs] 
-## [PROGRESS] Final confidence interval calculated [0.0714 secs]
+## [PROGRESS] Stage results calculated [0.0416 secs] 
+## [PROGRESS] Conditional power calculated [0.0359 secs] 
+## [PROGRESS] Conditional rejection probabilities (CRP) calculated [0.0011 secs] 
+## [PROGRESS] Repeated confidence interval of stage 1 calculated [0.5764 secs] 
+## [PROGRESS] Repeated confidence interval of stage 2 calculated [0.5501 secs] 
+## [PROGRESS] Repeated confidence interval calculated [1.13 secs] 
+## [PROGRESS] Repeated p-values of stage 1 calculated [0.2249 secs] 
+## [PROGRESS] Repeated p-values of stage 2 calculated [0.2228 secs] 
+## [PROGRESS] Repeated p-values calculated [0.4488 secs] 
+## [PROGRESS] Final p-value calculated [0.0014 secs] 
+## [PROGRESS] Final confidence interval calculated [0.0598 secs]
 ```
 
 
@@ -754,14 +718,10 @@ D) The Type 1 error rate will not inflate, and the Type 2 error rate will not in
 
 (ref:futilityq13lab) Example of O'Brien-Fleming-type boundaries for 3 looks to stop when rejecting $H_0$ (red line) or to stop for futility (blue line) with a 5% Type 1 and Type 2 error.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{10-sequential_files/figure-latex/futilityq13-1} 
-
-}
-
-\caption{(ref:futilityq13lab)}(\#fig:futilityq13)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="10-sequential_files/figure-html/futilityq13-1.png" alt="(ref:futilityq13lab)" width="100%" />
+<p class="caption">(\#fig:futilityq13)(ref:futilityq13lab)</p>
+</div>
 
 A) You can reject $H_0$ and stop data collection.
 B) You can reject $H_1$ and stop data collection.

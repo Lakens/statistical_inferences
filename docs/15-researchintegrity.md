@@ -34,14 +34,10 @@ Researchers also flexibly analyse their data by selectively reporting conditions
 
 (ref:qrp) Self-admittance of engaging in a questionable research practices at least once from 14 surveys among a variety of samples of researchers .
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{15-researchintegrity_files/figure-latex/qrp-1} 
-
-}
-
-\caption{(ref:qrp)}(\#fig:qrp)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="15-researchintegrity_files/figure-html/qrp-1.png" alt="(ref:qrp)" width="100%" />
+<p class="caption">(\#fig:qrp)(ref:qrp)</p>
+</div>
 
 ## Fabrication, Falsification, and Plagiarism
 
@@ -102,14 +98,10 @@ A recent study by Pickett and Roche [-@pickett_questionable_2017] examined the p
 
 (ref:pickettroche) Table from Pickett and Roche (2017) showing judgments of how moral selective reporting1 and data fraud are in the eyes of members of the general public. 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/picketroche} 
-
-}
-
-\caption{(ref:pickettroche)}(\#fig:pickettroche)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/picketroche.png" alt="(ref:pickettroche)" width="100%" />
+<p class="caption">(\#fig:pickettroche)(ref:pickettroche)</p>
+</div>
 
 **Q6**: Assuming the results observed by Pickett and Roche, as well as the results by studies on questionable research practices summarized in Figure \@ref(fig:qrp) are accurate and representative, there seems to be a large divide between current research practices, and what the general public think is morally acceptable. Do you think this divide is problematic? Do you think that if the general public was perfectly aware of current practices related to selective reporting, they would have a reason to evaluate the ways scientists work negatively, or do you think that with a good explanation of current practices, the general public would evaluate current practices positively?
 
