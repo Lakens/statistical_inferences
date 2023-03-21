@@ -32,7 +32,7 @@ Cox [-@cox_problems_1958] writes:
 
 >it might be argued that in making an inference we are 'deciding' to make a statement of a certain type about the populations and that therefore, provided that the word decision is not interpreted too narrowly, the study of statistical decisions embraces that of inference. The point here is that one of the main general problems of statistical inference consists in deciding what types of statement can usefully be made and exactly what they mean.
 
-Thus, in a Neyman-Pearson approach, *p*-values form the basis of decisions about which claims to make. In science, such claims underly most novel experiments in the form of **auxiliary hypotheses**, or the assumptions about underlying hypotheses that are assumed to be accurate in order for a test to work as planned [@hempel_philosophy_1966]. For example, if it is important that participants can see color in a planned experiment, we assume it is true that the [Ishihara test](https://en.wikipedia.org/wiki/Ishihara_test) successfully identifies which participants are colorblind. 
+Thus, in a Neyman-Pearson approach, *p*-values form the basis of decisions about which claims to make. In science, such claims underlie most novel experiments in the form of **auxiliary hypotheses**, or the assumptions about underlying hypotheses that are assumed to be accurate in order for a test to work as planned [@hempel_philosophy_1966]. For example, if it is important that participants can see color in a planned experiment, we assume it is true that the [Ishihara test](https://en.wikipedia.org/wiki/Ishihara_test) successfully identifies which participants are colorblind. 
 
 ## Creating a null model
 
