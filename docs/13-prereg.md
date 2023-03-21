@@ -6,10 +6,14 @@ For as long as data has been used to support scientific claims, people have trie
 
 (ref:bemlab) Screenshot from the Results and Discussion section of Bem, 2011.
 
-<div class="figure" style="text-align: center">
-<img src="images/bem.png" alt="(ref:bemlab)" width="100%" />
-<p class="caption">(\#fig:bem)(ref:bemlab)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/bem} 
+
+}
+
+\caption{(ref:bemlab)}(\#fig:bem)
+\end{figure}
 
 It is clear there are 5 tests against guessing average (for erotic, neutral, negative, positive, and ‘romantic but non-erotic’ pictures). A Bonferroni correction would lead us to use an alpha level of 0.01 (an alpha of 0.05/5 tests) and the main result, that participants guessed the future position of erotic pictures above guessing average, with a *p*-value of 0.013, would not have allowed Bem to reject the null hypothesis, given a pre-specified alpha level corrected for multiple comparisons.
 
@@ -35,10 +39,14 @@ The requirement to register the primary outcome of interest on [ClinicalTrials.g
 
 (ref:kaplan) Figure from Kaplan and Irvin (2015) showing the substantial drop in statistically significant results after the registration of primary outcomes was required on ClinicalTrials.gov. 
 
-<div class="figure" style="text-align: center">
-<img src="images/kaplan2015.png" alt="(ref:kaplan)" width="100%" />
-<p class="caption">(\#fig:kaplan2015)(ref:kaplan)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/kaplan2015} 
+
+}
+
+\caption{(ref:kaplan)}(\#fig:kaplan2015)
+\end{figure}
 
 When implemented perfectly, study registries allow the scientific community to know about the planned analyses before data collection, and the main result of the planned hypotheses. However, these results might not necessarily end up in the published literature, and this is especially a risk for studies where predictions are not confirmed. One step beyond study registration is a novel publication format known as **Registered Reports**. Journals that publish Registered evaluate studies based on the introduction, method, and statistical analyses, but not on the results [@chambers_past_2022; @nosek_registered_2014]. The idea to review studies before data collection is not new, and has proposed repeatedly during the last half century [@wiseman_registered_2019]. As discussed in the section on [publication bias](#publicationbias), Registered Reports have a substantially larger probability of reporting findings that do not support the hypotheses compared to the traditional scientific literature [@scheel_excess_2021]. 
 
@@ -58,10 +66,14 @@ The more detail a preregistration document has, the easier it is for others to t
 
 (ref:preregcheclistlab) Screenshot of Table 1 in Wicherts et al., 2016, which depicts the checklist for preregistrations.
 
-<div class="figure" style="text-align: center">
-<img src="images/preregchecklist.png" alt="(ref:preregcheclistlab)" width="100%" />
-<p class="caption">(\#fig:preregcheclist)(ref:preregcheclistlab)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/preregchecklist} 
+
+}
+
+\caption{(ref:preregcheclistlab)}(\#fig:preregcheclist)
+\end{figure}
 
 Although these checklists were useful to introduce scientists to the idea of preregistration, it is important to raise the bar to the level we need to have high quality preregistrations that actually fulfill their goal to allow peer to evaluate the severity of a test. The first step towards this is for authors to follow reporting guidelines in their field. In psychology, this means following the Journal Article Reporting Standards (JARS) [@appelbaum_journal_2018]. The reporting guidelines encompass more suggestions than needed for a preregistration document, but I would recommend using JARS both for your preregistration document and when writing up the final report, as it is a very well-thought through set of recommendations. Taking JARS into account when planning or reporting your research is likely to improve your research.
 
@@ -93,7 +105,10 @@ Clearly stating the intended sample size prevents practices such as optional sto
 
 Because there is a range of possible sample size justifications, I recommend using the online Shiny app that accompanies the [sample size justification](#power) chapter. The Shiny app can be found [here](https://shiny.ieis.tue.nl/sample_size_justification/). The Shiny app guides you through four steps. 
 
-<iframe src="https://shiny.ieis.tue.nl/sample_size_justification/" width="100%" height="400px" data-external="1"></iframe>
+
+```
+## NULL
+```
 
 First, researchers should specify the population they are sampling from. To describe the sample, researchers can simply follow the JARS guidelines, such as the Quantitative Design Reporting Standards:
 
@@ -129,10 +144,14 @@ A hypothesis test is a methodological procedure to evaluate a prediction that ca
 
 (ref:expconf) Different study types plotted on a dimension from fully exploratory to fully confirmatory (from Waldron & Allen, 2022).
 
-<div class="figure" style="text-align: center">
-<img src="images/expconf.png" alt="(ref:expconf)" width="100%" />
-<p class="caption">(\#fig:expconf)(ref:expconf)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/expconf} 
+
+}
+
+\caption{(ref:expconf)}(\#fig:expconf)
+\end{figure}
 
 Preregistration is a relatively new practice for most researchers. It should not be surprising that there is often quite some room for improvement in the way researchers preregister. It is not sufficient to preregister - the goal is to preregister well enough so that others can evaluate the severity with which you tested your hypothesis. How do we do this? First, it is important to acknowledge that it is difficult to describe a hypothesis verbally. Just like we use notation to describe statistics because it removes ambiguity, verbal descriptions of hypotheses rarely sufficiently constrain potential flexibility in the data analysis. 
 
@@ -160,10 +179,14 @@ One of my favorite movies is Fight Club. It stars Brad Pitt and Edward Norton. A
 
 (ref:imdbratinglab) Screenshot of a IMDB and metacritic rating.
 
-<div class="figure" style="text-align: center">
-<img src="images/imdbrating.png" alt="(ref:imdbratinglab)" width="40%" />
-<p class="caption">(\#fig:imdbrating)(ref:imdbratinglab)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.4\linewidth]{images/imdbrating} 
+
+}
+
+\caption{(ref:imdbratinglab)}(\#fig:imdbrating)
+\end{figure}
 
 I will operationalize movie ratings as the IMDB scores, and movies that star Brad Pitt or Edward Norton as all movies they have appeared in, according to the following two search commands on IMDB: 
 
@@ -282,32 +305,39 @@ Go to https://pasa.psycharchives.org. Log in with your ORCID if you have one or 
 
 Click ‘Start a new submission’
 
-<img src="images/psycharchives1.png" width="40%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=0.4\linewidth]{images/psycharchives1} \end{center}
 
 and scroll down to the preregistration option and click it. 
-<img src="images/psycharchives2.png" width="100%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=1\linewidth]{images/psycharchives2} \end{center}
  
 You will see a recommendation to submit your preregistration in a PDF/A file, which is a PDF which does not allow certain restrictions that hinder long-term archiving. This already reveals how PsychArchives will ask you to meet certain standards that they deem best practices, that you might not think about yourself. This is a good thing!
 
 In Microsoft word, you can save a file as a PDF/A compliant pdf file by choosing ‘File’> ‘Save As’, choose PDF from the dropdown menu, click on ‘More options…’ below the dropdown menu:
 
-<img src="images/psycharchives3.png" width="40%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=0.4\linewidth]{images/psycharchives3} \end{center}
  
 Click the ‘Options…’ button:
 
-<img src="images/psycharchives4.png" width="100%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=1\linewidth]{images/psycharchives4} \end{center}
 
 And  check the box: PDF/A compliant
 
-<img src="images/psycharchives5.png" width="100%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=1\linewidth]{images/psycharchives5} \end{center}
 
 When opening a PDF/A compliant PDF, some PDF readers will show a warning message:
 
-<img src="images/psycharchives6.png" width="100%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=1\linewidth]{images/psycharchives6} \end{center}
 
 Click ‘Next’. You can now upload a preregistration document. PsychArchives will motivate you to add descriptions and meta-data to files. 
 
-<img src="images/psycharchives7.png" width="100%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=1\linewidth]{images/psycharchives7} \end{center}
 
 You then choose a sharing level (level 0 means the file is for public use, level 1 is for scientific use only) and a license. Click ‘Save and Next’.
 
@@ -315,7 +345,8 @@ Now we see why PsychArchives is setting a higher bar then some other services, b
 
 When you submit your preregistration, you will see that your preregistration will be manually checked. Staff at PsychArchives will check whether your submission adheres to all guidelines. If not, you will be told what to improve, and have to resubmit the file. Note that this check is about the uploaded files and meta-data – staff does not check the quality of your preregistration!
   
-<img src="images/psycharchives8.png" width="100%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=1\linewidth]{images/psycharchives8} \end{center}
 
 You can find the PsychArchives preregistration at the following persistent identifier link: https://doi.org/10.23668/psycharchives.12575 
 
@@ -323,7 +354,8 @@ You can find the PsychArchives preregistration at the following persistent ident
 
 Go to [www.osf.io](http://www.osf.io), create an account or log in, and click the button 'Create new project'. Enter a title. If you are from Europe, and you want to adhere to the GDPR privacy regulations, make sure to select 'Germany' as the storage location. Click 'Create', and click 'Go to project'. 
 
-<img src="images/osf1.png" width="100%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=1\linewidth]{images/osf1} \end{center}
 
 Add a description, so that others will understand what this project is about, and a license, so that others know how they can re-use any material you are sharing.
 
@@ -335,7 +367,8 @@ To preregister a study, click the 'Registrations' button in the top bar, and cli
 
 For hypothesis testing research the default OSF preregistration template will provide a useful structure to your preregistration. It will also allow you to upload supplementary files (such as the html file detailing our sample size justification that we created above). 
 
-<img src="images/895c7caf7508910ae52cc2d09e06f31c.png" width="100%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=1\linewidth]{images/895c7caf7508910ae52cc2d09e06f31c} \end{center}
 
 You will be asked a range of relevant questions to complete. For a completed preregistration related to the study comparing movie ratings of movies starring Brad Pitt and Edward Norton, see: https://doi.org/10.17605/OSF.IO/RJYCP. Note that all pre-registrations on the OSF will become public after four years. This is the only platform where you will not be able to keep your preregistrations private indefinitely. 
 
@@ -347,12 +380,14 @@ AsPredicted offers a preregistration service with a focus on simplicity. The web
 
 Go to <https://aspredicted.org/> and create a new AsPredicted pre-registration by clicking the 'create' button. Fill in your name, e-mail, and institution.
 
-<img src="images/aspredicted1.png" width="100%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=1\linewidth]{images/aspredicted1} \end{center}
 
 Scroll down, and answer questions 1 to 11. At 2) paste your answer to Q1, at 3) paste your answer to Q2, at 4) explain how many groups you will compare (e.g., Edward Norton vs. Brad Pitt), at 5) and 6) enter the answer at Q4, and at 7) enter the answer from Q3. Answer the remaining questions. Please indicate at 10) that you are using AsPredicted for a ‘Class project or assignment’ if you want to complete an actual preregistration.
 
 Preview your pre-registration, and submit the preregistration. If you have added co-authors, they need to approve the submission. AsPredicted gives you the option to make an anonymous PDF file for peer review purposes, or you can just make the preregistration public.
 
-<img src="images/aspredicted2.png" width="100%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=1\linewidth]{images/aspredicted2} \end{center}
 
 To share your preregistration during the review process, AsPredicted allows you to download an anonymous PDF. You can see the preregistration corresponding to the research question above at: https://aspredicted.org/nx35m.pdf
