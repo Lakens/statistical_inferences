@@ -1,21 +1,28 @@
 <script>
-$( document ).ready(function() {
-  var cite = ' ';
-  var license = ' <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="blank"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"></a>';
+// open rdrr links externally ----
 
-  $("footer div.row div:eq(1) p").html(
-    license + cite
-  );
+var exlinks = document.querySelectorAll("a[href^='https://rdrr.io']");
+var exlink_func = function(){
+  window.open(this.href);
+  return false;
+};
+for (var i = 0; i < exlinks.length; i++) {
+    exlinks[i].addEventListener('click', exlink_func, false);
+}
 
-  function move_sidebar() {
-    var w = window.innerWidth;
-    if (w < 992) {
-      $("#toc").appendTo($("#main-nav"));
-    } else {
-      $("#toc").appendTo($("div.sidebar-chapter"));
-    }
+// visible second sidebar in mobile ----
+
+function move_sidebar() {
+  var toc = document.getElementById("TOC");
+  var small_sidebar = document.querySelector("#quarto-sidebar .sidebar-menu-container");
+  var right_sidebar = document.getElementById("quarto-margin-sidebar");
+
+  if (window.innerWidth < 768) {
+    small_sidebar.append(toc);
+  } else {
+    right_sidebar.append(toc);
   }
-  move_sidebar();
-  window.onresize = move_sidebar;
-});
+}
+move_sidebar();
+window.onresize = move_sidebar;
 </script>

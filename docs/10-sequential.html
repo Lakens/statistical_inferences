@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.310">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="description" content="This open educational resource contains information to improve statistical inferences, design better experiments, and report scientific research more transparently.">
+<title>Improving Your Statistical Inferences - 10&nbsp; Sequential Analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./11-meta.html" rel="next">
+<link href="./09-equivalencetest.html" rel="prev">
+<link href="./images/logos/favicon.ico" rel="icon">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><script async="" src="https://www.googletagmanager.com/gtag/js?id=G-0MK2WTGRM3"></script><script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
+</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><link rel="stylesheet" href="include/booktem.css">
+<link rel="stylesheet" href="include/style.css">
+<link rel="stylesheet" href="include/webex.css">
+</head>
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-sequential.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Sequential Analysis</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Improving Your Statistical Inferences</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/Lakens/statistical_inferences" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Download" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="./Improving-Your-Statistical-Inferences.pdf">
+              <i class="bi bi-bi-file-pdf pe-1"></i>
+            Download PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="./Improving-Your-Statistical-Inferences.epub">
+              <i class="bi bi-bi-journal pe-1"></i>
+            Download ePub
+            </a>
+          </li>
+      </ul>
+</div>
+    <a href="https://twitter.com/intent/tweet?url=%7Curl%7C" title="Twitter" class="quarto-navigation-tool px-1" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Overview</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-pvalue.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Using <em>p</em>-values to test a hypothesis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-errorcontrol.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Error control</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-likelihoods.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Likelihoods</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-bayes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Bayesian statistics</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-questions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Asking Statistical Questions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-effectsize.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Effect Sizes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-CI.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Confidence Intervals</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-samplesizejustification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Sample Size Justification</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-equivalencetest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Equivalence Testing and Interval Hypotheses</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-sequential.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Sequential Analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-meta.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Meta-analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-bias.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Bias detection</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-prereg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Preregistration and Transparency</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-computationalreproducibility.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Computational Reproducibility</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-researchintegrity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Research Integrity</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li><a href="#choosing-alpha-levels-for-sequential-analyses." id="toc-choosing-alpha-levels-for-sequential-analyses." class="nav-link active" data-scroll-target="#choosing-alpha-levels-for-sequential-analyses."><span class="header-section-number">10.1</span> Choosing alpha levels for sequential analyses.</a></li>
+  <li><a href="#the-pocock-correction" id="toc-the-pocock-correction" class="nav-link" data-scroll-target="#the-pocock-correction"><span class="header-section-number">10.2</span> The Pocock correction</a></li>
+  <li><a href="#comparing-spending-functions" id="toc-comparing-spending-functions" class="nav-link" data-scroll-target="#comparing-spending-functions"><span class="header-section-number">10.3</span> Comparing Spending Functions</a></li>
+  <li><a href="#alpha-spending-functions" id="toc-alpha-spending-functions" class="nav-link" data-scroll-target="#alpha-spending-functions"><span class="header-section-number">10.4</span> Alpha spending functions</a></li>
+  <li><a href="#updating-boundaries-during-a-study" id="toc-updating-boundaries-during-a-study" class="nav-link" data-scroll-target="#updating-boundaries-during-a-study"><span class="header-section-number">10.5</span> Updating boundaries during a study</a></li>
+  <li><a href="#sample-size-for-sequential-designs" id="toc-sample-size-for-sequential-designs" class="nav-link" data-scroll-target="#sample-size-for-sequential-designs"><span class="header-section-number">10.6</span> Sample Size for Sequential Designs</a></li>
+  <li><a href="#stopping-for-futility" id="toc-stopping-for-futility" class="nav-link" data-scroll-target="#stopping-for-futility"><span class="header-section-number">10.7</span> Stopping for futility</a></li>
+  <li><a href="#reporting-the-results-of-a-sequential-analysis" id="toc-reporting-the-results-of-a-sequential-analysis" class="nav-link" data-scroll-target="#reporting-the-results-of-a-sequential-analysis"><span class="header-section-number">10.8</span> Reporting the results of a sequential analysis</a></li>
+  <li>
+<a href="#test-yourself" id="toc-test-yourself" class="nav-link" data-scroll-target="#test-yourself"><span class="header-section-number">10.9</span> Test Yourself</a>
+  <ul class="collapse">
+<li><a href="#open-questions" id="toc-open-questions" class="nav-link" data-scroll-target="#open-questions"><span class="header-section-number">10.9.1</span> Open Questions</a></li>
+  </ul>
+</li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/Lakens/statistical_inferences/edit/main/10-sequential.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/Lakens/statistical_inferences/issues/new" class="toc-action">Report an issue</a></p><p><a href="https://github.com/Lakens/statistical_inferences/blob/main/10-sequential.qmd" class="toc-action">View source</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title"><span id="sec-sequential" class="quarto-section-identifier"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Sequential Analysis</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header><p>Repeatedly analyzing incoming data while data collection is in progress has many advantages. Researchers can stop the data collection at an interim analysis when they can reject the null hypothesis or the smallest effect size of interest, even if they would be willing to collect more data if needed, or if the results show there is an unexpected problem with the study (e.g., participants misunderstand the instructions or questions). One could easily argue that psychological researchers have an ethical obligation to repeatedly analyze accumulating data, given that continuing data collection whenever the desired level of confidence is reached, or whenever it is sufficiently clear that the expected effects are not present, is a waste of the time of participants and the money provided by taxpayers. In addition to this ethical argument, designing studies that make use of sequential analyses can be more efficient than when data is only analyzed a single time, when the maximum sample size a researcher is willing to collect has been reached.</p>
+<p>Sequential analyses should not be confused with <a href="02-errorcontrol.html#sec-optionalstopping"><strong>optional stopping</strong></a>, which was discussed in the chapter on error control. In optional stopping, researchers use an unadjusted alpha level (e.g., 5%) to repeatedly analyze the data as it comes in, which can substantially inflate the Type 1 error rate. The critical difference with <strong>sequential analysis</strong> is that the Type 1 error rate is controlled. By lowering the alpha level at each interim analysis, the overall Type I error rate can be controlled, much like a Bonferroni correction is used to prevent inflation of the Type 1 error rate for multiple comparisons. Indeed, the Bonferroni correction is a valid (but conservative) approach to control the error rate in sequential analyses <span class="citation" data-cites="wassmer_group_2016">(<a href="references.html#ref-wassmer_group_2016" role="doc-biblioref">Wassmer &amp; Brannath, 2016</a>)</span>.</p>
+<p>In sequential analysis a researcher designs a study such that they are able to perform <strong>interim analyses</strong>, say when 25%, 50%, and 75% of the data is collected. At each interim analysis a test is performed at a corrected alpha level, so that over all planned analyses the desired Type 1 error rate is maintained. Sequential analyses are commonly used in medical trials, where quickly discovering an effective treatment can be a matter of life and death. If at an interim analysis, researchers decide that a new drug is effective, in turn they may well want to terminate the trial and give the working drug to patients in the control condition to improve their health, or even save their lives. For example, the safety and efficacy of the Pfizer–BioNTech COVID-19 vaccine used an experimental design where they planned to analyze the data 5 times, and controlled the overall Type 1 error rate by lowering the alpha level for each <a href="https://www.nejm.org/doi/suppl/10.1056/NEJMoa2034577/suppl_file/nejmoa2034577_protocol.pdf">interim analysis</a>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="images/vaccinetrial.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Screenshot of the planned interim analyses examining the safety and Efficacy of the BNT162b2 mRNA Covid-19 Vaccine.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The use of sequential analyses is only slowly becoming more popular in many scientific disciplines, but sequential analysis techniques have a long history. As early as 1929, Dodge and Romig realized that analyzing the data sequentially was more efficient than doing so once <span class="citation" data-cites="dodge_method_1929">(<a href="references.html#ref-dodge_method_1929" role="doc-biblioref">Dodge &amp; Romig, 1929</a>)</span>. <span class="citation" data-cites="wald_sequential_1945">Wald (<a href="references.html#ref-wald_sequential_1945" role="doc-biblioref">1945</a>)</span>, who popularized the idea of sequential tests of hypotheses in 1945, performed his work during the second world war. He was only allowed to publish his findings after the war had ended, as he explains in a historical note:</p>
+<blockquote class="blockquote">
+<p>Because of the substantial savings in the expected number of observations effected by the sequential probability ratio test, and because of the simplicity of this test procedure in practical applications, the National Defense Research Committee considered these developments sufficiently useful for the war effort to make it desirable to keep the results out of the reach of the enemy, at least for a certain period of time. The author was, therefore, requested to submit his findings in a restricted report which was dated September, 1943.</p>
+</blockquote>
+<p>Sequential analyses are well-established procedures, and have been developed in great detail over the last decades <span class="citation" data-cites="proschan_statistical_2006 jennison_group_2000 wassmer_group_2016">(<a href="references.html#ref-jennison_group_2000" role="doc-biblioref">Jennison &amp; Turnbull, 2000</a>; <a href="references.html#ref-proschan_statistical_2006" role="doc-biblioref">Proschan et al., 2006</a>; <a href="references.html#ref-wassmer_group_2016" role="doc-biblioref">Wassmer &amp; Brannath, 2016</a>)</span>. Here, we will explain the basics of how to control error rates in group sequential analyses, perform a-priori power analysis and compare when sequential designs will be more or less efficient than fixed designs. Before we discuss these topics, it is useful to clarify some terminology. A <strong>look</strong> (also called <strong>stage</strong>) means analyzing all the data collected up to a specific point; that is, you look after 50, 100, and 150 observations, and analyze all the data that has been collected up to that point. After 50 and 100 observations we perform an <strong>interim analysis</strong>, and after 150 observations we perform the <strong>final analysis</strong>, after which we always stop. Not all looks have to occur in practice. If the analysis reveals a statistically significant result at look 1, data collection can be terminated. We can stop because we reject <span class="math inline">\(H_0\)</span> (e.g., in a null hypothesis significance test), or because we reject <span class="math inline">\(H_1\)</span> (e.g., in an equivalence test). We can also stop for <strong>curtailment</strong> or for <strong>futility</strong>: It is either impossible, or very unlikely for the final analysis to yield p &lt; alpha. The <strong>overall alpha level</strong> in a sequential design differs from the alpha level at each look. For example, if we want an overall Type I error rate of 5% for a two-sided test with 3 looks, the alpha level for each look could be 0.0221 (if we decide to use the correction for the alpha level proposed by <span class="citation" data-cites="pocock_group_1977">Pocock (<a href="references.html#ref-pocock_group_1977" role="doc-biblioref">1977</a>)</span>). In this chapter we will focus on group sequential designs, where data is collected in multiple groups, but other sequential approaches exist, as explained in the chapter on <a href="#sequentialsamplesize">sample size justification</a>.</p>
+<section id="choosing-alpha-levels-for-sequential-analyses." class="level2" data-number="10.1"><h2 data-number="10.1" class="anchored" data-anchor-id="choosing-alpha-levels-for-sequential-analyses.">
+<span class="header-section-number">10.1</span> Choosing alpha levels for sequential analyses.</h2>
+<p>If one would analyze the data at multiple looks without correcting the alpha level, the Type 1 error rate would inflate <span class="citation" data-cites="armitage_repeated_1969">(<a href="references.html#ref-armitage_repeated_1969" role="doc-biblioref">Armitage et al., 1969</a>)</span>. As Armitage and colleagues show, with equally spaced looks, the alpha level inflates to 0.142 after 5 looks, 0.374 after 100 looks, and 0.530 after 1000 looks. Looking at the data twice is conceptually similar to deciding if a result is significant if one of two dependent variables shows a statistically significant effect. However, an important difference is that in the case of sequential analyses the multiple tests are not independent, but dependent. A test at look 2 combines the old data collected at look 1 with the new data at look 2. This means the Type 1 error rate inflates less quickly compared to independent tests, and we will see below this enables more efficient and flexible solutions to controlling error rates.</p>
+<p>When controlling the Type 1 error rate in sequential analyses, a decision needs to be made about how to spend the alpha level across all looks at the data. For example, when a researcher plans a study with one interim look and one final look at the data, boundary critical Z-values need to be set for the first look (at <em>n</em> out of <em>N</em> observations) and the second look (at <em>N</em> observations). These two critical values, <span class="math inline">\(c_1\)</span> and <span class="math inline">\(c_2\)</span> (for the first and the second analysis) need to be chosen such that the overall probability (Pr) that the null hypothesis is rejected – when in the first analysis the observed Z-score is larger than the critical value for the first look, <span class="math inline">\(Z_n\)</span> ≥ <span class="math inline">\(c_1\)</span>, and (if we did not reject the hypothesis in the first analysis, so <span class="math inline">\(Z_n\)</span> &lt; <span class="math inline">\(c_1\)</span>, and we continue data collection) when in the second analysis the observed Z-score is larger than the critical value for the second look, <span class="math inline">\(Z_N\)</span> ≥ <span class="math inline">\(c_2\)</span> – equals the desired overall alpha level when the null hypothesis is true. In formal terms, for a directional test:</p>
+<p><span class="math display">\[
+Pr\{Z_n \geq c_1\} + Pr\{Z_n &lt; c_1, Z_N \geq c_2\} = \alpha
+\]</span></p>
+<p>With more than one interim analysis, additional critical values have to be determined following the same rationale. If you combine multiple looks at the data with multiple comparisons, you would correct the alpha level twice, once for multiple comparisons, and then for multiple looks. Because the alpha level is corrected, it does not matter which statistical test you perform at each look, all that matters is that the <em>p</em>-value is compared to the corrected alpha level. The corrections discussed below are valid for any design where the data is normally distributed, and where each group of observations is independent of the previous group.</p>
+</section><section id="the-pocock-correction" class="level2" data-number="10.2"><h2 data-number="10.2" class="anchored" data-anchor-id="the-pocock-correction">
+<span class="header-section-number">10.2</span> The Pocock correction</h2>
+<p>The first decision researchers need to make is how they want to correct the Type I error rate across looks. Four common approaches are the Pocock correction, the O’Brien-Fleming correction, the Haybittle &amp; Peto correction, and the Wang and Tsiatis approach. Users are also free to specify their own preferred way to spend the alpha level across looks.</p>
+<p>The Pocock correction is the simplest way to correct the alpha level for multiple looks. Conceptually, it is very similar to the Bonferroni correction. The Pocock correction has been created such that the alpha level is identical for each look at the data, resulting in constant critical values (expressed as <em>z</em> values) <span class="math inline">\(u_k = c\)</span> to reject the null hypothesis, <span class="math inline">\(H_0\)</span>, at look <span class="math inline">\(k\)</span>. The following code uses the package <code>rpact</code> to design a study for a sequential analysis:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(rpact)</span>
+<span id="cb1-2"><a href="#cb1-2"></a>design <span class="ot">&lt;-</span> <span class="fu">getDesignGroupSequential</span>(</span>
+<span id="cb1-3"><a href="#cb1-3"></a>  <span class="at">kMax =</span> <span class="dv">2</span>,</span>
+<span id="cb1-4"><a href="#cb1-4"></a>  <span class="at">typeOfDesign =</span> <span class="st">"P"</span>,</span>
+<span id="cb1-5"><a href="#cb1-5"></a>  <span class="at">sided =</span> <span class="dv">2</span>,</span>
+<span id="cb1-6"><a href="#cb1-6"></a>  <span class="at">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb1-7"><a href="#cb1-7"></a>  <span class="at">beta =</span> <span class="fl">0.1</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a>)</span>
+<span id="cb1-9"><a href="#cb1-9"></a>design</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Design parameters and output of group sequential design:
+
+User defined parameters:
+  Type of design                               : Pocock 
+  Maximum number of stages                     : 2 
+  Stages                                       : 1, 2 
+  Significance level                           : 0.0500 
+  Type II error rate                           : 0.1000 
+  Test                                         : two-sided 
+
+Derived from user defined parameters:
+  Information rates                            : 0.500, 1.000 
+
+Default parameters:
+  Two-sided power                              : FALSE 
+  Tolerance                                    : 0.00000001 
+
+Output:
+  Cumulative alpha spending                    : 0.02939, 0.05000 
+  Critical values                              : 2.178, 2.178 
+  Stage levels (one-sided)                     : 0.01469, 0.01469 </code></pre>
+</div>
+</div>
+<p>The output tells us we have designed a study with 2 looks (one interim, one final) using the Pocock spending function. The last line returns one-sided alpha levels. The <code>rpact</code> package focuses on Confirmatory Adaptive Clinical Trial Design and Analysis. In clinical trials, researchers mostly test directional predictions, and thus, the default setting is to perform a one-sided test. In clinical trials it is common to use a 0.025 significance level for one-sided tests, but in many other fields, 0.05 is a more common default. We can get the two-sided alpha levels by multiplying the one-sided alpha levels by two:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>design<span class="sc">$</span>stageLevels <span class="sc">*</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.02938579 0.02938579</code></pre>
+</div>
+</div>
+<p>We can check the output against the <a href="https://en.wikipedia.org/wiki/Pocock_boundary">Wikipedia page for the Pocock correction</a> where we indeed see that with 2 looks at the data the alpha level for each look is 0.0294. The Pocock correction is slightly more efficient than using a Bonferroni correction (in which case the alpha levels would be 0.025), because of the dependency in the data (at the second look, the data analyzed at the first look is again part of the analysis).</p>
+<p><code>rpact</code> makes it easy to plot the boundaries (based on the critical values) for each look. Looks are plotted as a function of the ‘Information Rate’, which is the percentage of the total data that has been collected at a look. In Figure @ref(fig:boundplot1) there are two equally spaced looks, so when 50% of the data has been collected (Information Rate 0.5) and when 100% of the data has been collected (Information Rate 1). We see the critical values (solid black lines) are larger than the 1.96 we would use for a fixed design with a 5% alpha level, namely <em>Z</em> = 2.178 (black dashed line). Whenever we observe a test statistic that is more extreme than these critical values at the first or second look, we can reject the null hypothesis.</p>
+<div class="cell" data-layout-align="center" data-fig.margin="false">
+<div class="cell-output-display">
+<div id="fig-boundplot1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="10-sequential_files/figure-html/fig-boundplot1-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;10.1: Plot of critical boundaries at each look for a 2 look design with a Pocock correction.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The analysis can also be performed in the <code>rpact</code> <a href="https://rpact.shinyapps.io/public/">shiny app</a> which also allows users to create all plots through simple menu options, and download a complete report of the analyses (e.g., for a preregistration document).</p>
+<div class="cell" data-layout-align="center" data-fig.margin="false">
+<div class="cell-output-display">
+<div id="fig-rpactshiny" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="images/rpact1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;10.2: Screenshot of rpact Shiny app.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="comparing-spending-functions" class="level2" data-number="10.3"><h2 data-number="10.3" class="anchored" data-anchor-id="comparing-spending-functions">
+<span class="header-section-number">10.3</span> Comparing Spending Functions</h2>
+<p>We can visualize the corrections for different types of designs for each of 3 looks (2 interim looks and one final look) in the same plot (see Figure @ref(fig:fourspendingfunctions)). The plot below shows the Pocock, O’Brien-Fleming, Haybittle-Peto, and Wang-Tsiatis correction with <span class="math inline">\(\Delta\)</span> = 0.25. We see that researchers can choose different approaches to spend their alpha level across looks. Researchers can choose to spend their alpha conservatively (keeping most of the alpha for the last look), or more liberally (spending more alpha at the earlier looks, which increases the probability of stopping early for many true effect sizes).</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-fourspendingfunctions" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="10-sequential_files/figure-html/fig-fourspendingfunctions-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;10.3: our different spending functions for 3 looks: O’Brien-Fleming (OF), Pocock (P), Haybittle-Peto (HP), Wang-Tsiatis (WT).</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We can see that the O’Brien and Fleming correction is much more conservative at the first look but is close to the uncorrected critical value of 1.96 at the last look (the black dashed line - for two-sided tests all critical values are mirrored in the negative direction): 3.471, 2.454, and 2.004. The Pocock correction has the same critical value at each look (2.289, 2.289, and 2.289). The Haybittle and Peto correction has the same critical value at each look but the last (3, 3, and 1.975). With the Wang and Tsiatis correction, critical values decrease with each look (2.741, 2.305, and 2.083).</p>
+<p>Being conservative during early looks is sensible if you mainly want to monitor the results for unexpected developments. A Pocock correction is more useful when there is substantial uncertainty both in whether an effect is present and how large the effect size is, as it gives a higher probability of stopping the experiment early if the effects are large. Because the statistical power of a test depends on the alpha level, lowering the alpha level at the final look means that the statistical power is lower compared to a fixed design, and that to achieve a desired power, the sample size of a study needs to be increased to maintain the same statistical power at the last look. This increase in sample size can be compensated by stopping data collection early, in which case a sequential design is more efficient than a fixed design. Because the alpha at the last look for O’Brien-Fleming or Haybittle-Peto designs are very similar to the statistical power for a fixed design with only one look, the required sample size is also very similar. The Pocock correction requires a larger increase in the maximum sample size to achieve the desired power compared to a fixed design.</p>
+<p>Corrected alpha levels can be computed to many digits, but this quickly reaches a level of precision that is meaningless in real life. The observed Type I error rate for all tests you will do in your lifetime is not noticeably different if you set the alpha level at 0.0194, 0.019, or 0.02 (see the concept of ‘<a href="https://en.wikipedia.org/wiki/Significant_figures">significant digits</a>’. Even as we calculate and use alpha thresholds up to many digits in sequential tests, the messiness of most research makes these alpha levels have <a href="https://en.wikipedia.org/wiki/False_precision">false precision</a>. Keep this in mind when interpreting your data.</p>
+</section><section id="alpha-spending-functions" class="level2" data-number="10.4"><h2 data-number="10.4" class="anchored" data-anchor-id="alpha-spending-functions">
+<span class="header-section-number">10.4</span> Alpha spending functions</h2>
+<p>The approaches to specify the shape of decision boundaries across looks discussed so far have an important limitation <span class="citation" data-cites="proschan_statistical_2006">(<a href="references.html#ref-proschan_statistical_2006" role="doc-biblioref">Proschan et al., 2006</a>)</span>. They require a pre-specified number of looks (e.g., 4), and the sample size for the interim looks need to be pre-specified as well (e.g., after 25%, 50%, 75%, and 100% of observations). It is logistically not always feasible to stop the data collection exactly at 25% of the planned total sample size. An important contribution to the sequential testing literature was made by Lan and DeMets <span class="citation" data-cites="lan_discrete_1983">(<a href="references.html#ref-lan_discrete_1983" role="doc-biblioref">1983</a>)</span> who introduced the alpha spending approach to correct the alpha level. In this approach the cumulative Type I error rate spent across the looks is pre-specified through a function (the <em>alpha spending function</em>) to control the overall significance level <span class="math inline">\(\alpha\)</span> at the end of the study.</p>
+<p>The main benefit of these alpha spending functions is that error rates at interim analyses can be controlled, while neither the number nor the timing of the looks needs to be specified in advance. This makes alpha spending approaches much more flexible than earlier approaches to controlling the Type 1 error in group sequential designs. When using an alpha spending function it is important that the decision to perform an interim analysis is not based on collected data, as this can still increase the Type I error rate. As long as this assumption is met, it is possible to update the alpha levels at each look during a study.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-comparison" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="10-sequential_files/figure-html/fig-comparison-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;10.4: Comparison of Pocock (P) and O’Brien-Fleming correction (OF), Pocock-like (asP) and O’Brien-Fleming like (asOF) alpha spending functions, for 5 looks.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="updating-boundaries-during-a-study" class="level2" data-number="10.5"><h2 data-number="10.5" class="anchored" data-anchor-id="updating-boundaries-during-a-study">
+<span class="header-section-number">10.5</span> Updating boundaries during a study</h2>
+<p>Although alpha spending functions control the Type I error rate even when there are deviations from the pre-planned number of looks, or their timing, this does require recalculating the boundaries used in the statistical test based on the amount of information that has been observed. Let us assume a researcher designs a study with three equally spaced looks at the data (two interim looks, one final look), using a Pocock-type alpha spending function, where results will be analyzed in a two-sided <em>t</em>-test with an overall desired Type I error rate of 0.05, and a desired power of 0.9 for a Cohen’s <em>d</em> of 0.5. An a-priori power analysis (which we will explain in the next section) shows that we achieve the desired power in our sequential design if we plan to look after 65.4, 130.9, and 196.3 observations in each condition. Since we cannot collect partial participants, we should round these numbers up, and because we have 2 independent groups, we will collect 66 observations for look 1 (33 in each condition), 132 at the second look (66 in each condition) and 198 at the third look (99 in each condition). The code below computes the alpha levels at each look (or stage) for a two-sided test:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>design <span class="ot">&lt;-</span> <span class="fu">getDesignGroupSequential</span>(<span class="at">kMax =</span> <span class="dv">3</span>, </span>
+<span id="cb5-2"><a href="#cb5-2"></a>                                   <span class="at">typeOfDesign =</span> <span class="st">"asP"</span>,</span>
+<span id="cb5-3"><a href="#cb5-3"></a>                                   <span class="at">sided =</span> <span class="dv">2</span>, </span>
+<span id="cb5-4"><a href="#cb5-4"></a>                                   <span class="at">alpha =</span> <span class="fl">0.05</span>, </span>
+<span id="cb5-5"><a href="#cb5-5"></a>                                   <span class="at">beta =</span> <span class="fl">0.1</span>)</span>
+<span id="cb5-6"><a href="#cb5-6"></a>design<span class="sc">$</span>stageLevels <span class="sc">*</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.02264162 0.02173822 0.02167941</code></pre>
+</div>
+</div>
+<p>Now imagine that due to logistical issues, we do not manage to analyze the data until we have collected data from 76 observations (38 in each condition) instead of the planned 66 observations. Such logistical issues are common in practice and one of the main reasons alpha spending functions for group sequential designs were developed. Our first look at the data does not occur at the planned time of collecting 33.3% of the total sample, but at 76/198 = 38.4% of the planned sample. We can recalculate the alpha level we should use for each look at the data, based on the current look, and planned future looks. Instead of using the alpha levels 0.0226, 0.0217, and 0.0217 at the three respective looks (as calculated above, and note how in the Pocock-like alpha spending function the alpha levels are almost, but not exactly, the same at each look, unlike the Pocock correction where they are identical at each look). We can adjust the information rates by explicitly specifying them using <code>informationRates</code> in the code below. The first look now occurs at 76/198 of the planned sample. The second look is still planned to occur at 2/3 of the sample, and the final look at the planned maximum sample size.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>design <span class="ot">&lt;-</span> <span class="fu">getDesignGroupSequential</span>(</span>
+<span id="cb7-2"><a href="#cb7-2"></a>  <span class="at">typeOfDesign =</span> <span class="st">"asP"</span>, </span>
+<span id="cb7-3"><a href="#cb7-3"></a>  <span class="at">informationRates =</span> <span class="fu">c</span>(<span class="dv">76</span><span class="sc">/</span><span class="dv">198</span>, <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>, <span class="dv">1</span>), </span>
+<span id="cb7-4"><a href="#cb7-4"></a>  <span class="at">alpha =</span> <span class="fl">0.05</span>, </span>
+<span id="cb7-5"><a href="#cb7-5"></a>  <span class="at">sided =</span> <span class="dv">2</span>)</span>
+<span id="cb7-6"><a href="#cb7-6"></a>design<span class="sc">$</span>stageLevels <span class="sc">*</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.02532710 0.02043978 0.02164755</code></pre>
+</div>
+</div>
+<p>The updated alpha levels are 0.0253 for the current look, 0.0204 for the second look, and 0.0216 for the final look. The alpha level we will use for the first look is therefore not 0.0226 (as originally planned) but the slightly higher 0.0253. The second look will now use a slightly lower alpha of 0.0204 instead of 0.0217. The differences are small, but the fact that there is a formal method to control the alpha level that provides the flexibility to look at different times than originally planned is extremely useful.</p>
+<p>It is also possible to correct the alpha level if the final look at the data changes, for example because you are not able to collect the intended sample size, or because due to unforeseen circumstances you collect more data than planned. This is nowadays increasingly common as people preregister their studies, or publish using Registered Reports. Sometimes they end up with slightly more data than planned, which raises the question is they should analyze the planned sample size, or all the data. Analyzing all the collected data prevents wasting responses from participants, and uses all the information available, but it increases the flexibility in the data analysis (as researchers can now choose to analyze either the data from the planned sample, or all the data they have collected). Alpha spending functions solve this conundrum by allowing researchers to analyze all the data, while updating the alpha level that is used to control the overall alpha level.</p>
+<p>If more data is collected than was planned, we can no longer use the alpha spending function that was chosen (i.e., the Pocock spending function), and instead have to provide a <strong>user-defined alpha spending function</strong> by updating the timing and alpha spending function to reflect the data collection as it actually occurred up to the final look. Assuming the second look in our earlier example occurred as originally planned at 2/3 of the data we planned to collect, but the last look occurred at 206 participants instead of 198, we can compute an updated alpha level for the last look. Given the current total sample size, we need to recompute the alpha levels for the earlier looks, which now occurred at 76/206 = 0.369, 132/206 = 0.641, and for the last look at 206/206 = 1.</p>
+<p>The first and second look occurred with the adjusted alpha levels we computed after the first adjustment (alpha levels of 0.0253 and 0.0204). We have already spent part of our total alpha at the first two looks. We can look at the “Cumulative alpha spent’ in the results from the design we specified above, and see how much of our Type I error rate we spent so far:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>design<span class="sc">$</span>alphaSpent</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.02532710 0.03816913 0.05000000</code></pre>
+</div>
+</div>
+<p>We see that we have spent 0.0253 after look 1, and 0.0382 after look 2. We also know we want to spend the remainder of our Type I error rate at the last look, for a total of 0.05.</p>
+<p>Our actual alpha spending function is no longer captured by the Pocock spending function after collecting more data than planned, so instead we specify a user defined spending function. We can perform these calculations using the code below by specifying the <code>userAlphaSpending</code> information, after choosing the <code>asUser</code> design:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>design <span class="ot">&lt;-</span> <span class="fu">getDesignGroupSequential</span>(</span>
+<span id="cb11-2"><a href="#cb11-2"></a>  <span class="at">typeOfDesign =</span> <span class="st">"asUser"</span>, </span>
+<span id="cb11-3"><a href="#cb11-3"></a>  <span class="at">informationRates =</span> <span class="fu">c</span>(<span class="dv">72</span><span class="sc">/</span><span class="dv">206</span>, <span class="dv">132</span><span class="sc">/</span><span class="dv">206</span>, <span class="dv">1</span>), </span>
+<span id="cb11-4"><a href="#cb11-4"></a>  <span class="at">alpha =</span> <span class="fl">0.05</span>, </span>
+<span id="cb11-5"><a href="#cb11-5"></a>  <span class="at">sided =</span> <span class="dv">2</span>, </span>
+<span id="cb11-6"><a href="#cb11-6"></a>  <span class="at">userAlphaSpending =</span> <span class="fu">c</span>(<span class="fl">0.0253</span>, <span class="fl">0.0382</span>, <span class="fl">0.05</span>)</span>
+<span id="cb11-7"><a href="#cb11-7"></a>)</span>
+<span id="cb11-8"><a href="#cb11-8"></a>design<span class="sc">$</span>stageLevels <span class="sc">*</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.02530000 0.01987072 0.02075796</code></pre>
+</div>
+</div>
+<p>The alpha levels for looks in the past do not correspond with the alpha levels we used, but the final alpha level (0.0208) gives the alpha level we should use for our final analysis based on a sample size that is larger than what we planned to collect. The difference with the alpha level we would have used if we collected the planned sample size is really small (0.0216 vs.&nbsp;0.0208), in part because we did not miss the planned sample size by a lot. Such small differences in alpha levels will not really be noticeable in practice, but it is very useful that there is a formally correct solution to deal with collecting more data than planned, while controlling the Type 1 error rate. If you use sequential designs, you can use these corrections whenever you overshoot the sample size you planned to collect in a preregistration.</p>
+</section><section id="sample-size-for-sequential-designs" class="level2" data-number="10.6"><h2 data-number="10.6" class="anchored" data-anchor-id="sample-size-for-sequential-designs">
+<span class="header-section-number">10.6</span> Sample Size for Sequential Designs</h2>
+<p>At the final look, sequential designs require somewhat more participants than a fixed design, depending on how much the alpha level at this look is lowered due to the correction for multiple comparisons. That said, due to early stopping, sequential designs will on average require less participants. Let’s first examine how many participants we would need in a fixed design, where we only analyze our data once. We have an alpha level of 0.05, and a Type 2 (beta) error of 0.1 - in other words, the desired power is 90%. We will perform one test, and assuming a normal distribution our critical Z-score would be 1.96, for an alpha level of 5%.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>design <span class="ot">&lt;-</span> <span class="fu">getDesignGroupSequential</span>(</span>
+<span id="cb13-2"><a href="#cb13-2"></a>  <span class="at">kMax =</span> <span class="dv">1</span>,</span>
+<span id="cb13-3"><a href="#cb13-3"></a>  <span class="at">typeOfDesign =</span> <span class="st">"P"</span>,</span>
+<span id="cb13-4"><a href="#cb13-4"></a>  <span class="at">sided =</span> <span class="dv">2</span>,</span>
+<span id="cb13-5"><a href="#cb13-5"></a>  <span class="at">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb13-6"><a href="#cb13-6"></a>  <span class="at">beta =</span> <span class="fl">0.1</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a>)</span>
+<span id="cb13-8"><a href="#cb13-8"></a></span>
+<span id="cb13-9"><a href="#cb13-9"></a>power_res <span class="ot">&lt;-</span> <span class="fu">getSampleSizeMeans</span>(</span>
+<span id="cb13-10"><a href="#cb13-10"></a>  <span class="at">design =</span> design,</span>
+<span id="cb13-11"><a href="#cb13-11"></a>  <span class="at">groups =</span> <span class="dv">2</span>,</span>
+<span id="cb13-12"><a href="#cb13-12"></a>  <span class="at">alternative =</span> <span class="fl">0.5</span>, </span>
+<span id="cb13-13"><a href="#cb13-13"></a>  <span class="at">stDev =</span> <span class="dv">1</span>, </span>
+<span id="cb13-14"><a href="#cb13-14"></a>  <span class="at">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
+<span id="cb13-15"><a href="#cb13-15"></a>  <span class="at">normalApproximation =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb13-16"><a href="#cb13-16"></a></span>
+<span id="cb13-17"><a href="#cb13-17"></a>power_res</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Design plan parameters and output for means:
+
+Design parameters:
+  Critical values                              : 1.96 
+  Two-sided power                              : FALSE 
+  Significance level                           : 0.0500 
+  Type II error rate                           : 0.1000 
+  Test                                         : two-sided 
+
+User defined parameters:
+  Alternatives                                 : 0.5 
+
+Default parameters:
+  Mean ratio                                   : FALSE 
+  Theta H0                                     : 0 
+  Normal approximation                         : FALSE 
+  Standard deviation                           : 1 
+  Treatment groups                             : 2 
+  Planned allocation ratio                     : 1 
+
+Sample size and output:
+  Number of subjects fixed                     : 170.1 
+  Number of subjects fixed (1)                 : 85 
+  Number of subjects fixed (2)                 : 85 
+  Lower critical values (treatment effect scale) : -0.303 
+  Upper critical values (treatment effect scale) : 0.303 
+  Local two-sided significance levels          : 0.0500 
+
+Legend:
+  (i): values of treatment arm i</code></pre>
+</div>
+</div>
+<p>We see that we need 85 participants in each group, (or 86, since the sample size is actually 85.03 and the required number of observations is rounded up, and so we need 172 participants in total. Other power analysis software, such as G*Power, should yield the same required sample size. We can now examine our design above with 2 looks and a Pocock-like alpha spending function for a 2 sided test with an alpha of 0.05. We will look 2 times, and expect a true effect of <em>d</em> = 0.5 (which we enter by specifying an alternative of 0.5, and a stDev of 1).</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>seq_design <span class="ot">&lt;-</span> <span class="fu">getDesignGroupSequential</span>(</span>
+<span id="cb15-2"><a href="#cb15-2"></a>  <span class="at">kMax =</span> <span class="dv">2</span>,</span>
+<span id="cb15-3"><a href="#cb15-3"></a>  <span class="at">typeOfDesign =</span> <span class="st">"asP"</span>,</span>
+<span id="cb15-4"><a href="#cb15-4"></a>  <span class="at">sided =</span> <span class="dv">2</span>,</span>
+<span id="cb15-5"><a href="#cb15-5"></a>  <span class="at">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb15-6"><a href="#cb15-6"></a>  <span class="at">beta =</span> <span class="fl">0.1</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a>  )</span>
+<span id="cb15-8"><a href="#cb15-8"></a></span>
+<span id="cb15-9"><a href="#cb15-9"></a><span class="co"># Compute the sample size we need</span></span>
+<span id="cb15-10"><a href="#cb15-10"></a>power_res_seq <span class="ot">&lt;-</span> <span class="fu">getSampleSizeMeans</span>(</span>
+<span id="cb15-11"><a href="#cb15-11"></a>  <span class="at">design =</span> seq_design,</span>
+<span id="cb15-12"><a href="#cb15-12"></a>  <span class="at">groups =</span> <span class="dv">2</span>,</span>
+<span id="cb15-13"><a href="#cb15-13"></a>  <span class="at">alternative =</span> <span class="fl">0.5</span>, </span>
+<span id="cb15-14"><a href="#cb15-14"></a>  <span class="at">stDev =</span> <span class="dv">1</span>, </span>
+<span id="cb15-15"><a href="#cb15-15"></a>  <span class="at">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
+<span id="cb15-16"><a href="#cb15-16"></a>  <span class="at">normalApproximation =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb15-17"><a href="#cb15-17"></a></span>
+<span id="cb15-18"><a href="#cb15-18"></a>power_res_seq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Design plan parameters and output for means:
+
+Design parameters:
+  Information rates                            : 0.500, 1.000 
+  Critical values                              : 2.157, 2.201 
+  Futility bounds (non-binding)                : -Inf 
+  Cumulative alpha spending                    : 0.03101, 0.05000 
+  Local one-sided significance levels          : 0.01550, 0.01387 
+  Two-sided power                              : FALSE 
+  Significance level                           : 0.0500 
+  Type II error rate                           : 0.1000 
+  Test                                         : two-sided 
+
+User defined parameters:
+  Alternatives                                 : 0.5 
+
+Default parameters:
+  Mean ratio                                   : FALSE 
+  Theta H0                                     : 0 
+  Normal approximation                         : FALSE 
+  Standard deviation                           : 1 
+  Treatment groups                             : 2 
+  Planned allocation ratio                     : 1 
+
+Sample size and output:
+  Reject per stage [1]                         : 0.6022 
+  Reject per stage [2]                         : 0.2978 
+  Early stop                                   : 0.6022 
+  Maximum number of subjects                   : 188.9 
+  Maximum number of subjects (1)               : 94.5 
+  Maximum number of subjects (2)               : 94.5 
+  Number of subjects [1]                       : 94.5 
+  Number of subjects [2]                       : 188.9 
+  Expected number of subjects under H0         : 186 
+  Expected number of subjects under H0/H1      : 172.7 
+  Expected number of subjects under H1         : 132.1 
+  Lower critical values (treatment effect scale) [1] : -0.451 
+  Lower critical values (treatment effect scale) [2] : -0.323 
+  Upper critical values (treatment effect scale) [1] : 0.451 
+  Upper critical values (treatment effect scale) [2] : 0.323 
+  Local two-sided significance levels [1]      : 0.03101 
+  Local two-sided significance levels [2]      : 0.02774 
+
+Legend:
+  (i): values of treatment arm i
+  [k]: values at stage k</code></pre>
+</div>
+</div>
+<p>The sample size per condition at the first look is 47.24, and at the second look it is 94.47, which means we are now collecting 190 instead of 172 participants. This is a consequence of lowering our alpha level at each look (from 0.05 to 0.028). To compensate for the lower alpha level, we need to increase the sample size of the study to achieve the same power.</p>
+<p>However, the maximum sample size is not the expected sample size for this design, because of the possibility that we can stop data collection at an earlier look in the sequential design. In the long run, if <em>d</em> = 0.5, and we use an Pocock-like alpha spending function, and ignoring upward rounding because we can only collect a complete number of observations, we will sometimes collect 96 participants and stop after the first look, and the remaining time continue to 190 participants. As we see in the rows ‘Reject per stage’ the data collection is expected to stop after the first look in 0.6 of the studies because we have observed a significant result. The remainder of the time (1 - 0.6) = 0.4.</p>
+<p>This means that, assuming there is a true effect of <em>d</em> = 0.5, the <em>expected</em> sample size on average is the probability of stopping at each look, multiplied by the number of observations we collect at each look, so 0.6 * 96 + 0.3 * 190 = 133.39. The <code>rpact</code> package returns 132.06 under “Expected number of subjects under <span class="math inline">\(H_1\)</span>” - the small difference is due to the fact that <code>rpact</code> does not round the number of observations up, although it should). So, assuming the true effect is <em>d</em> = 0.5, in any single study we might need to collect slightly more data than in a fixed design (where we would collect 172), but on average we will need to collect less observations in a sequential design.</p>
+<p>Because power is a curve, and the true effect size is unknown, it is useful to plot power across a range of possible effect sizes, so that we can explore the expected sample size, in the long run, if we use a sequential design, for different true effect sizes.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># Use getPowerMeans and set max N to 190 based on analysis above</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a>sample_res <span class="ot">&lt;-</span> <span class="fu">getPowerMeans</span>(</span>
+<span id="cb17-3"><a href="#cb17-3"></a>  <span class="at">design =</span> seq_design,</span>
+<span id="cb17-4"><a href="#cb17-4"></a>  <span class="at">groups =</span> <span class="dv">2</span>,</span>
+<span id="cb17-5"><a href="#cb17-5"></a>  <span class="at">alternative =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.01</span>), </span>
+<span id="cb17-6"><a href="#cb17-6"></a>  <span class="at">stDev =</span> <span class="dv">1</span>, </span>
+<span id="cb17-7"><a href="#cb17-7"></a>  <span class="at">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
+<span id="cb17-8"><a href="#cb17-8"></a>  <span class="at">maxNumberOfSubjects =</span> <span class="dv">190</span>, </span>
+<span id="cb17-9"><a href="#cb17-9"></a>  <span class="at">normalApproximation =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb17-10"><a href="#cb17-10"></a></span>
+<span id="cb17-11"><a href="#cb17-11"></a><span class="fu">plot</span>(sample_res, <span class="at">type =</span> <span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-powerseq" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="10-sequential_files/figure-html/fig-powerseq-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;10.5: Power curve for a sequential design with 2 looks.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The blue line in Figure @ref(fig:powerseq) indicates the expected number of observations we need to collect. Not surprisingly, when the true effect size is 0, we will almost always continue data collection to the end. We will only stop if we observe a Type 1 error, which is rare, and thus the expected number of observations is very close to the maximum sample size we are willing to collect. On the other side of the graph we see the scenario for when the true effect size is <em>d</em> = 1. With such a large effect size, we will have high power at our first look, and we will almost always be able to stop at the first look. The red line indicates the power at the final look, and the green line indicates the probability of stopping early.</p>
+<p>The Pocock correction leads to a substantially lower alpha level at the last look, which requires an increase in sample size to compensate. As we saw before, the O’Brien-Fleming spending function does not require such a severe reduction in the alpha level at the last look. As the power analysis below shows, with 2 looks, this design would not need an increase in sample size at all in practice.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>seq_design <span class="ot">&lt;-</span> <span class="fu">getDesignGroupSequential</span>(</span>
+<span id="cb18-2"><a href="#cb18-2"></a>  <span class="at">kMax =</span> <span class="dv">2</span>,</span>
+<span id="cb18-3"><a href="#cb18-3"></a>  <span class="at">typeOfDesign =</span> <span class="st">"asOF"</span>,</span>
+<span id="cb18-4"><a href="#cb18-4"></a>  <span class="at">sided =</span> <span class="dv">2</span>,</span>
+<span id="cb18-5"><a href="#cb18-5"></a>  <span class="at">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb18-6"><a href="#cb18-6"></a>  <span class="at">beta =</span> <span class="fl">0.1</span></span>
+<span id="cb18-7"><a href="#cb18-7"></a>  )</span>
+<span id="cb18-8"><a href="#cb18-8"></a></span>
+<span id="cb18-9"><a href="#cb18-9"></a><span class="co"># Compute the sample size we need</span></span>
+<span id="cb18-10"><a href="#cb18-10"></a>power_res_seq <span class="ot">&lt;-</span> <span class="fu">getSampleSizeMeans</span>(</span>
+<span id="cb18-11"><a href="#cb18-11"></a>  <span class="at">design =</span> seq_design,</span>
+<span id="cb18-12"><a href="#cb18-12"></a>  <span class="at">groups =</span> <span class="dv">2</span>,</span>
+<span id="cb18-13"><a href="#cb18-13"></a>  <span class="at">alternative =</span> <span class="fl">0.5</span>, </span>
+<span id="cb18-14"><a href="#cb18-14"></a>  <span class="at">stDev =</span> <span class="dv">1</span>, </span>
+<span id="cb18-15"><a href="#cb18-15"></a>  <span class="at">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
+<span id="cb18-16"><a href="#cb18-16"></a>  <span class="at">normalApproximation =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb18-17"><a href="#cb18-17"></a></span>
+<span id="cb18-18"><a href="#cb18-18"></a><span class="fu">summary</span>(power_res_seq)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Sample size calculation for a continuous endpoint
+
+Sequential analysis with a maximum of 2 looks (group sequential design), overall 
+significance level 5% (two-sided).
+The sample size was calculated for a two-sample t-test, H0: mu(1) - mu(2) = 0, 
+H1: effect = 0.5, standard deviation = 1, power 90%.
+
+Stage                                         1      2 
+Information rate                            50%   100% 
+Efficacy boundary (z-value scale)         2.963  1.969 
+Overall power                            0.2525 0.9000 
+Expected number of subjects               149.1 
+Number of subjects                         85.3  170.6 
+Cumulative alpha spent                   0.0031 0.0500 
+Two-sided local significance level       0.0031 0.0490 
+Lower efficacy boundary (t)              -0.661 -0.304 
+Upper efficacy boundary (t)               0.661  0.304 
+Exit probability for efficacy (under H0) 0.0031 
+Exit probability for efficacy (under H1) 0.2525 
+
+Legend:
+  (t): treatment effect scale</code></pre>
+</div>
+</div>
+<p>This design meets the desired power when we collect 172 participants - exactly as many as when we would <em>not</em> look at the data once. We basically get a free look at the data, with the expected number of participants (assuming <em>d</em> = 0.5) dropping to 149.1. Increasing the number of looks to 4 comes at only a very small required increase in the number of participants to maintain the same statistical power, but further decreases the expected sample size. Especially for a conservative a-priori power analysis, or when performing an a-priori power analysis for a smallest effect size of interest, and there is a decent probability that the true effect size is larger, using sequential analysis is a very attractive option.</p>
+</section><section id="stopping-for-futility" class="level2" data-number="10.7"><h2 data-number="10.7" class="anchored" data-anchor-id="stopping-for-futility">
+<span class="header-section-number">10.7</span> Stopping for futility</h2>
+<p>So far, the sequential designs we have discussed would only stop at an interim analysis if we can reject <span class="math inline">\(H_0\)</span>. A well-designed study also takes into account the possibility that there is no effect, as we discussed in the chapter on <a href="09-equivalencetest.html">equivalence testing</a>. In the sequential analysis literature, stopping to reject the presence of the smallest effect size of interest is called <strong>stopping for futility</strong>. In the most extreme case, it could be impossible after an interim analysis that the final analysis will yield a statistically significant result. To illustrate this in a hypothetical scenario, imagine that after collecting 182 out of 192 observations, the observed mean difference between two independent conditions is 0.1, while the study was designed with the idea that the smallest effect deemed worthwhile is a mean difference of 0.5. If the primary dependent variable is measured on a 7 point Likert scale, it might be that even if every of the remaining 5 participants in the control condition answers 1, and every of the remaining participants in the experimental condition answers 7, the effect size after 192 observations will not yield <em>p</em> &lt; <span class="math inline">\(\alpha\)</span>. If the goal of your study was to detect whether there was an effect of at least a mean difference of 0.5, at this point a researcher knows that goal will not be reached. Stopping a study at an interim analysis because the final result cannot yield a significant effect is called <em>non-stochastic curtailment</em>.</p>
+<p>In less extreme but more common situations, it might still be possible for the study to observe a significant effect, but the probability might be very small. The probability of finding a significant result, given the data that have been observed up to an interim analysis, is called <strong>conditional power</strong>. Performing the conditional power analysis on the effect size that was originally expected might be too optimistic, but it is also undesirable to use the observed effect size, which typically has quite some uncertainty. One proposal is to update the expected effect size based on the observed data. If a Bayesian updating procedure is used, this is called <strong>predictive power</strong> <span class="citation" data-cites="spiegelhalter_monitoring_1986">(<a href="references.html#ref-spiegelhalter_monitoring_1986" role="doc-biblioref">Spiegelhalter et al., 1986</a>)</span>. It is possible to use <strong>adaptive designs</strong> that allow researchers to increase the final number of observations based on an interim analysis without inflating the Type 1 error rate (see <span class="citation" data-cites="wassmer_group_2016">Wassmer &amp; Brannath (<a href="references.html#ref-wassmer_group_2016" role="doc-biblioref">2016</a>)</span>).</p>
+<p>Alternatively, if the observed effect size is smaller than expected, one might want to stop for futility. As an illustration of a simple stopping rule for futility, imagine a researcher who will stop for futility whenever the observed effect size is is either zero, or in the opposite direction as was predicted. In Figure @ref(fig:futility1) the red line indicates critical values to declare a significant effect. In essence, this means that if the observed <em>z</em>-score for the interim test is either 0 or negative, data collection will be terminated. This can be specified by adding <code>futilityBounds = c(0, 0)</code> to the specification of the sequential design. One can choose in advance to stop whenever the criteria to stop for futility have been met, (i.e., a binding futility rule), but it is typically recommended to allow the possibility to continue data collection (i.e., a non-binding futility rule, specified by setting <code>bindingFutility = FALSE</code>).</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>design <span class="ot">&lt;-</span> <span class="fu">getDesignGroupSequential</span>(</span>
+<span id="cb20-2"><a href="#cb20-2"></a>  <span class="at">sided =</span> <span class="dv">1</span>,</span>
+<span id="cb20-3"><a href="#cb20-3"></a>  <span class="at">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb20-4"><a href="#cb20-4"></a>  <span class="at">beta =</span> <span class="fl">0.1</span>,</span>
+<span id="cb20-5"><a href="#cb20-5"></a>  <span class="at">typeOfDesign =</span> <span class="st">"asP"</span>,</span>
+<span id="cb20-6"><a href="#cb20-6"></a>  <span class="at">futilityBounds =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>),</span>
+<span id="cb20-7"><a href="#cb20-7"></a>  <span class="at">bindingFutility =</span> <span class="cn">FALSE</span></span>
+<span id="cb20-8"><a href="#cb20-8"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In Figure @ref(fig:futility1) we see a sequential design where data collection is stopped to reject <span class="math inline">\(H_0\)</span> when the observed <em>z</em>-score is larger than the values indicated by the red line, computed based on a Pocock-like alpha spending function (as in Figure @ref(fig:fourspendingfunctions). In addition, data collection will stop when at an interim analysis a <em>z</em>-score lower than or equal to 0 is observed, as indicated by the blue line. At the last look, the red and blue lines meet, because we will either reject <span class="math inline">\(H_0\)</span> at the critical value, or fail to reject <span class="math inline">\(H_0\)</span>.</p>
+<p>(ref:futility1lab) Pocock-type boundaries for 3 looks to stop when rejecting <span class="math inline">\(H_0\)</span> (red line) or to stop for futility (blue line) when the observed effect is in the opposite direction.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="10-sequential_files/figure-html/futility1-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">(ref:futility1lab)</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Manually specifying the futility bounds is not ideal, as we risk stopping data collection because we fail to reject <span class="math inline">\(H_0\)</span>, when there is a high probability of a Type 2 error. It is better to set the futility bounds by directly controlling the Type 2 error across looks at the data. Just as we are willing to distribute our Type I error rate across interim analyses, we can distribute our Type II error rate across looks, and decide to stop for futility when we fail to reject the effect size of interest with a desired Type 2 error rate.</p>
+<p>When a study is designed such that the null hypothesis significance test has 90% power to detect an effect of <em>d</em> = 0.5, 10% of the time <span class="math inline">\(H_0\)</span> will not be rejected when it should. In these 10% of cases where we make a Type 2 error, the conclusion will be that an effect of 0.5 is not present, when in reality, there is an effect of <em>d</em> = 0.5 (or larger). In an equivalence against a smallest effect size of interest of <em>d</em> = 0.5, the conclusion that an effect of 0.5 or larger is not present, when in reality there is an effect of <em>d</em> = 0.5 (or larger), is called a Type 1 error: We incorrectly conclude the effect is practically equivalent to zero. Therefore, what is a Type 2 error in NHST when <span class="math inline">\(H_0\)</span> is <em>d</em> = 0 and <span class="math inline">\(H_1\)</span> = <em>d</em> = 0.5 is a Type 1 error in an equivalence test where <span class="math inline">\(H_0\)</span> is <em>d</em> = 0.5 and <span class="math inline">\(H_1\)</span> is <em>d</em> = 0 <span class="citation" data-cites="jennison_group_2000">(<a href="references.html#ref-jennison_group_2000" role="doc-biblioref">Jennison &amp; Turnbull, 2000</a>)</span>. Controlling the Type 2 error in a sequential design can therefore be seen as controlling the Type 1 error for an equivalence test against the effect size the study is powered for. If we design a study to have a 5% Type 1 error rate and equally low Type 2 error rate (e.g., 5%, or 95% power), the study is an informative test for the presence or the absence of an effect of interest.</p>
+<p>If the true effect size is (close to) 0, sequential designs that stop for futility are more efficient than designs that do not stop for futility. Adding futility bounds based on beta-spending functions reduces power, which needs to be compensated by increasing the sample size, but this can be compensated by the fact that studies can stop earlier for futility, which can make designs more efficient. When specifying a smallest effect size of interest is not possible, researchers might not want to incorporate stopping for futility into the study design. To control the Type 2 error rate across looks, a <strong>beta-spending function</strong> needs to be chosen, such as a Pocock type beta spending function, an O’Brien-Fleming type beta spending function, or a user defined beta spending function. For example, a Pocock-like beta-spending function is added through <em>typeBetaSpending = “bsP”</em>. The beta-spending function does not need to be the same as the alpha-spending function. In <code>rpact</code> beta-spending functions can only be chosen for directional (one-sided) tests. After all, you can consider an effect in both directions support for your hypothesis, and an effect in the opposite direction as a reason to reject the alternative hypothesis.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>design <span class="ot">&lt;-</span> <span class="fu">getDesignGroupSequential</span>(</span>
+<span id="cb21-2"><a href="#cb21-2"></a>  <span class="at">kMax =</span> <span class="dv">2</span>,</span>
+<span id="cb21-3"><a href="#cb21-3"></a>  <span class="at">typeOfDesign =</span> <span class="st">"asP"</span>,</span>
+<span id="cb21-4"><a href="#cb21-4"></a>  <span class="at">sided =</span> <span class="dv">1</span>,</span>
+<span id="cb21-5"><a href="#cb21-5"></a>  <span class="at">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb21-6"><a href="#cb21-6"></a>  <span class="at">beta =</span> <span class="fl">0.1</span>,</span>
+<span id="cb21-7"><a href="#cb21-7"></a>  <span class="at">typeBetaSpending =</span> <span class="st">"bsP"</span>,</span>
+<span id="cb21-8"><a href="#cb21-8"></a>  <span class="at">bindingFutility =</span> <span class="cn">FALSE</span></span>
+<span id="cb21-9"><a href="#cb21-9"></a>  )</span>
+<span id="cb21-10"><a href="#cb21-10"></a></span>
+<span id="cb21-11"><a href="#cb21-11"></a><span class="fu">plot</span>(design)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-futility2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="10-sequential_files/figure-html/fig-futility2-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;10.6: Pocock-type boundaries for 3 looks to stop when rejecting <span class="math inline">\(H_0\)</span> (red line) or to stop for futility (blue line) based on a Pocock-type beta-spending function.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>With a beta-spending function, the expected number of subjects under <span class="math inline">\(H_1\)</span> will increase, so if the alternative hypothesis is true, designing a study to be able to stop for futility comes at a cost. However, it is possible that <span class="math inline">\(H_0\)</span> is true, and when it is, stopping for futility reduces the expected sample size. In Figure @ref(fig:powerseq2) you can see that the probability of stopping (the green line) is now also high when the true effect size is 0, as we will now stop for futility, and if we do, the expected sample size (the blue line) is lower compared to @ref(fig:powerseq). It is important to design studies that have a high informational value to reject the presence of a meaningful effect at the final analysis, but whether stopping for futility early is an option you want to build into a study is a choice that requires considering the probability that the null hypothesis is true and a (perhaps small) increase in the sample size.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-powerseq2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="10-sequential_files/figure-html/fig-powerseq2-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;10.7: Power curve for a sequential design with 2 looks with stopping for futility.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="reporting-the-results-of-a-sequential-analysis" class="level2" data-number="10.8"><h2 data-number="10.8" class="anchored" data-anchor-id="reporting-the-results-of-a-sequential-analysis">
+<span class="header-section-number">10.8</span> Reporting the results of a sequential analysis</h2>
+<p>Group sequential designs have been developed to efficiently test hypotheses using the Neyman-Pearson approach for statistical inference, where the goal is to decide how to act, while controlling error rates in the long run. Group sequential designs do not have the goal to quantify the strength of evidence, or provide accurate estimates of the effect size <span class="citation" data-cites="proschan_statistical_2006">(<a href="references.html#ref-proschan_statistical_2006" role="doc-biblioref">Proschan et al., 2006</a>)</span>. Nevertheless, after having reached a conclusion about whether a hypothesis can be rejected or not, researchers will often want to also interpret the effect size estimate when reporting results.</p>
+<p>A challenge when interpreting the observed effect size in sequential designs is that whenever a study is stopped early when <span class="math inline">\(H_0\)</span> is rejected, there is a risk that the data analysis was stopped because, due to random variation, a large effect size was observed at the time of the interim analysis. This means that the observed effect size at these interim analyses over-estimates the true effect size. As <span class="citation" data-cites="schonbrodt_sequential_2017">Schönbrodt et al. (<a href="references.html#ref-schonbrodt_sequential_2017" role="doc-biblioref">2017</a>)</span> show, a meta-analysis of studies that used sequential designs will yield an accurate effect size, because studies that stop early have smaller sample sizes, and are weighted less, which is compensated by the smaller effect size estimates in those sequential studies that reach the final look, and are weighted more because of their larger sample size. However, researchers might want to interpret effect sizes from single studies before a meta-analysis can be performed, and in this case, reporting an adjusted effect size estimate can be useful. Although sequential analysis software only allows one to compute adjusted effect size estimates for certain statistical tests, we recommend reporting both the adjusted effect size where possible, and to always also report the unadjusted effect size estimate for future meta-analyses.</p>
+<p>A similar issue is at play when reporting <em>p</em> values and confidence intervals. When a sequential design is used, the distribution of a <em>p</em> value that does not account for the sequential nature of the design is no longer uniform when <span class="math inline">\(H_0\)</span> is true. A <em>p</em> value is the probability of observing a result <em>at least as extreme</em> as the result that was observed, given that <span class="math inline">\(H_0\)</span> is true. It is no longer straightforward to determine what ‘at least as extreme’ means a sequential design <span class="citation" data-cites="cook_p-value_2002">(<a href="references.html#ref-cook_p-value_2002" role="doc-biblioref">Cook, 2002</a>)</span>. The most widely recommended procedure to determine what “at least as extreme” means is to order the outcomes of a series of sequential analyses in terms of the look at which the study was stopped, where earlier stopping is more extreme than later stopping, and where studies with higher <em>z</em> values are more extreme, when different studies are stopped at the same time <span class="citation" data-cites="proschan_statistical_2006">(<a href="references.html#ref-proschan_statistical_2006" role="doc-biblioref">Proschan et al., 2006</a>)</span>. This is referred to as <em>stagewise ordering</em>, which treats rejections at earlier looks as stronger evidence against <span class="math inline">\(H_0\)</span> than rejections later in the study <span class="citation" data-cites="wassmer_group_2016">(<a href="references.html#ref-wassmer_group_2016" role="doc-biblioref">Wassmer &amp; Brannath, 2016</a>)</span>. Given the direct relationship between a <em>p</em> value and a confidence interval, confidence intervals for sequential designs have also been developed.</p>
+<p>Reporting adjusted <em>p</em> values and confidence intervals, however, might be criticized. After a sequential design, a correct interpretation from a Neyman-Pearson framework is to conclude that <span class="math inline">\(H_0\)</span> is rejected, the alternative hypothesis is rejected, or that the results are inconclusive. The reason that adjusted <em>p</em> values are reported after sequential designs is to allow readers to interpret them as a measure of evidence. <span class="citation" data-cites="dupont_sequential_1983">Dupont (<a href="references.html#ref-dupont_sequential_1983" role="doc-biblioref">1983</a>)</span> provides good arguments to doubt that adjusted <em>p</em> values provide a valid measure of the strength of evidence. Furthermore, a strict interpretation of the Neyman-Pearson approach to statistical inferences also provides an argument against interpreting <em>p</em> values as measures of evidence <span class="citation" data-cites="lakens_why_2022">(<a href="references.html#ref-lakens_why_2022" role="doc-biblioref">Lakens, 2022</a>)</span>. Therefore, it is recommended, if researchers are interested in communicating the evidence in the data for <span class="math inline">\(H_0\)</span> relative to the alternative hypothesis, to report likelihoods or Bayes factors, which can always be reported and interpreted after the data collection has been completed. Reporting the unadjusted <em>p</em>-value in relation to the alpha level communicates the basis to reject hypotheses, although it might be important for researchers performing a meta-analysis based on <em>p</em>-values (e.g., a <em>p</em>-curve or <em>z</em>-curve analysis, as explained in the chapter on <a href="#bias">bias detection</a>) that these are sequential <em>p</em>-values. Adjusted confidence intervals are useful tools to evaluate the observed effect estimate relative to its variability at an interim or the final look at the data. Note that the adjusted parameter estimates are only available in statistical software for a few commonly used designs in pharmaceutical trials, such as comparisons of mean differences between groups, or survuval analysis.</p>
+<p>Below, we see the same sequential design we started with, with 2 looks and a Pocock-type alpha spending function. After completing the study with the planned sample size of 95 participants per condition (where we collect 48 participants at look 1, and the remaining 47 at look 2), we can now enter the observed data using the function <code>getDataset</code>. The means and standard deviations are entered for each stage, so at the second look, only the data from the second 95 participants in each condition are used to compute the means (1.51 and 1.01) and standard deviations (1.03 and 0.96).</p>
+<div class="cell" data-layout-align="center" data-hash="10-sequential_cache/html/unnamed-chunk-13_ea0a878fd7e52a12f4aaa02f207bb3da">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>design <span class="ot">&lt;-</span> <span class="fu">getDesignGroupSequential</span>(</span>
+<span id="cb22-2"><a href="#cb22-2"></a>  <span class="at">kMax =</span> <span class="dv">2</span>,</span>
+<span id="cb22-3"><a href="#cb22-3"></a>  <span class="at">typeOfDesign =</span> <span class="st">"asP"</span>,</span>
+<span id="cb22-4"><a href="#cb22-4"></a>  <span class="at">sided =</span> <span class="dv">2</span>,</span>
+<span id="cb22-5"><a href="#cb22-5"></a>  <span class="at">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb22-6"><a href="#cb22-6"></a>  <span class="at">beta =</span> <span class="fl">0.1</span></span>
+<span id="cb22-7"><a href="#cb22-7"></a>)</span>
+<span id="cb22-8"><a href="#cb22-8"></a></span>
+<span id="cb22-9"><a href="#cb22-9"></a>dataMeans <span class="ot">&lt;-</span> <span class="fu">getDataset</span>(</span>
+<span id="cb22-10"><a href="#cb22-10"></a>  <span class="at">n1 =</span> <span class="fu">c</span>(<span class="dv">48</span>, <span class="dv">47</span>), </span>
+<span id="cb22-11"><a href="#cb22-11"></a>  <span class="at">n2 =</span> <span class="fu">c</span>(<span class="dv">48</span>, <span class="dv">47</span>), </span>
+<span id="cb22-12"><a href="#cb22-12"></a>  <span class="at">means1 =</span> <span class="fu">c</span>(<span class="fl">1.12</span>, <span class="fl">1.51</span>), <span class="co"># for directional test, means 1 &gt; means 2</span></span>
+<span id="cb22-13"><a href="#cb22-13"></a>  <span class="at">means2 =</span> <span class="fu">c</span>(<span class="fl">1.03</span>, <span class="fl">1.01</span>),</span>
+<span id="cb22-14"><a href="#cb22-14"></a>  <span class="at">stDevs1 =</span> <span class="fu">c</span>(<span class="fl">0.98</span>, <span class="fl">1.03</span>), </span>
+<span id="cb22-15"><a href="#cb22-15"></a>  <span class="at">stDevs2 =</span> <span class="fu">c</span>(<span class="fl">1.06</span>, <span class="fl">0.96</span>)</span>
+<span id="cb22-16"><a href="#cb22-16"></a>  )</span>
+<span id="cb22-17"><a href="#cb22-17"></a></span>
+<span id="cb22-18"><a href="#cb22-18"></a>res <span class="ot">&lt;-</span> <span class="fu">getAnalysisResults</span>(</span>
+<span id="cb22-19"><a href="#cb22-19"></a>  design, </span>
+<span id="cb22-20"><a href="#cb22-20"></a>  <span class="at">equalVariances =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb22-21"><a href="#cb22-21"></a>  <span class="at">dataInput =</span> dataMeans</span>
+<span id="cb22-22"><a href="#cb22-22"></a>  )</span>
+<span id="cb22-23"><a href="#cb22-23"></a></span>
+<span id="cb22-24"><a href="#cb22-24"></a>res</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>[PROGRESS] Stage results calculated [0.0396 secs] 
+[PROGRESS] Conditional power calculated [0.0303 secs] 
+[PROGRESS] Conditional rejection probabilities (CRP) calculated [0.001 secs] 
+[PROGRESS] Repeated confidence interval of stage 1 calculated [0.5556 secs] 
+[PROGRESS] Repeated confidence interval of stage 2 calculated [0.737 secs] 
+[PROGRESS] Repeated confidence interval calculated [1.29 secs] 
+[PROGRESS] Repeated p-values of stage 1 calculated [0.5025 secs] 
+[PROGRESS] Repeated p-values of stage 2 calculated [0.3471 secs] 
+[PROGRESS] Repeated p-values calculated [0.851 secs] 
+[PROGRESS] Final p-value calculated [0.0016 secs] 
+[PROGRESS] Final confidence interval calculated [0.0775 secs] </code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis results (means of 2 groups, group sequential design):
+
+Design parameters:
+  Information rates                            : 0.500, 1.000 
+  Critical values                              : 2.157, 2.201 
+  Futility bounds (non-binding)                : -Inf 
+  Cumulative alpha spending                    : 0.03101, 0.05000 
+  Local one-sided significance levels          : 0.01550, 0.01387 
+  Significance level                           : 0.0500 
+  Test                                         : two-sided 
+
+User defined parameters: not available
+
+Default parameters:
+  Normal approximation                         : FALSE 
+  Direction upper                              : TRUE 
+  Theta H0                                     : 0 
+  Equal variances                              : TRUE 
+
+Stage results:
+  Cumulative effect sizes                      : 0.0900, 0.2928 
+  Cumulative (pooled) standard deviations      : 1.021, 1.013 
+  Stage-wise test statistics                   : 0.432, 2.435 
+  Stage-wise p-values                          : 0.333390, 0.008421 
+  Overall test statistics                      : 0.432, 1.993 
+  Overall p-values                             : 0.33339, 0.02384 
+
+Analysis results:
+  Assumed standard deviation                   : 1.013 
+  Actions                                      : continue, accept 
+  Conditional rejection probability            : 0.007317, NA 
+  Conditional power                            : NA, NA 
+  Repeated confidence intervals (lower)        : -0.36630, -0.03306 
+  Repeated confidence intervals (upper)        : 0.5463, 0.6187 
+  Repeated p-values                            : &gt;0.5, 0.08195 
+  Final stage                                  : 2 
+  Final p-value                                : NA, 0.06662 
+  Final CIs (lower)                            : NA, -0.02007 
+  Final CIs (upper)                            : NA, 0.5734 
+  Median unbiased estimate                     : NA, 0.2814 </code></pre>
+</div>
+</div>
+<p>Imagine we have performed a study planned to have at most 2 equally spaced looks at the data, where we perform a two-sided test with an alpha of 0.05, and we use a Pocock type alpha spending function, and we observe mean differences between the two conditions at the last look. Based on a Pocock-like alpha spending function with two equally spaced looks the alpha level for a two-sided <em>t</em>-test is 0.003051, and 0.0490. We can thus reject <span class="math inline">\(H_0\)</span> after look 2. But we would also like to report an effect size, and adjusted <em>p</em> values and confidence intervals.</p>
+<p>The results show that the action after look 1 was to continue data collection, and that we could reject <span class="math inline">\(H_0\)</span> at the second look. The unadjusted mean difference is provided in the row “Overall effect size” and at the final look this was 0.293. The adjusted mean difference is provided in the row “Median unbiased estimate” and is lower, and the adjusted confidence interval is in the row “Final confidence interval”, giving the result 0.281, 95% CI [-0.02, 0.573].</p>
+<p>The unadjusted <em>p</em> values for a one-sided test are reported in the row “Overall <em>p</em>-value”. The actual <em>p</em> values for our two-sided test would be twice as large, so 0.6668, 0.0477. The adjusted <em>p</em>-value at the final look is provided in the row “Final <em>p</em>-value” and it is 0.06662.</p>
+</section><section id="test-yourself" class="level2" data-number="10.9"><h2 data-number="10.9" class="anchored" data-anchor-id="test-yourself">
+<span class="header-section-number">10.9</span> Test Yourself</h2>
+<div class="webex-check webex-box">
+<p><strong>Q1</strong>: Sequential analyses can increase the efficiency of the studies you perform. Which statement is true for a sequential design in which researchers only stop if <span class="math inline">\(H_0\)</span> can be rejected (and did not specify a rule to stop for futility)?</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_EUXTTQVDAD" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_EUXTTQVDAD" value=""><span>Sequential analyses will reduce the sample size of every study you will perform. </span></label><label><input type="radio" autocomplete="off" name="radio_EUXTTQVDAD" value=""><span>Sequential analyses will on average reduce the sample size of studies you will perform.</span></label><label><input type="radio" autocomplete="off" name="radio_EUXTTQVDAD" value="answer"><span>Sequential analyses will on average reduce the sample size of studies you will perform, as long as there is a true effect (when a rule to stop for futility has not been specified). </span></label><label><input type="radio" autocomplete="off" name="radio_EUXTTQVDAD" value=""><span>Sequential analyses will on average require the same sample size as fixed designs, but offer more flexibility. </span></label>
+</div>
+</div>
+<p><strong>Q2</strong>: What is the difference between sequential analysis and optional stopping?</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_VOVASFEZCY" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_VOVASFEZCY" value=""><span>The only difference is that a sequential analysis is transparently reporting, while optional stopping is typically not disclosed in a paper. </span></label><label><input type="radio" autocomplete="off" name="radio_VOVASFEZCY" value="answer"><span>In sequential analysis the Type 1 error rate is controlled, while in optional stopping the Type 1 error rate is inflated. </span></label><label><input type="radio" autocomplete="off" name="radio_VOVASFEZCY" value=""><span>In optional stopping data collection is only terminated when a significant result has been observed, while in sequential analysis data collection can also stop when the absence of a meaningful effect has been established.</span></label><label><input type="radio" autocomplete="off" name="radio_VOVASFEZCY" value=""><span>In sequential analysis it is not possible to design a study where you analyze the data after every participant, while you can do this in optional stopping.</span></label>
+</div>
+</div>
+<p><strong>Q3</strong>: What is the defining feature of the Pocock correction?</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_VKTCBNALUR" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_VKTCBNALUR" value=""><span>It uses a very conservative alpha level for early looks, and the alpha level at the last look is close to the unadjusted alpha level in a fixed design. </span></label><label><input type="radio" autocomplete="off" name="radio_VKTCBNALUR" value="answer"><span>It uses the same alpha level at each look (or almost the same alpha level at each look, when using an Pocock-like alpha spending function). </span></label><label><input type="radio" autocomplete="off" name="radio_VKTCBNALUR" value=""><span>It uses a critical value of 3 at each interim analysis, and spends the remaining Type 1 error rate at the last look. </span></label><label><input type="radio" autocomplete="off" name="radio_VKTCBNALUR" value=""><span>It has a parameter that can be chosen such that the Type 1 error rate is spent more conservatively or more liberally in early interim analyses. </span></label>
+</div>
+</div>
+<p><strong>Q4</strong>: A benefit of the O’Brien-Fleming correction is that the alpha level at the last look is close to the alpha level. Why is this a benefit?</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_QRCVBTZUTC" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_QRCVBTZUTC" value="answer"><span>It means that the sample size based on an a-priori power analysis (which depends on the alpha level) is close to the sample size in a fixed design, while allowing additional looks at the data. </span></label><label><input type="radio" autocomplete="off" name="radio_QRCVBTZUTC" value=""><span>It means the Type 1 error rate is inflated only a little bit, compared to a fixed design. </span></label><label><input type="radio" autocomplete="off" name="radio_QRCVBTZUTC" value=""><span>It means the Type 1 error rate is only a bit more conservative, compared to a fixed design.</span></label><label><input type="radio" autocomplete="off" name="radio_QRCVBTZUTC" value=""><span>It means that the sample size based on an a-priori power analysis (which depends on the alpha level) is always identical to the sample size in a fixed design, while allowing additional looks at the data. </span></label>
+</div>
+</div>
+<p><strong>Q5</strong>: A researcher uses a sequential design for a study with 5 looks at the data, with a desired overall alpha level of 0.05 for a two-sided test, and chooses a <strong>Pocock correction</strong>. After continuing data collect to the third look, the researcher observes a <em>p</em>-value of 0.011. Which statement is true? Note: remember that <code>rpact</code> returns one-sided alpha levels. You can use the following code by replacing 0 and specifying the typeOfDesign:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>design <span class="ot">&lt;-</span> rpact<span class="sc">::</span><span class="fu">getDesignGroupSequential</span>(</span>
+<span id="cb25-2"><a href="#cb25-2"></a>  <span class="at">kMax =</span> <span class="dv">0</span>,</span>
+<span id="cb25-3"><a href="#cb25-3"></a>  <span class="at">typeOfDesign =</span> <span class="st">""</span>,</span>
+<span id="cb25-4"><a href="#cb25-4"></a>  <span class="at">sided =</span> <span class="dv">0</span>,</span>
+<span id="cb25-5"><a href="#cb25-5"></a>  <span class="at">alpha =</span> <span class="fl">0.0</span></span>
+<span id="cb25-6"><a href="#cb25-6"></a>)</span>
+<span id="cb25-7"><a href="#cb25-7"></a>design</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div id="radio_UWUFSPWQYP" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_UWUFSPWQYP" value="answer"><span>The researcher can reject the null hypothesis and can terminate data collection.</span></label><label><input type="radio" autocomplete="off" name="radio_UWUFSPWQYP" value=""><span>The researcher fails to reject the null hypothesis and needs to continue the data collection.</span></label>
+</div>
+</div>
+<p><strong>Q6</strong>: A researcher uses a sequential design for a study with 5 looks at the data, with a desired overall alpha level of 0.05, and chooses an <strong>O’Brien-Fleming correction</strong>. After continuing data collect to the third look, the researcher observes a <em>p</em>-value of 0.011. Which statement is true (you can use the same code as for Q5)?</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_GVDLMOCMZJ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_GVDLMOCMZJ" value=""><span>The researcher can reject the null hypothesis and can terminate data collection.</span></label><label><input type="radio" autocomplete="off" name="radio_GVDLMOCMZJ" value="answer"><span>The researcher fails to reject the null hypothesis and needs to continue the data collection.</span></label>
+</div>
+</div>
+<p><strong>Q7</strong>: For the design in Q5 (using the Pocock correction), what is the sample size required to achieve 80% power (the default – you can change the default by specifying a different value than <code>beta = 0.2</code> in the <code>getDesignGroupSequential</code> function) for an effect size of <em>d</em> = 0.5 (which equals a mean difference of 0.5 with a standard deviation of 1). You can use the code below.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>design <span class="ot">&lt;-</span> rpact<span class="sc">::</span><span class="fu">getDesignGroupSequential</span>(</span>
+<span id="cb26-2"><a href="#cb26-2"></a>  <span class="at">kMax =</span> <span class="dv">5</span>,</span>
+<span id="cb26-3"><a href="#cb26-3"></a>  <span class="at">typeOfDesign =</span> <span class="st">"OF"</span>,</span>
+<span id="cb26-4"><a href="#cb26-4"></a>  <span class="at">sided =</span> <span class="dv">2</span>,</span>
+<span id="cb26-5"><a href="#cb26-5"></a>  <span class="at">alpha =</span> <span class="fl">0.05</span></span>
+<span id="cb26-6"><a href="#cb26-6"></a>)</span>
+<span id="cb26-7"><a href="#cb26-7"></a></span>
+<span id="cb26-8"><a href="#cb26-8"></a>power_res <span class="ot">&lt;-</span> rpact<span class="sc">::</span><span class="fu">getSampleSizeMeans</span>(</span>
+<span id="cb26-9"><a href="#cb26-9"></a>  <span class="at">design =</span> design,</span>
+<span id="cb26-10"><a href="#cb26-10"></a>  <span class="at">groups =</span> <span class="dv">2</span>,</span>
+<span id="cb26-11"><a href="#cb26-11"></a>  <span class="at">alternative =</span> <span class="fl">0.5</span>, </span>
+<span id="cb26-12"><a href="#cb26-12"></a>  <span class="at">stDev =</span> <span class="dv">1</span>, </span>
+<span id="cb26-13"><a href="#cb26-13"></a>  <span class="at">allocationRatioPlanned =</span> <span class="dv">1</span>,</span>
+<span id="cb26-14"><a href="#cb26-14"></a>  <span class="at">normalApproximation =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb26-15"><a href="#cb26-15"></a></span>
+<span id="cb26-16"><a href="#cb26-16"></a>power_res</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div id="radio_RCDQAPOOZY" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_RCDQAPOOZY" value=""><span>64 (32 in each independent group)</span></label><label><input type="radio" autocomplete="off" name="radio_RCDQAPOOZY" value=""><span>128 (64 in each independent group)</span></label><label><input type="radio" autocomplete="off" name="radio_RCDQAPOOZY" value=""><span>154 (77 in each independent group)</span></label><label><input type="radio" autocomplete="off" name="radio_RCDQAPOOZY" value="answer"><span>158 (79 in each independent group)</span></label>
+</div>
+</div>
+<p><strong>Q8</strong>: For the design in the previous question, what is the sample size required to achieve 80% power for an effect size of <em>d</em> = 0.5 for a fixed design with only one look instead of 5? First update the design (by changing the <code>kMax</code> to 1) and then re-run the code provided with the previous question.</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_VWLTROGHKP" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_VWLTROGHKP" value=""><span>64 (32 in each independent group)</span></label><label><input type="radio" autocomplete="off" name="radio_VWLTROGHKP" value="answer"><span>128 (64 in each independent group)</span></label><label><input type="radio" autocomplete="off" name="radio_VWLTROGHKP" value=""><span>154 (77 in each independent group)</span></label><label><input type="radio" autocomplete="off" name="radio_VWLTROGHKP" value=""><span>158 (79 in each independent group)</span></label>
+</div>
+</div>
+<p>We see the sample size increases quite a bit because of the choice for the Pocock correction, and the number of looks (5, which lead to a low alpha level at the final look). The ratio of the maximum sample size for a sequential design and the sample size for a fixed design is known as the <strong>inflation factor</strong>, which is independent of the effect size. Although a-priori power analyses have not been programmed for all types of tests, the inflation factor can be used to compute the increased number of observations that is required relative to a fixed design for any test. Researchers can perform an a-priori power analysis for a fixed design with any tool they would normally use, and multiply the total number of observations with the inflation factor to determine the required sample size for a sequential design. The inflation factor can be retrieved using the <code>getDesignCharacteristics</code> function.</p>
+<p><strong>Q9</strong>: First, re-run the code to create a sequential design with 5 looks and a Pocock correction at the data used in Q7. Then, run the code below, and find the inflation factor. What is the inflation factor, or the required increase in the sample size for a sequential design with 5 looks using the Pocock correction, compared to a fixed design? Note that <code>rpact</code> does not round up the number of observations for per group to whole numbers when calculating the inflation factor.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>rpact<span class="sc">::</span><span class="fu">getDesignCharacteristics</span>(design)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div id="radio_PEDNFFMSRW" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_PEDNFFMSRW" value=""><span>The inflation factor is 1</span></label><label><input type="radio" autocomplete="off" name="radio_PEDNFFMSRW" value=""><span>The inflation factor is 1.0284</span></label><label><input type="radio" autocomplete="off" name="radio_PEDNFFMSRW" value="answer"><span>The inflation factor is 1.2286</span></label><label><input type="radio" autocomplete="off" name="radio_PEDNFFMSRW" value=""><span>The inflation factor is 1.2536</span></label>
+</div>
+</div>
+<p><strong>Q10</strong>: We see the inflation factor is quite large, and there is a certain probability that we will have to collect more observations than using a fixed design. Re-run the code for Q7 (for the Pocock design with 5 looks). We see that on average, if there is a true effect of 0.5, we will be more efficient than in a fixed design. What is the expected number of subjects under <span class="math inline">\(H_1\)</span>, as provided by <code>rpact</code>?</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_DSRRQZPNBE" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_DSRRQZPNBE" value="answer"><span>101.9</span></label><label><input type="radio" autocomplete="off" name="radio_DSRRQZPNBE" value=""><span>104.3</span></label><label><input type="radio" autocomplete="off" name="radio_DSRRQZPNBE" value=""><span>125.3</span></label><label><input type="radio" autocomplete="off" name="radio_DSRRQZPNBE" value=""><span>152.8</span></label>
+</div>
+</div>
+<p>We see the sequential design will on average be more efficient than a fixed design, but the decision about the trade-off between the specific sequential design used, and whether the possible benefit is worth the risk of collecting additional data, must be made on a case-by-case basis.</p>
+<p><strong>Q11</strong>: First, change the code to create a sequential design with 5 looks at the data used in Q7 from the Pocock correction to the OF (O’Brien-Fleming) correction. Then, run the code in question 9 again, and find the inflation factor for this design. What is the inflation factor?</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_SQHSBQJJYA" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_SQHSBQJJYA" value=""><span>The inflation factor is 1</span></label><label><input type="radio" autocomplete="off" name="radio_SQHSBQJJYA" value="answer"><span>The inflation factor is 1.0284</span></label><label><input type="radio" autocomplete="off" name="radio_SQHSBQJJYA" value=""><span>The inflation factor is 1.2286</span></label><label><input type="radio" autocomplete="off" name="radio_SQHSBQJJYA" value=""><span>The inflation factor is 1.2536</span></label>
+</div>
+</div>
+<p><strong>Q12</strong>: It is also possible to stop for futility (or to reject the presence of a specific effect of interest). Researchers should decide between binding and non-binding beta-spending functions, but they do not need to decide between binding and non-binding alpha spending functions. If a researcher observed a statistically significant result at an interim analysis, but decides not to stop the data collection, but continue the data collection (for example to get a more precise effect size estimate) what are the consequences?</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_SSDHELYVUK" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_SSDHELYVUK" value=""><span>The Type 1 error rate will inflate, and the Type 2 error rate will inflate.</span></label><label><input type="radio" autocomplete="off" name="radio_SSDHELYVUK" value=""><span>The Type 1 error rate will inflate, and the Type 2 error rate will not inflate. </span></label><label><input type="radio" autocomplete="off" name="radio_SSDHELYVUK" value="answer"><span>The Type 1 error rate will not inflate, and the Type 2 error rate will inflate. v</span></label><label><input type="radio" autocomplete="off" name="radio_SSDHELYVUK" value=""><span>The Type 1 error rate will not inflate, and the Type 2 error rate will not inflate. </span></label>
+</div>
+</div>
+<p><strong>Q13</strong>: In the plot below you see the <em>t</em>-score boundaries for a sequential design to stop to reject <span class="math inline">\(H_0\)</span> (the red line) and to reject <span class="math inline">\(H_1\)</span> (the blue line). At the second interim look, you perform a test, and observe a <em>t</em>-value of 2. Which decision would you make?</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-futilityq13" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="10-sequential_files/figure-html/fig-futilityq13-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;10.8: Example of O’Brien-Fleming-type boundaries for 3 looks to stop when rejecting <span class="math inline">\(H_0\)</span> (red line) or to stop for futility (blue line) with a 5% Type 1 and Type 2 error.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div id="radio_EAQCFPHKLQ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_EAQCFPHKLQ" value=""><span>You can reject <span class="math inline">\(H_0\)</span> and stop data collection.</span></label><label><input type="radio" autocomplete="off" name="radio_EAQCFPHKLQ" value=""><span>You can reject <span class="math inline">\(H_1\)</span> and stop data collection.</span></label><label><input type="radio" autocomplete="off" name="radio_EAQCFPHKLQ" value=""><span>You reject both <span class="math inline">\(H_0\)</span> and <span class="math inline">\(H_1\)</span> and stop data collection.</span></label><label><input type="radio" autocomplete="off" name="radio_EAQCFPHKLQ" value="answer"><span>You fail to reject both <span class="math inline">\(H_0\)</span> and <span class="math inline">\(H_1\)</span> and continue data collection.</span></label>
+</div>
+</div>
+</div>
+<section id="open-questions" class="level3" data-number="10.9.1"><h3 data-number="10.9.1" class="anchored" data-anchor-id="open-questions">
+<span class="header-section-number">10.9.1</span> Open Questions</h3>
+<ol type="1">
+<li><p>What is the difference between sequential analysis and optional stopping?</p></li>
+<li><p>What is a possible benefit of using a sequential design over a fixed design?</p></li>
+<li><p>What does it mean to stop data collection for futility?</p></li>
+<li><p>What is the difference in the philosophy of how the alpha is spent across looks between the Pocock and O’Brien-Fleming approaches?</p></li>
+<li><p>What is the benefit of the fact that the alpha level at the final look when using an O’Brien-Fleming correction is close to the uncorrected alpha level?</p></li>
+<li><p>What is the difference between the Pocock and O’Brien-Fleming correction, and the corresponding Pocock and O’Brien-Fleming alpha spending functions developed by Lan and DeMets?</p></li>
+<li><p>How can it be that even though the maximum sample size for a sequential design is slightly larger than the sample size for a fixed design, sequential designs can still be more efficient?</p></li>
+<li><p>When does incorporating a stopping rule for futility increase the efficiency of a sequential design?</p></li>
+<li><p>On average, what is the effect of stopping early in a sequential design on the effect size estimate? What is an argument to not correct the effect size estimate when reporting it?</p></li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-armitage_repeated_1969" class="csl-entry" role="listitem">
+Armitage, P., McPherson, C. K., &amp; Rowe, B. C. (1969). Repeated significance tests on accumulating data. <em>Journal of the Royal Statistical Society: Series A (General)</em>, <em>132</em>(2), 235–244.
+</div>
+<div id="ref-cook_p-value_2002" class="csl-entry" role="listitem">
+Cook, T. D. (2002). P-<span>Value Adjustment</span> in <span>Sequential Clinical Trials</span>. <em>Biometrics</em>, <em>58</em>(4), 1005–1011.
+</div>
+<div id="ref-dodge_method_1929" class="csl-entry" role="listitem">
+Dodge, H. F., &amp; Romig, H. G. (1929). A <span>Method</span> of <span>Sampling Inspection</span>. <em>Bell System Technical Journal</em>, <em>8</em>(4), 613–631. <a href="https://doi.org/10.1002/j.1538-7305.1929.tb01240.x">https://doi.org/10.1002/j.1538-7305.1929.tb01240.x</a>
+</div>
+<div id="ref-dupont_sequential_1983" class="csl-entry" role="listitem">
+Dupont, W. D. (1983). Sequential stopping rules and sequentially adjusted <span>P</span> values: <span>Does</span> one require the other? <em>Controlled Clinical Trials</em>, <em>4</em>(1), 3–10. <a href="https://doi.org/10.1016/S0197-2456(83)80003-8">https://doi.org/10.1016/S0197-2456(83)80003-8</a>
+</div>
+<div id="ref-jennison_group_2000" class="csl-entry" role="listitem">
+Jennison, C., &amp; Turnbull, B. W. (2000). <em>Group sequential methods with applications to clinical trials</em>. <span>Chapman &amp; Hall/CRC</span>.
+</div>
+<div id="ref-lakens_why_2022" class="csl-entry" role="listitem">
+Lakens, D. (2022). Why <span>P</span> values are not measures of evidence. <em>Trends in Ecology &amp; Evolution</em>. <a href="https://doi.org/10.1016/j.tree.2021.12.006">https://doi.org/10.1016/j.tree.2021.12.006</a>
+</div>
+<div id="ref-lan_discrete_1983" class="csl-entry" role="listitem">
+Lan, K. K. G., &amp; DeMets, D. L. (1983). Discrete <span>Sequential Boundaries</span> for <span>Clinical Trials</span>. <em>Biometrika</em>, <em>70</em>(3), 659. <a href="https://doi.org/10.2307/2336502">https://doi.org/10.2307/2336502</a>
+</div>
+<div id="ref-pocock_group_1977" class="csl-entry" role="listitem">
+Pocock, S. J. (1977). Group sequential methods in the design and analysis of clinical trials. <em>Biometrika</em>, <em>64</em>(2), 191–199. <a href="https://doi.org/10.1093/biomet/64.2.191">https://doi.org/10.1093/biomet/64.2.191</a>
+</div>
+<div id="ref-proschan_statistical_2006" class="csl-entry" role="listitem">
+Proschan, M. A., Lan, K. K. G., &amp; Wittes, J. T. (2006). <em>Statistical monitoring of clinical trials: A unified approach</em>. <span>Springer</span>.
+</div>
+<div id="ref-schonbrodt_sequential_2017" class="csl-entry" role="listitem">
+Schönbrodt, F. D., Wagenmakers, E.-J., Zehetleitner, M., &amp; Perugini, M. (2017). Sequential hypothesis testing with <span>Bayes</span> factors: <span>Efficiently</span> testing mean differences. <em>Psychological Methods</em>, <em>22</em>(2), 322–339. <a href="https://doi.org/10.1037/MET0000061">https://doi.org/10.1037/MET0000061</a>
+</div>
+<div id="ref-spiegelhalter_monitoring_1986" class="csl-entry" role="listitem">
+Spiegelhalter, D. J., Freedman, L. S., &amp; Blackburn, P. R. (1986). Monitoring clinical trials: Conditional or predictive power? <em>Controlled Clinical Trials</em>, <em>7</em>(1), 8–17. <a href="https://doi.org/10.1016/0197-2456(86)90003-6">https://doi.org/10.1016/0197-2456(86)90003-6</a>
+</div>
+<div id="ref-wald_sequential_1945" class="csl-entry" role="listitem">
+Wald, A. (1945). Sequential tests of statistical hypotheses. <em>The Annals of Mathematical Statistics</em>, <em>16</em>(2), 117–186. https://doi.org/<a href="https://www.jstor.org/stable/2240273">https://www.jstor.org/stable/2240273</a>
+</div>
+<div id="ref-wassmer_group_2016" class="csl-entry" role="listitem">
+Wassmer, G., &amp; Brannath, W. (2016). <em>Group <span>Sequential</span> and <span>Confirmatory Adaptive Designs</span> in <span>Clinical Trials</span></em>. <span>Springer International Publishing</span>. <a href="https://doi.org/10.1007/978-3-319-32562-0">https://doi.org/10.1007/978-3-319-32562-0</a>
+</div>
+</div>
+</section></section></main><!-- /main --><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script><script>
+
+/* update total correct if #webex-total_correct exists */
+update_total_correct = function() {
+  console.log("webex: update total_correct");
+
+  var t = document.getElementsByClassName("webex-total_correct");
+  for (var i = 0; i < t.length; i++) {
+    p = t[i].parentElement;
+    var correct = p.getElementsByClassName("webex-correct").length;
+    var solvemes = p.getElementsByClassName("webex-solveme").length;
+    var radiogroups = p.getElementsByClassName("webex-radiogroup").length;
+    var selects = p.getElementsByClassName("webex-select").length;
+
+    t[i].innerHTML = correct + " of " + (solvemes + radiogroups + selects) + " correct";
+  }
+}
+
+/* webex-solution button toggling function */
+b_func = function() {
+  console.log("webex: toggle hide");
+
+  var cl = this.parentElement.classList;
+  if (cl.contains('open')) {
+    cl.remove("open");
+  } else {
+    cl.add("open");
+  }
+}
+
+/* check answers */
+check_func = function() {
+  console.log("webex: check answers");
+
+  var cl = this.parentElement.classList;
+  if (cl.contains('unchecked')) {
+    cl.remove("unchecked");
+    this.innerHTML = "Hide Answers";
+  } else {
+    cl.add("unchecked");
+    this.innerHTML = "Show Answers";
+  }
+}
+
+/* function for checking solveme answers */
+solveme_func = function(e) {
+  console.log("webex: check solveme");
+
+  var real_answers = JSON.parse(this.dataset.answer);
+  var my_answer = this.value;
+  var cl = this.classList;
+  if (cl.contains("ignorecase")) {
+    my_answer = my_answer.toLowerCase();
+  }
+  if (cl.contains("nospaces")) {
+    my_answer = my_answer.replace(/ /g, "")
+  }
+
+  if (my_answer == "") {
+    cl.remove("webex-correct");
+    cl.remove("webex-incorrect");
+  } else if (real_answers.includes(my_answer)) {
+    cl.add("webex-correct");
+    cl.remove("webex-incorrect");
+  } else {
+    cl.add("webex-incorrect");
+    cl.remove("webex-correct");
+  }
+
+  // match numeric answers within a specified tolerance
+  if(this.dataset.tol > 0){
+    var tol = JSON.parse(this.dataset.tol);
+    var matches = real_answers.map(x => Math.abs(x - my_answer) < tol)
+    if (matches.reduce((a, b) => a + b, 0) > 0) {
+      cl.add("webex-correct");
+    } else {
+      cl.remove("webex-correct");
+    }
+  }
+
+  // added regex bit
+  if (cl.contains("regex")){
+    answer_regex = RegExp(real_answers.join("|"))
+    if (answer_regex.test(my_answer)) {
+      cl.add("webex-correct");
+    }
+  }
+
+  update_total_correct();
+}
+
+/* function for checking select answers */
+select_func = function(e) {
+  console.log("webex: check select");
+
+  var cl = this.classList
+
+  /* add style */
+  cl.remove("webex-incorrect");
+  cl.remove("webex-correct");
+  if (this.value == "answer") {
+    cl.add("webex-correct");
+  } else if (this.value != "blank") {
+    cl.add("webex-incorrect");
+  }
+
+  update_total_correct();
+}
+
+/* function for checking radiogroups answers */
+radiogroups_func = function(e) {
+  console.log("webex: check radiogroups");
+
+  var checked_button = document.querySelector('input[name=' + this.id + ']:checked');
+  var cl = checked_button.parentElement.classList;
+  var labels = checked_button.parentElement.parentElement.children;
+
+  /* get rid of styles */
+  for (i = 0; i < labels.length; i++) {
+    labels[i].classList.remove("webex-incorrect");
+    labels[i].classList.remove("webex-correct");
+  }
+
+  /* add style */
+  if (checked_button.value == "answer") {
+    cl.add("webex-correct");
+  } else {
+    cl.add("webex-incorrect");
+  }
+
+  update_total_correct();
+}
+
+window.onload = function() {
+  console.log("webex onload");
+  /* set up solution buttons */
+  var buttons = document.getElementsByTagName("button");
+
+  for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].parentElement.classList.contains('webex-solution')) {
+      buttons[i].onclick = b_func;
+    }
+  }
+
+  var check_sections = document.getElementsByClassName("webex-check");
+  console.log("check:", check_sections.length);
+  for (var i = 0; i < check_sections.length; i++) {
+    check_sections[i].classList.add("unchecked");
+
+    let btn = document.createElement("button");
+    btn.innerHTML = "Show Answers";
+    btn.classList.add("webex-check-button");
+    btn.onclick = check_func;
+    check_sections[i].appendChild(btn);
+
+    let spn = document.createElement("span");
+    spn.classList.add("webex-total_correct");
+    check_sections[i].appendChild(spn);
+  }
+
+  /* set up webex-solveme inputs */
+  var solveme = document.getElementsByClassName("webex-solveme");
+
+  for (var i = 0; i < solveme.length; i++) {
+    /* make sure input boxes don't auto-anything */
+    solveme[i].setAttribute("autocomplete","off");
+    solveme[i].setAttribute("autocorrect", "off");
+    solveme[i].setAttribute("autocapitalize", "off");
+    solveme[i].setAttribute("spellcheck", "false");
+    solveme[i].value = "";
+
+    /* adjust answer for ignorecase or nospaces */
+    var cl = solveme[i].classList;
+    var real_answer = solveme[i].dataset.answer;
+    if (cl.contains("ignorecase")) {
+      real_answer = real_answer.toLowerCase();
+    }
+    if (cl.contains("nospaces")) {
+      real_answer = real_answer.replace(/ /g, "");
+    }
+    solveme[i].dataset.answer = real_answer;
+
+    /* attach checking function */
+    solveme[i].onkeyup = solveme_func;
+    solveme[i].onchange = solveme_func;
+
+    $(solveme[i]).after(" <span class='webex-icon'></span>");
+  }
+
+  /* set up radiogroups */
+  var radiogroups = document.getElementsByClassName("webex-radiogroup");
+  for (var i = 0; i < radiogroups.length; i++) {
+    radiogroups[i].onchange = radiogroups_func;
+  }
+
+  /* set up selects */
+  var selects = document.getElementsByClassName("webex-select");
+  for (var i = 0; i < selects.length; i++) {
+    selects[i].onchange = select_func;
+    $(selects[i]).after(" <span class='webex-icon'></span>");
+  }
+
+  update_total_correct();
+}
+
+</script><script>
+// open rdrr links externally ----
+
+var exlinks = document.querySelectorAll("a[href^='https://rdrr.io']");
+var exlink_func = function(){
+  window.open(this.href);
+  return false;
+};
+for (var i = 0; i < exlinks.length; i++) {
+    exlinks[i].addEventListener('click', exlink_func, false);
+}
+
+// visible second sidebar in mobile ----
+
+function move_sidebar() {
+  var toc = document.getElementById("TOC");
+  var small_sidebar = document.querySelector("#quarto-sidebar .sidebar-menu-container");
+  var right_sidebar = document.getElementById("quarto-margin-sidebar");
+
+  if (window.innerWidth < 768) {
+    small_sidebar.append(toc);
+  } else {
+    right_sidebar.append(toc);
+  }
+}
+move_sidebar();
+window.onresize = move_sidebar;
+</script><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./09-equivalencetest.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Equivalence Testing and Interval Hypotheses</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./11-meta.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Meta-analysis</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">Lakens, D. (2022). Improving Your Statistical Inferences. Retrieved from https://lakens.github.io/statistical_inferences/. https://doi.org/10.5281/zenodo.6409077</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+</body></html>

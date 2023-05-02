@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.310">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="description" content="This open educational resource contains information to improve statistical inferences, design better experiments, and report scientific research more transparently.">
+<title>Improving Your Statistical Inferences - 12&nbsp; Bias detection</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./13-prereg.html" rel="next">
+<link href="./11-meta.html" rel="prev">
+<link href="./images/logos/favicon.ico" rel="icon">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><script async="" src="https://www.googletagmanager.com/gtag/js?id=G-0MK2WTGRM3"></script><script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
+</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><link rel="stylesheet" href="include/booktem.css">
+<link rel="stylesheet" href="include/style.css">
+<link rel="stylesheet" href="include/webex.css">
+</head>
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./12-bias.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Bias detection</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Improving Your Statistical Inferences</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/Lakens/statistical_inferences" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Download" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="./Improving-Your-Statistical-Inferences.pdf">
+              <i class="bi bi-bi-file-pdf pe-1"></i>
+            Download PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="./Improving-Your-Statistical-Inferences.epub">
+              <i class="bi bi-bi-journal pe-1"></i>
+            Download ePub
+            </a>
+          </li>
+      </ul>
+</div>
+    <a href="https://twitter.com/intent/tweet?url=%7Curl%7C" title="Twitter" class="quarto-navigation-tool px-1" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Overview</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-pvalue.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Using <em>p</em>-values to test a hypothesis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-errorcontrol.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Error control</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-likelihoods.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Likelihoods</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-bayes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Bayesian statistics</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-questions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Asking Statistical Questions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-effectsize.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Effect Sizes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-CI.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Confidence Intervals</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-samplesizejustification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Sample Size Justification</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-equivalencetest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Equivalence Testing and Interval Hypotheses</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-sequential.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Sequential Analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-meta.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Meta-analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-bias.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Bias detection</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-prereg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Preregistration and Transparency</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-computationalreproducibility.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Computational Reproducibility</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-researchintegrity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Research Integrity</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li><a href="#sec-publicationbias" id="toc-sec-publicationbias" class="nav-link active" data-scroll-target="#sec-publicationbias"><span class="header-section-number">12.1</span> Publication bias</a></li>
+  <li><a href="#bias-detection-in-meta-analysis" id="toc-bias-detection-in-meta-analysis" class="nav-link" data-scroll-target="#bias-detection-in-meta-analysis"><span class="header-section-number">12.2</span> Bias detection in meta-analysis</a></li>
+  <li><a href="#trim-and-fill" id="toc-trim-and-fill" class="nav-link" data-scroll-target="#trim-and-fill"><span class="header-section-number">12.3</span> Trim and Fill</a></li>
+  <li><a href="#pet-peese" id="toc-pet-peese" class="nav-link" data-scroll-target="#pet-peese"><span class="header-section-number">12.4</span> PET-PEESE</a></li>
+  <li><a href="#p-value-meta-analysis" id="toc-p-value-meta-analysis" class="nav-link" data-scroll-target="#p-value-meta-analysis"><span class="header-section-number">12.5</span> <em>P</em>-value meta-analysis</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">12.6</span> Conclusion</a></li>
+  <li>
+<a href="#test-yourself" id="toc-test-yourself" class="nav-link" data-scroll-target="#test-yourself"><span class="header-section-number">12.7</span> Test Yourself</a>
+  <ul class="collapse">
+<li><a href="#open-questions" id="toc-open-questions" class="nav-link" data-scroll-target="#open-questions"><span class="header-section-number">12.7.1</span> Open Questions</a></li>
+  </ul>
+</li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/Lakens/statistical_inferences/edit/main/12-bias.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/Lakens/statistical_inferences/issues/new" class="toc-action">Report an issue</a></p><p><a href="https://github.com/Lakens/statistical_inferences/blob/main/12-bias.qmd" class="toc-action">View source</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title"><span id="sec-bias" class="quarto-section-identifier"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Bias detection</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header><p>Bias can be introduced throughout the research process. It is useful to prevent this or to detect it. Some researchers recommend a skeptical attitude towards any claim you read in the scientific literature. For example, the philosopher of science Deborah Mayo <span class="citation" data-cites="mayo_statistical_2018">(<a href="references.html#ref-mayo_statistical_2018" role="doc-biblioref">2018</a>)</span> writes: “Confronted with the statistical news flash of the day, your first question is: Are the results due to selective reporting, cherry picking, or any number of other similar ruses?”. You might not make yourself very popular if this is the first question you ask a speaker at the next scientific conference you are attending, but at the same time it would be naïve to ignore the fact that researchers more or less intentionally introduce bias into their claims.</p>
+<p>At the most extreme end of practices that introduce bias into scientific research is <strong>research misconduct</strong>: Making up data or results, or changing or omitting data or results such that the research isn’t accurately represented in the research record. For example, <a href="https://en.wikipedia.org/wiki/Andrew_Wakefield">Andrew Wakefield</a> authored a fraudulent paper in 1998 that claimed a link between the measles, mumps, and rubella (MMR) vaccine and autism. It was retracted in 2010, but only after it caused damage to trust in vaccines among some parts of the general population. Another example from psychology concerned a study by <a href="https://en.wikipedia.org/wiki/James_Vicary">James Vicary</a> on subliminal priming. He claimed to have found that by flashing ‘EAT POPCORN’ and ‘DRINK COCA-COLA’ subliminally during a movie screen in a cinema, the sales of popcorn and Coca-Cola had increased with 57.5 and 18.1 percent, respectively. However, it was later found that Vicary most likely committed scientific fraud, as there was no evidence that the study was ever performed <span class="citation" data-cites="rogers_how_1992">(<a href="references.html#ref-rogers_how_1992" role="doc-biblioref">Rogers, 1992</a>)</span>. The website Retraction Watch maintains a <a href="http://retractiondatabase.org">database</a> that tracks reasons why scientific papers are retracted, including data fabrication. It is unknown how often data fabrication occurs in practice, but as discussed in the chapter on <a href="15-researchintegrity.html">research integrity</a>, we should expect that at least a small percentage of scientists have fabricated, falsified or modified data or results at least once.</p>
+<p>(ref:outlierlab) Scene in The Dropout about the company Theranos that falsely claimed to have devices that could perform blood tests on very small amounts of blood. In the scene, two whistleblowers confront their bosses when they are pressured to remove datapoints that do not show the desired results.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="images/dropout_outlier_small.gif" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">(ref:outlierlab)</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>A different category of mistakes are statistical reporting errors, which range from reporting incorrect degrees of freedom, to reporting <em>p</em> = 0.056 as <em>p</em> &lt; 0.05 <span class="citation" data-cites="nuijten_prevalence_2015">(<a href="references.html#ref-nuijten_prevalence_2015" role="doc-biblioref">Nuijten et al., 2015</a>)</span>. Although we should do our best to prevent errors, everyone makes them, and data and code sharing become more common, it will become easier to detect errors in the work of other researchers. As Dorothy Bishop <span class="citation" data-cites="bishop_fallibility_2018">(<a href="references.html#ref-bishop_fallibility_2018" role="doc-biblioref">2018</a>)</span> writes: “As open science becomes increasingly the norm, we will find that everyone is fallible. The reputations of scientists will depend not on whether there are flaws in their research, but on how they respond when those flaws are noted.”</p>
+<p><a href="http://statcheck.io/">Statcheck</a> is software that automatically extracts statistics from articles and recomputes their <em>p</em>-values, as long as statistics are reported following guidelines from the American Psychological Association (APA). It checks if the reported statistics are internally consistent: Given the test statistics and degrees of freedom, is the reported <em>p</em>-value accurate? If it is, that makes it less likely that you have made a mistake (although it does not prevent coherent mistakes!) and if it is not, you should check if all the information in your statistical test is accurate. Statcheck is not perfect, and it will make Type 1 errors where it flags something as an error when it actually is not, but it is an easy to use tool to check your articles before you submit them for publication.</p>
+<p>Some inconsistencies in data are less easy to automatically detect, but can be identified manually. For example, <span class="citation" data-cites="brown_grim_2017">Brown &amp; Heathers (<a href="references.html#ref-brown_grim_2017" role="doc-biblioref">2017</a>)</span> show that many papers report means that are not possible given the sample size (known as the <a href="http://nickbrown.fr/GRIM"><em>GRIM</em> test</a>). For example, Matti Heino noticed in a <a href="https://mattiheino.com/2016/11/13/legacy-of-psychology/">blog post</a> that three of the reported means in the table in a classic study by Festinger and Carlsmith are mathematically impossible. With 20 observations per condition, and a scale from -5 to 5, all means should end in a multiple of 1/20, or 0.05. The three means ending in X.X8 or X.X2 are not consistent with the reported sample size and scale. Of course, such inconsistencies can be due to failing to report that there was missing data for some of the questions, but the GRIM test has also been used to uncover <a href="https://en.wikipedia.org/wiki/GRIM_test">scientific misconduct</a>.</p>
+<p>(ref:festingerlab) Screenshot of the table reporting the main results from Festinger and Carlsmith, 1959.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="images/festinger_carlsmith.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">(ref:festingerlab)</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="sec-publicationbias" class="level2" data-number="12.1"><h2 data-number="12.1" class="anchored" data-anchor-id="sec-publicationbias">
+<span class="header-section-number">12.1</span> Publication bias</h2>
+<p>Publication bias is one of the biggest challenges that science faces. <strong>Publication bias</strong> is the practice of selectively submitting and publishing scientific research, often based on whether or not the results are ‘statistically significant’ or not. The scientific literature is dominated by these statistically significant results. At the same time, we know that many studies researchers perform do not yield significant results. When scientists only have access to significant results, but not to all results, they are lacking a complete overview of the evidence for a hypothesis. In extreme cases, selective reporting can lead to a situation where there are hundreds of statistically significant results in the published literature, but no true effect because there are even more non-significant studies that are not shared. This is known as the <strong>file-drawer problem</strong>, when non-significant results are hidden away in file-drawers (or nowadays, folders on your computer) and not available to the scientific community. Every scientist should work towards solving publication bias, because it is extremely difficult to learn what is likely to be true as long as scientists do not share all their results, and because, as Greenwald <span class="citation" data-cites="greenwald_consequences_1975">(<a href="references.html#ref-greenwald_consequences_1975" role="doc-biblioref">1975</a>)</span> notes, it is an ethical violation.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-greenwald" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="images/greenwald.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;12.1: Screenshot of the final sentences of Greenwald, A. G. (1975). Consequences of prejudice against the null hypothesis. Psychological Bulletin, 82(1), 1–20.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Publication bias can only be fixed by making all your research results available to fellow scientists, irrespective of the <em>p</em>-value of the main hypothesis test. Registered Reports are one way to combat publication bias, as this type of scientific article is reviewed based on the introduction, method, and statistical analysis plan, before the data is collected <span class="citation" data-cites="chambers_past_2022 nosek_registered_2014">(<a href="references.html#ref-chambers_past_2022" role="doc-biblioref">Chambers &amp; Tzavella, 2022</a>; <a href="references.html#ref-nosek_registered_2014" role="doc-biblioref">Nosek &amp; Lakens, 2014</a>)</span>. After peer review by experts in the field, who might suggest improvements to the design and analysis, the article can get an ‘in principle acceptance’, which means that as long as the research plan is followed, the article will be published, regardless of the results. This should facilitate the publication of null results, and as shown in fig-scheel, an analysis of the first published Registered Reports in psychology revealed that 31 out of 71 (44%) articles observed positive results, compared to 146 out of 152 (96%) of comparable standard scientific articles published during the same time period <span class="citation" data-cites="scheel_excess_2021">(<a href="references.html#ref-scheel_excess_2021" role="doc-biblioref">Scheel et al., 2021</a>)</span>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-scheel" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="images/scheel.png" class="img-fluid figure-img" style="width:75.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;12.2: Positive result rates for standard reports and Registered Reports. Error bars indicate 95% confidence intervals around the observed positive result rate.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In the past, Registered Reports did not exist, and scientists did not share all results <span class="citation" data-cites="franco_publication_2014 greenwald_consequences_1975 sterling_publication_1959">(<a href="references.html#ref-franco_publication_2014" role="doc-biblioref">Franco et al., 2014</a>; <a href="references.html#ref-greenwald_consequences_1975" role="doc-biblioref">Greenwald, 1975</a>; <a href="references.html#ref-sterling_publication_1959" role="doc-biblioref">Sterling, 1959</a>)</span>, and as a consequence, we have to try to detect the extent to which publication bias impacts our ability to accurately evaluate the literature. Meta-analyses should always carefully examine the impact of publication bias on the meta-analytic effect size estimate - even though only an estimated 57% of meta-analyses published in Psychological Bulletin between 1990 to 2017 report that they assessed publication bias <span class="citation" data-cites="polanin_transparency_2020">(<a href="references.html#ref-polanin_transparency_2020" role="doc-biblioref">Polanin et al., 2020</a>)</span>. In more recent meta-analyses published in educational research, 82% used bias detection tests, but the methods used were typically far from the state-of-the-art <span class="citation" data-cites="ropovik_neglect_2021">(<a href="references.html#ref-ropovik_neglect_2021" role="doc-biblioref">Ropovik et al., 2021</a>)</span>. Several techniques to detect publication bias have been developed, and this continues to be a very active field of research. All techniques are based on specific assumptions, which you should consider before applying a test <span class="citation" data-cites="carter_correcting_2019">(<a href="references.html#ref-carter_correcting_2019" role="doc-biblioref">Carter et al., 2019</a>)</span>. There is no silver bullet: None of these techniques can fix publication bias. None of them can tell you with certainty what the true meta-analytic effect size is corrected for publication bias. The best these methods can do is detect publication bias caused by specific mechanisms, under specific conditions. Publication bias can be detected, but it cannot be corrected.</p>
+<p>In the chapter on <a href="03-likelihoods.html">likelihoods</a> we saw how mixed results are to be expected, and can be strong evidence for the alternative hypothesis. It is not only the case that mixed results should be expected, but exclusively observing statistically significant results, especially when the statistical power is low, is very surprising. With the commonly used lower limit for statistical power of 80%, we can expect a non-significant result in one out of five studies when there is a true effect. Some researchers have pointed out that <em>not</em> finding mixed results can be very unlikely (or ‘too good to be true’) in a set of studies <span class="citation" data-cites="francis_frequency_2014 schimmack_ironic_2012">(<a href="references.html#ref-francis_frequency_2014" role="doc-biblioref">Francis, 2014</a>; <a href="references.html#ref-schimmack_ironic_2012" role="doc-biblioref">Schimmack, 2012</a>)</span>. We don’t have a very good feeling for what real patterns of studies look like, because we are continuously exposed to a scientific literature that does not reflect reality. Almost all multiple study papers in the scientific literature present only statistically significant results, even though this is unlikely.</p>
+<p>The <a href="http://shiny.ieis.tue.nl/mixed_results_likelihood/">online Shiny app we used to compute binomial likelihoods</a> displays, if you scroll to the bottom of the page, binomial probabilities to find multiple significant findings given a specific assumption about the power of the tests. <span class="citation" data-cites="francis_frequency_2014">Francis (<a href="references.html#ref-francis_frequency_2014" role="doc-biblioref">2014</a>)</span> used these binomial likelihoods to calculate the test of excessive significance <span class="citation" data-cites="ioannidis_exploratory_2007">(<a href="references.html#ref-ioannidis_exploratory_2007" role="doc-biblioref">Ioannidis &amp; Trikalinos, 2007</a>)</span> for 44 articles published in the journal Psychological Science between 2009 and 2012 that contained four studies or more. He found that for 36 of these articles, the likelihood of observing four significant results, given the average power computed based on the observed effect sizes, was less than 10%. Given his choice of an alpha level of 0.10, this binomial probability is a hypothesis test, and allows the claims (at a 10% alpha level) that whenever the binomial probability of the number of statistically significant results is lower than 10%, the data is surprising, and we can reject the hypothesis that this is an unbiased set of studies. In other words, it is unlikely that this many significant results would be observed, suggesting that publication bias or other selection effects have played a role in these articles.</p>
+<p>One of these 44 articles had been co-authored by myself <span class="citation" data-cites="jostmann_weight_2009">(<a href="references.html#ref-jostmann_weight_2009" role="doc-biblioref">Jostmann et al., 2009</a>)</span>. At this time, I knew little about statistical power and publication bias, and being accused of improper scientific conduct was stressful. And yet, the accusations were correct - we had selectively reported results, and selectively reported analyses that worked. Having received virtually no training on this topic, we educated ourselves, and uploaded an unpublished study to the website psychfiledrawer.org (which no longer exists) to share our filedrawer. Some years later, we assisted when Many Labs 3 included one of the studies we had published in the set of studies they were replicating <span class="citation" data-cites="ebersole_many_2016">(<a href="references.html#ref-ebersole_many_2016" role="doc-biblioref">Ebersole et al., 2016</a>)</span>, and when a null result was observed, we wrote “We have had to conclude that there is actually no reliable evidence for the effect” <span class="citation" data-cites="jostmann_short_2016">(<a href="references.html#ref-jostmann_short_2016" role="doc-biblioref">Jostmann et al., 2016</a>)</span>. I hope this educational materials prevents others from making a fool of themselves as we did.</p>
+</section><section id="bias-detection-in-meta-analysis" class="level2" data-number="12.2"><h2 data-number="12.2" class="anchored" data-anchor-id="bias-detection-in-meta-analysis">
+<span class="header-section-number">12.2</span> Bias detection in meta-analysis</h2>
+<p>New methods to detect publication bias are continuously developed, and old methods become outdated (even though you can still see them appear in meta-analyses). One outdated method is known as <strong>fail-safe N</strong>. The idea was to calculate the number of non-significant results one would need to have in file-drawers before an observed meta-analytic effect size estimate would no longer be statistically different from 0. It is <a href="https://handbook-5-1.cochrane.org/chapter_10/10_4_4_3_fail_safe_n.htm">no longer recommended</a>, and Becker <span class="citation" data-cites="becker_failsafe_2005">(<a href="references.html#ref-becker_failsafe_2005" role="doc-biblioref">2005</a>)</span> writes “Given the other approaches that now exist for dealing with publication bias, the failsafe N should be abandoned in favor of other, more informative analyses”. Currently, the only use fail-safe N has is as a tool to identify meta-analyses that are not state-of-the-art.</p>
+<p>Before we can explain a second method (Trim-and-Fill), it’s useful to explain a common way to visualize meta-analyses, known as a <strong>funnel plot</strong>. In a funnel plot, the x-axis is used to plot the effect size of each study, and the y-axis is used to plot the ‘precision’ of each effect size (typically, the standard error of each effect size estimate). The larger the number of observations in a study, the more precise the effect size estimate, the smaller the standard error, and thus the higher up in the funnel plot the study will be. An infinitely precise study (with a standard error of 0) would be at the top of y-axis.</p>
+<p>The script below simulates meta-analyses for <code>nsims</code> studies, and stores all the results needed to examine bias detection. In the first section of the script, statistically significant results in the desired direction are simulated, and in the second part null results are generated. The script generates a percentage of significant results as indicated by <code>pub.bias</code> - when set to 1, all results are significant. In the code below, <code>pub.bias</code> is set to 0.05. Because there is no true effect in the simulation (<code>m1</code> and <code>m2</code> are equal, so there is no difference between the groups), the only significant results that should be expected are the 5% false positives. Finally, the meta-analysis is performed, the results are printed, and a funnel plot is created.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(metafor)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(truncnorm)</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a>nsims <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="co"># number of simulated experiments</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>pub.bias <span class="ot">&lt;-</span> <span class="fl">0.05</span> <span class="co"># set percentage of significant results in the literature</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a></span>
+<span id="cb1-7"><a href="#cb1-7"></a>m1 <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># too large effects will make non-significant results extremely rare</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a>sd1 <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a>m2 <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a>sd2 <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>metadata.sig <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">m1 =</span> <span class="cn">NA</span>, <span class="at">m2 =</span> <span class="cn">NA</span>, <span class="at">sd1 =</span> <span class="cn">NA</span>, <span class="at">sd2 =</span> <span class="cn">NA</span>, </span>
+<span id="cb1-12"><a href="#cb1-12"></a>                           <span class="at">n1 =</span> <span class="cn">NA</span>, <span class="at">n2 =</span> <span class="cn">NA</span>, <span class="at">pvalues =</span> <span class="cn">NA</span>, <span class="at">pcurve =</span> <span class="cn">NA</span>)</span>
+<span id="cb1-13"><a href="#cb1-13"></a>metadata.nonsig <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">m1 =</span> <span class="cn">NA</span>, <span class="at">m2 =</span> <span class="cn">NA</span>, <span class="at">sd1 =</span> <span class="cn">NA</span>, <span class="at">sd2 =</span> <span class="cn">NA</span>, </span>
+<span id="cb1-14"><a href="#cb1-14"></a>                              <span class="at">n1 =</span> <span class="cn">NA</span>, <span class="at">n2 =</span> <span class="cn">NA</span>, <span class="at">pvalues =</span> <span class="cn">NA</span>, <span class="at">pcurve =</span> <span class="cn">NA</span>)</span>
+<span id="cb1-15"><a href="#cb1-15"></a></span>
+<span id="cb1-16"><a href="#cb1-16"></a><span class="co"># simulate significant effects in the expected direction</span></span>
+<span id="cb1-17"><a href="#cb1-17"></a><span class="cf">if</span>(pub.bias <span class="sc">&gt;</span> <span class="dv">0</span>){</span>
+<span id="cb1-18"><a href="#cb1-18"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nsims<span class="sc">*</span>pub.bias) { <span class="co"># for each simulated experiment</span></span>
+<span id="cb1-19"><a href="#cb1-19"></a>  p <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co"># reset p to 1</span></span>
+<span id="cb1-20"><a href="#cb1-20"></a>  n <span class="ot">&lt;-</span> <span class="fu">round</span>(truncnorm<span class="sc">::</span><span class="fu">rtruncnorm</span>(<span class="dv">1</span>, <span class="dv">20</span>, <span class="dv">1000</span>, <span class="dv">100</span>, <span class="dv">100</span>)) <span class="co"># n based on truncated normal</span></span>
+<span id="cb1-21"><a href="#cb1-21"></a>  <span class="cf">while</span> (p <span class="sc">&gt;</span> <span class="fl">0.025</span>) { <span class="co"># continue simulating as along as p is not significant</span></span>
+<span id="cb1-22"><a href="#cb1-22"></a>    x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n, <span class="at">mean =</span> m1, <span class="at">sd =</span> sd1) </span>
+<span id="cb1-23"><a href="#cb1-23"></a>    y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n, <span class="at">mean =</span> m2, <span class="at">sd =</span> sd2) </span>
+<span id="cb1-24"><a href="#cb1-24"></a>    p <span class="ot">&lt;-</span> <span class="fu">t.test</span>(x, y, <span class="at">alternative =</span> <span class="st">"greater"</span>, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span>
+<span id="cb1-25"><a href="#cb1-25"></a>  }</span>
+<span id="cb1-26"><a href="#cb1-26"></a>  metadata.sig[i, <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">mean</span>(x)</span>
+<span id="cb1-27"><a href="#cb1-27"></a>  metadata.sig[i, <span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">mean</span>(y)</span>
+<span id="cb1-28"><a href="#cb1-28"></a>  metadata.sig[i, <span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="fu">sd</span>(x)</span>
+<span id="cb1-29"><a href="#cb1-29"></a>  metadata.sig[i, <span class="dv">4</span>] <span class="ot">&lt;-</span> <span class="fu">sd</span>(y)</span>
+<span id="cb1-30"><a href="#cb1-30"></a>  metadata.sig[i, <span class="dv">5</span>] <span class="ot">&lt;-</span> n</span>
+<span id="cb1-31"><a href="#cb1-31"></a>  metadata.sig[i, <span class="dv">6</span>] <span class="ot">&lt;-</span> n</span>
+<span id="cb1-32"><a href="#cb1-32"></a>  out <span class="ot">&lt;-</span> <span class="fu">t.test</span>(x, y, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-33"><a href="#cb1-33"></a>  metadata.sig[i, <span class="dv">7</span>] <span class="ot">&lt;-</span> out<span class="sc">$</span>p.value</span>
+<span id="cb1-34"><a href="#cb1-34"></a>  metadata.sig[i, <span class="dv">8</span>] <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"t("</span>, out<span class="sc">$</span>parameter, <span class="st">")="</span>, out<span class="sc">$</span>statistic)</span>
+<span id="cb1-35"><a href="#cb1-35"></a>}}</span>
+<span id="cb1-36"><a href="#cb1-36"></a></span>
+<span id="cb1-37"><a href="#cb1-37"></a><span class="co"># simulate non-significant effects (two-sided)</span></span>
+<span id="cb1-38"><a href="#cb1-38"></a><span class="cf">if</span>(pub.bias <span class="sc">&lt;</span> <span class="dv">1</span>){</span>
+<span id="cb1-39"><a href="#cb1-39"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nsims<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>pub.bias)) { <span class="co"># for each simulated experiment</span></span>
+<span id="cb1-40"><a href="#cb1-40"></a>  p <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># reset p to 1</span></span>
+<span id="cb1-41"><a href="#cb1-41"></a>  n <span class="ot">&lt;-</span> <span class="fu">round</span>(truncnorm<span class="sc">::</span><span class="fu">rtruncnorm</span>(<span class="dv">1</span>, <span class="dv">20</span>, <span class="dv">1000</span>, <span class="dv">100</span>, <span class="dv">100</span>))</span>
+<span id="cb1-42"><a href="#cb1-42"></a>  <span class="cf">while</span> (p <span class="sc">&lt;</span> <span class="fl">0.05</span>) { <span class="co"># continue simulating as along as p is significant</span></span>
+<span id="cb1-43"><a href="#cb1-43"></a>    x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n, <span class="at">mean =</span> m1, <span class="at">sd =</span> sd1) <span class="co"># produce  simulated participants</span></span>
+<span id="cb1-44"><a href="#cb1-44"></a>    y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n, <span class="at">mean =</span> m2, <span class="at">sd =</span> sd2) <span class="co"># produce  simulated participants</span></span>
+<span id="cb1-45"><a href="#cb1-45"></a>    p <span class="ot">&lt;-</span> <span class="fu">t.test</span>(x, y, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span>
+<span id="cb1-46"><a href="#cb1-46"></a>  }</span>
+<span id="cb1-47"><a href="#cb1-47"></a>  metadata.nonsig[i, <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">mean</span>(x)</span>
+<span id="cb1-48"><a href="#cb1-48"></a>  metadata.nonsig[i, <span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">mean</span>(y)</span>
+<span id="cb1-49"><a href="#cb1-49"></a>  metadata.nonsig[i, <span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="fu">sd</span>(x)</span>
+<span id="cb1-50"><a href="#cb1-50"></a>  metadata.nonsig[i, <span class="dv">4</span>] <span class="ot">&lt;-</span> <span class="fu">sd</span>(y)</span>
+<span id="cb1-51"><a href="#cb1-51"></a>  metadata.nonsig[i, <span class="dv">5</span>] <span class="ot">&lt;-</span> n</span>
+<span id="cb1-52"><a href="#cb1-52"></a>  metadata.nonsig[i, <span class="dv">6</span>] <span class="ot">&lt;-</span> n</span>
+<span id="cb1-53"><a href="#cb1-53"></a>  out <span class="ot">&lt;-</span> <span class="fu">t.test</span>(x, y, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-54"><a href="#cb1-54"></a>  metadata.nonsig[i, <span class="dv">7</span>] <span class="ot">&lt;-</span> out<span class="sc">$</span>p.value</span>
+<span id="cb1-55"><a href="#cb1-55"></a>  metadata.nonsig[i, <span class="dv">8</span>] <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"t("</span>, out<span class="sc">$</span>parameter, <span class="st">")="</span>, out<span class="sc">$</span>statistic)</span>
+<span id="cb1-56"><a href="#cb1-56"></a>}}</span>
+<span id="cb1-57"><a href="#cb1-57"></a></span>
+<span id="cb1-58"><a href="#cb1-58"></a><span class="co"># Combine significant and non-significant effects</span></span>
+<span id="cb1-59"><a href="#cb1-59"></a>metadata <span class="ot">&lt;-</span> <span class="fu">rbind</span>(metadata.nonsig, metadata.sig)</span>
+<span id="cb1-60"><a href="#cb1-60"></a></span>
+<span id="cb1-61"><a href="#cb1-61"></a><span class="co"># Use escalc to compute effect sizes</span></span>
+<span id="cb1-62"><a href="#cb1-62"></a>metadata <span class="ot">&lt;-</span> <span class="fu">escalc</span>(<span class="at">n1i =</span> n1, <span class="at">n2i =</span> n2, <span class="at">m1i =</span> m1, <span class="at">m2i =</span> m2, <span class="at">sd1i =</span> sd1, </span>
+<span id="cb1-63"><a href="#cb1-63"></a>  <span class="at">sd2i =</span> sd2, <span class="at">measure =</span> <span class="st">"SMD"</span>, <span class="at">data =</span> metadata[<span class="fu">complete.cases</span>(metadata),])</span>
+<span id="cb1-64"><a href="#cb1-64"></a><span class="co"># add se for PET-PEESE analysis</span></span>
+<span id="cb1-65"><a href="#cb1-65"></a>metadata<span class="sc">$</span>sei <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(metadata<span class="sc">$</span>vi)</span>
+<span id="cb1-66"><a href="#cb1-66"></a></span>
+<span id="cb1-67"><a href="#cb1-67"></a><span class="co">#Perform meta-analysis</span></span>
+<span id="cb1-68"><a href="#cb1-68"></a>result <span class="ot">&lt;-</span> metafor<span class="sc">::</span><span class="fu">rma</span>(yi, vi, <span class="at">data =</span> metadata)</span>
+<span id="cb1-69"><a href="#cb1-69"></a>result</span>
+<span id="cb1-70"><a href="#cb1-70"></a></span>
+<span id="cb1-71"><a href="#cb1-71"></a><span class="co"># Print a Funnel Plot</span></span>
+<span id="cb1-72"><a href="#cb1-72"></a>metafor<span class="sc">::</span><span class="fu">funnel</span>(result, <span class="at">level =</span> <span class="fl">0.95</span>, <span class="at">refline =</span> <span class="dv">0</span>)</span>
+<span id="cb1-73"><a href="#cb1-73"></a><span class="fu">abline</span>(<span class="at">v =</span> result<span class="sc">$</span>b[<span class="dv">1</span>], <span class="at">lty =</span> <span class="st">"dashed"</span>) <span class="co"># vertical line at meta-analytic ES</span></span>
+<span id="cb1-74"><a href="#cb1-74"></a><span class="fu">points</span>(<span class="at">x =</span> result<span class="sc">$</span>b[<span class="dv">1</span>], <span class="at">y =</span> <span class="dv">0</span>, <span class="at">cex =</span> <span class="fl">1.5</span>, <span class="at">pch =</span> <span class="dv">17</span>) <span class="co"># add point</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s start by looking at what unbiased research looks like, by running the code, keeping <code>pub.bias</code> at 0.05, such that only 5% Type 1 errors enter the scientific literature.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: Matrix</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: metadat</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Loading the 'metafor' package (version 3.8-1). For an
+introduction to the package please type: help(metafor)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Random-Effects Model (k = 100; tau^2 estimator: REML)
+
+tau^2 (estimated amount of total heterogeneity): 0.0000 (SE = 0.0018)
+tau (square root of estimated tau^2 value):      0.0006
+I^2 (total heterogeneity / total variability):   0.00%
+H^2 (total variability / sampling variability):  1.00
+
+Test for Heterogeneity:
+Q(df = 99) = 91.7310, p-val = 0.6851
+
+Model Results:
+
+estimate      se     zval    pval    ci.lb   ci.ub    
+ -0.0021  0.0121  -0.1775  0.8591  -0.0258  0.0215    
+
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>When we examine the results of the meta-analysis we see there are 100 studies in the meta-analysis (<code>k = 100</code>), and there is no statistically significant heterogeneity (<em>p</em> = 0.69, which is not too surprising, as we programmed the simulation to have a true effect size of 0, and there is no heterogeneity in effect sizes). We also get the results for the meta-analysis. The meta-analytic estimate is <em>d</em> = -0.002, which is very close to 0 (as it should be, because the true effect size is indeed 0). The standard error around this estimate is 0.012. With 100 studies, we have a very accurate estimate of the true effect size. The <em>Z</em>-value for the test against <em>d</em> = 0 is -0.177, and the <em>p</em>-value for this test is 0.86. We cannot reject the hypothesis that the true effect size is 0. The CI around the effect size estimate (-0.026, 0.021) includes 0.</p>
+<p>If we examine the funnel plot in fig-funnel1 we see each study represented as a dot. The larger the sample size, the higher up in the plot, and the smaller the sample size, the lower in the plot. The white pyramid represents the area within which a study is not statistically significant, because the observed effect size (x-axis) is not far enough removed from 0 such that the confidence interval around the observed effect size would exclude 0. The lower the standard error, the more narrow the confidence interval, and the smaller the effect sizes needs to be in order to be statistically significant. At the same time, the smaller the standard error, the closer the effect size will be to the true effect size, so the less likely we will see effects far away from 0. We should expect 95% of the effect size estimates to fall within the funnel, if it is centered on the true effect size. We see only a few studies (five, to be exact) fall outside the white pyramid on the right side of the plot. These are the 5% significant results that we programmed in the simulation. Note that all 5 of these studies are false positives, as there is no true effect. If there was a true effect (you can re-run the simulation and set <em>d</em> to 0.5 by changing <code>m1 &lt;- 0</code> in the simulation to <code>m1 &lt;- 0.5</code>) the pyramid cloud of points would move to the right, and be centered on 0.5 instead of 0.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-funnel1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="12-bias_files/figure-html/fig-funnel1-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;12.3: Funnel plot of unbiased null results.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We can now compare the unbiased meta-analysis above with a biased meta-analysis. We can simulate a situation with extreme publication bias. Building on the estimate by <span class="citation" data-cites="scheel_excess_2021">Scheel et al. (<a href="references.html#ref-scheel_excess_2021" role="doc-biblioref">2021</a>)</span>, let’s assume 96% of the studies show positive results. We set <code>pub.bias &lt;- 0.96</code> in the code. We keep both means at 0, so there still is not real effect, but we will end up with mainly Type 1 errors in the predicted direction in the final set of studies. After simulating biased results, we can perform the meta-analysis to see if the statistical inference based on the meta-analysis is misleading.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Random-Effects Model (k = 100; tau^2 estimator: REML)
+
+tau^2 (estimated amount of total heterogeneity): 0 (SE = 0.0019)
+tau (square root of estimated tau^2 value):      0
+I^2 (total heterogeneity / total variability):   0.00%
+H^2 (total variability / sampling variability):  1.00
+
+Test for Heterogeneity:
+Q(df = 99) = 77.6540, p-val = 0.9445
+
+Model Results:
+
+estimate      se     zval    pval   ci.lb   ci.ub      
+  0.2701  0.0125  21.6075  &lt;.0001  0.2456  0.2946  *** 
+
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>The biased nature of the set of studies we have analyzed becomes clear if we examine the funnel plot in fig-funnel2. The pattern is quite peculiar. We see four unbiased null results, as we programmed into the simulation, but the remainder of the 96 studies are statistically significant, even though the null is true. We see most studies fall just on the edge of the white pyramid. Because <em>p</em>-values are uniformly distributed under the null, the Type 1 errors we observe often have <em>p</em>-values in the range of 0.02 to 0.05, unlike what we would expect if there was a true effect. These just significant <em>p</em>-values fall just outside of the white pyramid. The larger the study, the smaller the effect size that is significant. The fact that the effect sizes do not vary around a single true effect size (e.g., <em>d</em> = 0 or <em>d</em> = 0.5), but rather effect sizes become smaller with larger sample sizes (or smaller standard errors), is a strong indicator of bias. The vertical dotted line and black triangle at the top of the plot illustrate the observed (upwardly biased) meta-analytic effect size estimate.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-funnel2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="12-bias_files/figure-html/fig-funnel2-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;12.4: Funnel plot of biased null results with mostly significant results.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>One might wonder if such extreme bias ever really emerges in scientific research. It does. In fig-carterbias we see a funnel plot by <span class="citation" data-cites="carter_publication_2014">Carter &amp; McCullough (<a href="references.html#ref-carter_publication_2014" role="doc-biblioref">2014</a>)</span> who examined bias in 198 published studies testing the ‘ego-depletion’ effect, the idea that self-control relies on a limited resource. Do you notice any similarities to the extremely biased meta-analysis we simulated above? You might not be surprised that, even though before 2015 researchers thought there was a large and reliable literature demonstrating ego-depletion effects, a Registered Replication report yielded a non-significant effect size estimate <span class="citation" data-cites="hagger_multilab_2016">(<a href="references.html#ref-hagger_multilab_2016" role="doc-biblioref">Hagger et al., 2016</a>)</span>, and even when the original researchers tried to replicate their own work, they failed to observe a significant effect of ego-depletion <span class="citation" data-cites="vohs_multisite_2021">(<a href="references.html#ref-vohs_multisite_2021" role="doc-biblioref">Vohs et al., 2021</a>)</span>. Imagine the huge amount of wasted time, effort, and money on a literature that was completely based on bias in scientific research. Obviously, such research waste has ethical implications, and researchers need to take responsibility for preventing such waste in the future.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-carterbias" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="images/carterfunnel.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;12.5: Funnel plot from Carter and McCullough (2014) vizualizing bias in 198 published tests of the ego-depletion effect.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We can also see signs of bias in the forest plot for a meta-analysis. In fig-twoforestplot, two forest plots are plotted side by side. The left forest plot is based on unbiased data, the right forest plot is based on biased data. The forest plots are a bit big with 100 studies, but we see that in the left forest plot, the effects randomly vary around 0 as they should. On the right, beyond the first four studies, all confidence intervals magically just exclude an effect of 0.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-twoforestplot" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="12-bias_files/figure-html/fig-twoforestplot-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;12.6: Forest plot of unbiased meta-analysis (left) and biased meta-analysies (right).</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>When there is publication bias because researchers only publish statistically significant results (<em>p</em> &lt; <span class="math inline">\(\alpha\)</span>), and you calculate the effect size in a meta-analysis, the meta-analytic effect size estimate is <strong>higher</strong> when there is publication bias (where researchers publish only effects with <em>p</em> &lt; <span class="math inline">\(\alpha\)</span>) compared to when there is no publication bias. This is because publication bias filters out the smaller (non-significant) effect sizes. which are then not included in the computation of the meta-analytic effect size. This leads to a meta-analytic effect size estimate that is larger than the true population effect size. With strong publication bias, we know the meta-analytic effect size is inflated, but we don’t know by how much. The true effect size could just be a bit smaller, but the true effect size could also be 0, such as in the case of the ego-depletion literature.</p>
+</section><section id="trim-and-fill" class="level2" data-number="12.3"><h2 data-number="12.3" class="anchored" data-anchor-id="trim-and-fill">
+<span class="header-section-number">12.3</span> Trim and Fill</h2>
+<p>Trim and fill is a technique that aims to augment a dataset by adding hypothetical ‘missing’ studies (that may be in the ‘file-drawer’). The procedure starts by removing (‘trimming’) small studies that bias the meta-analytic effect size, then estimates the true effect size, and ends with ‘filling’ in a funnel plot with studies that are assumed to be missing due to publication bias. In the fig-trimfill1, you can see the same funnel plot as above, but now with added hypothetical studies (the unfilled circles which represent ‘imputed’ studies). If you look closely, you’ll see these points each have a mirror image on the opposite side of the meta-analytic effect size estimate (this is clearest in the lower half of the funnel plot). If we examine the result of the meta-analysis that includes these imputed studies, we see that trim and fill successfully alerts us to the fact that the meta-analysis is biased (if not, it would not add imputed studies) but it fails miserably in correcting the effect size estimate. In the funnel plot, we see the original (biased) effect size estimate indicated by the triangle, and the meta-analytic effect size estimate adjusted with the trim-and-fill method (indicated by the black circle). We see the meta-analytic effect size estimate is a bit lower, but given that the true effect size in the simulation was 0, the adjustment is clearly not sufficient.</p>
+<div class="cell" data-layout-align="center" data-fig.margin="false">
+<div class="cell-output-display">
+<div id="fig-trimfill1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="12-bias_files/figure-html/fig-trimfill1-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;12.7: Funnel plot with assumed missing effects added through trim-and-fill.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Trim-and-fill is not very good under many realistic publication bias scenarios. The method is criticized for its reliance on the strong assumption of symmetry in the funnel plot. When publication bias is based on the <em>p</em>-value of the study (arguably the most important source of publication bias in many fields) the trim-and-fill method does not perform well enough to yield a corrected meta-analytic effect size estimate that is close to the true effect size <span class="citation" data-cites="peters_performance_2007 terrin_adjusting_2003">(<a href="references.html#ref-peters_performance_2007" role="doc-biblioref">Peters et al., 2007</a>; <a href="references.html#ref-terrin_adjusting_2003" role="doc-biblioref">Terrin et al., 2003</a>)</span>. When the assumptions are met, it can be used as a <strong>sensitivity analysis.</strong> Researchers should not report the trim-and-fill corrected effect size estimate as a realistic estimate of the unbiased effect size. If other bias-detection tests (like <em>p</em>-curve or <em>z</em>-curve discussed below) have already indicated the presence of bias, the trim-and-fill procedure might not provide additional insights.</p>
+</section><section id="pet-peese" class="level2" data-number="12.4"><h2 data-number="12.4" class="anchored" data-anchor-id="pet-peese">
+<span class="header-section-number">12.4</span> PET-PEESE</h2>
+<p>A novel class of solutions to publication bias is <strong>meta-regression</strong>. Instead of plotting a line through individual data-points, in meta-regression a line is plotted through data points that each represent a study. As with normal regression, the more data meta-regression is based on, the more precise the estimate is and, therefore, the more studies in a meta-analysis, the better meta-regression will work in practice. If the number of studies is small, all bias detection tests lose power, and this is something that one should keep in mind when using meta-regression. Furthermore, regression requires sufficient variation in the data, which in the case of meta-regression means a wide range of sample sizes (recommendations indicate meta-regression performs well if studies have a range from 15 to 200 participants in each group – which is not typical for most research areas in psychology). Meta-regression techniques try to estimate the population effect size if precision was perfect (so when the standard error = 0).</p>
+<p>One meta-regression technique is known as PET-PEESE <span class="citation" data-cites="stanley_meta-regression_2014 stanley_finding_2017">(<a href="references.html#ref-stanley_finding_2017" role="doc-biblioref">Stanley et al., 2017</a>; <a href="references.html#ref-stanley_meta-regression_2014" role="doc-biblioref">Stanley &amp; Doucouliagos, 2014</a>)</span>. It consists of a ‘precision-effect-test’ (PET) which can be used in a Neyman-Pearson hypothesis testing framework to test whether the meta-regression estimate can reject an effect size of 0 based on the 95% CI around the PET estimate at the intercept SE = 0. Note that when the confidence interval is very wide due to a small number of observations, this test might have low power, and have an a-priori low probability of rejecting the null effect. The estimated effect size for PET is calculated with: <span class="math inline">\(d = β_0 + β_1SE_i + _ui\)</span> where d is the estimated effect size, SE is the standard error, and the equation is estimated using weighted least squares (WLS), with 1/SE2i as the weights. The PET estimate underestimates the effect size when there is a true effect. Therefore, the PET-PEESE procedure recommends first using PET to test whether the null can be rejected, and if so, then the ‘precision-effect estimate with standard error’ (PEESE) should be used to estimate the meta-analytic effect size. In PEESE, the standard error (used in PET) is replaced by the variance (i.e., the standard error squared), which <span class="citation" data-cites="stanley_meta-regression_2014">Stanley &amp; Doucouliagos (<a href="references.html#ref-stanley_meta-regression_2014" role="doc-biblioref">2014</a>)</span> find reduces the bias of the estimated meta-regression intercept.</p>
+<p>PET-PEESE has limitations, as all bias detection techniques have. The biggest limitations are that it does not work well when there are few studies, all the studies in a meta-analysis have small sample sizes, or when there is large heterogeneity in the meta-analysis <span class="citation" data-cites="stanley_finding_2017">(<a href="references.html#ref-stanley_finding_2017" role="doc-biblioref">Stanley et al., 2017</a>)</span>. When these situations apply (and they will in practice), PET-PEESE might not be a good approach. Furthermore, there are some situations where there might be a correlation between sample size and precision, which in practice will often be linked to heterogeneity in the effect sizes included in a meta-analysis. For example, if true effects are different across studies, and people perform power analyses with accurate information about the expected true effect size, large effect sizes in a meta-analysis will have small sample sizes, and small effects will have large sample sizes. Meta-regression is, like normal regression, a way to test for an association, but you need to think about the causal mechanism behind the association.</p>
+<p>Let’s explore how PET-PEESE meta-regression attempts to give us an unbiased effect size estimate, under specific assumptions of how publication bias is caused. In fig-petpeese we once again see the funnel plot, now complemented with 2 additional lines through the plots. The vertical line at <em>d</em> = 0.27 is the meta-analytic effect size estimate, which is upwardly biased because we are averaging over statistically significant studies only. There are 2 additional lines, which are the meta-regression lines for PET-PEESE based on the formulas detailed previously. The straight diagonal line gives us the PET estimate at a SE of 0 (an infinite sample, at the top of the plot), indicated by the circle. The dotted line around this PET estimate is the 95% confidence interval for the estimate. In this case, the 95% CI contains 0, which means that based on the PET estimate of <em>d</em> = 0.02, we cannot reject a meta-analytic effect size of 0. Note that even with 100 studies, the 95% CI is quite wide. Meta-regression is, just like normal regression, only as accurate as the data we have. This is one limitation of PET-PEESE meta-regression: With small numbers of studies in the meta-analysis, it has low accuracy. If we had been able to reject the null based on the PET estimate, we would then have used the PEESE estimate (indicated by the diamond shape) of <em>d</em> = 0.17 for the meta-analytic effect size, corrected for bias (while never knowing whether the model underlying the PEESE estimate corresponded to the true bias generating mechanisms in the meta-analysis, and thus if the meta-analytic estimate was accurate).</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-petpeese" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="12-bias_files/figure-html/fig-petpeese-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;12.8: Funnel plot with PETPEESE regression lines.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="p-value-meta-analysis" class="level2" data-number="12.5"><h2 data-number="12.5" class="anchored" data-anchor-id="p-value-meta-analysis">
+<span class="header-section-number">12.5</span> <em>P</em>-value meta-analysis</h2>
+<p>In addition to a meta-analysis of effect sizes, it is possible to perform a meta-analysis of <em>p</em>-values. The first of such approaches is known as the <a href="https://en.wikipedia.org/wiki/Fisher%27s_method"><strong>Fisher’s combined probability test</strong></a>, and more recent bias detection tests such as <em>p</em>-curve analysis <span class="citation" data-cites="simonsohn_p-curve_2014">(<a href="references.html#ref-simonsohn_p-curve_2014" role="doc-biblioref">Simonsohn et al., 2014</a>)</span> and <em>p</em>-uniform* <span class="citation" data-cites="aert_correcting_2018">(<a href="references.html#ref-aert_correcting_2018" role="doc-biblioref">Aert &amp; Assen, 2018</a>)</span> build on this idea. These two techniques are an example of selection model approaches to test and adjust for meta-analysis <span class="citation" data-cites="iyengar_selection_1988">(<a href="references.html#ref-iyengar_selection_1988" role="doc-biblioref">Iyengar &amp; Greenhouse, 1988</a>)</span>, where a <em>model about the data generating process</em> of the effect sizes is combined with a <em>selection model</em> of how publication bias impacts which effect sizes become part of the scientific literature. An example of a data generating process would be that results of studies are generated by statistical tests where all test assumptions are met, and the studies have some average power. A selection model might be that all studies are published, as long as they are statistically significant at an alpha level of 0.05.</p>
+<p><em>P</em>-curve analysis uses exactly this selection model. It assumes all significant results are published, and examines whether the data generating process mirrors what would be expected if the studies have a certain power, or whether the data generating process mirrors the pattern expected if the null hypothesis is true. As discussed in the section on <a href="01-pvalue.html#sec-whichpexpect">which <em>p</em>-values you can expect</a> we should observe uniformly distributed <em>p</em>-values when the null hypothesis is true, and more small significant <em>p</em>-values (e.g., 0.01) than large significant <em>p</em>-values (e.g., 0.04) when the alternative hypothesis is true. <em>P</em>-curve analysis performs two tests. In the first test, <em>p</em>-curve analysis examines whether the <em>p</em>-value distribution is flatter than what would be expected if the studies you analyze had 33% power. This value is somewhat arbitrary (and can be adjusted), but the idea is to reject at the smallest level of statistical power that would lead to useful insights about the presence of effects. If the average power in the set of studies is less than 33%, there might be an effect, but the studies are not designed well enough to learn about it by performing statistical tests. If we can reject the presence of a pattern of <em>p</em>-values that has at least 33% power, this suggests the distribution looks more like one expected when the null hypothesis is true. That is, we would doubt there is an effect in the set of studies included in the meta-analysis, <em>even though all individual studies were statistically significant</em>.</p>
+<p>The second test examines whether the <em>p</em>-value distribution is sufficiently right-skewed (more small significant <em>p</em>-values than large significant <em>p</em>-values), such that the pattern suggests we can reject a uniform <em>p</em>-value distribution. If we can reject a uniform <em>p</em>-value distribution, this suggests the studies might have examined a true effect and had at least some power. If the second test is significant, we would act as if the set of studies examines some true effect, even though there might be publication bias. As an example, let’s consider Figure 3 from Simonsohn and colleagues <span class="citation" data-cites="simonsohn_p-curve_2014">(<a href="references.html#ref-simonsohn_p-curve_2014" role="doc-biblioref">2014</a>)</span>. The authors compared 20 papers in the Journal of Personality and Social Psychology that used a covariate in the analysis, and 20 studies that did not use a covariate. The authors suspected that researchers might add a covariate in their analyses to try to find a <em>p</em>-value smaller than 0.05, when the first analysis they tried did not yield a significant effect.</p>
+<div class="cell" data-layout-align="center" data-fig.margin="false">
+<div class="cell-output-display">
+<div id="fig-pcurve" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="images/pcurve.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;12.9: Figure 3 from Simonsohn et al (2014) showing a <em>p</em>-curve with and without bias.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The <em>p</em>-curve distribution of the observed <em>p</em>-values is represented by five points in the blue line. <em>P</em>-curve analysis is performed <em>only</em> on statistically significant results, based on the assumption that these are always published, and thus that this part of the <em>p</em>-value distribution contains all studies that were performed. The 5 points illustrate the percentage of <em>p</em>-values between 0 and 0.01, 0.01 and 0.02, 0.02 and 0.03, 0.03 and 0.04, and 0.04 and 0.05. In the figure on the right, you see a relatively normal right-skewed <em>p</em>-value distribution, with more low than high <em>p</em>-values. The <em>p</em>-curve analysis shows that the blue line in the right figure is more right-skewed than the uniform red line (where the red line is the uniform <em>p</em>-value distribution expected if there was no effect). Simonsohn and colleagues summarize this pattern as an indication that the set of studies has ‘evidential value’, but this terminology is somewhat misleading. The formally correct interpretation is that we can reject a <em>p</em>-value distribution as expected when the null hypothesis was true in all studies included in the <em>p</em>-curve analysis. Rejecting a uniform <em>p</em>-value distribution does not automatically mean there is evidence for the theorized effect (e.g., the pattern could be caused by a mix of null effects and a small subset of studies that show an effect due to a methodological confound).</p>
+<p>In the left figure we see the opposite pattern, with mainly high <em>p</em>-values around 0.05, and almost no <em>p</em>-values around 0.01. Because the blue line is significantly flatter than the green line, the <em>p</em>-curve analysis suggests this set of studies is the result of selection bias and was not generated by a set of sufficiently powered studies. <em>P</em>-curve analysis is a useful tool. But it is important to correctly interpret what a <em>p</em>-curve analysis can tell you. A right-skewed <em>p</em>-curve does not prove that there is no bias, or that the theoretical hypothesis is true. A flat <em>p</em>-curve does not prove that the theory is incorrect, but it does show that the studies that were meta-analyzed look more like the pattern that would be expected if the null hypothesis was true, and there was selection bias.</p>
+<p>The script stores all the test statistics for the 100 simulated <em>t</em>-tests that are included in the meta-analysis. The first few rows look like:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>t(136)=0.208132209831132
+t(456)=-1.20115958535433
+t(58)=0.0422284763301259
+t(358)=0.0775200850900646
+t(188)=2.43353676652346</code></pre>
+</div>
+</div>
+<p>Print all test results with <code>cat(metadata$pcurve, sep = "\n")</code>, and go to the online <em>p</em>-curve app at <a href="http://www.p-curve.com/app4/" class="uri">http://www.p-curve.com/app4/</a>. Paste all the test results, and click the ‘Make the p-curve’ button. Note that the <em>p</em>-curve app will only yield a result when there are <em>p</em>-values smaller than 0.05 - if all test statistics yield a <em>p</em> &gt; 0.05, the <em>p</em>-curve cannot be computed, as these tests are ignored.</p>
+<div class="cell" data-layout-align="center" data-fig.margin="false">
+<div class="cell-output-display">
+<div id="fig-pcurveresult" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="images/pcurveresult.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;12.10: Result of the <em>p</em>-curve analysis of the biased studies.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The distribution of <em>p</em>-values clearly looks like it comes from a uniform distribution (as it indeed does), and the statistical test indicates we can reject a <em>p</em>-value distribution as steep or steeper as would be generated by a set of studies with 33% power, <em>p</em> &lt; 0.0001. The app also provides an estimate of the average power of the tests that generated the observed <em>p</em>-value distribution, 5%, which is indeed correct. Therefore, we can conclude these studies, even though many effects are statistically significant, are more in line with selective reporting of Type 1 errors, than with a <em>p</em>-value distribution that should be expected if there was a true effect that was studied with sufficient statistical power. The theory might still be true, but the set of studies we have analyzed here do not provide support for the theory.</p>
+<p>A similar meta-analytic technique is <em>p</em>-uniform*. This technique is similar to <em>p</em>-curve analysis and selection bias models, but it uses the results both from significant and non-significant studies, and can be used to estimate a bias-adjusted meta-analytic effect size estimate. The technique uses a random-effects model to estimate the effect sizes for each study, and weighs them based on a selection model that assumes significant results are more likely to be published than non-significant results. Below, we see the output of the <em>p</em>-uniform* which estimates the bias-corrected effect size to be <em>d</em> = 0.0126. This effect size is not statistically different from 0, <em>p</em> = 0.3857, and therefore this bias detection technique correctly indicates that even though all effects were statistically significant, the set of studies does not provide a good reason to reject a meta-analytic effect size estimate of 0.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>puniform<span class="sc">::</span><span class="fu">puniform</span>(<span class="at">m1i =</span> metadata<span class="sc">$</span>m1, <span class="at">m2i =</span> metadata<span class="sc">$</span>m2, <span class="at">n1i =</span> metadata<span class="sc">$</span>n1, </span>
+<span id="cb8-2"><a href="#cb8-2"></a>  <span class="at">n2i =</span> metadata<span class="sc">$</span>n2, <span class="at">sd1i =</span> metadata<span class="sc">$</span>sd1, <span class="at">sd2i =</span> metadata<span class="sc">$</span>sd2, <span class="at">side =</span> <span class="st">"right"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Method: P
+
+Effect size estimation p-uniform
+
+       est     ci.lb     ci.ub       L.0      pval      ksig
+    0.0126   -0.0811    0.0887   -0.2904    0.3857        96
+
+===
+
+Publication bias test p-uniform
+
+      L.pb    pval
+    7.9976   &lt;.001
+
+===
+
+Fixed-effect meta-analysis
+
+    est.fe     se.fe   zval.fe pval.fe  ci.lb.fe  ci.ub.fe     Qstat     Qpval
+    0.2701    0.0125   21.6025   &lt;.001    0.2456    0.2946   77.6031     0.945</code></pre>
+</div>
+</div>
+<p>An alternative technique that also meta-analyzes the <em>p</em>-values from individual studies is a <em>z</em>-curve analysis, which is a meta-analysis of observed power (<span class="citation" data-cites="bartos_z-curve20_2020 brunner_estimating_2020">(<a href="references.html#ref-bartos_z-curve20_2020" role="doc-biblioref">Bartoš &amp; Schimmack, 2020</a>; <a href="references.html#ref-brunner_estimating_2020" role="doc-biblioref">Brunner &amp; Schimmack, 2020</a>)</span>; for an example, see <span class="citation" data-cites="sotola_garbage_2022">(<a href="references.html#ref-sotola_garbage_2022" role="doc-biblioref">Sotola, 2022</a>)</span>). Like a traditional meta-analysis, <em>z</em>-curve analysis transforms observed test results (<em>p</em>-values) into <em>z</em>-scores. In an unbiased literature where the null hypothesis is true, we should observe approximately <span class="math inline">\(\alpha\)</span>% significant results. If the null is true, the distribution of <em>z</em>-scores is centered on 0. <em>Z</em>-curve analysis computes absolute <em>z</em>-values, and therefore <span class="math inline">\(\alpha\)</span>% of <em>z</em>-scores should be larger than the critical value (1.96 for a 5% alpha level). In fig-zcurveunbiasednull <em>z</em>-scores for 1000 studies are plotted, with a true effect size of 0, where exactly 5% of the observed results are statistically significant.</p>
+<div class="cell" data-layout-align="center" data-hash="12-bias_cache/html/fig-zcurveunbiasednull_fcd431ff0fc450a41ce98718cd81ee25">
+<div class="cell-output-display">
+<div id="fig-zcurveunbiasednull" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="12-bias_files/figure-html/fig-zcurveunbiasednull-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;12.11: <em>Z</em>-curve analysis for 1000 studies with a true effect size of 0 without publication bias.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>If there is a true effect, the distribution of <em>z</em>-scores shifts away from 0, as a function of the statistical power of the test. The higher the power, the further to the right the distribution of <em>z</em>-scores will be located. For example, when examining an effect with 66% power, an unbiased distribution of <em>z</em>-scores, computed from observed <em>p</em>-values, looks like the distribution in fig-zcurveunbiasedalternative.</p>
+<div class="cell" data-layout-align="center" data-hash="12-bias_cache/html/fig-zcurveunbiasedalternative_e755495b1209a13167386643dc4a99fc">
+<div class="cell-output-display">
+<div id="fig-zcurveunbiasedalternative" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="12-bias_files/figure-html/fig-zcurveunbiasedalternative-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;12.12: <em>Z</em>-curve analysis for 1000 studies with a true effect size of <em>d</em> = 0.37 and <em>n</em> = 100 per condition in an independent <em>t</em>-test without publication bias.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In any meta-analysis the studies that are included will differ in their statistical power, and their true effect size (due to heterogeneity). <em>Z</em>-curve analysis uses mixtures of normal distributions centered at means 0 to 6 to fit a model of the underlying effect sizes that best represents the observed results in the included studies (for the technical details, see <span class="citation" data-cites="bartos_z-curve20_2020">Bartoš &amp; Schimmack (<a href="references.html#ref-bartos_z-curve20_2020" role="doc-biblioref">2020</a>)</span>. The <em>z</em>-curve then aims to estimate the average power of the set of studies, and then calculates the <em>observed discovery rate</em> (ODR: the percentage of significant results, or the observed power), the <em>expected discovery rate</em> (EDR: the proportion of the area under the curve on the right side of the significance criterion) and the expected replication rate (ERR: the expected proportion of successfully replicated significant studies from all significant studies). The <em>z</em>-curve is able to correct for selection bias for positive results (under specific assumptions), and can estimate the EDR and ERR using only the significant <em>p</em>-values.</p>
+<p>To examine the presence of bias, it is preferable to submit non-significant and significant <em>p</em>-values to a <em>z</em>-curve analysis, even if only the significant <em>p</em>-values are used to produce estimates. Publication bias can then be examined by comparing the ODR to the EDR. If the percentage of significant results in the set of studies (ODR) is much higher than the expected discovery rate (EDR), this is a sign of bias. If we analyze the same set of biased studies as we used to illustrate the bias detection techniques discussed above, <em>z</em>-curve analysis should be able to indicate the presence of bias. We can perform the <em>z</em>-curve with the following code:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>z_res <span class="ot">&lt;-</span> zcurve<span class="sc">::</span><span class="fu">zcurve</span>(<span class="at">p =</span> metadata<span class="sc">$</span>pvalues, <span class="at">method =</span> <span class="st">"EM"</span>, <span class="at">bootstrap =</span> <span class="dv">1000</span>)</span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="fu">summary</span>(z_res, <span class="at">all =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="fu">plot</span>(z_res, <span class="at">annotation =</span> <span class="cn">TRUE</span>, <span class="at">CI =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center" data-hash="12-bias_cache/html/unnamed-chunk-4_c6d808f41320354df3653ec87f360601">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="12-bias_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+zcurve::zcurve(p = metadata$pvalues, method = "EM", bootstrap = 1000)
+
+model: EM via EM
+
+              Estimate  l.CI   u.CI
+ERR              0.052 0.025  0.160
+EDR              0.053 0.050  0.119
+Soric FDR        0.947 0.389  1.000
+File Drawer R   17.987 7.399 19.000
+Expected N        1823   806   1920
+Missing N         1723   706   1820
+
+Model converged in 38 + 205 iterations
+Fitted using 96 p-values. 100 supplied, 96 significant (ODR = 0.96, 95% CI [0.89, 0.99]).
+Q = -6.69, 95% CI[-23.63, 11.25]</code></pre>
+</div>
+</div>
+<p>We see that the distribution of <em>z</em>-scores looks peculiar. Most expected <em>z</em>-scores between 0 and 1.96 are missing. 96 out of 100 studies were significant, which makes the observed discovery rate (ODR), or observed power (across all these studies with different sample sizes) 0.96, 95% CI[0.89; 0.99]. The expected discovery rate (EDR) is only 0.053, which differs statistically from the observed discovery rate, as indicated by the fact that the confidence interval of the EDR does not overlap with the ODR of 0.96. This means there is clear indication of selection bias based on the <em>z</em>-curve analysis. The expected replicability rate for these studies is only 0.052, which is in line with the expectation that we will only observe 5% Type 1 errors, as there was no true effect in this simulation. Thus, even though we only entered significant <em>p</em>-values, <em>z</em>-curve analysis correctly suggests that we should not expect these results to replicate at a higher frequency than the Type 1 error rate.</p>
+</section><section id="conclusion" class="level2" data-number="12.6"><h2 data-number="12.6" class="anchored" data-anchor-id="conclusion">
+<span class="header-section-number">12.6</span> Conclusion</h2>
+<p>Publication bias is a big problem in science. It is present in almost all meta-analyses performed on the primary hypothesis test in scientific articles, because these articles are much more likely to be submitted and accepted for publication if the primary hypothesis test is statistically significant. Meta-analytic effect size estimates that are not adjusted for bias will almost always overestimate the true effect size, and bias-adjusted effect sizes might still be misleading. Having messed up the scientific literature through publication bias, there is no way for us to know whether we are computing accurate meta-analytic effect sizes estimates from the literature. Publication bias inflates the effect size estimate to an unknown extent, and there have already have been several cases where the true effect size turned out to be zero. The publication bias tests in this chapter might not provide certainty about the unbiased effect size, but they can function as a red flag to indicate when bias is present, and provide adjusted estimates that, if the underlying model of publication bias is correct, might well be closer to the truth.</p>
+<p>There is a lot of activity in the literature on tests for publication bias. There are many different tests, and you need to carefully check the assumptions of each test before applying it. Most tests don’t work well when there is large heterogeneity, and heterogeneity is quite likely. A meta-analysis should always examine whether there is publication bias, preferably using multiple publication bias tests, and therefore it is useful to not just code effect sizes, but also code test statistics or <em>p</em>-values. None of the bias detection techniques discussed in this chapter will be a silver bullet, but they will be better than naively interpreting the uncorrected effect size estimate from the meta-analysis.</p>
+<p>For another open educational resource on tests for publication bias, see <a href="https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R/pub-bias.html">Doing Meta-Analysis in R</a>.</p>
+</section><section id="test-yourself" class="level2" data-number="12.7"><h2 data-number="12.7" class="anchored" data-anchor-id="test-yourself">
+<span class="header-section-number">12.7</span> Test Yourself</h2>
+<div class="webex-check webex-box">
+<p><strong>Q1</strong>: What happens when there is publication bias because researchers only publish statistically significant results (<em>p</em> &lt; <span class="math inline">\(\alpha\)</span>), and you calculate the effect size in a meta-analysis?</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_OOANLNAREB" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_OOANLNAREB" value=""><span>The meta-analytic effect size estimate is <strong>identical</strong> whether there is publication bias (where researchers publish only effects with <em>p</em> &lt; <span class="math inline">\(lpha\)</span>) or no publication bias.</span></label><label><input type="radio" autocomplete="off" name="radio_OOANLNAREB" value=""><span>The meta-analytic effect size estimate is <strong>closer to the true effect size</strong> when there is publication bias (where researchers publish only effects with <em>p</em> &lt; <span class="math inline">\(lpha\)</span>) compared to when there is no publication bias.</span></label><label><input type="radio" autocomplete="off" name="radio_OOANLNAREB" value="answer"><span>The meta-analytic effect size estimate is <strong>inflated</strong> when there is publication bias (where researchers publish only effects with <em>p</em> &lt; <span class="math inline">\(lpha\)</span>) compared to when there is no publication bias.</span></label><label><input type="radio" autocomplete="off" name="radio_OOANLNAREB" value=""><span>The meta-analytic effect size estimate is <strong>lower</strong> when there is publication bias (where researchers publish only effects with <em>p</em> &lt; <span class="math inline">\(lpha\)</span>) compared to when there is no publication bias.</span></label>
+</div>
+</div>
+<p><strong>Q2</strong>: The forest plot in the figure below looks quite peculiar. What do you notice?</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="12-bias_files/figure-html/metasimq2-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div id="radio_VHWGIQQHJZ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_VHWGIQQHJZ" value=""><span>All effect sizes are quite similar, suggesting large sample sizes and highly accurate effect size measures.</span></label><label><input type="radio" autocomplete="off" name="radio_VHWGIQQHJZ" value=""><span>The studies look as if they were designed based on perfect a-priori power analyses, all yielding just significant results.</span></label><label><input type="radio" autocomplete="off" name="radio_VHWGIQQHJZ" value="answer"><span>The studies have confidence intervals that only just fail to include 0, suggesting most studies are only just statistically significant. This suggests publication bias.</span></label><label><input type="radio" autocomplete="off" name="radio_VHWGIQQHJZ" value=""><span>All effects are in the same direction, which suggests that one-sided tests have been performed, even though these might not have been preregistered.</span></label>
+</div>
+</div>
+<p><strong>Q3</strong>: Which statement is true?</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_IXQIXRPGMN" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_IXQIXRPGMN" value=""><span>With extreme publication bias, all individual studies in a literature can be significant, but the standard errors are so large that the meta-analytic effect size estimate is not significantly different from 0.</span></label><label><input type="radio" autocomplete="off" name="radio_IXQIXRPGMN" value="answer"><span>With extreme publication bias, all individual studies in a literature can be significant, but the meta-analytic effect size estimate will be severely inflated, giving the impression there is overwhelming support for <span class="math inline">\(H_1\)</span> when actually the true effect size is either small, or even 0.</span></label><label><input type="radio" autocomplete="off" name="radio_IXQIXRPGMN" value=""><span>With extreme publication bias, all individual studies are significant, but meta-analytic effect size estimates are automatically corrected for publication bias in most statistical packages, and the meta-analytic effect size estimate is therefore quite reliable.</span></label><label><input type="radio" autocomplete="off" name="radio_IXQIXRPGMN" value=""><span>Regardless of whether there is publication bias, the meta-analytic effect size estimate is severely biased, and it should never be considered a reliable estimate of the population.</span></label>
+</div>
+</div>
+<p><strong>Q4</strong>: Which statement is true based on the plot below, visualizing a PET-PEESE meta-regression?</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-petpeeseq4" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="12-bias_files/figure-html/fig-petpeeseq4-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;12.13: Funnel plot with PETPEESE regression lines for the same studies as in Q2.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div id="radio_JSQHCIVGUY" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_JSQHCIVGUY" value=""><span>Using PET-PEESE meta-regression we can show that the true effect size is d = 0 (based on the PET estimate).</span></label><label><input type="radio" autocomplete="off" name="radio_JSQHCIVGUY" value=""><span>Using PET-PEESE meta-regression we can show that the true effect size is d = <code>r round(PEESE$b[1],2)</code> (based on the PEESE estimate).</span></label><label><input type="radio" autocomplete="off" name="radio_JSQHCIVGUY" value=""><span>Using PET-PEESE meta-regression we can show that the true effect size is d = <code>r round(result.biased$b, 2)</code> (based on the normal meta-analytic effect size estimate).</span></label><label><input type="radio" autocomplete="off" name="radio_JSQHCIVGUY" value="answer"><span>The small sample size (10 studies) means PET has very low power to reject the null, and therefore it is not a reliable indicator of bias - but there might be reason to worry.</span></label>
+</div>
+</div>
+<p><strong>Q5</strong>: Take a look at the figure and output table of the <em>p</em>-curve app below, which gives the results for the studies in Q2. Which interpretation of the output is correct?</p>
+<div class="cell" data-layout-align="center" data-fig.margin="false">
+<div class="cell-output-display">
+<div id="fig-pcurveresultq5" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="images/pcurveresultq5.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;12.14: Result of the p-curve analysis of the biased studies in Q2.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div id="radio_OKVDFLYWWO" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_OKVDFLYWWO" value="answer"><span>Based on the continuous Stouffer’s test for the full <em>p</em>-curve, we cannot reject a <em>p</em>-value distribution expected under <span class="math inline">\(H_0\)</span>, and we can reject a <em>p</em>-value distribution as expected if <span class="math inline">\(H_1\)</span> is true and studies had 33% power.</span></label><label><input type="radio" autocomplete="off" name="radio_OKVDFLYWWO" value=""><span>Based on the continuous Stouffer’s test for the full <em>p</em>-curve, we can conclude the observed <em>p</em>-value distribution is not skewed enough to be interpreted as the presence of a true effect size, therefore the theory used to deduce these studies is incorrect.</span></label><label><input type="radio" autocomplete="off" name="radio_OKVDFLYWWO" value=""><span>Based on the continuous Stouffer’s test for the full <em>p</em>-curve, we can conclude the observed <em>p</em>-value distribution is skewed enough to be interpreted in line with a <em>p</em>-value distribution as expected if <span class="math inline">\(H_1\)</span> is true and studies had 33% power.</span></label><label><input type="radio" autocomplete="off" name="radio_OKVDFLYWWO" value=""><span>Based on the continuous Stouffer’s test for the full <em>p</em>-curve, we can conclude the observed <em>p</em>-value distribution is flatter than we would expect if the studies had 33% power, and therefore, we can conclude these studies are based on fabricated data.</span></label>
+</div>
+</div>
+<p><strong>Q6</strong>: The true effect size in the studies simulated in Q2 is 0 - there is no true effect. Which statement about the <em>z</em>-curve analysis below is true?</p>
+<div class="cell" data-layout-align="center" data-hash="12-bias_cache/html/fig-zcurveq6_df72220b5ad300b5f64986ad37bc6652">
+<div class="cell-output-display">
+<div id="fig-zcurveq6" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="12-bias_files/figure-html/fig-zcurveq6-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;12.15: <strong>?(caption)</strong></figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div id="radio_HHHCLGSZCB" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_HHHCLGSZCB" value=""><span>The expected discovery rate and the expected replicability rate are both statistically significant, and therefore we can expect the observed effects to successfully replicate in future studies.</span></label><label><input type="radio" autocomplete="off" name="radio_HHHCLGSZCB" value="answer"><span>Despite the fact that the average observed power (the observed discovery rate) is 100%, <em>z</em>-curve correctly predicts the expected replicability rate (which is 5%, as only Type 1 errors will be statistically significant). </span></label><label><input type="radio" autocomplete="off" name="radio_HHHCLGSZCB" value=""><span><em>Z</em>-curve is not able to find an indication of bias, as the expected discovery rate and the expected replicability rate do not differ from each other statistically.</span></label><label><input type="radio" autocomplete="off" name="radio_HHHCLGSZCB" value=""><span>Although the observed discovery rate is 1 (indicating an observed power of 100%) the confidence interval ranges from 0.66 to 1, which indicates that the studies could have a lower but more realistic power, and the fact that 100% of the results were significant could have happened by chance.</span></label>
+</div>
+</div>
+<p><strong>Q7</strong>: We did not yet perform a trim and fill analysis, and given the analyses above (e.g., the <em>z</em>-curve analysis), which statement is true?</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_GTFBVORHZP" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_GTFBVORHZP" value="answer"><span>The trim-and-fill method would most likely not indicate any missing studies to 'fill'. </span></label><label><input type="radio" autocomplete="off" name="radio_GTFBVORHZP" value=""><span>The trim-and-fill method has known low power to detect bias, and would contradict the <em>z</em>-curve or <em>p</em>-curve analysis reported above. </span></label><label><input type="radio" autocomplete="off" name="radio_GTFBVORHZP" value=""><span>The trim-and-fill analysis would indicate bias, but so did the <em>p</em>-curve and <em>z</em>-curve analysis, and the adjusted effect size estimate by trim-and-fill does not adequately correct for bias, so the analysis would not add anything.</span></label><label><input type="radio" autocomplete="off" name="radio_GTFBVORHZP" value=""><span>The trim-and-fill method provides a reliable estimate of the true effect size, which is not provided by any of the other methods discussed so far, and therefore it should be reported alongside other bias detection tests.</span></label>
+</div>
+</div>
+<p><strong>Q8</strong>: Publication bias is defined as the practice of selectively submitting and publishing scientific research. Throughout this chapter, we have focused on selectively submitting <em>significant</em> results. Can you think of a research line or a research question where researchers might prefer to selectively publish <em>non-significant</em> results?</p>
+</div>
+<section id="open-questions" class="level3" data-number="12.7.1"><h3 data-number="12.7.1" class="anchored" data-anchor-id="open-questions">
+<span class="header-section-number">12.7.1</span> Open Questions</h3>
+<ol type="1">
+<li><p>What is the idea behind the GRIM test?</p></li>
+<li><p>What is the definition of ‘publication bias’?</p></li>
+<li><p>What is the file-drawer problem?</p></li>
+<li><p>In a funnel plot, what is true for studies that fall inside the funnel (when it is centered on 0)?</p></li>
+<li><p>What is true for the trim-and-fill approach with respect to its ability to detect and correct effect size estimates?</p></li>
+<li><p>When using the PET-PEESE approach, what is important to consider when the meta-analysis has a small number of studies?</p></li>
+<li><p>What conclusions can we draw from the 2 tests that are reported in a p-curve analysis?</p></li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-aert_correcting_2018" class="csl-entry" role="listitem">
+Aert, R. C. M. van, &amp; Assen, M. A. L. M. van. (2018). <em>Correcting for <span>Publication Bias</span> in a <span>Meta-Analysis</span> with the <span class="nocase">P-uniform</span>* <span>Method</span></em>. <span>MetaArXiv</span>. <a href="https://doi.org/10.31222/osf.io/zqjr9">https://doi.org/10.31222/osf.io/zqjr9</a>
+</div>
+<div id="ref-bartos_z-curve20_2020" class="csl-entry" role="listitem">
+Bartoš, F., &amp; Schimmack, U. (2020). <em>Z-<span>Curve</span>.2.0: <span>Estimating Replication Rates</span> and <span>Discovery Rates</span></em>. <a href="https://doi.org/10.31234/osf.io/urgtn">https://doi.org/10.31234/osf.io/urgtn</a>
+</div>
+<div id="ref-becker_failsafe_2005" class="csl-entry" role="listitem">
+Becker, B. J. (2005). Failsafe <span>N</span> or <span>File-Drawer Number</span>. In <em>Publication <span>Bias</span> in <span>Meta-Analysis</span></em> (pp. 111–125). <span>John Wiley &amp; Sons, Ltd</span>. <a href="https://doi.org/10.1002/0470870168.ch7">https://doi.org/10.1002/0470870168.ch7</a>
+</div>
+<div id="ref-bishop_fallibility_2018" class="csl-entry" role="listitem">
+Bishop, D. V. M. (2018). Fallibility in <span>Science</span>: <span>Responding</span> to <span>Errors</span> in the <span>Work</span> of <span>Oneself</span> and <span>Others</span>. <em>Advances in Methods and Practices in Psychological Science</em>, 2515245918776632. <a href="https://doi.org/10.1177/2515245918776632">https://doi.org/10.1177/2515245918776632</a>
+</div>
+<div id="ref-brown_grim_2017" class="csl-entry" role="listitem">
+Brown, N. J. L., &amp; Heathers, J. A. J. (2017). The <span>GRIM Test</span>: <span>A Simple Technique Detects Numerous Anomalies</span> in the <span>Reporting</span> of <span>Results</span> in <span>Psychology</span>. <em>Social Psychological and Personality Science</em>, <em>8</em>(4), 363–369. <a href="https://doi.org/10.1177/1948550616673876">https://doi.org/10.1177/1948550616673876</a>
+</div>
+<div id="ref-brunner_estimating_2020" class="csl-entry" role="listitem">
+Brunner, J., &amp; Schimmack, U. (2020). Estimating <span>Population Mean Power Under Conditions</span> of <span>Heterogeneity</span> and <span>Selection</span> for <span>Significance</span>. <em>Meta-Psychology</em>, <em>4</em>. <a href="https://doi.org/10.15626/MP.2018.874">https://doi.org/10.15626/MP.2018.874</a>
+</div>
+<div id="ref-carter_publication_2014" class="csl-entry" role="listitem">
+Carter, E. C., &amp; McCullough, M. E. (2014). Publication bias and the limited strength model of self-control: Has the evidence for ego depletion been overestimated? <em>Frontiers in Psychology</em>, <em>5</em>. <a href="https://doi.org/10.3389/fpsyg.2014.00823">https://doi.org/10.3389/fpsyg.2014.00823</a>
+</div>
+<div id="ref-carter_correcting_2019" class="csl-entry" role="listitem">
+Carter, E. C., Schönbrodt, F. D., Gervais, W. M., &amp; Hilgard, J. (2019). Correcting for <span>Bias</span> in <span>Psychology</span>: <span>A Comparison</span> of <span>Meta-Analytic Methods</span>. <em>Advances in Methods and Practices in Psychological Science</em>, <em>2</em>(2), 115–144. <a href="https://doi.org/10.1177/2515245919847196">https://doi.org/10.1177/2515245919847196</a>
+</div>
+<div id="ref-chambers_past_2022" class="csl-entry" role="listitem">
+Chambers, C. D., &amp; Tzavella, L. (2022). The past, present and future of <span>Registered Reports</span>. <em>Nature Human Behaviour</em>, <em>6</em>(1), 29–42. <a href="https://doi.org/10.1038/s41562-021-01193-7">https://doi.org/10.1038/s41562-021-01193-7</a>
+</div>
+<div id="ref-ebersole_many_2016" class="csl-entry" role="listitem">
+Ebersole, C. R., Atherton, O. E., Belanger, A. L., Skulborstad, H. M., Allen, J. M., Banks, J. B., Baranski, E., Bernstein, M. J., Bonfiglio, D. B. V., Boucher, L., Brown, E. R., Budiman, N. I., Cairo, A. H., Capaldi, C. A., Chartier, C. R., Chung, J. M., Cicero, D. C., Coleman, J. A., Conway, J. G., … Nosek, B. A. (2016). Many <span>Labs</span> 3: <span>Evaluating</span> participant pool quality across the academic semester via replication. <em>Journal of Experimental Social Psychology</em>, <em>67</em>, 68–82. <a href="https://doi.org/10.1016/j.jesp.2015.10.012">https://doi.org/10.1016/j.jesp.2015.10.012</a>
+</div>
+<div id="ref-francis_frequency_2014" class="csl-entry" role="listitem">
+Francis, G. (2014). The frequency of excess success for articles in <span>Psychological Science</span>. <em>Psychonomic Bulletin &amp; Review</em>, <em>21</em>(5), 1180–1187. <a href="https://doi.org/10.3758/s13423-014-0601-x">https://doi.org/10.3758/s13423-014-0601-x</a>
+</div>
+<div id="ref-franco_publication_2014" class="csl-entry" role="listitem">
+Franco, A., Malhotra, N., &amp; Simonovits, G. (2014). Publication bias in the social sciences: <span>Unlocking</span> the file drawer. <em>Science</em>, <em>345</em>(6203), 1502–1505. <a href="https://doi.org/10.1126/SCIENCE.1255484">https://doi.org/10.1126/SCIENCE.1255484</a>
+</div>
+<div id="ref-greenwald_consequences_1975" class="csl-entry" role="listitem">
+Greenwald, A. G. (1975). Consequences of prejudice against the null hypothesis. <em>Psychological Bulletin</em>, <em>82</em>(1), 1–20.
+</div>
+<div id="ref-hagger_multilab_2016" class="csl-entry" role="listitem">
+Hagger, M. S., Chatzisarantis, N. L. D., Alberts, H., Anggono, C. O., Batailler, C., Birt, A. R., Brand, R., Brandt, M. J., Brewer, G., Bruyneel, S., Calvillo, D. P., Campbell, W. K., Cannon, P. R., Carlucci, M., Carruth, N. P., Cheung, T., Crowell, A., De Ridder, D. T. D., Dewitte, S., … Zwienenberg, M. (2016). A <span>Multilab Preregistered Replication</span> of the <span>Ego-Depletion Effect</span>. <em>Perspectives on Psychological Science</em>, <em>11</em>(4), 546–573. <a href="https://doi.org/10.1177/1745691616652873">https://doi.org/10.1177/1745691616652873</a>
+</div>
+<div id="ref-ioannidis_exploratory_2007" class="csl-entry" role="listitem">
+Ioannidis, J. P. A., &amp; Trikalinos, T. A. (2007). An exploratory test for an excess of significant findings. <em>Clinical Trials</em>, <em>4</em>(3), 245–253. <a href="https://doi.org/10.1177/1740774507079441">https://doi.org/10.1177/1740774507079441</a>
+</div>
+<div id="ref-iyengar_selection_1988" class="csl-entry" role="listitem">
+Iyengar, S., &amp; Greenhouse, J. B. (1988). Selection <span>Models</span> and the <span>File Drawer Problem</span>. <em>Statistical Science</em>, <em>3</em>(1), 109–117. <a href="https://www.jstor.org/stable/2245925">https://www.jstor.org/stable/2245925</a>
+</div>
+<div id="ref-jostmann_weight_2009" class="csl-entry" role="listitem">
+Jostmann, N. B., Lakens, D., &amp; Schubert, T. W. (2009). Weight as an <span>Embodiment</span> of <span>Importance</span>. <em>Psychological Science</em>, <em>20</em>(9), 1169–1174. <a href="https://doi.org/10.1111/j.1467-9280.2009.02426.x">https://doi.org/10.1111/j.1467-9280.2009.02426.x</a>
+</div>
+<div id="ref-jostmann_short_2016" class="csl-entry" role="listitem">
+Jostmann, N. B., Lakens, D., &amp; Schubert, T. W. (2016). A short history of the weight-importance effect and a recommendation for pre-testing: <span>Commentary</span> on <span>Ebersole</span> et al. (2016). <em>Journal of Experimental Social Psychology</em>, <em>67</em>, 93–94. <a href="https://doi.org/10.1016/j.jesp.2015.12.001">https://doi.org/10.1016/j.jesp.2015.12.001</a>
+</div>
+<div id="ref-mayo_statistical_2018" class="csl-entry" role="listitem">
+Mayo, D. G. (2018). <em>Statistical inference as severe testing: How to get beyond the statistics wars</em>. <span>Cambridge University Press</span>.
+</div>
+<div id="ref-nosek_registered_2014" class="csl-entry" role="listitem">
+Nosek, B. A., &amp; Lakens, D. (2014). Registered reports: <span>A</span> method to increase the credibility of published results. <em>Social Psychology</em>, <em>45</em>(3), 137–141. <a href="https://doi.org/10.1027/1864-9335/a000192">https://doi.org/10.1027/1864-9335/a000192</a>
+</div>
+<div id="ref-nuijten_prevalence_2015" class="csl-entry" role="listitem">
+Nuijten, M. B., Hartgerink, C. H. J., van Assen, M. A. L. M., Epskamp, S., &amp; Wicherts, J. M. (2015). The prevalence of statistical reporting errors in psychology (1985). <em>Behavior Research Methods</em>. <a href="https://doi.org/10.3758/s13428-015-0664-2">https://doi.org/10.3758/s13428-015-0664-2</a>
+</div>
+<div id="ref-peters_performance_2007" class="csl-entry" role="listitem">
+Peters, J. L., Sutton, A. J., Jones, D. R., Abrams, K. R., &amp; Rushton, L. (2007). Performance of the trim and fill method in the presence of publication bias and between-study heterogeneity. <em>Statistics in Medicine</em>, <em>26</em>(25), 4544–4562. <a href="https://doi.org/10.1002/sim.2889">https://doi.org/10.1002/sim.2889</a>
+</div>
+<div id="ref-polanin_transparency_2020" class="csl-entry" role="listitem">
+Polanin, J. R., Hennessy, E. A., &amp; Tsuji, S. (2020). Transparency and <span>Reproducibility</span> of <span>Meta-Analyses</span> in <span>Psychology</span>: <span>A Meta-Review</span>. <em>Perspectives on Psychological Science</em>, <em>15</em>(4), 1026–1041. <a href="https://doi.org/10.1177/1745691620906416">https://doi.org/10.1177/1745691620906416</a>
+</div>
+<div id="ref-rogers_how_1992" class="csl-entry" role="listitem">
+Rogers, S. (1992). How a publicity blitz created the myth of subliminal advertising. <em>Public Relations Quarterly</em>, <em>37</em>(4), 12.
+</div>
+<div id="ref-ropovik_neglect_2021" class="csl-entry" role="listitem">
+Ropovik, I., Adamkovic, M., &amp; Greger, D. (2021). Neglect of publication bias compromises meta-analyses of educational research. <em>PLOS ONE</em>, <em>16</em>(6), e0252415. <a href="https://doi.org/10.1371/journal.pone.0252415">https://doi.org/10.1371/journal.pone.0252415</a>
+</div>
+<div id="ref-scheel_excess_2021" class="csl-entry" role="listitem">
+Scheel, A. M., Schijen, M. R. M. J., &amp; Lakens, D. (2021). An <span>Excess</span> of <span>Positive Results</span>: <span>Comparing</span> the <span>Standard Psychology Literature With Registered Reports</span>. <em>Advances in Methods and Practices in Psychological Science</em>, <em>4</em>(2), 25152459211007467. <a href="https://doi.org/10.1177/25152459211007467">https://doi.org/10.1177/25152459211007467</a>
+</div>
+<div id="ref-schimmack_ironic_2012" class="csl-entry" role="listitem">
+Schimmack, U. (2012). The ironic effect of significant results on the credibility of multiple-study articles. <em>Psychological Methods</em>, <em>17</em>(4), 551–566. <a href="https://doi.org/10.1037/a0029487">https://doi.org/10.1037/a0029487</a>
+</div>
+<div id="ref-simonsohn_p-curve_2014" class="csl-entry" role="listitem">
+Simonsohn, U., Nelson, L. D., &amp; Simmons, J. P. (2014). P-curve: <span>A</span> key to the file-drawer. <em>Journal of Experimental Psychology: General</em>, <em>143</em>(2), 534.
+</div>
+<div id="ref-sotola_garbage_2022" class="csl-entry" role="listitem">
+Sotola, L. K. (2022). Garbage <span>In</span>, <span>Garbage Out</span>? <span>Evaluating</span> the <span>Evidentiary Value</span> of <span class="nocase">Published Meta-analyses Using Z-Curve Analysis</span>. <em>Collabra: Psychology</em>, <em>8</em>(1), 32571. <a href="https://doi.org/10.1525/collabra.32571">https://doi.org/10.1525/collabra.32571</a>
+</div>
+<div id="ref-stanley_meta-regression_2014" class="csl-entry" role="listitem">
+Stanley, T. D., &amp; Doucouliagos, H. (2014). Meta-regression approximations to reduce publication selection bias. <em>Research Synthesis Methods</em>, <em>5</em>(1), 60–78. <a href="https://doi.org/10.1002/jrsm.1095">https://doi.org/10.1002/jrsm.1095</a>
+</div>
+<div id="ref-stanley_finding_2017" class="csl-entry" role="listitem">
+Stanley, T. D., Doucouliagos, H., &amp; Ioannidis, J. P. A. (2017). Finding the power to reduce publication bias: <span>Finding</span> the power to reduce publication bias. <em>Statistics in Medicine</em>. <a href="https://doi.org/10.1002/sim.7228">https://doi.org/10.1002/sim.7228</a>
+</div>
+<div id="ref-sterling_publication_1959" class="csl-entry" role="listitem">
+Sterling, T. D. (1959). Publication <span>Decisions</span> and <span>Their Possible Effects</span> on <span>Inferences Drawn</span> from <span>Tests</span> of <span>Significance–Or Vice Versa</span>. <em>Journal of the American Statistical Association</em>, <em>54</em>(285), 30–34. <a href="https://doi.org/10.2307/2282137">https://doi.org/10.2307/2282137</a>
+</div>
+<div id="ref-terrin_adjusting_2003" class="csl-entry" role="listitem">
+Terrin, N., Schmid, C. H., Lau, J., &amp; Olkin, I. (2003). Adjusting for publication bias in the presence of heterogeneity. <em>Statistics in Medicine</em>, <em>22</em>(13), 2113–2126. <a href="https://doi.org/10.1002/sim.1461">https://doi.org/10.1002/sim.1461</a>
+</div>
+<div id="ref-vohs_multisite_2021" class="csl-entry" role="listitem">
+Vohs, K. D., Schmeichel, B. J., Lohmann, S., Gronau, Q. F., Finley, A. J., Ainsworth, S. E., Alquist, J. L., Baker, M. D., Brizi, A., Bunyi, A., Butschek, G. J., Campbell, C., Capaldi, J., Cau, C., Chambers, H., Chatzisarantis, N. L. D., Christensen, W. J., Clay, S. L., Curtis, J., … Albarracín, D. (2021). A <span>Multisite Preregistered Paradigmatic Test</span> of the <span>Ego-Depletion Effect</span>. <em>Psychological Science</em>, <em>32</em>(10), 1566–1581. <a href="https://doi.org/10.1177/0956797621989733">https://doi.org/10.1177/0956797621989733</a>
+</div>
+</div>
+</section></section></main><!-- /main --><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script><script>
+
+/* update total correct if #webex-total_correct exists */
+update_total_correct = function() {
+  console.log("webex: update total_correct");
+
+  var t = document.getElementsByClassName("webex-total_correct");
+  for (var i = 0; i < t.length; i++) {
+    p = t[i].parentElement;
+    var correct = p.getElementsByClassName("webex-correct").length;
+    var solvemes = p.getElementsByClassName("webex-solveme").length;
+    var radiogroups = p.getElementsByClassName("webex-radiogroup").length;
+    var selects = p.getElementsByClassName("webex-select").length;
+
+    t[i].innerHTML = correct + " of " + (solvemes + radiogroups + selects) + " correct";
+  }
+}
+
+/* webex-solution button toggling function */
+b_func = function() {
+  console.log("webex: toggle hide");
+
+  var cl = this.parentElement.classList;
+  if (cl.contains('open')) {
+    cl.remove("open");
+  } else {
+    cl.add("open");
+  }
+}
+
+/* check answers */
+check_func = function() {
+  console.log("webex: check answers");
+
+  var cl = this.parentElement.classList;
+  if (cl.contains('unchecked')) {
+    cl.remove("unchecked");
+    this.innerHTML = "Hide Answers";
+  } else {
+    cl.add("unchecked");
+    this.innerHTML = "Show Answers";
+  }
+}
+
+/* function for checking solveme answers */
+solveme_func = function(e) {
+  console.log("webex: check solveme");
+
+  var real_answers = JSON.parse(this.dataset.answer);
+  var my_answer = this.value;
+  var cl = this.classList;
+  if (cl.contains("ignorecase")) {
+    my_answer = my_answer.toLowerCase();
+  }
+  if (cl.contains("nospaces")) {
+    my_answer = my_answer.replace(/ /g, "")
+  }
+
+  if (my_answer == "") {
+    cl.remove("webex-correct");
+    cl.remove("webex-incorrect");
+  } else if (real_answers.includes(my_answer)) {
+    cl.add("webex-correct");
+    cl.remove("webex-incorrect");
+  } else {
+    cl.add("webex-incorrect");
+    cl.remove("webex-correct");
+  }
+
+  // match numeric answers within a specified tolerance
+  if(this.dataset.tol > 0){
+    var tol = JSON.parse(this.dataset.tol);
+    var matches = real_answers.map(x => Math.abs(x - my_answer) < tol)
+    if (matches.reduce((a, b) => a + b, 0) > 0) {
+      cl.add("webex-correct");
+    } else {
+      cl.remove("webex-correct");
+    }
+  }
+
+  // added regex bit
+  if (cl.contains("regex")){
+    answer_regex = RegExp(real_answers.join("|"))
+    if (answer_regex.test(my_answer)) {
+      cl.add("webex-correct");
+    }
+  }
+
+  update_total_correct();
+}
+
+/* function for checking select answers */
+select_func = function(e) {
+  console.log("webex: check select");
+
+  var cl = this.classList
+
+  /* add style */
+  cl.remove("webex-incorrect");
+  cl.remove("webex-correct");
+  if (this.value == "answer") {
+    cl.add("webex-correct");
+  } else if (this.value != "blank") {
+    cl.add("webex-incorrect");
+  }
+
+  update_total_correct();
+}
+
+/* function for checking radiogroups answers */
+radiogroups_func = function(e) {
+  console.log("webex: check radiogroups");
+
+  var checked_button = document.querySelector('input[name=' + this.id + ']:checked');
+  var cl = checked_button.parentElement.classList;
+  var labels = checked_button.parentElement.parentElement.children;
+
+  /* get rid of styles */
+  for (i = 0; i < labels.length; i++) {
+    labels[i].classList.remove("webex-incorrect");
+    labels[i].classList.remove("webex-correct");
+  }
+
+  /* add style */
+  if (checked_button.value == "answer") {
+    cl.add("webex-correct");
+  } else {
+    cl.add("webex-incorrect");
+  }
+
+  update_total_correct();
+}
+
+window.onload = function() {
+  console.log("webex onload");
+  /* set up solution buttons */
+  var buttons = document.getElementsByTagName("button");
+
+  for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].parentElement.classList.contains('webex-solution')) {
+      buttons[i].onclick = b_func;
+    }
+  }
+
+  var check_sections = document.getElementsByClassName("webex-check");
+  console.log("check:", check_sections.length);
+  for (var i = 0; i < check_sections.length; i++) {
+    check_sections[i].classList.add("unchecked");
+
+    let btn = document.createElement("button");
+    btn.innerHTML = "Show Answers";
+    btn.classList.add("webex-check-button");
+    btn.onclick = check_func;
+    check_sections[i].appendChild(btn);
+
+    let spn = document.createElement("span");
+    spn.classList.add("webex-total_correct");
+    check_sections[i].appendChild(spn);
+  }
+
+  /* set up webex-solveme inputs */
+  var solveme = document.getElementsByClassName("webex-solveme");
+
+  for (var i = 0; i < solveme.length; i++) {
+    /* make sure input boxes don't auto-anything */
+    solveme[i].setAttribute("autocomplete","off");
+    solveme[i].setAttribute("autocorrect", "off");
+    solveme[i].setAttribute("autocapitalize", "off");
+    solveme[i].setAttribute("spellcheck", "false");
+    solveme[i].value = "";
+
+    /* adjust answer for ignorecase or nospaces */
+    var cl = solveme[i].classList;
+    var real_answer = solveme[i].dataset.answer;
+    if (cl.contains("ignorecase")) {
+      real_answer = real_answer.toLowerCase();
+    }
+    if (cl.contains("nospaces")) {
+      real_answer = real_answer.replace(/ /g, "");
+    }
+    solveme[i].dataset.answer = real_answer;
+
+    /* attach checking function */
+    solveme[i].onkeyup = solveme_func;
+    solveme[i].onchange = solveme_func;
+
+    $(solveme[i]).after(" <span class='webex-icon'></span>");
+  }
+
+  /* set up radiogroups */
+  var radiogroups = document.getElementsByClassName("webex-radiogroup");
+  for (var i = 0; i < radiogroups.length; i++) {
+    radiogroups[i].onchange = radiogroups_func;
+  }
+
+  /* set up selects */
+  var selects = document.getElementsByClassName("webex-select");
+  for (var i = 0; i < selects.length; i++) {
+    selects[i].onchange = select_func;
+    $(selects[i]).after(" <span class='webex-icon'></span>");
+  }
+
+  update_total_correct();
+}
+
+</script><script>
+// open rdrr links externally ----
+
+var exlinks = document.querySelectorAll("a[href^='https://rdrr.io']");
+var exlink_func = function(){
+  window.open(this.href);
+  return false;
+};
+for (var i = 0; i < exlinks.length; i++) {
+    exlinks[i].addEventListener('click', exlink_func, false);
+}
+
+// visible second sidebar in mobile ----
+
+function move_sidebar() {
+  var toc = document.getElementById("TOC");
+  var small_sidebar = document.querySelector("#quarto-sidebar .sidebar-menu-container");
+  var right_sidebar = document.getElementById("quarto-margin-sidebar");
+
+  if (window.innerWidth < 768) {
+    small_sidebar.append(toc);
+  } else {
+    right_sidebar.append(toc);
+  }
+}
+move_sidebar();
+window.onresize = move_sidebar;
+</script><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./11-meta.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Meta-analysis</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./13-prereg.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Preregistration and Transparency</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">Lakens, D. (2022). Improving Your Statistical Inferences. Retrieved from https://lakens.github.io/statistical_inferences/. https://doi.org/10.5281/zenodo.6409077</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+</body></html>

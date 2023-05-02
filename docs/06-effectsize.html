@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.310">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="description" content="This open educational resource contains information to improve statistical inferences, design better experiments, and report scientific research more transparently.">
+<title>Improving Your Statistical Inferences - 6&nbsp; Effect Sizes</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./07-CI.html" rel="next">
+<link href="./05-questions.html" rel="prev">
+<link href="./images/logos/favicon.ico" rel="icon">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><script async="" src="https://www.googletagmanager.com/gtag/js?id=G-0MK2WTGRM3"></script><script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
+</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><link rel="stylesheet" href="include/booktem.css">
+<link rel="stylesheet" href="include/style.css">
+<link rel="stylesheet" href="include/webex.css">
+</head>
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./06-effectsize.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Effect Sizes</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Improving Your Statistical Inferences</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/Lakens/statistical_inferences" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Download" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="./Improving-Your-Statistical-Inferences.pdf">
+              <i class="bi bi-bi-file-pdf pe-1"></i>
+            Download PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="./Improving-Your-Statistical-Inferences.epub">
+              <i class="bi bi-bi-journal pe-1"></i>
+            Download ePub
+            </a>
+          </li>
+      </ul>
+</div>
+    <a href="https://twitter.com/intent/tweet?url=%7Curl%7C" title="Twitter" class="quarto-navigation-tool px-1" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Overview</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-pvalue.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Using <em>p</em>-values to test a hypothesis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-errorcontrol.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Error control</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-likelihoods.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Likelihoods</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-bayes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Bayesian statistics</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-questions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Asking Statistical Questions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-effectsize.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Effect Sizes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-CI.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Confidence Intervals</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-samplesizejustification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Sample Size Justification</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-equivalencetest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Equivalence Testing and Interval Hypotheses</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-sequential.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Sequential Analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-meta.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Meta-analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-bias.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Bias detection</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-prereg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Preregistration and Transparency</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-computationalreproducibility.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Computational Reproducibility</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-researchintegrity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Research Integrity</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li><a href="#effect-sizes" id="toc-effect-sizes" class="nav-link active" data-scroll-target="#effect-sizes"><span class="header-section-number">6.1</span> Effect sizes</a></li>
+  <li><a href="#the-facebook-experiment" id="toc-the-facebook-experiment" class="nav-link" data-scroll-target="#the-facebook-experiment"><span class="header-section-number">6.2</span> The Facebook experiment</a></li>
+  <li><a href="#the-hungry-judges-study" id="toc-the-hungry-judges-study" class="nav-link" data-scroll-target="#the-hungry-judges-study"><span class="header-section-number">6.3</span> The Hungry Judges study</a></li>
+  <li><a href="#sec-cohend" id="toc-sec-cohend" class="nav-link" data-scroll-target="#sec-cohend"><span class="header-section-number">6.4</span> Standardised Mean Differences</a></li>
+  <li><a href="#interpreting-effect-sizes" id="toc-interpreting-effect-sizes" class="nav-link" data-scroll-target="#interpreting-effect-sizes"><span class="header-section-number">6.5</span> Interpreting effect sizes</a></li>
+  <li><a href="#correlations-and-variance-explained" id="toc-correlations-and-variance-explained" class="nav-link" data-scroll-target="#correlations-and-variance-explained"><span class="header-section-number">6.6</span> Correlations and Variance Explained</a></li>
+  <li><a href="#correcting-for-bias" id="toc-correcting-for-bias" class="nav-link" data-scroll-target="#correcting-for-bias"><span class="header-section-number">6.7</span> Correcting for Bias</a></li>
+  <li><a href="#effect-sizes-for-interactions" id="toc-effect-sizes-for-interactions" class="nav-link" data-scroll-target="#effect-sizes-for-interactions"><span class="header-section-number">6.8</span> Effect Sizes for Interactions</a></li>
+  <li>
+<a href="#test-yourself" id="toc-test-yourself" class="nav-link" data-scroll-target="#test-yourself"><span class="header-section-number">6.9</span> Test Yourself</a>
+  <ul class="collapse">
+<li><a href="#open-questions" id="toc-open-questions" class="nav-link" data-scroll-target="#open-questions"><span class="header-section-number">6.9.1</span> Open Questions</a></li>
+  </ul>
+</li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/Lakens/statistical_inferences/edit/main/06-effectsize.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/Lakens/statistical_inferences/issues/new" class="toc-action">Report an issue</a></p><p><a href="https://github.com/Lakens/statistical_inferences/blob/main/06-effectsize.qmd" class="toc-action">View source</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title"><span id="sec-effectsize" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Effect Sizes</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header><p>Effect sizes are an important statistical outcome in most empirical studies. Researchers want to know whether an intervention or experimental manipulation has an effect greater than zero, or (when it is obvious an effect exists) how big the effect is. Researchers are often reminded to report effect sizes, because they are useful for three reasons. First, they allow researchers to present the magnitude of the reported effects, which allow researchers to reflect on the <strong>practical significance</strong> of the effects they report, in addition to the <em>statistical</em> significance. Second, effect sizes allow researchers to draw meta-analytic conclusions by comparing standardized effect sizes across studies. Third, effect sizes from previous studies can be used when planning a new study in an a-priori power analysis.</p>
+<p>A measure of effect size is a quantitative description of the strength of a phenomenon. It is expressed as a number on a scale. For <strong>unstandardized effect sizes</strong>, the effect size is expressed on the scale that the measure was collected on. This is useful whenever people are able to intuitively interpret differences on a measurement scale. For example, children grow on average 6 centimeters a year between the age of 2 and puberty. We can interpret 6 centimeters a year as an effect size, and many people in the world have an intuitive understanding of how large 6 cm is. Where a <em>p</em>-value is used to make a claim about whether there is an effect, or whether we might just be looking at random variation in the data, an effect size is used to answer the question how large the effect is. This makes an effect size estimate an important complement to <em>p</em>-values in most studies. A <em>p</em>-value tells us we can claim children grow as they age; effect sizes tell us what size clothes we can expect children to wear when they are a certain age, and how long it will take before their new clothes are too small.</p>
+<p>For people in parts of the world that do not use the metric system, it might be difficult to understand what a difference of 6 cm is. To facilitate a comparison of effect sizes across situations where different measurement scales are used, researchers can report <strong>standardized effect sizes</strong>. A standardized effect size, such as <strong>Cohen’s <em>d</em></strong>, is computed by dividing the difference on the raw scale by the standard deviation, and is thus scaled in terms of the variability of the sample from which it was taken. An effect of <em>d</em> = 0.5 means that the difference is the size of half a standard deviation of the measure. This means that effect sizes are determined both by the size of an effect and the size of the standard deviation, and difference in a standardized effect size can be caused by a difference in the size of the unstandardized effect, or by a difference in the standard deviation.</p>
+<p>Standardized effect sizes are common when variables are not measured on a scale people are familiar with, or are measured on different scales within the same research area. If you ask people how happy they are, an answer of ‘5’ will mean something very different if you asked people to answer on a scale from 1 to 5 than if you asked them to answer on a scale from 1 to 9. Standardized effect sizes can be understood and compared regardless of the scale that was used to measure the dependent variable. Despite the ease of use of standardized effect size measures, there are good arguments to report and interpret unstandardized effect sizes wherever possible <span class="citation" data-cites="baguley_standardized_2009">(<a href="references.html#ref-baguley_standardized_2009" role="doc-biblioref">Baguley, 2009</a>)</span>.</p>
+<p>Standardized effect sizes can be grouped in two families (Rosenthal, 1994): The <em>d</em> family (consisting of standardized mean differences) and the <em>r</em> family (measures of strength of association). Conceptually, the d family effect sizes are based on the difference between observations, divided by the standard deviation of these observations. The r family effect sizes describe the proportion of variance that is explained by group membership. For example, a correlation (<span class="math inline">\(r\)</span>) of 0.5 indicates 25% of the variance (<span class="math inline">\(r^2\)</span>) is explained by the difference between groups. These effect sizes are calculated from the sum of squares (the difference between individual observations and the mean for the group, squared, and summed) for the effect divided by the sums of squares for other factors in the design.</p>
+<section id="effect-sizes" class="level2" data-number="6.1"><h2 data-number="6.1" class="anchored" data-anchor-id="effect-sizes">
+<span class="header-section-number">6.1</span> Effect sizes</h2>
+<p>What is the most important outcome of an empirical study? You might be tempted to say it’s the <em>p</em>-value of the statistical test, given that it is practically always reported in articles, and determines whether we call something ‘significant’ or not. However, as <span class="citation" data-cites="cohen_things_1990">Cohen (<a href="references.html#ref-cohen_things_1990" role="doc-biblioref">1990</a>)</span> writes in his ‘Things I’ve learned (so far)’:</p>
+<blockquote class="blockquote">
+<p>I have learned and taught that the primary product of a research inquiry is one or more measures of effect size, not <em>p</em>-values.</p>
+</blockquote>
+<p>Although what you want to learn from your data is different in every study, and there rarely is any single thing you always want to know, effect sizes are a very important part of the information we gain from data collection.</p>
+<p>A measure of effect size is a “quantitative reflection of the magnitude of some phenomenon that is used for the purpose of addressing a question of interest” <span class="citation" data-cites="kelley_effect_2012">(<a href="references.html#ref-kelley_effect_2012" role="doc-biblioref">Kelley &amp; Preacher, 2012</a>)</span>. It is expressed as a number on a scale, and which scale is used depends on the effect size measure that is used. For <strong>unstandardized effect sizes</strong>, we can use a scale that people are very familiar with. For example, children grow on average 6 centimeters a year between the age of 2 and puberty. We can interpret 6 centimeters a year as an effect size. It is obvious an effect size has many benefits over a <em>p</em>-value. A <em>p</em>-value gives an indication that it is very unlikely children stay the same size as they become older – effect sizes tell us what size clothes we can expect children to wear when they are a certain age, and how long it will take before their new clothes are too small.</p>
+<p>One reason to report effect sizes is to facilitate future research. It is possible to perform a meta-analysis or a power analysis based on unstandardized effect sizes and their standard deviation, but it is easier to work with standardized effect sizes, especially when there is variation in the measures researchers use. But the main goal of reporting effect sizes is to reflect on the question whether the observed effect size is meaningful. For example, we might be able to reliably measure that on average 19 years olds will grow 1 centimeter in the next year. This difference would be statistically significant in a large enough sample, but if you go shopping for clothes when you are 19 years old, it is not something you need care about. Let’s look at two examples of studies where looking at the effect size, in addition to its statistical significance, would have improved the statistical inferences.</p>
+</section><section id="the-facebook-experiment" class="level2" data-number="6.2"><h2 data-number="6.2" class="anchored" data-anchor-id="the-facebook-experiment">
+<span class="header-section-number">6.2</span> The Facebook experiment</h2>
+<p>In the summer of 2014 there were some concerns about an experiment Facebook had performed on its users to examine ‘emotional mood contagion’, or the idea that people’s moods can be influenced by the mood of people around them. You can read the article <a href="http://www.pnas.org/content/111/24/8788.full">here</a>. For starters, there was substantial concern about the ethical aspects of the study, primarily because the researchers who performed the study had not asked for <strong>informed consent</strong> from the participants in the study (you and me), nor did they ask for permission from the <strong>institutional review board</strong> (or ethics committee) of their university.</p>
+<p>One of the other criticisms of the study was that it could be dangerous to influence people’s mood. As Nancy J. Smyth, dean of the University of Buffalo’s School of Social Work wrote on her <a href="https://njsmyth.wordpress.com/2014/06/29/did-facebooks-secret-mood-manipulation-experiment-create-harm/">Social Work blog</a>: “There might even have been increased self-harm episodes, out of control anger, or dare I say it, suicide attempts or suicides that resulted from the experimental manipulation. Did this experiment create harm? The problem is, we will never know, because the protections for human subjects were never put into place”.</p>
+<p>If this Facebook experiment had such a strong effect on people’s mood that it made some people commit suicide who would otherwise not have committed suicide, this would obviously be problematic. So let us look at the effects the manipulation Facebook used had on people a bit more closely.</p>
+<p>From the article, let’s see what the researchers manipulated:</p>
+<blockquote class="blockquote">
+<p>Two parallel experiments were conducted for positive and negative emotion: One in which exposure to friends’ positive emotional content in their News Feed was reduced, and one in which exposure to negative emotional content in their News Feed was reduced. In these conditions, when a person loaded their News Feed, posts that contained emotional content of the relevant emotional valence, each emotional post had between a 10% and 90% chance (based on their User ID) of being omitted from their News Feed for that specific viewing.</p>
+</blockquote>
+<p>Then what they measured:</p>
+<blockquote class="blockquote">
+<p>For each experiment, two dependent variables were examined pertaining to emotionality expressed in people’s own status updates: the percentage of all words produced by a given person that was either positive or negative during the experimental period. In total, over 3 million posts were analyzed, containing over 122 million words, 4 million of which were positive (3.6%) and 1.8 million negative (1.6%).</p>
+</blockquote>
+<p>And then what they found:</p>
+<blockquote class="blockquote">
+<p>When positive posts were reduced in the News Feed, the percentage of positive words in people’s status updates decreased by B = −0.1% compared with control [t(310,044) = −5.63, P &lt; 0.001, Cohen’s d = 0.02], whereas the percentage of words that were negative increased by B = 0.04% (t = 2.71, P = 0.007, d = 0.001). Conversely, when negative posts were reduced, the percent of words that were negative decreased by B = −0.07% [t(310,541) = −5.51, P &lt; 0.001, d = 0.02] and the percentage of words that were positive, conversely, increased by B = 0.06% (t = 2.19, P &lt; 0.003, d = 0.008).</p>
+</blockquote>
+<p>Here, we will focus on the negative effects of the Facebook study (so specifically, the increase in negative words people used) to get an idea of whether there is a risk of an increase in suicide rates. Even though apparently there was a negative effect, it is not easy to get an understanding about the size of the effect from the numbers as mentioned in the text. Moreover, the number of posts that the researchers analyzed was really large. With a large sample, it becomes important to check if the size of the effect is such that the finding is substantially interesting, because with large sample sizes even minute differences will turn out to be statistically significant (we will look at this in more detail below). For that, we need a better understanding of “effect sizes”.</p>
+</section><section id="the-hungry-judges-study" class="level2" data-number="6.3"><h2 data-number="6.3" class="anchored" data-anchor-id="the-hungry-judges-study">
+<span class="header-section-number">6.3</span> The Hungry Judges study</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-hungryjudges" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="images/hungryjudges.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;6.1: Proportion of rulings in favor of the prisoners by ordinal position. Circled points indicate the first decision in each of the three decision sessions; tick marks on x axis denote every third case; dotted line denotes food break. From Danziger, S., Levav, J., Avnaim-Pesso, L. (2011). Extraneous factors in judicial decisions. Proceedings of the National Academy of Sciences, 108(17), 6889–6892. https://doi.org/10.1073/PNAS.1018033108</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We see a graphical representation of the proportion of favorable parole decisions that real-life judges are making as a function of the number of cases they process across the day in <a href="#fig-hungryjudges">Figure&nbsp;<span>6.1</span></a>. This study is mentioned in many popular science books as an example of a finding that shows that people do not always make rational decisions, but that “judicial rulings can be swayed by extraneous variables that should have no bearing on legal decisions” <span class="citation" data-cites="danziger_extraneous_2011">(<a href="references.html#ref-danziger_extraneous_2011" role="doc-biblioref">Danziger et al., 2011</a>)</span>. We see that early on in the day, judges start by giving about 65% of people parole, which basically means, “All right, you can go back into society.” But then very quickly, the number of favorable decisions decreases to basically zero. After a quick break which, as the authors say, “may replenish mental resources by providing rest, improving mood, or by increasing glucose levels in the body” the parole decisions are back up at 65%, and then again quickly drop down to basically zero. They take another break, the percentage of positive decisions is back up to 65%, only to drop again over the course of the day.</p>
+<p>If we calculate the effect size for the drop after a break, and before the next break <span class="citation" data-cites="glockner_irrational_2016">(<a href="references.html#ref-glockner_irrational_2016" role="doc-biblioref">Glöckner, 2016</a>)</span>, the effect represents a Cohen’s <em>d</em> of approximately two, which is incredibly large. There are hardly any effects in psychology this large, let alone effects of mood or rest on decision making. And this surprisingly large effect occurs not just once, but three times over the course of the day. If mental depletion actually has such a huge real-life impact, society would basically fall into complete chaos just before lunch break every day. Or at the very least, our society would have organized itself around this incredibly strong effect of mental depletion. Just like manufacturers take size differences between men and women into account when producing items such as golf clubs or watches, we would stop teaching in the time before lunch, doctors would not schedule surgery, and driving before lunch would be illegal. If a psychological effect is this big, we don’t need to discover it and publish it in a scientific journal - you would already know it exists.</p>
+<p>We can look at a meta-meta-analysis (a paper that meta-analyzes a large number of meta-analyses in the literature) by Richard, Bond, &amp; Stokes-Zoota <span class="citation" data-cites="richard_one_2003">(<a href="references.html#ref-richard_one_2003" role="doc-biblioref">2003</a>)</span> to see which effect sizes in law psychology are close to a Cohen’s <em>d</em> of 2. They report two meta-analyzed effects that are slightly smaller. The first is the effect that a jury’s final verdict is likely to be the verdict a majority initially favored, which 13 studies show has an effect size of <em>r</em> = 0.63, or <em>d</em> = 1.62. The second is that when a jury is initially split on a verdict, its final verdict is likely to be lenient, which 13 studies show to have an effect size of <em>r</em> = .63 as well. In their entire database, some effect sizes that come close to <em>d</em> = 2 are the finding that personality traits are stable over time (<em>r</em> = 0.66, <em>d</em> = 1.76), people who deviate from a group are rejected from that group (<em>r</em> = .6, <em>d</em> = 1.5), or that leaders have charisma (<em>r</em> = .62, <em>d</em> = 1.58). You might notice the almost tautological nature of these effects. And that is, supposedly, the effect size that the passing of time (and subsequently eating lunch) has on parole hearing sentencings.</p>
+<p>We see how examining the size of an effect can lead us to identify findings that cannot be caused by their proposed mechanisms. The effect reported in the hungry judges study must therefore be due to a confound. Indeed, such confounds have been identified, as it turns out the ordering of the cases is not random, and it is likely the cases that deserve parole are handled first, and the cases that do not deserve parole are handled later <span class="citation" data-cites="weinshall-margel_overlooked_2011 chatziathanasiou_beware_2022">(<a href="references.html#ref-chatziathanasiou_beware_2022" role="doc-biblioref">Chatziathanasiou, 2022</a>; <a href="references.html#ref-weinshall-margel_overlooked_2011" role="doc-biblioref">Weinshall-Margel &amp; Shapard, 2011</a>)</span>. An additional use of effect sizes is to identify effect sizes that are too large to be plausible. Hilgard <span class="citation" data-cites="hilgard_maximal_2021">(<a href="references.html#ref-hilgard_maximal_2021" role="doc-biblioref">2021</a>)</span> proposes to build in ‘maximum positive controls’, experimental conditions that show the largest possible effect that provides an upper limit on plausible effect size measures.</p>
+</section><section id="sec-cohend" class="level2" data-number="6.4"><h2 data-number="6.4" class="anchored" data-anchor-id="sec-cohend">
+<span class="header-section-number">6.4</span> Standardised Mean Differences</h2>
+<p>Effect sizes can be grouped into two families <span class="citation" data-cites="rosenthal_contrasts_2000">(<a href="references.html#ref-rosenthal_contrasts_2000" role="doc-biblioref">Rosenthal et al., 2000</a>)</span>: The <strong>d family</strong> (based on standardized mean differences) and the <strong>r family</strong> (based on measures of strength of association). Conceptually, the <em>d</em> family effect sizes are based on a comparison between the difference between the observations, divided by the standard deviation of these observations. This means that a Cohen’s <em>d</em> = 1 means the standardized difference between two groups equals one standard deviation. The size of the effect in the Facebook study above was quantified with Cohen’s <em>d</em>. Cohen’s <em>d</em> (the <em>d</em> is <a href="https://blog.apastyle.org/apastyle/2011/08/the-grammar-of-mathematics-writing-about-variables.html">italicized</a>) is used to describe the standardized mean difference of an effect. This value can be used to compare effects across studies, even when the dependent variables are measured with different scales, for example when one study uses 7-point scales to measure dependent variables, while the other study uses 9-point scales. We can even compare effect sizes across completely different measures of the same construct, one study uses a self-report measure, and another study uses a physiological measure. Although we can compare effect sizes across different measurements, this does not mean they are comparable, as we will discuss in more detail in the section on <a href="11-meta.html#sec-heterogeneity">heterogeneity</a> in the chapter on meta-analysis.</p>
+<p>Cohen’s <em>d</em> ranges from minus infinity to infinity (although in practice, the mean difference in the positive or negative direction that can be observed will never be infinite), with the value of 0 indicating there is no effect. Cohen <span class="citation" data-cites="cohen_statistical_1988">(<a href="references.html#ref-cohen_statistical_1988" role="doc-biblioref">1988</a>)</span> uses subscripts to distinguish different versions of Cohen’s <em>d</em>, a practice I will follow because it prevents confusion (without any specification, Cohen’s <em>d</em> denotes the entire family of effect sizes). Cohen refers to the standardized mean difference between two groups of independent observations for the <em>sample</em> as <span class="math inline">\(d_s\)</span>. Before we get into the statistical details, let’s first visualize what a Cohen’s <em>d</em> of 0.001 (as was found in the Facebook study) means. We will use a visualization from <a href="http://rpsychologist.com/d3/cohend/" class="uri">http://rpsychologist.com/d3/cohend/</a>, a website made by Kristoffer Magnusson, that allows you to visualize the differences between two measurements (such as the increase in negative words used by the Facebook user when the number of positive words on the timeline was reduced). The visualization actually shows two distributions, one dark blue and one light blue, but they overlap so much that the tiny difference in distributions is not visible (click the settings button to change the slider settings, and set the step size to 0.001 to reproduce the figure below in the online app).</p>
+<div class="cell" data-layout-align="center" data-fig.margin="false">
+<div class="cell-output-display">
+<div id="fig-rpsychd1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="images/rpsychd1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;6.2: A visualization of 2 groups (although the difference is hardly visible) representing d = 0.001.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The four numbers below the distribution express the effect size in different ways to facilitate the interpretation. For example, the <strong>probability of superiority</strong> expresses the probability that a randomly picked observation from one group will have a larger score than a randomly picked observation from the other group. Because the effect is so small, this probability is 50.03% - which means that people in the experimental write almost the same number of positive or negative words as people in the control condition. The <strong>number needed to treat</strong> index illustrates that in the Facebook study a person needs to type 3570 words before we will observe one additional negative word, compared to the control condition. I don’t know how often you type this many words on Facebook, but I think we can agree this effect is not noticeable on an individual level.</p>
+<p>To understand how Cohen’s <em>d</em> for two independent groups is calculated, let’s first look at the formula for the <em>t</em>-statistic:</p>
+<p><span class="math display">\[
+t = \frac{{\overline{M}}_{1}{- \overline{M}}_{2}}{\text{SD}_{\text{pooled}} \times \sqrt{\frac{1}{n_{1}} + \frac{1}{n_{2}}}}
+\]</span></p>
+<p>Here <span class="math inline">\({\overline{M}}_{1}{- \overline{M}}_{2}\)</span> is the difference between the means, and <span class="math inline">\(\text{SD}_{\text{pooled}}\)</span> is the pooled standard deviation <span class="citation" data-cites="lakens_calculating_2013">(<a href="references.html#ref-lakens_calculating_2013" role="doc-biblioref">Lakens, 2013</a>)</span>, and n1 and n2 are the sample sizes of the two groups that are being compared. The <em>t</em>-value is used to determine whether the difference between two groups in a <em>t</em>-test is statistically significant (as explained in the chapter on <a href="01-pvalue.html"><em>p</em>-values</a>. The formula for Cohen’s <em>d</em> is very similar:</p>
+<p><span class="math display">\[d_s = \frac{{\overline{M}}_{1}{-\overline{M}}_{2}}{\text{SD}_{\text{pooled}}}\]</span></p>
+<p>As you can see, the sample size in each group (<span class="math inline">\(n_1\)</span> and <span class="math inline">\(n_2\)</span>) is part of the formula for a <em>t</em>-value, but it is not part of the formula for Cohen’s <em>d</em> (the pooled standard deviation is computed by weighing the standard deviation in each group by the sample size, but it cancels out if groups are of equal size). This distinction is useful to know, because in practice it means that the <em>t</em>-value (and consequently, the <em>p</em>-value) is a function of the sample size, but Cohen’s <em>d</em> is independent of the sample size. If there is a true effect (e.g., a non-zero effect size in the population) the <em>t</em>-value for a null hypothesis test against an effect of zero will on average become larger (and the <em>p</em>-value will become smaller) as the sample size increases. The effect size, however, will not increase or decrease, but will become more accurate, as the standard error decreases as the sample size increases. This is also the reason why <em>p</em>-values cannot be used to make a statement about whether an effect is <strong>practically significant</strong>, and effect size estimates are often such an important complement to <em>p</em>-values when making statistical inferences.</p>
+<p>You can calculate Cohen’s <em>d</em> for independent groups from the independent samples <em>t</em>-value (which can often be convenient when the result section of the paper you are reading does not report effect sizes) through:</p>
+<p><span class="math display">\[d_s = t ⨯ \sqrt{\frac{1}{n_{1}} + \frac{1}{n_{2}}}\]</span></p>
+<p>A <em>d</em> = 0.001 is an extremely tiny effect, so let’s explore an effect size that is a bit more representative of what you would read in the literature. In the meta-meta-analysis mentioned earlier, the median effect size in published studies included in meta-analyses in the psychological literature is <em>d</em> = 0.43 <span class="citation" data-cites="richard_one_2003">(<a href="references.html#ref-richard_one_2003" role="doc-biblioref">Richard et al., 2003</a>)</span>. To get a feeling for this effect size, let’s use the online app and set the effect size to <em>d</em> = 0.43.</p>
+<div class="cell" data-layout-align="center" data-fig.margin="false">
+<div class="cell-output-display">
+<div id="fig-rpsychd2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="images/rpsychd2.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;6.3: A visualization of 2 groups representing d = 0.43.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>One example of a meta-analytic effect size in the meta-meta-analysis that is exactly <span class="math inline">\(d_s\)</span> = 0.43 is the finding that people in a group work less hard to achieve a goal than people who work individually, called <em>social loafing</em>. This is an effect that is large enough that we notice it in daily life. Yet, if we look at the overlap in the two distributions, we see that the amount of effort people put in overlaps considerably between the two conditions (in the case of social loafing, working individually versus working in a group). We see in <a href="#fig-rpsychd2">Figure&nbsp;<span>6.3</span></a> that the <strong>probability of superiority</strong>, or the probability that if we randomly draw one person from the group condition and one person from the individual condition, the person working in a group puts in less effort, is only 61.9%. This interpretation of differences between groups is also called the <strong>common language effect size</strong> <span class="citation" data-cites="mcgraw_common_1992">(<a href="references.html#ref-mcgraw_common_1992" role="doc-biblioref">McGraw &amp; Wong, 1992</a>)</span>.</p>
+<div class="cell" data-layout-align="center" data-fig.margin="false">
+<div class="cell-output-display">
+<div id="fig-rpsychd3" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="images/rpsychd3.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;6.4: A vizualization of 2 groups representing d = 2.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Based on <a href="http://www.nature.com/pr/journal/v73/n3/full/pr2012189a.html">this data</a>, the difference between the height of 21-year old men and women in The Netherlands is approximately 13 centimeters (in an unstandardized effect size), or a standardized effect size of <span class="math inline">\(d_s\)</span> = 2. If I pick a random man and a random woman walking down the street in my hometown of Rotterdam, how likely is it that the man will be taller than the woman? We see this is quite likely, with a probability of superiority of 92.1%. But even with such a huge effect, there is still considerable overlap in the two distributions. If we conclude the height of people in one group is greater than the height of people in another group, this does not mean everyone in one group is taller than everyone in the other group.</p>
+<p>Sometimes when you try to explain scientific findings at a birthday party, a skeptical aunt or uncle might remark ‘well I don’t believe that is true because <em>I</em> never experience this’. With probabilistic observations, there is a distribution of observed effects. In the example about social loafing, <em>on average</em> people put in less effort to achieve a goal when working in a group than working by themselves. For any individual in the population, the effect might be larger, smaller, absent, or even in the opposite direction. If your skeptical aunt or uncle never experiences a finding, this does not contradict the claim that the effect exists <em>on average</em> in the population. Indeed, it is even expected that there is no effect for some people in the population, at least some of the time. Although there might be some exceptions (e.g., almost every individual will experience the <a href="https://en.wikipedia.org/wiki/Stroop_effect">Stroop effect</a>), many effects are smaller, or have sufficient variation, such that the effect is not present for every single individual in the population.</p>
+<p>Conceptually, calculating Cohen’s <em>d</em> for within-subjects comparisons is based on the same idea as for independent groups, where the differences between two observations are divided by the standard deviation within the groups of observations. However, in the case of correlated samples the most common standardizer is the standard deviation of the difference scores. Testing whether two correlated means are significantly different from each other with a paired samples <em>t</em>-test is the same as testing whether the difference scores of the correlated means is significantly different from 0 in a one-sample <em>t</em>-test. Similarly, calculating the effect size for the difference between two correlated means is similar to the effect size that is calculated for a one sample <em>t</em>-test. The standardized mean difference effect size for within-subjects designs is referred to as Cohen’s <span class="math inline">\(d_z\)</span>, where the <em>z</em> alludes to the fact that the unit of analysis is no longer <em>x</em> or <em>y</em>, but their difference, <em>z</em>, and can be calculated with:</p>
+<p><span class="math display">\[d_z = \frac{M_{dif}}{\sqrt{\frac{\sum{({X_{dif}-M_{dif})}}^2}{N-1}}}\]</span> The effect size estimate Cohen’s <span class="math inline">\(d_z\)</span> can also be calculated directly from the <em>t</em>-value and the number of participants using the formula:</p>
+<p><span class="math display">\[d_z = \frac{t}{\sqrt{n}}\]</span></p>
+<p>Given the direct relationship between the <em>t</em>-value of a paired-samples <em>t</em>-test and Cohen’s <span class="math inline">\(d_z\)</span>, it will not be surprising that software that performs power analyses for within-subjects designs (e.g., G*Power) relies on Cohen’s <span class="math inline">\(d_z\)</span> as input.</p>
+<p>Maxwell &amp; Delaney <span class="citation" data-cites="maxwell_designing_2004">(<a href="references.html#ref-maxwell_designing_2004" role="doc-biblioref">2004</a>)</span> remark: ‘a major goal of developing effect size measures is to provide a standard metric that meta-analysts and others can interpret across studies that vary in their dependent variables as well as types of designs.’ Because Cohen’s <span class="math inline">\(d_z\)</span> takes the correlation between the dependent measures into account, it cannot be directly compared with Cohen’s <span class="math inline">\(d_s\)</span>. Some researchers prefer to use the average standard deviation of both groups of observations as a standardizer (which ignores the correlation between the observations), because this allows for a more direct comparison with Cohen’s <span class="math inline">\(d_s\)</span>. This effect size is referred to as Cohen’s <span class="math inline">\(d_{av}\)</span> <span class="citation" data-cites="cumming_understanding_2013">(<a href="references.html#ref-cumming_understanding_2013" role="doc-biblioref">Cumming, 2013</a>)</span>, and is simply:</p>
+<p><span class="math display">\[d_{av} = \frac{M_{dif}}{\frac{SD_1+SD_2}{2}}\]</span></p>
+</section><section id="interpreting-effect-sizes" class="level2" data-number="6.5"><h2 data-number="6.5" class="anchored" data-anchor-id="interpreting-effect-sizes">
+<span class="header-section-number">6.5</span> Interpreting effect sizes</h2>
+<p>A commonly used interpretation of Cohen’s <em>d</em> is to refer to effect sizes as small (<em>d</em> = 0.2), medium (<em>d</em> = 0.5), and large (<em>d</em> = 0.8) based on benchmarks suggested by Cohen (1988). However, these values are arbitrary and should not be used. In practice, you will only see them used in a form of circular reasoning: The effect is small, because it is <em>d</em> = 0.2, and <em>d</em> = 0.2 is small. We see that using the benchmarks adds nothing, beyond covering up the fact that we did not actually interpret the size of the effect. Furthermore, benchmarks for what is a ‘medium’ and ‘large’ effect do not even correspond between Cohen’s <em>d</em> and <em>r</em> (as explained by <span class="citation" data-cites="mcgrath_when_2006">McGrath &amp; Meyer (<a href="references.html#ref-mcgrath_when_2006" role="doc-biblioref">2006</a>)</span>, see the ‘Test Yourself’ Q12). Any verbal classification based on benchmarks ignores the fact that any effect can be practically meaningful, such as an intervention that leads to a reliable reduction in suicide rates with an effect size of <em>d</em> = 0.1. In other cases, an effect size of <em>d</em> = 0.1 might have no consequence at all, for example because such an effect is smaller than the just noticeable difference, and is therefore too small to be noticed by individuals in the real world.</p>
+<p>Publication bias and flexibility in the data analysis inflate effect size estimates. Innovations such as <strong>Registered Reports</strong> <span class="citation" data-cites="chambers_past_2022 nosek_registered_2014">(<a href="references.html#ref-chambers_past_2022" role="doc-biblioref">Chambers &amp; Tzavella, 2022</a>; <a href="references.html#ref-nosek_registered_2014" role="doc-biblioref">Nosek &amp; Lakens, 2014</a>)</span> increasingly lead to the availability of unbiased effect size estimates in the scientific literature. Registered Reports are scientific publications which have been reviewed before the data has been collected based on the introduction, method, and proposed statistical analysis plan, and published regardless of whether the results were statistically significant or not. One consequence of no longer selectively publishing significant studies is that many effect sizes will turn out to be smaller than researchers thought. For example, in the 100 replication studies performed in the Reproducibility Project: Psychology, observed effect sizes in replication studies were on average half the size as those observed in the original studies <span class="citation" data-cites="open_science_collaboration_estimating_2015">(<a href="references.html#ref-open_science_collaboration_estimating_2015" role="doc-biblioref">Open Science Collaboration, 2015</a>)</span>.</p>
+<p>To not just <em>report</em> but <em>interpret</em> an effect size, nothing is gained by the common practice of finding the corresponding verbal label of ‘small’, ‘medium’, or ‘large’. Instead, researchers who want to argue that an effect is meaningful need to provide empirical and falsifiable arguments for the meaningfulness of effects <span class="citation" data-cites="primbs_are_2022 anvari_not_2021">(<a href="references.html#ref-anvari_not_2021" role="doc-biblioref">Anvari et al., 2021</a>; <a href="references.html#ref-primbs_are_2022" role="doc-biblioref">Primbs et al., 2022</a>)</span>. One approach to argue effect sizes are meaningful is by explicitly specifying a <a href="09-equivalencetest.html#sec-sesoi">smallest effect size of interest</a>] <span class="citation" data-cites="gotz_small_2022">(<a href="references.html#ref-gotz_small_2022" role="doc-biblioref">Götz et al., 2022</a>)</span>, for example based on a cost-benefit analysis. Alternatively, researchers can interpret effect sizes relative to other effects in the literature <span class="citation" data-cites="baguley_standardized_2009 funder_evaluating_2019">(<a href="references.html#ref-baguley_standardized_2009" role="doc-biblioref">Baguley, 2009</a>; <a href="references.html#ref-funder_evaluating_2019" role="doc-biblioref">Funder &amp; Ozer, 2019</a>)</span>.</p>
+</section><section id="correlations-and-variance-explained" class="level2" data-number="6.6"><h2 data-number="6.6" class="anchored" data-anchor-id="correlations-and-variance-explained">
+<span class="header-section-number">6.6</span> Correlations and Variance Explained</h2>
+<p>The <em>r</em> family effect sizes are based on the proportion of variance that is explained by group membership (e.g., a correlation of <em>r</em> = 0.5 indicates 25% of the variance (<span class="math inline">\(r^2\)</span> is explained by the difference between groups). You might remember that <em>r</em> is used to refer to a correlation. The correlation of two continuous variables can range from 0 (completely unrelated) to 1 (perfect positive relationship) or -1 (perfect negative relationship). To get a better feel of correlations, play the game <a href="http://guessthecorrelation.com/">guess the correlation</a> where you will see a scatterplot, and have to guess the correlation between the variables (see <a href="#fig-guesscorrelation">Figure&nbsp;<span>6.5</span></a>).</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-guesscorrelation" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="images/guesscorrelation.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;6.5: Screenshot from Guess the Correlation game (the correct answer is r = 0.24).</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The <em>r</em> family effect sizes are calculated from the sum of squares (the difference between individual observations and the mean for the group, squared, and summed) for the effect divided by the sums of squares for other factors in the design. Earlier, I mentioned the median effect size in psychology is <span class="math inline">\(d_s\)</span> = 0.43. However, the authors actually report their results as a correlation, <em>r</em> = 0.21. We can convert Cohen’s <em>d</em> into <em>r</em> (but take care that this only applies to <span class="math inline">\(d_s\)</span>, not <span class="math inline">\(d_z\)</span>):</p>
+<p><span class="math display">\[r = \frac{d_s}{\sqrt{{d_s^{2}}^{+}\frac{N^{2} - 2N}{n_{1} \times n_{2}}}}\]</span></p>
+<p><em>N</em> is the total sample size of both groups, whereas <span class="math inline">\(n_1\)</span> and <span class="math inline">\(n_2\)</span> are the sample sizes of the individual groups you are comparing (it is common to use capital <span class="math inline">\(N\)</span> for the total sample size, and lowercase n for sample sizes per group). You can go to <a href="http://rpsychologist.com/d3/correlation/" class="uri">http://rpsychologist.com/d3/correlation/</a> to look at a good visualization of the proportion of variance that is explained by group membership, and the relationship between <em>r</em> and <span class="math inline">\(r^2\)</span>. The amount of variance explained is often quite a small number, and we see in <a href="#fig-sharedvariance">Figure&nbsp;<span>6.6</span></a> that a correlation of 0.21 (the median from the meta-meta-analysis by Richard and colleagues) we see the proportion of variance explained is only 4.4%. Funder and Ozer <span class="citation" data-cites="funder_evaluating_2019">(<a href="references.html#ref-funder_evaluating_2019" role="doc-biblioref">2019</a>)</span> warn against misinterpreting small values for the variance explained as an indication that the effect is not meaningful (and they even consider the practice of squaring the correlation “actively misleading”).</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-sharedvariance" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="images/sharedvariance.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;6.6: Screenshot from correlation effect size vizualization by Kristoffer Magnusson for <em>r</em> = 0.21.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>As we have seen before, it can be useful to interpret effect sizes to identify effects that are practically insignificant, or effects that are implausibly large. Let’s take a look at a study that examines the number of suicides as a function of the amount of country music played on the radio. You can find the paper <a href="https://heinonline.org/HOL/P?h=hein.journals/josf71&amp;i=227">here</a> It won an <a href="http://www.abc.net.au/science/articles/2004/10/01/1211441.htm">Ig Nobel prize for studies that first make you laugh, and then think</a>, although in this case, the the study should not make you think about country music, but about the importance of interpreting effect sizes.</p>
+<p>The authors predicted the following:</p>
+<blockquote class="blockquote">
+<p>We contend that the themes found in country music foster a suicidal mood among people already at risk of suicide and that it is thereby associated with a high suicide rate.</p>
+</blockquote>
+<p>Then they collected data:</p>
+<blockquote class="blockquote">
+<p>Our sample is comprised of 49 large metropolitan areas for which data on music were available. Exposure to country music is measured as the proportion of radio airtime devoted to country music. Suicide data were extracted from the annual Mortality Tapes, obtained from the Inter-University Consortium for Political and Social Research (ICPSR) at the University of Michigan. The dependent variable is the number of suicides per 100,000 population.</p>
+</blockquote>
+<p>And they concluded:</p>
+<blockquote class="blockquote">
+<p>A significant zero-order correlation was found between white suicide rates and country music (<em>r</em> = .54, <em>p</em> &lt; .05). The greater the airtime given to country music, the greater the white suicide rate.</p>
+</blockquote>
+<p>We can again compare the size of this effect with other known effects in psychology. In the database by Richard and colleagues, there are very few effects this large, but some examples are: that leaders are most effective if they have charisma (<em>r</em> = 0.54), good leader–subordinate relations promote subordinate satisfaction (<em>r</em> = 0.53), and people can recognize emotions across cultures (<em>r</em> = 0.53). These effects are all large and obvious, which should raise some doubts about whether the relationship between listening to country music and suicides can be of the same size. Is country music really that bad? If we search the literature, we find that <a href="http://sf.oxfordjournals.org/content/74/1/327.short">other researchers were not able to reproduce the analysis of the original authors</a>. It is likely that the results are spurious, or a Type 1 error.</p>
+<p>Eta squared <span class="math inline">\(\eta^2\)</span> (part of the <em>r</em> family of effect sizes, and an extension of r that can be used for more than two sets of observations) measures the proportion of the variation in Y that is associated with membership of the different groups defined by X, or the sum of squares of the effect divided by the total sum of squares:</p>
+<p><span class="math display">\[\eta^{2} = \frac{\text{SS}_{\text{effect}}}{\text{SS}_{\text{total}}}\]</span></p>
+<p>An <span class="math inline">\(\eta^2\)</span> of .13 means that 13% of the total variance can be accounted for by group membership. Although <span class="math inline">\(\eta^2\)</span> is an efficient way to compare the sizes of effects within a study (given that every effect is interpreted in relation to the total variance, all <span class="math inline">\(\eta^2\)</span> from a single study sum to 100%), eta squared cannot easily be compared between studies, because the total variability in a study (<span class="math inline">\(SS_{total}\)</span>) depends on the design of a study, and increases when additional variables are manipulated (e.g., when independent variables are added). Keppel <span class="citation" data-cites="keppel_design_1991">(<a href="references.html#ref-keppel_design_1991" role="doc-biblioref">Keppel, 1991</a>)</span> has recommended partial eta squared (<span class="math inline">\(\eta_{p}^{2}\)</span>) to improve the comparability of effect sizes between studies. <span class="math inline">\(\eta_{p}^{2}\)</span> expresses the sum of squares of the effect in relation to the sum of squares of the effect plus the sum of squares of the error associated with the effect. Partial eta squared is calculated as:</p>
+<p><span class="math display">\[\eta_{p}^{2} = \frac{\text{SS}_{\text{effect}}}{\text{SS}_{\text{effect}} + \text{SS}_{\text{error}}}\]</span></p>
+<p>For designs with fixed factors (manipulated factors, or factors that exhaust all levels of the independent variable, such as alive vs.&nbsp;dead), but not for designs with measured factors or covariates, partial eta squared can be computed from the <em>F</em>-value and its degrees of freedom <span class="citation" data-cites="cohen_statistical_1988">(<a href="references.html#ref-cohen_statistical_1988" role="doc-biblioref">Cohen, 1988</a>)</span>:</p>
+<p><span class="math display">\[\eta_{p}^{2} = \frac{F \times \text{df}_{\text{effect}}}{{F \times \text{df}}_{\text{effect}} + \text{df}_{\text{error}}}\]</span></p>
+<p>For example, for an <em>F</em>(1, 38) = 7.21, <span class="math inline">\(\eta_{p}^{2}\)</span> = 7.21 ⨯ 1/(7.21 ⨯ 1 + 38) = 0.16.</p>
+<p>Eta squared can be transformed into Cohen’s <em>d</em>:</p>
+<p><em>d</em> = 2<span class="math inline">\(\times f\)</span> where <span class="math inline">\(f^{2} = \eta^{2}/(1 - \eta^{2})\)</span></p>
+</section><section id="correcting-for-bias" class="level2" data-number="6.7"><h2 data-number="6.7" class="anchored" data-anchor-id="correcting-for-bias">
+<span class="header-section-number">6.7</span> Correcting for Bias</h2>
+<p>Population effect sizes are almost always estimated on the basis of samples, and as a measure of the population effect size estimate based on sample averages, Cohen’s <em>d</em> slightly overestimates the true population effect. When Cohen’s <em>d</em> refers to the population, the Greek letter δ is typically used. Therefore, corrections for bias are used (even though these corrections do not always lead to a completely unbiased effect size estimate). In the <em>d</em> family of effect sizes, the correction for bias in the population effect size estimate of Cohen’s <em>d</em> is known as Hedges’ <em>g</em> (although different people use different names – <span class="math inline">\(d_{unbiased}\)</span> is also used). This correction for bias is only noticeable in small sample sizes, but since we often use software to calculate effect sizes anyway, it makes sense to always report Hedge’s <em>g</em> instead of Cohen’s <em>d</em> <span class="citation" data-cites="thompson_effect_2007">(<a href="references.html#ref-thompson_effect_2007" role="doc-biblioref">Thompson, 2007</a>)</span>.</p>
+<p>As with Cohen’s <em>d</em>, <span class="math inline">\(\eta^2\)</span> is a biased estimate of the true effect size in the population. Two less biased effect size estimates have been proposed, epsilon squared <span class="math inline">\(\varepsilon^{2}\)</span> and omega squared <span class="math inline">\(\omega^{2}\)</span>. For all practical purposes, these two effect sizes correct for bias equally well <span class="citation" data-cites="okada_is_2013 albers_when_2018">(<a href="references.html#ref-albers_when_2018" role="doc-biblioref">Albers &amp; Lakens, 2018</a>; <a href="references.html#ref-okada_is_2013" role="doc-biblioref">Okada, 2013</a>)</span>, and should be preferred above <span class="math inline">\(\eta^2\)</span>. Partial epsilon squared (<span class="math inline">\(\varepsilon_{p}^{2}\)</span>) and partial omega squared (<span class="math inline">\(\omega_{p}^{2}\)</span>) can be calculated based on the <em>F</em>-value and degrees of freedom.</p>
+<p><span class="math display">\[
+\omega_{p}^{2} = \frac{F - 1}{F + \ \frac{\text{df}_{\text{error}} + 1}{\text{df}_{\text{effect}}}}
+\]</span></p>
+<p><span class="math display">\[
+\varepsilon_{p}^{2} = \frac{F - 1}{F + \ \frac{\text{df}_{\text{error}}}{\text{df}_{\text{effect}}}}
+\]</span> Partial effect sizes <span class="math inline">\(\eta_{p}^{2}\)</span>, <span class="math inline">\(\varepsilon_{p}^{2}\)</span> and <span class="math inline">\(\omega_{p}^{2}\)</span> cannot be generalized across different designs. For this reason, generalized eta-squared (<span class="math inline">\(\eta_{G}^{2}\)</span>) and generalized omega-squared (<span class="math inline">\(\omega_{G}^{2}\)</span>) have been proposed <span class="citation" data-cites="olejnik_generalized_2003">(<a href="references.html#ref-olejnik_generalized_2003" role="doc-biblioref">Olejnik &amp; Algina, 2003</a>)</span>, although they are not very popular. In part, this might be because summarizing the effect size in an ANOVA design with a single index has limitations, and perhaps it makes more sense to describe the pattern of results, as we will see in the section below.</p>
+</section><section id="effect-sizes-for-interactions" class="level2" data-number="6.8"><h2 data-number="6.8" class="anchored" data-anchor-id="effect-sizes-for-interactions">
+<span class="header-section-number">6.8</span> Effect Sizes for Interactions</h2>
+<p>The effect size used for power analyses for ANOVA designs is Cohen’s <em>f</em>. For two independent groups, Cohen’s <span class="math inline">\(f\)</span> = 0.5 * Cohen’s <em>d</em>. For more than two groups, Cohen’s f can be converted into eta-squared and back with <span class="math inline">\(f = \frac{\eta^2}{(1 - \eta^2)}\)</span> or <span class="math inline">\(\eta^2 = \frac{f^2}{(1 + f^2)}\)</span>. When predicting interaction effects in ANOVA designs, planning the study based on an expected effect size such as <span class="math inline">\(\eta_{p}^{2}\)</span> or Cohen’s <em>f</em> might not be the most intuitive approach.</p>
+<p>Let’s start with the effect size for a simple two group comparison. Let’s assume we predict a mean difference of 1, and know the standard deviation of the measure is 2. This means the standardized effect size is <em>d</em> = 0.5. An independent <em>t</em>-test is mathematically identical to an <em>F</em>-test with two groups. For an <em>F</em>-test, the effect size used for power analyses is Cohen’s <em>f</em>, which is calculated based on the standard deviation of the population means divided by the population standard deviation (which we know for our measure is 2), or:</p>
+<p><span class="math display">\[\begin{equation}
+f = \frac{\sigma _{ m }}{\sigma}
+\end{equation}\]</span> where for equal sample sizes <span class="math display">\[\begin{equation}
+\sigma _{ m } = \sqrt { \frac { \sum_ { i = 1 } ^ { k } ( m _ { i } - m ) ^ { 2 } } { k } }.
+\end{equation}\]</span></p>
+<p>In this formula <em>m</em> is the grand mean, k is the number of means, and m_i is the mean in each group. The formula above might look a bit daunting, but calculating Cohen’s f is not that difficult for two groups.</p>
+<p>If we take the expected means of 0 and 1, and a standard deviation of 2, the grand mean (the <em>m</em> in the formula above) is (0 + 1)/2 = 0.5. The formula says we should subtract this grand mean from the mean of each group, square this value, and sum them. So we have (0 - 0.5)^2 and (1 - 0.5)^2, which are both 0.25. We sum these values (0.25 + 0.25 = 0.5), divide them by the number of groups (0.5/2 = 0.25) and take the square root, we find that <span class="math inline">\(\sigma_{ m }\)</span> = 0.5. We can now calculate Cohen’s <em>f</em> (using <span class="math inline">\(\sigma\)</span> = 2 for our measure):</p>
+<p><span class="math display">\[\begin{equation}
+f = \frac{\sigma _{ m }}{\sigma} = \frac{0.5}{2} = 0.25
+\end{equation}\]</span></p>
+<p>We confirm that for two groups Cohen’s <em>f</em> is half as large as Cohen’s <em>d</em>.</p>
+<p>Now we have the basis to look at interaction effects. Different patterns of means in an ANOVA can have the same Cohen’s <em>f</em>. There are two types of interactions, as visualized below in <a href="#fig-interactions">Figure&nbsp;<span>6.7</span></a>. In an <strong>ordinal interaction</strong>, the mean of one group (“B1”) is always higher than the mean for the other group (“B2”). <strong>Disordinal interactions</strong> are also known as ‘cross-over’ interactions, and occur when the group with the larger mean switches over. The difference is important, since the disordinal interaction in <a href="#fig-interactions">Figure&nbsp;<span>6.7</span></a> has a larger effect size than the ordinal interaction.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+ℹ Please use `linewidth` instead.</code></pre>
+</div>
+<div class="cell-output-display">
+<div id="fig-interactions" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="06-effectsize_files/figure-html/fig-interactions-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;6.7: Schematic illustration of a disordinal (or cross-over) and ordinal interaction.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Mathematically the interaction effect is computed as the cell mean minus the sum of the grand mean, the marginal mean in each condition of one factor minus the grand mean, and the marginal mean in each condition for the other factor minus grand mean <span class="citation" data-cites="maxwell_designing_2004">(<a href="references.html#ref-maxwell_designing_2004" role="doc-biblioref">Maxwell &amp; Delaney, 2004</a>)</span>.</p>
+<p>Let’s consider two cases, one where we have a perfect disordinal interaction (the means of 0 and 1 flip around in the other condition, and are 1 and 0) or an ordinal interaction (the effect is present in one condition, with means 0 and 1, but disappears in the other condition, with means 0 and 0, see <a href="#fig-interactionplots">Figure&nbsp;<span>6.8</span></a>).</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-interactionplots" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="06-effectsize_files/figure-html/fig-interactionplots-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;6.8: Disordinal (or cross-over) and ordinal interaction with means of 0 and 1, n = 50 per group, and an sd of 2.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We can calculate the interaction effect as follows (we will go through the steps in some detail). First, let’s look at the disordinal interaction. The grand mean is (1 + 0 + 0 + 1) / 4 = 0.5.</p>
+<p>We can compute the marginal means for A1, A2, B1, and B2, which is simply averaging per row and column, which gets us for the A1 row (1+0)/2=0.5. For this perfect disordinal interaction, all marginal means are 0.5. This means there are no main effects. There is no main effect of factor A (because the marginal means for A1 and A2 are both exactly 0.5), nor is there a main effect of B.</p>
+<p>We can also calculate the interaction effect. For each cell we take the value in the cell (e.g., for a1b1 this is 1) and compute the difference between the cell mean and the additive effect of the two factors as:</p>
+<p>1 - (the grand mean of 0.5 + (the marginal mean of a1 minus the grand mean, or 0.5 - 0.5 = 0) + (the marginal mean of b1 minus the grand mean, or 0.5 - 0.5 = 0)). Thus, for each cell we get:</p>
+<p>a1b1: 1 - (0.5 + (0.5 -0.5) + (0.5 -0.5)) = 0.5</p>
+<p>a1b2: 0 - (0.5 + (0.5 -0.5) + (0.5 -0.5)) = -0.5</p>
+<p>a2b1: 0 - (0.5 + (0.5 -0.5) + (0.5 -0.5)) = -0.5</p>
+<p>a2b2: 1 - (0.5 + (0.5 -0.5) + (0.5 -0.5)) = 0.5</p>
+<p>Cohen’s <span class="math inline">\(f\)</span> is then <span class="math inline">\(f = \frac { \sqrt { \frac { 0.5^2 +-0.5^2 + -0.5^2 + 0.5^2 } { 4 } }}{ 2 } = 0.25\)</span></p>
+<p>For the ordinal interaction the grand mean is (1 + 0 + 0 + 0) / 4, or 0.25. The marginal means are a1: 0.5, a2: 0, b1: 0.5, and b2: 0.</p>
+<p>Completing the calculation for all four cells for the ordinal interaction gives:</p>
+<p>a1b1: 1 - (0.25 + (0.5 -0.25) + (0.5 -0.25)) = 0.25</p>
+<p>a1b2: 0 - (0.25 + (0.5 -0.25) + (0.0 -0.25)) = -0.25</p>
+<p>a2b1: 0 - (0.25 + (0.0 -0.25) + (0.5 -0.25)) = -0.25</p>
+<p>a2b2: 0 - (0.25 + (0.0 -0.25) + (0.0 -0.25)) = 0.25</p>
+<p>Cohen’s <span class="math inline">\(f\)</span> is then <span class="math inline">\(f = \frac { \sqrt { \frac { 0.25^2 +-0.25^2 + -0.25^2 + 0.25^2 } { 4 } }}{ 2 } = 0.125\)</span>.</p>
+<p>We see the effect size of the cross-over interaction (<em>f</em> = 0.25) is twice as large as the effect size of the ordinal interaction (<em>f</em> = 0.125). This should make sense if we think about the interaction as a test of contrasts. In the disordinal interaction we are comparing cells a1b1 and a2b2 against a1b2 and a2b1, or (1+1)/2 vs.&nbsp;(0+0)/2. Thus, if we see this as a <em>t</em>-test for a contrast, we see the mean difference is 1. For the ordinal interaction, we have (1+0)/2 vs.&nbsp;(0+0)/2, so the mean difference is halved, namely 0.5. This obviously matters for the statistical power we will have when we examine interaction effects in our experiments.</p>
+<p>Just stating that you expect a ‘medium’ Cohen’s <em>f</em> effect size for an interaction effect in your power analysis is not the best approach. Instead, start by thinking about the pattern of means and standard deviations (and for within factors, the correlation between dependent variables) and then compute the effect size from the data pattern. If you prefer not to do so by hand, you can use <a href="https://aaroncaldwell.us/SuperpowerBook/">Superpower</a> <span class="citation" data-cites="lakens_simulation-based_2021">(<a href="references.html#ref-lakens_simulation-based_2021" role="doc-biblioref">Lakens &amp; Caldwell, 2021</a>)</span>. This also holds for more complex designs, such as multilevel models. In these cases, it is often the case that power analyses are easier based on simulation-based approaches, than based on plugging in a single effect size in power analysis software <span class="citation" data-cites="debruine_understanding_2021">(<a href="references.html#ref-debruine_understanding_2021" role="doc-biblioref">DeBruine &amp; Barr, 2021</a>)</span>.</p>
+</section><section id="test-yourself" class="level2" data-number="6.9"><h2 data-number="6.9" class="anchored" data-anchor-id="test-yourself">
+<span class="header-section-number">6.9</span> Test Yourself</h2>
+<div class="webex-check webex-box">
+<p><strong>Q1</strong>: One of the largest effect sizes in the meta-meta analysis by Richard and colleagues from 2003 is that people are likely to perform an action if they feel positively about the action and believe it is common. Such an effect is (with all respect to all researchers who contributed research to this meta-analysis) somewhat trivial. Even so, the correlation was <em>r</em> = .66, which equals a Cohen’s <em>d</em> of 1.76. What is according to the online app at <a href="https://rpsychologist.com/cohend/" class="uri">https://rpsychologist.com/cohend/</a> the probability of superiority for an effect of this size?</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_NWPWWHQHJW" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_NWPWWHQHJW" value=""><span>70.5%</span></label><label><input type="radio" autocomplete="off" name="radio_NWPWWHQHJW" value=""><span>88.1%</span></label><label><input type="radio" autocomplete="off" name="radio_NWPWWHQHJW" value="answer"><span>89.3%</span></label><label><input type="radio" autocomplete="off" name="radio_NWPWWHQHJW" value=""><span>92.1%</span></label>
+</div>
+</div>
+<p><strong>Q2</strong>: Cohen’s <em>d</em> is to ______ as eta-squared is to ________</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_KQHJEMRIBH" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_KQHJEMRIBH" value="answer"><span><em>r</em>; epsilon-squared</span></label><label><input type="radio" autocomplete="off" name="radio_KQHJEMRIBH" value=""><span>Hedges’ <em>g</em>; omega-squared</span></label><label><input type="radio" autocomplete="off" name="radio_KQHJEMRIBH" value=""><span>Cohen’s <span class="math inline">\(d_s\)</span>; generalized eta-squared</span></label>
+</div>
+</div>
+<p><strong>Q3</strong>: A correlation of <em>r</em> = 1.2 is:</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_PZHIFEAMGC" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_PZHIFEAMGC" value="answer"><span>Impossible</span></label><label><input type="radio" autocomplete="off" name="radio_PZHIFEAMGC" value=""><span>Implausibly large for an effect size in the social sciences</span></label><label><input type="radio" autocomplete="off" name="radio_PZHIFEAMGC" value=""><span>In line with the median effect size in psychology</span></label>
+</div>
+</div>
+<p><strong>Q4</strong>: Let’s assume the difference between two means we observe is 1, and the pooled standard deviation is also 1. What, on average, happens to the <em>t</em>-value and Cohen’s <em>d</em>, as we would simulate studies, as a function of the sample size in these simulations?</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_ANXKLBZHCZ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_ANXKLBZHCZ" value=""><span>Given the mean difference and standard deviation, as the sample size becomes bigger, the <em>t</em>-value become larger, and Cohen’s <em>d</em> becomes larger.</span></label><label><input type="radio" autocomplete="off" name="radio_ANXKLBZHCZ" value="answer"><span>Given the mean difference and standard deviation, as the sample size becomes bigger, the <em>t</em>-value gets closer to the true value, and Cohen’s <em>d</em> becomes larger.</span></label><label><input type="radio" autocomplete="off" name="radio_ANXKLBZHCZ" value=""><span>Given the mean difference and standard deviation, as the sample size becomes bigger, the <em>t</em>-value become larger, and Cohen’s <em>d</em> gets closer to the true value.</span></label><label><input type="radio" autocomplete="off" name="radio_ANXKLBZHCZ" value=""><span>Given the mean difference and standard deviation, as the sample size becomes bigger, the <em>t</em>-value gets closer to the true value, and Cohen’s <em>d</em> gets closer to the true value.</span></label>
+</div>
+</div>
+<p><strong>Q5</strong>: Go to <a href="http://rpsychologist.com/d3/correlation/" class="uri">http://rpsychologist.com/d3/correlation/</a> to look at a good visualization of the proportion of variance that is explained by group membership, and the relationship between <em>r</em> and <span class="math inline">\(r^2\)</span>. Look at the scatterplot and the shared variance for an effect size of <em>r</em> = .21 <span class="citation" data-cites="richard_one_2003">(<a href="references.html#ref-richard_one_2003" role="doc-biblioref">Richard et al., 2003</a>)</span>. Given that <em>r</em> = 0.21 was their estimate of the median effect size in psychological research (not corrected for bias), how much variance in the data do we on average explain?</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_ABDYHPMYTH" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_ABDYHPMYTH" value=""><span>2%</span></label><label><input type="radio" autocomplete="off" name="radio_ABDYHPMYTH" value=""><span>21%</span></label><label><input type="radio" autocomplete="off" name="radio_ABDYHPMYTH" value="answer"><span>4%</span></label><label><input type="radio" autocomplete="off" name="radio_ABDYHPMYTH" value=""><span>44%</span></label>
+</div>
+</div>
+<p><strong>Q6</strong>: By default, the sample size for the online correlation visualization linked to above is 50. Click on the cogwheel to access the settings, change the sample size to 500, and click the button ‘New Sample’. What happens?</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_FDTKXLBVBC" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_FDTKXLBVBC" value=""><span>The proportion of explained variance is 5 times as large.</span></label><label><input type="radio" autocomplete="off" name="radio_FDTKXLBVBC" value=""><span>The proportion of explained variance is 5 times as small.</span></label><label><input type="radio" autocomplete="off" name="radio_FDTKXLBVBC" value=""><span>The proportion of explained variance is 52 times as large.</span></label><label><input type="radio" autocomplete="off" name="radio_FDTKXLBVBC" value="answer"><span>The proportion of explained variance stays the same.</span></label>
+</div>
+</div>
+<p><strong>Q7</strong>: In an old paper you find a statistical result reported as <em>t</em>(36) = 2.14 <em>p</em> &lt; 0.05 for an independent <em>t</em>-test without a reported effect size. Using the online MOTE app <a href="https://doomlab.shinyapps.io/mote/" class="uri">https://doomlab.shinyapps.io/mote/</a> (choose Independent t -t from the Mean Differences dropdown menu) or the MOTE R function d.ind.t.t, what is the effect size Cohen’s <em>d</em> for this effect, given 38 participants (e.g., 19 in each group, leading to N – 2 = 36 degrees of freedom) and an alpha level of 0.05?</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_UBTWWIAXYM" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_UBTWWIAXYM" value=""><span><em>d</em> = 0.38</span></label><label><input type="radio" autocomplete="off" name="radio_UBTWWIAXYM" value=""><span><em>d</em> = 0.41</span></label><label><input type="radio" autocomplete="off" name="radio_UBTWWIAXYM" value="answer"><span><em>d</em> = 0.71</span></label><label><input type="radio" autocomplete="off" name="radio_UBTWWIAXYM" value=""><span><em>d</em> = 0.75</span></label>
+</div>
+</div>
+<p><strong>Q8</strong>: In an old paper you find a statistical result from a 2x3 between subjects ANOVA reported as <em>F</em>(2, 122) = 4.13, <em>p</em> &lt; 0.05, without a reported effect size. Using the online MOTE app <a href="https://doomlab.shinyapps.io/mote/" class="uri">https://doomlab.shinyapps.io/mote/</a> (choose Eta – F from the Variance Overlap dropdown menu) or the MOTE R function eta.F, what is the effect size in partial eta-squared?</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_CFOBTFDKXQ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_CFOBTFDKXQ" value="answer"><span><span class="math inline">\(\eta_p^2\)</span> = 0.06</span></label><label><input type="radio" autocomplete="off" name="radio_CFOBTFDKXQ" value=""><span><span class="math inline">\(\eta_p^2\)</span> = 1.00</span></label><label><input type="radio" autocomplete="off" name="radio_CFOBTFDKXQ" value=""><span><span class="math inline">\(\eta_p^2\)</span> = 0.032</span></label><label><input type="radio" autocomplete="off" name="radio_CFOBTFDKXQ" value=""><span><span class="math inline">\(\eta_p^2\)</span> = 0.049</span></label>
+</div>
+</div>
+<p><strong>Q9</strong>: You realize that computing omega-squared corrects for some of the bias in eta-squared. For the old paper with <em>F</em>(2, 122) = 4.13, <em>p</em> &lt; 0.05, and using the online MOTE app <a href="https://doomlab.shinyapps.io/mote/" class="uri">https://doomlab.shinyapps.io/mote/</a> (choose Omega – F from the Variance Overlap dropdown menu) or the MOTE R function <code>omega.F</code>, what is the effect size in partial omega-squared? HINT: The total sample size is the df error + k, where k is the number of groups (which is 6 for the 2x3 ANOVA).</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_SVMBCKSJXN" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_SVMBCKSJXN" value="answer"><span><span class="math inline">\(\eta_p^2\)</span> = 0.05</span></label><label><input type="radio" autocomplete="off" name="radio_SVMBCKSJXN" value=""><span><span class="math inline">\(\eta_p^2\)</span> = 0.75</span></label><label><input type="radio" autocomplete="off" name="radio_SVMBCKSJXN" value=""><span><span class="math inline">\(\eta_p^2\)</span> = 0.032</span></label><label><input type="radio" autocomplete="off" name="radio_SVMBCKSJXN" value=""><span><span class="math inline">\(\eta_p^2\)</span> = 0.024</span></label>
+</div>
+</div>
+<p><strong>Q10</strong>: Several times in this chapter the effect size Cohen’s <em>d</em> was converted to <em>r</em>, or vice versa. We can use the <code>effectsize</code> R package (that can also be used to compute effect sizes when you analyze your data in R) to convert the median <em>r</em> = 0.21 observed in Richard and colleagues’ meta-meta-analysis to <em>d</em>: <code>effectsize::r_to_d(0.21)</code> which (assuming equal sample sizes per condition) yields <em>d</em> = 0.43 (the conversion assumes equal sample sizes in each group). Which Cohen’s <em>d</em> corresponds to a <em>r</em> = 0.1?</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_CWRQLPAAPF" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_CWRQLPAAPF" value=""><span><em>d</em> = 0.05</span></label><label><input type="radio" autocomplete="off" name="radio_CWRQLPAAPF" value=""><span><em>d</em> = 0.10</span></label><label><input type="radio" autocomplete="off" name="radio_CWRQLPAAPF" value="answer"><span><em>d</em> = 0.20</span></label><label><input type="radio" autocomplete="off" name="radio_CWRQLPAAPF" value=""><span><em>d</em> = 0.30</span></label>
+</div>
+</div>
+<p><strong>Q11</strong>: It can be useful to convert effect sizes to <em>r</em> when performing a meta-analysis where not all effect sizes that are included are based on mean differences. Using the <code>d_to_r()</code> function in the <code>effectsize</code> package, what does a <em>d</em> = 0.8 correspond to (again assuming equal sample sizes per condition)?</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_MYRKNCQGOH" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_MYRKNCQGOH" value=""><span><em>r</em> = 0.30</span></label><label><input type="radio" autocomplete="off" name="radio_MYRKNCQGOH" value="answer"><span><em>r</em> = 0.37</span></label><label><input type="radio" autocomplete="off" name="radio_MYRKNCQGOH" value=""><span><em>r</em> = 0.50</span></label><label><input type="radio" autocomplete="off" name="radio_MYRKNCQGOH" value=""><span><em>r</em> = 0.57</span></label>
+</div>
+</div>
+<p><strong>Q12</strong>: From questions 10 and 11 you might have noticed something peculiar. The benchmarks typically used for ‘small’, ‘medium’, and ‘large’ effects for Cohen’s d are <em>d</em> = 0.2, <em>d</em> = 0.5, and <em>d</em> = 0.8, and for a correlation are <em>r</em> = 0.1, <em>r</em> = 0.3, and <em>r</em> = 0.5. Using the <code>d_to_r()</code> function in the <code>effectsize</code> package, check to see whether the benchmark for a ‘large’ effect size correspond between <em>d</em> and <em>r</em>.</p>
+<p>As <span class="citation" data-cites="mcgrath_when_2006">McGrath &amp; Meyer (<a href="references.html#ref-mcgrath_when_2006" role="doc-biblioref">2006</a>)</span> write: “Many users of Cohen’s (1988) benchmarks seem unaware that those for the correlation coefficient and d are not strictly equivalent, because Cohen’s generally cited benchmarks for the correlation were intended for the infrequently used biserial correlation rather than for the point biserial.”</p>
+<p>Download the paper by McGrath and Meyer, 2006 (you can find links to the pdf <a href="https://scholar.google.com/scholar?cluster=18022919125620514097&amp;as_sdt=0%2C5&amp;inst=1903264034810781805">here</a>), and on page 390, right column, read which solution the authors prefer.</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_QSHEUYINWE" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_QSHEUYINWE" value=""><span>Think carefully about the limitations of using benchmarks.</span></label><label><input type="radio" autocomplete="off" name="radio_QSHEUYINWE" value="answer"><span>Just stop using these silly benchmarks.</span></label><label><input type="radio" autocomplete="off" name="radio_QSHEUYINWE" value=""><span>The benchmarks for <em>d</em> would need to be changed to 0.20, 0.67, and 1.15</span></label><label><input type="radio" autocomplete="off" name="radio_QSHEUYINWE" value=""><span>The benchmarks for correlations would need to be changed to .10, .24, and .37</span></label>
+</div>
+</div>
+</div>
+<section id="open-questions" class="level3" data-number="6.9.1"><h3 data-number="6.9.1" class="anchored" data-anchor-id="open-questions">
+<span class="header-section-number">6.9.1</span> Open Questions</h3>
+<ol type="1">
+<li><p>What is the difference between standardized and unstandardized effect sizes?</p></li>
+<li><p>Give a definition of an ‘effect size’.</p></li>
+<li><p>What are some of the main uses of effect sizes?</p></li>
+<li><p>How can effect sizes improve statistical inferences, beyond looking at the <em>p</em>-value?</p></li>
+<li><p>What is the effect size <em>r</em>?</p></li>
+<li><p>What is the effect size <em>d</em>?</p></li>
+<li><p>What are the unbiased effect sizes that correspond to d and eta-squared called?</p></li>
+<li><p>Give an example when small effects are meaningless, and when they are not.</p></li>
+<li><p>What values can Cohen’s <em>d</em> take?</p></li>
+<li><p>What values can a correlation (<em>r</em>) take?</p></li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-albers_when_2018" class="csl-entry" role="listitem">
+Albers, C. J., &amp; Lakens, D. (2018). When power analyses based on pilot data are biased: <span>Inaccurate</span> effect size estimators and follow-up bias. <em>Journal of Experimental Social Psychology</em>, <em>74</em>, 187–195. <a href="https://doi.org/10.1016/j.jesp.2017.09.004">https://doi.org/10.1016/j.jesp.2017.09.004</a>
+</div>
+<div id="ref-anvari_not_2021" class="csl-entry" role="listitem">
+Anvari, F., Kievit, R., Lakens, D., Pennington, C. R., Przybylski, A. K., Tiokhin, L., Wiernik, B. M., &amp; Orben, A. (2021). Not all effects are indispensable: <span>Psychological</span> science requires verifiable lines of reasoning for whether an effect matters. <em>Perspectives on Psychological Science</em>. <a href="https://doi.org/10.31234/osf.io/g3vtr">https://doi.org/10.31234/osf.io/g3vtr</a>
+</div>
+<div id="ref-baguley_standardized_2009" class="csl-entry" role="listitem">
+Baguley, T. (2009). Standardized or simple effect size: <span>What</span> should be reported? <em>British Journal of Psychology</em>, <em>100</em>(3), 603–617. <a href="https://doi.org/10.1348/000712608X377117">https://doi.org/10.1348/000712608X377117</a>
+</div>
+<div id="ref-chambers_past_2022" class="csl-entry" role="listitem">
+Chambers, C. D., &amp; Tzavella, L. (2022). The past, present and future of <span>Registered Reports</span>. <em>Nature Human Behaviour</em>, <em>6</em>(1), 29–42. <a href="https://doi.org/10.1038/s41562-021-01193-7">https://doi.org/10.1038/s41562-021-01193-7</a>
+</div>
+<div id="ref-chatziathanasiou_beware_2022" class="csl-entry" role="listitem">
+Chatziathanasiou, K. (2022). <em>Beware the <span>Lure</span> of <span>Narratives</span>: <span>“<span>Hungry Judges</span>”</span> <span>Should</span> not <span>Motivate</span> the <span>Use</span> of <span>“<span>Artificial Intelligence</span>”</span> in <span>Law</span></em> ({{SSRN Scholarly Paper}} ID 4011603). <span>Social Science Research Network</span>. <a href="https://doi.org/10.2139/ssrn.4011603">https://doi.org/10.2139/ssrn.4011603</a>
+</div>
+<div id="ref-cohen_statistical_1988" class="csl-entry" role="listitem">
+Cohen, J. (1988). <em>Statistical power analysis for the behavioral sciences</em> (2nd ed). <span>L. Erlbaum Associates</span>.
+</div>
+<div id="ref-cohen_things_1990" class="csl-entry" role="listitem">
+Cohen, J. (1990). Things <span>I</span> have learned (so far). <em>American Psychologist</em>, <em>45</em>(12), 1304–1312. <a href="https://doi.org/10.1037/0003-066X.45.12.1304">https://doi.org/10.1037/0003-066X.45.12.1304</a>
+</div>
+<div id="ref-cumming_understanding_2013" class="csl-entry" role="listitem">
+Cumming, G. (2013). <em>Understanding the new statistics: <span>Effect</span> sizes, confidence intervals, and meta-analysis</em>. <span>Routledge</span>.
+</div>
+<div id="ref-danziger_extraneous_2011" class="csl-entry" role="listitem">
+Danziger, S., Levav, J., &amp; Avnaim-Pesso, L. (2011). Extraneous factors in judicial decisions. <em>Proceedings of the National Academy of Sciences</em>, <em>108</em>(17), 6889–6892. <a href="https://doi.org/10.1073/PNAS.1018033108">https://doi.org/10.1073/PNAS.1018033108</a>
+</div>
+<div id="ref-debruine_understanding_2021" class="csl-entry" role="listitem">
+DeBruine, L. M., &amp; Barr, D. J. (2021). Understanding <span>Mixed-Effects Models Through Data Simulation</span>. <em>Advances in Methods and Practices in Psychological Science</em>, <em>4</em>(1), 2515245920965119. <a href="https://doi.org/10.1177/2515245920965119">https://doi.org/10.1177/2515245920965119</a>
+</div>
+<div id="ref-funder_evaluating_2019" class="csl-entry" role="listitem">
+Funder, D. C., &amp; Ozer, D. J. (2019). Evaluating effect size in psychological research: <span>Sense</span> and nonsense. <em>Advances in Methods and Practices in Psychological Science</em>, <em>2</em>(2), 156–168. <a href="https://doi.org/10.1177/2515245919847202">https://doi.org/10.1177/2515245919847202</a>
+</div>
+<div id="ref-glockner_irrational_2016" class="csl-entry" role="listitem">
+Glöckner, A. (2016). The irrational hungry judge effect revisited: <span>Simulations</span> reveal that the magnitude of the effect is overestimated. <em>Judgment and Decision Making</em>, <em>11</em>(6), 601–610.
+</div>
+<div id="ref-gotz_small_2022" class="csl-entry" role="listitem">
+Götz, F. M., Gosling, S. D., &amp; Rentfrow, P. J. (2022). Small <span>Effects</span>: <span>The Indispensable Foundation</span> for a <span>Cumulative Psychological Science</span>. <em>Perspectives on Psychological Science</em>, <em>17</em>(1), 205–215. <a href="https://doi.org/10.1177/1745691620984483">https://doi.org/10.1177/1745691620984483</a>
+</div>
+<div id="ref-hilgard_maximal_2021" class="csl-entry" role="listitem">
+Hilgard, J. (2021). Maximal positive controls: <span>A</span> method for estimating the largest plausible effect size. <em>Journal of Experimental Social Psychology</em>, <em>93</em>. <a href="https://doi.org/10.1016/j.jesp.2020.104082">https://doi.org/10.1016/j.jesp.2020.104082</a>
+</div>
+<div id="ref-kelley_effect_2012" class="csl-entry" role="listitem">
+Kelley, K., &amp; Preacher, K. J. (2012). On effect size. <em>Psychological Methods</em>, <em>17</em>(2), 137–152. <a href="https://doi.org/10.1037/a0028086">https://doi.org/10.1037/a0028086</a>
+</div>
+<div id="ref-keppel_design_1991" class="csl-entry" role="listitem">
+Keppel, G. (1991). <em>Design and analysis: <span>A</span> researcher’s handbook, 3rd ed</em> (pp. xiii, 594). <span>Prentice-Hall, Inc</span>.
+</div>
+<div id="ref-lakens_calculating_2013" class="csl-entry" role="listitem">
+Lakens, D. (2013). Calculating and reporting effect sizes to facilitate cumulative science: A practical primer for t-tests and <span>ANOVAs</span>. <em>Frontiers in Psychology</em>, <em>4</em>. <a href="https://doi.org/10.3389/fpsyg.2013.00863">https://doi.org/10.3389/fpsyg.2013.00863</a>
+</div>
+<div id="ref-lakens_simulation-based_2021" class="csl-entry" role="listitem">
+Lakens, D., &amp; Caldwell, A. R. (2021). Simulation-<span>Based Power Analysis</span> for <span>Factorial Analysis</span> of <span>Variance Designs</span>. <em>Advances in Methods and Practices in Psychological Science</em>, <em>4</em>(1). <a href="https://doi.org/10.1177/2515245920951503">https://doi.org/10.1177/2515245920951503</a>
+</div>
+<div id="ref-maxwell_designing_2004" class="csl-entry" role="listitem">
+Maxwell, S. E., &amp; Delaney, H. D. (2004). <em>Designing experiments and analyzing data: A model comparison perspective</em> (2nd ed). <span>Lawrence Erlbaum Associates</span>.
+</div>
+<div id="ref-mcgrath_when_2006" class="csl-entry" role="listitem">
+McGrath, R. E., &amp; Meyer, G. J. (2006). When effect sizes disagree: <span>The</span> case of r and d. <em>Psychological Methods</em>, <em>11</em>(4), 386–401. <a href="https://doi.org/10.1037/1082-989X.11.4.386">https://doi.org/10.1037/1082-989X.11.4.386</a>
+</div>
+<div id="ref-mcgraw_common_1992" class="csl-entry" role="listitem">
+McGraw, K. O., &amp; Wong, S. P. (1992). A common language effect size statistic. <em>Psychological Bulletin</em>, <em>111</em>(2), 361–365. <a href="https://doi.org/10.1037/0033-2909.111.2.361">https://doi.org/10.1037/0033-2909.111.2.361</a>
+</div>
+<div id="ref-nosek_registered_2014" class="csl-entry" role="listitem">
+Nosek, B. A., &amp; Lakens, D. (2014). Registered reports: <span>A</span> method to increase the credibility of published results. <em>Social Psychology</em>, <em>45</em>(3), 137–141. <a href="https://doi.org/10.1027/1864-9335/a000192">https://doi.org/10.1027/1864-9335/a000192</a>
+</div>
+<div id="ref-okada_is_2013" class="csl-entry" role="listitem">
+Okada, K. (2013). Is <span>Omega Squared Less Biased</span>? A <span>Comparison</span> of <span>Three Major Effect Size Indices</span> in <span>One-Way Anova</span>. <em>Behaviormetrika</em>, <em>40</em>(2), 129–147. <a href="https://doi.org/10.2333/bhmk.40.129">https://doi.org/10.2333/bhmk.40.129</a>
+</div>
+<div id="ref-olejnik_generalized_2003" class="csl-entry" role="listitem">
+Olejnik, S., &amp; Algina, J. (2003). Generalized <span>Eta</span> and <span>Omega Squared Statistics</span>: <span>Measures</span> of <span>Effect Size</span> for <span>Some Common Research Designs</span>. <em>Psychological Methods</em>, <em>8</em>(4), 434–447. <a href="https://doi.org/10.1037/1082-989X.8.4.434">https://doi.org/10.1037/1082-989X.8.4.434</a>
+</div>
+<div id="ref-open_science_collaboration_estimating_2015" class="csl-entry" role="listitem">
+Open Science Collaboration. (2015). Estimating the reproducibility of psychological science. <em>Science</em>, <em>349</em>(6251), aac4716–aac4716. <a href="https://doi.org/10.1126/science.aac4716">https://doi.org/10.1126/science.aac4716</a>
+</div>
+<div id="ref-primbs_are_2022" class="csl-entry" role="listitem">
+Primbs, M., Pennington, C. R., Lakens, D., Silan, M. A., Lieck, D. S. N., Forscher, P., Buchanan, E. M., &amp; Westwood, S. J. (2022). Are <span>Small Effects</span> the <span>Indispensable Foundation</span> for a <span>Cumulative Psychological Science</span>? <span>A Reply</span> to <span>Götz</span> et al. (2022). <em>Perspectives on Psychological Science</em>. <a href="https://doi.org/10.31234/osf.io/6s8bj">https://doi.org/10.31234/osf.io/6s8bj</a>
+</div>
+<div id="ref-richard_one_2003" class="csl-entry" role="listitem">
+Richard, F. D., Bond, C. F., &amp; Stokes-Zoota, J. J. (2003). One <span>Hundred Years</span> of <span>Social Psychology Quantitatively Described</span>. <em>Review of General Psychology</em>, <em>7</em>(4), 331–363. <a href="https://doi.org/10.1037/1089-2680.7.4.331">https://doi.org/10.1037/1089-2680.7.4.331</a>
+</div>
+<div id="ref-rosenthal_contrasts_2000" class="csl-entry" role="listitem">
+Rosenthal, R., Rosnow, R. L., &amp; Rubin, D. B. (2000). <em>Contrasts and effect sizes in behavioral research: A correlational approach</em>. <span>Cambridge University Press</span>.
+</div>
+<div id="ref-thompson_effect_2007" class="csl-entry" role="listitem">
+Thompson, B. (2007). Effect sizes, confidence intervals, and confidence intervals for effect sizes. <em>Psychology in the Schools</em>, <em>44</em>(5), 423–432. <a href="https://doi.org/10.1002/pits.20234">https://doi.org/10.1002/pits.20234</a>
+</div>
+<div id="ref-weinshall-margel_overlooked_2011" class="csl-entry" role="listitem">
+Weinshall-Margel, K., &amp; Shapard, J. (2011). Overlooked factors in the analysis of parole decisions. <em>Proceedings of the National Academy of Sciences</em>, <em>108</em>(42), E833–E833. <a href="https://doi.org/10.1073/pnas.1110910108">https://doi.org/10.1073/pnas.1110910108</a>
+</div>
+</div>
+</section></section></main><!-- /main --><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script><script>
+
+/* update total correct if #webex-total_correct exists */
+update_total_correct = function() {
+  console.log("webex: update total_correct");
+
+  var t = document.getElementsByClassName("webex-total_correct");
+  for (var i = 0; i < t.length; i++) {
+    p = t[i].parentElement;
+    var correct = p.getElementsByClassName("webex-correct").length;
+    var solvemes = p.getElementsByClassName("webex-solveme").length;
+    var radiogroups = p.getElementsByClassName("webex-radiogroup").length;
+    var selects = p.getElementsByClassName("webex-select").length;
+
+    t[i].innerHTML = correct + " of " + (solvemes + radiogroups + selects) + " correct";
+  }
+}
+
+/* webex-solution button toggling function */
+b_func = function() {
+  console.log("webex: toggle hide");
+
+  var cl = this.parentElement.classList;
+  if (cl.contains('open')) {
+    cl.remove("open");
+  } else {
+    cl.add("open");
+  }
+}
+
+/* check answers */
+check_func = function() {
+  console.log("webex: check answers");
+
+  var cl = this.parentElement.classList;
+  if (cl.contains('unchecked')) {
+    cl.remove("unchecked");
+    this.innerHTML = "Hide Answers";
+  } else {
+    cl.add("unchecked");
+    this.innerHTML = "Show Answers";
+  }
+}
+
+/* function for checking solveme answers */
+solveme_func = function(e) {
+  console.log("webex: check solveme");
+
+  var real_answers = JSON.parse(this.dataset.answer);
+  var my_answer = this.value;
+  var cl = this.classList;
+  if (cl.contains("ignorecase")) {
+    my_answer = my_answer.toLowerCase();
+  }
+  if (cl.contains("nospaces")) {
+    my_answer = my_answer.replace(/ /g, "")
+  }
+
+  if (my_answer == "") {
+    cl.remove("webex-correct");
+    cl.remove("webex-incorrect");
+  } else if (real_answers.includes(my_answer)) {
+    cl.add("webex-correct");
+    cl.remove("webex-incorrect");
+  } else {
+    cl.add("webex-incorrect");
+    cl.remove("webex-correct");
+  }
+
+  // match numeric answers within a specified tolerance
+  if(this.dataset.tol > 0){
+    var tol = JSON.parse(this.dataset.tol);
+    var matches = real_answers.map(x => Math.abs(x - my_answer) < tol)
+    if (matches.reduce((a, b) => a + b, 0) > 0) {
+      cl.add("webex-correct");
+    } else {
+      cl.remove("webex-correct");
+    }
+  }
+
+  // added regex bit
+  if (cl.contains("regex")){
+    answer_regex = RegExp(real_answers.join("|"))
+    if (answer_regex.test(my_answer)) {
+      cl.add("webex-correct");
+    }
+  }
+
+  update_total_correct();
+}
+
+/* function for checking select answers */
+select_func = function(e) {
+  console.log("webex: check select");
+
+  var cl = this.classList
+
+  /* add style */
+  cl.remove("webex-incorrect");
+  cl.remove("webex-correct");
+  if (this.value == "answer") {
+    cl.add("webex-correct");
+  } else if (this.value != "blank") {
+    cl.add("webex-incorrect");
+  }
+
+  update_total_correct();
+}
+
+/* function for checking radiogroups answers */
+radiogroups_func = function(e) {
+  console.log("webex: check radiogroups");
+
+  var checked_button = document.querySelector('input[name=' + this.id + ']:checked');
+  var cl = checked_button.parentElement.classList;
+  var labels = checked_button.parentElement.parentElement.children;
+
+  /* get rid of styles */
+  for (i = 0; i < labels.length; i++) {
+    labels[i].classList.remove("webex-incorrect");
+    labels[i].classList.remove("webex-correct");
+  }
+
+  /* add style */
+  if (checked_button.value == "answer") {
+    cl.add("webex-correct");
+  } else {
+    cl.add("webex-incorrect");
+  }
+
+  update_total_correct();
+}
+
+window.onload = function() {
+  console.log("webex onload");
+  /* set up solution buttons */
+  var buttons = document.getElementsByTagName("button");
+
+  for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].parentElement.classList.contains('webex-solution')) {
+      buttons[i].onclick = b_func;
+    }
+  }
+
+  var check_sections = document.getElementsByClassName("webex-check");
+  console.log("check:", check_sections.length);
+  for (var i = 0; i < check_sections.length; i++) {
+    check_sections[i].classList.add("unchecked");
+
+    let btn = document.createElement("button");
+    btn.innerHTML = "Show Answers";
+    btn.classList.add("webex-check-button");
+    btn.onclick = check_func;
+    check_sections[i].appendChild(btn);
+
+    let spn = document.createElement("span");
+    spn.classList.add("webex-total_correct");
+    check_sections[i].appendChild(spn);
+  }
+
+  /* set up webex-solveme inputs */
+  var solveme = document.getElementsByClassName("webex-solveme");
+
+  for (var i = 0; i < solveme.length; i++) {
+    /* make sure input boxes don't auto-anything */
+    solveme[i].setAttribute("autocomplete","off");
+    solveme[i].setAttribute("autocorrect", "off");
+    solveme[i].setAttribute("autocapitalize", "off");
+    solveme[i].setAttribute("spellcheck", "false");
+    solveme[i].value = "";
+
+    /* adjust answer for ignorecase or nospaces */
+    var cl = solveme[i].classList;
+    var real_answer = solveme[i].dataset.answer;
+    if (cl.contains("ignorecase")) {
+      real_answer = real_answer.toLowerCase();
+    }
+    if (cl.contains("nospaces")) {
+      real_answer = real_answer.replace(/ /g, "");
+    }
+    solveme[i].dataset.answer = real_answer;
+
+    /* attach checking function */
+    solveme[i].onkeyup = solveme_func;
+    solveme[i].onchange = solveme_func;
+
+    $(solveme[i]).after(" <span class='webex-icon'></span>");
+  }
+
+  /* set up radiogroups */
+  var radiogroups = document.getElementsByClassName("webex-radiogroup");
+  for (var i = 0; i < radiogroups.length; i++) {
+    radiogroups[i].onchange = radiogroups_func;
+  }
+
+  /* set up selects */
+  var selects = document.getElementsByClassName("webex-select");
+  for (var i = 0; i < selects.length; i++) {
+    selects[i].onchange = select_func;
+    $(selects[i]).after(" <span class='webex-icon'></span>");
+  }
+
+  update_total_correct();
+}
+
+</script><script>
+// open rdrr links externally ----
+
+var exlinks = document.querySelectorAll("a[href^='https://rdrr.io']");
+var exlink_func = function(){
+  window.open(this.href);
+  return false;
+};
+for (var i = 0; i < exlinks.length; i++) {
+    exlinks[i].addEventListener('click', exlink_func, false);
+}
+
+// visible second sidebar in mobile ----
+
+function move_sidebar() {
+  var toc = document.getElementById("TOC");
+  var small_sidebar = document.querySelector("#quarto-sidebar .sidebar-menu-container");
+  var right_sidebar = document.getElementById("quarto-margin-sidebar");
+
+  if (window.innerWidth < 768) {
+    small_sidebar.append(toc);
+  } else {
+    right_sidebar.append(toc);
+  }
+}
+move_sidebar();
+window.onresize = move_sidebar;
+</script><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./05-questions.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Asking Statistical Questions</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./07-CI.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Confidence Intervals</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">Lakens, D. (2022). Improving Your Statistical Inferences. Retrieved from https://lakens.github.io/statistical_inferences/. https://doi.org/10.5281/zenodo.6409077</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+</body></html>

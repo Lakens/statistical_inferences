@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.310">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="description" content="This open educational resource contains information to improve statistical inferences, design better experiments, and report scientific research more transparently.">
+<title>Improving Your Statistical Inferences - 2&nbsp; Error control</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./03-likelihoods.html" rel="next">
+<link href="./01-pvalue.html" rel="prev">
+<link href="./images/logos/favicon.ico" rel="icon">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><script async="" src="https://www.googletagmanager.com/gtag/js?id=G-0MK2WTGRM3"></script><script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
+</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><link rel="stylesheet" href="include/booktem.css">
+<link rel="stylesheet" href="include/style.css">
+<link rel="stylesheet" href="include/webex.css">
+</head>
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./02-errorcontrol.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Error control</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Improving Your Statistical Inferences</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/Lakens/statistical_inferences" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Download" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="./Improving-Your-Statistical-Inferences.pdf">
+              <i class="bi bi-bi-file-pdf pe-1"></i>
+            Download PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="./Improving-Your-Statistical-Inferences.epub">
+              <i class="bi bi-bi-journal pe-1"></i>
+            Download ePub
+            </a>
+          </li>
+      </ul>
+</div>
+    <a href="https://twitter.com/intent/tweet?url=%7Curl%7C" title="Twitter" class="quarto-navigation-tool px-1" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Overview</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-pvalue.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Using <em>p</em>-values to test a hypothesis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-errorcontrol.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Error control</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-likelihoods.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Likelihoods</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-bayes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Bayesian statistics</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-questions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Asking Statistical Questions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-effectsize.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Effect Sizes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-CI.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Confidence Intervals</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-samplesizejustification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Sample Size Justification</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-equivalencetest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Equivalence Testing and Interval Hypotheses</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-sequential.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Sequential Analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-meta.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Meta-analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-bias.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Bias detection</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-prereg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Preregistration and Transparency</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-computationalreproducibility.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Computational Reproducibility</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-researchintegrity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Research Integrity</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li><a href="#which-outcome-can-you-expect-if-you-perform-a-study" id="toc-which-outcome-can-you-expect-if-you-perform-a-study" class="nav-link active" data-scroll-target="#which-outcome-can-you-expect-if-you-perform-a-study"><span class="header-section-number">2.1</span> Which outcome can you expect if you perform a study?</a></li>
+  <li><a href="#sec-ppv" id="toc-sec-ppv" class="nav-link" data-scroll-target="#sec-ppv"><span class="header-section-number">2.2</span> Positive predictive value</a></li>
+  <li><a href="#type-1-error-inflation" id="toc-type-1-error-inflation" class="nav-link" data-scroll-target="#type-1-error-inflation"><span class="header-section-number">2.3</span> Type 1 error inflation</a></li>
+  <li><a href="#sec-optionalstopping" id="toc-sec-optionalstopping" class="nav-link" data-scroll-target="#sec-optionalstopping"><span class="header-section-number">2.4</span> Optional stopping</a></li>
+  <li><a href="#sec-justifyerrorrate" id="toc-sec-justifyerrorrate" class="nav-link" data-scroll-target="#sec-justifyerrorrate"><span class="header-section-number">2.5</span> Justifying Error Rates</a></li>
+  <li><a href="#why-you-dont-need-to-adjust-your-alpha-level-for-all-tests-youll-do-in-your-lifetime." id="toc-why-you-dont-need-to-adjust-your-alpha-level-for-all-tests-youll-do-in-your-lifetime." class="nav-link" data-scroll-target="#why-you-dont-need-to-adjust-your-alpha-level-for-all-tests-youll-do-in-your-lifetime."><span class="header-section-number">2.6</span> Why you don’t need to adjust your alpha level for all tests you’ll do in your lifetime.</a></li>
+  <li><a href="#power-analysis" id="toc-power-analysis" class="nav-link" data-scroll-target="#power-analysis"><span class="header-section-number">2.7</span> Power Analysis</a></li>
+  <li>
+<a href="#test-yourself" id="toc-test-yourself" class="nav-link" data-scroll-target="#test-yourself"><span class="header-section-number">2.8</span> Test Yourself</a>
+  <ul class="collapse">
+<li><a href="#questions-about-the-positive-predictive-value" id="toc-questions-about-the-positive-predictive-value" class="nav-link" data-scroll-target="#questions-about-the-positive-predictive-value"><span class="header-section-number">2.8.1</span> Questions about the positive predictive value</a></li>
+  <li><a href="#questions-about-optional-stopping" id="toc-questions-about-optional-stopping" class="nav-link" data-scroll-target="#questions-about-optional-stopping"><span class="header-section-number">2.8.2</span> Questions about optional stopping</a></li>
+  <li><a href="#open-questions" id="toc-open-questions" class="nav-link" data-scroll-target="#open-questions"><span class="header-section-number">2.8.3</span> Open Questions</a></li>
+  </ul>
+</li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/Lakens/statistical_inferences/edit/main/02-errorcontrol.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/Lakens/statistical_inferences/issues/new" class="toc-action">Report an issue</a></p><p><a href="https://github.com/Lakens/statistical_inferences/blob/main/02-errorcontrol.qmd" class="toc-action">View source</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title"><span id="sec-errorcontrol" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Error control</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header><p>In the previous chapter on <a href="01-pvalue.html"><em>p</em>-values</a> we have learned that in the Neyman-Pearson approach to hypothesis testing the goal is to make scientific claims while controlling how often you will make a fool of yourself in the long run. At the core of the idea of <strong>error control</strong> lies the desire to make scientific claims based on a methodological procedure that, when the assumptions are met, limits the percentage of incorrect claims to a desired maximum value. By focusing on long run probabilities, statistical approaches that rely on error control can not make statements about the data in a single study. As Neyman and Pearson <span class="citation" data-cites="neyman_problem_1933">(<a href="references.html#ref-neyman_problem_1933" role="doc-biblioref">1933</a>)</span> write:</p>
+<blockquote class="blockquote">
+<p>But we may look at the purpose of tests from another view-point. Without hoping to know whether each separate hypothesis is true or false, we may search for rules to govern our behaviour with regard to them, in following which we insure that, in the long run of experience, we shall not be too often wrong.</p>
+</blockquote>
+<p>Researchers often do not control error rates when they make claims, and sometimes intentionally use flexibility in the data analysis to ‘p-hack’ or cherry-pick one out of many performed analyses that shows the results they wanted to see. From an error-statistical approach to statistical inferences, this is problematic behavior, as Mayo <span class="citation" data-cites="mayo_statistical_2018">(<a href="references.html#ref-mayo_statistical_2018" role="doc-biblioref">2018</a>)</span> writes:</p>
+<blockquote class="blockquote">
+<p>The problem with cherry picking, hunting for significance, and a host of biasing selection effects – the main source of handwringing behind the statistics crisis in science – is they wreak havoc with a method’s error probabilities. It becomes easy to arrive at findings that have not been severely tested.</p>
+</blockquote>
+<section id="which-outcome-can-you-expect-if-you-perform-a-study" class="level2" data-number="2.1"><h2 data-number="2.1" class="anchored" data-anchor-id="which-outcome-can-you-expect-if-you-perform-a-study">
+<span class="header-section-number">2.1</span> Which outcome can you expect if you perform a study?</h2>
+<p>If you perform a study and plan to make a claim based on the statistical test you plan to perform, the long run probability of making a correct claim or an erroneous claim is determined by three factors, namely the Type 1 error rate, the Type 2 error rate, and the probability that the null hypothesis is true. There are four possible outcomes of a statistical test, depending on whether the result is statistically significant or not, and whether the null hypothesis is true, or not.</p>
+<p><strong>False Positive (FP)</strong>: Concluding there is a true effect, when there is a no true effect (<span class="math inline">\(H_0\)</span> is true). This is also referred to as a <strong>Type 1 error</strong>, and indicated by <strong><span class="math inline">\(\alpha\)</span></strong>.</p>
+<p><strong>False Negative (FN)</strong>: Concluding there is a no true effect, when there is a true effect (<span class="math inline">\(H_1\)</span> is true). This is also referred to as a <strong>Type 2 error</strong>, and indicated by <strong><span class="math inline">\(\beta\)</span></strong>.</p>
+<p><strong>True Negative (TN)</strong>: Concluding there is no true effect, when there is no true effect (<span class="math inline">\(H_0\)</span> is true). This is the complement of False Positives, and is thus indicated by <strong>1-<span class="math inline">\(\alpha\)</span></strong>.</p>
+<p><strong>True Positive (TP)</strong>: Concluding there is a true effect, when there is a true effect (<span class="math inline">\(H_1\)</span> is true). This is the complement of False Negatives, and is thus indicated by <strong>1-<span class="math inline">\(\beta\)</span></strong>.</p>
+<p>The probability of observing a true positive when there is a true effect is, in the long run, equal to the <strong>statistical power</strong> of your study. The probability of observing a false positive when the null hypothesis is true is, in the long run, equal to the <strong>alpha level</strong> you have set, or the <strong>Type 1 error rate</strong>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-errortypes" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="images/type1type2error.jpg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.1: Difference between Type 1 and Type 2 errors. Figure made by <a href="https://effectsizefaq.com/2010/05/31/i-always-get-confused-about-type-i-and-ii-errors-can-you-show-me-something-to-help-me-remember-the-difference/">Paul Ellis</a></figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>So, for the next study you will perform, which of the four possible outcomes is most likely? First, let’s assume you have set the alpha level to 5%. Furthermore, let’s assume you have designed a study so that it will have 80% power (and for this example, let’s assume Omniscient Jones knows you indeed have exactly 80% power). The last thing to specify is the probability that the null hypothesis is true. Let’s assume for this next study you have no idea if the null hypothesis is true or not, and that it is equally likely that the null hypothesis is true, or the alternative hypothesis is true (both have a probability of 50%). We can now calculate what the most likely outcome of such a study is.</p>
+<p>Before we perform this calculation, take a moment to think if you know the answer. You might have designed studies with a 5% alpha level and 80% power, where you believed it was equally likely that <span class="math inline">\(H_0\)</span> or <span class="math inline">\(H_1\)</span> was true. Surely, it is useful to have reasonable expectations about which result to expect, when we perform such a study? Yet in my experience, many researchers perform without thinking about these probabilities at all. They often hope to observe a true positive, even when in the situation described above, the most likely outcome is a true negative. Let’s now calculate these probabilities.</p>
+<p>Let’s assume we perform 200 studies with a 5% alpha level, 80% power, and a 50% probability that <span class="math inline">\(H_0\)</span> is true. How many false positives, true positives, false negatives, and true negatives should we expect in the long run?</p>
+<table class="table">
+<colgroup>
+<col style="width: 39%">
+<col style="width: 30%">
+<col style="width: 30%">
+</colgroup>
+<thead><tr class="header">
+<th></th>
+<th>
+<span class="math inline">\(H_0\)</span> True (50%)</th>
+<th>
+<span class="math inline">\(H_1\)</span> True (50%)</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Significant Finding (Positive result) <span class="math inline">\(\alpha\)</span> = 5%, 1-<span class="math inline">\(\beta\)</span> = 80%</td>
+<td><strong>False Positive 5% <span class="math inline">\(\times\)</span> 50% = 2.5% (5 studies)</strong></td>
+<td><strong>True Positive 80% <span class="math inline">\(\times\)</span> 50% = 40% (80 studies)</strong></td>
+</tr>
+<tr class="even">
+<td>Non-Significant Finding (Negative result) 1-<span class="math inline">\(\alpha\)</span> = 95%, <span class="math inline">\(\beta\)</span> = 20%</td>
+<td><strong>True Negative 95% <span class="math inline">\(\times\)</span> 50% = 47.5% (95 studies)</strong></td>
+<td><strong>False Negative 20% <span class="math inline">\(\times\)</span> 50% = 10% (20 studies)</strong></td>
+</tr>
+</tbody>
+</table>
+<p>In the table above we see that 2.5% of all studies will be a false positive (a 5% Type 1 error rate, multiplied by a 50% probability that <span class="math inline">\(H_0\)</span> is true). 40% of all studies will be a true positive (80% power multiplied by a 50% probability that <span class="math inline">\(H_1\)</span> is true). The probability of a false negative is 10% (a 20% Type 2 error rate multiplied by a 50% probability that <span class="math inline">\(H_1\)</span> is true). The most likely outcome is a true negative, with 47.5% (a 95% probability observing a non-significant result, multiplied by a 50% probability that <span class="math inline">\(H_0\)</span> is true).</p>
+<p>It might be that you are not too enthusiastic about this outlook, and you would like to perform studies that have a higher probability of observing a true positive. What should we do? We can reduce the alpha level, increase the power, or increase the probability that <span class="math inline">\(H_1\)</span> is true. As the probability of observing a true positive depends on the power, multiplied by the probability that <span class="math inline">\(H_1\)</span> is true, we should design studies where both of these values are high. Statistical power can be increased by changes in the design of the study (e.g., by increasing the sample size). The probability that <span class="math inline">\(H_1\)</span> is true depends on the hypothesis you are testing. If the probability that <span class="math inline">\(H_1\)</span> is true is very high from the outset, you are at the risk of testing a hypothesis that is already established with enough certainty. A solution, which might not happen that often in your career, is to come up with the test of a hypothesis that is not trivial, but that after explaining it to peers makes a lot of sense. In other words, they would not have come up with the idea themselves, but after explaining it to them, they think it is extremely plausible. Such creative research ideas will most likely be very rare in your academic career, if you ever have any at all. Not all research needs to be this ground-breaking. It is also extremely valuable to perform <strong>replication and extension studies</strong> where it is relatively likely that <span class="math inline">\(H_1\)</span> is true, but the scientific community still benefits from knowing that findings generalize to different circumstances.</p>
+</section><section id="sec-ppv" class="level2" data-number="2.2"><h2 data-number="2.2" class="anchored" data-anchor-id="sec-ppv">
+<span class="header-section-number">2.2</span> Positive predictive value</h2>
+<p>John Ioannidis wrote a well known article titled “Why Most Published Research Findings Are False” <span class="citation" data-cites="ioannidis_why_2005">(<a href="references.html#ref-ioannidis_why_2005" role="doc-biblioref">Ioannidis, 2005</a>)</span>. At the same time, we have learned that if you set your alpha at 5%, the Type 1 error rate will not be higher than 5% (in the long run). How are these two statements related? Why aren’t 95% of published research findings true? The key to understanding this difference is that two different probabilities are calculated. The Type 1 error rate is the probability of saying there is an effect, when there is no effect. Ioannidis calculates the <em>positive predictive value</em> (PPV), which is the conditional probability that if a study turns out to show a statistically significant result, there is actually a true effect. This probability is useful to understand, because people often selectively focus on significant results, and because due to publication bias, in some research areas only significant results are published.</p>
+<p>A real-life example where it was useful to understand the concept of the positive predictive value concerned the number of vaccinated and unvaccinated people admitted to hospital with COVID symptoms. In some places, equal numbers of patients were vaccinated as unvaccinated. If you do not understand the concept of a positive predictive value, you might believe this reveals that it is equally likely to end up in the hospital, whether you are vaccinated or not. This is incorrect. As <a href="#fig-ppvhospital">Figure&nbsp;<span>2.2</span></a> nicely visualizes, the probability that a person is vaccinated is very high, and the probability that a vaccinated person ends up in the hospital is much lower than the probability that an unvaccinated person ends up in the hospital. However, if we select only those individuals who end up in the hospital, we are computing a probability <em>conditional</em> on being in the hospital.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-ppvhospital" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="images/hospitalvaccinated.jpg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.2: The positive predictive value can be used to explain why there are more vaccinated people in the hospital than unvaccinated people.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>It is useful to understand what the probability is that, if you have observed a significant result in an experiment, the result is actually a true positive. In other words, in the long run, how many <em>true positives</em> can we expect, among all positive results (both true positives and false positives)? This is known as the Positive Predictive Value (PPV). We can also calculate how many <em>false positives</em> we can expect, among all positive results (again, both true positives and false positives). This is known as the <strong>False Positive Report Probability</strong> <span class="citation" data-cites="wacholder_assessing_2004">(<a href="references.html#ref-wacholder_assessing_2004" role="doc-biblioref">Wacholder et al., 2004</a>)</span>, sometimes also referred to as the False Positive Risk <span class="citation" data-cites="colquhoun_false_2019">(<a href="references.html#ref-colquhoun_false_2019" role="doc-biblioref">Colquhoun, 2019</a>)</span>.</p>
+<p><span class="math display">\[PPV = \frac{\text{True}\ \text{Positives}}{(\text{True}\ \text{Positives} +
+                                                \text{False}\ \text{Positives})}\]</span></p>
+<p><span class="math display">\[FPRP = \frac{\text{False}\ \text{Positives}}{(\text{True}\ \text{Positives}
+                                                  + \text{False}\ \text{Positives})}\]</span></p>
+<p>The PPV and FPRP combine classic Frequentist concepts of statistical power and alpha levels with prior probabilities that <span class="math inline">\(H_0\)</span> and <span class="math inline">\(H_1\)</span> are true. They depend on the proportion of studies you do where there is an effect (<span class="math inline">\(H_1\)</span> is true), and where there is no effect (<span class="math inline">\(H_0\)</span> is true), in addition to the statistical power, and the alpha level. After all, you can only observe a false positive if the null hypothesis is true, and you can only observe a true positive if the alternative hypothesis is true. Whenever you perform a study, you are either operating in a reality where there is a true effect, or you are operating in a reality where there is no effect – but you don’t know in which reality you are.</p>
+<p>When you perform studies, you will be aware of all outcomes of your studies (both the significant and the non-significant findings). When you read the literature, there is publication bias, and you often only have access to significant results. This is when thinking about the PPV (and the FPRP) becomes important. If we set the alpha level to 5%, in the long run 5% of studies where <span class="math inline">\(H_0\)</span> is true (FP + TN) will be significant. But in a literature with only significant results, we do not have access to all true negatives, and it is possible that the proportion of false positives in the literature is much larger than 5%.</p>
+<p>If we continue the example above, we see there are 85 positive results (80 + 5) in the 200 studies. The false positive report probability is 5/85 = 0.0588. At the same time, the alpha of 5% guarantees that (in the long run) 5% of the 100 studies where the null hypothesis is true are Type 1 errors: 5%*100 = 5. This is also true. When we do 200 studies, at most 0.05*200 = 10 could possibly be false positives (if <span class="math inline">\(H_0\)</span> was true in all experiments). In the 200 studies we performed (and where <span class="math inline">\(H_0\)</span> was true in only 50% of the studies), the <strong>proportion of false positives for all experiments</strong> is only 2.5%. Thus, for all experiments you do, the proportion of false positives will, in the long run, never be higher than the Type I error rate set by the researcher (e.g., 5% when <span class="math inline">\(H_0\)</span> is true in all experiments), but it can be lower (when <span class="math inline">\(H_0\)</span> is true in less than 100% of the experiments).</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-ppvexample" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="images/PPVexample.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.3: Screenshot of the output of the results of the PPV Shiny app by <a href="http://shinyapps.org/apps/PPV/">Michael Zehetleitner and Felix Schönbrodt </a></figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p><em>(Note: The FDR and FPRP are different abbreviations for the same thing.)</em></p>
+<p>People often say something like: “<em>Well, we all know 1 in 20 results in the published literature are Type 1 errors</em>”. You should be able to understand this is not true in practice, after learning about the positive predictive value. When in 100% of the studies you perform, the null hypothesis is true, and all studies are published, only <em>then</em> are 1 in 20 studies, in the long run, false positives (and the rest correctly reveal no statistically significant difference). It also explains why the common <em>p</em>-value <a href="01-pvalue.html#sec-misconception4">misconception</a> “If you have observed a significant finding, the probability that you have made a Type 1 error (a false positive) is 5%.” is not correct, because in practice the null hypothesis is not true in all tests that are performed (sometimes the alternative hypothesis is true). Importantly, as long as there is <a href="12-bias.html">publication bias</a> (where findings with desired results end up in the scientific literature, and for example non-significant results are not shared) then even if researchers use a 5% alpha level, it is quite reasonable to assume much more than 5% of significant findings in the published literature are false positives. In the scientific literature, the false positive report probability can be quite high, and under specific circumstances, it might even be so high that most published research findings are false. This will happen when researchers examine mostly studies where the null hypothesis is true, with low power, or when the Type 1 error rate is inflated due to <em>p</em>-hacking or other types of bias.</p>
+</section><section id="type-1-error-inflation" class="level2" data-number="2.3"><h2 data-number="2.3" class="anchored" data-anchor-id="type-1-error-inflation">
+<span class="header-section-number">2.3</span> Type 1 error inflation</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-cooking" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="images/babbagecooking.jpg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.4: Quote from the 1830 book by Babbage Reflections on the Decline of Science in England And on Some of Its Causes.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>If you perform multiple comparisons, there is a risk that the Type 1 error rate inflates. When multiple comparisons are planned, in some cases it is possible to control the Type 1 error rate by lowering the alpha level for each individual analysis. The most widely known approach to control for multiple comparisons is the Bonferroni correction where the alpha level is divided by the number of tests that is performed <span class="citation" data-cites="dunn_multiple_1961">(<a href="references.html#ref-dunn_multiple_1961" role="doc-biblioref">Dunn, 1961</a>)</span>. However, researchers also often use informal data analysis strategies that inflate the Type 1 error rate. Babbage <span class="citation" data-cites="babbage_reflections_1830">(<a href="references.html#ref-babbage_reflections_1830" role="doc-biblioref">1830</a>)</span> already complained about these problematic practices in 1830, and two centuries later, they are still common. Barber <span class="citation" data-cites="barber_pitfalls_1976">(<a href="references.html#ref-barber_pitfalls_1976" role="doc-biblioref">1976</a>)</span> provides an in depth discussion of a range of approaches, such as eyeballing the data to decide which hypotheses to test (sometimes called ‘double dipping’), selectively reporting only those analyses that confirm predictions, and ignoring non-significant results, collecting many variables and performing multitudes of tests, or performing sub-group analyses when the planned analysis yields nonsignificant results, or after a nonsignificant prediction derive a new hypothesis that is supported by the data, and test the hypothesis on the data that the hypothesis was derived from (sometimes called <strong>HARKing</strong>, Hypothesizing After Results Are Known <span class="citation" data-cites="kerr_harking_1998">(<a href="references.html#ref-kerr_harking_1998" role="doc-biblioref">Kerr, 1998</a>)</span>). Many researchers admit to having used practices that inflate error rates (see section about <a href="15-researchintegrity.html#sec-QRP">questionable research practices</a> in the chapter on research integrity). I myself have used such practices in the first scientific article I published, before I was fully aware of how problematic this was - for an article we published several years later in which we reflect on this, see <span class="citation" data-cites="jostmann_short_2016">Jostmann et al. (<a href="references.html#ref-jostmann_short_2016" role="doc-biblioref">2016</a>)</span>.</p>
+<p>For some paradigms, researchers have a lot of flexibility in how to compute the main dependent variable. Elson and colleagues examined 130 publications that use the Competitive Reaction Time Task, in which participants select the duration and intensity of blasts to be delivered to a competitor <span class="citation" data-cites="elson_press_2014">(<a href="references.html#ref-elson_press_2014" role="doc-biblioref">Elson et al., 2014</a>)</span>. The task is used to measure ‘aggressive behavior’ in an ethical manner. To compute the score, researchers can use the duration of a noise blast, the intensity, or a combination thereof, averaged over any number of trials, with several possible transformations of the data. The 130 publications that were examined reported 157 different quantification strategies in total, showing that most calculations of the dependent variable were unique, used only in a single article. One might wonder why the same authors sometimes used different computations across articles. One possible explanation is that they used this flexibility in the data analysis to find statistically significant results.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-flexiblemeasure" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="images/flexiblemeasure.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.5: Plot of publications using CRTT (blue) and unique quantifications of the measure (red). Figure from FlexibleMeasures.com by <a href="https://www.flexiblemeasures.com/crtt/index.php?menu=quantifications">Malte Elson</a></figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="sec-optionalstopping" class="level2" data-number="2.4"><h2 data-number="2.4" class="anchored" data-anchor-id="sec-optionalstopping">
+<span class="header-section-number">2.4</span> Optional stopping</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-optionalstoppingexample" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="images/optionalstoppingexample.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.6: Screenshot a scientific paper explicitly admitting to using optional stopping.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>One practice that inflates the Type 1 error rate is known as <strong>optional stopping</strong>. In optional stopping, a researcher repeatedly analyzes the data, continues the data collection when the test result is not statistically significant, but stops when a significant effect is observed. The quote from a published article in the figure above is an example where researchers transparently report they used optional stopping, but more commonly people do not disclose the use of optional stopping in their methods sections. In recent years, many researchers have learned that optional stopping is problematic. This has lead some to the general idea that you should not collect data, look at whether the results are significant, and stop data collection when the result is significant, or if not, continue data collection. That is not the correct conclusion, and is an example of becoming too inflexible. The correct approach - to collect data in batches, called <strong>sequential analysis</strong> - has been extensively developed by statisticians, and is used in many medical trials. We will discuss <a href="10-sequential.html">sequential analyses in a dedicated chapter</a>. The main lesson is that certain research practices can increase the flexibility and efficiency of studies you perform, when done right, but the same practices can inflate the Type 1 error rate when done wrong. Let’s therefore try to get a better understanding when we are inflating our Type 1 error rate with optional stopping, and how to do this correctly using sequential analysis.</p>
+<p>Copy the code below into R and run it. This script will simulate an ongoing data collection. After 10 participants in each condition, a <em>p</em>-value is calculated by performing an independent <em>t</em>-test, and this <em>t</em>-test is then repeated after every additional participant that is collected. Then, all these <em>p</em>-values are plotted as a function of the increasing sample size.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>n <span class="ot">&lt;-</span> <span class="dv">200</span> <span class="co"># total number of datapoints (per condition) after initial 10</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>d <span class="ot">&lt;-</span> <span class="fl">0.0</span> <span class="co"># effect size d</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a>p <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n) <span class="co"># store p-values</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>x <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n) <span class="co"># store x-values</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>y <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n) <span class="co"># store y-values</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a></span>
+<span id="cb1-8"><a href="#cb1-8"></a>n <span class="ot">&lt;-</span> n <span class="sc">+</span> <span class="dv">10</span> <span class="co"># add 10 to number of datapoints</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">10</span><span class="sc">:</span>n) { <span class="co"># for each simulated participants after the first 10</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>  x[i] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb1-12"><a href="#cb1-12"></a>  y[i] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">mean =</span> d, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb1-13"><a href="#cb1-13"></a>  p[i] <span class="ot">&lt;-</span> <span class="fu">t.test</span>(x[<span class="dv">1</span><span class="sc">:</span>i], y[<span class="dv">1</span><span class="sc">:</span>i], <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span>
+<span id="cb1-14"><a href="#cb1-14"></a>}</span>
+<span id="cb1-15"><a href="#cb1-15"></a></span>
+<span id="cb1-16"><a href="#cb1-16"></a>p <span class="ot">&lt;-</span> p[<span class="dv">10</span><span class="sc">:</span>n] <span class="co"># Remove first 10 empty p-values</span></span>
+<span id="cb1-17"><a href="#cb1-17"></a></span>
+<span id="cb1-18"><a href="#cb1-18"></a><span class="co"># Create the plot</span></span>
+<span id="cb1-19"><a href="#cb1-19"></a><span class="fu">par</span>(<span class="at">bg =</span> <span class="st">"#fffafa"</span>)</span>
+<span id="cb1-20"><a href="#cb1-20"></a><span class="fu">plot</span>(<span class="dv">0</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">lwd =</span> <span class="dv">3</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">10</span>, n), </span>
+<span id="cb1-21"><a href="#cb1-21"></a>     <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">xlab =</span> <span class="st">"sample size"</span>, <span class="at">ylab =</span> <span class="st">"p-value"</span>)</span>
+<span id="cb1-22"><a href="#cb1-22"></a><span class="fu">lines</span>(p, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb1-23"><a href="#cb1-23"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="fl">0.05</span>, <span class="at">col =</span> <span class="st">"darkgrey"</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">2</span>) <span class="co"># draw line at p = 0.05</span></span>
+<span id="cb1-24"><a href="#cb1-24"></a></span>
+<span id="cb1-25"><a href="#cb1-25"></a><span class="fu">min</span>(p) <span class="co"># Return lowest p-value from all looks</span></span>
+<span id="cb1-26"><a href="#cb1-26"></a><span class="fu">cat</span>(<span class="st">"The lowest p-value was observed at sample size"</span>, <span class="fu">which.min</span>(p) <span class="sc">+</span> <span class="dv">10</span>) </span>
+<span id="cb1-27"><a href="#cb1-27"></a><span class="fu">cat</span>(<span class="st">"The p-value dropped below 0.05 for the first time at sample size:"</span>, </span>
+<span id="cb1-28"><a href="#cb1-28"></a>    <span class="fu">ifelse</span>(<span class="fu">is.na</span>(<span class="fu">which</span>(p <span class="sc">&lt;</span> <span class="fl">0.05</span>)[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">10</span>), <span class="st">"NEVER"</span>, <span class="fu">which</span>(p <span class="sc">&lt;</span> <span class="fl">0.05</span>)[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">10</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>For example, in the Figure below, you see the <em>p</em>-value plotted on the y-axis (from 0 to 1) and the sample size plotted on the x-axis (from 0 to 200). For this simulation, the true effect size was d = 0, meaning there is no true effect. We can thus only observe true negatives or false positives. As the sample size increases, the <em>p</em>-value slowly moves up and down (remember from the chapter on <a href="#sec-pvalues"><em>p</em>-values</a> that when there is no true effect, <em>p</em>-values are uniformly distributed). In <a href="#fig-animatep">Figure&nbsp;<span>2.7</span></a>), the <em>p</em>-value drops below the grey line (indicating an alpha level 0.05) after collecting 83 participants in each condition, only to drift back upwards to larger <em>p</em>-values. From this figure, it becomes clear that the more often we look at the data, and the larger the total sample size, the higher the probability that one of the analyses will yield a p &lt; <span class="math inline">\(\alpha\)</span>. If resources are infinite, the Type 1 error rate will be 1, and a researcher can always find a significant result through optional stopping.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-animatep" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="images/animatep.gif" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.7: Simulated <em>p</em>-values for each additional observation when the null is true.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>When there <em>is</em> a true effect, we see that <em>p</em>-values also vary, but they will eventually drop to below the alpha level. Due to the variation, we just do not know exactly when. When we perform an a-priori power analysis, we can compute the probability that looking at a specific sample size will yield a significant <em>p</em>-value. In <a href="#fig-animatep2">Figure&nbsp;<span>2.8</span></a> we see the same simulation, but now when there is a true but small effect of d = 0.3. With 200 observations per condition, a sensitivity power analysis reveals that we have 85% power. If we would analyze the data at an interim analysis (e.g., after 150 observations) we would often already find a statistically significant effect (as we would have 74% power). This illustrates a benefit of sequential analyses, where we control error rates, but can stop early at an interim analysis. Sequential analyses are especially useful in large or expensive studies where there is uncertainty about the true effect size.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-animatep2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="images/animatep2.gif" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.8: Simulated <em>p</em>-values for each additional observation when d = 0.3.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Let’s more formally examine the inflation of the Type 1 error rate through optional stopping in a <strong>simulation study</strong>. Copy the code below into R and run the code. Note that the 50000 simulations (needed to get the error rates reasonably accurate) take some time to run.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>N <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="co"># total datapoints (per condition)</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>looks <span class="ot">&lt;-</span> <span class="dv">5</span> <span class="co"># set number of looks at the data</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>nsims <span class="ot">&lt;-</span> <span class="dv">50000</span> <span class="co"># number of simulated studies</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>alphalevel <span class="ot">&lt;-</span> <span class="fl">0.05</span> <span class="co"># set alphalevel</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="cf">if</span>(looks <span class="sc">&gt;</span> <span class="dv">1</span>){</span>
+<span id="cb2-7"><a href="#cb2-7"></a>  look_at_n <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(<span class="fu">seq</span>(N <span class="sc">/</span> looks, N, (N <span class="sc">-</span> (N <span class="sc">/</span> looks)) <span class="sc">/</span> (looks <span class="sc">-</span> <span class="dv">1</span>)))</span>
+<span id="cb2-8"><a href="#cb2-8"></a>}  <span class="cf">else</span> {</span>
+<span id="cb2-9"><a href="#cb2-9"></a>  look_at_n <span class="ot">&lt;-</span> N</span>
+<span id="cb2-10"><a href="#cb2-10"></a>}</span>
+<span id="cb2-11"><a href="#cb2-11"></a>look_at_n <span class="ot">&lt;-</span> look_at_n[look_at_n <span class="sc">&gt;</span> <span class="dv">2</span>] <span class="co"># Remove looks at N of 1 or 2</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>looks<span class="ot">&lt;-</span><span class="fu">length</span>(look_at_n) <span class="co"># if looks are removed, update number of looks</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a></span>
+<span id="cb2-14"><a href="#cb2-14"></a>matp <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow =</span> nsims, <span class="at">ncol =</span> looks) <span class="co"># Matrix for p-values l tests</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a>p <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nsims) <span class="co"># Variable to save pvalues</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a></span>
+<span id="cb2-17"><a href="#cb2-17"></a><span class="co"># Loop data generation for each study, then loop to perform a test for each N</span></span>
+<span id="cb2-18"><a href="#cb2-18"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nsims) {</span>
+<span id="cb2-19"><a href="#cb2-19"></a>  x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> N, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb2-20"><a href="#cb2-20"></a>  y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> N, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb2-21"><a href="#cb2-21"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>looks) {</span>
+<span id="cb2-22"><a href="#cb2-22"></a>    matp[i, j] <span class="ot">&lt;-</span> <span class="fu">t.test</span>(x[<span class="dv">1</span><span class="sc">:</span>look_at_n[j]], y[<span class="dv">1</span><span class="sc">:</span>look_at_n[j]], </span>
+<span id="cb2-23"><a href="#cb2-23"></a>                         <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value <span class="co"># perform the t-test, store</span></span>
+<span id="cb2-24"><a href="#cb2-24"></a>  }</span>
+<span id="cb2-25"><a href="#cb2-25"></a>  <span class="fu">cat</span>(<span class="st">"Loop"</span>, i, <span class="st">"of"</span>, nsims, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb2-26"><a href="#cb2-26"></a>}</span>
+<span id="cb2-27"><a href="#cb2-27"></a></span>
+<span id="cb2-28"><a href="#cb2-28"></a><span class="co"># Save Type 1 error rate smallest p at all looks</span></span>
+<span id="cb2-29"><a href="#cb2-29"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nsims) {</span>
+<span id="cb2-30"><a href="#cb2-30"></a>  p[i] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">length</span>(matp[i,<span class="fu">which</span>(matp[i,] <span class="sc">&lt;</span> alphalevel)]) <span class="sc">==</span> <span class="dv">0</span>, </span>
+<span id="cb2-31"><a href="#cb2-31"></a>                 matp[i,looks], matp[i,<span class="fu">which</span>(matp[i,] <span class="sc">&lt;</span> alphalevel)])</span>
+<span id="cb2-32"><a href="#cb2-32"></a>}</span>
+<span id="cb2-33"><a href="#cb2-33"></a></span>
+<span id="cb2-34"><a href="#cb2-34"></a><span class="fu">hist</span>(p, <span class="at">breaks =</span> <span class="dv">100</span>, <span class="at">col =</span> <span class="st">"grey"</span>) <span class="co"># create plot</span></span>
+<span id="cb2-35"><a href="#cb2-35"></a><span class="fu">abline</span>(<span class="at">h =</span> nsims <span class="sc">/</span> <span class="dv">100</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">3</span>)</span>
+<span id="cb2-36"><a href="#cb2-36"></a></span>
+<span id="cb2-37"><a href="#cb2-37"></a><span class="fu">cat</span>(<span class="st">"Type 1 error rates for look 1 to"</span>, looks, <span class="st">":"</span>, </span>
+<span id="cb2-38"><a href="#cb2-38"></a>    <span class="fu">colSums</span>(matp <span class="sc">&lt;</span> alphalevel) <span class="sc">/</span> nsims)</span>
+<span id="cb2-39"><a href="#cb2-39"></a><span class="fu">cat</span>(<span class="st">"Type 1 error rate when only the lowest p-value for all looks is reported:"</span>, </span>
+<span id="cb2-40"><a href="#cb2-40"></a>    <span class="fu">sum</span>(p <span class="sc">&lt;</span> alphalevel) <span class="sc">/</span> nsims)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This simulation will perform multiple independent <em>t</em>-tests on simulated data, looking multiple times until the maximum sample size is reached. In the first four lines, you can set the most important parameters of the simulation. First, the maximum sample size in each condition (e.g., 100). Then, the number of looks (e.g., 5). At best, you can look at the data after every participant (e.g., with 100 participants, you can look 100 times – or actually 98 times, because you need more than 2 participants in each condition for a <em>t</em>-test!). You can set the number of simulations (the more, the clearer the pattern will be, but the longer the simulation takes), and the alpha level (e.g., 0.05). Since you can only make a Type 1 error when there is no true effect, the effect size is set to 0 in these simulations.</p>
+<p>When you perform only a single test, the Type 1 error rate is the probability of finding a <em>p</em>-value lower than your alpha level, when there is no effect. In an optional stopping scenario where you look at the data twice, the Type 1 error rate is the probability of finding a <em>p</em>-value lower than your alpha level at the first look, <strong>and</strong> the probability of <strong>not</strong> finding a <em>p</em>-value lower than your alpha level at the <strong>first</strong> look, but finding a <em>p</em>-value lower than your alpha level at the <strong>second</strong> look. This is a <em>conditional probability</em>, which makes error control a little bit more complex than when multiple looks are completely independent.</p>
+<p>So how much does optional stopping inflate the Type 1 error rate? And which <em>p</em>-values can we expect under optional stopping?</p>
+<p>Start by running the simulation without changing any values, so simulating 100 participants in each condition, looking 5 times at your data, with an alpha of 0.05. Note the 50.000 simulations take a while! You should see something similar to <a href="#fig-optionalstopfig">Figure&nbsp;<span>2.9</span></a> below (which is based on 500.000 simulations to make the pattern very clear).</p>
+<div class="cell" data-layout-align="center" data-hash="02-errorcontrol_cache/html/fig-optionalstopfig_f6cfe59b5af48f74cbc6c918c685ccfa">
+<div class="cell-output-display">
+<div id="fig-optionalstopfig" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="02-errorcontrol_files/figure-html/fig-optionalstopfig-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.9: Simulation of 500000 studies performing 5 interim analyses at an alpha level of 5%.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We see 100 bars, one for each % (so one for all <em>p</em>-values between 0.00 and 0.01, one for <em>p</em>-values between 0.01 and 0.02, etc.). There is a horizontal line that indicates where all <em>p</em>-values should fall, if they would be uniformly distributed (as they should be when there is no true effect, as explained in the chapter on <a href="#sec-pvalues"><em>p</em>-values</a>).</p>
+<p>The distribution of <em>p</em>-values is peculiar. We see that compared to a uniform distributions, a bunch of results just above the alpha threshold of 0.05 are missing, and they seem to have been pulled just below 0.05, where there is a much higher frequency of outcomes compared to when data is not analyzed multiple times as it comes in. Notice how relatively high <em>p</em>-values (e.g., <em>p</em> = 0.04) are more common than lower <em>p</em>-values (e.g., 0.01). We will see in the chapter on <a href="bias">bias detection</a> that statistical techniques such as <em>p</em>-curve analysis can pick up on this pattern.</p>
+<p>When using an alpha level of 5% with 5 looks at the data, the overall Type 1 error rate has inflated to 14%. If we lower the alpha level at each interim analysis, the overall Type 1 error rate can be controlled. The shape of the <em>p</em>-value distribution will still look peculiar, but the total number of significant test results will be controlled at the desired alpha level. The well-known Bonferroni correction (i.e., using an alpha level of <span class="math inline">\(\alpha\)</span> / the number of looks), but the <a href="https://en.wikipedia.org/wiki/Pocock_boundary">Pocock correction</a> is slightly more efficient. For more information on how to perform interim analyses while controlling error rates, see the dedicated chapter on <a href="10-sequential.html">sequential analysis</a>.</p>
+</section><section id="sec-justifyerrorrate" class="level2" data-number="2.5"><h2 data-number="2.5" class="anchored" data-anchor-id="sec-justifyerrorrate">
+<span class="header-section-number">2.5</span> Justifying Error Rates</h2>
+<blockquote class="blockquote">
+<p>If we reject <span class="math inline">\(H_0\)</span> , we may reject it when it is true; if we accept <span class="math inline">\(H_0\)</span> , we may be accepting it when it is false, that is to say, when really some alternative Bt is true. These two sources of error can rarely be eliminated completely; in some cases it will be more important to avoid the first, in others the second. We are reminded of the old problem considered by Laplace of the number of votes in a court of judges that should be needed to convict a prisoner. Is it more serious to convict an innocent man or to acquit a guilty? That will depend upon the consequences of the error; whether the punishment is death or a fine; what the danger is to the community of released criminals; and what are the current ethical views on punishment. From the point of view of mathematical theory, all that we can do is to show how the risk of the errors may be controlled and minimised. The use of these statistical tools in any given case, in determining just how the balance should be struck, must be left to the investigator.</p>
+</blockquote>
+<p>Even though in <em>theory</em> the Type 1 and Type 2 error rate should be justified by the researcher (as Neyman and Pearson <span class="citation" data-cites="neyman_problem_1933">(<a href="references.html#ref-neyman_problem_1933" role="doc-biblioref">1933</a>)</span> write above), in <em>practice</em> researchers tend to imitate others. The default use of an alpha level of 0.05 can already be found in the work of Gosset on the <em>t</em>-distribution <span class="citation" data-cites="cowles_origins_1982 kennedy-shaffer_before_2019">(<a href="references.html#ref-cowles_origins_1982" role="doc-biblioref">Cowles &amp; Davis, 1982</a>; <a href="references.html#ref-kennedy-shaffer_before_2019" role="doc-biblioref">Kennedy-Shaffer, 2019</a>)</span>, who believed that a difference of two standard deviations (a z-score of 2) was sufficiently rare. The default use of 80% power (or a 20% Type 2 error rate) is similarly based on personal preferences by <span class="citation" data-cites="cohen_statistical_1988">Cohen (<a href="references.html#ref-cohen_statistical_1988" role="doc-biblioref">1988</a>)</span>, who writes:</p>
+<blockquote class="blockquote">
+<p>It is proposed here as a convention that, when the investigator has no other basis for setting the desired power value, the value .80 be used. This means that beta is set at .20. This value is offered for several reasons (Cohen, 1965, pp.&nbsp;98-99). The chief among them takes into consideration the implicit convention for alpha of .05. The beta of .20 is chosen with the idea that the general relative seriousness of these two kinds of errors is of the order of .20/.05, i.e., that Type I errors are of the order of four times as serious as Type II errors. This .80 desired power convention is offered with the hope that it will be ignored whenever an investigator can find a basis in his substantive concerns about his specific research investigation to choose a value ad hoc.</p>
+</blockquote>
+<p>We see that conventions are built on conventions: the norm to aim for 80% power is built on the norm to set the alpha level at 5%. Although there is nothing special about an alpha level of 5%, it is interesting to reflect on why it has become so widely established. Irwin Bross <span class="citation" data-cites="bross_critical_1971">(<a href="references.html#ref-bross_critical_1971" role="doc-biblioref">1971</a>)</span> argues the use of an alpha level is functional and efficient when seen as an aspect of communication networks among scientists, and writes “Thus the specification of the critical levels […] has proved in practice to be an effective method for controlling the noise in communication networks.” Bross believes the 0.05 threshold is <em>somewhat</em>, but not <em>completely</em> arbitrary, and asks us to imagine what would have happened had an alpha level of 0.001 been proposed, or an alpha level of 0.20. In both cases, he believes the convention would not have spread – in the first case because in many fields there are not sufficient resources to make claims at such a low error rate, and in the second case because few researchers would have found that alpha level a satisfactory quantification of ‘rare’ events. <span class="citation" data-cites="uygun_tunc_epistemic_2021">Uygun Tunç et al. (<a href="references.html#ref-uygun_tunc_epistemic_2021" role="doc-biblioref">2021</a>)</span> argue that one possible reason is that, as far as conventions go, an alpha level of 5% might be low enough such that peers take any claims made with this error rate seriously, while at the same time being high enough such that peers will be motivated to perform an independent replication study to increase or decrease our confidence in the claim. Although lower error rates would establish claims more convincingly, this would also require more resources. One might speculate that in research areas where not every claim is important enough to a careful justification of costs and benefits, 5% has a pragmatic function in facilitating conjectures and refutations in fields that otherwise lack a coordinated approach to knowledge generation, but are faced with limited resources.</p>
+<p>Nevertheless, some researchers have proposed to move away from the default use of a 5% alpha level. For example, <span class="citation" data-cites="johnson_revised_2013">Johnson (<a href="references.html#ref-johnson_revised_2013" role="doc-biblioref">2013</a>)</span> proposes a default significance level of 0.005 or 0.001. Others have cautioned against such blanket recommendation because the additional resources required to reduce the Type 1 error rate might not be worth the costs <span class="citation" data-cites="lakens_justify_2018">(<a href="references.html#ref-lakens_justify_2018" role="doc-biblioref">Lakens et al., 2018</a>)</span>. A lower alpha lever requires a larger sample size to achieve the same statistical power. If the sample size cannot be increased, a lower alpha level reduces the statistical power, and increases the Type 2 error rate. Whether that is desirable should be evaluated on a case by case basis.</p>
+<p>There are two main reasons to abandon the universal use of a 5% alpha level. The first reason to carefully choose an alpha level is that decision-making becomes more efficient <span class="citation" data-cites="mudge_setting_2012 gannon_blending_2019">(<a href="references.html#ref-gannon_blending_2019" role="doc-biblioref">Gannon et al., 2019</a>; <a href="references.html#ref-mudge_setting_2012" role="doc-biblioref">Mudge et al., 2012</a>)</span>. If researchers use hypothesis tests to make dichotomous decisions from a methodological falsificationist approach to statistical inferences, and have a certain maximum sample size they are willing or able to collect, it is typically possible to make decisions more efficiently by choosing error rates such that the combined cost of Type 1 and Type 2 errors is minimized. If we aim to either minimize or balance Type 1 and Type 2 error rates for a given sample size and effect size, the alpha level should be set not based on convention, but by weighting the relative cost of both types of errors <span class="citation" data-cites="maier_justify_2022">(<a href="references.html#ref-maier_justify_2022" role="doc-biblioref">Maier &amp; Lakens, 2022</a>)</span>.</p>
+<p>For example, imagine a researcher plans to collect 64 participants per condition to detect a d = 0.5 effect, and weighs the cost of Type 1 errors 4 times as much as Type 2 errors. This is exactly the scenario Cohen (1988) described, and with 64 participants per condition the relative weight of Type 1 and Type 2 errors yields a 5% Type 1 error rate and a 20% Type 2 error rate. Now imagine this researcher realizes they have the resources to collect 80 observations instead of just 64. With an interest in an effect size of d = 0.5, the relative weight of Type 1 and Type 2 errors of 4 would be satisfied when they set the alpha level to 0.037 as then the Type 2 error rate is 0.147. Alternatively, the researcher might have decided to collect 64 observations, but not balance the error rates, but set the alpha level such that the weighted combined error rate is minimized, which is achieved when the alpha level is set to 0.033, as visualized in <a href="#fig-minerror">Figure&nbsp;<span>2.10</span></a> (for further information, see <span class="citation" data-cites="maier_justify_2022">Maier &amp; Lakens (<a href="references.html#ref-maier_justify_2022" role="doc-biblioref">2022</a>)</span>).</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-minerror" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="02-errorcontrol_files/figure-html/fig-minerror-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.10: Weighted combined error rate, minimized at alpha = 0.037.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Justifying error rates can lead to situations where the alpha level is increased above 0.05, because this leads to more optimal decision making. Winer (1962) writes:</p>
+<blockquote class="blockquote">
+<p>The frequent use of the .05 and .01 levels of significance is a matter of convention having little scientific or logical basis. When the power of tests is likely to be low under these levels of significance, and when Type 1 and Type 2 errors are of approximately equal importance, the .30 and .20 levels of significance may be more appropriate than the .05 and .01 levels.”</p>
+</blockquote>
+<p>The reasoning here is that a design that has 70% power for the smallest effect size of interest would not balance the Type 1 and Type 2 error rates in a sensible manner. Of course, such an increase of the alpha level should only be deemed acceptable when authors can justify that the costs of the increase in the Type 1 error rate is sufficiently compensated by the benefit of decreased Type 2 error rate. This will encompass cases where (1) the study will have practical implications that require decision making, (2) a cost-benefit analysis is provided that gives a clear rationale for relatively high costs of a Type 2 error, (3) the probability that <span class="math inline">\(H_1\)</span> is false is relatively low, and (4) it is not feasible to reduce overall error rates by collecting more data.</p>
+<p>One should also carefully reflect on the choice of the alpha level when an experiment achieves very high statistical power for all effect sizes that are considered meaningful. If a study has 99% power for effect sizes of interest, and thus a 1% Type 2 error rate, but uses the default 5% alpha level, it also suffers from a lack of balance, and the use of a lower alpha level would lead to a more balanced decision, and increase the severity of the test.</p>
+<p>The second reason is most relevant for large data sets, and is related to <a href="01-pvalue.html#sec-lindley">Lindley’s paradox</a>. As the statistical power increases, some <em>p</em>-values below 0.05 (e.g., <em>p</em> = 0.04) can be more likely when there is <em>no</em> effect than when there <em>is</em> an effect. To prevent situations where a frequentist rejects the null hypothesis based on <em>p</em> &lt; 0.05, when the evidence in the test favors the null hypothesis over the alternative hypothesis, it is recommended to lower the alpha level as a function of the sample size. The need to do so is discussed by <span class="citation" data-cites="leamer_specification_1978">Leamer (<a href="references.html#ref-leamer_specification_1978" role="doc-biblioref">1978</a>)</span>, who writes “The rule of thumb quite popular now, that is, setting the significance level arbitrarily to .05, is shown to be deficient in the sense that from every reasonable viewpoint the significance level should be a decreasing function of sample size.” The idea of this approach is to reduce the alpha level such that a Bayes factor or likelihood computed for a significant result would never be evidence <em>for</em> the null hypothesis (for an online Shiny app to perform such calculations, see <a href="https://shiny.ieis.tue.nl/JustifyAlpha/">here</a>.</p>
+<div class="cell" data-layout-align="center">
+<iframe src="https://shiny.ieis.tue.nl/JustifyAlpha/" width="100%" height="400px" data-external="1">
+</iframe>
+</div>
+</section><section id="why-you-dont-need-to-adjust-your-alpha-level-for-all-tests-youll-do-in-your-lifetime." class="level2" data-number="2.6"><h2 data-number="2.6" class="anchored" data-anchor-id="why-you-dont-need-to-adjust-your-alpha-level-for-all-tests-youll-do-in-your-lifetime.">
+<span class="header-section-number">2.6</span> Why you don’t need to adjust your alpha level for all tests you’ll do in your lifetime.</h2>
+<p>Some researchers criticize corrections for multiple comparisons because one might as well correct for all tests you do in your lifetime <span class="citation" data-cites="perneger_whats_1998">(<a href="references.html#ref-perneger_whats_1998" role="doc-biblioref">Perneger, 1998</a>)</span>. If you choose to use a Neyman-Pearson approach to statistics the only reason to correct for all tests you perform in your lifetime is when all the work you have done in your life tests a single theory, and you would use your last words to decide to accept or reject this theory, as long as only one of all individual tests you have performed yielded a <em>p</em> &lt; <span class="math inline">\(\alpha\)</span>. Researchers rarely work like this.</p>
+<p>Instead, in a Neyman-Pearson approach to hypothesis testing, the goal is to use data to make decisions about how to act. Neyman <span class="citation" data-cites="neyman_inductive_1957">(<a href="references.html#ref-neyman_inductive_1957" role="doc-biblioref">1957</a>)</span> calls his approach <strong>inductive behavior</strong>. The outcome of an experiment leads one to take different possible actions, which can be either practical (e.g., implement a new procedure, abandon a research line) or scientific (e.g., claim there is or is no effect). From an error-statistical approach <span class="citation" data-cites="mayo_statistical_2018">(<a href="references.html#ref-mayo_statistical_2018" role="doc-biblioref">Mayo, 2018</a>)</span> inflated Type 1 error rates mean that it has become very likely that you will be able to claim support for your hypothesis, even when the hypothesis is wrong. This reduces the severity of the test. To prevent this, we need to control our error rate at the level of our claim.</p>
+<p>A useful distinction in the literature on multiple testing is a <strong>union-intersection</strong> testing approach, and an <strong>intersection-union</strong> testing approach <span class="citation" data-cites="dmitrienko_traditional_2013">(<a href="references.html#ref-dmitrienko_traditional_2013" role="doc-biblioref">Dmitrienko &amp; D’Agostino Sr, 2013</a>)</span>. In a union-intersection approach, a claim is made when <em>at-least-one</em> test is significant. In these cases, a correction for multiple comparisons is required to control the error rate. In an intersection-union approach, a claim is made when all performed tests are statistically significant, and no correction for multiple comparisons is required (and indeed, under some assumptions researchers could even <em>increase</em> the alpha level in a intersection-union approach).</p>
+<p>Let’s assume we collect data from 100 participants in a control and treatment condition. We collect 3 dependent variables (dv1, dv2, and dv3). In the population there is no difference between groups on any of these three variables (the true effect size is 0). We will analyze the three dv’s in independent <em>t</em>-tests. This requires specifying our alpha level, and thus deciding whether we need to correct for multiple comparisons. For some reason I do not fully understand, several researchers believe it is difficult to decide when you need to correct for multiple comparisons. As Bretz, Hothorn, &amp; Westfall <span class="citation" data-cites="bretz_multiple_2011">(<a href="references.html#ref-bretz_multiple_2011" role="doc-biblioref">2011</a>)</span> write in their excellent book “Multiple Comparisons Using R”: “The appropriate choice of null hypotheses being of primary interest is a controversial question. That is, it is not always clear which set of hypotheses should constitute the family H1,…,Hm. This topic has often been in dispute and there is no general consensus.” In one of the best papers on controlling for multiple comparisons out there, <span class="citation" data-cites="bender_adjusting_2001">Bender &amp; Lange (<a href="references.html#ref-bender_adjusting_2001" role="doc-biblioref">2001</a>)</span> write: “Unfortunately, there is no simple and unique answer to when it is appropriate to control which error rate. Different persons may have different but nevertheless reasonable opinions. In addition to the problem of deciding which error rate should be under control, it has to be defined first which tests of a study belong to one experiment.”</p>
+<p>I have never understood this confusion, at least not when working within a Neyman-Pearson approach to hypothesis testing, where the goal is to control error rates at the level of a <em>statistical claim</em>. How we control error rates depends on the claim(s) we want to make. We might want to act as if (or claim that) our treatment works if there is a difference between the treatment and control conditions on any of the three variables. This means we consider the prediction corroborated when the <em>p</em>-value of the first <em>t</em>-test is smaller than alpha level, the <em>p</em>-value of the second <em>t</em>-test is smaller than the alpha level, or the <em>p</em>-value of the third <em>t</em>-test is smaller than the alpha level. This falls under the union-intersection approach, and a researcher should correct the alpha level for multiple comparisons.</p>
+<p>We could also want to make three different predictions. Instead of one hypothesis (“something will happen”) we have three different hypotheses, and predict there will be an effect on dv1, dv2, and dv3. Each of these claims can be corroborated, or not. As these are three tests, that inform three claims, there are no multiple comparisons, and no correction for the alpha level is required.</p>
+<p>It might seem if researchers can get out of corrections for multiple comparisons by formulating a hypothesis for every possible test they will perform. Indeed, they can. For a ten by ten correlation matrix, a researcher might state they are testing 45 unique predictions, each at an uncorrected alpha level. However, readers might reasonably question whether these 45 tests were all predicted by a sensible theory, or if the author is just making up predictions in order to not have to correct the alpha level. Distinguishing between these two scenarios is not a <em>statistical</em> question, but a <em>theoretical</em> question. If only a few of the 45 tests corroborate the prediction, the meager track record of the predictions should make readers doubt the body of work that was used to derive the predictions has anything going for it.</p>
+<p>There are different ways to control for error rates, the easiest being the Bonferroni correction an the ever-so-slightly less conservative Holm-Bonferroni sequential procedure. When the number of statistical tests becomes substantial, it is sometimes preferable to control false discovery rates, instead of error rates <span class="citation" data-cites="benjamini_controlling_1995">(<a href="references.html#ref-benjamini_controlling_1995" role="doc-biblioref">Benjamini &amp; Hochberg, 1995</a>)</span>.</p>
+</section><section id="power-analysis" class="level2" data-number="2.7"><h2 data-number="2.7" class="anchored" data-anchor-id="power-analysis">
+<span class="header-section-number">2.7</span> Power Analysis</h2>
+<p>So far we have largely focused on Type 1 error control. As was clear from <a href="#fig-animatep2">Figure&nbsp;<span>2.8</span></a>, when there is a true effect <em>p</em>-values will eventually become smaller than an alpha level as the sample size becomes large enough. When designing an experiment, one goal might be to choose a sample size that provides a desired Type 2 error rate for an effect size of interest. This can be achieved by performing an a-priori power analysis. The statistical power of a test (and the Type 2 error rate) depends on the effect size, the sample size, and the alpha level. The larger the sample size, effect size, and alpha level, the higher the statistical power, and the lower the effect size, sample size, and alpha level, the lower the statistical power.</p>
+<p>It is important to highlight that the goal of an a-priori power analysis is <em>not</em> to achieve sufficient power for the true effect size. The true effect size is always unknown when designing a study. The goal of an a-priori power analysis is to achieve sufficient power, given a specific <em>assumption</em> of the effect size a researcher wants to detect. Just like a Type I error rate is the maximum probability of making a Type I error conditional on the assumption that the null hypothesis is true, an a-priori power analysis is computed under the assumption of a specific effect size. It is unknown if this assumption is correct. All a researcher can do is to make sure their assumptions are well justified. Statistical inferences based on a test where the Type II error is controlled are conditional on the assumption of a specific effect size. They allow the inference that, assuming the true effect size is at least as large as that used in the a-priori power analysis, the maximum Type II error rate in a study is not larger than a desired value.</p>
+<p>In <a href="#fig-powerd">Figure&nbsp;<span>2.11</span></a> we see the expected distribution of observed standardized effect sizes (Cohen’s <em>d</em>) for an independent <em>t</em>-test with 50 observations in each condition. The bell-shaped curve on the left represents the expectations if the null is true, and the red areas in the tail represent Type 1 errors. The bell-shaped curve on the right represents the expectations if the alternative hypothesis is true, and d = 0.5. The vertical line at d = 0.4 represents the <strong>critical effect size</strong>. With this sample size and an alpha level of 0.05, observed effect sizes smaller than d = 0.4 will not be statistically significant. If there is a true effect, these outcomes will be Type 2 errors, illustrated by the blue shaded area. The remainder of the curve reflects true positives, when there is a true effect, and the observed effect sizes are statistically significant. The power of the test is the percentages of the distribution on the right that is larger than the critical value.</p>
+<div class="cell" data-layout-align="center" data-hash="02-errorcontrol_cache/html/fig-powerd_98cc432b8d7960249695749af9260f80">
+<div class="cell-output-display">
+<div id="fig-powerd" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="02-errorcontrol_files/figure-html/fig-powerd-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.11: Distribution of <em>d</em> = 0 and <em>d</em> = 0.5 for an independent <em>t</em>-test with <em>n</em> = 50.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The issue of Type 2 error control will be discussed in more detail in the chapter on <a href="08-samplesizejustification.html#sec-aprioripower">sample size justification</a>. Even though the topic of Type 2 error control is only briefly discussed here, it is at least as important as Type 1 error control. An informative study should have a high probability of observing an effect if there is an effect. Indeed, the default recommendation to aim for 80% power leaves a surprisingly large (20%) probability of a Type 2 error. If a researcher only cares about not making a decision error, but the researcher does not care about whether this decision error is a false positive or a false negative, an argument could be made that Type 1 and Type 2 errors are weighed equally. Therefore, desiging a study with balanced error rates (e.g., a 5% Type 1 error and 95% power) would make sense.</p>
+</section><section id="test-yourself" class="level2" data-number="2.8"><h2 data-number="2.8" class="anchored" data-anchor-id="test-yourself">
+<span class="header-section-number">2.8</span> Test Yourself</h2>
+<section id="questions-about-the-positive-predictive-value" class="level3 webex-check webex-box" data-number="2.8.1"><h3 data-number="2.8.1" class="anchored" data-anchor-id="questions-about-the-positive-predictive-value">
+<span class="header-section-number">2.8.1</span> Questions about the positive predictive value</h3>
+<p><strong>Q1</strong>: In the example at the start of this chapter, we see that we control the Type 1 error rate at 5% by using an alpha of 0.05. Still, when there is a 50% probability that <span class="math inline">\(H_0\)</span> is true, the proportion of false positives for all experiments performed turns out to be much lower, namely 2.5%, or 0.025. Why?</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_WGLWVJOCLX" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_WGLWVJOCLX" value=""><span>The proportion of false positives for all experiments we have performed is a variable with a distribution around the true error rate – sometimes it’s higher, sometimes it’s lower, due to random variation.</span></label><label><input type="radio" autocomplete="off" name="radio_WGLWVJOCLX" value="answer"><span>The proportion of false positives for all experiments we have performed is only 5% when <span class="math inline">\(H_0\)</span> is true for all 200 studies.</span></label><label><input type="radio" autocomplete="off" name="radio_WGLWVJOCLX" value=""><span>The proportion of false positives for all experiments we have performed is only 5% when you have 50% power – if power increases above 50%, the proportion of false positives for all experiments we have performed becomes smaller.</span></label><label><input type="radio" autocomplete="off" name="radio_WGLWVJOCLX" value=""><span>The proportion of false positives for all experiments we have performed is only 5% when you have 100% power, and it becomes smaller if power is lower than 100%.</span></label>
+</div>
+</div>
+<p><strong>Q2</strong>: What will make the biggest difference in improving the probability that you will find a true positive? Check your answer by shifting the sliders in the online PPV app at http://shinyapps.org/apps/PPV/ or https://shiny.ieis.tue.nl/PPV/</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_IRHUKPJJRE" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_IRHUKPJJRE" value="answer"><span>Increase the % of a-priori true hypotheses</span></label><label><input type="radio" autocomplete="off" name="radio_IRHUKPJJRE" value=""><span>Decrease the % of a-priori true hypotheses</span></label><label><input type="radio" autocomplete="off" name="radio_IRHUKPJJRE" value=""><span>Increase the alpha level</span></label><label><input type="radio" autocomplete="off" name="radio_IRHUKPJJRE" value=""><span>Decrease the alpha level</span></label><label><input type="radio" autocomplete="off" name="radio_IRHUKPJJRE" value=""><span>Increase the power</span></label><label><input type="radio" autocomplete="off" name="radio_IRHUKPJJRE" value=""><span>Decrease the power</span></label>
+</div>
+</div>
+<p>Increasing the power requires bigger sample sizes, or studying larger effects. Increasing the % of a-priori true hypotheses can be done by making better predictions – for example building on reliable findings, and relying on strong theories. These are useful recommendations if you want to increase the probability of performing studies where you find a statistically significant result.</p>
+<p><strong>Q3</strong>: Set the “% of a priori true hypotheses” slider to 50%. Leave the ‘<span class="math inline">\(\alpha\)</span> level’ slider at 5%. Leave the ‘% of p-hacked studies’ slider at 0. The title of Ioannidis’ paper is ‘why most published research findings are false’. One reason might be that studies often have low power. At which value for power is the PPV 50%. In other words, at which level of power is a significant result just as likely to be true, as that it is false?</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_XRWQTEEUYQ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_XRWQTEEUYQ" value=""><span>80%</span></label><label><input type="radio" autocomplete="off" name="radio_XRWQTEEUYQ" value=""><span>50%</span></label><label><input type="radio" autocomplete="off" name="radio_XRWQTEEUYQ" value=""><span>20%</span></label><label><input type="radio" autocomplete="off" name="radio_XRWQTEEUYQ" value="answer"><span>5%</span></label>
+</div>
+</div>
+<p>It seems low power alone is not the best explanation for why most published findings might be false, as it is unlikely that power is low enough in the scientific literature. Ioannidis (2005) discusses some scenarios under which it becomes likely that most published research findings are false. Some of these assume that ‘p-hacked studies’, or studies that show a significant result due to bias, enter the literature. There are good reasons to believe this happens, as we discussed in this chapter. In the ‘presets by Ioannidis’ dropdown menu, you can select some of these situations. Explore all of them, and pay close attention to the ones where the PPV is smaller than 50%.</p>
+<p><strong>Q4</strong>: In general, when are most published findings false? Interpret ‘low’ and ‘high’ in the answer options below in relation to the values in the first example in this chapter of 50% probability <span class="math inline">\(H_1\)</span> is true, 5% alpha, 80% power, and 0% bias.</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_MVAOXQJCZK" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_MVAOXQJCZK" value="answer"><span>When the probability of examining a true hypothesis is low, combined with either low power or substantial bias (e.g., p-hacking).</span></label><label><input type="radio" autocomplete="off" name="radio_MVAOXQJCZK" value=""><span>When the probability of examining a true hypothesis is high, combined with either low power or substantial bias (e.g., p-hacking).</span></label><label><input type="radio" autocomplete="off" name="radio_MVAOXQJCZK" value=""><span>When the alpha level is high, combined with either low power or substantial bias (e.g., p-hacking).</span></label><label><input type="radio" autocomplete="off" name="radio_MVAOXQJCZK" value=""><span>When power is low and p-hacking is high (regardless of the % of true hypotheses one examines).</span></label>
+</div>
+</div>
+<p><strong>Q5</strong>: Set the “% of a priori true hypotheses” slider to 0%. Set the “% of p-hacked studies” slider to 0%. Set the “<span class="math inline">\(\alpha\)</span> level” slider to 5%. Play around with the power slider. Which statement is true? <strong>Without <em>p</em>-hacking, when the alpha level is 5%, and when 0% of the hypotheses are true, </strong></p>
+<div class="cell" data-layout-align="center">
+<div id="radio_UELNJHVUPI" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_UELNJHVUPI" value=""><span>the proportion of false positives for all experiments we have performed is 100%.</span></label><label><input type="radio" autocomplete="off" name="radio_UELNJHVUPI" value=""><span>the PPV depends on the power of the studies.</span></label><label><input type="radio" autocomplete="off" name="radio_UELNJHVUPI" value=""><span>regardless of the power, the PPV equals the proportion of false positives for all experiments we have performed.</span></label><label><input type="radio" autocomplete="off" name="radio_UELNJHVUPI" value="answer"><span>regardless of the power, the proportion of false positives for all experiments we have performed is 5%, and the PPV is 0% (all significant results are false positives).</span></label>
+</div>
+</div>
+</section><section id="questions-about-optional-stopping" class="level3 webex-check webex-box" data-number="2.8.2"><h3 data-number="2.8.2" class="anchored" data-anchor-id="questions-about-optional-stopping">
+<span class="header-section-number">2.8.2</span> Questions about optional stopping</h3>
+<p>For Questions 1 to 4, use the script below:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>n <span class="ot">&lt;-</span> <span class="dv">200</span> <span class="co"># total number of datapoints (per condition) after initial 10</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>d <span class="ot">&lt;-</span> <span class="fl">0.0</span> <span class="co"># effect size d</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a></span>
+<span id="cb3-4"><a href="#cb3-4"></a>p <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n) <span class="co"># store p-values</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>x <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n) <span class="co"># store x-values</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>y <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n) <span class="co"># store y-values</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a></span>
+<span id="cb3-8"><a href="#cb3-8"></a>n <span class="ot">&lt;-</span> n <span class="sc">+</span> <span class="dv">10</span> <span class="co"># add 10 to number of datapoints</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a></span>
+<span id="cb3-10"><a href="#cb3-10"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">10</span><span class="sc">:</span>n) { <span class="co"># for each simulated participants after the first 10</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a>  x[i] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb3-12"><a href="#cb3-12"></a>  y[i] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">mean =</span> d, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb3-13"><a href="#cb3-13"></a>  p[i] <span class="ot">&lt;-</span> <span class="fu">t.test</span>(x[<span class="dv">1</span><span class="sc">:</span>i], y[<span class="dv">1</span><span class="sc">:</span>i], <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span>
+<span id="cb3-14"><a href="#cb3-14"></a>}</span>
+<span id="cb3-15"><a href="#cb3-15"></a></span>
+<span id="cb3-16"><a href="#cb3-16"></a>p <span class="ot">&lt;-</span> p[<span class="dv">10</span><span class="sc">:</span>n] <span class="co"># Remove first 10 empty p-values</span></span>
+<span id="cb3-17"><a href="#cb3-17"></a></span>
+<span id="cb3-18"><a href="#cb3-18"></a><span class="co"># Create the plot</span></span>
+<span id="cb3-19"><a href="#cb3-19"></a><span class="fu">par</span>(<span class="at">bg =</span> <span class="st">"#fffafa"</span>)</span>
+<span id="cb3-20"><a href="#cb3-20"></a><span class="fu">plot</span>(<span class="dv">0</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">lwd =</span> <span class="dv">3</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">10</span>, n), </span>
+<span id="cb3-21"><a href="#cb3-21"></a>     <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">xlab =</span> <span class="st">"sample size"</span>, <span class="at">ylab =</span> <span class="st">"p-value"</span>)</span>
+<span id="cb3-22"><a href="#cb3-22"></a><span class="fu">lines</span>(p, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb3-23"><a href="#cb3-23"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="fl">0.05</span>, <span class="at">col =</span> <span class="st">"darkgrey"</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">2</span>) <span class="co"># draw line at p = 0.05</span></span>
+<span id="cb3-24"><a href="#cb3-24"></a></span>
+<span id="cb3-25"><a href="#cb3-25"></a><span class="fu">min</span>(p) <span class="co"># Return lowest p-value from all looks</span></span>
+<span id="cb3-26"><a href="#cb3-26"></a><span class="fu">cat</span>(<span class="st">"The lowest p-value was observed at sample size"</span>, <span class="fu">which.min</span>(p) <span class="sc">+</span> <span class="dv">10</span>) </span>
+<span id="cb3-27"><a href="#cb3-27"></a><span class="fu">cat</span>(<span class="st">"The p-value dropped below 0.05 for the first time at sample size:"</span>, </span>
+<span id="cb3-28"><a href="#cb3-28"></a>    <span class="fu">ifelse</span>(<span class="fu">is.na</span>(<span class="fu">which</span>(p <span class="sc">&lt;</span> <span class="fl">0.05</span>)[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">10</span>), <span class="st">"NEVER"</span>, <span class="fu">which</span>(p <span class="sc">&lt;</span> <span class="fl">0.05</span>)[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">10</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Q1</strong>: Run the script above that plots the <em>p</em>-value as the sample size increases 20 times, and count how often the lowest <em>p</em>-value ends up below 0.05 (we will calculate the long run probability of this happening through more extensive simulations later). Remember that you can click the ‘clipboard’ icon on the top right of the code section to copy all the code to your clipboard, and paste it in RStudio.</p>
+<p><strong>Q2</strong>: If there is a true effect, we can only observe a true positive or a false negative. Change the effect size in the second line in the script from d &lt;- 0.0 to d &lt;- 0.3. This is a relatively small true effect, and with 200 participants in each condition, we have 85% power (or an 85% probability of finding a significant effect). Run the script again. Below is one possible example of the trajectory of <em>p</em>-values as the sample size increases. Run the script 20 times. Take a good look at the variation in the <em>p</em>-value trajectory. Remember that at N = 200, 85% of the times the <em>p</em>-value should have ended up below 0.05. The script returns the sample size the <em>p</em>-value is the lowest (which is often, but not always, at the maximum sample size, when there is a true effect) and the sample size at which the <em>p</em>-value drops below 0.05 for the first time. Which statement is true?</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_JALNAPRHPK" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_JALNAPRHPK" value=""><span>If the <em>p</em>-value drops below 0.05, it stays below 0.05.</span></label><label><input type="radio" autocomplete="off" name="radio_JALNAPRHPK" value=""><span>The <em>p</em>-value randomly moves between 0 and 1, and will every now and then end up below 0.05.</span></label><label><input type="radio" autocomplete="off" name="radio_JALNAPRHPK" value="answer"><span>The <em>p</em>-value often drops below 0.05 well before 200 participants in each condition. In around 50% of the simulations, this already happens at N = 100.</span></label><label><input type="radio" autocomplete="off" name="radio_JALNAPRHPK" value=""><span>The <em>p</em>-value will typically move below 0.05 and stay there for some time, but given a large enough sample, it will always move back up to <em>p</em> &gt; 0.05.</span></label>
+</div>
+</div>
+<p><strong>Q3</strong>: Change the effect size in the second line of the script to d &lt;- 0.8, which can be regarded as a large effect. Run the script 20 times. Take a good look at the variation in the <em>p</em>-value trajectory. Which statement is true?</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_YVNZJIAVKI" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_YVNZJIAVKI" value=""><span>The <em>p</em>-value randomly moves between 0 and 1, and will every now and then end up below 0.05.</span></label><label><input type="radio" autocomplete="off" name="radio_YVNZJIAVKI" value="answer"><span>The <em>p</em>-values drop below and stay below 0.05 much earlier than when the true effect size is 0.3.</span></label><label><input type="radio" autocomplete="off" name="radio_YVNZJIAVKI" value=""><span><em>p</em>-values are meaningful when effect sizes are large (e.g., d = 0.8), but meaningless when effect sizes are small (e.g., d = 0.3).</span></label><label><input type="radio" autocomplete="off" name="radio_YVNZJIAVKI" value=""><span>When you examine a large effect, whenever a <em>p</em>-value drops below 0.05, it will always stay below 0.05 as the sample size increases.</span></label>
+</div>
+</div>
+<p><strong>Q4</strong>: Looking at <a href="#fig-optionalstopfig">Figure&nbsp;<span>2.9</span></a>, which statement is true?</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_FPIRKAVWJH" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_FPIRKAVWJH" value=""><span>Optional stopping does not impact the Type 1 error rate.</span></label><label><input type="radio" autocomplete="off" name="radio_FPIRKAVWJH" value="answer"><span>Optional stopping inflates the Type 1 error rate. We can see this in the first five bars (<em>p</em>-values between 0.00 and 0.05), which are substantially higher than the horizontal line.</span></label><label><input type="radio" autocomplete="off" name="radio_FPIRKAVWJH" value=""><span>Optional stopping inflates the Type 1 error rate. We can see this in the bars just above 0.05, which dip substantially below the uniform distribution that should be present if there is no true effect.</span></label>
+</div>
+</div>
+<p>For Questions 5 to 8, use the script below:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>N <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="co"># total datapoints (per condition)</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>looks <span class="ot">&lt;-</span> <span class="dv">5</span> <span class="co"># set number of looks at the data</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a>nsims <span class="ot">&lt;-</span> <span class="dv">50000</span> <span class="co"># number of simulated studies</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>alphalevel <span class="ot">&lt;-</span> <span class="fl">0.05</span> <span class="co"># set alphalevel</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="cf">if</span>(looks <span class="sc">&gt;</span> <span class="dv">1</span>){</span>
+<span id="cb4-7"><a href="#cb4-7"></a>  look_at_n <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(<span class="fu">seq</span>(N <span class="sc">/</span> looks, N, (N <span class="sc">-</span> (N <span class="sc">/</span> looks)) <span class="sc">/</span> (looks <span class="sc">-</span> <span class="dv">1</span>)))</span>
+<span id="cb4-8"><a href="#cb4-8"></a>}  <span class="cf">else</span> {</span>
+<span id="cb4-9"><a href="#cb4-9"></a>  look_at_n <span class="ot">&lt;-</span> N</span>
+<span id="cb4-10"><a href="#cb4-10"></a>}</span>
+<span id="cb4-11"><a href="#cb4-11"></a>look_at_n <span class="ot">&lt;-</span> look_at_n[look_at_n <span class="sc">&gt;</span> <span class="dv">2</span>] <span class="co"># Remove looks at N of 1 or 2</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a>looks<span class="ot">&lt;-</span><span class="fu">length</span>(look_at_n) <span class="co"># if looks are removed, update number of looks</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a></span>
+<span id="cb4-14"><a href="#cb4-14"></a>matp <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow =</span> nsims, <span class="at">ncol =</span> looks) <span class="co"># Matrix for p-values l tests</span></span>
+<span id="cb4-15"><a href="#cb4-15"></a>p <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nsims) <span class="co"># Variable to save pvalues</span></span>
+<span id="cb4-16"><a href="#cb4-16"></a></span>
+<span id="cb4-17"><a href="#cb4-17"></a><span class="co"># Loop data generation for each study, then loop to perform a test for each N</span></span>
+<span id="cb4-18"><a href="#cb4-18"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nsims) {</span>
+<span id="cb4-19"><a href="#cb4-19"></a>  x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> N, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb4-20"><a href="#cb4-20"></a>  y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> N, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb4-21"><a href="#cb4-21"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>looks) {</span>
+<span id="cb4-22"><a href="#cb4-22"></a>    matp[i, j] <span class="ot">&lt;-</span> <span class="fu">t.test</span>(x[<span class="dv">1</span><span class="sc">:</span>look_at_n[j]], y[<span class="dv">1</span><span class="sc">:</span>look_at_n[j]], </span>
+<span id="cb4-23"><a href="#cb4-23"></a>                         <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value <span class="co"># perform the t-test, store</span></span>
+<span id="cb4-24"><a href="#cb4-24"></a>  }</span>
+<span id="cb4-25"><a href="#cb4-25"></a>  <span class="fu">cat</span>(<span class="st">"Loop"</span>, i, <span class="st">"of"</span>, nsims, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb4-26"><a href="#cb4-26"></a>}</span>
+<span id="cb4-27"><a href="#cb4-27"></a></span>
+<span id="cb4-28"><a href="#cb4-28"></a><span class="co"># Save Type 1 error rate smallest p at all looks</span></span>
+<span id="cb4-29"><a href="#cb4-29"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nsims) {</span>
+<span id="cb4-30"><a href="#cb4-30"></a>  p[i] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">length</span>(matp[i,<span class="fu">which</span>(matp[i,] <span class="sc">&lt;</span> alphalevel)]) <span class="sc">==</span> <span class="dv">0</span>, </span>
+<span id="cb4-31"><a href="#cb4-31"></a>                 matp[i,looks], matp[i,<span class="fu">which</span>(matp[i,] <span class="sc">&lt;</span> alphalevel)])</span>
+<span id="cb4-32"><a href="#cb4-32"></a>}</span>
+<span id="cb4-33"><a href="#cb4-33"></a></span>
+<span id="cb4-34"><a href="#cb4-34"></a><span class="fu">hist</span>(p, <span class="at">breaks =</span> <span class="dv">100</span>, <span class="at">col =</span> <span class="st">"grey"</span>) <span class="co"># create plot</span></span>
+<span id="cb4-35"><a href="#cb4-35"></a><span class="fu">abline</span>(<span class="at">h =</span> nsims <span class="sc">/</span> <span class="dv">100</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">3</span>)</span>
+<span id="cb4-36"><a href="#cb4-36"></a></span>
+<span id="cb4-37"><a href="#cb4-37"></a><span class="fu">cat</span>(<span class="st">"Type 1 error rates for look 1 to"</span>, looks, <span class="st">":"</span>, </span>
+<span id="cb4-38"><a href="#cb4-38"></a>    <span class="fu">colSums</span>(matp <span class="sc">&lt;</span> alphalevel) <span class="sc">/</span> nsims)</span>
+<span id="cb4-39"><a href="#cb4-39"></a><span class="fu">cat</span>(<span class="st">"Type 1 error rate when only the lowest p-value for all looks is reported:"</span>, </span>
+<span id="cb4-40"><a href="#cb4-40"></a>    <span class="fu">sum</span>(p <span class="sc">&lt;</span> alphalevel) <span class="sc">/</span> nsims)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Q5</strong>: The script to simulate optional stopping provides written output. One summary gives you the Type 1 error rate for each individual look. One summary gives the Type 1 error rate when optional stopping is used. When running the script with the default values, which statement is true?</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_STUDMXHKOH" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_STUDMXHKOH" value=""><span>At each look, the Type 1 error rate is higher than the alpha level (0.05). When using optional stopping (and reporting only the lowest <em>p</em>-value), the Type 1 error rate is higher than 0.05.</span></label><label><input type="radio" autocomplete="off" name="radio_STUDMXHKOH" value=""><span>At each look, the Type 1 error rate is approximately equal to the alpha level (0.05). When using optional stopping (and reporting only the lowest <em>p</em>-value), the alpha level also approximately equals the alpha level (0.05).</span></label><label><input type="radio" autocomplete="off" name="radio_STUDMXHKOH" value="answer"><span>At each look, the Type 1 error rate is approximately equal to the alpha level (0.05). When using optional stopping, the Type 1 error rate is higher than the alpha level (0.05).</span></label>
+</div>
+</div>
+<p><strong>Q6</strong>: Change the number of looks in the simulation to <strong>2</strong> (change ‘looks &lt;- 5’ to ‘looks &lt;- 2’), and leave all other settings the same. Run the simulation again. What is the Type 1 error rate using optional stopping with only 1 interim analysis, rounded to 2 digits? (Note that due to small number of simulations, the exact alpha level you get might differ a little bit from the answer options below).</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_JMFXUZATIG" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_JMFXUZATIG" value=""><span>approximately 0.05</span></label><label><input type="radio" autocomplete="off" name="radio_JMFXUZATIG" value="answer"><span>approximately 0.08</span></label><label><input type="radio" autocomplete="off" name="radio_JMFXUZATIG" value=""><span>approximately 0.12</span></label><label><input type="radio" autocomplete="off" name="radio_JMFXUZATIG" value=""><span>approximately 0.18</span></label>
+</div>
+</div>
+<p><strong>Q7</strong>: As Wagenmakers <span class="citation" data-cites="wagenmakers_practical_2007">(<a href="references.html#ref-wagenmakers_practical_2007" role="doc-biblioref">2007</a>)</span> notes: <em>“a user of NHST could always obtain a significant result through optional stopping (i.e., analyzing the data as they accumulate and stopping the experiment whenever the p-value reaches some desired significance level)”</em>. This is correct. It’s true that the <em>p</em>-value will always drop below the alpha level at some point in time. But, we need a rather large number of observations. We can calculate the maximum Type 1 error rate due to optional stopping for any maximum sample size. For example, what is the maximum Type 1 error rate when optional stopping is used when collecting 200 participants in each condition, and looking 200 times (or 198 times, given that you can’t perform a <em>t</em>-test on a sample size of 1 or 2 people)? Set the number of participants to <strong>200</strong>, the number of looks to <strong>200</strong>, the number of simulations to <strong>10000</strong> (this simulation will take even longer!), and the alpha to <strong>0.05</strong>.</p>
+<p>What is maximum Type 1 error rate when collecting 200 participants in each condition of an independent <em>t</em>-test, using optional stopping, rounded to 2 digits? (Note that the simulation will take a while, but still, due to the relatively small number of simulations, the exact alpha level you get might differ a little bit from the answer options below – choose the answer option closest to your result).</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_HJLWLAKNNE" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_HJLWLAKNNE" value=""><span>0.05</span></label><label><input type="radio" autocomplete="off" name="radio_HJLWLAKNNE" value=""><span>0.11</span></label><label><input type="radio" autocomplete="off" name="radio_HJLWLAKNNE" value=""><span>0.20</span></label><label><input type="radio" autocomplete="off" name="radio_HJLWLAKNNE" value="answer"><span>0.41</span></label>
+</div>
+</div>
+<p><strong>Q8</strong>: At Wikipedia, look at the entry about the Pocock boundary: <a href="https://en.wikipedia.org/wiki/Pocock_boundary" class="uri">https://en.wikipedia.org/wiki/Pocock_boundary</a> . There are ethical reasons to look at the data, while data is being collected. These are clear in medicine, but similar arguments can be made for other research areas (see Lakens, 2014). Researchers often want to look at the data multiple times. This is perfectly fine, as long as they design a study with a number of looks in advance, and control their Type 1 error rate.</p>
+<p>The Pocock boundary provides a very easy way to control the type 1 error rate in sequential analyses. Sequential analysis is the formal way to do optional stopping. Researchers should use a slightly lower alpha level for each look, the make sure the overall alpha level (after all looks) is not larger than 5%.</p>
+<p>Set the number of participants to <strong>100</strong>, the number of looks to <strong>5</strong>, and the number of simulations to <strong>50000</strong> (so back to the original script). In the Wikipedia article on the Pocock boundary, find the corrected alpha level for 5 looks at the data. Change the alpha level in the simulation to this value. Run the simulation. Which of the following statements is true?</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_BPGLEXEIJG" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_BPGLEXEIJG" value=""><span>The Type 1 error rate at each look is approximately 0.03, and the overall alpha level is approximately 0.05.</span></label><label><input type="radio" autocomplete="off" name="radio_BPGLEXEIJG" value=""><span>The Type 1 error rate at each look is approximately 0.03, and the overall alpha level is approximately 0.15.</span></label><label><input type="radio" autocomplete="off" name="radio_BPGLEXEIJG" value="answer"><span>The Type 1 error rate at each look is approximately 0.016, and the overall alpha level is approximately 0.05.</span></label><label><input type="radio" autocomplete="off" name="radio_BPGLEXEIJG" value=""><span>The Type 1 error rate at each look is approximately 0.016, and the overall alpha level is approximately 0.08.</span></label>
+</div>
+</div>
+<p><strong>Q9</strong>: Look at the graph of the <em>p</em>-value distribution when using the Pocock boundary, and compare it to the graph you got when not using the Pocock boundary. You can flip back and forth between plots you have generated in RStudio using the blue arrows on the plots tab. Which statement is true?</p>
+<div class="cell" data-layout-align="center">
+<div id="radio_YYVXADXPWL" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_YYVXADXPWL" value=""><span><strong>Without</strong> Pocock’s boundary, <strong>small</strong> <em>p</em>-values (e.g., <em>p</em> = 0.01) are <strong>more</strong> likely than slightly <strong>higher</strong> <em>p</em>-values (<em>p</em> = 0.04). <strong>With</strong> Pocock’s boundary, <strong>small</strong> <em>p</em>-values (e.g., <em>p</em> = 0.01) are <strong>also more</strong> likely than slightly <strong>higher</strong> <em>p</em>-values (<em>p</em> = 0.04).</span></label><label><input type="radio" autocomplete="off" name="radio_YYVXADXPWL" value=""><span><strong>Without</strong> Pocock’s boundary, <strong>small</strong> <em>p</em>-values (e.g., <em>p</em> = 0.01) are <strong>more</strong> likely than slightly <strong>higher</strong> <em>p</em>-values (<em>p</em> = 0.04). <strong>With</strong> Pocock’s boundary, <strong>small</strong> <em>p</em>-values (e.g., <em>p</em> = 0.01) are <strong>less</strong> likely than slightly <strong>higher</strong> <em>p</em>-values (<em>p</em> = 0.04).</span></label><label><input type="radio" autocomplete="off" name="radio_YYVXADXPWL" value="answer"><span><strong>Without</strong> Pocock’s boundary, <strong>small</strong> <em>p</em>-values (e.g., <em>p</em> = 0.01) are <strong>less</strong> likely than slightly <strong>higher</strong> <em>p</em>-values (<em>p</em> = 0.04). <strong>With</strong> Pocock’s boundary, <strong>small</strong> <em>p</em>-values (e.g., <em>p</em> = 0.01) are <strong>more</strong> likely than slightly <strong>higher</strong> <em>p</em>-values (<em>p</em> = 0.04).</span></label><label><input type="radio" autocomplete="off" name="radio_YYVXADXPWL" value=""><span><strong>Without</strong> Pocock’s boundary, <strong>small</strong> <em>p</em>-values (e.g., <em>p</em> = 0.01) are <strong>less</strong> likely than slightly <strong>higher</strong> <em>p</em>-values (<em>p</em> = 0.04). <strong>With</strong> Pocock’s boundary, <strong>small</strong> <em>p</em>-values (e.g., <em>p</em> = 0.01) are <strong>also less</strong> likely than slightly <strong>higher</strong> <em>p</em>-values (<em>p</em> = 0.04).</span></label>
+</div>
+</div>
+</section><section id="open-questions" class="level3" data-number="2.8.3"><h3 data-number="2.8.3" class="anchored" data-anchor-id="open-questions">
+<span class="header-section-number">2.8.3</span> Open Questions</h3>
+<ol type="1">
+<li><p>What is the definition of the positive predictive value?</p></li>
+<li><p>What is the definition of a false positive?</p></li>
+<li><p>What is the definition of a false negative?</p></li>
+<li><p>What is the definition of a true positive?</p></li>
+<li><p>What is the definition of a true negative?</p></li>
+<li><p>If you perform 200 studies, where there is a 50% probability H0 is true, you have 80% power, and use a 5% Type 1 error rate, what is the most likely outcome of a study?</p></li>
+<li><p>How can you increase the positive predictive value in lines of research you decide to perform?</p></li>
+<li><p>Why is it incorrect to think that “1 in 20 results in the published literature are Type 1 errors”?</p></li>
+<li><p>What is the problem with optional stopping?</p></li>
+<li><p>How do multiple tests inflate the Type 1 error rate, and what can be done to correct for multiple comparisons?</p></li>
+<li><p>In a replication study, what determines the probability that you will observe a significant effect?</p></li>
+<li><p>Which approach to statistical inferences is the Neyman-Pearson approach part of, and what is the main goal of the Neyman-Pearson approach?</p></li>
+<li><p>How should error rates (alpha and beta) in a statistical test be determined?</p></li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-babbage_reflections_1830" class="csl-entry" role="listitem">
+Babbage, C. (1830). <em>Reflections on the <span>Decline</span> of <span>Science</span> in <span>England</span>: <span>And</span> on <span>Some</span> of <span>Its Causes</span></em>. <span>B. Fellowes</span>.
+</div>
+<div id="ref-barber_pitfalls_1976" class="csl-entry" role="listitem">
+Barber, T. X. (1976). <em>Pitfalls in <span>Human Research</span>: <span>Ten Pivotal Points</span></em>. <span>Pergamon Press</span>.
+</div>
+<div id="ref-bender_adjusting_2001" class="csl-entry" role="listitem">
+Bender, R., &amp; Lange, S. (2001). Adjusting for multiple testingwhen and how? <em>Journal of Clinical Epidemiology</em>, <em>54</em>(4), 343–349.
+</div>
+<div id="ref-benjamini_controlling_1995" class="csl-entry" role="listitem">
+Benjamini, Y., &amp; Hochberg, Y. (1995). Controlling the false discovery rate: A practical and powerful approach to multiple testing. <em>Journal of the Royal Statistical Society. Series B (Methodological)</em>, 289–300. <a href="https://www.jstor.org/stable/2346101">https://www.jstor.org/stable/2346101</a>
+</div>
+<div id="ref-bretz_multiple_2011" class="csl-entry" role="listitem">
+Bretz, F., Hothorn, T., &amp; Westfall, P. H. (2011). <em>Multiple comparisons using <span>R</span></em>. <span>CRC Press</span>.
+</div>
+<div id="ref-bross_critical_1971" class="csl-entry" role="listitem">
+Bross, I. D. (1971). Critical levels, statistical language and scientific inference. In <em>Foundations of statistical inference</em> (pp. 500–513). <span>Holt, Rinehart and Winston</span>.
+</div>
+<div id="ref-cohen_statistical_1988" class="csl-entry" role="listitem">
+Cohen, J. (1988). <em>Statistical power analysis for the behavioral sciences</em> (2nd ed). <span>L. Erlbaum Associates</span>.
+</div>
+<div id="ref-colquhoun_false_2019" class="csl-entry" role="listitem">
+Colquhoun, D. (2019). The <span>False Positive Risk</span>: <span>A Proposal Concerning What</span> to <span>Do About</span> p-<span>Values</span>. <em>The American Statistician</em>, <em>73</em>(sup1), 192–201. <a href="https://doi.org/10.1080/00031305.2018.1529622">https://doi.org/10.1080/00031305.2018.1529622</a>
+</div>
+<div id="ref-cowles_origins_1982" class="csl-entry" role="listitem">
+Cowles, M., &amp; Davis, C. (1982). On the origins of the. 05 level of statistical significance. <em>American Psychologist</em>, <em>37</em>(5), 553.
+</div>
+<div id="ref-dmitrienko_traditional_2013" class="csl-entry" role="listitem">
+Dmitrienko, A., &amp; D’Agostino Sr, R. (2013). Traditional multiplicity adjustment methods in clinical trials. <em>Statistics in Medicine</em>, <em>32</em>(29), 5172–5218. <a href="https://doi.org/10.1002/sim.5990">https://doi.org/10.1002/sim.5990</a>
+</div>
+<div id="ref-dunn_multiple_1961" class="csl-entry" role="listitem">
+Dunn, O. J. (1961). Multiple <span>Comparisons</span> among <span>Means</span>. <em>Journal of the American Statistical Association</em>, <em>56</em>(293), 52–64. <a href="https://doi.org/10.1080/01621459.1961.10482090">https://doi.org/10.1080/01621459.1961.10482090</a>
+</div>
+<div id="ref-elson_press_2014" class="csl-entry" role="listitem">
+Elson, M., Mohseni, M. R., Breuer, J., Scharkow, M., &amp; Quandt, T. (2014). Press <span>CRTT</span> to measure aggressive behavior: The unstandardized use of the competitive reaction time task in aggression research. <em>Psychological Assessment</em>, <em>26</em>(2), 419–432. <a href="https://doi.org/10.1037/a0035569">https://doi.org/10.1037/a0035569</a>
+</div>
+<div id="ref-gannon_blending_2019" class="csl-entry" role="listitem">
+Gannon, M. A., de Bragança Pereira, C. A., &amp; Polpo, A. (2019). Blending <span>Bayesian</span> and <span>Classical Tools</span> to <span>Define Optimal Sample-Size-Dependent Significance Levels</span>. <em>The American Statistician</em>, <em>73</em>(sup1), 213–222. <a href="https://doi.org/10.1080/00031305.2018.1518268">https://doi.org/10.1080/00031305.2018.1518268</a>
+</div>
+<div id="ref-ioannidis_why_2005" class="csl-entry" role="listitem">
+Ioannidis, J. P. A. (2005). Why <span>Most Published Research Findings Are False</span>. <em>PLoS Medicine</em>, <em>2</em>(8), e124. <a href="https://doi.org/10.1371/journal.pmed.0020124">https://doi.org/10.1371/journal.pmed.0020124</a>
+</div>
+<div id="ref-johnson_revised_2013" class="csl-entry" role="listitem">
+Johnson, V. E. (2013). Revised standards for statistical evidence. <em>Proceedings of the National Academy of Sciences</em>, <em>110</em>(48), 19313–19317. <a href="https://doi.org/10.1073/pnas.1313476110">https://doi.org/10.1073/pnas.1313476110</a>
+</div>
+<div id="ref-jostmann_short_2016" class="csl-entry" role="listitem">
+Jostmann, N. B., Lakens, D., &amp; Schubert, T. W. (2016). A short history of the weight-importance effect and a recommendation for pre-testing: <span>Commentary</span> on <span>Ebersole</span> et al. (2016). <em>Journal of Experimental Social Psychology</em>, <em>67</em>, 93–94. <a href="https://doi.org/10.1016/j.jesp.2015.12.001">https://doi.org/10.1016/j.jesp.2015.12.001</a>
+</div>
+<div id="ref-kennedy-shaffer_before_2019" class="csl-entry" role="listitem">
+Kennedy-Shaffer, L. (2019). Before p <span><span class="math inline">\(&lt;\)</span></span> 0.05 to <span>Beyond</span> p <span><span class="math inline">\(&lt;\)</span></span> 0.05: <span>Using History</span> to <span>Contextualize</span> p-<span>Values</span> and <span>Significance Testing</span>. <em>The American Statistician</em>, <em>73</em>(sup1), 82–90. <a href="https://doi.org/10.1080/00031305.2018.1537891">https://doi.org/10.1080/00031305.2018.1537891</a>
+</div>
+<div id="ref-kerr_harking_1998" class="csl-entry" role="listitem">
+Kerr, N. L. (1998). <span>HARKing</span>: <span>Hypothesizing After</span> the <span>Results</span> are <span>Known</span>. <em>Personality and Social Psychology Review</em>, <em>2</em>(3), 196–217. <a href="https://doi.org/10.1207/s15327957pspr0203_4">https://doi.org/10.1207/s15327957pspr0203_4</a>
+</div>
+<div id="ref-lakens_justify_2018" class="csl-entry" role="listitem">
+Lakens, D., Adolfi, F. G., Albers, C. J., Anvari, F., Apps, M. A. J., Argamon, S. E., Baguley, T., Becker, R. B., Benning, S. D., Bradford, D. E., Buchanan, E. M., Caldwell, A. R., Calster, B., Carlsson, R., Chen, S.-C., Chung, B., Colling, L. J., Collins, G. S., Crook, Z., … Zwaan, R. A. (2018). Justify your alpha. <em>Nature Human Behaviour</em>, <em>2</em>, 168–171. <a href="https://doi.org/10.1038/s41562-018-0311-x">https://doi.org/10.1038/s41562-018-0311-x</a>
+</div>
+<div id="ref-leamer_specification_1978" class="csl-entry" role="listitem">
+Leamer, E. E. (1978). <em>Specification <span>Searches</span>: <span>Ad Hoc Inference</span> with <span>Nonexperimental Data</span></em> (1 edition). <span>Wiley</span>.
+</div>
+<div id="ref-maier_justify_2022" class="csl-entry" role="listitem">
+Maier, M., &amp; Lakens, D. (2022). Justify your alpha: <span>A</span> primer on two practical approaches. <em>Advances in Methods and Practices in Psychological Science</em>. <a href="https://doi.org/10.31234/osf.io/ts4r6">https://doi.org/10.31234/osf.io/ts4r6</a>
+</div>
+<div id="ref-mayo_statistical_2018" class="csl-entry" role="listitem">
+Mayo, D. G. (2018). <em>Statistical inference as severe testing: How to get beyond the statistics wars</em>. <span>Cambridge University Press</span>.
+</div>
+<div id="ref-mudge_setting_2012" class="csl-entry" role="listitem">
+Mudge, J. F., Baker, L. F., Edge, C. B., &amp; Houlahan, J. E. (2012). Setting an <span>Optimal</span> <span><span class="math inline">\(\alpha\)</span></span> <span>That Minimizes Errors</span> in <span>Null Hypothesis Significance Tests</span>. <em>PLOS ONE</em>, <em>7</em>(2), e32734. <a href="https://doi.org/10.1371/journal.pone.0032734">https://doi.org/10.1371/journal.pone.0032734</a>
+</div>
+<div id="ref-neyman_inductive_1957" class="csl-entry" role="listitem">
+Neyman, J. (1957). "<span>Inductive Behavior</span>" as a <span>Basic Concept</span> of <span>Philosophy</span> of <span>Science</span>. <em>Revue de l’Institut International de Statistique / Review of the International Statistical Institute</em>, <em>25</em>(1/3), 7. <a href="https://doi.org/10.2307/1401671">https://doi.org/10.2307/1401671</a>
+</div>
+<div id="ref-neyman_problem_1933" class="csl-entry" role="listitem">
+Neyman, J., &amp; Pearson, E. S. (1933). On the problem of the most efficient tests of statistical hypotheses. <em>Philosophical Transactions of the Royal Society of London A: Mathematical, Physical and Engineering Sciences</em>, <em>231</em>(694-706), 289–337. <a href="https://doi.org/10.1098/rsta.1933.0009">https://doi.org/10.1098/rsta.1933.0009</a>
+</div>
+<div id="ref-perneger_whats_1998" class="csl-entry" role="listitem">
+Perneger, T. V. (1998). What’s wrong with <span>Bonferroni</span> adjustments. <em>Bmj</em>, <em>316</em>(7139), 1236–1238.
+</div>
+<div id="ref-uygun_tunc_epistemic_2021" class="csl-entry" role="listitem">
+Uygun Tunç, D., Tunç, M. N., &amp; Lakens, D. (2021). <em>The <span>Epistemic</span> and <span>Pragmatic Function</span> of <span>Dichotomous Claims Based</span> on <span>Statistical Hypothesis Tests</span></em>. <span>PsyArXiv</span>. <a href="https://doi.org/10.31234/osf.io/af9by">https://doi.org/10.31234/osf.io/af9by</a>
+</div>
+<div id="ref-wacholder_assessing_2004" class="csl-entry" role="listitem">
+Wacholder, S., Chanock, S., Garcia-Closas, M., El ghormli, L., &amp; Rothman, N. (2004). Assessing the <span>Probability That</span> a <span>Positive Report</span> is <span>False</span>: <span>An Approach</span> for <span>Molecular Epidemiology Studies</span>. <em>JNCI Journal of the National Cancer Institute</em>, <em>96</em>(6), 434–442. <a href="https://doi.org/10.1093/jnci/djh075">https://doi.org/10.1093/jnci/djh075</a>
+</div>
+<div id="ref-wagenmakers_practical_2007" class="csl-entry" role="listitem">
+Wagenmakers, E.-J. (2007). A practical solution to the pervasive problems of p values. <em>Psychonomic Bulletin &amp; Review</em>, <em>14</em>(5), 779–804. <a href="https://doi.org/10.3758/BF03194105">https://doi.org/10.3758/BF03194105</a>
+</div>
+</div>
+</section></section></main><!-- /main --><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script><script>
+
+/* update total correct if #webex-total_correct exists */
+update_total_correct = function() {
+  console.log("webex: update total_correct");
+
+  var t = document.getElementsByClassName("webex-total_correct");
+  for (var i = 0; i < t.length; i++) {
+    p = t[i].parentElement;
+    var correct = p.getElementsByClassName("webex-correct").length;
+    var solvemes = p.getElementsByClassName("webex-solveme").length;
+    var radiogroups = p.getElementsByClassName("webex-radiogroup").length;
+    var selects = p.getElementsByClassName("webex-select").length;
+
+    t[i].innerHTML = correct + " of " + (solvemes + radiogroups + selects) + " correct";
+  }
+}
+
+/* webex-solution button toggling function */
+b_func = function() {
+  console.log("webex: toggle hide");
+
+  var cl = this.parentElement.classList;
+  if (cl.contains('open')) {
+    cl.remove("open");
+  } else {
+    cl.add("open");
+  }
+}
+
+/* check answers */
+check_func = function() {
+  console.log("webex: check answers");
+
+  var cl = this.parentElement.classList;
+  if (cl.contains('unchecked')) {
+    cl.remove("unchecked");
+    this.innerHTML = "Hide Answers";
+  } else {
+    cl.add("unchecked");
+    this.innerHTML = "Show Answers";
+  }
+}
+
+/* function for checking solveme answers */
+solveme_func = function(e) {
+  console.log("webex: check solveme");
+
+  var real_answers = JSON.parse(this.dataset.answer);
+  var my_answer = this.value;
+  var cl = this.classList;
+  if (cl.contains("ignorecase")) {
+    my_answer = my_answer.toLowerCase();
+  }
+  if (cl.contains("nospaces")) {
+    my_answer = my_answer.replace(/ /g, "")
+  }
+
+  if (my_answer == "") {
+    cl.remove("webex-correct");
+    cl.remove("webex-incorrect");
+  } else if (real_answers.includes(my_answer)) {
+    cl.add("webex-correct");
+    cl.remove("webex-incorrect");
+  } else {
+    cl.add("webex-incorrect");
+    cl.remove("webex-correct");
+  }
+
+  // match numeric answers within a specified tolerance
+  if(this.dataset.tol > 0){
+    var tol = JSON.parse(this.dataset.tol);
+    var matches = real_answers.map(x => Math.abs(x - my_answer) < tol)
+    if (matches.reduce((a, b) => a + b, 0) > 0) {
+      cl.add("webex-correct");
+    } else {
+      cl.remove("webex-correct");
+    }
+  }
+
+  // added regex bit
+  if (cl.contains("regex")){
+    answer_regex = RegExp(real_answers.join("|"))
+    if (answer_regex.test(my_answer)) {
+      cl.add("webex-correct");
+    }
+  }
+
+  update_total_correct();
+}
+
+/* function for checking select answers */
+select_func = function(e) {
+  console.log("webex: check select");
+
+  var cl = this.classList
+
+  /* add style */
+  cl.remove("webex-incorrect");
+  cl.remove("webex-correct");
+  if (this.value == "answer") {
+    cl.add("webex-correct");
+  } else if (this.value != "blank") {
+    cl.add("webex-incorrect");
+  }
+
+  update_total_correct();
+}
+
+/* function for checking radiogroups answers */
+radiogroups_func = function(e) {
+  console.log("webex: check radiogroups");
+
+  var checked_button = document.querySelector('input[name=' + this.id + ']:checked');
+  var cl = checked_button.parentElement.classList;
+  var labels = checked_button.parentElement.parentElement.children;
+
+  /* get rid of styles */
+  for (i = 0; i < labels.length; i++) {
+    labels[i].classList.remove("webex-incorrect");
+    labels[i].classList.remove("webex-correct");
+  }
+
+  /* add style */
+  if (checked_button.value == "answer") {
+    cl.add("webex-correct");
+  } else {
+    cl.add("webex-incorrect");
+  }
+
+  update_total_correct();
+}
+
+window.onload = function() {
+  console.log("webex onload");
+  /* set up solution buttons */
+  var buttons = document.getElementsByTagName("button");
+
+  for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].parentElement.classList.contains('webex-solution')) {
+      buttons[i].onclick = b_func;
+    }
+  }
+
+  var check_sections = document.getElementsByClassName("webex-check");
+  console.log("check:", check_sections.length);
+  for (var i = 0; i < check_sections.length; i++) {
+    check_sections[i].classList.add("unchecked");
+
+    let btn = document.createElement("button");
+    btn.innerHTML = "Show Answers";
+    btn.classList.add("webex-check-button");
+    btn.onclick = check_func;
+    check_sections[i].appendChild(btn);
+
+    let spn = document.createElement("span");
+    spn.classList.add("webex-total_correct");
+    check_sections[i].appendChild(spn);
+  }
+
+  /* set up webex-solveme inputs */
+  var solveme = document.getElementsByClassName("webex-solveme");
+
+  for (var i = 0; i < solveme.length; i++) {
+    /* make sure input boxes don't auto-anything */
+    solveme[i].setAttribute("autocomplete","off");
+    solveme[i].setAttribute("autocorrect", "off");
+    solveme[i].setAttribute("autocapitalize", "off");
+    solveme[i].setAttribute("spellcheck", "false");
+    solveme[i].value = "";
+
+    /* adjust answer for ignorecase or nospaces */
+    var cl = solveme[i].classList;
+    var real_answer = solveme[i].dataset.answer;
+    if (cl.contains("ignorecase")) {
+      real_answer = real_answer.toLowerCase();
+    }
+    if (cl.contains("nospaces")) {
+      real_answer = real_answer.replace(/ /g, "");
+    }
+    solveme[i].dataset.answer = real_answer;
+
+    /* attach checking function */
+    solveme[i].onkeyup = solveme_func;
+    solveme[i].onchange = solveme_func;
+
+    $(solveme[i]).after(" <span class='webex-icon'></span>");
+  }
+
+  /* set up radiogroups */
+  var radiogroups = document.getElementsByClassName("webex-radiogroup");
+  for (var i = 0; i < radiogroups.length; i++) {
+    radiogroups[i].onchange = radiogroups_func;
+  }
+
+  /* set up selects */
+  var selects = document.getElementsByClassName("webex-select");
+  for (var i = 0; i < selects.length; i++) {
+    selects[i].onchange = select_func;
+    $(selects[i]).after(" <span class='webex-icon'></span>");
+  }
+
+  update_total_correct();
+}
+
+</script><script>
+// open rdrr links externally ----
+
+var exlinks = document.querySelectorAll("a[href^='https://rdrr.io']");
+var exlink_func = function(){
+  window.open(this.href);
+  return false;
+};
+for (var i = 0; i < exlinks.length; i++) {
+    exlinks[i].addEventListener('click', exlink_func, false);
+}
+
+// visible second sidebar in mobile ----
+
+function move_sidebar() {
+  var toc = document.getElementById("TOC");
+  var small_sidebar = document.querySelector("#quarto-sidebar .sidebar-menu-container");
+  var right_sidebar = document.getElementById("quarto-margin-sidebar");
+
+  if (window.innerWidth < 768) {
+    small_sidebar.append(toc);
+  } else {
+    right_sidebar.append(toc);
+  }
+}
+move_sidebar();
+window.onresize = move_sidebar;
+</script><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./01-pvalue.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Using <em>p</em>-values to test a hypothesis</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./03-likelihoods.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Likelihoods</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">Lakens, D. (2022). Improving Your Statistical Inferences. Retrieved from https://lakens.github.io/statistical_inferences/. https://doi.org/10.5281/zenodo.6409077</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+</body></html>
