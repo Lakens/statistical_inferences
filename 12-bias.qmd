@@ -1,6 +1,8 @@
 # Bias detection {#sec-bias}
 
 ```{r, include = FALSE}
+library(metafor)
+library(truncnorm)
 # add TES in metafor
 # add why multiple high p-values are surprising.
 # https://daniellakens.blogspot.com/2015/05/after-how-many-p-values-between-0025.html
@@ -11,9 +13,8 @@ Bias can be introduced throughout the research process. It is useful to prevent 
 
 At the most extreme end of practices that introduce bias into scientific research is **research misconduct**: Making up data or results, or changing or omitting data or results such that the research isn’t accurately represented in the research record. For example, [Andrew Wakefield](https://en.wikipedia.org/wiki/Andrew_Wakefield) authored a fraudulent paper in 1998 that claimed a link between the measles, mumps, and rubella (MMR) vaccine and autism. It was retracted in 2010, but only after it caused damage to trust in vaccines among some parts of the general population. Another example from psychology concerned a study by [James Vicary](https://en.wikipedia.org/wiki/James_Vicary) on subliminal priming. He claimed to have found that by flashing 'EAT POPCORN' and 'DRINK COCA-COLA' subliminally during a movie screen in a cinema, the sales of popcorn and Coca-Cola had increased with 57.5 and 18.1 percent, respectively. However, it was later found that Vicary most likely committed scientific fraud, as there was no evidence that the study was ever performed [@rogers_how_1992]. The website Retraction Watch maintains a [database](http://retractiondatabase.org) that tracks reasons why scientific papers are retracted, including data fabrication. It is unknown how often data fabrication occurs in practice, but as discussed in the chapter on [research integrity](#sec-integrity), we should expect that at least a small percentage of scientists have fabricated, falsified or modified data or results at least once.
 
-(ref:outlierlab) Scene in The Dropout about the company Theranos that falsely claimed to have devices that could perform blood tests on very small amounts of blood. In the scene, two whistleblowers confront their bosses when they are pressured to remove datapoints that do not show the desired results.
-
-```{r outliers, echo = FALSE, fig.cap="(ref:outlierlab)"}
+```{r fig-outliers, echo = FALSE}
+#| fig-cap: "Scene in The Dropout about the company Theranos that falsely claimed to have devices that could perform blood tests on very small amounts of blood. In the scene, two whistleblowers confront their bosses when they are pressured to remove datapoints that do not show the desired results."
 
 if (knitr:::is_latex_output()) {
   knitr::include_graphics("images/dropout_outlier.png")
@@ -22,16 +23,14 @@ if (knitr:::is_latex_output()) {
 }
 ```
 
-
 A different category of mistakes are statistical reporting errors, which range from reporting incorrect degrees of freedom, to reporting *p* = 0.056 as *p* < 0.05 [@nuijten_prevalence_2015]. Although we should do our best to prevent errors, everyone makes them, and data and code sharing become more common, it will become easier to detect errors in the work of other researchers. As Dorothy Bishop [-@bishop_fallibility_2018] writes: "As open science becomes increasingly the norm, we will find that everyone is fallible. The reputations of scientists will depend not on whether there are flaws in their research, but on how they respond when those flaws are noted."
 
 [Statcheck](http://statcheck.io/) is software that automatically extracts statistics from articles and recomputes their *p*-values, as long as statistics are reported following guidelines from the American Psychological Association (APA). It checks if the reported statistics are internally consistent: Given the test statistics and degrees of freedom, is the reported *p*-value accurate? If it is, that makes it less likely that you have made a mistake (although it does not prevent coherent mistakes!) and if it is not, you should check if all the information in your statistical test is accurate. Statcheck is not perfect, and it will make Type 1 errors where it flags something as an error when it actually is not, but it is an easy to use tool to check your articles before you submit them for publication. 
 
 Some inconsistencies in data are less easy to automatically detect, but can be identified manually. For example, @brown_grim_2017 show that many papers report means that are not possible given the sample size (known as the [*GRIM* test](http://nickbrown.fr/GRIM)). For example, Matti Heino noticed in a [blog post](https://mattiheino.com/2016/11/13/legacy-of-psychology/) that three of the reported means in the table in a classic study by Festinger and Carlsmith are mathematically impossible. With 20 observations per condition, and a scale from -5 to 5, all means should end in a multiple of 1/20, or 0.05. The three means ending in X.X8 or X.X2 are not consistent with the reported sample size and scale. Of course, such inconsistencies can be due to failing to report that there was missing data for some of the questions, but the GRIM test has also been used to uncover [scientific misconduct](https://en.wikipedia.org/wiki/GRIM_test). 
 
-(ref:festingerlab) Screenshot of the table reporting the main results from Festinger and Carlsmith, 1959.
-
-```{r festinger, echo = FALSE, fig.cap="(ref:festingerlab)"}
+```{r fig-festinger, echo = FALSE, fig.cap="(ref:festingerlab)"}
+#| fig-cap: "Screenshot of the table reporting the main results from Festinger and Carlsmith, 1959."
 knitr::include_graphics("images/festinger_carlsmith.png")
 ```
 
@@ -45,7 +44,7 @@ Publication bias is one of the biggest challenges that science faces. **Publicat
 knitr::include_graphics("images/greenwald.png")
 ```
 
-Publication bias can only be fixed by making all your research results available to fellow scientists, irrespective of the *p*-value of the main hypothesis test. Registered Reports are one way to combat publication bias, as this type of scientific article is reviewed based on the introduction, method, and statistical analysis plan, before the data is collected [@chambers_past_2022; @nosek_registered_2014]. After peer review by experts in the field, who might suggest improvements to the design and analysis, the article can get an 'in principle acceptance', which means that as long as the research plan is followed, the article will be published, regardless of the results. This should facilitate the publication of null results, and as shown in fig-scheel, an analysis of the first published Registered Reports in psychology revealed that 31 out of 71 (44%) articles observed positive results, compared to 146 out of 152 (96%) of comparable standard scientific articles published during the same time period [@scheel_excess_2021].
+Publication bias can only be fixed by making all your research results available to fellow scientists, irrespective of the *p*-value of the main hypothesis test. Registered Reports are one way to combat publication bias, as this type of scientific article is reviewed based on the introduction, method, and statistical analysis plan, before the data is collected [@chambers_past_2022; @nosek_registered_2014]. After peer review by experts in the field, who might suggest improvements to the design and analysis, the article can get an 'in principle acceptance', which means that as long as the research plan is followed, the article will be published, regardless of the results. This should facilitate the publication of null results, and as shown in @fig-scheel, an analysis of the first published Registered Reports in psychology revealed that 31 out of 71 (44%) articles observed positive results, compared to 146 out of 152 (96%) of comparable standard scientific articles published during the same time period [@scheel_excess_2021].
 
 ```{r fig-scheel, echo = FALSE, out.width  = '75%'}
 #| fig-cap: "Positive result rates for standard reports and Registered Reports. Error bars indicate 95% confidence intervals around the observed positive result rate."
@@ -150,9 +149,6 @@ points(x = result$b[1], y = 0, cex = 1.5, pch = 17) # add point
 Let’s start by looking at what unbiased research looks like, by running the code, keeping `pub.bias` at 0.05, such that only 5% Type 1 errors enter the scientific literature.
 
 ```{r metasim1, echo = FALSE}
-library(metafor)
-library(truncnorm)
-
 set.seed(52)
 nsims <- 100 # number of simulated experiments
 pub.bias <- 0.05 # set percentage of significant results in the literature
@@ -862,6 +858,8 @@ cat(longmcq(opts_p))
 **Q6**: The true effect size in the studies simulated in Q2 is 0 - there is no true effect. Which statement about the *z*-curve analysis below is true? 
 
 ```{r fig-zcurveq6, cache = TRUE, echo = FALSE}
+#| fig-cap: "Result of the z-curve analysis of the biased studies in Q2."
+
 # Perform the z-curve analysis using the z-curve package
 z_res <- zcurve::zcurve(p = metadata$pvalues, method = "EM", bootstrap = 1000)
 par(bg = backgroundcolor)
