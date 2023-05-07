@@ -328,8 +328,8 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
 <span id="cb1-5"><a href="#cb1-5"></a></span>
 <span id="cb1-6"><a href="#cb1-6"></a><span class="co"># plot data adding normal distribution and annotations</span></span>
 <span id="cb1-7"><a href="#cb1-7"></a><span class="fu">ggplot</span>(<span class="fu">as.data.frame</span>(x), <span class="fu">aes</span>(x)) <span class="sc">+</span></span>
-<span id="cb1-8"><a href="#cb1-8"></a>  <span class="fu">geom_histogram</span>(<span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="st">"grey"</span>, <span class="fu">aes</span>(<span class="at">y =</span> ..density..), <span class="at">binwidth =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb1-9"><a href="#cb1-9"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dnorm, <span class="at">args =</span> <span class="fu">c</span>(<span class="at">mean =</span> <span class="dv">100</span>, <span class="at">sd =</span> <span class="dv">15</span>), <span class="at">size =</span> <span class="dv">1</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a>  <span class="fu">geom_histogram</span>(<span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="st">"grey"</span>, <span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density)), <span class="at">binwidth =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dnorm, <span class="at">args =</span> <span class="fu">c</span>(<span class="at">mean =</span> <span class="dv">100</span>, <span class="at">sd =</span> <span class="dv">15</span>), <span class="at">linewidth =</span> <span class="dv">1</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
 <span id="cb1-10"><a href="#cb1-10"></a>  <span class="fu">xlab</span>(<span class="st">"IQ"</span>) <span class="sc">+</span></span>
 <span id="cb1-11"><a href="#cb1-11"></a>  <span class="fu">ylab</span>(<span class="st">"number of people"</span>) <span class="sc">+</span></span>
 <span id="cb1-12"><a href="#cb1-12"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">20</span>) <span class="sc">+</span></span>
@@ -339,14 +339,6 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
 <span id="cb1-16"><a href="#cb1-16"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fu">mean</span>(x), <span class="at">y =</span> <span class="fl">0.02</span>, <span class="at">label =</span> <span class="fu">paste</span>(<span class="st">"Mean = "</span>, <span class="fu">round</span>(<span class="fu">mean</span>(x)), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>, <span class="st">"SD = "</span>, <span class="fu">round</span>(<span class="fu">sd</span>(x)), <span class="at">sep =</span> <span class="st">""</span>), <span class="at">size =</span> <span class="dv">8</span>) <span class="sc">+</span> </span>
 <span id="cb1-17"><a href="#cb1-17"></a>  <span class="fu">theme</span>(<span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#fffafa"</span>)) <span class="sc">+</span> </span>
 <span id="cb1-18"><a href="#cb1-18"></a>  <span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#fffafa"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-ℹ Please use `linewidth` instead.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: The dot-dot notation (`..density..`) was deprecated in ggplot2 3.4.0.
-ℹ Please use `after_stat(density)` instead.</code></pre>
-</div>
 <div class="cell-output-display">
 <div id="fig-plot-hist-iq-1" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="11-meta_files/figure-html/fig-plot-hist-iq-1-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
@@ -357,6 +349,10 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
 </div>
 <p>The plot above provides one example of a randomly simulated dataset of 10 points drawn from a normal distribution with a mean of 100 and a standard deviation of 15. The grey bars indicate the frequency with which each IQ score was observed. The red dotted line illustrates the normal distribution based on the mean and sd of the population. Both the observed mean (97; thin vertical dashed line), as well as the observed standard deviation (14), differ from the true population values. If we simulate 4 additional datasets, we see both the mean and the standard deviation vary.</p>
 <div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: The dot-dot notation (`..density..`) was deprecated in ggplot2 3.4.0.
+ℹ Please use `after_stat(density)` instead.</code></pre>
+</div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="11-meta_files/figure-html/sim-4-iq-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
@@ -367,6 +363,10 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
 <p>Imagine we did not yet know what the mean IQ was in our population (where <em>M</em> = 100), or the standard deviation (where <em>SD</em> = 15), and that we would only have access to one dataset. Our estimate might be rather far off. This type of variation is to be expected in small samples of 10 participants, given the true standard deviation. The variability in the mean is determined by the standard deviation of the measurement. In real life, the standard deviation can be reduced by for example using multiple and reliable measurements (which is why an IQ test has not just one question, but many different questions). But we can also make sure our sample mean is closer to the population mean by increasing the sample size.</p>
 <p>A new simulated sample with 100 participants is plotted below. We are slowly seeing what is known as the <strong>normal distribution</strong> (and the frequency scores start to resemble the red dotted line illustrating the normal distribution of the population). This is the well-known bell shaped curve that represents the distribution of many variables in scientific research (although some other types of distributions are quite common as well). The mean and standard deviation are much closer to the true mean and standard deviation, and this is true for most of the simulated samples if you set n &lt;- 100 in the code above and run additional simulations.</p>
 <div class="cell" data-layout-align="center" data-fig.margin="false">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+ℹ Please use `linewidth` instead.</code></pre>
+</div>
 <div class="cell-output-display">
 <div id="fig-plot-hist-iq-2" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="11-meta_files/figure-html/fig-plot-hist-iq-2-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
