@@ -36,7 +36,7 @@ knitr::include_graphics("images/festinger_carlsmith.png")
 
 ## Publication bias {#sec-publicationbias}
 
-Publication bias is one of the biggest challenges that science faces. **Publication bias** is the practice of selectively submitting and publishing scientific research, often based on whether or not the results are ‘statistically significant’ or not. The scientific literature is dominated by these statistically significant results. At the same time, we know that many studies researchers perform do not yield significant results. When scientists only have access to significant results, but not to all results, they are lacking a complete overview of the evidence for a hypothesis. In extreme cases, selective reporting can lead to a situation where there are hundreds of statistically significant results in the published literature, but no true effect because there are even more non-significant studies that are not shared. This is known as the **file-drawer problem**, when non-significant results are hidden away in file-drawers (or nowadays, folders on your computer) and not available to the scientific community. Every scientist should work towards solving publication bias, because it is extremely difficult to learn what is likely to be true as long as scientists do not share all their results, and because, as Greenwald [-@greenwald_consequences_1975] notes, it is an ethical violation. 
+Publication bias is one of the biggest challenges that science faces. **Publication bias** is the practice of selectively submitting and publishing scientific research, often based on whether or not the results are ‘statistically significant’ or not. The scientific literature is dominated by these statistically significant results. In 1959 Sterling [-@sterling_publication_1959] counted how many hypothesis tests in 4 journals in psychology yielded significant results, and found that 286 out of 294 articles examined (i.e., 97%) rejected the null hypothesis with a statistically significant result. At the same time, we know that many studies researchers perform do not yield significant results. When scientists only have access to significant results, but not to all results, they are lacking a complete overview of the evidence for a hypothesis. In extreme cases, selective reporting can lead to a situation where there are hundreds of statistically significant results in the published literature, but no true effect because there are even more non-significant studies that are not shared. This is known as the **file-drawer problem**, when non-significant results are hidden away in file-drawers (or nowadays, folders on your computer) and not available to the scientific community. Every scientist should work towards solving publication bias, because it is extremely difficult to learn what is likely to be true as long as scientists do not share all their results, and because, as Greenwald [-@greenwald_consequences_1975] notes, it is an ethical violation. 
 
 ```{r fig-greenwald, echo = FALSE, out.width  = '100%'}
 #| fig-cap: "Screenshot of the final sentences of Greenwald, A. G. (1975). Consequences of prejudice against the null hypothesis. Psychological Bulletin, 82(1), 1–20."
@@ -319,15 +319,50 @@ abline(v = result.biased$b[1], lty = "dashed") #  vertical line at meta-analytic
 points(x = result.biased$b[1], y = 0, cex = 1.5, pch = 17) # add point
 ```
 
-One might wonder if such extreme bias ever really emerges in scientific research. It does. In fig-carterbias we see a funnel plot by @carter_publication_2014 who examined bias in 198 published studies testing the 'ego-depletion' effect, the idea that self-control relies on a limited resource. Do you notice any similarities to the extremely biased meta-analysis we simulated above? You might not be surprised that, even though before 2015 researchers thought there was a large and reliable literature demonstrating ego-depletion effects, a Registered Replication report yielded a non-significant effect size estimate [@hagger_multilab_2016], and even when the original researchers tried to replicate their own work, they failed to observe a significant effect of ego-depletion [@vohs_multisite_2021]. Imagine the huge amount of wasted time, effort, and money on a literature that was completely based on bias in scientific research. Obviously, such research waste has ethical implications, and researchers need to take responsibility for preventing such waste in the future.
+One might wonder if such extreme bias ever really emerges in scientific research. It does. In @fig-carterbias we see a funnel plot by @carter_publication_2014 who examined bias in 198 published studies testing the 'ego-depletion' effect, the idea that self-control relies on a limited resource. Using bias detecting techniques such as [PET-PEESE meta-regression](#sec-whichpexpect) they concluded based on the unbiased effect size estimated by PET (*d* = -0.1, which did not differ statistically from 0) that the true unbiased effect size might be *d* = 0, even though the meta-analytic effect size estimate without correcting for bias was *d* = 0.68. Do you notice any similarities to the extremely biased meta-analysis we simulated above? You might not be surprised that, even though before 2015 researchers thought there was a large and reliable literature demonstrating ego-depletion effects, a Registered Replication report yielded a non-significant effect size estimate [@hagger_multilab_2016], and even when the original researchers tried to replicate their own work, they failed to observe a significant effect of ego-depletion [@vohs_multisite_2021]. Imagine the huge amount of wasted time, effort, and money on a literature that was completely based on bias in scientific research. Obviously, such research waste has ethical implications, and researchers need to take responsibility for preventing such waste in the future.
 
 ```{r fig-carterbias, echo = FALSE}
-#| fig-cap: "Funnel plot from Carter and McCullough (2014) vizualizing bias in 198 published tests of the ego-depletion effect."
+#| fig-cap: "Funnel plot from Carter and McCullough (2014) vizualizing bias in 198 published tests of the ego-depletion effect, including PET-PEESE bias-corrected effect size estimates."
 
-knitr::include_graphics("images/carterfunnel.png")
+d.all<-c(0.88,1.62,1.79,1.9,0.76,0.59,0.56,0.53,0.95,0.59,0.55,0.64,0.61,0.47,0.91,0.45,0.59,0.73,0.94,1.12,0.96,0.37,0.66,0.67,0.92,0.52,0.68,0.59,1.18,0.77,1.16,0.57,0.38,0.91,0.81,0.79,0.66,0.9,1.41,0.65,0.46,0.62,0.62,0.77,0.62,0.65,0.84,0.86,0.34,0.31,0.37,0.99,0.92,0.73,0.46,0.89,0.4,0.38,0.99,0.49,0.59,0.83,0.28,0.62,0.7,1.83,0.52,1.12,0.66,0.73,0.46,0.12,1.68,0.84,0.66,0.94,0.69,0.55,1,0.18,0.53,0.58,0.7,0.72,0.42,0.58,0.9,0.71,0.85,0.66,0.53,3.02,1.14,0.6,0.11,0.59,0.47,0.7,0.6,0.62,0.59,0.64,0.75,0.57,0.84,1.08,0.59,0.98,1.53,0.44,0.56,0.29,0.18,0.36,0.25,0.15,1.42,0.79,0.93,0.91,0.95,0.45,0.52,0.51,0.08,0.68,0.53,0.85,0.61,0.75,1.61,0.43,0.9,0.41,0.47,0.65,0.67,0.19,0.47,0.02,0.04,0.82,0.6,1.2,0.61,0.83,1.07,0.97,1.36,0.58,1.56,0.99,1.36,1.22,2.6,0.44,1.19,0.58,0.64,1.59,1.06,0.8,0.63,0.7,0.79,1.34,1.01,0.98,0.99,0.84,0.93,0.73,0.96,1.27,1.38,1.4,0.77,0.76,1.07,0.76,1.13,1.25,1.27,0.77,1.11,0.95,1.73,0.9,0.3,0.13,0.34,-0.11,0.21,0.21,-0.57,0.65,0.65,0.56)
+n1.all<-c(20,20,22,10,15,42,25,34,14,22,45,22,21,36,11,39,30,19,12,14,15,73,17,27,26,49,20,30,23,19,54,50,23,13,27,23,16,15,8,50,49,28,26,15,25,28,18,24,35,24,16,14,11,31,37,20,49,127,10,34,29,10,10,29,28,12,24,16,21,33,36,26,18,21,31,54,41,20,19,50,30,34,19,17,33,42,39,13,28,21,29,8,24,15,80,23,17,19,22,21,12,30,17,26,18,36,37,19,20,45,32,142,251,53,32,81,9,30,16,17,15,38,31,29,29,15,32,25,30,36,12,19,18,37,28,42,28,51,19,20,17,30,31,23,24,15,17,15,15,30,30,20,10,10,10,10,20,34,29,15,30,17,29,36,16,15,15,13,13,20,20,24,18,35,20,9,14,18,24,24,12,13,14,25,21,16,14,34,23,23,26,24,18,19,26,26,33,40)
+n2.all<-c(20,20,22,10,15,42,24,34,13,22,44,22,21,36,11,39,30,18,12,14,15,73,16,26,25,48,19,30,23,18,54,50,23,13,27,23,16,14,8,50,48,28,26,15,24,28,18,24,34,24,16,13,10,31,36,20,49,45,9,33,28,9,9,28,27,12,22,16,20,33,36,24,15,21,30,53,40,19,18,49,29,34,18,16,26,42,39,12,28,20,29,8,24,15,80,23,17,19,21,20,12,30,17,23,14,35,36,19,20,40,25,142,250,52,32,81,13,30,16,17,15,41,31,32,32,15,33,25,29,36,12,18,18,36,27,41,29,50,21,20,16,30,31,22,69,30,16,15,15,30,30,20,10,10,10,10,20,34,29,15,30,17,28,35,16,15,15,12,13,20,20,40,17,35,20,9,14,18,24,23,11,12,13,25,21,15,14,34,25,23,23,23,18,18,27,27,32,40)
+d.v.all<-(((n1.all+n2.all)/(n1.all*n2.all))+(d.all^2/(2*(n1.all+n2.all))))
+d.se.all<-sqrt(d.v.all)
+
+
+# Combine meta-analytic data
+metadata.carter <- cbind(d.all, d.v.all, d.se.all)
+
+#Perform meta-analysis
+result.carter <- metafor::rma(d.all, d.v.all, data = metadata.carter)
+
+
+# PET PEESE code below is adapted from Joe Hilgard: https://github.com/Joe-Hilgard/PETPEESE/blob/master/PETPEESE_functions.R
+# PET
+PET <- metafor::rma(yi = d.all, sei = d.se.all, mods = ~d.se.all, data = metadata.carter, method = "FE")
+# PEESE
+PEESE <- metafor::rma(yi = d.all, sei = d.se.all, mods = ~I(d.se.all^2), data = metadata.carter, method = "FE")
+# Funnel Plot 
+par(bg = backgroundcolor)
+metafor::funnel(result.carter, level = 0.95, refline = 0, main = paste("FE d =", round(result.carter$b[1],2),"PET d =", round(PET$b[1],2),"PEESE d =", round(PEESE$b[1],2)))
+abline(v = result.carter$b[1], lty = "dashed") #draw vertical line at meta-analytic effect size estimate
+points(x = result.carter$b[1], y = 0, cex = 1.5, pch = 17) #draw point at meta-analytic effect size estimate
+# PEESE line and point
+sei <- (seq(0, max(sqrt(result.carter$vi)), .001))
+vi <- sei^2
+yi <- PEESE$b[1] + PEESE$b[2]*vi
+grid <- data.frame(yi, vi, sei)
+lines(x = grid$yi, y = grid$sei, typ = 'l') # add line for PEESE
+points(x = (PEESE$b[1]), y = 0, cex = 1.5, pch = 5) # add point estimate for PEESE
+# PET line and point
+abline(a = -PET$b[1]/PET$b[2], b = 1/PET$b[2]) # add line for PET
+points(x = PET$b[1], y = 0, cex = 1.5) # add point estimate for PET
+segments(x0 = PET$ci.lb[1], y0 = 0, x1 = PET$ci.ub[1], y1 = 0, lty = "dashed") #Add 95% CI around PET
+
 ```
 
-We can also see signs of bias in the forest plot for a meta-analysis. In fig-twoforestplot, two forest plots are plotted side by side. The left forest plot is based on unbiased data, the right forest plot is based on biased data. The forest plots are a bit big with 100 studies, but we see that in the left forest plot, the effects randomly vary around 0 as they should. On the right, beyond the first four studies, all confidence intervals magically just exclude an effect of 0.  
+We can also see signs of bias in the forest plot for a meta-analysis. In @fig-twoforestplot, two forest plots are plotted side by side. The left forest plot is based on unbiased data, the right forest plot is based on biased data. The forest plots are a bit big with 100 studies, but we see that in the left forest plot, the effects randomly vary around 0 as they should. On the right, beyond the first four studies, all confidence intervals magically just exclude an effect of 0.  
 
 ```{r fig-twoforestplot, echo = FALSE, fig.width=5, fig.height=15}
 #| fig-cap: "Forest plot of unbiased meta-analysis (left) and biased meta-analysies (right)."
@@ -361,7 +396,7 @@ points(x = result.trimfill$b[1], y = 0, cex = 1.5, pch = 16) # add point
 
 Trim-and-fill is not very good under many realistic publication bias scenarios. The method is criticized for its reliance on the strong assumption of symmetry in the funnel plot. When publication bias is based on the *p*-value of the study (arguably the most important source of publication bias in many fields) the trim-and-fill method does not perform well enough to yield a corrected meta-analytic effect size estimate that is close to the true effect size [@peters_performance_2007; @terrin_adjusting_2003]. When the assumptions are met, it can be used as a **sensitivity analysis.** Researchers should not report the trim-and-fill corrected effect size estimate as a realistic estimate of the unbiased effect size. If other bias-detection tests (like *p*-curve or *z*-curve discussed below) have already indicated the presence of bias, the trim-and-fill procedure might not provide additional insights. 
 
-## PET-PEESE  
+## PET-PEESE {#sec-petpeese}
 
 A novel class of solutions to publication bias is **meta-regression**. Instead of plotting a line through individual data-points, in meta-regression a line is plotted through data points that each represent a study. As with normal regression, the more data meta-regression is based on, the more precise the estimate is and, therefore, the more studies in a meta-analysis, the better meta-regression will work in practice. If the number of studies is small, all bias detection tests lose power, and this is something that one should keep in mind when using meta-regression. Furthermore, regression requires sufficient variation in the data, which in the case of meta-regression means a wide range of sample sizes (recommendations indicate meta-regression performs well if studies have a range from 15 to 200 participants in each group – which is not typical for most research areas in psychology). Meta-regression techniques try to estimate the population effect size if precision was perfect (so when the standard error = 0).  
 

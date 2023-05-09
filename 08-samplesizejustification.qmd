@@ -464,7 +464,7 @@ The two main reasons researchers should be careful when using effect sizes from 
 But even if we had access to all effect sizes (e.g., from pilot studies you have performed yourself) due to random variation the observed effect size will sometimes be quite small. @fig-followupbias shows it is quite likely to observe an effect of $\eta_p^2$ = 0.01 in a small pilot study, even when the true effect size is 0.0588. Entering an effect size estimate of $\eta_p^2$ = 0.01 in an a-priori power analysis would suggest a total sample size of 957 observations to achieve 80% power in a follow-up study. If researchers only follow up on pilot studies when they observe an effect size in the pilot study that, when entered into a power analysis, yields a sample size that is feasible to collect for the follow-up study, these effect size estimates will be upwardly biased, and power in the follow-up study will be systematically lower than desired [@albers_when_2018]. 
 
 
-```{r fig-followupbias, echo = FALSE, cache = TRUE}
+```{r fig-followupbias, echo = FALSE, echo = FALSE}
 #| fig-cap: "Distribution of partial eta squared under the null hypothesis (dotted grey curve) and a medium true effect of 0.0588 (solid black curve) for 3 groups with 25 observations."
 N <- 25
 J <- 3
@@ -496,7 +496,7 @@ eta_pop_crit <- (crit_f * df1) / (crit_f * df1 + df2)
 
 # Add Type II error rate
 ncp <- Ntot / (1 / eta_pop - 1)
-curve(eta_pop_dist, 0.00000000001, 1, n = 10000, col = "black", lwd = 3, add = TRUE)
+suppressWarnings(curve(eta_pop_dist, 0.00000000001, 1, n = 10000, col = "black", lwd = 3, add = TRUE))
 y <- seq(0.00000000001, eta_pop_crit, length = 10000)
 z <- df((y * df2) / (df1 - y * df1), df1, df2, ncp) # determine upperbounds polygon
 polygon(c(y, eta_pop_crit, eta_pop_crit), c(0, z, 0), col = rgb(0.7, 0.7, 0.7, 0.5), lwd = 3)
@@ -507,7 +507,7 @@ ncp <- 0
 x <- seq(eta_pop_crit, xmax, length = 10000)
 z <- df((x * df2) / (df1 - x * df1), df1, df2) # determine upperbounds polygon (ERROR SOMEWHERE HERE? Dark grey area for Type I error not showing on Figure 8.6; sorry the plotting is a bit beyond me so I cannot correct this)
 polygon(c(eta_pop_crit, x, 1), c(0, z, 0), col = rgb(0.3, 0.3, 0.3, 0.5)) # draw polygon
-curve(eta_pop_dist, 0.00000000001, 1, n = 10000, col = "grey33", lwd = 3, lty = 5, add = TRUE)
+suppressWarnings(curve(eta_pop_dist, 0.00000000001, 1, n = 10000, col = "grey33", lwd = 3, lty = 5, add = TRUE))
 
 
 ```
