@@ -349,10 +349,6 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
 </div>
 <p>The plot above provides one example of a randomly simulated dataset of 10 points drawn from a normal distribution with a mean of 100 and a standard deviation of 15. The grey bars indicate the frequency with which each IQ score was observed. The red dotted line illustrates the normal distribution based on the mean and sd of the population. Both the observed mean (97; thin vertical dashed line), as well as the observed standard deviation (14), differ from the true population values. If we simulate 4 additional datasets, we see both the mean and the standard deviation vary.</p>
 <div class="cell" data-layout-align="center">
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: The dot-dot notation (`..density..`) was deprecated in ggplot2 3.4.0.
-ℹ Please use `after_stat(density)` instead.</code></pre>
-</div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="11-meta_files/figure-html/sim-4-iq-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
@@ -363,10 +359,6 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
 <p>Imagine we did not yet know what the mean IQ was in our population (where <em>M</em> = 100), or the standard deviation (where <em>SD</em> = 15), and that we would only have access to one dataset. Our estimate might be rather far off. This type of variation is to be expected in small samples of 10 participants, given the true standard deviation. The variability in the mean is determined by the standard deviation of the measurement. In real life, the standard deviation can be reduced by for example using multiple and reliable measurements (which is why an IQ test has not just one question, but many different questions). But we can also make sure our sample mean is closer to the population mean by increasing the sample size.</p>
 <p>A new simulated sample with 100 participants is plotted below. We are slowly seeing what is known as the <strong>normal distribution</strong> (and the frequency scores start to resemble the red dotted line illustrating the normal distribution of the population). This is the well-known bell shaped curve that represents the distribution of many variables in scientific research (although some other types of distributions are quite common as well). The mean and standard deviation are much closer to the true mean and standard deviation, and this is true for most of the simulated samples if you set n &lt;- 100 in the code above and run additional simulations.</p>
 <div class="cell" data-layout-align="center" data-fig.margin="false">
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-ℹ Please use `linewidth` instead.</code></pre>
-</div>
 <div class="cell-output-display">
 <div id="fig-plot-hist-iq-2" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="11-meta_files/figure-html/fig-plot-hist-iq-2-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
@@ -446,15 +438,15 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
 <p>Let’s first begin with something you will hardly ever do in real life: a meta-analysis of a single study. This is a little silly, because a simple <em>t</em>-test or correlation will tell you the same thing – but it is educational to compare a <em>t</em>-test with a meta-analysis of a single study, before we look at how multiple studies are combined into a meta-analysis.</p>
 <p>A difference between an independent <em>t</em>-test and a meta-analysis is that a <em>t</em>-test is performed on the raw data, while a meta-analysis is typically performed on the effect size(s) of individual studies. The <code>metafor</code> R package contains a very useful function called <code>escalc</code> that can be used to calculate effect sizes, their variances, and confidence intervals around effect size estimates. So let’s start by calculating the effect size to enter into our meta-analysis. As explained in the chapter on <a href="06-effectsize.html">effect sizes</a> the two main effect sizes used for meta-analyses of continuous variables are the standardized mean difference (<em>d</em>) or the correlation (<em>r</em>), although it is of course also possible to perform meta-analyses on dichotomous variables (we will see an example below). The code below will calculate the <strong>standardized mean difference</strong> (SMD) from two independent groups from <strong>means</strong> (specified by m1i and m2i), <strong>standard deviations</strong> (sd1i and sd2i), and the number of observations in each group (n1i and n2i). By default, <code>metafor</code> computes the effect size ‘<strong>Hedges’ g</strong>’ which is the unbiased version of Cohen’s <em>d</em> (see the section on <a href="06-effectsize.html#sec-cohend">Cohen’s <em>d</em></a> in the chapter on Effect Sizes).</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">library</span>(metafor)</span>
-<span id="cb4-2"><a href="#cb4-2"></a>g <span class="ot">&lt;-</span> <span class="fu">escalc</span>(<span class="at">measure =</span> <span class="st">"SMD"</span>,</span>
-<span id="cb4-3"><a href="#cb4-3"></a>            <span class="at">n1i =</span> <span class="dv">50</span>, <span class="co"># sample size in Group 1</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a>            <span class="at">m1i =</span> <span class="fl">5.6</span>, <span class="co"># observed mean in Group 1</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a>            <span class="at">sd1i =</span> <span class="fl">1.2</span>, <span class="co"># observed standard deviation in Group 1</span></span>
-<span id="cb4-6"><a href="#cb4-6"></a>            <span class="at">n2i =</span> <span class="dv">50</span>, <span class="co"># sample size in Group 2</span></span>
-<span id="cb4-7"><a href="#cb4-7"></a>            <span class="at">m2i =</span> <span class="fl">4.9</span>, <span class="co"># observed mean in Group 2</span></span>
-<span id="cb4-8"><a href="#cb4-8"></a>            <span class="at">sd2i =</span> <span class="fl">1.3</span>) <span class="co"># observed standard deviation in Group 2</span></span>
-<span id="cb4-9"><a href="#cb4-9"></a>g</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(metafor)</span>
+<span id="cb2-2"><a href="#cb2-2"></a>g <span class="ot">&lt;-</span> <span class="fu">escalc</span>(<span class="at">measure =</span> <span class="st">"SMD"</span>,</span>
+<span id="cb2-3"><a href="#cb2-3"></a>            <span class="at">n1i =</span> <span class="dv">50</span>, <span class="co"># sample size in Group 1</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>            <span class="at">m1i =</span> <span class="fl">5.6</span>, <span class="co"># observed mean in Group 1</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>            <span class="at">sd1i =</span> <span class="fl">1.2</span>, <span class="co"># observed standard deviation in Group 1</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>            <span class="at">n2i =</span> <span class="dv">50</span>, <span class="co"># sample size in Group 2</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>            <span class="at">m2i =</span> <span class="fl">4.9</span>, <span class="co"># observed mean in Group 2</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>            <span class="at">sd2i =</span> <span class="fl">1.3</span>) <span class="co"># observed standard deviation in Group 2</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>g</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="table table-sm table-striped small">
@@ -483,8 +475,8 @@ Vg = J^{2} \times \left( \frac{n_{1} + n_{2}}{n_{1}n_{2}} + \frac{g^{2}}{2(n_{1}
 \]</span></p>
 <p>The variance of the standardized mean difference depends only on the sample size (n1 and n2) and the value of the standardized mean difference itself. <strong>To perform the required calculations for a meta-analysis, you need the effect sizes and their variance</strong>. This means that if you have coded the effect sizes and the sample sizes (per group) from studies in the literature, you have the information you need to perform a meta-analysis. You do not need to manually calculate the effect size and its variance using the two formula above – the <code>escalc</code> function does this for you. We can now easily perform a single study meta-analysis using the <code>rma</code> function in the <code>metafor</code> package:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>meta_res <span class="ot">&lt;-</span> <span class="fu">rma</span>(yi, vi, <span class="at">data =</span> g)</span>
-<span id="cb5-2"><a href="#cb5-2"></a>meta_res</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>meta_res <span class="ot">&lt;-</span> <span class="fu">rma</span>(yi, vi, <span class="at">data =</span> g)</span>
+<span id="cb3-2"><a href="#cb3-2"></a>meta_res</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Random-Effects Model (k = 1; tau^2 estimator: REML)
@@ -535,24 +527,24 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>Meta-analyses get a bit more exciting when we are using them to analyze results from multiple studies. When multiple studies are combined in a meta-analysis, effect size estimates are not simply averaged, but they are <strong>weighed</strong> by the <strong>precision</strong> of the effect size estimate, which is determined by standard error, which is in turn determined by the sample size of the study. Thus, the larger the sample size of an individual study, the more weight it gets in the meta-analysis, meaning that it has more influence on the meta-analytic effect size estimate.</p>
 <p>One intuitive way to learn about meta-analyses is to simulate studies and meta-analyze them. The code below simulates 12 studies. There is a true effect in the simulated studies, as the difference in means in the population is 0.4 (and given the standard deviation of 1, Cohen’s <em>d</em> = 0.4 as well). The studies vary in their sample size between 30 observations and 100 observations per condition. The meta-analysis is performed, and a forest plot is created.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">set.seed</span>(<span class="dv">94</span>)</span>
-<span id="cb7-2"><a href="#cb7-2"></a>nSims <span class="ot">&lt;-</span> <span class="dv">12</span> <span class="co"># number of simulated studies</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a>m1 <span class="ot">&lt;-</span> <span class="fl">0.4</span> <span class="co"># population mean Group 1</span></span>
-<span id="cb7-4"><a href="#cb7-4"></a>sd1 <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co"># standard deviation Group 1</span></span>
-<span id="cb7-5"><a href="#cb7-5"></a>m2 <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># population mean Group 2</span></span>
-<span id="cb7-6"><a href="#cb7-6"></a>sd2 <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co"># standard deviation Group 1</span></span>
-<span id="cb7-7"><a href="#cb7-7"></a>metadata <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">yi =</span> <span class="fu">numeric</span>(<span class="dv">0</span>), <span class="at">vi =</span> <span class="fu">numeric</span>(<span class="dv">0</span>)) <span class="co"># create dataframe</span></span>
-<span id="cb7-8"><a href="#cb7-8"></a></span>
-<span id="cb7-9"><a href="#cb7-9"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nSims) { <span class="co"># for each simulated study</span></span>
-<span id="cb7-10"><a href="#cb7-10"></a>  n <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">30</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">1</span>) <span class="co"># pick a sample size per group</span></span>
-<span id="cb7-11"><a href="#cb7-11"></a>  x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n, <span class="at">mean =</span> m1, <span class="at">sd =</span> sd1) </span>
-<span id="cb7-12"><a href="#cb7-12"></a>  y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n, <span class="at">mean =</span> m2, <span class="at">sd =</span> sd2)</span>
-<span id="cb7-13"><a href="#cb7-13"></a>  metadata[i,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>] <span class="ot">&lt;-</span> metafor<span class="sc">::</span><span class="fu">escalc</span>(<span class="at">n1i =</span> n, <span class="at">n2i =</span> n, <span class="at">m1i =</span> <span class="fu">mean</span>(x), </span>
-<span id="cb7-14"><a href="#cb7-14"></a>       <span class="at">m2i =</span> <span class="fu">mean</span>(y), <span class="at">sd1i =</span> <span class="fu">sd</span>(x), <span class="at">sd2i =</span> <span class="fu">sd</span>(y), <span class="at">measure =</span> <span class="st">"SMD"</span>)</span>
-<span id="cb7-15"><a href="#cb7-15"></a>}</span>
-<span id="cb7-16"><a href="#cb7-16"></a>result <span class="ot">&lt;-</span> metafor<span class="sc">::</span><span class="fu">rma</span>(yi, vi, <span class="at">data =</span> metadata, <span class="at">method =</span> <span class="st">"FE"</span>)</span>
-<span id="cb7-17"><a href="#cb7-17"></a><span class="fu">par</span>(<span class="at">bg =</span> <span class="st">"#fffafa"</span>)</span>
-<span id="cb7-18"><a href="#cb7-18"></a>metafor<span class="sc">::</span><span class="fu">forest</span>(result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">set.seed</span>(<span class="dv">94</span>)</span>
+<span id="cb5-2"><a href="#cb5-2"></a>nSims <span class="ot">&lt;-</span> <span class="dv">12</span> <span class="co"># number of simulated studies</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>m1 <span class="ot">&lt;-</span> <span class="fl">0.4</span> <span class="co"># population mean Group 1</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>sd1 <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co"># standard deviation Group 1</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>m2 <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># population mean Group 2</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>sd2 <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co"># standard deviation Group 1</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a>metadata <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">yi =</span> <span class="fu">numeric</span>(<span class="dv">0</span>), <span class="at">vi =</span> <span class="fu">numeric</span>(<span class="dv">0</span>)) <span class="co"># create dataframe</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a></span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nSims) { <span class="co"># for each simulated study</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a>  n <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">30</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">1</span>) <span class="co"># pick a sample size per group</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a>  x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n, <span class="at">mean =</span> m1, <span class="at">sd =</span> sd1) </span>
+<span id="cb5-12"><a href="#cb5-12"></a>  y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n, <span class="at">mean =</span> m2, <span class="at">sd =</span> sd2)</span>
+<span id="cb5-13"><a href="#cb5-13"></a>  metadata[i,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>] <span class="ot">&lt;-</span> metafor<span class="sc">::</span><span class="fu">escalc</span>(<span class="at">n1i =</span> n, <span class="at">n2i =</span> n, <span class="at">m1i =</span> <span class="fu">mean</span>(x), </span>
+<span id="cb5-14"><a href="#cb5-14"></a>       <span class="at">m2i =</span> <span class="fu">mean</span>(y), <span class="at">sd1i =</span> <span class="fu">sd</span>(x), <span class="at">sd2i =</span> <span class="fu">sd</span>(y), <span class="at">measure =</span> <span class="st">"SMD"</span>)</span>
+<span id="cb5-15"><a href="#cb5-15"></a>}</span>
+<span id="cb5-16"><a href="#cb5-16"></a>result <span class="ot">&lt;-</span> metafor<span class="sc">::</span><span class="fu">rma</span>(yi, vi, <span class="at">data =</span> metadata, <span class="at">method =</span> <span class="st">"FE"</span>)</span>
+<span id="cb5-17"><a href="#cb5-17"></a><span class="fu">par</span>(<span class="at">bg =</span> <span class="st">"#fffafa"</span>)</span>
+<span id="cb5-18"><a href="#cb5-18"></a>metafor<span class="sc">::</span><span class="fu">forest</span>(result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="fig-meta-sim" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="11-meta_files/figure-html/fig-meta-sim-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
@@ -644,44 +636,44 @@ OR = \ \frac{80 \times 30}{20\  \times 70} = 1.714
 \]</span></p>
 <p>We can simulate studies with dichotomous outcomes, where we set the percentage of successes and failures in the experimental and control condition. In the script below, by default the percentage of success in the experimental condition is 70%, and in the control condition it is 50%.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">library</span>(metafor)</span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="fu">set.seed</span>(<span class="dv">5333</span>)</span>
-<span id="cb9-3"><a href="#cb9-3"></a>nSims <span class="ot">&lt;-</span> <span class="dv">12</span> <span class="co"># Number of simulated experiments</span></span>
-<span id="cb9-4"><a href="#cb9-4"></a></span>
-<span id="cb9-5"><a href="#cb9-5"></a>pr1 <span class="ot">&lt;-</span> <span class="fl">0.7</span> <span class="co"># Set percentage of successes in Group 1</span></span>
-<span id="cb9-6"><a href="#cb9-6"></a>pr2 <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="co"># Set percentage of successes in Group 2</span></span>
-<span id="cb9-7"><a href="#cb9-7"></a></span>
-<span id="cb9-8"><a href="#cb9-8"></a>ai <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nSims) <span class="co"># set up empty vector for successes Group 1</span></span>
-<span id="cb9-9"><a href="#cb9-9"></a>bi <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nSims) <span class="co"># set up empty vector for failures Group 1</span></span>
-<span id="cb9-10"><a href="#cb9-10"></a>ci <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nSims) <span class="co"># set up empty vector for successes Group 2</span></span>
-<span id="cb9-11"><a href="#cb9-11"></a>di <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nSims) <span class="co"># set up empty vector for failures Group 2</span></span>
-<span id="cb9-12"><a href="#cb9-12"></a></span>
-<span id="cb9-13"><a href="#cb9-13"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nSims) { <span class="co"># for each simulated experiment</span></span>
-<span id="cb9-14"><a href="#cb9-14"></a>  n <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">30</span><span class="sc">:</span><span class="dv">80</span>, <span class="dv">1</span>)</span>
-<span id="cb9-15"><a href="#cb9-15"></a>  x <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, pr1) <span class="co"># participants (1 = success, 0 = failure)</span></span>
-<span id="cb9-16"><a href="#cb9-16"></a>  y <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, pr2) <span class="co"># participants (1 = success, 0 = failure)</span></span>
-<span id="cb9-17"><a href="#cb9-17"></a>  ai[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(x <span class="sc">==</span> <span class="dv">1</span>) <span class="co"># Successes Group 1</span></span>
-<span id="cb9-18"><a href="#cb9-18"></a>  bi[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(x <span class="sc">==</span> <span class="dv">0</span>) <span class="co"># Failures Group 1</span></span>
-<span id="cb9-19"><a href="#cb9-19"></a>  ci[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(y <span class="sc">==</span> <span class="dv">1</span>) <span class="co"># Successes Group 2</span></span>
-<span id="cb9-20"><a href="#cb9-20"></a>  di[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(y <span class="sc">==</span> <span class="dv">0</span>) <span class="co"># Failures Group 2</span></span>
-<span id="cb9-21"><a href="#cb9-21"></a>}</span>
-<span id="cb9-22"><a href="#cb9-22"></a></span>
-<span id="cb9-23"><a href="#cb9-23"></a><span class="co"># Combine data into dataframe</span></span>
-<span id="cb9-24"><a href="#cb9-24"></a>metadata <span class="ot">&lt;-</span> <span class="fu">cbind</span>(ai, bi, ci, di)</span>
-<span id="cb9-25"><a href="#cb9-25"></a><span class="co"># Create escalc object from metadata dataframe </span></span>
-<span id="cb9-26"><a href="#cb9-26"></a>metadata <span class="ot">&lt;-</span> <span class="fu">escalc</span>(<span class="at">measure =</span> <span class="st">"OR"</span>, </span>
-<span id="cb9-27"><a href="#cb9-27"></a>                   <span class="at">ai =</span> ai, <span class="at">bi =</span> bi, <span class="at">ci =</span> ci, <span class="at">di =</span> di, </span>
-<span id="cb9-28"><a href="#cb9-28"></a>                   <span class="at">data =</span> metadata)</span>
-<span id="cb9-29"><a href="#cb9-29"></a><span class="co"># Perform Meta-analysis</span></span>
-<span id="cb9-30"><a href="#cb9-30"></a>result <span class="ot">&lt;-</span> <span class="fu">rma</span>(yi, vi, <span class="at">data =</span> metadata)</span>
-<span id="cb9-31"><a href="#cb9-31"></a><span class="co"># Create forest plot. Using ilab and ilab.xpos arguments to add counts</span></span>
-<span id="cb9-32"><a href="#cb9-32"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">0</span>, <span class="dv">2</span>))</span>
-<span id="cb9-33"><a href="#cb9-33"></a><span class="fu">par</span>(<span class="at">bg =</span> <span class="st">"#fffafa"</span>)</span>
-<span id="cb9-34"><a href="#cb9-34"></a><span class="fu">forest</span>(result, </span>
-<span id="cb9-35"><a href="#cb9-35"></a>       <span class="at">ilab =</span> <span class="fu">cbind</span>(metadata<span class="sc">$</span>ai, metadata<span class="sc">$</span>bi, metadata<span class="sc">$</span>ci, metadata<span class="sc">$</span>di), </span>
-<span id="cb9-36"><a href="#cb9-36"></a>       <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="dv">8</span>), </span>
-<span id="cb9-37"><a href="#cb9-37"></a>       <span class="at">ilab.xpos =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">7</span>, <span class="sc">-</span><span class="dv">6</span>, <span class="sc">-</span><span class="dv">5</span>, <span class="sc">-</span><span class="dv">4</span>))</span>
-<span id="cb9-38"><a href="#cb9-38"></a><span class="fu">text</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">7</span>, <span class="sc">-</span><span class="dv">6</span>, <span class="sc">-</span><span class="dv">5</span>, <span class="sc">-</span><span class="dv">4</span>), <span class="fl">14.7</span>, <span class="fu">c</span>(<span class="st">"E+"</span>, <span class="st">"E-"</span>, <span class="st">"C+"</span>, <span class="st">"C-"</span>), <span class="at">font =</span> <span class="dv">2</span>, <span class="at">cex =</span> .<span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">library</span>(metafor)</span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="fu">set.seed</span>(<span class="dv">5333</span>)</span>
+<span id="cb7-3"><a href="#cb7-3"></a>nSims <span class="ot">&lt;-</span> <span class="dv">12</span> <span class="co"># Number of simulated experiments</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a></span>
+<span id="cb7-5"><a href="#cb7-5"></a>pr1 <span class="ot">&lt;-</span> <span class="fl">0.7</span> <span class="co"># Set percentage of successes in Group 1</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a>pr2 <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="co"># Set percentage of successes in Group 2</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a></span>
+<span id="cb7-8"><a href="#cb7-8"></a>ai <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nSims) <span class="co"># set up empty vector for successes Group 1</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a>bi <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nSims) <span class="co"># set up empty vector for failures Group 1</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a>ci <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nSims) <span class="co"># set up empty vector for successes Group 2</span></span>
+<span id="cb7-11"><a href="#cb7-11"></a>di <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nSims) <span class="co"># set up empty vector for failures Group 2</span></span>
+<span id="cb7-12"><a href="#cb7-12"></a></span>
+<span id="cb7-13"><a href="#cb7-13"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nSims) { <span class="co"># for each simulated experiment</span></span>
+<span id="cb7-14"><a href="#cb7-14"></a>  n <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">30</span><span class="sc">:</span><span class="dv">80</span>, <span class="dv">1</span>)</span>
+<span id="cb7-15"><a href="#cb7-15"></a>  x <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, pr1) <span class="co"># participants (1 = success, 0 = failure)</span></span>
+<span id="cb7-16"><a href="#cb7-16"></a>  y <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, pr2) <span class="co"># participants (1 = success, 0 = failure)</span></span>
+<span id="cb7-17"><a href="#cb7-17"></a>  ai[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(x <span class="sc">==</span> <span class="dv">1</span>) <span class="co"># Successes Group 1</span></span>
+<span id="cb7-18"><a href="#cb7-18"></a>  bi[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(x <span class="sc">==</span> <span class="dv">0</span>) <span class="co"># Failures Group 1</span></span>
+<span id="cb7-19"><a href="#cb7-19"></a>  ci[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(y <span class="sc">==</span> <span class="dv">1</span>) <span class="co"># Successes Group 2</span></span>
+<span id="cb7-20"><a href="#cb7-20"></a>  di[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(y <span class="sc">==</span> <span class="dv">0</span>) <span class="co"># Failures Group 2</span></span>
+<span id="cb7-21"><a href="#cb7-21"></a>}</span>
+<span id="cb7-22"><a href="#cb7-22"></a></span>
+<span id="cb7-23"><a href="#cb7-23"></a><span class="co"># Combine data into dataframe</span></span>
+<span id="cb7-24"><a href="#cb7-24"></a>metadata <span class="ot">&lt;-</span> <span class="fu">cbind</span>(ai, bi, ci, di)</span>
+<span id="cb7-25"><a href="#cb7-25"></a><span class="co"># Create escalc object from metadata dataframe </span></span>
+<span id="cb7-26"><a href="#cb7-26"></a>metadata <span class="ot">&lt;-</span> <span class="fu">escalc</span>(<span class="at">measure =</span> <span class="st">"OR"</span>, </span>
+<span id="cb7-27"><a href="#cb7-27"></a>                   <span class="at">ai =</span> ai, <span class="at">bi =</span> bi, <span class="at">ci =</span> ci, <span class="at">di =</span> di, </span>
+<span id="cb7-28"><a href="#cb7-28"></a>                   <span class="at">data =</span> metadata)</span>
+<span id="cb7-29"><a href="#cb7-29"></a><span class="co"># Perform Meta-analysis</span></span>
+<span id="cb7-30"><a href="#cb7-30"></a>result <span class="ot">&lt;-</span> <span class="fu">rma</span>(yi, vi, <span class="at">data =</span> metadata)</span>
+<span id="cb7-31"><a href="#cb7-31"></a><span class="co"># Create forest plot. Using ilab and ilab.xpos arguments to add counts</span></span>
+<span id="cb7-32"><a href="#cb7-32"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">0</span>, <span class="dv">2</span>))</span>
+<span id="cb7-33"><a href="#cb7-33"></a><span class="fu">par</span>(<span class="at">bg =</span> <span class="st">"#fffafa"</span>)</span>
+<span id="cb7-34"><a href="#cb7-34"></a><span class="fu">forest</span>(result, </span>
+<span id="cb7-35"><a href="#cb7-35"></a>       <span class="at">ilab =</span> <span class="fu">cbind</span>(metadata<span class="sc">$</span>ai, metadata<span class="sc">$</span>bi, metadata<span class="sc">$</span>ci, metadata<span class="sc">$</span>di), </span>
+<span id="cb7-36"><a href="#cb7-36"></a>       <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="dv">8</span>), </span>
+<span id="cb7-37"><a href="#cb7-37"></a>       <span class="at">ilab.xpos =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">7</span>, <span class="sc">-</span><span class="dv">6</span>, <span class="sc">-</span><span class="dv">5</span>, <span class="sc">-</span><span class="dv">4</span>))</span>
+<span id="cb7-38"><a href="#cb7-38"></a><span class="fu">text</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">7</span>, <span class="sc">-</span><span class="dv">6</span>, <span class="sc">-</span><span class="dv">5</span>, <span class="sc">-</span><span class="dv">4</span>), <span class="fl">14.7</span>, <span class="fu">c</span>(<span class="st">"E+"</span>, <span class="st">"E-"</span>, <span class="st">"C+"</span>, <span class="st">"C-"</span>), <span class="at">font =</span> <span class="dv">2</span>, <span class="at">cex =</span> .<span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="11-meta_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
@@ -692,8 +684,8 @@ OR = \ \frac{80 \times 30}{20\  \times 70} = 1.714
 <p>The forest plot presents the studies and four columns of data after the study label, which contain the number of successes and failures in the experimental groups (E+ and E-), and the number of successes and failures in the control group (C+ and C-). Imagine we study the percentage of people who get a job within 6 months after a job training program, compared to a control condition. In Study 1, which had 50 participants in each condition, 29 people in the job training condition got a job within 6 months, and 21 did not get a job. In the control condition, 23 people got a job, but 27 did not. The effect size estimate for the random effects model is 0.65. Feel free to play around with the script, adjusting the number of studies, or the sample sizes in each study, to examine the effect it has on the meta-analytic effect size estimate.</p>
 <p>We can also get the meta-analytic test results by printing the test output. We see that there was no heterogeneity in this meta-analysis. This is true (we simulated identical studies), but is highly unlikely to ever happen in real life where variation in effect sizes between studies included in a meta-analysis is a much more realistic scenario.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># Print result meta-analysis</span></span>
-<span id="cb10-2"><a href="#cb10-2"></a>result</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># Print result meta-analysis</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>result</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Random-Effects Model (k = 12; tau^2 estimator: REML)
@@ -723,52 +715,52 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>On theoretical grounds one might argue that some heterogeneity will always happen in a meta-analysis, and therefore it is more interesting to quantify the extent to which there is heterogeneity. The <span class="math inline">\(I^2\)</span> index aims to quantify statistical heterogeneity. It is calculated as follows: <span class="math display">\[I^{2} = \ \frac{(Q - k - 1)}{Q} \times 100\%\]</span> where <span class="math inline">\(k\)</span> is the number of studies (and <span class="math inline">\(k-1\)</span> is the degrees of freedom). <span class="math inline">\(I^2\)</span> ranges from 0 to 100 and can be interpreted as the percentage of the total variability in a set of effect sizes that is due to heterogeneity. When <span class="math inline">\(I^2\)</span> = 0 all variability in the effect size estimates can be explained by within-study error, and when <span class="math inline">\(I^2\)</span> = 50 half of the total variability can be explained by true heterogeneity. <span class="math inline">\(I^2\)</span> values of 25%, 50%, and 75% can be interpreted as low, medium, and high heterogeneity. Finally, in a random effects meta-analysis, <span class="math inline">\(\tau^2\)</span> estimates the variance of the true effects, and <span class="math inline">\(\tau\)</span> is the estimated standard deviation, as expressed on the same scale as the effect size. A benefit of <span class="math inline">\(\tau^2\)</span> is that it does not depend on the precision, as <span class="math inline">\(I^2\)</span> does, which tends to 100% if the studies included in the meta-analysis are very large <span class="citation" data-cites="rucker_undue_2008">(<a href="references.html#ref-rucker_undue_2008" role="doc-biblioref">Rücker et al., 2008</a>)</span>, but a downside is that <span class="math inline">\(\tau^2\)</span> is more difficult to interpret <span class="citation" data-cites="harrer_doing_2021">(<a href="references.html#ref-harrer_doing_2021" role="doc-biblioref">Harrer et al., 2021</a>)</span>.</p>
 <p>The script below simulates a similar meta-analysis to the example for dichotomous outcomes above, but with a small variation. The first half of the simulated experiments are based on the population success rates 0.7 and 0.2, but the second half of the simulated experiments are based on the population success rates 0.9 and 0.7. Thus, in this set of studies the odds ratio differs for the first half of the studies, compared to the second half (successes in Group 1 and 2 are set to 0.2 and 0.7 for the first half, but to 0.7 and 0.9 in the second half). There is true heterogeneity. We use the <code>confint</code> function in the metafor package to report <span class="math inline">\(I^2\)</span> and <span class="math inline">\(\tau^2\)</span>, and their confidence intervals.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">library</span>(metafor)</span>
-<span id="cb12-2"><a href="#cb12-2"></a><span class="fu">set.seed</span>(<span class="dv">2942</span>)</span>
-<span id="cb12-3"><a href="#cb12-3"></a>nSims <span class="ot">&lt;-</span> <span class="dv">12</span> <span class="co"># Number of simulated experiments</span></span>
-<span id="cb12-4"><a href="#cb12-4"></a></span>
-<span id="cb12-5"><a href="#cb12-5"></a>pr1 <span class="ot">&lt;-</span> <span class="fl">0.7</span> <span class="co"># Set percentage of successes in Group 1</span></span>
-<span id="cb12-6"><a href="#cb12-6"></a>pr2 <span class="ot">&lt;-</span> <span class="fl">0.2</span> <span class="co"># Set percentage of successes in Group 2</span></span>
-<span id="cb12-7"><a href="#cb12-7"></a></span>
-<span id="cb12-8"><a href="#cb12-8"></a>ai <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nSims) <span class="co"># set up empty vector for successes Group 1</span></span>
-<span id="cb12-9"><a href="#cb12-9"></a>bi <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nSims) <span class="co"># set up empty vector for failures Group 1</span></span>
-<span id="cb12-10"><a href="#cb12-10"></a>ci <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nSims) <span class="co"># set up empty vector for successes Group 2</span></span>
-<span id="cb12-11"><a href="#cb12-11"></a>di <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nSims) <span class="co"># set up empty vector for failures Group 2</span></span>
-<span id="cb12-12"><a href="#cb12-12"></a></span>
-<span id="cb12-13"><a href="#cb12-13"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nSims<span class="sc">/</span><span class="dv">2</span>) { <span class="co"># for half (/2) of the simulated studies</span></span>
-<span id="cb12-14"><a href="#cb12-14"></a>  n <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">30</span><span class="sc">:</span><span class="dv">80</span>, <span class="dv">1</span>)</span>
-<span id="cb12-15"><a href="#cb12-15"></a>  x <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, pr1) <span class="co"># produce simulated participants (1 = success, 0 = failure)</span></span>
-<span id="cb12-16"><a href="#cb12-16"></a>  y <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, pr2) <span class="co"># produce simulated participants (1 = success, 0 = failure)</span></span>
-<span id="cb12-17"><a href="#cb12-17"></a>  ai[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(x <span class="sc">==</span> <span class="dv">1</span>) <span class="co"># Successes Group 1</span></span>
-<span id="cb12-18"><a href="#cb12-18"></a>  bi[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(x <span class="sc">==</span> <span class="dv">0</span>) <span class="co"># Failures Group 1</span></span>
-<span id="cb12-19"><a href="#cb12-19"></a>  ci[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(y <span class="sc">==</span> <span class="dv">1</span>) <span class="co"># Successes Group 2</span></span>
-<span id="cb12-20"><a href="#cb12-20"></a>  di[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(y <span class="sc">==</span> <span class="dv">0</span>) <span class="co"># Failures Group 2</span></span>
-<span id="cb12-21"><a href="#cb12-21"></a>}</span>
-<span id="cb12-22"><a href="#cb12-22"></a></span>
-<span id="cb12-23"><a href="#cb12-23"></a>pr1 <span class="ot">&lt;-</span> <span class="fl">0.9</span> <span class="co"># Set percentage of successes in Group 1</span></span>
-<span id="cb12-24"><a href="#cb12-24"></a>pr2 <span class="ot">&lt;-</span> <span class="fl">0.7</span> <span class="co"># Set percentage of successes in Group 2</span></span>
-<span id="cb12-25"><a href="#cb12-25"></a></span>
-<span id="cb12-26"><a href="#cb12-26"></a><span class="cf">for</span> (i <span class="cf">in</span> (nSims<span class="sc">/</span><span class="dv">2</span> <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span>(nSims)) { <span class="co"># for the other half (/2) of each simulated study</span></span>
-<span id="cb12-27"><a href="#cb12-27"></a>  n <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">30</span><span class="sc">:</span><span class="dv">80</span>, <span class="dv">1</span>)</span>
-<span id="cb12-28"><a href="#cb12-28"></a>  x <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, pr1) <span class="co"># produce simulated participants (1 = success, 0 = failure)</span></span>
-<span id="cb12-29"><a href="#cb12-29"></a>  y <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, pr2) <span class="co"># produce simulated participants (1 = success, 0 = failure)</span></span>
-<span id="cb12-30"><a href="#cb12-30"></a>  ai[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(x <span class="sc">==</span> <span class="dv">1</span>) <span class="co"># Successes Group 1</span></span>
-<span id="cb12-31"><a href="#cb12-31"></a>  bi[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(x <span class="sc">==</span> <span class="dv">0</span>) <span class="co"># Failures Group 1</span></span>
-<span id="cb12-32"><a href="#cb12-32"></a>  ci[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(y <span class="sc">==</span> <span class="dv">1</span>) <span class="co"># Successes Group 2</span></span>
-<span id="cb12-33"><a href="#cb12-33"></a>  di[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(y <span class="sc">==</span> <span class="dv">0</span>) <span class="co"># Failures Group 2</span></span>
-<span id="cb12-34"><a href="#cb12-34"></a>}</span>
-<span id="cb12-35"><a href="#cb12-35"></a></span>
-<span id="cb12-36"><a href="#cb12-36"></a><span class="co"># Combine data into dataframe</span></span>
-<span id="cb12-37"><a href="#cb12-37"></a>metadata <span class="ot">&lt;-</span> <span class="fu">cbind</span>(ai, bi, ci, di)</span>
-<span id="cb12-38"><a href="#cb12-38"></a><span class="co"># Create escalc object from metadata dataframe </span></span>
-<span id="cb12-39"><a href="#cb12-39"></a>metadata <span class="ot">&lt;-</span> <span class="fu">escalc</span>(<span class="at">measure =</span> <span class="st">"OR"</span>, </span>
-<span id="cb12-40"><a href="#cb12-40"></a>                   <span class="at">ai =</span> ai, <span class="at">bi =</span> bi, <span class="at">ci =</span> ci, <span class="at">di =</span> di, </span>
-<span id="cb12-41"><a href="#cb12-41"></a>                   <span class="at">data =</span> metadata)</span>
-<span id="cb12-42"><a href="#cb12-42"></a><span class="co"># Perform Meta-analysis</span></span>
-<span id="cb12-43"><a href="#cb12-43"></a>result <span class="ot">&lt;-</span> <span class="fu">rma</span>(yi, vi, <span class="at">data =</span> metadata)</span>
-<span id="cb12-44"><a href="#cb12-44"></a><span class="co"># Print result meta-analysis</span></span>
-<span id="cb12-45"><a href="#cb12-45"></a>result</span>
-<span id="cb12-46"><a href="#cb12-46"></a><span class="fu">confint</span>(result) <span class="co"># Get confidence interval for indices of heterogeneity</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">library</span>(metafor)</span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="fu">set.seed</span>(<span class="dv">2942</span>)</span>
+<span id="cb10-3"><a href="#cb10-3"></a>nSims <span class="ot">&lt;-</span> <span class="dv">12</span> <span class="co"># Number of simulated experiments</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a></span>
+<span id="cb10-5"><a href="#cb10-5"></a>pr1 <span class="ot">&lt;-</span> <span class="fl">0.7</span> <span class="co"># Set percentage of successes in Group 1</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a>pr2 <span class="ot">&lt;-</span> <span class="fl">0.2</span> <span class="co"># Set percentage of successes in Group 2</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a></span>
+<span id="cb10-8"><a href="#cb10-8"></a>ai <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nSims) <span class="co"># set up empty vector for successes Group 1</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a>bi <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nSims) <span class="co"># set up empty vector for failures Group 1</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a>ci <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nSims) <span class="co"># set up empty vector for successes Group 2</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a>di <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nSims) <span class="co"># set up empty vector for failures Group 2</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a></span>
+<span id="cb10-13"><a href="#cb10-13"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nSims<span class="sc">/</span><span class="dv">2</span>) { <span class="co"># for half (/2) of the simulated studies</span></span>
+<span id="cb10-14"><a href="#cb10-14"></a>  n <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">30</span><span class="sc">:</span><span class="dv">80</span>, <span class="dv">1</span>)</span>
+<span id="cb10-15"><a href="#cb10-15"></a>  x <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, pr1) <span class="co"># produce simulated participants (1 = success, 0 = failure)</span></span>
+<span id="cb10-16"><a href="#cb10-16"></a>  y <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, pr2) <span class="co"># produce simulated participants (1 = success, 0 = failure)</span></span>
+<span id="cb10-17"><a href="#cb10-17"></a>  ai[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(x <span class="sc">==</span> <span class="dv">1</span>) <span class="co"># Successes Group 1</span></span>
+<span id="cb10-18"><a href="#cb10-18"></a>  bi[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(x <span class="sc">==</span> <span class="dv">0</span>) <span class="co"># Failures Group 1</span></span>
+<span id="cb10-19"><a href="#cb10-19"></a>  ci[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(y <span class="sc">==</span> <span class="dv">1</span>) <span class="co"># Successes Group 2</span></span>
+<span id="cb10-20"><a href="#cb10-20"></a>  di[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(y <span class="sc">==</span> <span class="dv">0</span>) <span class="co"># Failures Group 2</span></span>
+<span id="cb10-21"><a href="#cb10-21"></a>}</span>
+<span id="cb10-22"><a href="#cb10-22"></a></span>
+<span id="cb10-23"><a href="#cb10-23"></a>pr1 <span class="ot">&lt;-</span> <span class="fl">0.9</span> <span class="co"># Set percentage of successes in Group 1</span></span>
+<span id="cb10-24"><a href="#cb10-24"></a>pr2 <span class="ot">&lt;-</span> <span class="fl">0.7</span> <span class="co"># Set percentage of successes in Group 2</span></span>
+<span id="cb10-25"><a href="#cb10-25"></a></span>
+<span id="cb10-26"><a href="#cb10-26"></a><span class="cf">for</span> (i <span class="cf">in</span> (nSims<span class="sc">/</span><span class="dv">2</span> <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span>(nSims)) { <span class="co"># for the other half (/2) of each simulated study</span></span>
+<span id="cb10-27"><a href="#cb10-27"></a>  n <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">30</span><span class="sc">:</span><span class="dv">80</span>, <span class="dv">1</span>)</span>
+<span id="cb10-28"><a href="#cb10-28"></a>  x <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, pr1) <span class="co"># produce simulated participants (1 = success, 0 = failure)</span></span>
+<span id="cb10-29"><a href="#cb10-29"></a>  y <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, pr2) <span class="co"># produce simulated participants (1 = success, 0 = failure)</span></span>
+<span id="cb10-30"><a href="#cb10-30"></a>  ai[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(x <span class="sc">==</span> <span class="dv">1</span>) <span class="co"># Successes Group 1</span></span>
+<span id="cb10-31"><a href="#cb10-31"></a>  bi[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(x <span class="sc">==</span> <span class="dv">0</span>) <span class="co"># Failures Group 1</span></span>
+<span id="cb10-32"><a href="#cb10-32"></a>  ci[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(y <span class="sc">==</span> <span class="dv">1</span>) <span class="co"># Successes Group 2</span></span>
+<span id="cb10-33"><a href="#cb10-33"></a>  di[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(y <span class="sc">==</span> <span class="dv">0</span>) <span class="co"># Failures Group 2</span></span>
+<span id="cb10-34"><a href="#cb10-34"></a>}</span>
+<span id="cb10-35"><a href="#cb10-35"></a></span>
+<span id="cb10-36"><a href="#cb10-36"></a><span class="co"># Combine data into dataframe</span></span>
+<span id="cb10-37"><a href="#cb10-37"></a>metadata <span class="ot">&lt;-</span> <span class="fu">cbind</span>(ai, bi, ci, di)</span>
+<span id="cb10-38"><a href="#cb10-38"></a><span class="co"># Create escalc object from metadata dataframe </span></span>
+<span id="cb10-39"><a href="#cb10-39"></a>metadata <span class="ot">&lt;-</span> <span class="fu">escalc</span>(<span class="at">measure =</span> <span class="st">"OR"</span>, </span>
+<span id="cb10-40"><a href="#cb10-40"></a>                   <span class="at">ai =</span> ai, <span class="at">bi =</span> bi, <span class="at">ci =</span> ci, <span class="at">di =</span> di, </span>
+<span id="cb10-41"><a href="#cb10-41"></a>                   <span class="at">data =</span> metadata)</span>
+<span id="cb10-42"><a href="#cb10-42"></a><span class="co"># Perform Meta-analysis</span></span>
+<span id="cb10-43"><a href="#cb10-43"></a>result <span class="ot">&lt;-</span> <span class="fu">rma</span>(yi, vi, <span class="at">data =</span> metadata)</span>
+<span id="cb10-44"><a href="#cb10-44"></a><span class="co"># Print result meta-analysis</span></span>
+<span id="cb10-45"><a href="#cb10-45"></a>result</span>
+<span id="cb10-46"><a href="#cb10-46"></a><span class="fu">confint</span>(result) <span class="co"># Get confidence interval for indices of heterogeneity</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Random-Effects Model (k = 12; tau^2 estimator: REML)
