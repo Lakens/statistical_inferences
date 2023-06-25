@@ -849,10 +849,10 @@ datasetplot <- data.frame(IV, DV) # create a dataframe (to make the plot)
 
 # plot graph two groups
 p1 <- ggplot(datasetplot, aes(DV, fill = as.factor(IV))) +
-  geom_histogram(alpha = 0.4, binwidth = 2, position = "identity", colour = "black", aes(y = ..density..)) +
+  geom_histogram(alpha = 0.4, binwidth = 2, position = "identity", colour = "black", aes(y = after_stat(density))) +
   scale_fill_manual(values = cbbPalette, name = "Condition") +
-  stat_function(fun = dnorm, args = c(mean = mx, sd = sdx), size = 1, color = "#E69F00", lty = 2) +
-  stat_function(fun = dnorm, args = c(mean = my, sd = sdy), size = 1, color = "#56B4E9", lty = 2) +
+  stat_function(fun = dnorm, args = c(mean = mx, sd = sdx), linewidth = 1, color = "#E69F00", lty = 2) +
+  stat_function(fun = dnorm, args = c(mean = my, sd = sdy), linewidth = 1, color = "#56B4E9", lty = 2) +
   xlab("IQ") +
   ylab("number of people") +
   ggtitle("Data") +
@@ -860,8 +860,8 @@ p1 <- ggplot(datasetplot, aes(DV, fill = as.factor(IV))) +
   theme(plot.background = element_rect(fill = backgroundcolor))  + 
   theme(panel.background = element_rect(fill = backgroundcolor)) +
   theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) +
-  geom_vline(xintercept = mean(x), colour = "black", linetype = "dashed", size = 1) +
-  geom_vline(xintercept = mean(y), colour = "black", linetype = "dashed", size = 1) +
+  geom_vline(xintercept = mean(x), colour = "black", linetype = "dashed", linewidth = 1) +
+  geom_vline(xintercept = mean(y), colour = "black", linetype = "dashed", linewidth = 1) +
   coord_cartesian(xlim = c(50, 150)) +
   scale_x_continuous(breaks = c(60, 80, 100, 120, 140)) +
   annotate("text", size = 3, x = 70, y = 0.02, label = paste("Mean X = ", round(mean(x)), "\n", "SD = ", round(sd(x)), sep = "")) +
@@ -871,7 +871,7 @@ p1 <- ggplot(datasetplot, aes(DV, fill = as.factor(IV))) +
 
 # plot data differences
 p2 <- ggplot(as.data.frame(dif), aes(dif)) +
-  geom_histogram(colour = "black", fill = "grey", aes(y = ..density..), binwidth = 2) +
+  geom_histogram(colour = "black", fill = "grey", aes(y = after_stat(density)), binwidth = 2) +
   #  geom_density(fill=NA, colour="black", size = 1) +
   xlab("IQ dif") +
   ylab("number of people") +
@@ -941,16 +941,16 @@ datasetplot<-data.frame(IV,DV) #create a dataframe (to make the plot)
 
 #plot graph two groups
 p4 <- ggplot(datasetplot, aes(DV, fill = as.factor(IV)))  + 
-  geom_histogram(alpha=0.4, binwidth=2, position="identity", colour="black", aes(y = ..density..)) +
+  geom_histogram(alpha=0.4, binwidth=2, position="identity", colour="black", aes(y = after_stat(density))) +
   scale_fill_manual(values=cbbPalette, name = "Condition") +
-  stat_function(fun=dnorm, args=c(mean=mx,sd=sdx), size=1, color="#E69F00", lty=2) +
-  stat_function(fun=dnorm, args=c(mean=my,sd=sdy), size=1, color="#56B4E9", lty=2) +
+  stat_function(fun=dnorm, args=c(mean=mx,sd=sdx), linewidth=1, color="#E69F00", lty=2) +
+  stat_function(fun=dnorm, args=c(mean=my,sd=sdy), linewidth=1, color="#56B4E9", lty=2) +
   xlab("IQ") + ylab("number of people")  + ggtitle("Data") + theme_bw(base_size=12) + 
   theme(plot.background = element_rect(fill = backgroundcolor))  + 
   theme(panel.background = element_rect(fill = backgroundcolor)) + 
   theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) + 
-  geom_vline(xintercept=mean(x), colour="black", linetype="dashed", size=1) + 
-  geom_vline(xintercept=mean(y), colour="black", linetype="dashed", size=1) + 
+  geom_vline(xintercept=mean(x), colour="black", linetype="dashed", linewidth=1) + 
+  geom_vline(xintercept=mean(y), colour="black", linetype="dashed", linewidth=1) + 
   coord_cartesian(xlim=c(50,150)) + scale_x_continuous(breaks=c(60,80,100,120,140)) +
   annotate("text", size = 3, x = 70, y = 0.02, label = paste("Mean X = ",round(mean(x)),"\n","SD = ",round(sd(x)),sep="")) +
   annotate("text", size = 3, x = 130, y = 0.02, label = paste("Mean Y = ",round(mean(y)),"\n","SD = ",round(sd(y)),sep="")) +
@@ -959,7 +959,7 @@ p4 <- ggplot(datasetplot, aes(DV, fill = as.factor(IV)))  +
 
 #plot data differences
 p5 <- ggplot(as.data.frame(dif), aes(dif))  + 
-  geom_histogram(colour="black", fill="grey", aes(y=..density..), binwidth=2) +
+  geom_histogram(colour="black", fill="grey", aes(y=after_stat(density)), binwidth=2) +
   #  geom_density(fill=NA, colour="black", size = 1) +
   xlab("IQ dif") + ylab("number of people")  + ggtitle("Data") + theme_bw(base_size=10) + 
   theme(plot.background = element_rect(fill = backgroundcolor))  + 
