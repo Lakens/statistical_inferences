@@ -111,8 +111,8 @@ for (i in 1:nsims*(1-pub.bias)) { # for each simulated experiment
   p <- 0 # reset p to 1
   n <- round(truncnorm::rtruncnorm(1, 20, 1000, 100, 100))
   while (p < 0.05) { # continue simulating as along as p is significant
-    x <- rnorm(n = n, mean = m1, sd = sd1) # produce  simulated participants
-    y <- rnorm(n = n, mean = m2, sd = sd2) # produce  simulated participants
+    x <- rnorm(n = n, mean = m1, sd = sd1) # produce simulated participants
+    y <- rnorm(n = n, mean = m2, sd = sd2) # produce simulated participants
     p <- t.test(x, y, var.equal = TRUE)$p.value
   }
   metadata.nonsig[i, 1] <- mean(x)
@@ -229,7 +229,7 @@ If we examine the funnel plot in @fig-funnel1 we see each study represented as a
 # Print a Funnel Plot
 par(bg = backgroundcolor)
 metafor::funnel(result, level = 0.95, refline = 0)
-abline(v = result$b[1], lty = "dashed") #  vertical line at meta-analytic ES
+abline(v = result$b[1], lty = "dashed") # vertical line at meta-analytic ES
 points(x = result$b[1], y = 0, cex = 1.5, pch = 17) # add point
 
 ```
@@ -277,8 +277,8 @@ for (i in 1:nsims*(1-pub.bias)) { # for each simulated experiment
   p <- 0 # reset p to 1
   n <- round(truncnorm::rtruncnorm(1, 20, 1000, 100, 100))
   while (p < 0.05) { # continue simulating as along as p is significant
-    x <- rnorm(n = n, mean = m1, sd = sd1) # produce  simulated participants
-    y <- rnorm(n = n, mean = m2, sd = sd2) # produce  simulated participants
+    x <- rnorm(n = n, mean = m1, sd = sd1) # produce simulated participants
+    y <- rnorm(n = n, mean = m2, sd = sd2) # produce simulated participants
     p <- t.test(x, y, var.equal = TRUE)$p.value
   }
   metadata.nonsig[i, 1] <- mean(x)
@@ -400,7 +400,7 @@ Trim-and-fill is not very good under many realistic publication bias scenarios. 
 
 A novel class of solutions to publication bias is **meta-regression**. Instead of plotting a line through individual data-points, in meta-regression a line is plotted through data points that each represent a study. As with normal regression, the more data meta-regression is based on, the more precise the estimate is and, therefore, the more studies in a meta-analysis, the better meta-regression will work in practice. If the number of studies is small, all bias detection tests lose power, and this is something that one should keep in mind when using meta-regression. Furthermore, regression requires sufficient variation in the data, which in the case of meta-regression means a wide range of sample sizes (recommendations indicate meta-regression performs well if studies have a range from 15 to 200 participants in each group – which is not typical for most research areas in psychology). Meta-regression techniques try to estimate the population effect size if precision was perfect (so when the standard error = 0).  
 
-One meta-regression technique is known as PET-PEESE [@stanley_meta-regression_2014; @stanley_finding_2017]. It consists of a ‘precision-effect-test’ (PET) which can be used in a Neyman-Pearson hypothesis testing framework to test whether the meta-regression estimate can reject an effect size of 0 based on the 95% CI around the PET estimate at the intercept SE = 0. Note that when the confidence interval is very wide due to a small number of observations, this test might have low power, and have an a-priori low probability of rejecting the null effect. The estimated effect size for PET is calculated with: $d = β_0 + β_1SE_i + _ui$ where d is the estimated effect size, SE is the standard error, and the equation is estimated using weighted least squares (WLS), with 1/SE2i as the weights. The PET estimate underestimates the effect size when there is a true effect. Therefore, the PET-PEESE procedure recommends first using PET to test whether the null can be rejected, and if so, then the  'precision-effect estimate with standard error' (PEESE) should be used to estimate the meta-analytic effect size. In PEESE, the standard error (used in PET) is replaced by the variance (i.e., the standard error squared), which @stanley_meta-regression_2014 find reduces the bias of the estimated meta-regression intercept.  
+One meta-regression technique is known as PET-PEESE [@stanley_meta-regression_2014; @stanley_finding_2017]. It consists of a ‘precision-effect-test’ (PET) which can be used in a Neyman-Pearson hypothesis testing framework to test whether the meta-regression estimate can reject an effect size of 0 based on the 95% CI around the PET estimate at the intercept *SE* = 0. Note that when the confidence interval is very wide due to a small number of observations, this test might have low power, and have an a-priori low probability of rejecting the null effect. The estimated effect size for PET is calculated with: $d = \beta_0 + \beta_1 SE_i + u_i$ where *d* is the estimated effect size, *SE* is the standard error, and the equation is estimated using weighted least squares (WLS), with 1/SE2i as the weights. The PET estimate underestimates the effect size when there is a true effect. Therefore, the PET-PEESE procedure recommends first using PET to test whether the null can be rejected, and if so, then the 'precision-effect estimate with standard error' (PEESE) should be used to estimate the meta-analytic effect size. In PEESE, the standard error (used in PET) is replaced by the variance (i.e., the standard error squared), which @stanley_meta-regression_2014 find reduces the bias of the estimated meta-regression intercept.  
 
 PET-PEESE has limitations, as all bias detection techniques have. The biggest limitations are that it does not work well when there are few studies, all the studies in a meta-analysis have small sample sizes, or when there is large heterogeneity in the meta-analysis [@stanley_finding_2017]. When these situations apply (and they will in practice), PET-PEESE might not be a good approach. Furthermore, there are some situations where there might be a correlation between sample size and precision, which in practice will often be linked to heterogeneity in the effect sizes included in a meta-analysis. For example, if true effects are different across studies, and people perform power analyses with accurate information about the expected true effect size, large effect sizes in a meta-analysis will have small sample sizes, and small effects will have large sample sizes. Meta-regression is, like normal regression, a way to test for an association, but you need to think about the causal mechanism behind the association.
 
@@ -523,8 +523,8 @@ if(pub.bias < 1){
     p <- 0 # reset p to 1
     n <- 100
     while (p < 0.05) { # continue simulating as along as p is significant
-      x <- rnorm(n = n, mean = m1, sd = sd1) # produce  simulated participants
-      y <- rnorm(n = n, mean = m2, sd = sd2) # produce  simulated participants
+      x <- rnorm(n = n, mean = m1, sd = sd1) # produce simulated participants
+      y <- rnorm(n = n, mean = m2, sd = sd2) # produce simulated participants
       p <- t.test(x, y, var.equal = TRUE)$p.value
     }
     metadata.nonsig[i, 1] <- mean(x)
@@ -598,8 +598,8 @@ if(pub.bias < 1){
     p <- 0 # reset p to 1
     n <- 100
     while (p < 0.05) { # continue simulating as along as p is significant
-      x <- rnorm(n = n, mean = m1, sd = sd1) # produce  simulated participants
-      y <- rnorm(n = n, mean = m2, sd = sd2) # produce  simulated participants
+      x <- rnorm(n = n, mean = m1, sd = sd1) # produce simulated participants
+      y <- rnorm(n = n, mean = m2, sd = sd2) # produce simulated participants
       p <- t.test(x, y, var.equal = TRUE)$p.value
     }
     metadata.nonsig[i, 1] <- mean(x)
@@ -682,8 +682,8 @@ for (i in 1:nsims*(1-pub.bias)) { # for each simulated experiment
   p <- 0 # reset p to 1
   n <- round(truncnorm::rtruncnorm(1, 20, 1000, 100, 100))
   while (p < 0.05) { # continue simulating as along as p is significant
-    x <- rnorm(n = n, mean = m1, sd = sd1) # produce  simulated participants
-    y <- rnorm(n = n, mean = m2, sd = sd2) # produce  simulated participants
+    x <- rnorm(n = n, mean = m1, sd = sd1) # produce simulated participants
+    y <- rnorm(n = n, mean = m2, sd = sd2) # produce simulated participants
     p <- t.test(x, y, var.equal = TRUE)$p.value
   }
   metadata.nonsig[i, 1] <- mean(x)
@@ -773,8 +773,8 @@ if(pub.bias < 1){
     p <- 0 # reset p to 1
     n <- round(truncnorm::rtruncnorm(1, 20, 1000, 100, 100))
     while (p < 0.05) { # continue simulating as along as p is significant
-      x <- rnorm(n = n, mean = m1, sd = sd1) # produce  simulated participants
-      y <- rnorm(n = n, mean = m2, sd = sd2) # produce  simulated participants
+      x <- rnorm(n = n, mean = m1, sd = sd1) # produce simulated participants
+      y <- rnorm(n = n, mean = m2, sd = sd2) # produce simulated participants
       p <- t.test(x, y, var.equal = TRUE)$p.value
     }
     metadata.nonsig[i, 1] <- mean(x)
