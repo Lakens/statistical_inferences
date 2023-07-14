@@ -92,9 +92,9 @@ mineffectplot <- baseplot +
   annotate("text", size = rel(3.5), x=-2.8, y=plotheight/2.5, parse=TRUE, label= "H1") + #label for lower area (H1)
   annotate("text", size = rel(3.5), x=2.8, y=plotheight/2.5, parse=TRUE, label="H1") + #label for upper area (H1)
   annotate("text", size = rel(3.5), x=0, y=plotheight/2.5, parse=TRUE, label="H0", hjust = 0.6) + #label for minimal effects area (H1)
-  annotate("segment", x = 0.1, xend = 1, y = plotheight/2.5, yend=plotheight/2.5,
+  annotate("segment", x = 0.3, xend = 1, y = plotheight/2.5, yend=plotheight/2.5,
            arrow = arrow(type = "closed", length=unit(2, "mm"))) + #arrow pointing from H0 label to upper H0 dashed line
-  annotate("segment", x = -0.1, xend = -1, y = plotheight/2.5, yend=plotheight/2.5,
+  annotate("segment", x = -0.3, xend = -1, y = plotheight/2.5, yend=plotheight/2.5,
            arrow = arrow(type = "closed", length=unit(2, "mm")))  #arrow pointing from H0 label to lower H0 dashed line         
 
 
@@ -137,7 +137,7 @@ In a study where researchers are manipulating fatigue by asking participants to 
 
 The TOSTER package (originally created by myself but recently redesigned by [Aaron Caldwell](https://aaroncaldwell.us/)) can be used to plot two *t*-distributions and their critical regions indicating when we can reject the presence of effects smaller than -0.5 and larger than 0.5. It can take some time to get used to the idea that we are rejecting values more extreme than the equivalence bounds. Try to consistently ask in any hypothesis test: Which values can the test reject? In a nil null hypothesis test, we can reject an effect of 0, and in the equivalence test in the Figure below, we can reject values lower than -0.5 and higher than 0.5. In @fig-tdistequivalence we see two *t*-distributions centered on the upper and lower bound of the specified equivalence range (-0.5 and 0.5). 
 
-```{r fig-tdistequivalence, echo = FALSE}
+```{r fig-tdistequivalence, echo = FALSE, warning = FALSE, message = FALSE}
 #| fig-cap: "The mean difference and its confidence interval plotted below the *t*-distributions used to perform the two-one-sided tests against -0.5 and 0.5."
 
 res <- TOSTER::tsum_TOST(m1 = 4.55, m2 = 4.87, sd1 = 1.05, sd2 = 1.11,
@@ -184,7 +184,7 @@ print(res)
 
 In @fig-ciequivalence2 we see the the same results, but now visualized as a confidence density plot [@schweder_confidence_2016], which is a graphical summary of the distribution of confidence. A confidence density plot allows you to see which effects can be rejected with difference confidence interval widths. We see the bounds of the green area (corresponding to a 90% confidence interval) fall inside the equivalence bounds. Thus, the equivalence test is statistically significant, and we can statistically reject the presence of effects outside the equivalence range. We can also see that the 95% confidence interval excludes 0, and therefore, a traditional null hypothesis significance test is also statistically significant. 
 
-```{r fig-ciequivalence2, echo = FALSE}
+```{r fig-ciequivalence2, echo = FALSE, warning = FALSE, message = FALSE}
 #| fig-cap: "The mean difference and its confidence interval for an equivalence test with an equivalence range of -0.5 and 0.5."
 
 res <- TOSTER::tsum_TOST(m1 = 4.55, m2 = 4.87, sd1 = 1.05, sd2 = 1.11,
@@ -207,7 +207,7 @@ Equivalence bounds can be specified in raw effect sizes, or in standardized mean
 
 If a researcher has specified a smallest effect size of interest, and is interested in testing whether the effect in the population is larger than this smallest effect of interest, a minimum effect test can be performed. As with any hypothesis test, we can reject the smallest effect of interest whenever the confidence interval around the observed effect does not overlap with it. In the case of a minimum effect test, however, the confidence interval should be fall completely beyond the smallest effect size of interest. For example, let's assume a researcher performs a minimum effect test with 200 observations per condition against a smallest effect size of interest of a mean difference of 0.5.
 
-```{r fig-tmet, echo = FALSE}
+```{r fig-tmet, echo = FALSE, warning = FALSE, message = FALSE}
 #| fig-cap: "The mean difference and its confidence interval plotted below the *t*-distributions used to perform the two-one-sided tests against -0.5 and 0.5 when performing a minimum effect test."
 
 res <- TOSTER::tsum_TOST(m1 = 5.73, m2 = 4.87, sd1 = 1.05, sd2 = 1.11,
@@ -263,7 +263,7 @@ In Bayesian estimation, one way to argue for the absence of a meaningful effect 
 
 If the prior used by Kruschke was perfectly uniform, and the ROPE procedure and an equivalence test used the same confidence interval (e.g., 90%), the two tests would yield  identical results. There would only be philosophical differences in how the numbers are interpreted. The `BEST` package in R that can be used to perform the ROPE procedure by default uses a ‘broad’ prior, and therefore results of the ROPE procedure and an equivalence test are not exactly the same, but they are very close. One might even argue the two tests are 'practically equivalent'. In the R code below, random normally distributed data for two conditions is generated (with means of 0 and a standard deviation of 1) and the ROPE procedure and a TOST equivalence test are performed. 
 
-```{r, echo = FALSE, cache = TRUE}
+```{r, echo = FALSE, warning = FALSE, message = FALSE, cache = TRUE}
 set.seed(1)
 
 x<-rnorm(100) #Generate 100 random normally distributed observations
@@ -399,8 +399,7 @@ We can use the minimal statistically detectable effect to set the SESOI for repl
 
 Setting a smallest effect size of interest for a replication study is a bit like a tennis match. Original authors serve and hit the ball across the net, saying ‘look, something is going on’. The approach to set the SESOI to the effect size that could have been significant in the original study is a return volley which allows you to say ‘there does not seem to be anything large enough that could have been significant in your own original study’ after performing a well-designed replication study with high statistical power to reject the SESOI. This is never the end of the match – the original authors can attempt to return the ball with a more specific statement about effects their theory predicts, and demonstrate such a smaller effect size is present. But the ball is back in their court, and if they want to continue to claim there is an effect, they will have to support their claim by new data.
 
-Beyond replication studies, the amount of data that is collected limits the inferences one can make. It is also possible to compute a minimal statistically detectable effect based on the sample sizes that are typically used in a research field. For example, imagine a line of research in which a hypothesis has almost always
-been tested by performing a one-sample *t*-test, and where the sample sizes that are collected are always smaller than 100 observations. A one-sample *t*-test on 100 observations, using an alpha of .05 (two sided), has 80% power to detect an effect of *d* = 0.28 (as can be calculated in a sensitivity power analysis). In a new study, concluding that one can reliably reject the presence of effects more extreme than *d* = 0.28 suggests that sample sizes of 100 might not be enough to detect effects in such research lines. Rejecting the presence of effects more extreme than *d* = 0.28 does not test a theoretical prediction, but it contributes to the literature by answering a **resource question**. It suggests that future studies in this research line will need to change the design of their studies by substantially increasing the sample size. Setting the smallest effect size of interest based on this approach does not answer any theoretical question (after all, the SESOI is not based on any theoretical prediction). But informing peers that given the sample size commonly collected in a field in a field, the effect is not large enough so that it can be reliably studied is a useful contribution to the literature. It does not mean that the effect is not interesting per se, and a field might decide that it is time to examine the research question collaboratively, by coordinating research lines, and collecting enough data to reliably study whether a smaller effect is present.
+Beyond replication studies, the minimal statistically detectable effect can also be computed based on the sample sizes that are typically used in a research field. For example, imagine a line of research in which a hypothesis has almost always been tested by performing a one-sample *t*-test, and where the sample sizes that are collected are always smaller than 100 observations. A one-sample *t*-test on 100 observations, using an alpha of .05 (two sided), has 80% power to detect an effect of *d* = 0.28 (as can be calculated in a sensitivity power analysis). In a new study, concluding that one can reliably reject the presence of effects more extreme than *d* = 0.28 suggests that sample sizes of 100 might not be enough to detect effects in such research lines. Rejecting the presence of effects more extreme than *d* = 0.28 does not test a theoretical prediction, but it contributes to the literature by answering a **resource question**. It suggests that future studies in this research line will need to change the design of their studies by substantially increasing the sample size. Setting the smallest effect size of interest based on this approach does not answer any theoretical question (after all, the SESOI is not based on any theoretical prediction). But this approach to specifying a smallest effect size of interest can make a useful contribution to the literature by informing peers that the effect is not large enough so that it can be reliably studied given the sample sizes researchers are typically collecting. It does not mean that the effect is not interesting, but it might be an indication that the field will need to coordinate data collection in the future, because the effect is too small to reliable study with the sample sizes that have been collected in the past.
 
 ## Test Yourself
 ::: {.webex-check .webex-box}
@@ -871,12 +870,18 @@ cat(longmcq(opts_p))
 are performed for the same data, and neither test is statistically significant? 
 
 6. When designing equivalence tests to have a desired statistical power, why do you need a 
-larger sample size, the narrower the equivalence range is? 
+larger sample size, the narrower the equivalence range is?
 
-7. Why is it incorrect to say there is ‘no effect’ when the equivalence test is statistically significant? 
+7. While for a null hypothesis significance test one always has some probability to observe a statistically significant result, it is possible to perform an equivalence test with 0% power. When would this happen?
 
-8. Specify one way in which the Bayesian ROPE procedure and an equivalence test are similar, and specify one way in which they are different. 
+8. Why is it incorrect to say there is ‘no effect’ when the equivalence test is statistically significant? 
 
-9. What are two approaches to specify a smallest effect size of interest? 
+9. Specify one way in which the Bayesian ROPE procedure and an equivalence test are similar, and specify one way in which they are different. 
 
-10. What is the idea behind the ‘small telescopes’ approach to equivalence testing? 
+10. What is the anchor based method to specify a smallest effect size of interest? 
+
+11. What is a cost-benefit approach to specify a smallest effect size of interest? 
+
+12. How can researchers use theoretical predictions to specify a smallest effect size of interest? 
+
+13. What is the idea behind the ‘small telescopes’ approach to equivalence testing? 
