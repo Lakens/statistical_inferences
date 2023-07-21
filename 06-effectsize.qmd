@@ -345,6 +345,67 @@ We see the effect size of the cross-over interaction (*f* = 0.25) is twice as la
 
 Just stating that you expect a 'medium' Cohen's *f* effect size for an interaction effect in your power analysis is not the best approach. Instead, start by thinking about the pattern of means and standard deviations (and for within factors, the correlation between dependent variables) and then compute the effect size from the data pattern. If you prefer not to do so by hand, you can use [Superpower](https://aaroncaldwell.us/SuperpowerBook/) [@lakens_simulation-based_2021]. This also holds for more complex designs, such as multilevel models. In these cases, it is often the case that power analyses are easier based on simulation-based approaches, than based on plugging in a single effect size in power analysis software [@debruine_understanding_2021].
 
+## Why Effect Sizes Selected for Significance are Inflated
+
+Estimates based on samples from the population will show variability. The larger the sample, the closer our estimates will be to the true population values, as explained in the next chapter on [confidence intervals](#sec-confint). Sometimes we will observe larger estimates than the population value, and sometimes we will observe smaller values. As long as we have an unbiased collection of effect size estimates we can combine them in a [meta-analysis](#sec-meta) to increase the accuracy of the estimate. Regrettably, the scientific literature is often biased. It is specifically common that statistically significant studies are published (e.g., studies with *p*-values smaller than 0.05) and studies with *p*-values larger than 0.05 remain unpublished. Instead of having access to all effect sizes, anyone reading the literature only has access to effects that passed a **significance filter**. 
+
+If the observed *p*-value is 1, the observed effect size is 0. All else equal, the lower the *p*-value, the larger the effect size. If we only report studies with *p*-values below 0.05, then we only report studies with relatively larger effect sizes. This means that on average, effect size estimates from a biased literature with a significance filter will suffer from **inflated effect sizes**. 
+
+Another way to think about this is through the concept of a **truncated distribution**. If effect sizes are only reported if the *p*-value is statistically significant, then we only have access to effect sizes that are larger than some minimal value [@taylor_bias_1996; @anderson_sample-size_2017]. In @fig-inflated only effects larger than d = 0.4 can be significant, so all effect sizes below this threshold are censored, and only effect sizes in the gray part of the distribution will be available to researchers. Without the lower part of the effect size distribution effect sizes will on average be inflated. 
+
+```{r fig-inflated, fig.margin=FALSE, echo=FALSE}
+#| fig-cap: "Range of effect sizes that will be statisticially significant in an independent t-test with 50 participants per group and a true effect size of d = 0.5."
+
+N <- 50
+d <- 0.5
+p_upper <- 0.05
+ncp <- (d * sqrt(N / 2)) # Calculate non-centrality parameter d
+crit_d <- abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
+low_x <- min(- crit_d)
+high_x <- max(d + 0.5 + crit_d)
+# calc d-distribution
+x <- seq(low_x, high_x, length = 10000) # create x values
+# Set max Y for graph
+d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2) # calculate distribution of d based on t-distribution
+y_max <- max(d_dist) + 1
+# create plot
+par(bg = backgroundcolor)
+d <- round(d, 2)
+plot(-10, xlim = c(low_x, high_x), ylim = c(0, y_max), xlab = substitute(paste("Cohen's d")), ylab = "Density", main = "", cex.lab = 1.3, cex.axis = 1.2)
+# abline(v = seq(low_x,high_x,0.1), h = seq(0,0.5,0.1), col = "lightgrey", lty = 1)
+#    axis(side = 1, at = seq(low_x,high_x,0.1), labels = FALSE)
+
+# Add Type II error rate
+crit_d <- abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
+y <- seq(crit_d, 2, length = 10000)
+z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2)) # determine upperbounds polygon
+polygon(c(crit_d, y, 2), c(0, z, 0), col = rgb(0.7, 0.7, 0.7), border = rgb(0.7, 0.7, 0.7))
+segments(crit_d, 0, crit_d, y_max - 0.7, col = "black", lwd = 3, lty = 2)
+text(crit_d, y_max - 0.4, paste("Critical d = ", round(crit_d, 2)), cex = 1.3)
+# add effect line
+d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2) # calculate distribution of d based on t-distribution
+lines(x, d_dist, col = "black", type = "l", lwd = 3)
+```
+## The Minimal Statistically Detectable Effect {#sec-minimaldetectable1}
+
+Given any alpha level and sample size it is possible to directly compute the **minimal statistically detectable effect**, or the **critical effect size**, which is the smallest effect size that, if observed, would be statistically significant given a specified alpha level and sample size [@cook_assessing_2014]. As explained in the previous section, if researchers selectively have access to only significant results, all effect sizes should be larger than the minimal statistically detectable effect, and the average effect size estimate will be upwardly inflated. For any critical *t* value (e.g., *t* = 1.96 for $\alpha$ = 0.05, for large sample sizes) we can compute a critical mean difference [@phillips_statistical_2001], or a critical standardized effect size. For a two-sided independent *t* test the critical mean difference is:
+
+$$M_{crit} = t_{crit}{\sqrt{\frac{sd_1^2}{n_1} + \frac{sd_2^2}{n_2}}}$$
+
+and the corresponding critical standardized mean difference is: 
+
+$$d_{crit} = t_{crit}{\sqrt{\frac{1}{n_1} + \frac{1}{n_2}}}$$
+
+G\*Power provides the critical test statistic (such as the critical *t* value) when performing a power analysis. For example, @fig-gcrit2 shows that for a correlation based on a two-sided test, with $\alpha$ = 0.05, and *N* = 30, only effects larger than *r* = 0.361 or smaller than *r* = -0.361 can be statistically significant. This reveals that when the sample size is relatively small, the observed effect needs to be quite substantial to be statistically significant.
+
+```{r fig-gcrit2, echo = FALSE}
+#| fig-cap: "The critical correlation of a test based on a total sample size of 30 and alpha = 0.05 calculated in G\\*Power."
+
+knitr::include_graphics("images/gpowcrit2.png")
+```
+
+It is important to realize that due to random variation each study has a probability to yield effects larger than the critical effect size, even if the true effect size is small (or even when the true effect size is 0, in which case each significant effect is a Type I error). At the same time, researchers often do not want to perform an experiment where effects they are interested in can not even become statistically significant, which is why it can be useful to compute the minimal statistically significant effect as part of a [sample size justification](#sec-minimaldetectable1).
+
 ## Test Yourself
 ::: {.webex-check .webex-box}
 **Q1**: One of the largest effect sizes in the meta-meta analysis by Richard and colleagues from 2003 is that people are likely to perform an action if they feel positively about the action and believe it is common. Such an effect is (with all respect to all researchers who contributed research to this meta-analysis) somewhat trivial. Even so, the correlation was *r* = .66, which equals a Cohen’s *d* of 1.76. What is according to the online app at <https://rpsychologist.com/cohend/> the probability of superiority for an effect of this size? 
