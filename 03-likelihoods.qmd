@@ -187,8 +187,8 @@ Note that likelihood ratios give us the relative evidence for one specified hypo
 
 n <- 10  #total number of trials
 x <- 4  #total number of successes
-H0 <- .5 #specify p(sig|H0) which is typically .05 (alpha)
-H1 <- .8 #specify p(sig|H1) which is power (1-beta)
+H0 <- .8 #specify p(sig|H0) which is typically .05 (alpha)
+H1 <- .5 #specify p(sig|H1) which is power (1-beta)
 
 theta<- seq(0,1,len=100)
 like <- dbinom(x,n,theta)
@@ -201,12 +201,12 @@ points(H1,dbinom(x,n,H1))
 segments(H0, dbinom(x,n,H0), x/n, dbinom(x,n,H0), lty=2, lwd=2)
 segments(H1, dbinom(x,n,H1), x/n, dbinom(x,n,H1), lty=2, lwd=2)
 segments(x/n, dbinom(x,n,H0), x/n, dbinom(x,n,H1), lwd=2)
-title(paste('Likelihood Ratio:',round(LR,digits=0)))
+title(paste('Likelihood Ratio:',round(LR,digits=2)))
 ```
 
 A likelihood ratio of 1 means the data are equally likely under both hypotheses. Values further away from 1 indicate that the data are more likely under one hypothesis than the other. The ratio can be expressed in favor of one hypothesis over the other (for example L(*p* = 0.5)/L(*p* = 0.8) or vice versa (L(*p* = 0.8)/L(*p* = 0.5). This means the likelihood ratio of 37.25 for $H_0$ relative to $H_1$ is equivalent to a likelihood ratio of 1/37.25 = 0.02685 for $H_1$ relative to $H_0$. Likelihood ratios range from 0 to infinity, and the closer to zero or infinity, the stronger the relative evidence for one hypothesis over the other. We will see in the chapter on [Bayesian statistics](#sec-bayes) that likelihood ratios are in this sense very similar (and a special case of) a Bayes Factor.
 
-Likelihoods are relative evidence. Just because the data are more likely under one possible value of *p* than another value of *p* doesn’t mean that the data have come from either of these two distributions. Other values might generate even higher likelihood values. For example, consider the situation where we flip a coin 100 times, and observe 50 heads. We compare *p* = 0.3 versus *p* = 0.8, and find that the likelihood ratio is 803462, implying that there is 803461 times more evidence in the data for *p* = 0.3 than for *p* = 0.8. That might sound pretty conclusive evidence for *p* = 0.3. But it is only relative evidence for *p* = 0.3 compared to *p* = 0.8. If we look at the likelihood function, we clearly see that, not surprisingly, *p* = 0.5 is the value that maximizes the likelihood function. Just because one hypothesis is more likely than another hypothesis, does not mean that there isn't a third hypothesis that is even more likely. 
+Likelihoods are relative evidence. Just because the data are more likely under one possible value of *p* than another value of *p* doesn’t mean that the data have come from either of these two distributions. Other values might generate even higher likelihood values. For example, consider the situation where we flip a coin 100 times, and observe 50 heads. We compare *p* = 0.3 versus *p* = 0.8, and find that the likelihood ratio is 803462, implying that there is 803462 times more evidence in the data for *p* = 0.3 than for *p* = 0.8. That might sound pretty conclusive evidence for *p* = 0.3. But it is only relative evidence for *p* = 0.3 compared to *p* = 0.8. If we look at the likelihood function, we clearly see that, not surprisingly, *p* = 0.5 is the value that maximizes the likelihood function. Just because one hypothesis is more likely than another hypothesis, does not mean that there isn't a third hypothesis that is even more likely. 
 
 ```{r fig-like7,  echo = FALSE}
 #| fig-cap: "Computing a likelihood ratio for *p* = 0.3 relative to *p* = 0.8 when observing *p* = 0.5 in 100 coin flips."
