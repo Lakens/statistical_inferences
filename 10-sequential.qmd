@@ -56,7 +56,7 @@ design <- getDesignGroupSequential(
   alpha = 0.05,
   beta = 0.1
 )
-design
+print(summary(design))
 ```
 
 The output tells us we have designed a study with 2 looks (one interim, one final) using the Pocock spending function. The last line returns one-sided alpha levels. The `rpact` package focuses on Confirmatory Adaptive Clinical Trial Design and Analysis. In clinical trials, researchers mostly test directional predictions, and thus, the default setting is to perform a one-sided test. In clinical trials it is common to use a 0.025 significance level for one-sided tests, but in many other fields, 0.05 is a more common default. We can get the two-sided alpha levels by multiplying the one-sided alpha levels by two: 
@@ -209,7 +209,7 @@ power_res <- getSampleSizeMeans(
   allocationRatioPlanned = 1,
   normalApproximation = FALSE)
 
-power_res
+print(power_res)
 ```
 
 We see that we need 85 participants in each group, (or 86, since the sample size is actually `r round(power_res$numberOfSubjects1, 2)` and the required number of observations is rounded up, and so we need `r ceiling(power_res$numberOfSubjects1) * 2` participants in total. Other power analysis software, such as G\*Power, should yield the same required sample size. We can now examine our design above with 2 looks and a Pocock-like alpha spending function for a 2 sided test with an alpha of 0.05. We will look 2 times, and expect a true effect of *d* = 0.5 (which we enter by specifying an alternative of 0.5, and a stDev of 1).
@@ -232,7 +232,7 @@ power_res_seq <- getSampleSizeMeans(
   allocationRatioPlanned = 1,
   normalApproximation = FALSE)
 
-power_res_seq
+print(power_res_seq)
 ```
 
 The sample size per condition at the first look is `r round(power_res_seq$numberOfSubjects1[1], 2)`, and at the second look it is `r round(power_res_seq$numberOfSubjects1[2], 2)`, which means we are now collecting `r ceiling(power_res_seq$numberOfSubjects1[2]) * 2` instead of `r ceiling(power_res$numberOfSubjects1) * 2` participants. This is a consequence of lowering our alpha level at each look (from 0.05 to `r round(seq_design$stageLevels[2] * 2, 3)`). To compensate for the lower alpha level, we need to increase the sample size of the study to achieve the same power. 
@@ -281,7 +281,7 @@ power_res_seq <- getSampleSizeMeans(
   allocationRatioPlanned = 1,
   normalApproximation = FALSE)
 
-summary(power_res_seq)
+print(summary(power_res_seq))
 ```
 
 This design meets the desired power when we collect `r ceiling(power_res_seq$numberOfSubjects1[2]) * 2` participants - exactly as many as when we would *not* look at the data once. We basically get a free look at the data, with the expected number of participants (assuming *d* = 0.5) dropping to `r round(power_res_seq$expectedNumberOfSubjectsH1, 2)`. Increasing the number of looks to 4 comes at only a very small required increase in the number of participants to maintain the same statistical power, but further decreases the expected sample size. Especially for a conservative a-priori power analysis, or when performing an a-priori power analysis for a smallest effect size of interest, and there is a decent probability that the true effect size is larger, using sequential analysis is a very attractive option.
@@ -387,7 +387,7 @@ res <- getAnalysisResults(
   dataInput = dataMeans
   )
 
-res
+print(summary(res))
 ```
 
 ```{r, echo = FALSE}
@@ -416,7 +416,7 @@ res <- getAnalysisResults(
 ```
 
 ```{r, echo = FALSE}
-res
+print(summary(res))
 ```
 
 Imagine we have performed a study planned to have at most 2 equally spaced looks at the data, where we perform a two-sided test with an alpha of 0.05, and we use a Pocock type alpha spending function, and we observe mean differences between the two conditions at the last look. Based on a Pocock-like alpha spending function with two equally spaced looks the alpha level for a two-sided *t*-test is `r format(seq_design$stageLevels[1]*2, nsmall = 4, digits = 4)`, and `r format(seq_design$stageLevels[2]*2, nsmall = 4, digits = 4)`. We can thus reject $H_0$ after look `r res$finalStage`. But we would also like to report an effect size, and adjusted *p* values and confidence intervals. 
@@ -484,7 +484,7 @@ design <- rpact::getDesignGroupSequential(
   sided = 0,
   alpha = 0.0
 )
-design
+print(summary(design))
 ```
 
 ```{r, echo = FALSE, results = 'asis'}
@@ -523,7 +523,7 @@ power_res <- rpact::getSampleSizeMeans(
   allocationRatioPlanned = 1,
   normalApproximation = FALSE)
 
-power_res
+print(power_res)
 ```
 
 ```{r, echo = FALSE, results = 'asis'}
