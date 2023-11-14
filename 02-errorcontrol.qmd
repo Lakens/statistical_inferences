@@ -216,7 +216,7 @@ if (knitr::is_html_output()){
 
 Let's more formally examine the inflation of the Type 1 error rate through optional stopping in a **simulation study**. Copy the code below into R and run the code. Note that the 50000 simulations (needed to get the error rates reasonably accurate) take some time to run. 
 
-```{r, eval=FALSE}
+```{r optionalstopsim, eval=FALSE, cache = TRUE}
 N <- 100 # total datapoints (per condition)
 looks <- 5 # set number of looks at the data
 nsims <- 50000 # number of simulated studies
@@ -326,7 +326,7 @@ Nevertheless, some researchers have proposed to move away from the default use o
 
 There are two main reasons to abandon the universal use of a 5% alpha level. The first is that decision-making becomes more efficient [@mudge_setting_2012; @gannon_blending_2019]. If researchers use hypothesis tests to make dichotomous decisions from a methodological falsificationist approach to statistical inferences, and have a certain maximum sample size they are willing or able to collect, it is typically possible to make decisions more efficiently by choosing error rates such that the combined cost of Type 1 and Type 2 errors is minimized. If we aim to either minimize or balance Type 1 and Type 2 error rates for a given sample size and effect size, the alpha level should be set not based on convention, but by weighting the relative cost of both types of errors [@maier_justify_2022].
 
-```{r, echo=FALSE, fig.show='hide'}
+```{r justifyalpha1, echo=FALSE, fig.show='hide'}
 res1 <- JustifyAlpha::optimal_alpha(power_function = "pwr::pwr.t.test(d = 0.5, n = 80, sig.level = x, type = 'two.sample', alternative = 'two.sided')$power", error = "balance", costT1T2 = 4, printplot = FALSE)
 
 res2 <- JustifyAlpha::optimal_alpha(power_function = "pwr::pwr.t.test(d = 0.5, n = 64, sig.level = x, type = 'two.sample', alternative = 'two.sided')$power", error = "minimize", costT1T2 = 4, printplot = TRUE)
@@ -348,13 +348,6 @@ The reasoning here is that a design that has 70% power for the smallest effect s
 One should also carefully reflect on the choice of the alpha level when an experiment achieves very high statistical power for all effect sizes that are considered meaningful. If a study has 99% power for effect sizes of interest, and thus a 1% Type 2 error rate, but uses the default 5% alpha level, it also suffers from a lack of balance, and the use of a lower alpha level would lead to a more balanced decision, and increase the severity of the test. 
 
 The second reason for making a study-specific choice of alpha level is most relevant for large data sets, and is related to [Lindley's paradox](#sec-lindley). As the statistical power increases, some *p*-values below 0.05 (e.g., *p* = 0.04) can be more likely when there is *no* effect than when there *is* an effect. To prevent situations where a frequentist rejects the null hypothesis based on *p* < 0.05, when the evidence in the test favors the null hypothesis over the alternative hypothesis, it is recommended to lower the alpha level as a function of the sample size. The need to do so is discussed by @leamer_specification_1978, who writes "The rule of thumb quite popular now, that is, setting the significance level arbitrarily to .05, is shown to be deficient in the sense that from every reasonable viewpoint the significance level should be a decreasing function of sample size." The idea of this approach is to reduce the alpha level such that a Bayes factor or likelihood computed for a significant result would never be evidence *for* the null hypothesis (for an online Shiny app to perform such calculations, see [here](https://shiny.ieis.tue.nl/JustifyAlpha/).
-
-```{r, echo = FALSE}
-if (knitr::is_latex_output()) {
-} else {
-  knitr::include_url("https://shiny.ieis.tue.nl/JustifyAlpha/")
-}
-```
 
 ## Why you don't need to adjust your alpha level for all tests you'll do in your lifetime.
 
