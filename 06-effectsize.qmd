@@ -5,6 +5,11 @@
 library(Superpower)
 library(ggplot2)
 library(patchwork)
+library(metafor)
+library(extrafont)
+font_import(prompt = FALSE, pattern = 'Open')
+loadfonts()
+
 ```
 
 Effect sizes are an important statistical outcome in most empirical studies. Researchers want to know whether an intervention or experimental manipulation has an effect greater than zero, or (when it is obvious that an effect exists) how big the effect is. Researchers are often reminded to report effect sizes, because they are useful for three reasons. First, they allow you to present the magnitude of the reported effects, which in tyrn allows you to reflect on the **practical significance** of the effects, in addition to the *statistical* significance. Second, effect sizes allow researchers to draw meta-analytic conclusions by comparing standardized effect sizes across studies. Third, effect sizes from previous studies can be used when planning a new study in an a-priori power analysis.
@@ -354,11 +359,15 @@ Just stating that you expect a 'medium' Cohen's *f* effect size for an interacti
 
 ## Why Effect Sizes Selected for Significance are Inflated
 
-Estimates based on samples from the population will show variability. The larger the sample, the closer our estimates will be to the true population values, as explained in the next chapter on [confidence intervals](#sec-confint). Sometimes we will observe larger estimates than the population value, and sometimes we will observe smaller values. As long as we have an unbiased collection of effect size estimates we can combine them in a [meta-analysis](#sec-meta) to increase the accuracy of the estimate. Regrettably, the scientific literature is often biased. It is specifically common that statistically significant studies are published (e.g., studies with *p*-values smaller than 0.05) and studies with *p*-values larger than 0.05 remain unpublished. Instead of having access to all effect sizes, anyone reading the literature only has access to effects that passed a **significance filter**. 
-
-If the observed *p*-value is 1, the observed effect size is 0. All else equal, the lower the *p*-value, the larger the effect size. If we only report studies with *p*-values below 0.05, then we only report studies with relatively larger effect sizes. This means that on average, effect size estimates from a biased literature with a significance filter will suffer from **inflated effect sizes**. 
-
 Another way to think about this is through the concept of a **truncated distribution**. If effect sizes are only reported if the *p*-value is statistically significant, then we only have access to effect sizes that are larger than some minimal value [@taylor_bias_1996; @anderson_sample-size_2017]. In @fig-inflated only effects larger than d = 0.4 can be significant, so all effect sizes below this threshold are censored, and only effect sizes in the gray part of the distribution will be available to researchers. Without the lower part of the effect size distribution effect sizes will on average be inflated. 
+
+Estimates based on samples from the population will show variability. The larger the sample, the closer our estimates will be to the true population values, as explained in the next chapter on [confidence intervals](#sec-confint). Sometimes we will observe larger estimates than the population value, and sometimes we will observe smaller values. As long as we have an unbiased collection of effect size estimates, combining effect sizes estimates through a meta-analysis can increase the accuracy of the estimate. Regrettably, the scientific literature is often biased. It is specifically common that statistically significant studies are published (e.g., studies with p values smaller than 0.05) while studies with p values larger than 0.05 remain unpublished [@franco_publication_2014; @sterling_publication_1959]. Instead of having access to all effect sizes, anyone reading the literature only has access to effects that passed a significance filter. This will introduce systematic bias in our effect size estimates.
+
+The explain how selection for significance introduces bias, it is useful to understand the concept of a truncated or censored distribution. If we want to measure the average length of people in The Netherlands we would collect a representative sample of individuals, measure how tall they are, and compute the average score. If we collect sufficient data the estimate will be close to the true value in the population. However, if we collect data from participants who are on a theme park ride where people need to be at least 150 centimeters tall to enter,  the mean we compute is based on a truncated distribution where only individuals taller than 150 cm are included. Smaller individuals are missing. Imagine we have measured the height of two individuals in the theme park ride, and they are 164 and 184 cm tall. Their average height is (164+184)/2 = 174 cm. Outside the entrance of the theme park ride is one individual who is 144 cm tall. Had we measured this individual as well, our estimate of the average length would be (144+164+184)/3 = 164 cm. Removing low values from a distribution will lead to overestimation of the true value. Removing high values would lead to underestimation of the true value.
+
+The scientific literature suffers from publication bias. Non-significant test results – based on whether a p value is smaller than 0.05 or not – are often less likely to be published. When an effect size estimate is 0 the p value is 1. The further removed effect sizes are from 0, the smaller the p value. All else equal (e.g., studies have the same sample size, and measures have the same distribution and variability) if results are selected for statistical significance (e.g., p < .05) they are also selected for larger effect sizes. As small effect sizes will be observed with their corresponding probabilities, their absence will inflate effect size estimates. Every study in the scientific literature provides it’s own estimate of the true effect size, just as every individual provides it’s own estimate of the average height of people in a country. When these estimates are combined – as happens in [meta-analyses](#sec-meta) in the scientific literature – the meta-analytic effect size estimate will be biased (or systematically different from the true population value) whenever the distribution is truncated. To achieve unbiased estimates of population values when combining individual studies in the scientific literature in meta-analyses researchers need access to the complete distribution of values – or all studies that are performed, regardless of whether they yielded a *p* value above or below 0.05.
+
+In @fig-inflated we see a distribution centered at an effect size of Cohen’s *d* = 0.5 for a two-sided *t*-test with 50 observations in each independent condition. Given an alpha level of 0.05 in this test only effect sizes larger than *d* = 0.4 will be statistically significant (i.e., all observed effect sizes in the grey area). The threshold for which observed effect sizes will be statistically significant is determined by the sample size and the alpha level (and not influenced by the true effect size). The white  area under the curve illustrates Type 2 errors – non-significant results that will be observed if the alternative hypothesis is true. If researchers only have access to the effect sizes estimates in the grey area – a truncated distribution where non-significant results are removed – a weighted average effect size from only these studies will be upwardly biased.
 
 ```{r fig-inflated, fig.margin=FALSE, echo=FALSE}
 #| fig-cap: "Range of effect sizes that will be statisticially significant in an independent t-test with 50 participants per group and a true effect size of d = 0.5."
@@ -393,6 +402,69 @@ text(crit_d, y_max - 0.4, paste("Critical d = ", round(crit_d, 2)), cex = 1.3)
 d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2) # calculate distribution of d based on t-distribution
 lines(x, d_dist, col = "black", type = "l", lwd = 3)
 ```
+
+If researchers only have access to the effect sizes estimates in the grey area – a truncated distribution where non-significant results are removed – a weighted average effect size from only these studies will be upwardly biased. We can see this in the two forest plots visualizing meta-analyses in @fig-metabias. In the top meta-analysis all 5 studies are included, even though study C and D yield non-significant results (as can be seen from the fact that the 95% CI overlaps with 0). The estimated effect size based on all 5 studies is *d* = 0.4. In the bottom meta-analysis the two non-significant studies are removed - as would happen when there is publication bias. Without these two studies the estimated effect size in the meta-analysis, *d* = 0.5, is inflated. The extent to which meta-analyses are inflated depends on the true effect size and the sample size of the studies.
+
+```{r fig-metabias, fig.margin=FALSE, echo=FALSE, fig.height=8}
+#| fig-cap: "Two forest plots, the top with all studies reported, the bottom only reporting statistically significant effects."
+
+yi <- c(0.52, 0.45, 0.22, 0.31, 0.53)
+vi <- c(0.038, 0.0399, 0.031, 0.034, 0.031)
+
+metadata <- data.frame(yi = yi, vi = vi)
+result <- metafor::rma(yi, vi, data = metadata, slab = c("A", "B", "C", "D", "E"))
+result_biased <- metafor::rma(yi, vi, data = metadata[c(1,2,5),], slab = c("A", "B", "E"))
+
+
+par(mfrow=c(2,1))
+par(mar=c(5,4,1,1))
+par(bg = backgroundcolor)
+
+metafor::forest(result,
+       xlab = "Cohen's d",
+       efac=c(0,4),
+       lty=c(1,1,0),
+       cex=0.8,
+       shade = TRUE,
+       rowadj=0,
+       psize = 1,
+       colout = "#333333",
+       xlim = c(-0.4, 1.5),
+       alim = c(-0.2, 1),
+       textpos = c(-0.4, 1.5),
+       font = "Open Sans",
+       header = TRUE)
+par(mar=c(5,3,1,2))
+metafor::forest(result_biased,
+       xlab = "Cohen's d",
+       efac=c(0,4),
+       lty=c(1,1,0),
+       cex=0.8,
+       shade = TRUE,
+       rowadj=0,
+       psize = 1,
+       colout = "#333333",
+       xlim = c(-0.4, 1.5),
+       alim = c(-0.2, 1),
+       textpos = c(-0.4, 1.5),
+       font = "Open Sans",
+       header = TRUE)
+
+par(mfrow=c(1,1))
+
+```
+
+
+The inflation will be greater the larger the part of the distribution is truncated, and the closer the true population effect size is to 0. In our example about the height of individuals the inflation would be greater had we truncated the distribution by removing everyone smaller than 170 cm instead of 150 cm. If the true average height of individuals was 194 cm, removing the few people that are expected to be smaller than 150 (based on the assumption of normally distributed data) would have less of an effect on how much our estimate is inflated than when the true average height was 150 cm, in which case we would remove 50% of individuals. In statistical tests where results are selected for significance at a 5% alpha level more data will be removed if the true effect size is smaller, but also when the sample size is smaller. If the sample size is smaller, statistical power is lower, and more of the values in the distribution (those closest to 0)  will be non-significant.
+
+Any single estimate of a population value will vary around the true population value. The effect size estimate from a single study can be smaller than the true effect size, even if studies have been selected for significance. For example, it is possible that the true effect size is 0.5, you have observed an effect size of 0.45, but only effect sizes smaller than 0.4 are truncated when selecting studies based on statistical significance (as in the figure above). At the same time, this single effect size estimate of 0.45 is inflated. What inflates the effect size is the long-run procedure used to generate the value. In the long run effect sizes estimates based on a procedure where estimates are selected for significance will be upwardly biased. This means that a single observed effect size of d = 0.45 will be inflated if it is generated based on a procedure where all non-significant effects are truncated, but it will be unbiased if it is generated based on a distribution where all observed effect sizes are reported, regardless of whether they are significant or not. This also means that a single researcher can not guarantee that the effect sizes they contribute to a literature will contribute to an unbiased effect sizes estimate: There needs to be a system in place where all researchers report all observed effect sizes to prevent bias. An alternative is to not have to rely on other researchers, and collect sufficient data in a single study to have a highly accurate effect size estimate. Multi-lab replication studies are an example of such an approach, where dozens of researchers collect a large number (up to thousands) of observations.
+
+The most extreme consequence of the inflation of effect size estimates occurs when the true effect size in the population is 0, but due to selection of statistically significant results, only significant effects in the expected direction are published. Note that if all significant results are published (and not only effect sizes in the expected direction) 2.5% of Type 1 error rates will be in the positive direction, and 2.5% will be in the negative direction, and the average effect size would be actually be 0. Thus, as long as the true effect size is exactly 0, and all Type 1 errors are published, the effect size estimate would be unbiased. In practice, we see scientists often do not simply publish all results, but only statistically significant results in the desired direction. An example of this is the literature on ego-depletion, where hundreds of studies were published, most showing statistically significant effects, but unbiased large scale replication studies revealed effect sizes of 0 [@hagger_multilab_2016; @vohs_multisite_2021].
+
+What can be done about the problem of biased effect sizes estimates if we mainly have access to the studies that passed a significance filter? Statisticians have developed approaches to adjust biased effect size estimates by taking a truncated distribution into account [@taylor_bias_1996]. This approach has recently been implemented in R [@anderson_sample-size_2017]. Implementing this approach in practice is difficult, because we never know for sure if an effect size estimate is biased, and if it is biased, how much bias there is. Furthermore, selection based on significance is only one form of bias, whereas researchers who selectively report significant results may engage in additional problematic research practices, such as selectively reporting results, which are not accounted for in the adjustment. Nevertheless, it can be used as a more conservative approach to estimate effect sizes in a biased literature. Other researchers have referred to this problem as a Type M error [@gelman_beyond_2014] and have suggested that researchers always report the average inflation factor of effect sizes. I do not believe this approach is useful. The Type M error is not an error, but a bias in estimation, and it is more informative to compute the adjusted estimate based on a truncated distribution as proposed by Taylor and Muller [-@taylor_bias_1996], than to compute the average inflation for a specific study design. If effects are on average inflated by a factor of 1.3 (the Type M error) it does not mean that the observed effect size is inflated by this factor, and the truncated effect sizes estimator by Taylor and Muller will provide researchers with an actual estimate based on their observed effect size. Type M errors might have a function in education, but they are not useful for scientists.
+
+Of course the real solution to bias in effect size estimates due to significance filters that lead to truncated or censored distributions is to stop selectively reporting results. Designing highly informative studies that have high power to both reject the null, as a smallest effect size of interest in an equivalence test, is a good starting point. Publishing research as Registered Reports is even better. Eventually, if we do not solve this problem ourselves, it is likely that we will face external regulatory actions that force us to include all studies that have received ethical review board approval to a public registry, and update the registration with the effect size estimate, as is done for clinical trials.
+
 ## The Minimal Statistically Detectable Effect {#sec-minimaldetectable1}
 
 Given any alpha level and sample size it is possible to directly compute the **minimal statistically detectable effect**, or the **critical effect size**, which is the smallest effect size that, if observed, would be statistically significant given a specified alpha level and sample size [@cook_assessing_2014]. As explained in the previous section, if researchers selectively have access to only significant results, all effect sizes should be larger than the minimal statistically detectable effect, and the average effect size estimate will be upwardly inflated. For any critical *t* value (e.g., *t* = 1.96 for $\alpha$ = 0.05, for large sample sizes) we can compute a critical mean difference [@phillips_statistical_2001], or a critical standardized effect size. For a two-sided independent *t* test the critical mean difference is:
