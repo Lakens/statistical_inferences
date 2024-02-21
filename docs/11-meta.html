@@ -299,13 +299,14 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
   <li><a href="#fixed-effect-vs-random-effects" id="toc-fixed-effect-vs-random-effects" class="nav-link" data-scroll-target="#fixed-effect-vs-random-effects"><span class="header-section-number">11.4</span> Fixed Effect vs Random Effects</a></li>
   <li><a href="#simulating-meta-analyses-for-dichotomous-outcomes" id="toc-simulating-meta-analyses-for-dichotomous-outcomes" class="nav-link" data-scroll-target="#simulating-meta-analyses-for-dichotomous-outcomes"><span class="header-section-number">11.5</span> Simulating meta-analyses for dichotomous outcomes</a></li>
   <li><a href="#sec-heterogeneity" id="toc-sec-heterogeneity" class="nav-link" data-scroll-target="#sec-heterogeneity"><span class="header-section-number">11.6</span> Heterogeneity</a></li>
-  <li><a href="#strengths-and-weaknesses-of-meta-analysis" id="toc-strengths-and-weaknesses-of-meta-analysis" class="nav-link" data-scroll-target="#strengths-and-weaknesses-of-meta-analysis"><span class="header-section-number">11.7</span> Strengths and weaknesses of meta-analysis</a></li>
-  <li><a href="#sec-reportmeta" id="toc-sec-reportmeta" class="nav-link" data-scroll-target="#sec-reportmeta"><span class="header-section-number">11.8</span> Which results should you report to be included in a future meta-analysis?</a></li>
-  <li><a href="#sec-metareporting" id="toc-sec-metareporting" class="nav-link" data-scroll-target="#sec-metareporting"><span class="header-section-number">11.9</span> Improving the reproducibility of meta-analyses</a></li>
+  <li><a href="#exploring-heterogeneity-through-subgroup-analyses" id="toc-exploring-heterogeneity-through-subgroup-analyses" class="nav-link" data-scroll-target="#exploring-heterogeneity-through-subgroup-analyses"><span class="header-section-number">11.7</span> Exploring heterogeneity through subgroup analyses</a></li>
+  <li><a href="#strengths-and-weaknesses-of-meta-analysis" id="toc-strengths-and-weaknesses-of-meta-analysis" class="nav-link" data-scroll-target="#strengths-and-weaknesses-of-meta-analysis"><span class="header-section-number">11.8</span> Strengths and weaknesses of meta-analysis</a></li>
+  <li><a href="#sec-reportmeta" id="toc-sec-reportmeta" class="nav-link" data-scroll-target="#sec-reportmeta"><span class="header-section-number">11.9</span> Which results should you report to be included in a future meta-analysis?</a></li>
+  <li><a href="#sec-metareporting" id="toc-sec-metareporting" class="nav-link" data-scroll-target="#sec-metareporting"><span class="header-section-number">11.10</span> Improving the reproducibility of meta-analyses</a></li>
   <li>
-<a href="#test-yourself" id="toc-test-yourself" class="nav-link" data-scroll-target="#test-yourself"><span class="header-section-number">11.10</span> Test Yourself</a>
+<a href="#test-yourself" id="toc-test-yourself" class="nav-link" data-scroll-target="#test-yourself"><span class="header-section-number">11.11</span> Test Yourself</a>
   <ul class="collapse">
-<li><a href="#open-questions" id="toc-open-questions" class="nav-link" data-scroll-target="#open-questions"><span class="header-section-number">11.10.1</span> Open Questions</a></li>
+<li><a href="#open-questions" id="toc-open-questions" class="nav-link" data-scroll-target="#open-questions"><span class="header-section-number">11.11.1</span> Open Questions</a></li>
   </ul>
 </li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/Lakens/statistical_inferences/edit/master/11-meta.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/Lakens/statistical_inferences/issues/new" class="toc-action">Report an issue</a></p><p><a href="https://github.com/Lakens/statistical_inferences/blob/master/11-meta.qmd" class="toc-action">View source</a></p></div></div></nav>
@@ -725,98 +726,155 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>If all studies have the same true population effect size, the only source of variation is random error. If there are real differences between (sets of) studies, there are two sources of variation, namely random variation from study to study <em>and</em> real differences in effect sizes in (sets of) studies.</p>
 <p>A classical measure of heterogeneity is Cochran’s <span class="math inline">\(Q\)</span> statistic, which is the weighted sum of the squared differences between effect size estimates in each study, and the meta-analytic effect size estimate. The <span class="math inline">\(Q\)</span> statistic can be used to test whether the absence of heterogeneity can be statistically rejected (by comparing it to the expected amount of variation, which is the degrees of freedom, <em>df</em>, or the number of studies -1, see Borenstein et al., 2009), but it can have low power if the number of studies in the meta-analysis is small <span class="citation" data-cites="huedo-medina_assessing_2006">(<a href="references.html#ref-huedo-medina_assessing_2006" role="doc-biblioref">Huedo-Medina et al., 2006</a>)</span>.</p>
 <p>On theoretical grounds one might argue that some heterogeneity will always happen in a meta-analysis, and therefore it is more interesting to quantify the extent to which there is heterogeneity. The <span class="math inline">\(I^2\)</span> index aims to quantify statistical heterogeneity. It is calculated as follows: <span class="math display">\[I^{2} = \ \frac{(Q - k - 1)}{Q} \times 100\%\]</span> where <span class="math inline">\(k\)</span> is the number of studies (and <span class="math inline">\(k-1\)</span> is the degrees of freedom). <span class="math inline">\(I^2\)</span> ranges from 0 to 100 and can be interpreted as the percentage of the total variability in a set of effect sizes that is due to heterogeneity. When <span class="math inline">\(I^2\)</span> = 0 all variability in the effect size estimates can be explained by within-study error, and when <span class="math inline">\(I^2\)</span> = 50 half of the total variability can be explained by true heterogeneity. <span class="math inline">\(I^2\)</span> values of 25%, 50%, and 75% can be interpreted as low, medium, and high heterogeneity. Finally, in a random effects meta-analysis, <span class="math inline">\(\tau^2\)</span> estimates the variance of the true effects, and <span class="math inline">\(\tau\)</span> is the estimated standard deviation, as expressed on the same scale as the effect size. A benefit of <span class="math inline">\(\tau^2\)</span> is that it does not depend on the precision, as <span class="math inline">\(I^2\)</span> does, which tends to 100% if the studies included in the meta-analysis are very large <span class="citation" data-cites="rucker_undue_2008">(<a href="references.html#ref-rucker_undue_2008" role="doc-biblioref">Rücker et al., 2008</a>)</span>, but a downside is that <span class="math inline">\(\tau^2\)</span> is more difficult to interpret <span class="citation" data-cites="harrer_doing_2021">(<a href="references.html#ref-harrer_doing_2021" role="doc-biblioref">Harrer et al., 2021</a>)</span>.</p>
-<p>The script below simulates a similar meta-analysis to the example for dichotomous outcomes above, but with a small variation. The first half of the simulated experiments are based on the population success rates 0.7 and 0.2, but the second half of the simulated experiments are based on the population success rates 0.9 and 0.7. Thus, in this set of studies the odds ratio differs for the first half of the studies, compared to the second half (successes in Group 1 and 2 are set to 0.2 and 0.7 for the first half, but to 0.7 and 0.9 in the second half). There is true heterogeneity. We use the <code>confint</code> function in the metafor package to report <span class="math inline">\(I^2\)</span> and <span class="math inline">\(\tau^2\)</span>, and their confidence intervals.</p>
+<p>The script below simulates a similar meta-analysis to the example for standardized means above, but with a small variation. Of the 30 studies, 15 are generated based on a true mean difference of 0.2, while the other 15 studies are based on a true effect size of 0.5. Thus, in this set of studies the true effect size varies, and there is true heterogeneity. We use the <code>confint</code> function in the metafor package to report <span class="math inline">\(I^2\)</span> and <span class="math inline">\(\tau^2\)</span>, and their confidence intervals, and we see the test for heterogeneity is statisticaly significant. In other words, we would conclude that the meta-analytic effect size is statistically different form 0, but we would also conclude that there is unexplained variability in effect sizes in this set of studies, and the effect size is not the same for all studies in the meta-analysis.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">library</span>(metafor)</span>
-<span id="cb10-2"><a href="#cb10-2"></a><span class="fu">set.seed</span>(<span class="dv">2942</span>)</span>
-<span id="cb10-3"><a href="#cb10-3"></a>nSims <span class="ot">&lt;-</span> <span class="dv">12</span> <span class="co"># Number of simulated experiments</span></span>
-<span id="cb10-4"><a href="#cb10-4"></a></span>
-<span id="cb10-5"><a href="#cb10-5"></a>pr1 <span class="ot">&lt;-</span> <span class="fl">0.7</span> <span class="co"># Set percentage of successes in Group 1</span></span>
-<span id="cb10-6"><a href="#cb10-6"></a>pr2 <span class="ot">&lt;-</span> <span class="fl">0.2</span> <span class="co"># Set percentage of successes in Group 2</span></span>
-<span id="cb10-7"><a href="#cb10-7"></a></span>
-<span id="cb10-8"><a href="#cb10-8"></a>ai <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nSims) <span class="co"># set up empty vector for successes Group 1</span></span>
-<span id="cb10-9"><a href="#cb10-9"></a>bi <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nSims) <span class="co"># set up empty vector for failures Group 1</span></span>
-<span id="cb10-10"><a href="#cb10-10"></a>ci <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nSims) <span class="co"># set up empty vector for successes Group 2</span></span>
-<span id="cb10-11"><a href="#cb10-11"></a>di <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nSims) <span class="co"># set up empty vector for failures Group 2</span></span>
-<span id="cb10-12"><a href="#cb10-12"></a></span>
-<span id="cb10-13"><a href="#cb10-13"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nSims<span class="sc">/</span><span class="dv">2</span>) { <span class="co"># for half (/2) of the simulated studies</span></span>
-<span id="cb10-14"><a href="#cb10-14"></a>  n <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">30</span><span class="sc">:</span><span class="dv">80</span>, <span class="dv">1</span>)</span>
-<span id="cb10-15"><a href="#cb10-15"></a>  x <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, pr1) <span class="co"># produce simulated participants (1 = success, 0 = failure)</span></span>
-<span id="cb10-16"><a href="#cb10-16"></a>  y <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, pr2) <span class="co"># produce simulated participants (1 = success, 0 = failure)</span></span>
-<span id="cb10-17"><a href="#cb10-17"></a>  ai[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(x <span class="sc">==</span> <span class="dv">1</span>) <span class="co"># Successes Group 1</span></span>
-<span id="cb10-18"><a href="#cb10-18"></a>  bi[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(x <span class="sc">==</span> <span class="dv">0</span>) <span class="co"># Failures Group 1</span></span>
-<span id="cb10-19"><a href="#cb10-19"></a>  ci[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(y <span class="sc">==</span> <span class="dv">1</span>) <span class="co"># Successes Group 2</span></span>
-<span id="cb10-20"><a href="#cb10-20"></a>  di[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(y <span class="sc">==</span> <span class="dv">0</span>) <span class="co"># Failures Group 2</span></span>
-<span id="cb10-21"><a href="#cb10-21"></a>}</span>
-<span id="cb10-22"><a href="#cb10-22"></a></span>
-<span id="cb10-23"><a href="#cb10-23"></a>pr1 <span class="ot">&lt;-</span> <span class="fl">0.9</span> <span class="co"># Set percentage of successes in Group 1</span></span>
-<span id="cb10-24"><a href="#cb10-24"></a>pr2 <span class="ot">&lt;-</span> <span class="fl">0.7</span> <span class="co"># Set percentage of successes in Group 2</span></span>
-<span id="cb10-25"><a href="#cb10-25"></a></span>
-<span id="cb10-26"><a href="#cb10-26"></a><span class="cf">for</span> (i <span class="cf">in</span> (nSims<span class="sc">/</span><span class="dv">2</span> <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span>(nSims)) { <span class="co"># for the other half (/2) of each simulated study</span></span>
-<span id="cb10-27"><a href="#cb10-27"></a>  n <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">30</span><span class="sc">:</span><span class="dv">80</span>, <span class="dv">1</span>)</span>
-<span id="cb10-28"><a href="#cb10-28"></a>  x <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, pr1) <span class="co"># produce simulated participants (1 = success, 0 = failure)</span></span>
-<span id="cb10-29"><a href="#cb10-29"></a>  y <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, pr2) <span class="co"># produce simulated participants (1 = success, 0 = failure)</span></span>
-<span id="cb10-30"><a href="#cb10-30"></a>  ai[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(x <span class="sc">==</span> <span class="dv">1</span>) <span class="co"># Successes Group 1</span></span>
-<span id="cb10-31"><a href="#cb10-31"></a>  bi[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(x <span class="sc">==</span> <span class="dv">0</span>) <span class="co"># Failures Group 1</span></span>
-<span id="cb10-32"><a href="#cb10-32"></a>  ci[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(y <span class="sc">==</span> <span class="dv">1</span>) <span class="co"># Successes Group 2</span></span>
-<span id="cb10-33"><a href="#cb10-33"></a>  di[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(y <span class="sc">==</span> <span class="dv">0</span>) <span class="co"># Failures Group 2</span></span>
-<span id="cb10-34"><a href="#cb10-34"></a>}</span>
-<span id="cb10-35"><a href="#cb10-35"></a></span>
-<span id="cb10-36"><a href="#cb10-36"></a><span class="co"># Combine data into dataframe</span></span>
-<span id="cb10-37"><a href="#cb10-37"></a>metadata <span class="ot">&lt;-</span> <span class="fu">cbind</span>(ai, bi, ci, di)</span>
-<span id="cb10-38"><a href="#cb10-38"></a><span class="co"># Create escalc object from metadata dataframe </span></span>
-<span id="cb10-39"><a href="#cb10-39"></a>metadata <span class="ot">&lt;-</span> <span class="fu">escalc</span>(<span class="at">measure =</span> <span class="st">"OR"</span>, </span>
-<span id="cb10-40"><a href="#cb10-40"></a>                   <span class="at">ai =</span> ai, <span class="at">bi =</span> bi, <span class="at">ci =</span> ci, <span class="at">di =</span> di, </span>
-<span id="cb10-41"><a href="#cb10-41"></a>                   <span class="at">data =</span> metadata)</span>
-<span id="cb10-42"><a href="#cb10-42"></a><span class="co"># Perform Meta-analysis</span></span>
-<span id="cb10-43"><a href="#cb10-43"></a>result <span class="ot">&lt;-</span> <span class="fu">rma</span>(yi, vi, <span class="at">data =</span> metadata)</span>
-<span id="cb10-44"><a href="#cb10-44"></a><span class="co"># Print result meta-analysis</span></span>
-<span id="cb10-45"><a href="#cb10-45"></a>result</span>
-<span id="cb10-46"><a href="#cb10-46"></a><span class="fu">confint</span>(result) <span class="co"># Get confidence interval for indices of heterogeneity</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="fu">set.seed</span>(<span class="dv">3</span>)</span>
+<span id="cb10-3"><a href="#cb10-3"></a>nSims <span class="ot">&lt;-</span> <span class="dv">30</span> <span class="co"># Number of simulated experiments (need to be divided by 2)</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a>metadata <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">yi =</span> <span class="fu">numeric</span>(<span class="dv">0</span>), <span class="at">vi =</span> <span class="fu">numeric</span>(<span class="dv">0</span>)) <span class="co"># create dataframe</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a>true_es <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nSims) <span class="co"># set up empty vector for true effect sizes</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a>study <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nSims) <span class="co"># set up empty vector for study numbers</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a>group <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nSims) <span class="co"># set up empty vector for group</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a></span>
+<span id="cb10-9"><a href="#cb10-9"></a>m1 <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="co"># population mean Group 1</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a>sd1 <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co"># standard deviation Group 1</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a>m2 <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># population mean Group 2</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a>sd2 <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co"># standard deviation Group 1</span></span>
+<span id="cb10-13"><a href="#cb10-13"></a></span>
+<span id="cb10-14"><a href="#cb10-14"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(nSims<span class="sc">/</span><span class="dv">2</span>)) {</span>
+<span id="cb10-15"><a href="#cb10-15"></a>  n <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">30</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">1</span>)</span>
+<span id="cb10-16"><a href="#cb10-16"></a>  x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n, <span class="at">mean =</span> m1, <span class="at">sd =</span> sd1) <span class="co"># simulate random normally distributed data</span></span>
+<span id="cb10-17"><a href="#cb10-17"></a>  y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n, <span class="at">mean =</span> m2, <span class="at">sd =</span> sd2) <span class="co"># simulate random normally distributed data</span></span>
+<span id="cb10-18"><a href="#cb10-18"></a>  metadata[i,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>] <span class="ot">&lt;-</span> metafor<span class="sc">::</span><span class="fu">escalc</span>(<span class="at">n1i =</span> n, <span class="at">n2i =</span> n, <span class="at">m1i =</span> <span class="fu">mean</span>(x), <span class="at">m2i =</span> <span class="fu">mean</span>(y), <span class="at">sd1i =</span> <span class="fu">sd</span>(x), <span class="at">sd2i =</span> <span class="fu">sd</span>(y), <span class="at">measure =</span> <span class="st">"SMD"</span>) <span class="co"># compute the effect size</span></span>
+<span id="cb10-19"><a href="#cb10-19"></a>  true_es[i] <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">"Study"</span>, i, <span class="st">"Effect = 0.5"</span>) <span class="co"># true effect size</span></span>
+<span id="cb10-20"><a href="#cb10-20"></a>  group[i] <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">"Manipulation A"</span>) <span class="co"># Group label</span></span>
+<span id="cb10-21"><a href="#cb10-21"></a>  study[i] <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">"Study"</span>,i) <span class="co"># Study</span></span>
+<span id="cb10-22"><a href="#cb10-22"></a>}</span>
+<span id="cb10-23"><a href="#cb10-23"></a></span>
+<span id="cb10-24"><a href="#cb10-24"></a>m1 <span class="ot">&lt;-</span> <span class="fl">0.2</span> <span class="co"># population mean Group 1</span></span>
+<span id="cb10-25"><a href="#cb10-25"></a>sd1 <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co"># standard deviation Group 1</span></span>
+<span id="cb10-26"><a href="#cb10-26"></a>m2 <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># population mean Group 2</span></span>
+<span id="cb10-27"><a href="#cb10-27"></a>sd2 <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co"># standard deviation Group 1</span></span>
+<span id="cb10-28"><a href="#cb10-28"></a></span>
+<span id="cb10-29"><a href="#cb10-29"></a><span class="cf">for</span> (i <span class="cf">in</span> (nSims<span class="sc">/</span><span class="dv">2</span><span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>nSims) { <span class="co"># for third quarter of each simulated study</span></span>
+<span id="cb10-30"><a href="#cb10-30"></a>  n <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">30</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">1</span>)</span>
+<span id="cb10-31"><a href="#cb10-31"></a>  x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n, <span class="at">mean =</span> m1, <span class="at">sd =</span> sd1) <span class="co"># simulate random normally distributed data</span></span>
+<span id="cb10-32"><a href="#cb10-32"></a>  y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n, <span class="at">mean =</span> m2, <span class="at">sd =</span> sd2) <span class="co"># simulate random normally distributed data</span></span>
+<span id="cb10-33"><a href="#cb10-33"></a>  metadata[i,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>] <span class="ot">&lt;-</span> metafor<span class="sc">::</span><span class="fu">escalc</span>(<span class="at">n1i =</span> n, <span class="at">n2i =</span> n, <span class="at">m1i =</span> <span class="fu">mean</span>(x), <span class="at">m2i =</span> <span class="fu">mean</span>(y), <span class="at">sd1i =</span> <span class="fu">sd</span>(x), <span class="at">sd2i =</span> <span class="fu">sd</span>(y), <span class="at">measure =</span> <span class="st">"SMD"</span>) <span class="co"># compute the effect size</span></span>
+<span id="cb10-34"><a href="#cb10-34"></a>  true_es[i] <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">"Study"</span>, i, <span class="st">"Effect = 0.2"</span>) <span class="co"># true effect size</span></span>
+<span id="cb10-35"><a href="#cb10-35"></a>  group[i] <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">"Manipulation B"</span>) <span class="co"># Group label</span></span>
+<span id="cb10-36"><a href="#cb10-36"></a>  study[i] <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">"Study"</span>,i) <span class="co"># Study</span></span>
+<span id="cb10-37"><a href="#cb10-37"></a>}</span>
+<span id="cb10-38"><a href="#cb10-38"></a></span>
+<span id="cb10-39"><a href="#cb10-39"></a><span class="co"># Combine data into dataframe</span></span>
+<span id="cb10-40"><a href="#cb10-40"></a>metadata <span class="ot">&lt;-</span> <span class="fu">cbind.data.frame</span>(metadata, true_es, study, group)</span>
+<span id="cb10-41"><a href="#cb10-41"></a><span class="co"># Shuffle rows to make it difficult to see which effect size comes from which group</span></span>
+<span id="cb10-42"><a href="#cb10-42"></a>metadata <span class="ot">&lt;-</span> metadata[<span class="fu">sample</span>(<span class="fu">nrow</span>(metadata)),]</span>
+<span id="cb10-43"><a href="#cb10-43"></a></span>
+<span id="cb10-44"><a href="#cb10-44"></a><span class="co"># Perform Meta-analysis</span></span>
+<span id="cb10-45"><a href="#cb10-45"></a>result <span class="ot">&lt;-</span> <span class="fu">rma</span>(yi, vi, <span class="at">data =</span> metadata, <span class="at">slab =</span> <span class="fu">paste</span>(true_es))</span>
+<span id="cb10-46"><a href="#cb10-46"></a><span class="co"># Print result meta-analysis</span></span>
+<span id="cb10-47"><a href="#cb10-47"></a>result</span>
+<span id="cb10-48"><a href="#cb10-48"></a><span class="fu">confint</span>(result) <span class="co"># Get confidence interval for indices of heterogeneity</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
-Random-Effects Model (k = 12; tau^2 estimator: REML)
+Random-Effects Model (k = 30; tau^2 estimator: REML)
 
-tau^2 (estimated amount of total heterogeneity): 0.3174 (SE = 0.2429)
-tau (square root of estimated tau^2 value):      0.5634
-I^2 (total heterogeneity / total variability):   56.53%
-H^2 (total variability / sampling variability):  2.30
+tau^2 (estimated amount of total heterogeneity): 0.0274 (SE = 0.0160)
+tau (square root of estimated tau^2 value):      0.1655
+I^2 (total heterogeneity / total variability):   45.43%
+H^2 (total variability / sampling variability):  1.83
 
 Test for Heterogeneity:
-Q(df = 11) = 25.7650, p-val = 0.0070
+Q(df = 29) = 52.3032, p-val = 0.0050
 
 Model Results:
 
 estimate      se    zval    pval   ci.lb   ci.ub      
-  1.8125  0.2190  8.2764  &lt;.0001  1.3833  2.2417  *** 
+  0.3578  0.0453  7.8909  &lt;.0001  0.2689  0.4467  *** 
 
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
        estimate   ci.lb   ci.ub 
-tau^2    0.3174  0.0355  1.2286 
-tau      0.5634  0.1883  1.1084 
-I^2(%)  56.5308 12.6888 83.4276 
-H^2      2.3005  1.1453  6.0341 </code></pre>
+tau^2    0.0274  0.0044  0.0717 
+tau      0.1655  0.0666  0.2677 
+I^2(%)  45.4253 11.8823 68.5417 
+H^2      1.8324  1.1348  3.1788 </code></pre>
+</div>
+</div>
+<p>The forest plot in <a href="#fig-plot-heterogeneity">Figure&nbsp;<span>11.12</span></a> shows there is more variation around the meta-analytic effect size estimate than expected purely based on random variation. The plot has 2 vertical lines, one at 0.2, and one at 0.5. Of course, in a real meta-analysis we would not know what the true effect sizes of subsets are, but these lines help us to see that one subset of the effects varies randomly around 0.2, and a second subset varies randomly around 0.5.</p>
+<div class="cell" data-layout-align="center" data-fig.margin="false">
+<div class="cell-output-display">
+<div id="fig-plot-heterogeneity" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="11-meta_files/figure-html/fig-plot-heterogeneity-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;11.12: Forest plot of 30 studies with 2 subsets of studies, one set with a true effect size of 0.2, and one set with a true effect size of 0.5.</figcaption><p></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Based on the test for heterogeneity, we can reject the null hypothesis that there is no heterogeneity in the meta-analysis. Tests for heterogeneity themselves have Type 1 and Type 2 error rates, and with a small number of studies (such as in our example, n = 12) tests for heterogeneity can have low power. If you remove the set.seed command and run the code multiple times, you will see that the test for heterogeneity will often not be significant, even though there is true heterogeneity in the simulation. In large meta-analyses, power can be so high that the test always yields a <em>p</em>-value small enough to reject the null hypothesis, but then it is important to look at the <span class="math inline">\(I^2\)</span> estimate.</p>
 <p>Recently there has been considerable attention to the possibility that effect sizes within research lines have substantial heterogeneity <span class="citation" data-cites="bryan_behavioural_2021">(<a href="references.html#ref-bryan_behavioural_2021" role="doc-biblioref">Bryan et al., 2021</a>)</span>. Large heterogeneity can impact the power of studies, and therefore has consequences for how studies are planned <span class="citation" data-cites="kenny_unappreciated_2019">(<a href="references.html#ref-kenny_unappreciated_2019" role="doc-biblioref">Kenny &amp; Judd, 2019</a>)</span>. Although heterogeneity seems to be low in direct replication studies <span class="citation" data-cites="olsson-collentine_heterogeneity_2020">(<a href="references.html#ref-olsson-collentine_heterogeneity_2020" role="doc-biblioref">Olsson-Collentine et al., 2020</a>)</span> it is high in most meta-analyses, which has been argued to reflect a lack of understanding of the effects in those research lines <span class="citation" data-cites="linden_heterogeneity_2021">(<a href="references.html#ref-linden_heterogeneity_2021" role="doc-biblioref">Linden &amp; Hönekopp, 2021</a>)</span>.</p>
-</section><section id="strengths-and-weaknesses-of-meta-analysis" class="level2" data-number="11.7"><h2 data-number="11.7" class="anchored" data-anchor-id="strengths-and-weaknesses-of-meta-analysis">
-<span class="header-section-number">11.7</span> Strengths and weaknesses of meta-analysis</h2>
+</section><section id="exploring-heterogeneity-through-subgroup-analyses" class="level2" data-number="11.7"><h2 data-number="11.7" class="anchored" data-anchor-id="exploring-heterogeneity-through-subgroup-analyses">
+<span class="header-section-number">11.7</span> Exploring heterogeneity through subgroup analyses</h2>
+<p>Let’s imagine that while coding our meta-analysis we noticed that in the total set of studies two different manipulations were used. Manipulation A was stronger, and therefore we would theoretically expect a stronger effect, while manipulation B was more subtle. We have coded which manipulation was used in each of the studies included in our meta-analysis. This allows us to explore whether the heterogeneity observed above can be explained by the type of manipulation. In other words, we are testing if the effect size is moderated by the type of manipulation. This is a sub-group analysis. It is conceptually very similar to an ANOVA where we test whether there are differences between groups. We see the test of moderators yields a statistically significant result, which means we can reject the null hypothesis that the two groups do not differ in their effect size. Furthermore, there is no statistically significant emount of heterogeneity left after splitting up the studies in these two groups.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="co"># Based on https://www.metafor-project.org/doku.php/tips:comp_two_independent_estimates</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="co"># We take original dataset and run a meta-regression using the "mods" argument</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="co"># This pools the estimates of tau, but this is often a good approach</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="fu">rma</span>(yi, vi, <span class="at">mods =</span> <span class="sc">~</span> group, <span class="at">data =</span> metadata, <span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Mixed-Effects Model (k = 30; tau^2 estimator: REML)
+
+tau^2 (estimated amount of residual heterogeneity):     0.006 (SE = 0.010)
+tau (square root of estimated tau^2 value):             0.081
+I^2 (residual heterogeneity / unaccounted variability): 16.42%
+H^2 (unaccounted variability / sampling variability):   1.20
+R^2 (amount of heterogeneity accounted for):            76.32%
+
+Test for Residual Heterogeneity:
+QE(df = 28) = 31.550, p-val = 0.293
+
+Test of Moderators (coefficient 2):
+QM(df = 1) = 17.231, p-val &lt; .001
+
+Model Results:
+
+                     estimate     se    zval   pval   ci.lb   ci.ub      
+intrcpt                 0.514  0.053   9.643  &lt;.001   0.410   0.618  *** 
+groupManipulation B    -0.303  0.073  -4.151  &lt;.001  -0.446  -0.160  *** 
+
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>If we plot the two subgroups, we see in <a href="#fig-plot-subgroup">Figure&nbsp;<span>11.13</span></a> that effect sizes vary randomly across the true effect sizes. Again, in real meta-analyses these true effect sizes would not be known.</p>
+<div class="cell" data-layout-align="center" data-fig.margin="false">
+<div class="cell-output-display">
+<div id="fig-plot-subgroup" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="11-meta_files/figure-html/fig-plot-subgroup-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;11.13: Two forest plots for the 2 different subgroups with Manipulation A or B.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="strengths-and-weaknesses-of-meta-analysis" class="level2" data-number="11.8"><h2 data-number="11.8" class="anchored" data-anchor-id="strengths-and-weaknesses-of-meta-analysis">
+<span class="header-section-number">11.8</span> Strengths and weaknesses of meta-analysis</h2>
 <p>The conclusions from meta-analyses have been debated from the very first meta-analyses that were performed. It’s ironic that, as far as I can find, the ‘garbage in-garbage out’ criticism of meta-analysis originates from Eysenck <span class="citation" data-cites="eysenck_exercise_1978">(<a href="references.html#ref-eysenck_exercise_1978" role="doc-biblioref">1978</a>)</span> because although it is valid criticism, Eysenck himself published literal garbage, as he was found <a href="https://www.science.org/content/article/misconduct-allegations-push-psychology-hero-his-pedestal">guilty of scientific misconduct</a>, which has led to a large number of <a href="http://retractiondatabase.org/RetractionSearch.aspx?AspxAutoDetectCookieSupport=1#?AspxAutoDetectCookieSupport%3d1%26auth%3dEysenck%252c%2bHans%2bJ">retractions</a> and expressions of concern. Eysenck wrote about a meta-analysis that yielded results he did not like:</p>
 <blockquote class="blockquote">
 <p>The most surprising feature of Smith and Glass’s (1977) exercise in mega-silliness is their advocacy of low standards of judgment. More, they advocate and practice the abandonment of critical judgments of any kind. A mass of reports—good, bad, and indifferent—are fed into the computer in the hope that people will cease caring about the quality of the material on which the conclusions are based. If their abandonment of scholarship were to be taken seriously, a daunting but improbable likelihood, it would mark the beginning of a passage into the dark age of scientific psychology. The notion that one can distill scientific knowledge from a compilation of studies mostly of poor design, relying on subjective, unvalidated, and certainly unreliable clinical judgments, and dissimilar with respect to nearly all the vital parameters, dies hard. This article, it is to be hoped, is the final death rattle of such hopes. “Garbage in—garbage out” is a well-known axiom of computer specialists; it applies here with equal force.</p>
 </blockquote>
 <p>The problem of ‘garbage in, garbage out’ remains one of the most common, and difficult to deal with, criticisms of meta-analysis. It is true that a meta-analysis cannot turn low quality data into a good effect size estimate, or highly heterogeneous effect sizes into a useful estimate of an effect size that generalizes to all studies included in the meta-analysis. The decision of which studies to include in a meta-analysis is a difficult one, and often leads to disagreements in the conclusions of meta-analyses performed on the same set of studies <span class="citation" data-cites="goodyear-smith_analysis_2012 ferguson_comment_2014">(<a href="references.html#ref-ferguson_comment_2014" role="doc-biblioref">Ferguson, 2014</a>; <a href="references.html#ref-goodyear-smith_analysis_2012" role="doc-biblioref">Goodyear-Smith et al., 2012</a>)</span>. Finally, meta-analyses can be biased, in the same way individual studies are biased, which is a topic explored in more detail in the chapter on <a href="12-bias.html">bias detection</a>.</p>
 <p>A strength of meta-analysis is that combining highly similar studies into a single analysis increases the statistical power of the test, as well as the accuracy of the effect size estimate. Whenever it is not possible, or it is efficient, to perform studies with a large number of observations in each study, an unbiased meta-analysis can provide better statistical inferences. Furthermore, including an <strong>internal meta-analysis</strong> in a multi-study paper (when all studies are sufficiently similar) can be a way to reduce the file-drawer problem, by allowing researchers to publish mixed results. At the same time, researchers have raised the concern that if researchers selectively report studies when they perform an internal meta-analysis they simply increase the flexibility in the data analysis, and are more likely to erroneously claim support for their hypothesis <span class="citation" data-cites="vosgerau_99_2019">(<a href="references.html#ref-vosgerau_99_2019" role="doc-biblioref">Vosgerau et al., 2019</a>)</span>. Researchers should publish all well-designed studies they have performed in a research line, and if the studies are similar and unbiased, a meta-analysis will improve inferences. At the same time, the result of a meta-analysis may be biased, and should not be interpreted as the final answer. For this reason, an analysis of the heterogeneity of effect size estimates, and the use of statistical techniques to detect bias, are an essential part of any meta-analysis.</p>
-</section><section id="sec-reportmeta" class="level2" data-number="11.8"><h2 data-number="11.8" class="anchored" data-anchor-id="sec-reportmeta">
-<span class="header-section-number">11.8</span> Which results should you report to be included in a future meta-analysis?</h2>
+</section><section id="sec-reportmeta" class="level2" data-number="11.9"><h2 data-number="11.9" class="anchored" data-anchor-id="sec-reportmeta">
+<span class="header-section-number">11.9</span> Which results should you report to be included in a future meta-analysis?</h2>
 <p>It would be a useful educational exercise for any researcher who publishes quantitative studies to code a dozen studies for a meta-analysis. A notorious problem when performing a meta-analysis is that researchers do not report all the results a meta-analyst needs in order to include the study in their meta-analysis. Sometimes the original researcher can be contacted and the missing information can be provided, but as every single study is just a data-point in a future meta-analysis, it is best to report all the required results to be included in a future meta-analysis.</p>
 <p>The single best approach to guarantee that all required information for a future meta-analysis is available to meta-analysts is to share the (anonymized) data and analysis code with the manuscript. This will enable meta-analysts to compute any statistical information they need. Access to individual observations allows meta-analysts to perform analyses on subgroups, and makes it possible to perform more advanced statistical tests <span class="citation" data-cites="stewart_ipd_2002">(<a href="references.html#ref-stewart_ipd_2002" role="doc-biblioref">Stewart &amp; Tierney, 2002</a>)</span>. Finally, access to the raw data, instead of only access to the summary statistics, makes it easier to find flawed individual studies that should not be included in a meta-analysis <span class="citation" data-cites="lawrence_lesson_2021">(<a href="references.html#ref-lawrence_lesson_2021" role="doc-biblioref">Lawrence et al., 2021</a>)</span>. As open data becomes the norm, efforts to standardize measures and develop specifications for datasets will facilitate the availability of raw data as input for meta-analyses. This will also facilitate the re-use of data, and allow researchers to perform meta-analyses unrelated to the main research question. If you want to share the raw data you will collect, make sure you address this in your <a href="https://www.uu.nl/en/research/research-data-management/guides/informed-consent-for-data-sharing">informed consent form</a>.</p>
 <p>When summarizing data in a scientific article, report the number of observations associated with each statistical test. Most articles will mention the total sample size, but if some observations are removed while cleaning the data, also report the final number of observations included in a test. When a statistical test is based on multiple conditions (e.g., a <em>t</em>-test), report the sample size in each independent group. If this information is missing, meta-analysts will often have to assume that the total number of observations is distributed equally across conditions, which is not always correct. Report full test results for significant and non-significant results (e.g., never write <em>F</em> &lt; 1, <em>ns</em>). Write out the full test result, including an effect size estimate, regardless of the <em>p</em>-value, as non-significant results are especially important to be included in meta-analyses. When reporting effect sizes, report how they were computed (e.g., when reporting standardized mean differences, did you compute Cohen’s <em>d</em> or Hedges’ <em>g</em>). Report exact <em>p</em>-values for each test, or the full test statistics that can be used to recompute the <em>p</em>-value. Report means and standard deviations for each group of observations, and for within-subject designs, report the correlation between dependent variables (which is currently almost always never reported, but is needed to compute <a href="06-effectsize.html#sec-cohend">Cohen’s <span class="math inline">\(d_{av}\)</span></a> and perform simulation based power analyses based on the predicted data pattern). It might be useful to use a table to summarize all statistical tests if many tests are reported, but the raw data cannot be shared (for example in the supplemental material).</p>
-</section><section id="sec-metareporting" class="level2" data-number="11.9"><h2 data-number="11.9" class="anchored" data-anchor-id="sec-metareporting">
-<span class="header-section-number">11.9</span> Improving the reproducibility of meta-analyses</h2>
+</section><section id="sec-metareporting" class="level2" data-number="11.10"><h2 data-number="11.10" class="anchored" data-anchor-id="sec-metareporting">
+<span class="header-section-number">11.10</span> Improving the reproducibility of meta-analyses</h2>
 <p>Although meta-analyses do not provide definitive conclusions, they are typically interpreted as state-of-the-art empirical knowledge about a specific effect or research area. Large-scale meta-analyses often accumulate a massive number of citations and influence future research and theory development. It is therefore essential that published meta-analyses are of the highest possible quality.</p>
 <p>At the same time, the conclusions from meta-analyses are often open for debate and are subject to change as new data becomes available. We recently proposed practical recommendations to increase the reproducibility of meta-analyses to facilitate quality control, improve reporting guidelines, allow researchers to re-analyze meta-analyses based on alternative inclusion criteria, and future-proof meta-analyses by making sure the collected meta-analytic data is shared so that continuously accumulating meta-analyses can be performed, and so that novel statistical techniques can be applied on the collected data as they become available <span class="citation" data-cites="lakens_reproducibility_2016">(<a href="references.html#ref-lakens_reproducibility_2016" role="doc-biblioref">Lakens et al., 2016</a>)</span>. The need for the improvement in reproducibility of meta-analysis is clear - a recent review of 150 meta-analyses in Psychological Bulletin revealed that only 1 meta-analysis shared the statistical code <span class="citation" data-cites="polanin_transparency_2020">(<a href="references.html#ref-polanin_transparency_2020" role="doc-biblioref">Polanin et al., 2020</a>)</span>. This is unacceptable in the current day and age. In addition to inspecting how well your meta-analysis adheres to the <a href="https://apastyle.apa.org/jars/quant-table-9.pdf">JARS Quantitative Meta-Analysis Reporting Standards</a>, following the recommendations summarized in <a href="#tbl-table-rec1">Table&nbsp;<span>11.1</span></a> should substantially improve the state-of-the-art in meta-analyses.</p>
 <div class="cell" data-layout-align="center">
@@ -863,31 +921,31 @@ H^2      2.3005  1.1453  6.0341 </code></pre>
 </div>
 </div>
 <p>For another open educational resource on meta-analysis in R, see <a href="https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R">Doing Meta-Analysis in R</a>.</p>
-</section><section id="test-yourself" class="level2" data-number="11.10"><h2 data-number="11.10" class="anchored" data-anchor-id="test-yourself">
-<span class="header-section-number">11.10</span> Test Yourself</h2>
+</section><section id="test-yourself" class="level2" data-number="11.11"><h2 data-number="11.11" class="anchored" data-anchor-id="test-yourself">
+<span class="header-section-number">11.11</span> Test Yourself</h2>
 <div class="webex-check webex-box">
 <p><strong>Q1</strong>: What is true about the standard deviation of the sample, and the standard deviation of the mean (or the standard error)?</p>
 <div class="cell" data-layout-align="center">
-<div id="radio_ASEFRDROOE" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_ASEFRDROOE" value=""><span>As the sample size increases, the standard deviation of the sample becomes smaller, and the standard deviation of the mean (or standard error) becomes smaller.</span></label><label><input type="radio" autocomplete="off" name="radio_ASEFRDROOE" value="answer"><span>As the sample size increases, the standard deviation of the sample becomes more accurate, and the standard deviation of the mean (or standard error) becomes smaller. </span></label><label><input type="radio" autocomplete="off" name="radio_ASEFRDROOE" value=""><span>As the sample size increases, the standard deviation of the sample becomes more smaller, and the standard deviation of the mean (or standard error) becomes more accurate.</span></label><label><input type="radio" autocomplete="off" name="radio_ASEFRDROOE" value=""><span>As the sample size increases, the standard deviation of the sample becomes more accurate, and the standard deviation of the mean (or standard error) becomes more accurate. </span></label>
+<div id="radio_PFNTZSCGBT" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_PFNTZSCGBT" value=""><span>As the sample size increases, the standard deviation of the sample becomes smaller, and the standard deviation of the mean (or standard error) becomes smaller.</span></label><label><input type="radio" autocomplete="off" name="radio_PFNTZSCGBT" value="answer"><span>As the sample size increases, the standard deviation of the sample becomes more accurate, and the standard deviation of the mean (or standard error) becomes smaller. </span></label><label><input type="radio" autocomplete="off" name="radio_PFNTZSCGBT" value=""><span>As the sample size increases, the standard deviation of the sample becomes more smaller, and the standard deviation of the mean (or standard error) becomes more accurate.</span></label><label><input type="radio" autocomplete="off" name="radio_PFNTZSCGBT" value=""><span>As the sample size increases, the standard deviation of the sample becomes more accurate, and the standard deviation of the mean (or standard error) becomes more accurate. </span></label>
 </div>
 </div>
 <p><strong>Q2</strong>: If we would perform a meta-analysis by just averaging all observed effect sizes, an effect size of <em>d</em> = 0.7 from a small study with 20 observations would influence the meta-analytic effect size estimate just as much as a <em>d</em> = 0.3 from a study with 2000 observations. How is the meta-analytic effect size estimate computed instead?</p>
 <div class="cell" data-layout-align="center">
-<div id="radio_OBNWWVUFNX" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_OBNWWVUFNX" value=""><span>Effect sizes estimates from small studies undergo a small study correction before being included.</span></label><label><input type="radio" autocomplete="off" name="radio_OBNWWVUFNX" value=""><span>Effect size estimates from small studies are ignored when computing a meta-analytic effect size estimate.</span></label><label><input type="radio" autocomplete="off" name="radio_OBNWWVUFNX" value="answer"><span>Effect sizes are weighed based on the precision of their estimate, determined by the standard error. </span></label><label><input type="radio" autocomplete="off" name="radio_OBNWWVUFNX" value=""><span>Effect sizes are weighed based on how close they are to the meta-analytic effect size estimate, with studies further removed receiving less weight. </span></label>
+<div id="radio_BBMNMMQIOF" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_BBMNMMQIOF" value=""><span>Effect sizes estimates from small studies undergo a small study correction before being included.</span></label><label><input type="radio" autocomplete="off" name="radio_BBMNMMQIOF" value=""><span>Effect size estimates from small studies are ignored when computing a meta-analytic effect size estimate.</span></label><label><input type="radio" autocomplete="off" name="radio_BBMNMMQIOF" value="answer"><span>Effect sizes are weighed based on the precision of their estimate, determined by the standard error. </span></label><label><input type="radio" autocomplete="off" name="radio_BBMNMMQIOF" value=""><span>Effect sizes are weighed based on how close they are to the meta-analytic effect size estimate, with studies further removed receiving less weight. </span></label>
 </div>
 </div>
 <p><strong>Q3</strong>: The size of the squares indicating effect sizes in a forest plot vary as a function of the:</p>
 <div class="cell" data-layout-align="center">
-<div id="radio_USSXIAJVNT" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_USSXIAJVNT" value=""><span>Power of the study</span></label><label><input type="radio" autocomplete="off" name="radio_USSXIAJVNT" value=""><span>Size of the effect</span></label><label><input type="radio" autocomplete="off" name="radio_USSXIAJVNT" value="answer"><span>Sample size</span></label><label><input type="radio" autocomplete="off" name="radio_USSXIAJVNT" value=""><span>Type 1 error rate</span></label>
+<div id="radio_HMGECTCBLR" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_HMGECTCBLR" value=""><span>Power of the study</span></label><label><input type="radio" autocomplete="off" name="radio_HMGECTCBLR" value=""><span>Size of the effect</span></label><label><input type="radio" autocomplete="off" name="radio_HMGECTCBLR" value="answer"><span>Sample size</span></label><label><input type="radio" autocomplete="off" name="radio_HMGECTCBLR" value=""><span>Type 1 error rate</span></label>
 </div>
 </div>
 <p><strong>Q4</strong>: One can compute a ‘fixed effect model’ or a ‘random effects model’ when performing a meta-analysis on studies in the scientific literature. Which statement is true?</p>
 <div class="cell" data-layout-align="center">
-<div id="radio_LBEADYBIFR" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_LBEADYBIFR" value=""><span>It is generally recommended to compute a <strong>fixed effect</strong> model, mainly because not all studies included in a meta-analysis will be functionally similar. </span></label><label><input type="radio" autocomplete="off" name="radio_LBEADYBIFR" value="answer"><span>It is generally recommended to compute a <strong>random effects</strong> model, mainly because not all studies included in a meta-analysis will be functionally similar.</span></label><label><input type="radio" autocomplete="off" name="radio_LBEADYBIFR" value=""><span>It is generally recommended to compute a <strong>fixed effect</strong> model, as this reduces the heterogeneity in the set of studies. </span></label><label><input type="radio" autocomplete="off" name="radio_LBEADYBIFR" value=""><span>It is generally recommended to compute a <strong>random effects</strong> model, as this reduces the heterogeneity in the set of studies. </span></label>
+<div id="radio_GNIMIIMGJZ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_GNIMIIMGJZ" value=""><span>It is generally recommended to compute a <strong>fixed effect</strong> model, mainly because not all studies included in a meta-analysis will be functionally similar. </span></label><label><input type="radio" autocomplete="off" name="radio_GNIMIIMGJZ" value="answer"><span>It is generally recommended to compute a <strong>random effects</strong> model, mainly because not all studies included in a meta-analysis will be functionally similar.</span></label><label><input type="radio" autocomplete="off" name="radio_GNIMIIMGJZ" value=""><span>It is generally recommended to compute a <strong>fixed effect</strong> model, as this reduces the heterogeneity in the set of studies. </span></label><label><input type="radio" autocomplete="off" name="radio_GNIMIIMGJZ" value=""><span>It is generally recommended to compute a <strong>random effects</strong> model, as this reduces the heterogeneity in the set of studies. </span></label>
 </div>
 </div>
 <p><strong>Q5</strong>: When there is no heterogeneity in the effect size estimates included in a meta-analysis, a fixed effect and random effects model will yield similar conclusions. If there is variability in the effect size estimates, the two models can yield different results. Below, we see two forest plots based on the same 5 simulated studies. The top plot is based on a random effects meta-analysis, the bottom plot based on a fixed effect meta-analysis. A random effects meta-analysis incorporates uncertainty about the variability of effect size estimates into the final meta-analytic estimate. How does this translate into a difference between the two plots?</p>
@@ -895,7 +953,7 @@ H^2      2.3005  1.1453  6.0341 </code></pre>
 <div class="cell-output-display">
 <div id="fig-meta-sim-rand" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="11-meta_files/figure-html/fig-meta-sim-rand-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;11.12: Simulated studies under a random effects model.</figcaption><p></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;11.14: Simulated studies under a random effects model.</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -904,7 +962,7 @@ H^2      2.3005  1.1453  6.0341 </code></pre>
 <div class="cell-output-display">
 <div id="fig-meta-sim-fixed" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="11-meta_files/figure-html/fig-meta-sim-fixed-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;11.13: Simulated studies under a fixed effect model.</figcaption><p></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;11.15: Simulated studies under a fixed effect model.</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -933,8 +991,8 @@ H^2      2.3005  1.1453  6.0341 </code></pre>
 </div>
 </div>
 </div>
-<section id="open-questions" class="level3" data-number="11.10.1"><h3 data-number="11.10.1" class="anchored" data-anchor-id="open-questions">
-<span class="header-section-number">11.10.1</span> Open Questions</h3>
+<section id="open-questions" class="level3" data-number="11.11.1"><h3 data-number="11.11.1" class="anchored" data-anchor-id="open-questions">
+<span class="header-section-number">11.11.1</span> Open Questions</h3>
 <ol type="1">
 <li><p>What is the difference between the standard deviation and the standard error, and what happens to each as the sample size increases?</p></li>
 <li><p>What is an internal meta-analysis?</p></li>

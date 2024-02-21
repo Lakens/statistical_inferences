@@ -734,60 +734,144 @@ A classical measure of heterogeneity is Cochran’s $Q$ statistic, which is the 
 
 On theoretical grounds one might argue that some heterogeneity will always happen in a meta-analysis, and therefore it is more interesting to quantify the extent to which there is heterogeneity. The $I^2$ index aims to quantify statistical heterogeneity. It is calculated as follows: $$I^{2} = \ \frac{(Q - k - 1)}{Q} \times 100\%$$ where $k$ is the number of studies (and $k-1$ is the degrees of freedom). $I^2$ ranges from 0 to 100 and can be interpreted as the percentage of the total variability in a set of effect sizes that is due to heterogeneity. When $I^2$ = 0 all variability in the effect size estimates can be explained by within-study error, and when $I^2$ = 50 half of the total variability can be explained by true heterogeneity. $I^2$ values of 25%, 50%, and 75% can be interpreted as low, medium, and high heterogeneity. Finally, in a random effects meta-analysis, $\tau^2$ estimates the variance of the true effects, and $\tau$ is the estimated standard deviation, as expressed on the same scale as the effect size. A benefit of $\tau^2$ is that it does not depend on the precision, as $I^2$ does, which tends to 100% if the studies included in the meta-analysis are very large [@rucker_undue_2008], but a downside is that $\tau^2$ is more difficult to interpret [@harrer_doing_2021]. 
 
-The script below simulates a similar meta-analysis to the example for dichotomous outcomes above, but with a small variation. The first half of the simulated experiments are based on the population success rates 0.7 and 0.2, but the second half of the simulated experiments are based on the population success rates 0.9 and 0.7. Thus, in this set of studies the odds ratio differs for the first half of the studies, compared to the second half (successes in Group 1 and 2 are set to 0.2 and 0.7 for the first half, but to 0.7 and 0.9 in the second half). There is true heterogeneity. We use the `confint` function in the metafor package to report $I^2$ and $\tau^2$, and their confidence intervals.
+The script below simulates a similar meta-analysis to the example for standardized means above, but with a small variation. Of the 30 studies, 15 are generated based on a true mean difference of 0.2, while the other 15 studies are based on a true effect size of 0.5. Thus, in this set of studies the true effect size varies, and there is true heterogeneity. We use the `confint` function in the metafor package to report $I^2$ and $\tau^2$, and their confidence intervals, and we see the test for heterogeneity is statisticaly significant. In other words, we would conclude that the meta-analytic effect size is statistically different form 0, but we would also conclude that there is unexplained variability in effect sizes in this set of studies, and the effect size is not the same for all studies in the meta-analysis.
 
 ```{r meta-heterogeneity}
 library(metafor)
-set.seed(2942)
-nSims <- 12 # Number of simulated experiments
+set.seed(3)
+nSims <- 30 # Number of simulated experiments (need to be divided by 2)
+metadata <- data.frame(yi = numeric(0), vi = numeric(0)) # create dataframe
+true_es <- numeric(nSims) # set up empty vector for true effect sizes
+study <- numeric(nSims) # set up empty vector for study numbers
+group <- numeric(nSims) # set up empty vector for group
 
-pr1 <- 0.7 # Set percentage of successes in Group 1
-pr2 <- 0.2 # Set percentage of successes in Group 2
+m1 <- 0.5 # population mean Group 1
+sd1 <- 1 # standard deviation Group 1
+m2 <- 0 # population mean Group 2
+sd2 <- 1 # standard deviation Group 1
 
-ai <- numeric(nSims) # set up empty vector for successes Group 1
-bi <- numeric(nSims) # set up empty vector for failures Group 1
-ci <- numeric(nSims) # set up empty vector for successes Group 2
-di <- numeric(nSims) # set up empty vector for failures Group 2
-
-for (i in 1:nSims/2) { # for half (/2) of the simulated studies
-  n <- sample(30:80, 1)
-  x <- rbinom(n, 1, pr1) # produce simulated participants (1 = success, 0 = failure)
-  y <- rbinom(n, 1, pr2) # produce simulated participants (1 = success, 0 = failure)
-  ai[i] <- sum(x == 1) # Successes Group 1
-  bi[i] <- sum(x == 0) # Failures Group 1
-  ci[i] <- sum(y == 1) # Successes Group 2
-  di[i] <- sum(y == 0) # Failures Group 2
+for (i in 1:(nSims/2)) {
+  n <- sample(30:100, 1)
+  x <- rnorm(n = n, mean = m1, sd = sd1) # simulate random normally distributed data
+  y <- rnorm(n = n, mean = m2, sd = sd2) # simulate random normally distributed data
+  metadata[i,1:2] <- metafor::escalc(n1i = n, n2i = n, m1i = mean(x), m2i = mean(y), sd1i = sd(x), sd2i = sd(y), measure = "SMD") # compute the effect size
+  true_es[i] <- paste("Study", i, "Effect = 0.5") # true effect size
+  group[i] <- paste("Manipulation A") # Group label
+  study[i] <- paste("Study",i) # Study
 }
 
-pr1 <- 0.9 # Set percentage of successes in Group 1
-pr2 <- 0.7 # Set percentage of successes in Group 2
+m1 <- 0.2 # population mean Group 1
+sd1 <- 1 # standard deviation Group 1
+m2 <- 0 # population mean Group 2
+sd2 <- 1 # standard deviation Group 1
 
-for (i in (nSims/2 + 1):(nSims)) { # for the other half (/2) of each simulated study
-  n <- sample(30:80, 1)
-  x <- rbinom(n, 1, pr1) # produce simulated participants (1 = success, 0 = failure)
-  y <- rbinom(n, 1, pr2) # produce simulated participants (1 = success, 0 = failure)
-  ai[i] <- sum(x == 1) # Successes Group 1
-  bi[i] <- sum(x == 0) # Failures Group 1
-  ci[i] <- sum(y == 1) # Successes Group 2
-  di[i] <- sum(y == 0) # Failures Group 2
+for (i in (nSims/2+1):nSims) { # for third quarter of each simulated study
+  n <- sample(30:100, 1)
+  x <- rnorm(n = n, mean = m1, sd = sd1) # simulate random normally distributed data
+  y <- rnorm(n = n, mean = m2, sd = sd2) # simulate random normally distributed data
+  metadata[i,1:2] <- metafor::escalc(n1i = n, n2i = n, m1i = mean(x), m2i = mean(y), sd1i = sd(x), sd2i = sd(y), measure = "SMD") # compute the effect size
+  true_es[i] <- paste("Study", i, "Effect = 0.2") # true effect size
+  group[i] <- paste("Manipulation B") # Group label
+  study[i] <- paste("Study",i) # Study
 }
 
 # Combine data into dataframe
-metadata <- cbind(ai, bi, ci, di)
-# Create escalc object from metadata dataframe 
-metadata <- escalc(measure = "OR", 
-                   ai = ai, bi = bi, ci = ci, di = di, 
-                   data = metadata)
+metadata <- cbind.data.frame(metadata, true_es, study, group)
+# Shuffle rows to make it difficult to see which effect size comes from which group
+metadata <- metadata[sample(nrow(metadata)),]
+
 # Perform Meta-analysis
-result <- rma(yi, vi, data = metadata)
+result <- rma(yi, vi, data = metadata, slab = paste(true_es))
 # Print result meta-analysis
 result
 confint(result) # Get confidence interval for indices of heterogeneity
+``` 
+
+The forest plot in @fig-plot-heterogeneity shows there is more variation around the meta-analytic effect size estimate than expected purely based on random variation. The plot has 2 vertical lines, one at 0.2, and one at 0.5. Of course, in a real meta-analysis we would not know what the true effect sizes of subsets are, but these lines help us to see that one subset of the effects varies randomly around 0.2, and a second subset varies randomly around 0.5.
+
+```{r, fig-plot-heterogeneity, warning=FALSE, fig.margin = FALSE, fig.height = 10, echo = FALSE}
+#| fig-cap: "Forest plot of 30 studies with 2 subsets of studies, one set with a true effect size of 0.2, and one set with a true effect size of 0.5."
+
+par(mar=c(4,0,0,2), bg = backgroundcolor)
+metafor::forest(result,
+                efac=c(0,3),
+                lty=c(1,1,0),
+                cex=0.8,
+                shade = TRUE,
+                rowadj=0,
+                psize = 1,
+                colout = "#333333",
+                xlim = c(-2, 2.5),
+                alim = c(-1, 1.5),
+                textpos = c(-2, 2.5),
+                at = c(-1, -0.5, 0, 0.5, 1, 1.5),
+                refline = c(0, 0.2, 0.5),
+                header = TRUE
+)
+
 ```
 
 Based on the test for heterogeneity, we can reject the null hypothesis that there is no heterogeneity in the meta-analysis. Tests for heterogeneity themselves have Type 1 and Type 2 error rates, and with a small number of studies (such as in our example, n = 12) tests for heterogeneity can have low power. If you remove the set.seed command and run the code multiple times, you will see that the test for heterogeneity will often not be significant, even though there is true heterogeneity in the simulation. In large meta-analyses, power can be so high that the test always yields a *p*-value small enough to reject the null hypothesis, but then it is important to look at the $I^2$ estimate. 
 
 Recently there has been considerable attention to the possibility that effect sizes within research lines have substantial heterogeneity [@bryan_behavioural_2021]. Large heterogeneity can impact the power of studies, and therefore has consequences for how studies are planned [@kenny_unappreciated_2019]. Although heterogeneity seems to be low in direct replication studies [@olsson-collentine_heterogeneity_2020] it is high in most meta-analyses, which has been argued to reflect a lack of understanding of the effects in those research lines [@linden_heterogeneity_2021]. 
+
+## Exploring heterogeneity through subgroup analyses
+
+Let's imagine that while coding our meta-analysis we noticed that in the total set of studies two different manipulations were used. Manipulation A was stronger, and therefore we would theoretically expect a stronger effect, while manipulation B was more subtle. We have coded which manipulation was used in each of the studies included in our meta-analysis. This allows us to explore whether the heterogeneity observed above can be explained by the type of manipulation. In other words, we are testing if the effect size is moderated by the type of manipulation. This is a sub-group analysis. It is conceptually very similar to an ANOVA where we test whether there are differences between groups. We see the test of moderators yields a statistically significant result, which means we can reject the null hypothesis that the two groups do not differ in their effect size. Furthermore, there is no statistically significant emount of heterogeneity left after splitting up the studies in these two groups. 
+
+```{r}
+# Based on https://www.metafor-project.org/doku.php/tips:comp_two_independent_estimates
+
+# We take original dataset and run a meta-regression using the "mods" argument
+# This pools the estimates of tau, but this is often a good approach
+rma(yi, vi, mods = ~ group, data = metadata, digits = 3)
+
+```
+If we plot the two subgroups, we see in @fig-plot-subgroup that effect sizes vary randomly across the true effect sizes. Again, in real meta-analyses these true effect sizes would not be known.
+
+```{r, fig-plot-subgroup, warning=FALSE, fig.margin = FALSE, echo = FALSE, fig.height = 10}
+#| fig-cap: "Two forest plots for the 2 different subgroups with Manipulation A or B."
+
+#Perform meta-analyses for each subgroup
+res1 <- rma(yi, vi, data = metadata, subset=group=="Manipulation A")
+res2 <- rma(yi, vi, data = metadata, subset=group=="Manipulation B")
+
+par(mfrow=c(2,1))
+par(mar=c(4,0,0,2), bg = backgroundcolor)
+metafor::forest(res1,
+                efac=c(0,3),
+                lty=c(1,1,0),
+                cex=0.8,
+                shade = TRUE,
+                rowadj=0,
+                psize = 1,
+                colout = "#333333",
+                xlim = c(-2, 2.5),
+                alim = c(-1, 1.5),
+                at = c(-1, -0.5, 0, 0.5, 1, 1.5),
+                textpos = c(-2, 2.5),
+                refline = c(0, 0.5),
+                header = "Studies with Manipulation A"
+)
+par(mar=c(4,0,0,2), bg = backgroundcolor)
+metafor::forest(res2,
+                efac=c(0,3),
+                lty=c(1,1,0),
+                cex=0.8,
+                shade = TRUE,
+                rowadj=0,
+                psize = 1,
+                colout = "#333333",
+                xlim = c(-2, 2.5),
+                alim = c(-1, 1.5),
+                at = c(-1, -0.5, 0, 0.5, 1, 1.5),
+                textpos = c(-2, 2.5),
+                refline = c(0, 0.2),
+                header = "Studies with Manipulation B"
+)
+
+par(mfrow=c(1,1))
+```
 
 ## Strengths and weaknesses of meta-analysis
 
