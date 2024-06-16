@@ -4,7 +4,11 @@
 # needed to make the chapter (not visible)
 library(ggplot2)
 library(gridExtra)
+# Install JAGS https://sourceforge.net/projects/mcmc-jags/files/ 
+# library(remotes)
+# install_version("BEST", "0.5.4")
 library(BEST)
+
 
 # for students
 library(TOSTER)
@@ -19,7 +23,7 @@ There should be many situations where researchers are interested in examining wh
 
 It is never possible to show an effect is *exactly* 0. Even if you collected data from every person in the world, the effect in any single study will randomly vary around the true effect size of 0 - you might end up with a mean difference that is very close to, but not exactly, zero, in any finite sample. @hodges_testing_1954 were the first to discuss the statistical problem of testing whether two populations have the same mean. They suggest (p. 264) to: “test that their means do not differ by more than an amount specified to represent the smallest difference of practical interest”. @nunnally_place_1960 similarly proposed a ‘fixed-increment’ hypothesis where researchers compare an observed effect against a range of values that is deemed too small to be meaningful. Defining a range of values considered practically equivalent to the absence of an effect is known as an **equivalence range** [@bauer_unifying_1996] or a **region of practical equivalence** [@kruschke_bayesian_2013]. The equivalence range should be specified in advance, and requires careful consideration of the smallest effect size of interest. 
 
-Although researchers have repeatedly attempted to introduce tests against an equivalence range in the social sciences [@cribbie_recommendations_2004; @levine_communication_2008; @hoenig_abuse_2001; @rogers_using_1993; @quertemont_how_2011], this statistical approach has only recently become popular. During the replication crisis, researchers searched for tools to interpret null results when performing replication studies. Researchers wanted to be able to publish informative null results when replicating findings in the literature that they suspected were false positives. One notable example were the studies on pre-cognition by Daryl Bem, which ostensibly showed that participants were able to predict the future [@bem_feeling_2011]. Equivalence tests were proposed as a statistical approach to answer the question whether an observed effect is small enough to conclude that a previous study could not be replicated [@anderson_theres_2016; @lakens_equivalence_2017; @simonsohn_small_2015]. Researchers specify a smallest effect size of interest (for example an effect of 0.5, so for a two-sided test any value outside a range from -0.5 to 0.5) and test whether effects more extreme than this range can be rejected. If so, they can reject the presence of effects that are deemed large enough to be meaningful.
+Although researchers have repeatedly attempted to introduce tests against an equivalence range in the social sciences [@cribbie_recommendations_2004; @levine_communication_2008; @hoenig_abuse_2001; @rogers_using_1993; @quertemont_how_2011], this statistical approach has only recently become popular. During the replication crisis, researchers searched for tools to interpret null results when performing replication studies. Researchers wanted to be able to publish informative null results when replicating findings in the literature that they suspected were false positives. One notable example were the studies on pre-cognition by Daryl Bem, which ostensibly showed that participants were able to predict the future [@bem_feeling_2011]. Equivalence tests were proposed as a statistical approach to answer the question whether an observed effect is small enough to conclude that a previous study could not be replicated [@anderson_there_2016; @lakens_equivalence_2017; @simonsohn_small_2015]. Researchers specify a smallest effect size of interest (for example an effect of 0.5, so for a two-sided test any value outside a range from -0.5 to 0.5) and test whether effects more extreme than this range can be rejected. If so, they can reject the presence of effects that are deemed large enough to be meaningful.
 
 One can distinguish a **nil null hypothesis**, where the null hypothesis is an effect of 0, from a **non-nil null hypothesis**, where the null hypothesis is any other effect than 0, for example effects more extreme than the smallest effect size of interest [@nickerson_null_2000]. As Nickerson writes: 
 
@@ -49,7 +53,7 @@ baseplot <-   ggplot(df) +
 #NHST plot
 NHSTplot <- baseplot +
   scale_x_continuous(limits = c(-5, 5), breaks=c(-4, -3, -2, -1, 0, 1, 2, 3, 4),
-                     name = "observed difference") +
+                     name = "difference") +
   ggtitle("A: Two-sided NHST") +
   annotate("segment", x = 0, xend = 0, y = plotheight-plotheight/2, yend = -Inf) + #vertical line at x=0 (H0)
   annotate("rect", xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = 0.9, fill = "red", alpha = .2, color = NA) + #shading for H0 area
@@ -61,7 +65,7 @@ NHSTplot <- baseplot +
 
 rangeplot <- baseplot +
   scale_x_continuous(limits = c(-5, 5), breaks=c(-4, -3, -2, -1, 0, 1, 2, 3, 4),
-                     name = "observed difference") +
+                     name = "difference") +
   ggtitle("B: Interval Hypothesis Test") +
   annotate("segment", x = 0.5, xend = 0.5, y = plotheight, yend = -Inf, linetype = "dashed") + #dashed line for lower bound
   annotate("segment", x = 2.5, xend = 2.5, y = plotheight, yend = -Inf, linetype = "dashed") + #dashed line for upper bound
@@ -72,7 +76,7 @@ rangeplot <- baseplot +
 
 equivalenceplot <- baseplot +
   scale_x_continuous(limits = c(-5, 5), breaks=c(-4, -3, -2, -1, 0, 1, 2, 3, 4),
-                     name = "observed difference") +
+                     name = "difference") +
   ggtitle("C: Equivalence Test") +
   annotate("segment", x = -1, xend = -1, y = plotheight, yend = -Inf, linetype = "dashed") + #dashed line for lower bound
   annotate("segment", x = 1, xend = 1, y = plotheight, yend = -Inf, linetype = "dashed") + #dashed line for upper bound
@@ -83,7 +87,7 @@ equivalenceplot <- baseplot +
 
 mineffectplot <- baseplot +
   scale_x_continuous(limits = c(-5, 5), breaks=c(-4, -3, -2, -1, 0, 1, 2, 3, 4),
-                     name = "observed difference") +
+                     name = "difference") +
   ggtitle("D: Minimum Effect Test") +
   annotate("segment", x = -1, xend = -1, y = plotheight, yend = -Inf, linetype = "dashed") + #dashed line for lower bound
   annotate("segment", x = 1, xend = 1, y = plotheight, yend = -Inf, linetype = "dashed") + #dashed line for upper bound
@@ -106,7 +110,7 @@ When an equivalence test is reversed, a researcher designs a study to reject eff
 
 One benefit of a minimum effect test compared to a null hypothesis test is that there is no distinction between statistical significance and practical significance. As the test value is chosen to represent the minimum effect of interest, whenever it is rejected, the effect is both statistically and practically significant [@murphy_statistical_2014]. Another benefit of minimum effect tests is that, especially in correlational studies in the social sciences, variables are often connected through causal structures that result in real but theoretically uninteresting nonzero correlations between variables, which has been labeled the 'crud factor' [@meehl_appraising_1990; @orben_crud_2020]. Because an effect of zero is unlikely to be true in large correlational datasets, rejecting a nil null hypothesis is not a severe test. Even if the hypothesis is incorrect, it is likely that an effect of 0 will be rejected due to ['crud'](#sec-crud). For this reason, some researchers have suggested to test against a minimum effect of *r* = 0.1, as correlations below this threshold are quite common due to theoretically irrelevant correlations between variables [@ferguson_providing_2021].
 
-@fig-intervaltest illustrates two-sided tests, but it is often more intuitive and logical to perform one-sided tests. In that case, a minimum effect test would, for example, aim to reject effects smaller than 0.1, and an equivalence test would aim to reject effects larger than for example 0.1. Instead of specifying an upper and lower bound of a range, it is sufficient to specify a single value for one-sided tests. A final variation of a one-sided non-nil null hypothesis test is known as a test for **non-inferiority**, which examines if an effect is larger than the lower bound of an equivalence range. Such a test is for example performed when a novel intervention should not be noticeably worse than an existing intervention, but it can be a tiny bit worse. For example, if a difference between a novel and existing intervention is not smaller than -0.1, and effects smaller than -0.1 can be rejected, one can conclude an effect is non-inferior [@schumi_through_2011; @mazzolari_myths_2022]. We see that extending nil null hypothesis tests to non-nil null hypotheses allow researchers to ask questions that might be more interesting.
+@fig-intervaltest illustrates two-sided tests, but it is often more intuitive and logical to perform one-sided tests. In that case, a minimum effect test would, for example, aim to reject effects smaller than 0.1, and an equivalence test would aim to reject effects larger than for example 0.1. Instead of specifying an upper and lower bound of a range, it is sufficient to specify a single value for one-sided tests. A final variation of a one-sided non-nil null hypothesis test is known as a test for **non-inferiority**, which examines if an effect is larger than the lower bound of an equivalence range. Such a test is for example performed when a novel intervention should not be noticeably worse than an existing intervention, but it can be a tiny bit worse. For example, if a difference between a novel and existing intervention is not smaller than -0.1, and effects smaller than -0.1 can be rejected, one can conclude an effect is non-inferior [@schumi_looking_2011; @mazzolari_myths_2022]. We see that extending nil null hypothesis tests to non-nil null hypotheses allow researchers to ask questions that might be more interesting.
  
 ## Equivalence tests
 
@@ -313,13 +317,13 @@ Anvari and Lakens [-@anvari_using_2021] applied the anchor-based method to exami
 
 ## Specifying a SESOI based on a cost-benefit analysis 
 
-Another principled approach to justify a smallest effect size of interest is to perform a cost-benefit analysis. Research shows that cognitive training may improve mental abilities in older adults which might benefit older drivers [@ball_effects_2002]. Based on these findings, Viamonte, Ball, and Kilgore [-@viamonte_cost-benefit_2006] performed a cost-benefit analysis and concluded that based on the cost of the intervention (\$247.50), the probability of an accident for drivers older than 75 (*p* = 0.0710), and the cost of an accident (\$22,000), performing the intervention on all drivers aged 75 or older was more efficient than not intervening or only intervening after a screening test. Furthermore, sensitivity analyses revealed that intervening for all drivers would remain beneficial as long as the reduction in collision risk is 25%. Therefore, a 25% reduction in the probability of elderly above 75 getting into a car accident could be set as the smallest effect size of interest.
+Another principled approach to justify a smallest effect size of interest is to perform a cost-benefit analysis. Research shows that cognitive training may improve mental abilities in older adults which might benefit older drivers [@ball_effects_2002]. Based on these findings, Viamonte, Ball, and Kilgore [-@viamonte_costbenefit_2006] performed a cost-benefit analysis and concluded that based on the cost of the intervention (\$247.50), the probability of an accident for drivers older than 75 (*p* = 0.0710), and the cost of an accident (\$22,000), performing the intervention on all drivers aged 75 or older was more efficient than not intervening or only intervening after a screening test. Furthermore, sensitivity analyses revealed that intervening for all drivers would remain beneficial as long as the reduction in collision risk is 25%. Therefore, a 25% reduction in the probability of elderly above 75 getting into a car accident could be set as the smallest effect size of interest.
 
 For another example, economists have examined the value of a statistical life, based on willingness to pay to reduce the risk of death, at \$1.5 - \$2.5 million (in the year 2000, in western countries, see Mrozek & Taylor [-@mrozek_what_2002]). Building on this work, Abelson [-@abelson_value_2003] calculated the willingness to pay to prevent acute health issues such as eye irritation at about \$40-\$50 per day. A researcher may be examining a psychological intervention that reduces the amount of times people touch their face close to their eyes, thereby reducing eye irritations caused by bacteria. If the intervention costs $20 per year to administer, it therefore should reduce the average number of days with eye irritation in the population by at least 0.5 days for the intervention to be worth the cost. A cost-benefit analysis can also be based on the resources required to empirically study a very small effect when weighed against the value this knowledge would have for the scientific community.
 
 ## Specifying the SESOI using the small telescopes approach
 
-Ideally, researchers who publish empirical claims would always specify which observations would falsify their claim. Regrettably, this is not yet common practice. This is particularly problematic when a researcher performs a close replication of earlier work. Because it is never possible to prove an effect is exactly zero, and the original authors seldom specify which range of effect sizes would falsify their hypotheses, it has proven to be very difficult to interpret the outcome of a replication study [@anderson_theres_2016]. When does the new data contradict the original finding?
+Ideally, researchers who publish empirical claims would always specify which observations would falsify their claim. Regrettably, this is not yet common practice. This is particularly problematic when a researcher performs a close replication of earlier work. Because it is never possible to prove an effect is exactly zero, and the original authors seldom specify which range of effect sizes would falsify their hypotheses, it has proven to be very difficult to interpret the outcome of a replication study [@anderson_there_2016]. When does the new data contradict the original finding?
 
 Consider a study in which you want to test the idea of the wisdom of crowds. You ask 20 people to estimate the number of coins in a jar, expecting the average to be very close to the true value. The research question is whether the people can on average correctly guess the number of coins, which is 500. The observed mean guess by 20 people is 550, with a standard deviation of 100. The observed difference from the true value is statistically significant, *t*(19)=2.37, *p* = 0.0375, with a Cohen’s *d* of 0.5. Can it really be that the group average is so far off? Is there no Wisdom of Crowds? Was there something special about the coins you used that make it especially difficult to guess their number? Or was it just a fluke? You set out to perform a close replication of this study.
 

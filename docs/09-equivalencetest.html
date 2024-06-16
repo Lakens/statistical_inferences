@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.310">
+<meta name="generator" content="quarto-1.4.555">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="This open educational resource contains information to improve statistical inferences, design better experiments, and report scientific research more transparently.">
 <title>Improving Your Statistical Inferences - 9&nbsp; Equivalence Testing and Interval Hypotheses</title>
@@ -20,7 +20,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -56,6 +56,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -99,7 +100,13 @@ div.csl-indent {
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -108,8 +115,10 @@ div.csl-indent {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script><script async="" src="https://www.googletagmanager.com/gtag/js?id=G-0MK2WTGRM3"></script><script type="text/javascript">
 
@@ -117,7 +126,32 @@ window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
-</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><link rel="stylesheet" href="include/booktem.css">
+</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script><link rel="stylesheet" href="include/booktem.css">
 <link rel="stylesheet" href="include/style.css">
 <link rel="stylesheet" href="include/webex.css">
 </head>
@@ -125,19 +159,19 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./09-equivalencetest.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Equivalence Testing and Interval Hypotheses</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./09-equivalencetest.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Equivalence Testing and Interval Hypotheses</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
   </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Improving Your Statistical Inferences</a> 
         <div class="sidebar-tools-main tools-wide">
@@ -287,7 +321,7 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
 </li>
     </ul>
 </div>
-</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
@@ -314,7 +348,7 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
   <li><a href="#open-questions" id="toc-open-questions" class="nav-link" data-scroll-target="#open-questions"><span class="header-section-number">9.13.4</span> Open Questions</a></li>
   </ul>
 </li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/Lakens/statistical_inferences/edit/master/09-equivalencetest.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/Lakens/statistical_inferences/issues/new" class="toc-action">Report an issue</a></p><p><a href="https://github.com/Lakens/statistical_inferences/blob/master/09-equivalencetest.qmd" class="toc-action">View source</a></p></div></div></nav>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/Lakens/statistical_inferences/edit/master/09-equivalencetest.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Lakens/statistical_inferences/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/Lakens/statistical_inferences/blob/master/09-equivalencetest.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
@@ -331,28 +365,32 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
   </div>
   
 
+
 </header><p>Most scientific studies are designed to test the prediction that an effect or a difference exists. Does a new intervention work? Is there a relationship between two variables? These studies are commonly analyzed with a null hypothesis significance test. When a statistically significant <em>p</em>-value is observed, the null hypothesis can be rejected, and researchers can claim that the intervention works, or that there is a relationship between two variables, with a maximum error rate. But if the <em>p</em>-value is not statistically significant, researchers very often draw a logically incorrect conclusion: They conclude there is no effect based on <em>p</em> &gt; 0.05.</p>
 <p>Open a result section of an article you are writing, or the result section of an article you have recently read. Search for “<em>p</em> &gt; 0.05”, and look carefully at what you or the scientists concluded (in the results section, but also check which claim they make in the discussion section). If you see the conclusion that there was ‘no effect’ or there was ‘no association between variables’, you have found an example where researchers forgot that <em>absence of evidence is not evidence of absence</em> <span class="citation" data-cites="altman_statistics_1995">(<a href="references.html#ref-altman_statistics_1995" role="doc-biblioref">Altman &amp; Bland, 1995</a>)</span>. A non-significant result in itself only tells us that we cannot reject the null hypothesis. It is tempting to ask after <em>p</em> &gt; 0.05 ‘so, is the true effect zero’? But the <em>p</em>-value from a null hypothesis significance test cannot answer that question. (remember the concept of 無 (<a href="https://en.wikipedia.org/wiki/Mu_(negative)#Non-dualistic_meaning">mu</a>) discussed in the chapter on <a href="01-pvalue.html#sec-misconception1"><em>p</em> values</a>: the answer is neither yes nor no, but we should ‘unask’ the question).</p>
 <p>There should be many situations where researchers are interested in examining whether a meaningful effect is absent. For example, it can be important to show two groups do not differ on factors that might be a confound in the experimental design (e.g., examining whether a manipulation intended to increase fatigue did not affect the mood of the participants, by showing that positive and negative affect did not differ between the groups). Researchers might want to know if two interventions work equally well, especially when the newer intervention costs less or requires less effort (e.g., is online therapy just as efficient as in person therapy?). And other times we might be interested to demonstrate the absence of an effect because a theoretical model predicts there is no effect, or because we believe a previously published study was a false positive, and we expect to show the absence of an effect in a replication study <span class="citation" data-cites="dienes_using_2014">(<a href="references.html#ref-dienes_using_2014" role="doc-biblioref">Dienes, 2014</a>)</span>. And yet, when you ask researchers if they have ever designed a study where the goal was to show that there was no effect, for example by predicting that there would be no difference between two conditions, many people say they have never designed a study where their main prediction was that the effect size was 0. Researchers almost always predict there is a difference. One reason might be that many researchers would not even know how to statistically support a prediction of an effect size of 0, because they were not trained in the use of equivalence testing.</p>
 <p>It is never possible to show an effect is <em>exactly</em> 0. Even if you collected data from every person in the world, the effect in any single study will randomly vary around the true effect size of 0 - you might end up with a mean difference that is very close to, but not exactly, zero, in any finite sample. <span class="citation" data-cites="hodges_testing_1954">Hodges &amp; Lehmann (<a href="references.html#ref-hodges_testing_1954" role="doc-biblioref">1954</a>)</span> were the first to discuss the statistical problem of testing whether two populations have the same mean. They suggest (p.&nbsp;264) to: “test that their means do not differ by more than an amount specified to represent the smallest difference of practical interest”. <span class="citation" data-cites="nunnally_place_1960">Nunnally (<a href="references.html#ref-nunnally_place_1960" role="doc-biblioref">1960</a>)</span> similarly proposed a ‘fixed-increment’ hypothesis where researchers compare an observed effect against a range of values that is deemed too small to be meaningful. Defining a range of values considered practically equivalent to the absence of an effect is known as an <strong>equivalence range</strong> <span class="citation" data-cites="bauer_unifying_1996">(<a href="references.html#ref-bauer_unifying_1996" role="doc-biblioref">Bauer &amp; Kieser, 1996</a>)</span> or a <strong>region of practical equivalence</strong> <span class="citation" data-cites="kruschke_bayesian_2013">(<a href="references.html#ref-kruschke_bayesian_2013" role="doc-biblioref">Kruschke, 2013</a>)</span>. The equivalence range should be specified in advance, and requires careful consideration of the smallest effect size of interest.</p>
-<p>Although researchers have repeatedly attempted to introduce tests against an equivalence range in the social sciences <span class="citation" data-cites="cribbie_recommendations_2004 levine_communication_2008 hoenig_abuse_2001 rogers_using_1993 quertemont_how_2011">(<a href="references.html#ref-cribbie_recommendations_2004" role="doc-biblioref">Cribbie et al., 2004</a>; <a href="references.html#ref-hoenig_abuse_2001" role="doc-biblioref">Hoenig &amp; Heisey, 2001</a>; <a href="references.html#ref-levine_communication_2008" role="doc-biblioref">Levine et al., 2008</a>; <a href="references.html#ref-quertemont_how_2011" role="doc-biblioref">Quertemont, 2011</a>; <a href="references.html#ref-rogers_using_1993" role="doc-biblioref">Rogers et al., 1993</a>)</span>, this statistical approach has only recently become popular. During the replication crisis, researchers searched for tools to interpret null results when performing replication studies. Researchers wanted to be able to publish informative null results when replicating findings in the literature that they suspected were false positives. One notable example were the studies on pre-cognition by Daryl Bem, which ostensibly showed that participants were able to predict the future <span class="citation" data-cites="bem_feeling_2011">(<a href="references.html#ref-bem_feeling_2011" role="doc-biblioref">Bem, 2011</a>)</span>. Equivalence tests were proposed as a statistical approach to answer the question whether an observed effect is small enough to conclude that a previous study could not be replicated <span class="citation" data-cites="anderson_theres_2016 lakens_equivalence_2017 simonsohn_small_2015">(<a href="references.html#ref-anderson_theres_2016" role="doc-biblioref">Anderson &amp; Maxwell, 2016</a>; <a href="references.html#ref-lakens_equivalence_2017" role="doc-biblioref">Lakens, 2017</a>; <a href="references.html#ref-simonsohn_small_2015" role="doc-biblioref">Simonsohn, 2015</a>)</span>. Researchers specify a smallest effect size of interest (for example an effect of 0.5, so for a two-sided test any value outside a range from -0.5 to 0.5) and test whether effects more extreme than this range can be rejected. If so, they can reject the presence of effects that are deemed large enough to be meaningful.</p>
+<p>Although researchers have repeatedly attempted to introduce tests against an equivalence range in the social sciences <span class="citation" data-cites="cribbie_recommendations_2004 levine_communication_2008 hoenig_abuse_2001 rogers_using_1993 quertemont_how_2011">(<a href="references.html#ref-cribbie_recommendations_2004" role="doc-biblioref">Cribbie et al., 2004</a>; <a href="references.html#ref-hoenig_abuse_2001" role="doc-biblioref">Hoenig &amp; Heisey, 2001</a>; <a href="references.html#ref-levine_communication_2008" role="doc-biblioref">Levine et al., 2008</a>; <a href="references.html#ref-quertemont_how_2011" role="doc-biblioref">Quertemont, 2011</a>; <a href="references.html#ref-rogers_using_1993" role="doc-biblioref">Rogers et al., 1993</a>)</span>, this statistical approach has only recently become popular. During the replication crisis, researchers searched for tools to interpret null results when performing replication studies. Researchers wanted to be able to publish informative null results when replicating findings in the literature that they suspected were false positives. One notable example were the studies on pre-cognition by Daryl Bem, which ostensibly showed that participants were able to predict the future <span class="citation" data-cites="bem_feeling_2011">(<a href="references.html#ref-bem_feeling_2011" role="doc-biblioref">Bem, 2011</a>)</span>. Equivalence tests were proposed as a statistical approach to answer the question whether an observed effect is small enough to conclude that a previous study could not be replicated <span class="citation" data-cites="anderson_there_2016 lakens_equivalence_2017 simonsohn_small_2015">(<a href="references.html#ref-anderson_there_2016" role="doc-biblioref">Anderson &amp; Maxwell, 2016</a>; <a href="references.html#ref-lakens_equivalence_2017" role="doc-biblioref">Lakens, 2017</a>; <a href="references.html#ref-simonsohn_small_2015" role="doc-biblioref">Simonsohn, 2015</a>)</span>. Researchers specify a smallest effect size of interest (for example an effect of 0.5, so for a two-sided test any value outside a range from -0.5 to 0.5) and test whether effects more extreme than this range can be rejected. If so, they can reject the presence of effects that are deemed large enough to be meaningful.</p>
 <p>One can distinguish a <strong>nil null hypothesis</strong>, where the null hypothesis is an effect of 0, from a <strong>non-nil null hypothesis</strong>, where the null hypothesis is any other effect than 0, for example effects more extreme than the smallest effect size of interest <span class="citation" data-cites="nickerson_null_2000">(<a href="references.html#ref-nickerson_null_2000" role="doc-biblioref">Nickerson, 2000</a>)</span>. As Nickerson writes:</p>
 <blockquote class="blockquote">
 <p>The distinction is an important one, especially relative to the controversy regarding the merits or shortcomings of NHST inasmuch as criticisms that may be valid when applied to nil hypothesis testing are not necessarily valid when directed at null hypothesis testing in the more general sense.</p>
 </blockquote>
-<p>Equivalence tests are a specific implementation of <strong>interval hypothesis tests</strong>, where instead of testing against a null hypothesis of no effect (that is, an effect size of 0; <strong>nil null hypothesis</strong>), an effect is tested against a null hypothesis that represents a range of non-zero effect sizes (<strong>non-nil null hypothesis</strong>). Indeed, one of the most widely suggested improvements that mitigates the most important limitations of null hypothesis significance testing is to replace the nil null hypothesis with the test of a range prediction (by specifying a non-nil null hypothesis) in an interval hypothesis test <span class="citation" data-cites="lakens_practical_2021">(<a href="references.html#ref-lakens_practical_2021" role="doc-biblioref">Lakens, 2021</a>)</span>. To illustrate the difference, Panel A in <a href="#fig-intervaltest">Figure&nbsp;<span>9.1</span></a> visualizes the results that are predicted in a two-sided null hypothesis test with a nil hypothesis, where the test examines whether an effect of 0 can be rejected. Panel B shows an interval hypothesis where an effect between 0.5 and 2.5 is predicted, where the non-nill null hypothesis consists of values smaller than 0.5 or larger than 2.5, and the interval hypothesis test examines whether values in these ranges can be rejected. Panel C illustrates an equivalence test, which is basically identical to an interval hypothesis test, but the predicted effects are located in a range around 0, and contain effects that are deemed too small to be meaningful.</p>
+<p>Equivalence tests are a specific implementation of <strong>interval hypothesis tests</strong>, where instead of testing against a null hypothesis of no effect (that is, an effect size of 0; <strong>nil null hypothesis</strong>), an effect is tested against a null hypothesis that represents a range of non-zero effect sizes (<strong>non-nil null hypothesis</strong>). Indeed, one of the most widely suggested improvements that mitigates the most important limitations of null hypothesis significance testing is to replace the nil null hypothesis with the test of a range prediction (by specifying a non-nil null hypothesis) in an interval hypothesis test <span class="citation" data-cites="lakens_practical_2021">(<a href="references.html#ref-lakens_practical_2021" role="doc-biblioref">Lakens, 2021</a>)</span>. To illustrate the difference, Panel A in <a href="#fig-intervaltest" class="quarto-xref">Figure&nbsp;<span>9.1</span></a> visualizes the results that are predicted in a two-sided null hypothesis test with a nil hypothesis, where the test examines whether an effect of 0 can be rejected. Panel B shows an interval hypothesis where an effect between 0.5 and 2.5 is predicted, where the non-nill null hypothesis consists of values smaller than 0.5 or larger than 2.5, and the interval hypothesis test examines whether values in these ranges can be rejected. Panel C illustrates an equivalence test, which is basically identical to an interval hypothesis test, but the predicted effects are located in a range around 0, and contain effects that are deemed too small to be meaningful.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-intervaltest" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="09-equivalencetest_files/figure-html/fig-intervaltest-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;9.1: Two-sided null hypothesis test (A), interval hypothesis test (B), equivalence test (C) and minimum effect test (D).</figcaption><p></p>
-</figure>
+<div id="fig-intervaltest" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-intervaltest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="09-equivalencetest_files/figure-html/fig-intervaltest-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-intervaltest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.1: Two-sided null hypothesis test (A), interval hypothesis test (B), equivalence test (C) and minimum effect test (D).
+</figcaption></figure>
 </div>
 </div>
 </div>
-<p>When an equivalence test is reversed, a researcher designs a study to reject effects less extreme than a smallest effect size of interest (see Panel D in <a href="#fig-intervaltest">Figure&nbsp;<span>9.1</span></a>), it is called a <strong>minimum effect test</strong> <span class="citation" data-cites="murphy_testing_1999">(<a href="references.html#ref-murphy_testing_1999" role="doc-biblioref">Murphy &amp; Myors, 1999</a>)</span>. A researcher might not just be interested in rejecting an effect of 0 (as in a null hypothesis significance test) but in rejecting a range of effects that are too small to be meaningful. All else equal, a study designed to have high power for a minimum effect requires more observations than if the goal had been to reject an effect of zero. As the confidence interval needs to reject a value that is closer to the observed effect size (e.g., 0.1 instead of 0) it needs to be more narrow, which requires more observations.</p>
+<p>When an equivalence test is reversed, a researcher designs a study to reject effects less extreme than a smallest effect size of interest (see Panel D in <a href="#fig-intervaltest" class="quarto-xref">Figure&nbsp;<span>9.1</span></a>), it is called a <strong>minimum effect test</strong> <span class="citation" data-cites="murphy_testing_1999">(<a href="references.html#ref-murphy_testing_1999" role="doc-biblioref">Murphy &amp; Myors, 1999</a>)</span>. A researcher might not just be interested in rejecting an effect of 0 (as in a null hypothesis significance test) but in rejecting a range of effects that are too small to be meaningful. All else equal, a study designed to have high power for a minimum effect requires more observations than if the goal had been to reject an effect of zero. As the confidence interval needs to reject a value that is closer to the observed effect size (e.g., 0.1 instead of 0) it needs to be more narrow, which requires more observations.</p>
 <p>One benefit of a minimum effect test compared to a null hypothesis test is that there is no distinction between statistical significance and practical significance. As the test value is chosen to represent the minimum effect of interest, whenever it is rejected, the effect is both statistically and practically significant <span class="citation" data-cites="murphy_statistical_2014">(<a href="references.html#ref-murphy_statistical_2014" role="doc-biblioref">Murphy et al., 2014</a>)</span>. Another benefit of minimum effect tests is that, especially in correlational studies in the social sciences, variables are often connected through causal structures that result in real but theoretically uninteresting nonzero correlations between variables, which has been labeled the ‘crud factor’ <span class="citation" data-cites="meehl_appraising_1990 orben_crud_2020">(<a href="references.html#ref-meehl_appraising_1990" role="doc-biblioref">Meehl, 1990</a>; <a href="references.html#ref-orben_crud_2020" role="doc-biblioref">Orben &amp; Lakens, 2020</a>)</span>. Because an effect of zero is unlikely to be true in large correlational datasets, rejecting a nil null hypothesis is not a severe test. Even if the hypothesis is incorrect, it is likely that an effect of 0 will be rejected due to <a href="05-questions.html#sec-crud">‘crud’</a>. For this reason, some researchers have suggested to test against a minimum effect of <em>r</em> = 0.1, as correlations below this threshold are quite common due to theoretically irrelevant correlations between variables <span class="citation" data-cites="ferguson_providing_2021">(<a href="references.html#ref-ferguson_providing_2021" role="doc-biblioref">Ferguson &amp; Heene, 2021</a>)</span>.</p>
-<p><a href="#fig-intervaltest">Figure&nbsp;<span>9.1</span></a> illustrates two-sided tests, but it is often more intuitive and logical to perform one-sided tests. In that case, a minimum effect test would, for example, aim to reject effects smaller than 0.1, and an equivalence test would aim to reject effects larger than for example 0.1. Instead of specifying an upper and lower bound of a range, it is sufficient to specify a single value for one-sided tests. A final variation of a one-sided non-nil null hypothesis test is known as a test for <strong>non-inferiority</strong>, which examines if an effect is larger than the lower bound of an equivalence range. Such a test is for example performed when a novel intervention should not be noticeably worse than an existing intervention, but it can be a tiny bit worse. For example, if a difference between a novel and existing intervention is not smaller than -0.1, and effects smaller than -0.1 can be rejected, one can conclude an effect is non-inferior <span class="citation" data-cites="schumi_through_2011 mazzolari_myths_2022">(<a href="references.html#ref-mazzolari_myths_2022" role="doc-biblioref">Mazzolari et al., 2022</a>; <a href="references.html#ref-schumi_through_2011" role="doc-biblioref">Schumi &amp; Wittes, 2011</a>)</span>. We see that extending nil null hypothesis tests to non-nil null hypotheses allow researchers to ask questions that might be more interesting.</p>
+<p><a href="#fig-intervaltest" class="quarto-xref">Figure&nbsp;<span>9.1</span></a> illustrates two-sided tests, but it is often more intuitive and logical to perform one-sided tests. In that case, a minimum effect test would, for example, aim to reject effects smaller than 0.1, and an equivalence test would aim to reject effects larger than for example 0.1. Instead of specifying an upper and lower bound of a range, it is sufficient to specify a single value for one-sided tests. A final variation of a one-sided non-nil null hypothesis test is known as a test for <strong>non-inferiority</strong>, which examines if an effect is larger than the lower bound of an equivalence range. Such a test is for example performed when a novel intervention should not be noticeably worse than an existing intervention, but it can be a tiny bit worse. For example, if a difference between a novel and existing intervention is not smaller than -0.1, and effects smaller than -0.1 can be rejected, one can conclude an effect is non-inferior <span class="citation" data-cites="schumi_looking_2011 mazzolari_myths_2022">(<a href="references.html#ref-mazzolari_myths_2022" role="doc-biblioref">Mazzolari et al., 2022</a>; <a href="references.html#ref-schumi_looking_2011" role="doc-biblioref">Schumi &amp; Wittes, 2011</a>)</span>. We see that extending nil null hypothesis tests to non-nil null hypotheses allow researchers to ask questions that might be more interesting.</p>
 <section id="equivalence-tests" class="level2" data-number="9.1"><h2 data-number="9.1" class="anchored" data-anchor-id="equivalence-tests">
 <span class="header-section-number">9.1</span> Equivalence tests</h2>
 <p>Equivalence tests were first developed in pharmaceutical sciences <span class="citation" data-cites="hauck_new_1984 westlake_use_1972">(<a href="references.html#ref-hauck_new_1984" role="doc-biblioref">Hauck &amp; Anderson, 1984</a>; <a href="references.html#ref-westlake_use_1972" role="doc-biblioref">Westlake, 1972</a>)</span> and later formalized as the <strong>two one-sided tests (TOST)</strong> approach to equivalence testing <span class="citation" data-cites="schuirmann_comparison_1987 seaman_equivalence_1998 wellek_testing_2010">(<a href="references.html#ref-schuirmann_comparison_1987" role="doc-biblioref">Schuirmann, 1987</a>; <a href="references.html#ref-seaman_equivalence_1998" role="doc-biblioref">Seaman &amp; Serlin, 1998</a>; <a href="references.html#ref-wellek_testing_2010" role="doc-biblioref">Wellek, 2010</a>)</span>. The TOST procedure entails performing two one-sided tests to examine whether the observed data is surprisingly larger than a lower equivalence boundary (<span class="math inline">\(\Delta_{L}\)</span>), or surprisingly smaller than an upper equivalence boundary (<span class="math inline">\(\Delta_{U}\)</span>):</p>
@@ -370,13 +408,16 @@ t_{U} = \frac{{\overline{M}}_{1} - {\overline{M}}_{2}{- \Delta}_{U}}{\sigma\sqrt
 <p>If both one-sided tests are significant, we can reject the presence of effects large enough to be meaningful. The formulas are highly similar to the normal formula for the <em>t</em>-statistic. The difference between a NHST <em>t</em>-test and the TOST procedure is that the lower equivalence boundary <span class="math inline">\(\Delta_{L}\)</span> and the upper equivalence boundary <span class="math inline">\(\Delta_{U}\)</span> are subtracted from the mean difference between groups (in a normal <em>t</em>-test, we compare the mean difference against 0, and thus the delta drops out of the formula because it is 0).</p>
 <p>To perform an equivalence test, you don’t need to learn any new statistical tests, as it is just the well-known <em>t</em>-test against a different value than 0. It is somewhat surprising that the use of <em>t</em>tests to perform equivalence tests is not taught alongside their use in null hypothesis significance tests, as there is some indication that this could prevent common misunderstandings of <em>p</em>-values <span class="citation" data-cites="parkhurst_statistical_2001">(<a href="references.html#ref-parkhurst_statistical_2001" role="doc-biblioref">Parkhurst, 2001</a>)</span>. Let’s look at an example of an equivalence test using the TOST procedure.</p>
 <p>In a study where researchers are manipulating fatigue by asking participants to carry heavy boxes around, the researchers want to ensure the manipulation does not inadvertently alter participants’ moods. The researchers assess positive and negative emotions in both conditions, and want to claim there are no differences in positive mood. Let’s assume that positive mood in the experimental fatigue condition (<span class="math inline">\(m_1\)</span> = 4.55, <span class="math inline">\(sd_1\)</span> = 1.05, <span class="math inline">\(n_1\)</span> = 15) did not differ from the mood in the the control condition (<span class="math inline">\(m_2\)</span> = 4.87, <span class="math inline">\(sd_2\)</span> = 1.11, <span class="math inline">\(n_2\)</span> = 15). The researchers conclude: “Mood did not differ between conditions, <em>t</em> = -0.81, <em>p</em> = .42”. Of course, mood did differ between conditions, as 4.55 - 4.87 = -0.32. The claim is that there was no <em>meaningful</em> difference in mood, but to make such a claim in a correct manner, we first need to specify which difference in mood is large enough to be meaningful. For now, let’s assume the researcher consider any effect less extreme half a scale point too small to be meaningful. We now test if the observed mean difference of -0.32 is small enough such that we can reject the presence of effects that are large enough to matter.</p>
-<p>The TOSTER package (originally created by myself but recently redesigned by <a href="https://aaroncaldwell.us/">Aaron Caldwell</a>) can be used to plot two <em>t</em>-distributions and their critical regions indicating when we can reject the presence of effects smaller than -0.5 and larger than 0.5. It can take some time to get used to the idea that we are rejecting values more extreme than the equivalence bounds. Try to consistently ask in any hypothesis test: Which values can the test reject? In a nil null hypothesis test, we can reject an effect of 0, and in the equivalence test in the Figure below, we can reject values lower than -0.5 and higher than 0.5. In <a href="#fig-tdistequivalence">Figure&nbsp;<span>9.2</span></a> we see two <em>t</em>-distributions centered on the upper and lower bound of the specified equivalence range (-0.5 and 0.5).</p>
+<p>The TOSTER package (originally created by myself but recently redesigned by <a href="https://aaroncaldwell.us/">Aaron Caldwell</a>) can be used to plot two <em>t</em>-distributions and their critical regions indicating when we can reject the presence of effects smaller than -0.5 and larger than 0.5. It can take some time to get used to the idea that we are rejecting values more extreme than the equivalence bounds. Try to consistently ask in any hypothesis test: Which values can the test reject? In a nil null hypothesis test, we can reject an effect of 0, and in the equivalence test in the Figure below, we can reject values lower than -0.5 and higher than 0.5. In <a href="#fig-tdistequivalence" class="quarto-xref">Figure&nbsp;<span>9.2</span></a> we see two <em>t</em>-distributions centered on the upper and lower bound of the specified equivalence range (-0.5 and 0.5).</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-tdistequivalence" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="09-equivalencetest_files/figure-html/fig-tdistequivalence-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;9.2: The mean difference and its confidence interval plotted below the <em>t</em>-distributions used to perform the two-one-sided tests against -0.5 and 0.5.</figcaption><p></p>
-</figure>
+<div id="fig-tdistequivalence" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-tdistequivalence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="09-equivalencetest_files/figure-html/fig-tdistequivalence-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tdistequivalence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.2: The mean difference and its confidence interval plotted below the <em>t</em>-distributions used to perform the two-one-sided tests against -0.5 and 0.5.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -392,7 +433,7 @@ t_{U} = \frac{{\overline{M}}_{1} - {\overline{M}}_{2}{- \Delta}_{U}}{\sigma\sqrt
 <span id="cb1-8"><a href="#cb1-8"></a>                  <span class="at">high_eqbound =</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
-Welch Modified Two-Sample t-Test
+Welch Two Sample t-test
 
 The equivalence test was non-significant, t(27.91) = 0.456, p = 3.26e-01
 The null hypothesis test was non-significant, t(27.91) = -0.811, p = 4.24e-01
@@ -408,18 +449,18 @@ TOST Upper -2.0785 27.91   0.023
 Effect Sizes 
                Estimate     SE              C.I. Conf. Level
 Raw             -0.3200 0.3945 [-0.9912, 0.3512]         0.9
-Hedges's g(av)  -0.2881 0.3930 [-0.8733, 0.3021]         0.9
+Hedges's g(av)  -0.2881 0.3799 [-0.8733, 0.3021]         0.9
 Note: SMD confidence intervals are an approximation. See vignette("SMD_calcs").</code></pre>
 </div>
 </div>
 <p>In the line ‘t-test’ the output shows the traditional nil null hypothesis significance test (which we already knew was not statistically significant: <em>t</em> = 0.46, <em>p</em> = 0.42. Just like the default <em>t</em>-test in R, the tsum_TOST function will by default calculate Welch’s <em>t</em>-test (instead of Student’s <em>t</em>-test), which is a better default <span class="citation" data-cites="delacre_why_2017">(<a href="references.html#ref-delacre_why_2017" role="doc-biblioref">Delacre et al., 2017</a>)</span>, but you can request Student’s <em>t</em>-test by adding <code>var.equal = TRUE</code> as an argument to the function.</p>
 <p>We also see a test indicated by TOST Lower. This is the first one-sided test examining if we can reject effects lower than -0.5. From the test result, we see this is not the case: <em>t</em> = 0.46, <em>p</em> = 0.33. This is an ordinary <em>t</em>-test, just against an effect of -0.5. Because we cannot reject differences more extreme than -0.5, it is possible that a difference we consider meaningful (e.g., a difference of -0.60) is present. When we look at the one-sided test against the upper bound of the equivalence range (0.5) we see that we can statistically reject the presence of mood effects larger than 0.5, as in the line TOST Upper we see <em>t</em> = -2.08, <em>p</em> = 0.02. Our final conclusion is therefore that, even though we can reject effects more extreme than 0.5 based on the observed mean difference of -0.32, we cannot reject effects more extreme than -0.5. Therefore, we cannot completely reject the presence of meaningful mood effects. As the data does not allow us to claim the effect is different from 0, nor that the effect is, if anything, too small to matter (based on an equivalence range from -0.5 to 0.5), the data are <strong>inconclusive</strong>. We cannot distinguish between a Type 2 error (there is an effect, but in this study we just did not detect it) or a true negative (there really is no effect large enough to matter).</p>
 <p>Note that because we fail to reject the one-sided test against the lower equivalence bound, the possibility remains that there is a true effect size that is large enough to be considered meaningful. This statement is true, even when the effect size we have observed (-0.32) is closer to zero than to the equivalence bound of -0.5. One might think the observed effect size needs to be more extreme (i.e., &lt; -0.5 or &gt; 0.5) than the equivalence bound to maintain the possibility that there is an effect that is large enough to be considered meaningful. But that is not required. The 90% CI indicates that some values below -0.5 cannot be rejected. As we can expect that 90% of confidence intervals in the long run capture the true population parameter, it is perfectly possible that the true effect size is more extreme than -0.5. And, the effect might even be more extreme than the values captured by this confidence interval, as 10% of the time, the computed confidence interval is expected to not contain the true effect size. Therefore, when we fail to reject the smallest effect size of interest, we retain the possibility that an effect of interest exists. If we can reject the nil null hypothesis, but fail to reject values more extreme than the equivalence bounds, then we can claim there is an effect, and it might be large enough to be meaningful.</p>
-<p>One way to reduce the probability of an inconclusive effect is to collect sufficient data. Let’s imagine the researchers had not collected 15 participants in each condition, but 200 participants. They otherwise observe exactly the same data. As explained in the chapter on <a href="07-CI.html">confidence intervals</a>, as the sample size increases, the confidence interval becomes more narrow. For a TOST equivalence test to be able to reject both the upper and lower bound of the equivalence range, the confidence interval needs to fall completely within the equivalence range. In <a href="#fig-ciequivalence1">Figure&nbsp;<span>9.3</span></a> we see the same result as in <a href="#fig-tdistequivalence">Figure&nbsp;<span>9.2</span></a>, but now if we had collected 200 observations. Because of the larger sample size, the confidence is more narrow than when we collected 15 participants. We see that the 90% confidence interval around the observed mean difference now excludes both the upper and lower equivalence bound. This means that we can now reject effects outside of the equivalence range (even though barely, with a <em>p</em> = 0.048 as the one-sided test against the lower equivalence bound is only just statistically significant).</p>
+<p>One way to reduce the probability of an inconclusive effect is to collect sufficient data. Let’s imagine the researchers had not collected 15 participants in each condition, but 200 participants. They otherwise observe exactly the same data. As explained in the chapter on <a href="07-CI.html">confidence intervals</a>, as the sample size increases, the confidence interval becomes more narrow. For a TOST equivalence test to be able to reject both the upper and lower bound of the equivalence range, the confidence interval needs to fall completely within the equivalence range. In <a href="#fig-ciequivalence1" class="quarto-xref">Figure&nbsp;<span>9.3</span></a> we see the same result as in <a href="#fig-tdistequivalence" class="quarto-xref">Figure&nbsp;<span>9.2</span></a>, but now if we had collected 200 observations. Because of the larger sample size, the confidence is more narrow than when we collected 15 participants. We see that the 90% confidence interval around the observed mean difference now excludes both the upper and lower equivalence bound. This means that we can now reject effects outside of the equivalence range (even though barely, with a <em>p</em> = 0.048 as the one-sided test against the lower equivalence bound is only just statistically significant).</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output cell-output-stdout">
 <pre><code>
-Welch Modified Two-Sample t-Test
+Welch Two Sample t-test
 
 The equivalence test was significant, t(396.78) = 1.666, p = 4.82e-02
 The null hypothesis test was significant, t(396.78) = -2.962, p = 3.24e-03
@@ -433,26 +474,32 @@ TOST Lower  1.666 396.8   0.048
 TOST Upper -7.590 396.8 &lt; 0.001
 
 Effect Sizes 
-               Estimate    SE               C.I. Conf. Level
-Raw             -0.3200 0.108 [-0.4981, -0.1419]         0.9
-Hedges's g(av)  -0.2956 0.104 [-0.4605, -0.1304]         0.9
+               Estimate     SE               C.I. Conf. Level
+Raw             -0.3200 0.1080 [-0.4981, -0.1419]         0.9
+Hedges's g(av)  -0.2956 0.1008 [-0.4605, -0.1304]         0.9
 Note: SMD confidence intervals are an approximation. See vignette("SMD_calcs").</code></pre>
 </div>
 <div class="cell-output-display">
-<div id="fig-ciequivalence1" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="09-equivalencetest_files/figure-html/fig-ciequivalence1-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;9.3: The mean difference and its confidence interval for an equivalence test with an equivalence range of -0.5 and 0.5.</figcaption><p></p>
-</figure>
+<div id="fig-ciequivalence1" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-ciequivalence1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="09-equivalencetest_files/figure-html/fig-ciequivalence1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ciequivalence1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.3: The mean difference and its confidence interval for an equivalence test with an equivalence range of -0.5 and 0.5.
+</figcaption></figure>
 </div>
 </div>
 </div>
-<p>In <a href="#fig-ciequivalence2">Figure&nbsp;<span>9.4</span></a> we see the the same results, but now visualized as a confidence density plot <span class="citation" data-cites="schweder_confidence_2016">(<a href="references.html#ref-schweder_confidence_2016" role="doc-biblioref">Schweder &amp; Hjort, 2016</a>)</span>, which is a graphical summary of the distribution of confidence. A confidence density plot allows you to see which effects can be rejected with difference confidence interval widths. We see the bounds of the green area (corresponding to a 90% confidence interval) fall inside the equivalence bounds. Thus, the equivalence test is statistically significant, and we can statistically reject the presence of effects outside the equivalence range. We can also see that the 95% confidence interval excludes 0, and therefore, a traditional null hypothesis significance test is also statistically significant.</p>
+<p>In <a href="#fig-ciequivalence2" class="quarto-xref">Figure&nbsp;<span>9.4</span></a> we see the the same results, but now visualized as a confidence density plot <span class="citation" data-cites="schweder_confidence_2016">(<a href="references.html#ref-schweder_confidence_2016" role="doc-biblioref">Schweder &amp; Hjort, 2016</a>)</span>, which is a graphical summary of the distribution of confidence. A confidence density plot allows you to see which effects can be rejected with difference confidence interval widths. We see the bounds of the green area (corresponding to a 90% confidence interval) fall inside the equivalence bounds. Thus, the equivalence test is statistically significant, and we can statistically reject the presence of effects outside the equivalence range. We can also see that the 95% confidence interval excludes 0, and therefore, a traditional null hypothesis significance test is also statistically significant.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-ciequivalence2" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="09-equivalencetest_files/figure-html/fig-ciequivalence2-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;9.4: The mean difference and its confidence interval for an equivalence test with an equivalence range of -0.5 and 0.5.</figcaption><p></p>
-</figure>
+<div id="fig-ciequivalence2" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-ciequivalence2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="09-equivalencetest_files/figure-html/fig-ciequivalence2-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ciequivalence2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.4: The mean difference and its confidence interval for an equivalence test with an equivalence range of -0.5 and 0.5.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -468,7 +515,7 @@ Note: SMD confidence intervals are an approximation. See vignette("SMD_calcs").<
 <div class="cell" data-layout-align="center">
 <div class="cell-output cell-output-stdout">
 <pre><code>
-Welch Modified Two-Sample t-Test
+Welch Two Sample t-test
 
 The minimal effect test was significant, t(396.78) = 12.588, p = 4.71e-04
 The null hypothesis test was significant, t(396.78) = 7.960, p = 1.83e-14
@@ -482,16 +529,19 @@ TOST Lower 12.588 396.8       1
 TOST Upper  3.332 396.8 &lt; 0.001
 
 Effect Sizes 
-               Estimate    SE             C.I. Conf. Level
-Raw              0.8600 0.108 [0.6819, 1.0381]         0.9
-Hedges's g(av)   0.7945 0.125 [0.6234, 0.9646]         0.9
+               Estimate     SE             C.I. Conf. Level
+Raw              0.8600 0.1080 [0.6819, 1.0381]         0.9
+Hedges's g(av)   0.7945 0.1041 [0.6234, 0.9646]         0.9
 Note: SMD confidence intervals are an approximation. See vignette("SMD_calcs").</code></pre>
 </div>
 <div class="cell-output-display">
-<div id="fig-tmet" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="09-equivalencetest_files/figure-html/fig-tmet-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;9.5: The mean difference and its confidence interval plotted below the <em>t</em>-distributions used to perform the two-one-sided tests against -0.5 and 0.5 when performing a minimum effect test.</figcaption><p></p>
-</figure>
+<div id="fig-tmet" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-tmet-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="09-equivalencetest_files/figure-html/fig-tmet-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tmet-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.5: The mean difference and its confidence interval plotted below the <em>t</em>-distributions used to perform the two-one-sided tests against -0.5 and 0.5 when performing a minimum effect test.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -568,16 +618,16 @@ NOTE: n is number in *each* group</code></pre>
 <span class="header-section-number">9.5</span> The Bayesian ROPE procedure</h2>
 <p>In Bayesian estimation, one way to argue for the absence of a meaningful effect is the <strong>region of practical equivalence</strong> (ROPE) procedure <span class="citation" data-cites="kruschke_bayesian_2013">(<a href="references.html#ref-kruschke_bayesian_2013" role="doc-biblioref">Kruschke, 2013</a>)</span>, which is “somewhat analogous to frequentist equivalence testing” <span class="citation" data-cites="kruschke_bayesian_2017">(<a href="references.html#ref-kruschke_bayesian_2017" role="doc-biblioref">Kruschke &amp; Liddell, 2017</a>)</span>. In the ROPE procedure, an equivalence range is specified, just as in equivalence testing, but the Bayesian highest density interval based on a posterior distribution (as explained in the chapter on <a href="04-bayes.html">Bayesian statistics</a>) is used instead of the confidence interval.</p>
 <p>If the prior used by Kruschke was perfectly uniform, and the ROPE procedure and an equivalence test used the same confidence interval (e.g., 90%), the two tests would yield identical results. There would only be philosophical differences in how the numbers are interpreted. The <code>BEST</code> package in R that can be used to perform the ROPE procedure by default uses a ‘broad’ prior, and therefore results of the ROPE procedure and an equivalence test are not exactly the same, but they are very close. One might even argue the two tests are ‘practically equivalent’. In the R code below, random normally distributed data for two conditions is generated (with means of 0 and a standard deviation of 1) and the ROPE procedure and a TOST equivalence test are performed.</p>
-<div class="cell" data-layout-align="center" data-hash="09-equivalencetest_cache/html/unnamed-chunk-6_b292e780813c94ef3def5e0188d27ca4">
+<div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="09-equivalencetest_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="09-equivalencetest_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="09-equivalencetest_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="09-equivalencetest_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -606,11 +656,11 @@ NOTE: n is number in *each* group</code></pre>
 <p>Anvari and Lakens <span class="citation" data-cites="anvari_using_2021">(<a href="references.html#ref-anvari_using_2021" role="doc-biblioref">2021</a>)</span> applied the anchor-based method to examine a smallest effect of interest as measured by the widely used Positive and Negative Affect Scale (PANAS). Participants completed the 20 item PANAS at two time points several days apart (using a Likert scale going from 1 = “very slightly or not at all”, to 5 = “extremely”). At the second time point they were also asked to indicate if their affect had changed a little, a lot, or not at all. When people indicated their affect had changed “a little”, the average change in Likert units was 0.26 scale points for positive affect and 0.28 scale points for negative affect. Thus, an intervention to improve people’s affective state that should lead to what individuals subjectively consider at least a little improvement might set the SESOI at 0.3 units on the PANAS.</p>
 </section><section id="specifying-a-sesoi-based-on-a-cost-benefit-analysis" class="level2" data-number="9.10"><h2 data-number="9.10" class="anchored" data-anchor-id="specifying-a-sesoi-based-on-a-cost-benefit-analysis">
 <span class="header-section-number">9.10</span> Specifying a SESOI based on a cost-benefit analysis</h2>
-<p>Another principled approach to justify a smallest effect size of interest is to perform a cost-benefit analysis. Research shows that cognitive training may improve mental abilities in older adults which might benefit older drivers <span class="citation" data-cites="ball_effects_2002">(<a href="references.html#ref-ball_effects_2002" role="doc-biblioref">Ball et al., 2002</a>)</span>. Based on these findings, Viamonte, Ball, and Kilgore <span class="citation" data-cites="viamonte_cost-benefit_2006">(<a href="references.html#ref-viamonte_cost-benefit_2006" role="doc-biblioref">2006</a>)</span> performed a cost-benefit analysis and concluded that based on the cost of the intervention ($247.50), the probability of an accident for drivers older than 75 (<em>p</em> = 0.0710), and the cost of an accident ($22,000), performing the intervention on all drivers aged 75 or older was more efficient than not intervening or only intervening after a screening test. Furthermore, sensitivity analyses revealed that intervening for all drivers would remain beneficial as long as the reduction in collision risk is 25%. Therefore, a 25% reduction in the probability of elderly above 75 getting into a car accident could be set as the smallest effect size of interest.</p>
+<p>Another principled approach to justify a smallest effect size of interest is to perform a cost-benefit analysis. Research shows that cognitive training may improve mental abilities in older adults which might benefit older drivers <span class="citation" data-cites="ball_effects_2002">(<a href="references.html#ref-ball_effects_2002" role="doc-biblioref">Ball et al., 2002</a>)</span>. Based on these findings, Viamonte, Ball, and Kilgore <span class="citation" data-cites="viamonte_costbenefit_2006">(<a href="references.html#ref-viamonte_costbenefit_2006" role="doc-biblioref">2006</a>)</span> performed a cost-benefit analysis and concluded that based on the cost of the intervention ($247.50), the probability of an accident for drivers older than 75 (<em>p</em> = 0.0710), and the cost of an accident ($22,000), performing the intervention on all drivers aged 75 or older was more efficient than not intervening or only intervening after a screening test. Furthermore, sensitivity analyses revealed that intervening for all drivers would remain beneficial as long as the reduction in collision risk is 25%. Therefore, a 25% reduction in the probability of elderly above 75 getting into a car accident could be set as the smallest effect size of interest.</p>
 <p>For another example, economists have examined the value of a statistical life, based on willingness to pay to reduce the risk of death, at $1.5 - $2.5 million (in the year 2000, in western countries, see Mrozek &amp; Taylor <span class="citation" data-cites="mrozek_what_2002">(<a href="references.html#ref-mrozek_what_2002" role="doc-biblioref">2002</a>)</span>). Building on this work, Abelson <span class="citation" data-cites="abelson_value_2003">(<a href="references.html#ref-abelson_value_2003" role="doc-biblioref">2003</a>)</span> calculated the willingness to pay to prevent acute health issues such as eye irritation at about $40-$50 per day. A researcher may be examining a psychological intervention that reduces the amount of times people touch their face close to their eyes, thereby reducing eye irritations caused by bacteria. If the intervention costs $20 per year to administer, it therefore should reduce the average number of days with eye irritation in the population by at least 0.5 days for the intervention to be worth the cost. A cost-benefit analysis can also be based on the resources required to empirically study a very small effect when weighed against the value this knowledge would have for the scientific community.</p>
 </section><section id="specifying-the-sesoi-using-the-small-telescopes-approach" class="level2" data-number="9.11"><h2 data-number="9.11" class="anchored" data-anchor-id="specifying-the-sesoi-using-the-small-telescopes-approach">
 <span class="header-section-number">9.11</span> Specifying the SESOI using the small telescopes approach</h2>
-<p>Ideally, researchers who publish empirical claims would always specify which observations would falsify their claim. Regrettably, this is not yet common practice. This is particularly problematic when a researcher performs a close replication of earlier work. Because it is never possible to prove an effect is exactly zero, and the original authors seldom specify which range of effect sizes would falsify their hypotheses, it has proven to be very difficult to interpret the outcome of a replication study <span class="citation" data-cites="anderson_theres_2016">(<a href="references.html#ref-anderson_theres_2016" role="doc-biblioref">Anderson &amp; Maxwell, 2016</a>)</span>. When does the new data contradict the original finding?</p>
+<p>Ideally, researchers who publish empirical claims would always specify which observations would falsify their claim. Regrettably, this is not yet common practice. This is particularly problematic when a researcher performs a close replication of earlier work. Because it is never possible to prove an effect is exactly zero, and the original authors seldom specify which range of effect sizes would falsify their hypotheses, it has proven to be very difficult to interpret the outcome of a replication study <span class="citation" data-cites="anderson_there_2016">(<a href="references.html#ref-anderson_there_2016" role="doc-biblioref">Anderson &amp; Maxwell, 2016</a>)</span>. When does the new data contradict the original finding?</p>
 <p>Consider a study in which you want to test the idea of the wisdom of crowds. You ask 20 people to estimate the number of coins in a jar, expecting the average to be very close to the true value. The research question is whether the people can on average correctly guess the number of coins, which is 500. The observed mean guess by 20 people is 550, with a standard deviation of 100. The observed difference from the true value is statistically significant, <em>t</em>(19)=2.37, <em>p</em> = 0.0375, with a Cohen’s <em>d</em> of 0.5. Can it really be that the group average is so far off? Is there no Wisdom of Crowds? Was there something special about the coins you used that make it especially difficult to guess their number? Or was it just a fluke? You set out to perform a close replication of this study.</p>
 <p>You want your study to be informative, regardless of whether there is an effect or not. This means you need to design a replication study that will allow you to draw an informative conclusion, regardless of whether the alternative hypothesis is true (the crowd will not estimate the true number of coins accurately) or whether the null hypothesis is true (the crowd will guess 500 coins, and the original study was a fluke). But since the original researcher did not specify a smallest effect size of interest, when would a replication study allow you to conclude the original study is contradicted by the new data? Observing a mean of exactly 500 would perhaps be considered by some to be quite convincing, but due to random variation you will (almost) never find a mean score of exactly 500. A non-significant result can’t be interpreted as the absence of an effect, because your study might have too small a sample size to detect meaningful effects, and the result might be a Type 2 error. So how can we move forward and define an effect size that is meaningful? How can you design a study that has the ability to falsify a previous finding?</p>
 <p>Uri Simonsohn <span class="citation" data-cites="simonsohn_small_2015">(<a href="references.html#ref-simonsohn_small_2015" role="doc-biblioref">2015</a>)</span> defines a small effect as “one that would give 33% power to the original study”. In other words, the effect size that would give the original study odds of 2:1 <em>against</em> observing a statistically significant result if there was an effect. The idea is that if the original study had 33% power, the probability of observing a significant effect, if there was a true effect, is too low to reliably distinguish signal from noise (or situations where there is a true effect from situations where there is no true effect). Simonsohn (2015, p.&nbsp;561) calls this the <strong>small telescopes approach</strong>, and writes: “Imagine an astronomer claiming to have found a new planet with a telescope. Another astronomer tries to replicate the discovery using a larger telescope and finds nothing. Although this does not prove that the planet does not exist, it does nevertheless contradict the original findings, because planets that are observable with the smaller telescope should also be observable with the larger one.”</p>
@@ -640,10 +690,13 @@ NOTE: n is number in *each* group</code></pre>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-smalltelpower" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="images/0deabffd850f7b63c16e41e0af9ae0b6.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;9.6: Screenshot illustrating a sensitivity power analysis in G*Power to compute the effect size an original study had 33% power to detect.</figcaption><p></p>
-</figure>
+<div id="fig-smalltelpower" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-smalltelpower-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/0deabffd850f7b63c16e41e0af9ae0b6.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-smalltelpower-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.6: Screenshot illustrating a sensitivity power analysis in G*Power to compute the effect size an original study had 33% power to detect.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -673,10 +726,13 @@ NOTE: n is number in *each* group</code></pre>
 <p>Note that 33% power is a rounded value, and the calculation uses 1/3 (or 0.3333333…).</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-simonsohnexample" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="images/a4aa20a6e2dadfbaa82bc614d40693c7.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;9.7: Example used in Simonsohn (2015) of an original study and two replication studies.</figcaption><p></p>
-</figure>
+<div id="fig-simonsohnexample" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-simonsohnexample-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/a4aa20a6e2dadfbaa82bc614d40693c7.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-simonsohnexample-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.7: Example used in Simonsohn (2015) of an original study and two replication studies.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -684,23 +740,29 @@ NOTE: n is number in *each* group</code></pre>
 <p>Although the <em>small telescope</em> recommendations are easy to use, one should take care not to turn any statistical procedure into a heuristic. In our example above with the 20 referees, a Cohen’s <em>d</em> of 0.358 would be used as a smallest effect size of interest, and a sample size of 50 would be collected (2.5 times the original 20), but if someone would make the effort to perform a replication study, it would be relatively easy to collect a larger sample size. Alternatively, had the original study been extremely large, it would have had high power for effects that might not be practically significant, and we would not want to collect 2.5 times as many observations in a replication study. Indeed, as Simonsohn writes: “whether we need 2.5 times the original sample size or not depends on the question we wish to answer. If we are interested in testing whether the effect size is smaller than d33%, then, yes, we need about 2.5 times the original sample size no matter how big that original sample was. When samples are very large, however, that may not be the question of interest.” Always think about the question you want to ask, and design the study so that it provides an informative answer for a question of interest. Do not automatically follow a 2.5 times n heuristic, and always reflect on whether the use of a suggested procedure is appropriate in your situation.</p>
 </section><section id="setting-the-smallest-effect-size-of-interest-to-the-minimal-statistically-detectable-effect" class="level2" data-number="9.12"><h2 data-number="9.12" class="anchored" data-anchor-id="setting-the-smallest-effect-size-of-interest-to-the-minimal-statistically-detectable-effect">
 <span class="header-section-number">9.12</span> Setting the Smallest Effect Size of Interest to the Minimal Statistically Detectable Effect</h2>
-<p>Given a sample size and alpha level, every test has a <a href="#sec-minimaldetectable">minimal statistically detectable effect</a>. For example, given a test with 86 participants in each group, and an alpha level of 5%, only <em>t</em>-tests which yield a <em>t</em> ≥ 1.974 will be statistically significant. In other words, <em>t</em> = 1.974 is the <strong>critical <em>t</em>-value</strong>. Given a sample size and alpha level, the critical <em>t</em>-value can be transformed into a <strong>critical <em>d</em>-value</strong>. As visualized in <a href="#fig-distpowerplot1">Figure&nbsp;<span>9.8</span></a>, with n = 50 in each group and an alpha level of 5% the critical <em>d</em>-value is 0.4. This means that only effects larger than 0.4 will yield a <em>p</em> &lt; 0.05. The critical <em>d</em>-value is influenced by the sample size per group, and the alpha level, but does not depend on the the true effect size.</p>
+<p>Given a sample size and alpha level, every test has a <a href="#sec-minimaldetectable">minimal statistically detectable effect</a>. For example, given a test with 86 participants in each group, and an alpha level of 5%, only <em>t</em>-tests which yield a <em>t</em> ≥ 1.974 will be statistically significant. In other words, <em>t</em> = 1.974 is the <strong>critical <em>t</em>-value</strong>. Given a sample size and alpha level, the critical <em>t</em>-value can be transformed into a <strong>critical <em>d</em>-value</strong>. As visualized in <a href="#fig-distpowerplot1" class="quarto-xref">Figure&nbsp;<span>9.8</span></a>, with n = 50 in each group and an alpha level of 5% the critical <em>d</em>-value is 0.4. This means that only effects larger than 0.4 will yield a <em>p</em> &lt; 0.05. The critical <em>d</em>-value is influenced by the sample size per group, and the alpha level, but does not depend on the the true effect size.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-distpowerplot1" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="images/dpplot50.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;9.8: Null and alternative distribution with Type 1 and Type 2 error indicating the smallest effect size that will be statistically significant with n = 50 per condition.</figcaption><p></p>
-</figure>
+<div id="fig-distpowerplot1" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-distpowerplot1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/dpplot50.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-distpowerplot1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.8: Null and alternative distribution with Type 1 and Type 2 error indicating the smallest effect size that will be statistically significant with n = 50 per condition.
+</figcaption></figure>
 </div>
 </div>
 </div>
-<p>It is possible to observe a statistically significant test result if the true effect size is <em>smaller</em> than the critical effect size. Due to random variation, it is possible to observe a larger value in a <em>sample</em> than is the true value in the population. This is the reason the statistical power of a test is never 0 in a null hypothesis significance test. As illustrated in <a href="#fig-distpowerplot2">Figure&nbsp;<span>9.9</span></a>, even if the true effect size is smaller than the critical value (i.e., if the true effect size is 0.2) we see from the distribution that we can expect some <em>observed effect sizes</em> to be larger than 0.4 when the <em>true population effect size</em> is <em>d</em> = 0.2 – if we compute the statistical power for this test, it turns out we can expect 16.77% of the <em>observed effect sizes</em> will be larger than 0.4, in the long run. That is not a lot, but it is something. This is also the reason why publication bias combined with underpowered research is problematic: It leads to a large <strong>overestimation of the true effect size</strong> when only observed effect sizes from statistically significant findings in underpowered studies end up in the scientific literature.</p>
+<p>It is possible to observe a statistically significant test result if the true effect size is <em>smaller</em> than the critical effect size. Due to random variation, it is possible to observe a larger value in a <em>sample</em> than is the true value in the population. This is the reason the statistical power of a test is never 0 in a null hypothesis significance test. As illustrated in <a href="#fig-distpowerplot2" class="quarto-xref">Figure&nbsp;<span>9.9</span></a>, even if the true effect size is smaller than the critical value (i.e., if the true effect size is 0.2) we see from the distribution that we can expect some <em>observed effect sizes</em> to be larger than 0.4 when the <em>true population effect size</em> is <em>d</em> = 0.2 – if we compute the statistical power for this test, it turns out we can expect 16.77% of the <em>observed effect sizes</em> will be larger than 0.4, in the long run. That is not a lot, but it is something. This is also the reason why publication bias combined with underpowered research is problematic: It leads to a large <strong>overestimation of the true effect size</strong> when only observed effect sizes from statistically significant findings in underpowered studies end up in the scientific literature.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-distpowerplot2" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="images/dpplot502.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;9.9: Null and alternative distribution with Type 1 and Type 2 error indicating the smallest effect size that will be statistically significant with n = 50 per condition.</figcaption><p></p>
-</figure>
+<div id="fig-distpowerplot2" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-distpowerplot2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/dpplot502.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-distpowerplot2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.9: Null and alternative distribution with Type 1 and Type 2 error indicating the smallest effect size that will be statistically significant with n = 50 per condition.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -872,7 +934,7 @@ NOTE: n is number in *each* group</code></pre>
 </div>
 <p>You can see it takes a very large sample size to have high power to reliably reject very small effects. This should not be surprising. After all, it also requires a very large sample size to <em>detect</em> small effects! This is why we typically leave it to a future meta-analysis to detect, or reject, the presence of small effects.</p>
 <p><strong>Q12</strong>: You can do equivalence tests for all tests. The TOSTER package has functions for <em>t</em>-tests, correlations, differences between proportions, and meta-analyses. If the test you want to perform is not included in any software, remember that you can just use a 90% confidence interval, and test whether you can reject the smallest effect size of interest. Let’s perform an equivalence test for a meta-analysis. Hyde, Lindberg, Linn, Ellis, and Williams <span class="citation" data-cites="hyde_gender_2008">(<a href="references.html#ref-hyde_gender_2008" role="doc-biblioref">2008</a>)</span> report that effect sizes for gender differences in mathematics tests across the 7 million students in the US represent trivial differences, where a trivial difference is specified as an effect size smaller then <em>d</em> =0.1. The table with Cohen’s d and se is reproduced below:</p>
-<table class="table">
+<table class="caption-top table">
 <thead><tr class="header">
 <th><strong>Grades</strong></th>
 <th><strong>d + se</strong></th>
@@ -1018,10 +1080,13 @@ NOTE: n is number in *each* group</code></pre>
 <p>The distribution for eta-squared looks slightly different from the distribution of Cohen’s <em>d</em>, primarily because an <em>F</em>-test is a one-directional test (and because of this, eta-squared values are all positive, while Cohen’s <em>d</em> can be positive or negative). The light grey line plots the expected distribution of eta-squared when the null is true, with the red area under the curve indicating Type 1 errors, and the black line plots the expected distribution of eta-squared when the true effect size is η = 0.059. The blue area indicates the expected effect sizes smaller that the critical η of 0.04, which will not be statistically significant, and thus will be Type 2 errors.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-critf" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="images/7f6d17dc07bdc9e95ea8944d78b16d7c.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;9.10: Illustration of the critical <em>F</em>-value for two groups, 50 observations per group, and an alpha level of 0.05.</figcaption><p></p>
-</figure>
+<div id="fig-critf" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-critf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/7f6d17dc07bdc9e95ea8944d78b16d7c.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-critf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.10: Illustration of the critical <em>F</em>-value for two groups, 50 observations per group, and an alpha level of 0.05.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1057,14 +1122,14 @@ NOTE: n is number in *each* group</code></pre>
 </ol>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
 <div id="ref-abelson_value_2003" class="csl-entry" role="listitem">
 Abelson, P. (2003). The <span>Value</span> of <span>Life</span> and <span>Health</span> for <span>Public Policy</span>. <em>Economic Record</em>, <em>79</em>, S2–S13. <a href="https://doi.org/10.1111/1475-4932.00087">https://doi.org/10.1111/1475-4932.00087</a>
 </div>
 <div id="ref-altman_statistics_1995" class="csl-entry" role="listitem">
 Altman, D. G., &amp; Bland, J. M. (1995). Statistics notes: <span>Absence</span> of evidence is not evidence of absence. <em>BMJ</em>, <em>311</em>(7003), 485. <a href="https://doi.org/10.1136/bmj.311.7003.485">https://doi.org/10.1136/bmj.311.7003.485</a>
 </div>
-<div id="ref-anderson_theres_2016" class="csl-entry" role="listitem">
+<div id="ref-anderson_there_2016" class="csl-entry" role="listitem">
 Anderson, S. F., &amp; Maxwell, S. E. (2016). There’s more than one way to conduct a replication study: <span>Beyond</span> statistical significance. <em>Psychological Methods</em>, <em>21</em>(1), 1–12. <a href="https://doi.org/10.1037/met0000051">https://doi.org/10.1037/met0000051</a>
 </div>
 <div id="ref-anvari_using_2021" class="csl-entry" role="listitem">
@@ -1074,7 +1139,7 @@ Anvari, F., &amp; Lakens, D. (2021). Using anchor-based methods to determine the
 Ball, K., Berch, D. B., Helmers, K. F., Jobe, J. B., Leveck, M. D., Marsiske, M., Morris, J. N., Rebok, G. W., Smith, D. M., &amp; Tennstedt, S. L. (2002). Effects of cognitive training interventions with older adults: A randomized controlled trial. <em>Jama</em>, <em>288</em>(18), 2271–2281.
 </div>
 <div id="ref-bauer_unifying_1996" class="csl-entry" role="listitem">
-Bauer, P., &amp; Kieser, M. (1996). A unifying approach for confidence intervals and testing of equivalence and difference. <em>Biometrika</em>, <em>83</em>(4), 934–937.
+Bauer, P., &amp; Kieser, M. (1996). A unifying approach for confidence intervals and testing of equivalence and difference. <em>Biometrika</em>, <em>83</em>(4), 934–937. <a href="http://biomet.oxfordjournals.org/content/83/4/934.short">http://biomet.oxfordjournals.org/content/83/4/934.short</a>
 </div>
 <div id="ref-bem_feeling_2011" class="csl-entry" role="listitem">
 Bem, D. J. (2011). Feeling the future: Experimental evidence for anomalous retroactive influences on cognition and affect. <em>Journal of Personality and Social Psychology</em>, <em>100</em>(3), 407–425. <a href="https://doi.org/10.1037/a0021524">https://doi.org/10.1037/a0021524</a>
@@ -1095,13 +1160,13 @@ Delacre, M., Lakens, D., &amp; Leys, C. (2017). Why <span>Psychologists Should</
 Dienes, Z. (2014). Using <span>Bayes</span> to get the most out of non-significant results. <em>Frontiers in Psychology</em>, <em>5</em>. <a href="https://doi.org/10.3389/fpsyg.2014.00781">https://doi.org/10.3389/fpsyg.2014.00781</a>
 </div>
 <div id="ref-ferguson_vast_2012" class="csl-entry" role="listitem">
-Ferguson, C. J., &amp; Heene, M. (2012). A vast graveyard of undead theories publication bias and psychological science’s aversion to the null. <em>Perspectives on Psychological Science</em>, <em>7</em>(6), 555–561.
+Ferguson, C. J., &amp; Heene, M. (2012). A vast graveyard of undead theories publication bias and psychological science’s aversion to the null. <em>Perspectives on Psychological Science</em>, <em>7</em>(6), 555–561. <a href="http://pps.sagepub.com/content/7/6/555.short">http://pps.sagepub.com/content/7/6/555.short</a>
 </div>
 <div id="ref-ferguson_providing_2021" class="csl-entry" role="listitem">
 Ferguson, C. J., &amp; Heene, M. (2021). Providing a lower-bound estimate for psychology’s <span>“crud factor”</span>: <span>The</span> case of aggression. <em>Professional Psychology: Research and Practice</em>, <em>52</em>(6), 620–626. https://doi.org/<a href="http://dx.doi.org/10.1037/pro0000386">http://dx.doi.org/10.1037/pro0000386</a>
 </div>
 <div id="ref-gosset_application_1904" class="csl-entry" role="listitem">
-Gosset, W. S. (1904). <em>The <span>Application</span> of the "<span>Law</span> of <span>Error</span>" to the <span>Work</span> of the <span>Brewery</span></em> (1 vol 8; pp. 3–16). <span>Arthur Guinness &amp; Son, Ltd.</span>
+Gosset, W. S. (1904). <em>The <span>Application</span> of the "<span>Law</span> of <span>Error</span>" to the <span>Work</span> of the <span>Brewery</span></em> (1 vol 8; pp. 3–16). Arthur Guinness &amp; Son, Ltd.
 </div>
 <div id="ref-hauck_new_1984" class="csl-entry" role="listitem">
 Hauck, D. W. W., &amp; Anderson, S. (1984). A new statistical procedure for testing equivalence in two-group comparative bioavailability trials. <em>Journal of Pharmacokinetics and Biopharmaceutics</em>, <em>12</em>(1), 83–91. <a href="https://doi.org/10.1007/BF01063612">https://doi.org/10.1007/BF01063612</a>
@@ -1125,7 +1190,7 @@ King, M. T. (2011). A point of minimal important difference (<span>MID</span>): 
 Kruschke, J. K. (2013). Bayesian estimation supersedes the t test. <em>Journal of Experimental Psychology: General</em>, <em>142</em>(2), 573–603. <a href="https://doi.org/10.1037/a0029146">https://doi.org/10.1037/a0029146</a>
 </div>
 <div id="ref-kruschke_doing_2014" class="csl-entry" role="listitem">
-Kruschke, J. K. (2014). <em>Doing <span>Bayesian Data Analysis</span>, <span>Second Edition</span>: <span>A Tutorial</span> with <span>R</span>, <span>JAGS</span>, and <span>Stan</span></em> (2 edition). <span>Academic Press</span>.
+Kruschke, J. K. (2014). <em>Doing <span>Bayesian Data Analysis</span>, <span>Second Edition</span>: <span>A Tutorial</span> with <span>R</span>, <span>JAGS</span>, and <span>Stan</span></em> (2 edition). Academic Press.
 </div>
 <div id="ref-kruschke_bayesian_2017" class="csl-entry" role="listitem">
 Kruschke, J. K., &amp; Liddell, T. M. (2017). The <span>Bayesian New Statistics</span>: <span>Hypothesis</span> testing, estimation, meta-analysis, and power analysis from a <span>Bayesian</span> perspective. <em>Psychonomic Bulletin &amp; Review</em>. <a href="https://doi.org/10.3758/s13423-016-1221-4">https://doi.org/10.3758/s13423-016-1221-4</a>
@@ -1137,13 +1202,13 @@ Lakens, D. (2017). Equivalence <span>Tests</span>: <span>A Practical Primer</spa
 Lakens, D. (2021). The practical alternative to the p value is the correctly used p value. <em>Perspectives on Psychological Science</em>, <em>16</em>(3), 639–648. <a href="https://doi.org/10.1177/1745691620958012">https://doi.org/10.1177/1745691620958012</a>
 </div>
 <div id="ref-levine_communication_2008" class="csl-entry" role="listitem">
-Levine, T. R., Weber, R., Park, H. S., &amp; Hullett, C. R. (2008). A communication researchers’ guide to null hypothesis significance testing and alternatives. <em>Human Communication Research</em>, <em>34</em>(2), 188–209.
+Levine, T. R., Weber, R., Park, H. S., &amp; Hullett, C. R. (2008). A communication researchers’ guide to null hypothesis significance testing and alternatives. <em>Human Communication Research</em>, <em>34</em>(2), 188–209. <a href="http://onlinelibrary.wiley.com/doi/10.1111/j.1468-2958.2008.00318.x/full">http://onlinelibrary.wiley.com/doi/10.1111/j.1468-2958.2008.00318.x/full</a>
 </div>
 <div id="ref-mazzolari_myths_2022" class="csl-entry" role="listitem">
 Mazzolari, R., Porcelli, S., Bishop, D. J., &amp; Lakens, D. (2022). Myths and methodologies: <span>The</span> use of equivalence and non-inferiority tests for interventional studies in exercise physiology and sport science. <em>Experimental Physiology</em>, <em>107</em>(3), 201–212. <a href="https://doi.org/10.1113/EP090171">https://doi.org/10.1113/EP090171</a>
 </div>
 <div id="ref-mcelreath_statistical_2016" class="csl-entry" role="listitem">
-McElreath, R. (2016). <em>Statistical <span>Rethinking</span>: <span>A Bayesian Course</span> with <span>Examples</span> in <span>R</span> and <span>Stan</span></em> (Vol. 122). <span>CRC Press</span>.
+McElreath, R. (2016). <em>Statistical <span>Rethinking</span>: <span>A Bayesian Course</span> with <span>Examples</span> in <span>R</span> and <span>Stan</span></em> (Vol. 122). CRC Press. <a href="http://books.google.com/books?hl=en&amp;lr=&amp;id=mDo0CwAAQBAJ&amp;oi=fnd&amp;pg=PP1&amp;dq=%22Maximum+entropy%22+%2213.+Adventures+in%22+%22sure+that+planks+won%E2%80%99t+slip+at+busy%22+%22Ordered+categorical%22+%2214.+Missing+Data+and+Other%22+%22Other+count%22+%22Continuous+categories+and+the+Gaussian%22+&amp;ots=fD6h3iyM2m&amp;sig=pEXBn5Ex-ps9Fhw-b6juTVKIngY">http://books.google.com/books?hl=en&amp;lr=&amp;id=mDo0CwAAQBAJ&amp;oi=fnd&amp;pg=PP1&amp;dq=%22Maximum+entropy%22+%2213.+Adventures+in%22+%22sure+that+planks+won%E2%80%99t+slip+at+busy%22+%22Ordered+categorical%22+%2214.+Missing+Data+and+Other%22+%22Other+count%22+%22Continuous+categories+and+the+Gaussian%22+&amp;ots=fD6h3iyM2m&amp;sig=pEXBn5Ex-ps9Fhw-b6juTVKIngY</a>
 </div>
 <div id="ref-meehl_appraising_1990" class="csl-entry" role="listitem">
 Meehl, P. E. (1990). Appraising and amending theories: <span>The</span> strategy of <span>Lakatosian</span> defense and two principles that warrant it. <em>Psychological Inquiry</em>, <em>1</em>(2), 108–141. <a href="https://doi.org/10.1207/s15327965pli0102_1">https://doi.org/10.1207/s15327965pli0102_1</a>
@@ -1155,7 +1220,7 @@ Mrozek, J. R., &amp; Taylor, L. O. (2002). What determines the value of life? A 
 Murphy, K. R., &amp; Myors, B. (1999). Testing the hypothesis that treatments have negligible effects: <span class="nocase">Minimum-effect</span> tests in the general linear model. <em>Journal of Applied Psychology</em>, <em>84</em>(2), 234–248. <a href="https://doi.org/10.1037/0021-9010.84.2.234">https://doi.org/10.1037/0021-9010.84.2.234</a>
 </div>
 <div id="ref-murphy_statistical_2014" class="csl-entry" role="listitem">
-Murphy, K. R., Myors, B., &amp; Wolach, A. H. (2014). <em>Statistical power analysis: A simple and general model for traditional and modern hypothesis tests</em> (Fourth edition). <span>Routledge, Taylor &amp; Francis Group</span>.
+Murphy, K. R., Myors, B., &amp; Wolach, A. H. (2014). <em>Statistical power analysis: A simple and general model for traditional and modern hypothesis tests</em> (Fourth edition). Routledge, Taylor &amp; Francis Group.
 </div>
 <div id="ref-nickerson_null_2000" class="csl-entry" role="listitem">
 Nickerson, R. S. (2000). Null hypothesis significance testing: <span>A</span> review of an old and continuing controversy. <em>Psychological Methods</em>, <em>5</em>(2), 241–301. <a href="https://doi.org/10.1037//1082-989X.5.2.241">https://doi.org/10.1037//1082-989X.5.2.241</a>
@@ -1173,7 +1238,7 @@ Orben, A., &amp; Lakens, D. (2020). Crud (<span>Re</span>)<span>Defined</span>. 
 Parkhurst, D. F. (2001). Statistical significance tests: <span>Equivalence</span> and reverse tests should reduce misinterpretation. <em>Bioscience</em>, <em>51</em>(12), 1051–1057. <a href="https://doi.org/10.1641/0006-3568(2001)051%5B1051:SSTEAR%5D2.0.CO;2">https://doi.org/10.1641/0006-3568(2001)051[1051:SSTEAR]2.0.CO;2</a>
 </div>
 <div id="ref-popper_logic_2002" class="csl-entry" role="listitem">
-Popper, K. R. (2002). <em><span>The logic of scientific discovery</span></em>. <span>Routledge</span>.
+Popper, K. R. (2002). <em>The logic of scientific discovery</em>. Routledge.
 </div>
 <div id="ref-quertemont_how_2011" class="csl-entry" role="listitem">
 Quertemont, E. (2011). How to <span>Statistically Show</span> the <span>Absence</span> of an <span>Effect</span>. <em>Psychologica Belgica</em>, <em>51</em>(2), 109–127. <a href="https://doi.org/10.5334/pb-51-2-109">https://doi.org/10.5334/pb-51-2-109</a>
@@ -1182,13 +1247,13 @@ Quertemont, E. (2011). How to <span>Statistically Show</span> the <span>Absence<
 Rogers, J. L., Howard, K. I., &amp; Vessey, J. T. (1993). Using significance tests to evaluate equivalence between two experimental groups. <em>Psychological Bulletin</em>, <em>113</em>(3), 553–565. https://doi.org/<a href="http://dx.doi.org/10.1037/0033-2909.113.3.553">http://dx.doi.org/10.1037/0033-2909.113.3.553</a>
 </div>
 <div id="ref-schuirmann_comparison_1987" class="csl-entry" role="listitem">
-Schuirmann, D. J. (1987). A comparison of the two one-sided tests procedure and the power approach for assessing the equivalence of average bioavailability. <em>Journal of Pharmacokinetics and Biopharmaceutics</em>, <em>15</em>(6), 657–680.
+Schuirmann, D. J. (1987). A comparison of the two one-sided tests procedure and the power approach for assessing the equivalence of average bioavailability. <em>Journal of Pharmacokinetics and Biopharmaceutics</em>, <em>15</em>(6), 657–680. <a href="http://link.springer.com/article/10.1007/BF01068419">http://link.springer.com/article/10.1007/BF01068419</a>
 </div>
-<div id="ref-schumi_through_2011" class="csl-entry" role="listitem">
+<div id="ref-schumi_looking_2011" class="csl-entry" role="listitem">
 Schumi, J., &amp; Wittes, J. T. (2011). Through the looking glass: Understanding non-inferiority. <em>Trials</em>, <em>12</em>(1), 106. <a href="https://doi.org/10.1186/1745-6215-12-106">https://doi.org/10.1186/1745-6215-12-106</a>
 </div>
 <div id="ref-schweder_confidence_2016" class="csl-entry" role="listitem">
-Schweder, T., &amp; Hjort, N. L. (2016). <em>Confidence, <span>Likelihood</span>, <span>Probability</span>: <span>Statistical Inference</span> with <span>Confidence Distributions</span></em>. <span>Cambridge University Press</span>. <a href="https://doi.org/10.1017/CBO9781139046671">https://doi.org/10.1017/CBO9781139046671</a>
+Schweder, T., &amp; Hjort, N. L. (2016). <em>Confidence, <span>Likelihood</span>, <span>Probability</span>: <span>Statistical Inference</span> with <span>Confidence Distributions</span></em>. Cambridge University Press. <a href="https://doi.org/10.1017/CBO9781139046671">https://doi.org/10.1017/CBO9781139046671</a>
 </div>
 <div id="ref-seaman_equivalence_1998" class="csl-entry" role="listitem">
 Seaman, M. A., &amp; Serlin, R. C. (1998). Equivalence confidence intervals for two-group comparisons of means. <em>Psychological Methods</em>, <em>3</em>(4), 403–411. https://doi.org/<a href="http://dx.doi.org.dianus.libr.tue.nl/10.1037/1082-989X.3.4.403">http://dx.doi.org.dianus.libr.tue.nl/10.1037/1082-989X.3.4.403</a>
@@ -1196,11 +1261,11 @@ Seaman, M. A., &amp; Serlin, R. C. (1998). Equivalence confidence intervals for 
 <div id="ref-simonsohn_small_2015" class="csl-entry" role="listitem">
 Simonsohn, U. (2015). Small telescopes: <span>Detectability</span> and the evaluation of replication results. <em>Psychological Science</em>, <em>26</em>(5), 559–569. <a href="https://doi.org/10.1177/0956797614567341">https://doi.org/10.1177/0956797614567341</a>
 </div>
-<div id="ref-viamonte_cost-benefit_2006" class="csl-entry" role="listitem">
+<div id="ref-viamonte_costbenefit_2006" class="csl-entry" role="listitem">
 Viamonte, S. M., Ball, K. K., &amp; Kilgore, M. (2006). A <span>Cost-Benefit Analysis</span> of <span>Risk-Reduction Strategies Targeted</span> at <span>Older Drivers</span>. <em>Traffic Injury Prevention</em>, <em>7</em>(4), 352–359. <a href="https://doi.org/10.1080/15389580600791362">https://doi.org/10.1080/15389580600791362</a>
 </div>
 <div id="ref-wellek_testing_2010" class="csl-entry" role="listitem">
-Wellek, S. (2010). <em>Testing statistical hypotheses of equivalence and noninferiority</em> (2nd ed). <span>CRC Press</span>.
+Wellek, S. (2010). <em>Testing statistical hypotheses of equivalence and noninferiority</em> (2nd ed). CRC Press.
 </div>
 <div id="ref-westlake_use_1972" class="csl-entry" role="listitem">
 Westlake, W. J. (1972). Use of <span>Confidence Intervals</span> in <span>Analysis</span> of <span>Comparative Bioavailability Trials</span>. <em>Journal of Pharmaceutical Sciences</em>, <em>61</em>(8), 1340–1341. <a href="https://doi.org/10.1002/JPS.2600610845">https://doi.org/10.1002/JPS.2600610845</a>
@@ -1481,6 +1546,33 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
     }
   }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
   const toggleColorMode = (alternate) => {
     // Switch the stylesheets
     const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
@@ -1547,13 +1639,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return localAlternateSentinel;
     }
   }
-  let localAlternateSentinel = 'default';
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
   // Dark / light mode switch
   window.quartoToggleColorScheme = () => {
     // Read the current dark / light value 
     let toAlternate = !hasAlternateSentinel();
     toggleColorMode(toAlternate);
     setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
   };
   // Ensure there is a toggle, if there isn't float one in the top right
   if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -1632,10 +1726,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1645,8 +1756,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1658,7 +1778,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1702,6 +1945,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1727,6 +1971,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1786,22 +2056,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./08-samplesizejustification.html" class="pagination-link">
+      <a href="./08-samplesizejustification.html" class="pagination-link" aria-label="Sample Size Justification">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Sample Size Justification</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./10-sequential.html" class="pagination-link">
+      <a href="./10-sequential.html" class="pagination-link" aria-label="Sequential Analysis">
         <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Sequential Analysis</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
-    <div class="nav-footer-left">Lakens, D. (2022). Improving Your Statistical Inferences. Retrieved from https://lakens.github.io/statistical_inferences/. https://doi.org/10.5281/zenodo.6409077</div>   
+    <div class="nav-footer-left">
+<p>Lakens, D. (2022). Improving Your Statistical Inferences. Retrieved from https://lakens.github.io/statistical_inferences/. https://doi.org/10.5281/zenodo.6409077</p>
+</div>   
     <div class="nav-footer-center">
       &nbsp;
-    </div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Lakens/statistical_inferences/edit/master/09-equivalencetest.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Lakens/statistical_inferences/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/Lakens/statistical_inferences/blob/master/09-equivalencetest.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div>
     <div class="nav-footer-right">
       &nbsp;
     </div>

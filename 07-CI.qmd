@@ -92,7 +92,7 @@ There is a direct relationship between the CI around an effect size and statisti
 
 In order to maintain the direct relationship between a confidence interval and a *p*-value it is necessary to adjust the confidence interval level whenever the alpha level is adjusted. For example, if an alpha level of 5% is corrected for three comparisons to 0.05/3 - 0.0167, the corresponding confidence interval would be a 1 - 0.0167 = 0.9833 confidence interval. Similarly, if a *p*-value is computed for a one-sided *t*-test, there is only an upper or lower limit of the interval, and the other end of the interval ranges to −∞ or ∞. 
 
-To maintain a direct relationship between an *F*-test and its confidence interval, a 90% CI for effect sizes from an *F*-test should be provided. The reason for this is explained by [Karl Wuensch](https://web.archive.org/web/20140104080701/http://core.ecu.edu/psyc/wuenschk/docs30/CI-Eta2-Alpha.doc). Where Cohen’s *d* can take both positive and negative values, r² or η² are squared, and can therefore only take positive values. This is related to the fact that *F*-tests (as commonly used in ANOVA) are one-sided. If you calculate a 95% CI, you can get situations where the confidence interval includes 0, but the test reveals a statistical difference with a *p* < .05 (for a more mathematical explanation, see @steiger_beyond_2004). This means that a 95% CI around Cohen's *d* in an independent *t*-test equals a 90% CI around η² for exactly the same test performed as an ANOVA. As a final detail, because eta-squared cannot be smaller than zero, the lower bound for the confidence interval cannot be smaller than 0. This means that a confidence interval for an effect that is not statistically different from 0 has to start at 0. You report such a CI as 90% CI [.00; .XX] where the XX is the upper limit of the CI.
+To maintain a direct relationship between an *F*-test and its confidence interval, a 90% CI for effect sizes from an *F*-test should be provided. The reason for this is explained by [Karl Wuensch](https://web.archive.org/web/20140104080701/http://core.ecu.edu/psyc/wuenschk/docs30/CI-Eta2-Alpha.doc). Where Cohen’s *d* can take both positive and negative values, r² or η² are squared, and can therefore only take positive values. This is related to the fact that *F*-tests (as commonly used in ANOVA) are one-sided. If you calculate a 95% CI, you can get situations where the confidence interval includes 0, but the test reveals a statistical difference with a *p* < .05 (for a more mathematical explanation, see @steiger_test_2004). This means that a 95% CI around Cohen's *d* in an independent *t*-test equals a 90% CI around η² for exactly the same test performed as an ANOVA. As a final detail, because eta-squared cannot be smaller than zero, the lower bound for the confidence interval cannot be smaller than 0. This means that a confidence interval for an effect that is not statistically different from 0 has to start at 0. You report such a CI as 90% CI [.00; .XX] where the XX is the upper limit of the CI.
 
 
 ```{r metaexample, echo=FALSE}
@@ -170,21 +170,23 @@ d <- data.frame(
   lower = c(t.test(x)[[4]][1], t.test(y)[[4]][1], t.test(y, x)[[4]][1]),
   upper = c(t.test(x)[[4]][2], t.test(y)[[4]][2], t.test(y, x)[[4]][2])
 )
+
 par(bg = backgroundcolor)
 plot(NA, xlim = c(.5, 3.5), ylim = c(0, max(d$upper[1:2] + 1)), bty = "l", 
      xaxt = "n", xlab = "", ylab = "Mean")
 points(d$mean[1:2], pch = 19)
-segments(1, d$mean[1], 5, d$mean[1], lty = 2)
-segments(2, d$mean[2], 5, d$mean[2], lty = 2)
+segments(0, d$mean[1], 3, d$mean[1], lty = 2)
+segments(2, d$mean[2], -1, d$mean[2], lty = 2)
 axis(1, 1:3, d$labels)
 segments(1:2, d$lower[1:2], 1:2, d$upper[1:2])
 axis(4, seq((d$mean[1] - 3), (d$mean[1] + 5), by = 1), seq(-3, 5, by = 1))
 points(3, d$mean[1] + d$mean[3], pch = 19, cex = 1.5)
 segments(3, d$mean[1] + d$lower[3], 3, d$mean[1] + d$upper[3], lwd = 2)
+segments(3, d$mean[2], 5, d$mean[2], lty = 2)
 mtext("Difference", side = 4, at = d$mean[1], line = 3)
 segments(1:1, d$upper[1:1], 1:2, d$upper[1:1], lty = 3)
 segments(1:1, d$lower[1:2], 1:2, d$lower[1:2], lty = 3)
-text(3, 1, paste("P-value", round(t.test(x, y)$p.value, digits = 3)))
+text(3, 1, paste("P-value", sprintf("%.3f",t.test(x, y)$p.value)))
 
 ```
 
@@ -330,7 +332,7 @@ For jamovi, the ESCI module allows users to compute effect sizes and confidence 
 knitr::include_graphics("images/escijamovi.png")
 ```
 
-JASP offers a wide range of frequentist and Bayesian analyses, and in addition to Cohen's *d* also allows users to compute omega squared $\omega^{2}$, the less biased version of $\eta^{2}$ [@okada_is_2013; @albers_when_2018].
+JASP offers a wide range of frequentist and Bayesian analyses, and in addition to Cohen's *d* also allows users to compute omega squared $\omega^{2}$, the less biased version of $\eta^{2}$ [@okada_omega_2013; @albers_when_2018].
 
 ```{r fig-jasp1, fig.margin = FALSE, echo = FALSE}
 #| fig-cap: "JASP menu option allows you to select Cohen's *d* and a CI around it."
@@ -454,20 +456,23 @@ d <- data.frame(
   upper = c(t.test(x)[[4]][2], t.test(y)[[4]][2], t.test(y, x)[[4]][2])
 )
 
+par(bg = backgroundcolor)
 plot(NA, xlim = c(.5, 3.5), ylim = c(0, max(d$upper[1:2] + 1)), bty = "l", 
      xaxt = "n", xlab = "", ylab = "Mean")
 points(d$mean[1:2], pch = 19)
-segments(1, d$mean[1], 5, d$mean[1], lty = 2)
-segments(2, d$mean[2], 5, d$mean[2], lty = 2)
+segments(0, d$mean[1], 3, d$mean[1], lty = 2)
+segments(2, d$mean[2], -1, d$mean[2], lty = 2)
 axis(1, 1:3, d$labels)
 segments(1:2, d$lower[1:2], 1:2, d$upper[1:2])
 axis(4, seq((d$mean[1] - 3), (d$mean[1] + 5), by = 1), seq(-3, 5, by = 1))
 points(3, d$mean[1] + d$mean[3], pch = 19, cex = 1.5)
 segments(3, d$mean[1] + d$lower[3], 3, d$mean[1] + d$upper[3], lwd = 2)
+segments(3, d$mean[2], 5, d$mean[2], lty = 2)
 mtext("Difference", side = 4, at = d$mean[1], line = 3)
 segments(1:1, d$upper[1:1], 1:2, d$upper[1:1], lty = 3)
 segments(1:1, d$lower[1:2], 1:2, d$lower[1:2], lty = 3)
-text(3, 1, paste("P-value", round(t.test(x, y)$p.value, digits = 3)))
+text(3, 1, paste("P-value", sprintf("%.3f",t.test(x, y)$p.value)))
+
 ```
 
 **Q6**: How much do two 95% confidence intervals around individual means from independent groups overlap when the mean difference between the two means is only just statistically significant (*p* ≈ 0.05 at an alpha of 0.05)?

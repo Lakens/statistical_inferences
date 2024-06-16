@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.310">
+<meta name="generator" content="quarto-1.4.555">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="This open educational resource contains information to improve statistical inferences, design better experiments, and report scientific research more transparently.">
 <title>Improving Your Statistical Inferences - 7&nbsp; Confidence Intervals</title>
@@ -20,7 +20,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -56,6 +56,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -99,7 +100,13 @@ div.csl-indent {
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -108,8 +115,10 @@ div.csl-indent {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script><script async="" src="https://www.googletagmanager.com/gtag/js?id=G-0MK2WTGRM3"></script><script type="text/javascript">
 
@@ -117,7 +126,32 @@ window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
-</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><link rel="stylesheet" href="include/booktem.css">
+</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script><link rel="stylesheet" href="include/booktem.css">
 <link rel="stylesheet" href="include/style.css">
 <link rel="stylesheet" href="include/webex.css">
 </head>
@@ -125,19 +159,19 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-CI.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Confidence Intervals</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-CI.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Confidence Intervals</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
   </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Improving Your Statistical Inferences</a> 
         <div class="sidebar-tools-main tools-wide">
@@ -287,7 +321,7 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
 </li>
     </ul>
 </div>
-</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
@@ -309,7 +343,7 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
 <li><a href="#open-questions" id="toc-open-questions" class="nav-link" data-scroll-target="#open-questions"><span class="header-section-number">7.11.1</span> Open Questions</a></li>
   </ul>
 </li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/Lakens/statistical_inferences/edit/master/07-CI.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/Lakens/statistical_inferences/issues/new" class="toc-action">Report an issue</a></p><p><a href="https://github.com/Lakens/statistical_inferences/blob/master/07-CI.qmd" class="toc-action">View source</a></p></div></div></nav>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/Lakens/statistical_inferences/edit/master/07-CI.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Lakens/statistical_inferences/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/Lakens/statistical_inferences/blob/master/07-CI.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
@@ -326,39 +360,49 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
   </div>
   
 
+
 </header><p>When we report point estimates, we should acknowledge and quantify the uncertainty in these estimates. Confidence intervals provide a way to quantify the precision of an estimate. By reporting an estimate with a confidence interval, results are reported within a range of values that contain the true value of the parameter with a desired percentage. For example, when we report an effect size estimate with a 95% confidence interval, the expectation is that the interval is wide enough such that 95% of the time the range of values around the estimate contains the true parameter value (if all test assumptions are met).</p>
 <section id="population-vs.-sample" class="level2" data-number="7.1"><h2 data-number="7.1" class="anchored" data-anchor-id="population-vs.-sample">
 <span class="header-section-number">7.1</span> Population vs.&nbsp;Sample</h2>
-<p>In statistics, we differentiate between the population and the sample. The population is everyone you are interested in, such as all people in the world, elderly who are depressed, or people who buy innovative products. Your sample is everyone you were able to measure from the population you are interested in. We similarly distinguish between a parameter and a statistic. A parameter is a characteristic of the population, while a statistic is a characteristic of a sample. Sometimes, you have data about your entire population. For example, we have measured the height of all the people who have ever walked on the moon. We can calculate the average height of these twelve individuals, and so we know the true parameter. We do not need inferential statistics. However, we do not know the average height of all people who have ever walked on the earth. Therefore, we need to estimate this parameter, using a statistic based on a sample. Although it is rare that a study includes the entire population, it is not impossible, as illustrated in <a href="#fig-population">Figure&nbsp;<span>7.1</span></a>.</p>
+<p>In statistics, we differentiate between the population and the sample. The population is everyone you are interested in, such as all people in the world, elderly who are depressed, or people who buy innovative products. Your sample is everyone you were able to measure from the population you are interested in. We similarly distinguish between a parameter and a statistic. A parameter is a characteristic of the population, while a statistic is a characteristic of a sample. Sometimes, you have data about your entire population. For example, we have measured the height of all the people who have ever walked on the moon. We can calculate the average height of these twelve individuals, and so we know the true parameter. We do not need inferential statistics. However, we do not know the average height of all people who have ever walked on the earth. Therefore, we need to estimate this parameter, using a statistic based on a sample. Although it is rare that a study includes the entire population, it is not impossible, as illustrated in <a href="#fig-population" class="quarto-xref">Figure&nbsp;<span>7.1</span></a>.</p>
 <div class="cell" data-layout-align="center" data-fig.margin="false">
 <div class="cell-output-display">
-<div id="fig-population" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="images/population.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;7.1: Example of a registry-based study in which the entire population was included in the study. From https://doi.org/10.1093/ije/dyab066</figcaption><p></p>
-</figure>
+<div id="fig-population" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-population-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/population.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-population-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.1: Example of a registry-based study in which the entire population was included in the study. From https://doi.org/10.1093/ije/dyab066
+</figcaption></figure>
 </div>
 </div>
 </div>
 <p>When the entire population is measured there is no need to perform a hypothesis test. After all, there is no population to generalize to (although it is possible to argue we are still making an inference, even when the entire population is observed, because we have observed a <em>metaphorical population</em> from one of many possible worlds, see <span class="citation" data-cites="spiegelhalter_art_2019">Spiegelhalter (<a href="references.html#ref-spiegelhalter_art_2019" role="doc-biblioref">2019</a>)</span>). When data from the entire population has been collected, the population effect size is known and there is no confidence interval to compute. If the total population size is known, but not measured completely, then the confidence interval width should shrink to zero the closer a study gets to measuring the entire population. This is known as the finite population correction factor for the variance of the estimator <span class="citation" data-cites="kish_survey_1965">(<a href="references.html#ref-kish_survey_1965" role="doc-biblioref">Kish, 1965</a>)</span>. The variance of a sample mean is <span class="math inline">\(\sigma^2/n\)</span>, which for finite populations is multiplied by the finite population correction factor of the standard error: <span class="math display">\[FPC = \sqrt{\frac{(N - n)}{(N-1)}}\]</span> where <em>N</em> is the size of the population, and <em>n</em> is the size of the sample. When <em>N</em> is much larger than <em>n</em>, the correction factor will be close to 1 (and therefore this correction is typically ignored when populations are very large, even when populations are finite), and will not have a noticeable effect on the variance. When the total population is measured the correction factor is 0, such that the variance becomes 0 as well. For example, when the total population consists of 100 top athletes, and data is collected from a sample of 35 athletes, the finite population correction is <span class="math inline">\(\sqrt{(100 - 35)/(100-1)}\)</span> = 0.81. The <code>superb</code> R package can compute population corrected confidence intervals <span class="citation" data-cites="cousineau_superb_2019">(<a href="references.html#ref-cousineau_superb_2019" role="doc-biblioref">Cousineau &amp; Chiasson, 2019</a>)</span>.</p>
 </section><section id="what-is-a-confidence-interval" class="level2" data-number="7.2"><h2 data-number="7.2" class="anchored" data-anchor-id="what-is-a-confidence-interval">
 <span class="header-section-number">7.2</span> What is a Confidence Interval?</h2>
-<p>Confidence intervals are a statement about the percentage of confidence intervals that contain the true parameter value. This behavior of confidence intervals is nicely visualized on this website by Kristoffer Magnusson: <a href="http://rpsychologist.com/d3/CI/" class="uri">http://rpsychologist.com/d3/CI/</a>. In <a href="#fig-cisim">Figure&nbsp;<span>7.2</span></a> we see blue dots that represent means from a sample, and that fall around a red dashed vertical line, which represents the true value of the parameter in the population. Due to variation in the sample, the estimates do not all fall on the red dashed line. The horizontal lines around the blue dots are the confidence intervals. By default, the visualization shows 95% confidence intervals. Most of the lines are black (which means the confidence interval overlaps with the orange dashed line indicating the true population value), but some are red (indicating they do not capture the true population value). In the long run, 95% of the horizontal bars will be black, and 5% will be red.</p>
+<p>Confidence intervals are a statement about the percentage of confidence intervals that contain the true parameter value. This behavior of confidence intervals is nicely visualized on this website by Kristoffer Magnusson: <a href="http://rpsychologist.com/d3/CI/" class="uri">http://rpsychologist.com/d3/CI/</a>. In <a href="#fig-cisim" class="quarto-xref">Figure&nbsp;<span>7.2</span></a> we see blue dots that represent means from a sample, and that fall around a red dashed vertical line, which represents the true value of the parameter in the population. Due to variation in the sample, the estimates do not all fall on the red dashed line. The horizontal lines around the blue dots are the confidence intervals. By default, the visualization shows 95% confidence intervals. Most of the lines are black (which means the confidence interval overlaps with the orange dashed line indicating the true population value), but some are red (indicating they do not capture the true population value). In the long run, 95% of the horizontal bars will be black, and 5% will be red.</p>
 <div class="cell" data-layout-align="center" data-fig.margin="false">
 <div class="cell-output-display">
-<div id="fig-cisim" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="images/cisim.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;7.2: Series of simulated point estimates and confidence intervals.</figcaption><p></p>
-</figure>
+<div id="fig-cisim" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-cisim-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/cisim.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cisim-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.2: Series of simulated point estimates and confidence intervals.
+</figcaption></figure>
 </div>
 </div>
 </div>
-<p>We can now see what is meant by the sentence “Confidence intervals are a statement about the percentage of confidence intervals that contain the true parameter value“. In the long run, for 95% of the samples, the orange dashed line (the population parameter) is contained within the 95% confidence interval around the sample mean, and in 5% of the confidence intervals this is not true. As we will see when we turn to the formula for confidence intervals, the width of a confidence interval depends on the sample size and the standard deviation. The larger the sample size, the smaller the confidence intervals. In <a href="#fig-cisamplesize">Figure&nbsp;<span>7.3</span></a> we see how the confidence interval around the mean becomes more narrow as the sample size increases (assuming a standard deviation of 1). If we imagine confidence interval lines around each observed mean with a width equal to the width of the difference between the upper and lower confidence interval around 1, we see that in the long run 95% of the observed means would have a 95% confidence interval that contains the true population parameter (a mean of 1), but that approximately 5% of the means are more extreme and do not have a confidence interval that contains the population parameter of 1.</p>
+<p>We can now see what is meant by the sentence “Confidence intervals are a statement about the percentage of confidence intervals that contain the true parameter value“. In the long run, for 95% of the samples, the orange dashed line (the population parameter) is contained within the 95% confidence interval around the sample mean, and in 5% of the confidence intervals this is not true. As we will see when we turn to the formula for confidence intervals, the width of a confidence interval depends on the sample size and the standard deviation. The larger the sample size, the smaller the confidence intervals. In <a href="#fig-cisamplesize" class="quarto-xref">Figure&nbsp;<span>7.3</span></a> we see how the confidence interval around the mean becomes more narrow as the sample size increases (assuming a standard deviation of 1). If we imagine confidence interval lines around each observed mean with a width equal to the width of the difference between the upper and lower confidence interval around 1, we see that in the long run 95% of the observed means would have a 95% confidence interval that contains the true population parameter (a mean of 1), but that approximately 5% of the means are more extreme and do not have a confidence interval that contains the population parameter of 1.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-cisamplesize" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="07-CI_files/figure-html/fig-cisamplesize-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;7.3: The observed mean for 500 samples drawn from a population with a true mean of 1 as the sample size increases to 500 observations. Grey lines indicate the upper and lower 95% confidence interval around the mean.</figcaption><p></p>
-</figure>
+<div id="fig-cisamplesize" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-cisamplesize-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="07-CI_files/figure-html/fig-cisamplesize-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cisamplesize-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.3: The observed mean for 500 samples drawn from a population with a true mean of 1 as the sample size increases to 500 observations. Grey lines indicate the upper and lower 95% confidence interval around the mean.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -371,14 +415,17 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
 <span class="header-section-number">7.4</span> The relation between confidence intervals and <em>p</em>-values</h2>
 <p>There is a direct relationship between the CI around an effect size and statistical significance of a null-hypothesis significance test. For example, if an effect is statistically significant (<em>p</em> &lt; 0.05) in a two-sided independent <em>t</em>-test with an alpha of .05, the 95% CI for the mean difference between the two groups will not include zero. Confidence intervals are sometimes said to be more informative than <em>p</em>-values, because they not only provide information about whether an effect is statistically significant (i.e., when the confidence interval does not overlap with the value representing the null hypothesis), but also communicate the precision of the effect size estimate. This is true, but as mentioned in the chapter on <a href="01-pvalue.html"><em>p</em>-values</a> it is still recommended to add exact <em>p</em>-values, which facilitates the re-use of results for secondary analyses <span class="citation" data-cites="appelbaum_journal_2018">(<a href="references.html#ref-appelbaum_journal_2018" role="doc-biblioref">Appelbaum et al., 2018</a>)</span>, and allows other researchers to compare the <em>p</em>-value to an alpha level they would have preferred to use <span class="citation" data-cites="lehmann_testing_2005">(<a href="references.html#ref-lehmann_testing_2005" role="doc-biblioref">Lehmann &amp; Romano, 2005</a>)</span>.</p>
 <p>In order to maintain the direct relationship between a confidence interval and a <em>p</em>-value it is necessary to adjust the confidence interval level whenever the alpha level is adjusted. For example, if an alpha level of 5% is corrected for three comparisons to 0.05/3 - 0.0167, the corresponding confidence interval would be a 1 - 0.0167 = 0.9833 confidence interval. Similarly, if a <em>p</em>-value is computed for a one-sided <em>t</em>-test, there is only an upper or lower limit of the interval, and the other end of the interval ranges to −∞ or ∞.</p>
-<p>To maintain a direct relationship between an <em>F</em>-test and its confidence interval, a 90% CI for effect sizes from an <em>F</em>-test should be provided. The reason for this is explained by <a href="https://web.archive.org/web/20140104080701/http://core.ecu.edu/psyc/wuenschk/docs30/CI-Eta2-Alpha.doc">Karl Wuensch</a>. Where Cohen’s <em>d</em> can take both positive and negative values, r² or η² are squared, and can therefore only take positive values. This is related to the fact that <em>F</em>-tests (as commonly used in ANOVA) are one-sided. If you calculate a 95% CI, you can get situations where the confidence interval includes 0, but the test reveals a statistical difference with a <em>p</em> &lt; .05 (for a more mathematical explanation, see <span class="citation" data-cites="steiger_beyond_2004">Steiger (<a href="references.html#ref-steiger_beyond_2004" role="doc-biblioref">2004</a>)</span>). This means that a 95% CI around Cohen’s <em>d</em> in an independent <em>t</em>-test equals a 90% CI around η² for exactly the same test performed as an ANOVA. As a final detail, because eta-squared cannot be smaller than zero, the lower bound for the confidence interval cannot be smaller than 0. This means that a confidence interval for an effect that is not statistically different from 0 has to start at 0. You report such a CI as 90% CI [.00; .XX] where the XX is the upper limit of the CI.</p>
+<p>To maintain a direct relationship between an <em>F</em>-test and its confidence interval, a 90% CI for effect sizes from an <em>F</em>-test should be provided. The reason for this is explained by <a href="https://web.archive.org/web/20140104080701/http://core.ecu.edu/psyc/wuenschk/docs30/CI-Eta2-Alpha.doc">Karl Wuensch</a>. Where Cohen’s <em>d</em> can take both positive and negative values, r² or η² are squared, and can therefore only take positive values. This is related to the fact that <em>F</em>-tests (as commonly used in ANOVA) are one-sided. If you calculate a 95% CI, you can get situations where the confidence interval includes 0, but the test reveals a statistical difference with a <em>p</em> &lt; .05 (for a more mathematical explanation, see <span class="citation" data-cites="steiger_test_2004">Steiger (<a href="references.html#ref-steiger_test_2004" role="doc-biblioref">2004</a>)</span>). This means that a 95% CI around Cohen’s <em>d</em> in an independent <em>t</em>-test equals a 90% CI around η² for exactly the same test performed as an ANOVA. As a final detail, because eta-squared cannot be smaller than zero, the lower bound for the confidence interval cannot be smaller than 0. This means that a confidence interval for an effect that is not statistically different from 0 has to start at 0. You report such a CI as 90% CI [.00; .XX] where the XX is the upper limit of the CI.</p>
 <p>Confidence intervals are often used in forest plots that communicate the results from a meta-analysis. In the plot below, we see 4 rows. Each row shows the effect size estimate from one study (in Hedges’ <em>g</em>). For example, study 1 yielded an effect size estimate of 0.53, with a confidence interval around the effect size from 0.12 to 0.94. The horizontal black line, similarly to the visualization we played around with before, is the width of the confidence interval. When it does not touch the effect size 0 (indicated by a black vertical dotted line) the effect is statistically significant.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-meta" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="07-CI_files/figure-html/fig-meta-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;7.4: Meta-analysis of 4 studies.</figcaption><p></p>
-</figure>
+<div id="fig-meta" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-meta-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="07-CI_files/figure-html/fig-meta-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-meta-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.4: Meta-analysis of 4 studies.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -398,27 +445,33 @@ Standard \ Error \ (SE) = \sigma/\sqrt n
 <p>With a 95% confidence interval, the <span class="math inline">\(\alpha\)</span> = 0.05, and thus the critical <em>t</em>-value for the degrees of freedom for 1- <span class="math inline">\(\alpha\)</span> /2, or the 0.975th quantile is calculated. Remember that a <em>t</em>-distribution has slightly thicker tails than a <em>Z</em>-distribution. Where the 0.975th quantile for a <em>Z</em>-distribution is 1.96, the value for a <em>t</em>-distribution with for example df = 19 is 2.093. This value is multiplied by the standard error, and added (for the upper limit of the confidence interval) or subtracted (for the lower limit of the confidence interval) from the mean.</p>
 </section><section id="overlapping-confidence-intervals" class="level2" data-number="7.6"><h2 data-number="7.6" class="anchored" data-anchor-id="overlapping-confidence-intervals">
 <span class="header-section-number">7.6</span> Overlapping Confidence Intervals</h2>
-<p>Confidence intervals are often used in plots. In <a href="#fig-cioverlap">Figure&nbsp;<span>7.5</span></a> below, three estimates are visualized (the dots), surrounded by three lines (the 95% confidence intervals). The left two dots (X and Y) represent the <em>means</em> of the independent groups X and Y on a scale from 0 to 8 (see the axis from 0-8 on the left side of the plot). The dotted lines between the two confidence intervals visualize the overlap between the confidence intervals around the means. The two confidence intervals around the means of X and Y are commonly shown in a figure in a scientific article. The third dot, slightly larger, is the <em>mean difference</em> between X and Y, and the slightly thicker line visualizes the confidence interval of this mean difference. The difference score is expressed using the axis on the right (from -3 to 5). In the plot below, the mean of group X is 3, the mean of group Y is 5.6, and the difference is 2.6. The plot is based on 50 observations per group, and the confidence interval around the mean difference ranges from 0.49 to 4.68, which is quite wide.</p>
+<p>Confidence intervals are often used in plots. In <a href="#fig-cioverlap" class="quarto-xref">Figure&nbsp;<span>7.5</span></a> below, three estimates are visualized (the dots), surrounded by three lines (the 95% confidence intervals). The left two dots (X and Y) represent the <em>means</em> of the independent groups X and Y on a scale from 0 to 8 (see the axis from 0-8 on the left side of the plot). The dotted lines between the two confidence intervals visualize the overlap between the confidence intervals around the means. The two confidence intervals around the means of X and Y are commonly shown in a figure in a scientific article. The third dot, slightly larger, is the <em>mean difference</em> between X and Y, and the slightly thicker line visualizes the confidence interval of this mean difference. The difference score is expressed using the axis on the right (from -3 to 5). In the plot below, the mean of group X is 3, the mean of group Y is 5.6, and the difference is 2.6. The plot is based on 50 observations per group, and the confidence interval around the mean difference ranges from 0.49 to 4.68, which is quite wide.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-cioverlap" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="07-CI_files/figure-html/fig-cioverlap-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;7.5: Means and 95% confidence intervals of two independent groups and the mean difference between the two groups and its 95% confidence interval.</figcaption><p></p>
-</figure>
+<div id="fig-cioverlap" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-cioverlap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="07-CI_files/figure-html/fig-cioverlap-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cioverlap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.5: Means and 95% confidence intervals of two independent groups and the mean difference between the two groups and its 95% confidence interval.
+</figcaption></figure>
 </div>
 </div>
 </div>
-<p>As mentioned earlier, when a 95% confidence interval does not contain 0, the effect is statistically different from 0. In <a href="#fig-cioverlap">Figure&nbsp;<span>7.5</span></a> above, the mean difference and the 95% confidence interval around it are indicated by the ‘difference’ label. As the 95% confidence interval does not contain 0, the <em>t</em>-test is significant at an alpha of 0.05. The <em>p</em>-value is indicated in the plot as 0.016. Even though the two means differ statistically significantly from each other, the confidence interval around each mean overlap. One might intuitively believe that an effect is only statistically significant if the confidence interval around the individual means do not overlap, but this is not true. The significance test is related to the confidence interval around the mean difference.</p>
+<p>As mentioned earlier, when a 95% confidence interval does not contain 0, the effect is statistically different from 0. In <a href="#fig-cioverlap" class="quarto-xref">Figure&nbsp;<span>7.5</span></a> above, the mean difference and the 95% confidence interval around it are indicated by the ‘difference’ label. As the 95% confidence interval does not contain 0, the <em>t</em>-test is significant at an alpha of 0.05. The <em>p</em>-value is indicated in the plot as 0.016. Even though the two means differ statistically significantly from each other, the confidence interval around each mean overlap. One might intuitively believe that an effect is only statistically significant if the confidence interval around the individual means do not overlap, but this is not true. The significance test is related to the confidence interval around the mean difference.</p>
 </section><section id="prediction-intervals" class="level2" data-number="7.7"><h2 data-number="7.7" class="anchored" data-anchor-id="prediction-intervals">
 <span class="header-section-number">7.7</span> Prediction Intervals</h2>
 <p>Even though 95% of confidence intervals will contain the true parameter in the long run, a 95% confidence interval will not contain 95% of future individual observations (or 95% of future means; this will be discussed in the next section). Sometimes, researchers want to predict the interval within which a single value will fall. This is called the prediction interval. It is always much wider than a confidence interval. The reason is that individual observations can vary substantially, but means of future samples (which fall within a normal confidence interval 95% of the time) will vary much less.</p>
-<p>In <a href="#fig-predictioninterval">Figure&nbsp;<span>7.6</span></a>, the orange background illustrates the 95% confidence interval around the mean, and the yellow background illustrates the 95% prediction interval (PI).</p>
+<p>In <a href="#fig-predictioninterval" class="quarto-xref">Figure&nbsp;<span>7.6</span></a>, the orange background illustrates the 95% confidence interval around the mean, and the yellow background illustrates the 95% prediction interval (PI).</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-predictioninterval" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="07-CI_files/figure-html/fig-predictioninterval-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;7.6: A comparison of a 95% confidence interval (orange) and 95% prediction interval (yellow).</figcaption><p></p>
-</figure>
+<div id="fig-predictioninterval" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-predictioninterval-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="07-CI_files/figure-html/fig-predictioninterval-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-predictioninterval-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.6: A comparison of a 95% confidence interval (orange) and 95% prediction interval (yellow).
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -429,17 +482,20 @@ Standard \ Error \ (SE) = \sigma/\sqrt(1+1/n)
 <p>When we rewrite the formula used for the confidence interval to <span class="math inline">\(\sigma/\sqrt(1/N)\)</span>, we see that the difference between a confidence interval and the prediction interval is in the “1+” which always leads to wider intervals. Prediction intervals are <strong>wider</strong>, because they are constructed so that they will contain <strong>a single future value</strong> 95% of the time, instead of the <strong>mean</strong>. The fact that prediction intervals are wide is a good reminder that it is difficult to predict what will happen for any single individual.</p>
 </section><section id="capture-percentages" class="level2" data-number="7.8"><h2 data-number="7.8" class="anchored" data-anchor-id="capture-percentages">
 <span class="header-section-number">7.8</span> Capture Percentages</h2>
-<p>It can be difficult to understand why a 95% confidence interval does not provide us with the interval where 95% of future means will fall. The percentage of means that falls within a single confidence interval is called the <strong>capture percentage</strong>. A capture percentage is not something we would ever use to make inferences about data, but it is useful to learn about capture percentages to prevent misinterpreting confidence intervals. In <a href="#fig-metaci">Figure&nbsp;<span>7.7</span></a> we see two randomly simulated studies with the same sample size from the same population. The true effect size in both studies is 0, and we see that the 95% confidence intervals for both studies contain the true population value of 0. However, the two confidence intervals cover quite different ranges of effect sizes, with the confidence interval in Study 1 ranging from -0.07 to 0.48, and the confidence interval in Study 2 ranging from -0.50 to 0.06. It cannot be true that in the future, we should expect 95% of the effect sizes to fall between -0.07 to 0.48 <strong>and</strong> 95% of the effect sizes to fall between -0.50 to 0.06.</p>
+<p>It can be difficult to understand why a 95% confidence interval does not provide us with the interval where 95% of future means will fall. The percentage of means that falls within a single confidence interval is called the <strong>capture percentage</strong>. A capture percentage is not something we would ever use to make inferences about data, but it is useful to learn about capture percentages to prevent misinterpreting confidence intervals. In <a href="#fig-metaci" class="quarto-xref">Figure&nbsp;<span>7.7</span></a> we see two randomly simulated studies with the same sample size from the same population. The true effect size in both studies is 0, and we see that the 95% confidence intervals for both studies contain the true population value of 0. However, the two confidence intervals cover quite different ranges of effect sizes, with the confidence interval in Study 1 ranging from -0.07 to 0.48, and the confidence interval in Study 2 ranging from -0.50 to 0.06. It cannot be true that in the future, we should expect 95% of the effect sizes to fall between -0.07 to 0.48 <strong>and</strong> 95% of the effect sizes to fall between -0.50 to 0.06.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-metaci" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="07-CI_files/figure-html/fig-metaci-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;7.7: Meta-analysis of two simulated studies from the same population.</figcaption><p></p>
-</figure>
+<div id="fig-metaci" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-metaci-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="07-CI_files/figure-html/fig-metaci-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-metaci-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.7: Meta-analysis of two simulated studies from the same population.
+</figcaption></figure>
 </div>
 </div>
 </div>
-<p>The only situation in which a 95% confidence interval happens to also be a 95% capture percentage is when the observed effect size in a sample happens to be exactly the same as the true population parameter. In <a href="#fig-metaci">Figure&nbsp;<span>7.7</span></a>, that means we would need to observe an effect of exactly 0. However, you can’t know whether the observed effect size happens to be exactly the same as the population effect size. When a sample estimate is not identical to the true population value (which is almost always the case) less than 95% of future effect sizes will fall within the CI from your current sample. As we have observed two studies with the observed effect sizes a bit removed from the true effect size, we will find effect size estimates in future studies that fall outside the observed 95% confidence interval quite often. So, the percentage of future means that fall within a single confidence interval depends upon which single confidence interval you happened to observe. Based on simulation studies it is possible to show that on average, in the long run, a 95% CI has an 83.4% capture probability <span class="citation" data-cites="cumming_confidence_2006">(<a href="references.html#ref-cumming_confidence_2006" role="doc-biblioref">Cumming &amp; Maillardet, 2006</a>)</span>.</p>
+<p>The only situation in which a 95% confidence interval happens to also be a 95% capture percentage is when the observed effect size in a sample happens to be exactly the same as the true population parameter. In <a href="#fig-metaci" class="quarto-xref">Figure&nbsp;<span>7.7</span></a>, that means we would need to observe an effect of exactly 0. However, you can’t know whether the observed effect size happens to be exactly the same as the population effect size. When a sample estimate is not identical to the true population value (which is almost always the case) less than 95% of future effect sizes will fall within the CI from your current sample. As we have observed two studies with the observed effect sizes a bit removed from the true effect size, we will find effect size estimates in future studies that fall outside the observed 95% confidence interval quite often. So, the percentage of future means that fall within a single confidence interval depends upon which single confidence interval you happened to observe. Based on simulation studies it is possible to show that on average, in the long run, a 95% CI has an 83.4% capture probability <span class="citation" data-cites="cumming_confidence_2006">(<a href="references.html#ref-cumming_confidence_2006" role="doc-biblioref">Cumming &amp; Maillardet, 2006</a>)</span>.</p>
 </section><section id="calculating-confidence-intervals-around-standard-deviations." class="level2" data-number="7.9"><h2 data-number="7.9" class="anchored" data-anchor-id="calculating-confidence-intervals-around-standard-deviations.">
 <span class="header-section-number">7.9</span> Calculating Confidence Intervals around Standard Deviations.</h2>
 <p>If we calculate a standard deviation (SD) from a sample, this value is an estimate of the true value in the population. In small samples, this estimate can be quite far off the population value. But due to the law of large numbers, as our sample size increases, we will be measuring the standard deviation more accurately. Since the sample standard deviation is an estimate with uncertainty, we can calculate a 95% confidence interval around it. For some reason, this is rarely done in practice, maybe because researchers are often more interested in means, and less interested in standard deviations. But standard deviations are an interested property of our measures, and one could even make theoretical predictions about an increase of decrease in standard deviations between conditions. Currently, researchers rarely theorize about variation in standard deviations, and perhaps because of this, basically never compute confidence intervals around the standard deviations they report.</p>
@@ -473,7 +529,7 @@ Standard \ Error \ (SE) = \sigma/\sqrt(1+1/n)
 <span id="cb5-5"><a href="#cb5-5"></a>effectsize<span class="sc">::</span><span class="fu">cohens_d</span>(x, y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="kable-table">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead><tr class="header">
 <th style="text-align: right;">Cohens_d</th>
 <th style="text-align: right;">CI</th>
@@ -483,7 +539,7 @@ Standard \ Error \ (SE) = \sigma/\sqrt(1+1/n)
 <tbody><tr class="odd">
 <td style="text-align: right;">-0.443983</td>
 <td style="text-align: right;">0.95</td>
-<td style="text-align: right;">-0.9050134</td>
+<td style="text-align: right;">-0.9050135</td>
 <td style="text-align: right;">0.0180575</td>
 </tr></tbody>
 </table>
@@ -495,7 +551,7 @@ Standard \ Error \ (SE) = \sigma/\sqrt(1+1/n)
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>effectsize<span class="sc">::</span><span class="fu">cohens_d</span>(x, y, <span class="at">pooled_sd =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="kable-table">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead><tr class="header">
 <th style="text-align: right;">Cohens_d</th>
 <th style="text-align: right;">CI</th>
@@ -505,8 +561,8 @@ Standard \ Error \ (SE) = \sigma/\sqrt(1+1/n)
 <tbody><tr class="odd">
 <td style="text-align: right;">-0.5328286</td>
 <td style="text-align: right;">0.95</td>
-<td style="text-align: right;">-0.8972773</td>
-<td style="text-align: right;">-0.1613138</td>
+<td style="text-align: right;">-0.8972774</td>
+<td style="text-align: right;">-0.1613137</td>
 </tr></tbody>
 </table>
 </div>
@@ -516,29 +572,38 @@ Standard \ Error \ (SE) = \sigma/\sqrt(1+1/n)
 <p>For jamovi, the ESCI module allows users to compute effect sizes and confidence intervals, and is accompanied by educational material that focuses more on estimation and less on testing <span class="citation" data-cites="cumming_introduction_2016">(<a href="references.html#ref-cumming_introduction_2016" role="doc-biblioref">Cumming &amp; Calin-Jageman, 2016</a>)</span>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-escijamovi" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="images/escijamovi.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;7.8: Output from ESCI module in jamovi.</figcaption><p></p>
-</figure>
+<div id="fig-escijamovi" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-escijamovi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/escijamovi.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-escijamovi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.8: Output from ESCI module in jamovi.
+</figcaption></figure>
 </div>
 </div>
 </div>
-<p>JASP offers a wide range of frequentist and Bayesian analyses, and in addition to Cohen’s <em>d</em> also allows users to compute omega squared <span class="math inline">\(\omega^{2}\)</span>, the less biased version of <span class="math inline">\(\eta^{2}\)</span> <span class="citation" data-cites="okada_is_2013 albers_when_2018">(<a href="references.html#ref-albers_when_2018" role="doc-biblioref">Albers &amp; Lakens, 2018</a>; <a href="references.html#ref-okada_is_2013" role="doc-biblioref">Okada, 2013</a>)</span>.</p>
+<p>JASP offers a wide range of frequentist and Bayesian analyses, and in addition to Cohen’s <em>d</em> also allows users to compute omega squared <span class="math inline">\(\omega^{2}\)</span>, the less biased version of <span class="math inline">\(\eta^{2}\)</span> <span class="citation" data-cites="okada_omega_2013 albers_when_2018">(<a href="references.html#ref-albers_when_2018" role="doc-biblioref">Albers &amp; Lakens, 2018</a>; <a href="references.html#ref-okada_omega_2013" role="doc-biblioref">Okada, 2013</a>)</span>.</p>
 <div class="cell" data-layout-align="center" data-fig.margin="false">
 <div class="cell-output-display">
-<div id="fig-jasp1" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="images/jaspeffectci1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;7.9: JASP menu option allows you to select Cohen’s <em>d</em> and a CI around it.</figcaption><p></p>
-</figure>
+<div id="fig-jasp1" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-jasp1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/jaspeffectci1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-jasp1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.9: JASP menu option allows you to select Cohen’s <em>d</em> and a CI around it.
+</figcaption></figure>
 </div>
 </div>
 </div>
 <div class="cell" data-layout-align="center" data-fig.margin="false">
 <div class="cell-output-display">
-<div id="fig-jasp2" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="images/jaspeffectci2.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;7.10: JASP output returns Cohen’s <em>d</em> and the confidence interval around it.</figcaption><p></p>
-</figure>
+<div id="fig-jasp2" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-jasp2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/jaspeffectci2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-jasp2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.10: JASP output returns Cohen’s <em>d</em> and the confidence interval around it.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -560,10 +625,13 @@ Standard \ Error \ (SE) = \sigma/\sqrt(1+1/n)
 <p><strong>Q3</strong>: In the forest plot below, we see the effect size (indicated by the square) and the confidence interval of the effect size (indicated by the line around the effect). Which of the studies 1 to 4 in the forest plot below were statistically significant?</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-metaQ" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="07-CI_files/figure-html/fig-metaQ-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;7.11: Meta-analysis of 4 studies.</figcaption><p></p>
-</figure>
+<div id="fig-metaQ" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-metaQ-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="07-CI_files/figure-html/fig-metaQ-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-metaQ-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.11: Meta-analysis of 4 studies.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -587,7 +655,7 @@ Standard \ Error \ (SE) = \sigma/\sqrt(1+1/n)
 <label><input type="radio" autocomplete="off" name="radio_DKIVARKTKT" value=""><span>1.40</span></label><label><input type="radio" autocomplete="off" name="radio_DKIVARKTKT" value=""><span>2.95</span></label><label><input type="radio" autocomplete="off" name="radio_DKIVARKTKT" value=""><span>8.91</span></label><label><input type="radio" autocomplete="off" name="radio_DKIVARKTKT" value="answer"><span>10.45</span></label>
 </div>
 </div>
-<p>Copy the code below into R and run the code. It will generate plots like the one in <a href="#fig-cioverlap">Figure&nbsp;<span>7.5</span></a>. Run the entire script as often as you want (notice the variability in the <em>p</em>-values due to the relatively low power in the test!), to answer the following question. The <em>p</em>-value in the plot will tell you if the difference is statistically significant, and what the <em>p</em>-value is. Run the simulation until you find a <em>p</em>-value close to <em>p</em> = 0.05.</p>
+<p>Copy the code below into R and run the code. It will generate plots like the one in <a href="#fig-cioverlap" class="quarto-xref">Figure&nbsp;<span>7.5</span></a>. Run the entire script as often as you want (notice the variability in the <em>p</em>-values due to the relatively low power in the test!), to answer the following question. The <em>p</em>-value in the plot will tell you if the difference is statistically significant, and what the <em>p</em>-value is. Run the simulation until you find a <em>p</em>-value close to <em>p</em> = 0.05.</p>
 <div class="cell" data-layout-align="center" data-evaluate="false">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">50</span>, <span class="at">mean =</span> <span class="dv">3</span>, <span class="at">sd =</span> <span class="dv">5</span>) <span class="co"># get sample group 1</span></span>
 <span id="cb7-2"><a href="#cb7-2"></a>y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">50</span>, <span class="at">mean =</span> <span class="dv">5</span>, <span class="at">sd =</span> <span class="dv">5</span>) <span class="co"># get sample group 2</span></span>
@@ -599,23 +667,25 @@ Standard \ Error \ (SE) = \sigma/\sqrt(1+1/n)
 <span id="cb7-8"><a href="#cb7-8"></a>  <span class="at">upper =</span> <span class="fu">c</span>(<span class="fu">t.test</span>(x)[[<span class="dv">4</span>]][<span class="dv">2</span>], <span class="fu">t.test</span>(y)[[<span class="dv">4</span>]][<span class="dv">2</span>], <span class="fu">t.test</span>(y, x)[[<span class="dv">4</span>]][<span class="dv">2</span>])</span>
 <span id="cb7-9"><a href="#cb7-9"></a>)</span>
 <span id="cb7-10"><a href="#cb7-10"></a></span>
-<span id="cb7-11"><a href="#cb7-11"></a><span class="fu">plot</span>(<span class="cn">NA</span>, <span class="at">xlim =</span> <span class="fu">c</span>(.<span class="dv">5</span>, <span class="fl">3.5</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(d<span class="sc">$</span>upper[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>] <span class="sc">+</span> <span class="dv">1</span>)), <span class="at">bty =</span> <span class="st">"l"</span>, </span>
-<span id="cb7-12"><a href="#cb7-12"></a>     <span class="at">xaxt =</span> <span class="st">"n"</span>, <span class="at">xlab =</span> <span class="st">""</span>, <span class="at">ylab =</span> <span class="st">"Mean"</span>)</span>
-<span id="cb7-13"><a href="#cb7-13"></a><span class="fu">points</span>(d<span class="sc">$</span>mean[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="at">pch =</span> <span class="dv">19</span>)</span>
-<span id="cb7-14"><a href="#cb7-14"></a><span class="fu">segments</span>(<span class="dv">1</span>, d<span class="sc">$</span>mean[<span class="dv">1</span>], <span class="dv">5</span>, d<span class="sc">$</span>mean[<span class="dv">1</span>], <span class="at">lty =</span> <span class="dv">2</span>)</span>
-<span id="cb7-15"><a href="#cb7-15"></a><span class="fu">segments</span>(<span class="dv">2</span>, d<span class="sc">$</span>mean[<span class="dv">2</span>], <span class="dv">5</span>, d<span class="sc">$</span>mean[<span class="dv">2</span>], <span class="at">lty =</span> <span class="dv">2</span>)</span>
-<span id="cb7-16"><a href="#cb7-16"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, d<span class="sc">$</span>labels)</span>
-<span id="cb7-17"><a href="#cb7-17"></a><span class="fu">segments</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, d<span class="sc">$</span>lower[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, d<span class="sc">$</span>upper[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>])</span>
-<span id="cb7-18"><a href="#cb7-18"></a><span class="fu">axis</span>(<span class="dv">4</span>, <span class="fu">seq</span>((d<span class="sc">$</span>mean[<span class="dv">1</span>] <span class="sc">-</span> <span class="dv">3</span>), (d<span class="sc">$</span>mean[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">5</span>), <span class="at">by =</span> <span class="dv">1</span>), <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">5</span>, <span class="at">by =</span> <span class="dv">1</span>))</span>
-<span id="cb7-19"><a href="#cb7-19"></a><span class="fu">points</span>(<span class="dv">3</span>, d<span class="sc">$</span>mean[<span class="dv">1</span>] <span class="sc">+</span> d<span class="sc">$</span>mean[<span class="dv">3</span>], <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">cex =</span> <span class="fl">1.5</span>)</span>
-<span id="cb7-20"><a href="#cb7-20"></a><span class="fu">segments</span>(<span class="dv">3</span>, d<span class="sc">$</span>mean[<span class="dv">1</span>] <span class="sc">+</span> d<span class="sc">$</span>lower[<span class="dv">3</span>], <span class="dv">3</span>, d<span class="sc">$</span>mean[<span class="dv">1</span>] <span class="sc">+</span> d<span class="sc">$</span>upper[<span class="dv">3</span>], <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb7-21"><a href="#cb7-21"></a><span class="fu">mtext</span>(<span class="st">"Difference"</span>, <span class="at">side =</span> <span class="dv">4</span>, <span class="at">at =</span> d<span class="sc">$</span>mean[<span class="dv">1</span>], <span class="at">line =</span> <span class="dv">3</span>)</span>
-<span id="cb7-22"><a href="#cb7-22"></a><span class="fu">segments</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">1</span>, d<span class="sc">$</span>upper[<span class="dv">1</span><span class="sc">:</span><span class="dv">1</span>], <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, d<span class="sc">$</span>upper[<span class="dv">1</span><span class="sc">:</span><span class="dv">1</span>], <span class="at">lty =</span> <span class="dv">3</span>)</span>
-<span id="cb7-23"><a href="#cb7-23"></a><span class="fu">segments</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">1</span>, d<span class="sc">$</span>lower[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, d<span class="sc">$</span>lower[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="at">lty =</span> <span class="dv">3</span>)</span>
-<span id="cb7-24"><a href="#cb7-24"></a><span class="fu">text</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="fu">paste</span>(<span class="st">"P-value"</span>, <span class="fu">round</span>(<span class="fu">t.test</span>(x, y)<span class="sc">$</span>p.value, <span class="at">digits =</span> <span class="dv">3</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-11"><a href="#cb7-11"></a><span class="fu">par</span>(<span class="at">bg =</span> backgroundcolor)</span>
+<span id="cb7-12"><a href="#cb7-12"></a><span class="fu">plot</span>(<span class="cn">NA</span>, <span class="at">xlim =</span> <span class="fu">c</span>(.<span class="dv">5</span>, <span class="fl">3.5</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(d<span class="sc">$</span>upper[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>] <span class="sc">+</span> <span class="dv">1</span>)), <span class="at">bty =</span> <span class="st">"l"</span>, </span>
+<span id="cb7-13"><a href="#cb7-13"></a>     <span class="at">xaxt =</span> <span class="st">"n"</span>, <span class="at">xlab =</span> <span class="st">""</span>, <span class="at">ylab =</span> <span class="st">"Mean"</span>)</span>
+<span id="cb7-14"><a href="#cb7-14"></a><span class="fu">points</span>(d<span class="sc">$</span>mean[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="at">pch =</span> <span class="dv">19</span>)</span>
+<span id="cb7-15"><a href="#cb7-15"></a><span class="fu">segments</span>(<span class="dv">0</span>, d<span class="sc">$</span>mean[<span class="dv">1</span>], <span class="dv">3</span>, d<span class="sc">$</span>mean[<span class="dv">1</span>], <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb7-16"><a href="#cb7-16"></a><span class="fu">segments</span>(<span class="dv">2</span>, d<span class="sc">$</span>mean[<span class="dv">2</span>], <span class="sc">-</span><span class="dv">1</span>, d<span class="sc">$</span>mean[<span class="dv">2</span>], <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb7-17"><a href="#cb7-17"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, d<span class="sc">$</span>labels)</span>
+<span id="cb7-18"><a href="#cb7-18"></a><span class="fu">segments</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, d<span class="sc">$</span>lower[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, d<span class="sc">$</span>upper[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>])</span>
+<span id="cb7-19"><a href="#cb7-19"></a><span class="fu">axis</span>(<span class="dv">4</span>, <span class="fu">seq</span>((d<span class="sc">$</span>mean[<span class="dv">1</span>] <span class="sc">-</span> <span class="dv">3</span>), (d<span class="sc">$</span>mean[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">5</span>), <span class="at">by =</span> <span class="dv">1</span>), <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">5</span>, <span class="at">by =</span> <span class="dv">1</span>))</span>
+<span id="cb7-20"><a href="#cb7-20"></a><span class="fu">points</span>(<span class="dv">3</span>, d<span class="sc">$</span>mean[<span class="dv">1</span>] <span class="sc">+</span> d<span class="sc">$</span>mean[<span class="dv">3</span>], <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">cex =</span> <span class="fl">1.5</span>)</span>
+<span id="cb7-21"><a href="#cb7-21"></a><span class="fu">segments</span>(<span class="dv">3</span>, d<span class="sc">$</span>mean[<span class="dv">1</span>] <span class="sc">+</span> d<span class="sc">$</span>lower[<span class="dv">3</span>], <span class="dv">3</span>, d<span class="sc">$</span>mean[<span class="dv">1</span>] <span class="sc">+</span> d<span class="sc">$</span>upper[<span class="dv">3</span>], <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb7-22"><a href="#cb7-22"></a><span class="fu">segments</span>(<span class="dv">3</span>, d<span class="sc">$</span>mean[<span class="dv">2</span>], <span class="dv">5</span>, d<span class="sc">$</span>mean[<span class="dv">2</span>], <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb7-23"><a href="#cb7-23"></a><span class="fu">mtext</span>(<span class="st">"Difference"</span>, <span class="at">side =</span> <span class="dv">4</span>, <span class="at">at =</span> d<span class="sc">$</span>mean[<span class="dv">1</span>], <span class="at">line =</span> <span class="dv">3</span>)</span>
+<span id="cb7-24"><a href="#cb7-24"></a><span class="fu">segments</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">1</span>, d<span class="sc">$</span>upper[<span class="dv">1</span><span class="sc">:</span><span class="dv">1</span>], <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, d<span class="sc">$</span>upper[<span class="dv">1</span><span class="sc">:</span><span class="dv">1</span>], <span class="at">lty =</span> <span class="dv">3</span>)</span>
+<span id="cb7-25"><a href="#cb7-25"></a><span class="fu">segments</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">1</span>, d<span class="sc">$</span>lower[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, d<span class="sc">$</span>lower[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="at">lty =</span> <span class="dv">3</span>)</span>
+<span id="cb7-26"><a href="#cb7-26"></a><span class="fu">text</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="fu">paste</span>(<span class="st">"P-value"</span>, <span class="fu">sprintf</span>(<span class="st">"%.3f"</span>,<span class="fu">t.test</span>(x, y)<span class="sc">$</span>p.value)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="07-CI_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="07-CI_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -780,9 +850,9 @@ Standard \ Error \ (SE) = \sigma/\sqrt(1+1/n)
 </ol>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
 <div id="ref-albers_credible_2018" class="csl-entry" role="listitem">
-Albers, C. J., Kiers, H. A. L., &amp; Ravenzwaaij, D. van. (2018). Credible <span>Confidence</span>: <span>A Pragmatic View</span> on the <span>Frequentist</span> vs <span>Bayesian Debate</span>. <em>Collabra: Psychology</em>, <em>4</em>(1), 31. <a href="https://doi.org/10.1525/collabra.149">https://doi.org/10.1525/collabra.149</a>
+Albers, C. J., Kiers, H. A. L., &amp; Ravenzwaaij, D. van. (2018). Credible <span>Confidence</span>: <span>A Pragmatic View</span> on the <span>Frequentist</span> vs <span>Bayesian Debate</span>. <em>Collabra: Psychology</em>, <em>4</em>(1, 1), 31. <a href="https://doi.org/10.1525/collabra.149">https://doi.org/10.1525/collabra.149</a>
 </div>
 <div id="ref-albers_when_2018" class="csl-entry" role="listitem">
 Albers, C. J., &amp; Lakens, D. (2018). When power analyses based on pilot data are biased: <span>Inaccurate</span> effect size estimators and follow-up bias. <em>Journal of Experimental Social Psychology</em>, <em>74</em>, 187–195. <a href="https://doi.org/10.1016/j.jesp.2017.09.004">https://doi.org/10.1016/j.jesp.2017.09.004</a>
@@ -791,13 +861,13 @@ Albers, C. J., &amp; Lakens, D. (2018). When power analyses based on pilot data 
 Appelbaum, M., Cooper, H., Kline, R. B., Mayo-Wilson, E., Nezu, A. M., &amp; Rao, S. M. (2018). Journal article reporting standards for quantitative research in psychology: <span>The APA Publications</span> and <span>Communications Board</span> task force report. <em>American Psychologist</em>, <em>73</em>(1), 3. <a href="https://doi.org/10.1037/amp0000191">https://doi.org/10.1037/amp0000191</a>
 </div>
 <div id="ref-bauer_unifying_1996" class="csl-entry" role="listitem">
-Bauer, P., &amp; Kieser, M. (1996). A unifying approach for confidence intervals and testing of equivalence and difference. <em>Biometrika</em>, <em>83</em>(4), 934–937.
+Bauer, P., &amp; Kieser, M. (1996). A unifying approach for confidence intervals and testing of equivalence and difference. <em>Biometrika</em>, <em>83</em>(4), 934–937. <a href="http://biomet.oxfordjournals.org/content/83/4/934.short">http://biomet.oxfordjournals.org/content/83/4/934.short</a>
 </div>
 <div id="ref-ben-shachar_effectsize_2020" class="csl-entry" role="listitem">
 Ben-Shachar, M. S., Lüdecke, D., &amp; Makowski, D. (2020). Effectsize: <span>Estimation</span> of <span>Effect Size Indices</span> and <span>Standardized Parameters</span>. <em>Journal of Open Source Software</em>, <em>5</em>(56), 2815. <a href="https://doi.org/10.21105/joss.02815">https://doi.org/10.21105/joss.02815</a>
 </div>
 <div id="ref-buchanan_mote_2017" class="csl-entry" role="listitem">
-Buchanan, E. M., Scofield, J., &amp; Valentine, K. D. (2017). <em><span>MOTE</span>: <span>Effect Size</span> and <span>Confidence Interval Calculator</span>.</em>
+Buchanan, E. M., Scofield, J., &amp; Valentine, K. D. (2017). <em><span>MOTE</span>: <span>Effect Size</span> and <span>Confidence Interval Calculator</span>.</em> (Version 0.0.0.9100.).
 </div>
 <div id="ref-cohen_earth_1994" class="csl-entry" role="listitem">
 Cohen, J. (1994). The earth is round (p <span><span class="math inline">\(&lt;\)</span></span> .05). <em>American Psychologist</em>, <em>49</em>(12), 997–1003. <a href="https://doi.org/10.1037/0003-066X.49.12.997">https://doi.org/10.1037/0003-066X.49.12.997</a>
@@ -809,13 +879,13 @@ Cousineau, D., &amp; Chiasson, F. (2019). <em>Superb: <span>Computes</span> stan
 Cumming, G. (2014). The <span>New Statistics</span>: <span>Why</span> and <span>How</span>. <em>Psychological Science</em>, <em>25</em>(1), 7–29. <a href="https://doi.org/10.1177/0956797613504966">https://doi.org/10.1177/0956797613504966</a>
 </div>
 <div id="ref-cumming_introduction_2016" class="csl-entry" role="listitem">
-Cumming, G., &amp; Calin-Jageman, R. (2016). <em>Introduction to the <span>New Statistics</span>: <span>Estimation</span>, <span>Open Science</span>, and <span>Beyond</span></em>. <span>Routledge</span>.
+Cumming, G., &amp; Calin-Jageman, R. (2016). <em>Introduction to the <span>New Statistics</span>: <span>Estimation</span>, <span>Open Science</span>, and <span>Beyond</span></em>. Routledge. <a href="https://books.google.com?id=KR8xDQAAQBAJ">https://books.google.com?id=KR8xDQAAQBAJ</a>
 </div>
 <div id="ref-cumming_confidence_2006" class="csl-entry" role="listitem">
 Cumming, G., &amp; Maillardet, R. (2006). Confidence intervals and replication: <span>Where</span> will the next mean fall? <em>Psychological Methods</em>, <em>11</em>(3), 217–227. <a href="https://doi.org/10.1037/1082-989X.11.3.217">https://doi.org/10.1037/1082-989X.11.3.217</a>
 </div>
 <div id="ref-delacre_why_2021" class="csl-entry" role="listitem">
-Delacre, M., Lakens, D., Ley, C., Liu, L., &amp; Leys, C. (2021). <em>Why <span>Hedges</span>’ g*s based on the non-pooled standard deviation should be reported with <span>Welch</span>’s t-test</em>. <span>PsyArXiv</span>. <a href="https://doi.org/10.31234/osf.io/tu6mp">https://doi.org/10.31234/osf.io/tu6mp</a>
+Delacre, M., Lakens, D., Ley, C., Liu, L., &amp; Leys, C. (2021). <em>Why <span>Hedges</span>’ g*s based on the non-pooled standard deviation should be reported with <span>Welch</span>’s t-test</em>. <a href="https://doi.org/10.31234/osf.io/tu6mp">https://doi.org/10.31234/osf.io/tu6mp</a>
 </div>
 <div id="ref-delacre_why_2017" class="csl-entry" role="listitem">
 Delacre, M., Lakens, D., &amp; Leys, C. (2017). Why <span>Psychologists Should</span> by <span>Default Use Welch</span>’s <span><em>t</em></span>-test <span>Instead</span> of <span>Student</span>’s <span><em>t</em></span>-test. <em>International Review of Social Psychology</em>, <em>30</em>(1). <a href="https://doi.org/10.5334/irsp.82">https://doi.org/10.5334/irsp.82</a>
@@ -824,24 +894,24 @@ Delacre, M., Lakens, D., &amp; Leys, C. (2017). Why <span>Psychologists Should</
 Kelley, K. (2007). Confidence <span>Intervals</span> for <span>Standardized Effect Sizes</span>: <span>Theory</span>, <span>Application</span>, and <span>Implementation</span>. <em>Journal of Statistical Software</em>, <em>20</em>(8). <a href="https://doi.org/10.18637/JSS.V020.I08">https://doi.org/10.18637/JSS.V020.I08</a>
 </div>
 <div id="ref-kish_survey_1965" class="csl-entry" role="listitem">
-Kish, L. (1965). <em>Survey <span>Sampling</span></em>. <span>Wiley</span>.
+Kish, L. (1965). <em>Survey <span>Sampling</span></em>. Wiley.
 </div>
 <div id="ref-lehmann_testing_2005" class="csl-entry" role="listitem">
-Lehmann, E. L., &amp; Romano, J. P. (2005). <em>Testing statistical hypotheses</em> (3rd ed). <span>Springer</span>.
+Lehmann, E. L., &amp; Romano, J. P. (2005). <em>Testing statistical hypotheses</em> (3rd ed). Springer.
 </div>
 <div id="ref-louis_effective_2009" class="csl-entry" role="listitem">
 Louis, T. A., &amp; Zeger, S. L. (2009). Effective communication of standard errors and confidence intervals. <em>Biostatistics</em>, <em>10</em>(1), 1–2. <a href="https://doi.org/10.1093/biostatistics/kxn014">https://doi.org/10.1093/biostatistics/kxn014</a>
 </div>
 <div id="ref-morey_fallacy_2016" class="csl-entry" role="listitem">
-Morey, R. D., Hoekstra, R., Rouder, J. N., Lee, M. D., &amp; Wagenmakers, E.-J. (2016). The fallacy of placing confidence in confidence intervals. <em>Psychonomic Bulletin &amp; Review</em>, <em>23</em>(1), 103–123.
+Morey, R. D., Hoekstra, R., Rouder, J. N., Lee, M. D., &amp; Wagenmakers, E.-J. (2016). The fallacy of placing confidence in confidence intervals. <em>Psychonomic Bulletin &amp; Review</em>, <em>23</em>(1), 103–123. <a href="http://link.springer.com/article/10.3758/s13423-015-0947-8">http://link.springer.com/article/10.3758/s13423-015-0947-8</a>
 </div>
-<div id="ref-okada_is_2013" class="csl-entry" role="listitem">
+<div id="ref-okada_omega_2013" class="csl-entry" role="listitem">
 Okada, K. (2013). Is <span>Omega Squared Less Biased</span>? A <span>Comparison</span> of <span>Three Major Effect Size Indices</span> in <span>One-Way Anova</span>. <em>Behaviormetrika</em>, <em>40</em>(2), 129–147. <a href="https://doi.org/10.2333/bhmk.40.129">https://doi.org/10.2333/bhmk.40.129</a>
 </div>
 <div id="ref-spiegelhalter_art_2019" class="csl-entry" role="listitem">
-Spiegelhalter, D. (2019). <em>The <span>Art</span> of <span>Statistics</span>: <span>How</span> to <span>Learn</span> from <span>Data</span></em> (Illustrated edition). <span>Basic Books</span>.
+Spiegelhalter, D. (2019). <em>The <span>Art</span> of <span>Statistics</span>: <span>How</span> to <span>Learn</span> from <span>Data</span></em> (Illustrated edition). Basic Books.
 </div>
-<div id="ref-steiger_beyond_2004" class="csl-entry" role="listitem">
+<div id="ref-steiger_test_2004" class="csl-entry" role="listitem">
 Steiger, J. H. (2004). Beyond the <span>F Test</span>: <span>Effect Size Confidence Intervals</span> and <span>Tests</span> of <span>Close Fit</span> in the <span>Analysis</span> of <span>Variance</span> and <span>Contrast Analysis</span>. <em>Psychological Methods</em>, <em>9</em>(2), 164–182. <a href="https://doi.org/10.1037/1082-989X.9.2.164">https://doi.org/10.1037/1082-989X.9.2.164</a>
 </div>
 </div>
@@ -1120,6 +1190,33 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
     }
   }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
   const toggleColorMode = (alternate) => {
     // Switch the stylesheets
     const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
@@ -1186,13 +1283,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return localAlternateSentinel;
     }
   }
-  let localAlternateSentinel = 'default';
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
   // Dark / light mode switch
   window.quartoToggleColorScheme = () => {
     // Read the current dark / light value 
     let toAlternate = !hasAlternateSentinel();
     toggleColorMode(toAlternate);
     setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
   };
   // Ensure there is a toggle, if there isn't float one in the top right
   if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -1271,10 +1370,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1284,8 +1400,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1297,7 +1422,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1341,6 +1589,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1366,6 +1615,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1425,22 +1700,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./06-effectsize.html" class="pagination-link">
+      <a href="./06-effectsize.html" class="pagination-link" aria-label="Effect Sizes">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Effect Sizes</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./08-samplesizejustification.html" class="pagination-link">
+      <a href="./08-samplesizejustification.html" class="pagination-link" aria-label="Sample Size Justification">
         <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Sample Size Justification</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
-    <div class="nav-footer-left">Lakens, D. (2022). Improving Your Statistical Inferences. Retrieved from https://lakens.github.io/statistical_inferences/. https://doi.org/10.5281/zenodo.6409077</div>   
+    <div class="nav-footer-left">
+<p>Lakens, D. (2022). Improving Your Statistical Inferences. Retrieved from https://lakens.github.io/statistical_inferences/. https://doi.org/10.5281/zenodo.6409077</p>
+</div>   
     <div class="nav-footer-center">
       &nbsp;
-    </div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Lakens/statistical_inferences/edit/master/07-CI.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Lakens/statistical_inferences/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/Lakens/statistical_inferences/blob/master/07-CI.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div>
     <div class="nav-footer-right">
       &nbsp;
     </div>

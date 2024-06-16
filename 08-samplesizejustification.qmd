@@ -10,6 +10,30 @@ library(MOTE)
 library(ggplot2)
 library(patchwork)
 
+df_2_MD <- function(your_df){
+  cn <- as.character(names(your_df))
+  headr <- paste0(c("", cn),  sep = "|", collapse='')
+  sepr <- paste0(c('|', rep(paste0(c(rep('-',3), "|"), collapse=''),length(cn))), collapse ='')
+  st <- "|"
+    for (i in 1:nrow(your_df)){
+      for(j in 1:ncol(your_df)){
+        if (j%%ncol(your_df) == 0) {
+          st <- paste0(st, as.character(your_df[i,j]), "|", "\n", "" , "|", collapse = '')
+        } else {
+        st <- paste0(st, as.character(your_df[i,j]), "|", collapse = '')
+        }
+      }
+    }
+  fin <- paste0(c(headr, sepr, substr(st,1,nchar(st)-1)), collapse="\n")
+  cat(fin)
+}
+# knit_print.data.frame <- function (x, options, ...) {
+#   rmarkdown::paged_table(x, options) |>
+#     rmarkdown:::print.paged_df()
+# }
+# 
+# registerS3method("knit_print", "data.frame", knit_print.data.frame)
+
 ```
 
 *You can listen to an audio recording of this chapter [here](https://soundcloud.com/lakens/sample-size-justification-by-daniel-lakens). You can download a translation of this chapter in Chinese [here](https://surfdrive.surf.nl/files/index.php/s/vLD38Wf7QqfeYqc)*
@@ -34,11 +58,12 @@ table_pow_justifications <- data.frame(c(
     "A researcher has no reason to choose a specific sample size, or does not have a clearly specified inferential goal and wants to communicate this honestly."))
 colnames(table_pow_justifications) <- c("Type of justification", "When is this justification applicable?")
 
-table_print <- knitr::kable(table_pow_justifications, "html", booktabs = T) 
-
-table_print <- kableExtra::column_spec(table_print, 1, width = "5cm")
-table_print <- kableExtra::column_spec(table_print, 2, width = "10cm")
-table_print
+# table_print <- knitr::kable(table_pow_justifications, "html", booktabs = T) 
+# 
+# table_print <- kableExtra::column_spec(table_print, 1, width = "5cm")
+# table_print <- kableExtra::column_spec(table_print, 2, width = "10cm")
+# table_print
+df_2_MD(table_pow_justifications)
 ```
 
 ## Six Approaches to Justify Sample Sizes
@@ -74,12 +99,12 @@ table_effect_eval <- data.frame(c(
 
 colnames(table_effect_eval) <- c("Type of evaluation", "Which question should a researcher ask?")
 
-table_print <- knitr::kable(table_effect_eval)
-
-table_print <- kableExtra::column_spec(table_print, 1, width = "5cm")
-table_print <- kableExtra::column_spec(table_print, 2, width = "10cm")
-table_print
-
+# table_print <- knitr::kable(table_effect_eval, "html", booktabs = T) 
+# 
+# table_print <- kableExtra::column_spec(table_print, 1, width = "5cm")
+# table_print <- kableExtra::column_spec(table_print, 2, width = "10cm")
+# table_print
+df_2_MD(table_effect_eval)
 
 ```
 
@@ -109,11 +134,11 @@ It is most straightforward to evaluate whether data collection has value when we
 
 Another way in which a small dataset can be valuable is if its existence eventually makes it possible to perform a meta-analysis [@maxwell_ethics_2011]. This argument in favor of collecting a small dataset requires 1) that researchers share the data in a way that a future meta-analyst can find it, and 2) that there is a decent probability that someone will perform a high-quality meta-analysis that will include this data in the future [@halpern_continuing_2002]. The uncertainty about whether there will ever be such a meta-analysis should be weighed against the costs of data collection.
 
-One way to increase the probability of a future meta-analysis is if researchers commit to performing this meta-analysis themselves, by combining several studies they have performed into a small-scale meta-analysis [@cumming_new_2014]. For example, a researcher might plan to repeat a study for the next 12 years in a class they teach, with the expectation that after 12 years a meta-analysis of 12 studies would be sufficient to draw informative inferences (but see @ter_schure_accumulation_2019). If it is not plausible that a researcher will collect all the required data by themselves, they can attempt to set up a collaboration where fellow researchers in their field commit to collecting similar data with identical measures. If it is not likely that sufficient data will emerge over time to reach the inferential goals, there might be no value in collecting the data.
+One way to increase the probability of a future meta-analysis is if researchers commit to performing this meta-analysis themselves, by combining several studies they have performed into a small-scale meta-analysis [@cumming_new_2014]. For example, a researcher might plan to repeat a study for the next 12 years in a class they teach, with the expectation that after 12 years a meta-analysis of 12 studies would be sufficient to draw informative inferences (but see @terschure_accumulation_2019). If it is not plausible that a researcher will collect all the required data by themselves, they can attempt to set up a collaboration where fellow researchers in their field commit to collecting similar data with identical measures. If it is not likely that sufficient data will emerge over time to reach the inferential goals, there might be no value in collecting the data.
 
 Even if a researcher believes it is worth collecting data because a future meta-analysis will be performed, they will most likely perform a statistical test on the data. To make sure their expectations about the results of such a test are well-calibrated, it is important to consider which effect sizes are of interest, and to perform a sensitivity power analysis to evaluate the probability of a Type II error for effects of interest. From the six ways to evaluate which effect sizes are interesting that will be discussed in the second part of this review, it is useful to consider the smallest effect size that can be statistically significant, the expected width of the confidence interval around the effect size, and effects that can be expected in a specific research area, and to evaluate the power for these effect sizes in a sensitivity power analysis. If a decision or claim is made, a compromise power analysis is worthwhile to consider when deciding upon the error rates while planning the study. When reporting a resource constraints sample size justification it is recommended to address the five considerations in @tbl-table-pow-rec). Addressing these points explicitly facilitates evaluating if the data is worthwhile to collect. To make it easier to address all relevant points explicitly, an interactive form to implement the recommendations in this chapter can be found at https://shiny.ieis.tue.nl/sample_size_justification/.
 
-```{r tbl-table-pow-rec, echo = FALSE}
+```{r tbl-table-pow-rec, echo = FALSE, results = 'asis'}
 #| tbl-cap: "Overview of recommendations when reporting a sample size justification based on resource constraints."
 
 table_pow_rec <- data.frame(c(
@@ -133,11 +158,12 @@ table_pow_rec <- data.frame(c(
 
 colnames(table_pow_rec) <- c("What to address", "How to address it?")
 
-table_print <- knitr::kable(table_pow_rec)
-
-table_print <- kableExtra::column_spec(table_print, 1, width = "5cm")
-table_print <- kableExtra::column_spec(table_print, 2, width = "10cm")
-table_print
+# table_print <- knitr::kable(table_pow_rec, "html", booktabs = T) 
+# 
+# table_print <- kableExtra::column_spec(table_print, 1, width = "5cm")
+# table_print <- kableExtra::column_spec(table_print, 2, width = "10cm")
+# table_print
+df_2_MD(table_pow_rec)
 
 ```
 
@@ -259,7 +285,7 @@ for (i in 1:10000) {  # simulate 10k tests
 sum(p < 0.05) / 10000 # Compute power
 ```
 
-There is a wide range of tools available to perform power analyses. Whichever tool a researcher decides to use, it will take time to learn how to use the software correctly to perform a meaningful a-priori power analysis. Resources to educate psychologists about power analysis consist of book-length treatments [@aberson_applied_2019; @cohen_statistical_1988; @murphy_statistical_2014; @julious_sample_2004], general introductions [@maxwell_sample_2008; @brysbaert_how_2019; @perugini_practical_2018; @faul_gpower_2007; @baguley_understanding_2004], and an increasing number of applied tutorials for specific tests [@debruine_understanding_2021; @lakens_simulation-based_2021; @green_simr_2016; @brysbaert_power_2018; @westfall_statistical_2014; @schoemann_determining_2017; @kruschke_bayesian_2013]. It is important to be trained in the basics of power analysis, and it can be extremely beneficial to learn how to perform simulation-based power analyses. At the same time, it is often recommended to enlist the help of an expert, especially when a researcher lacks experience with a power analysis for a specific test.
+There is a wide range of tools available to perform power analyses. Whichever tool a researcher decides to use, it will take time to learn how to use the software correctly to perform a meaningful a-priori power analysis. Resources to educate psychologists about power analysis consist of book-length treatments [@aberson_applied_2019; @cohen_statistical_1988; @murphy_statistical_2014; @julious_sample_2004], general introductions [@maxwell_sample_2008; @brysbaert_how_2019; @perugini_practical_2018; @faul_gpower_2007; @baguley_understanding_2004], and an increasing number of applied tutorials for specific tests [@debruine_understanding_2021; @lakens_simulationbased_2021; @green_simr_2016; @brysbaert_power_2018; @westfall_statistical_2014; @schoemann_determining_2017; @kruschke_bayesian_2013]. It is important to be trained in the basics of power analysis, and it can be extremely beneficial to learn how to perform simulation-based power analyses. At the same time, it is often recommended to enlist the help of an expert, especially when a researcher lacks experience with a power analysis for a specific test.
 
 When reporting an a-priori power analysis, make sure that the power analysis is completely reproducible. If power analyses are performed in R it is possible to share the analysis script and information about the version of the package. In many software packages it is possible to export the power analysis that is performed as a PDF file. For example, in G\*Power analyses can be exported under the 'protocol of power analysis' tab. If the software package provides no way to export the analysis, add a screenshot of the power analysis to the supplementary files.
 
@@ -271,7 +297,7 @@ knitr::include_graphics("images/gpowprotocol.png")
 
 The reproducible report needs to be accompanied by justifications for the choices that were made with respect to the values used in the power analysis. If the effect size used in the power analysis is based on previous research, the factors presented in @tbl-tablemetajust (if the effect size is based on a meta-analysis) or @tbl-table-es-just (if the effect size is based on a single study) should be discussed. If an effect size estimate is based on the existing literature, provide a full citation, and preferably a direct quote from the article where the effect size estimate is reported. If the effect size is based on a smallest effect size of interest, this value should not just be stated, but justified (e.g., based on theoretical predictions or practical implications, see @lakens_equivalence_2018). For an overview of all aspects that should be reported when describing an a-priori power analysis, see @tbl-table-pow-rec-2.
 
-```{r tbl-table-pow-rec-2, echo = FALSE}
+```{r tbl-table-pow-rec-2, echo = FALSE, results = 'asis'}
 #| tbl-cap: "Overview of recommendations when reporting an a-priori power analysis."
 
 table_pow_rec_2 <- data.frame(c(
@@ -290,11 +316,13 @@ table_pow_rec_2 <- data.frame(c(
     "Include the code used to run the power analysis, or print a report containing the details about the power analyses that has been performed."))
 colnames(table_pow_rec_2) <- c("What to take into account?", "How to take it into account?")
 
-table_print <- knitr::kable(table_pow_rec_2)
+# table_print <- knitr::kable(table_pow_rec_2, "html", booktabs = T) 
+# 
+# table_print <- kableExtra::column_spec(table_print, 1, width = "5cm")
+# table_print <- kableExtra::column_spec(table_print, 2, width = "10cm")
+# table_print
+df_2_MD(table_pow_rec_2)
 
-table_print <- kableExtra::column_spec(table_print, 1, width = "5cm")
-table_print <- kableExtra::column_spec(table_print, 2, width = "10cm")
-table_print
 
 ```
 
@@ -316,9 +344,9 @@ If researchers do not want to test a hypothesis, for example because they prefer
 
 When a researcher uses a heuristic, they are not able to justify their sample size themselves, but they trust in a sample size recommended by some authority. When I started as a PhD student in 2005 it was common to collect 15 participants in each between subject condition. When asked why this was a common practice, no one was really sure, but people trusted that there was a justification somewhere in the literature. Now, I realize there was no justification for the heuristics we used. As @berkeley_defence_1735 already observed: "Men learn the elements of science from others: And every learner hath a deference more or less to authority, especially the young learners, few of that kind caring to dwell long upon principles, but inclining rather to take them upon trust: And things early admitted by repetition become familiar: And this familiarity at length passeth for evidence."
 
-Some papers provide researchers with simple rules of thumb about the sample size that should be collected. Such papers clearly fill a need, and are cited a lot, even when the advice in these articles is flawed. For example, @wilson_vanvoorhis_understanding_2007 translate an absolute *minimum* of 50+8 observations for regression analyses suggested by a rule of thumb examined in @green_how_1991 into the recommendation to collect ~50 observations. Green actually concludes in his article that "In summary, no specific minimum number of subjects or minimum ratio of subjects-to-predictors was supported". He does discuss how a general rule of thumb of N = 50 + 8 provided an accurate minimum number of observations for the 'typical' study in the social sciences because these have a 'medium' effect size, as Green claims by citing Cohen (1988). Cohen actually didn't claim that the typical study in the social sciences has a 'medium' effect size, and instead said (1988, p. 13): "Many effects sought in personality, social, and clinical-psychological research are likely to be small effects as here defined". We see how a string of mis-citations eventually leads to a misleading rule of thumb.
+Some papers provide researchers with simple rules of thumb about the sample size that should be collected. Such papers clearly fill a need, and are cited a lot, even when the advice in these articles is flawed. For example, @wilsonvanvoorhis_understanding_2007 translate an absolute *minimum* of 50+8 observations for regression analyses suggested by a rule of thumb examined in @green_how_1991 into the recommendation to collect ~50 observations. Green actually concludes in his article that "In summary, no specific minimum number of subjects or minimum ratio of subjects-to-predictors was supported". He does discuss how a general rule of thumb of N = 50 + 8 provided an accurate minimum number of observations for the 'typical' study in the social sciences because these have a 'medium' effect size, as Green claims by citing Cohen (1988). Cohen actually didn't claim that the typical study in the social sciences has a 'medium' effect size, and instead said (1988, p. 13): "Many effects sought in personality, social, and clinical-psychological research are likely to be small effects as here defined". We see how a string of mis-citations eventually leads to a misleading rule of thumb.
 
-Rules of thumb seem to primarily emerge due to mis-citations and/or overly simplistic recommendations. Simonsohn, Nelson, and Simmons [-@simmons_false-positive_2011] recommended that "Authors must collect at least 20 observations per cell". A later recommendation by the same authors presented at a conference suggested to use n > 50, unless you study large effects [@simmons_life_2013]. Regrettably, this advice is now often mis-cited as a justification to collect no more than 50 observations per condition without considering the expected effect size. If authors justify a specific sample size (e.g., n = 50) based on a general recommendation in another paper, either they are mis-citing the paper, or the paper they are citing is flawed.
+Rules of thumb seem to primarily emerge due to mis-citations and/or overly simplistic recommendations. Simonsohn, Nelson, and Simmons [-@simmons_falsepositive_2011] recommended that "Authors must collect at least 20 observations per cell". A later recommendation by the same authors presented at a conference suggested to use n > 50, unless you study large effects [@simmons_life_2013]. Regrettably, this advice is now often mis-cited as a justification to collect no more than 50 observations per condition without considering the expected effect size. If authors justify a specific sample size (e.g., n = 50) based on a general recommendation in another paper, either they are mis-citing the paper, or the paper they are citing is flawed.
 
 Another common heuristic is to collect the same number of observations as were collected in a previous study. This strategy is not recommended in scientific disciplines with widespread publication bias, and/or where novel and surprising findings from largely exploratory single studies are published. Using the same sample size as a previous study is only a valid approach if the sample size justification in the previous study also applies to the current study. Instead of stating that you intend to collect the same sample size as an earlier study, repeat the sample size justification, and update it in light of any new information (such as the effect size in the earlier study, see @tbl-table-es-just). 
 
@@ -414,7 +442,7 @@ Second, researchers should check whether the effect sizes reported in the meta-a
 
 Third, the meta-analytic effect size estimate should not be biased. Check if the bias detection tests that are reported in the meta-analysis are state-of-the-art, or perform multiple bias detection tests yourself [@carter_correcting_2019], and consider bias corrected effect size estimates (even though these estimates might still be biased, and do not necessarily reflect the true population effect size).
 
-```{r tbl-tablemetajust, echo = FALSE}
+```{r tbl-tablemetajust, echo = FALSE, results = 'asis'}
 #| tbl-cap: "Overview of recommendations when justifying the use of a meta-analytic effect size estimate for a power analysis."
 
 table_meta_just <- data.frame(c(
@@ -427,17 +455,18 @@ table_meta_just <- data.frame(c(
 
 colnames(table_meta_just) <- c("What to take into account", "How to take it into account?")
 
-table_print <- knitr::kable(table_meta_just)
-
-table_print <- kableExtra::column_spec(table_print, 1, width = "5cm")
-table_print <- kableExtra::column_spec(table_print, 2, width = "10cm")
-table_print
+# table_print <- knitr::kable(table_meta_just, "html", booktabs = T) 
+# 
+# table_print <- kableExtra::column_spec(table_print, 1, width = "5cm")
+# table_print <- kableExtra::column_spec(table_print, 2, width = "10cm")
+# table_print
+df_2_MD(table_meta_just)
 
 ```
 
 ## Using an Estimate from a Previous Study
 
-If a meta-analysis is not available, researchers often rely on an effect size from a previous study in an a-priori power analysis. The first issue that requires careful attention is whether the two studies are sufficiently similar. Just as when using an effect size estimate from a meta-analysis, researchers should consider if there are differences between the studies in terms of the population, the design, the manipulations, the measures, or other factors that should lead one to expect a different effect size. For example, intra-individual reaction time variability increases with age, and therefore a study performed on older participants should expect a smaller standardized effect size than a study performed on younger participants. If an earlier study used a very strong manipulation, and you plan to use a more subtle manipulation, a smaller effect size should be expected. Finally, effect sizes do not generalize to studies with different designs. For example, the effect size for a comparison between two groups is most often not similar to the effect size for an interaction in a follow-up study where a second factor is added to the original design [@lakens_simulation-based_2021].
+If a meta-analysis is not available, researchers often rely on an effect size from a previous study in an a-priori power analysis. The first issue that requires careful attention is whether the two studies are sufficiently similar. Just as when using an effect size estimate from a meta-analysis, researchers should consider if there are differences between the studies in terms of the population, the design, the manipulations, the measures, or other factors that should lead one to expect a different effect size. For example, intra-individual reaction time variability increases with age, and therefore a study performed on older participants should expect a smaller standardized effect size than a study performed on younger participants. If an earlier study used a very strong manipulation, and you plan to use a more subtle manipulation, a smaller effect size should be expected. Finally, effect sizes do not generalize to studies with different designs. For example, the effect size for a comparison between two groups is most often not similar to the effect size for an interaction in a follow-up study where a second factor is added to the original design [@lakens_simulationbased_2021].
 
 Even if a study is sufficiently similar, statisticians have warned against using effect size estimates from small pilot studies in power analyses. Leon, Davis, and Kraemer [-@leon_role_2011] write: 
 
@@ -520,11 +549,11 @@ BUCSS_res <- BUCSS::ss.power.ba(
 
 In essence, the problem with using small studies to estimate the effect size that will be entered into an a-priori power analysis is that due to publication bias or follow-up bias the effect sizes researchers end up using for their power analysis do not come from a full *F* distribution, but from what is known as a *truncated* *F* distribution [@taylor_bias_1996]. For example, imagine if there is extreme publication bias in the situation illustrated in @fig-followupbias. The only studies that would be accessible to researchers would come from the part of the distribution where $\eta_p^2$ > 0.08, and the test result would be statistically significant. It is possible to compute an effect size estimate that, based on certain assumptions, corrects for bias. For example, imagine we observe a result in the literature for a One-Way ANOVA with 3 conditions, reported as *F*(2, 42) = 0.017, $\eta_p^2$ = 0.176. If we would take this effect size at face value and enter it as our effect size estimate in an a-priori power analysis, the suggested sample size to achieve 80% power would suggest we need to collect `r ceiling(pwr_res)` observations in each condition. 
 
-However, if we assume bias is present, we can use the `BUCSS` R package [@anderson_sample-size_2017] to perform a power analysis that attempts to correct for bias. In the example above, a power analysis that takes bias into account (under a specific model of publication bias, based on a truncated *F* distribution where only significant results are published) suggests collecting `r BUCSS_res[[1]][1]` participants in each condition instead. It is possible that the bias corrected estimate of the non-centrality parameter used to compute power is zero, in which case it is not possible to correct for bias using this method. As an alternative to formally modeling a correction for publication bias whenever researchers assume an effect size estimate is biased, researchers can simply use a more conservative effect size estimate, for example by computing power based on the lower limit of a 60% two-sided confidence interval around the effect size estimate, which @perugini_safeguard_2014 refer to as *safeguard power*. Both these approaches lead to a more conservative power analysis, but not necessarily a more accurate power analysis. It is simply not possible to perform an accurate power analysis on the basis of an effect size estimate from a study that might be biased and/or had a small sample size [@teare_sample_2014]. If it is not possible to specify a smallest effect size of interest, and there is great uncertainty about which effect size to expect, it might be more efficient to perform a study with a sequential design (discussed below). 
+However, if we assume bias is present, we can use the `BUCSS` R package [@anderson_samplesize_2017] to perform a power analysis that attempts to correct for bias. In the example above, a power analysis that takes bias into account (under a specific model of publication bias, based on a truncated *F* distribution where only significant results are published) suggests collecting `r BUCSS_res[[1]][1]` participants in each condition instead. It is possible that the bias corrected estimate of the non-centrality parameter used to compute power is zero, in which case it is not possible to correct for bias using this method. As an alternative to formally modeling a correction for publication bias whenever researchers assume an effect size estimate is biased, researchers can simply use a more conservative effect size estimate, for example by computing power based on the lower limit of a 60% two-sided confidence interval around the effect size estimate, which @perugini_safeguard_2014 refer to as *safeguard power*. Both these approaches lead to a more conservative power analysis, but not necessarily a more accurate power analysis. It is simply not possible to perform an accurate power analysis on the basis of an effect size estimate from a study that might be biased and/or had a small sample size [@teare_sample_2014]. If it is not possible to specify a smallest effect size of interest, and there is great uncertainty about which effect size to expect, it might be more efficient to perform a study with a sequential design (discussed below). 
 
 To summarize, an effect size from a previous study in an a-priori power analysis can be used if three conditions are met (see @tbl-table-es-just). First, the previous study is sufficiently similar to the planned study. Second, there was a low risk of bias (e.g., the effect size estimate comes from a Registered Report, or from an analysis for which results would not have impacted the likelihood of publication). Third, the sample size is large enough to yield a relatively accurate effect size estimate, based on the width of a 95% CI around the observed effect size estimate. There is always uncertainty around the effect size estimate, and entering the upper and lower limit of the 95% CI around the effect size estimate might be informative about the consequences of the uncertainty in the effect size estimate for an a-priori power analysis.
 
-```{r tbl-table-es-just, echo = FALSE}
+```{r tbl-table-es-just, echo = FALSE, results = 'asis'}
 #| tbl-cap: "Overview of recommendations when justifying the use of an effect size estimate from a single study."
 
 table_es_just <- data.frame(c(
@@ -538,12 +567,12 @@ table_es_just <- data.frame(c(
 
 colnames(table_es_just) <- c("What to take into account", "How to take it into account?")
 
-table_print <- knitr::kable(table_es_just)
-
-table_print <- kableExtra::column_spec(table_print, 1, width = "5cm")
-table_print <- kableExtra::column_spec(table_print, 2, width = "10cm")
-table_print
-
+# table_print <- knitr::kable(table_es_just, "html", booktabs = T) 
+# 
+# table_print <- kableExtra::column_spec(table_print, 1, width = "5cm")
+# table_print <- kableExtra::column_spec(table_print, 2, width = "10cm")
+# table_print
+df_2_MD(table_es_just)
 ```
 
 ## Using an Estimate from a Theoretical Model
@@ -646,18 +675,6 @@ knitr::include_graphics("images/sensitivity1.png")
 
 If the number of observations per group had been larger, the evaluation might have been more positive. We might not have had any specific effect size in mind, but if we had collected 150 observations per group, a sensitivity analysis could have shown that power was sufficient for a range of effects we believe is most interesting to examine, and we would still have approximately 50% power for quite small effects. For a sensitivity analysis to be meaningful, the sensitivity curve should be compared against a smallest effect size of interest, or a range of effect sizes that are expected. A sensitivity power analysis has no clear cut-offs to examine [@bacchetti_current_2010]. Instead, the idea is to make a holistic trade-off between different effect sizes one might observe or care about, and their associated statistical power. 
 
-<!-- If we look at the effect size that we would have 50% power for, we see it is *d* = 0.7411272. This is very close to our critical effect size of *d* = 0.7479725 (the smallest effect size that, if observed, would be significant). The difference is due to the non-central *t*-distribution (see Figure \@ref(fig:noncentralt). If the distribution was symmetric, observing an effect size exactly on the critical value would mean half of the distribution is smaller than the critical effect size, and half of the distribution is larger, and we would have exactly 50% power for the critical effect size. Because the distribution is not symmetrical, we need to find the critical effect size for which it *is* true that half the distribution falls below it, and half the distribution falls above it. This value can't be calculated directly, and requires an iterative procedure that optimizes the values of the non-centrality parameter such that power is exactly 50% [@smithson_confidence_2003]. The `pwr` package in R can calculate this effect size in a sensitivity analysis where we enter the sample size (per group), the alpha level, and the desired power for a two-sided independent *t* test, which will return *d* = 0.7411272. We can check this true effect size would indeed give with 50% power. -->
-
-<!-- ```{r, echo = TRUE} -->
-<!-- # Sensitivity power analysis -->
-<!-- pwr::pwr.t.test( -->
-<!--   n = 15,  -->
-<!--   sig.level = 0.05,  -->
-<!--   power = 0.5,  -->
-<!--   type = "two.sample", -->
-<!--   alternative = "two.sided") -->
-<!-- ``` -->
-
 ## The Distribution of Effect Sizes in a Research Area
 
 In my personal experience the most commonly entered effect size estimate in an a-priori power analysis for an independent *t* test is Cohen's benchmark for a 'medium' effect size, because of what is known as the *default effect*. When you open G\*Power, a 'medium' effect is the default option for an a-priori power analysis. Cohen's benchmarks for small, medium, and large effects should not be used in an a-priori power analysis [@cook_assessing_2014; @correll_avoid_2020], and Cohen regretted having proposed these benchmarks [@funder_evaluating_2019]. The large variety in research topics means that any 'default' or 'heuristic' that is used to compute statistical power is not just unlikely to correspond to your actual situation, but it is also likely to lead to a sample size that is substantially misaligned with the question you are trying to answer with the collected data. 
@@ -709,9 +726,9 @@ This brings us to the second situation where a compromise power analysis can be 
 
 For example, if we plan to perform a two-sided *t* test, can feasibly collect at most 50 observations in each independent group, and expect a population effect size of 0.5, we would have 70% power if we set our alpha level to 0.05. Alternatively, using compromise power analysis, we can choose to weigh both types of error equally ($\beta/\alpha$ ratio = 1) by setting both the alpha level and Type II error rate to 0.149. Doing so, we would have 85.10% power to detect the expected population effect size of *d* = 0.5 instead. The choice of $\alpha$ and $\beta$ in a compromise power analysis can be extended to take prior probabilities of the null and alternative hypothesis into account [@maier_justify_2022; @murphy_statistical_2014; @miller_quest_2019]. 
 
-A compromise power analysis requires a researcher to specify the sample size. This sample size itself requires a justification, so a compromise power analysis will typically be performed together with a resource constraint justification for a sample size. It is especially important to perform a compromise power analysis if your resource constraint justification is strongly based on the need to make a decision, in which case a researcher should think carefully about the Type I and Type II error rates stakeholders are willing to accept. However, a compromise power analysis also makes sense if the sample size is very large, but a researcher did not have the freedom to set the sample size. This might happen if, for example, data collection is part of a larger international study and the sample size is based on other research questions. In designs where the Type II error rate is very small (and power is very high) some statisticians have also recommended to lower the alpha level to prevent Lindley's paradox, a situation where a significant effect (*p* < $\alpha$) is evidence for the null hypothesis [@jeffreys_theory_1939; @good_bayesnon-bayes_1992]. Lowering the alpha level as a function of the statistical power of the test can prevent this paradox, providing another argument for a compromise power analysis when sample sizes are large [@maier_justify_2022]. Finally, a compromise power analysis needs a justification for the effect size, either based on a smallest effect size of interest or an effect size that is expected. @tbl-table-compromise-just lists three aspects that should be discussed alongside a reported compromise power analysis.
+A compromise power analysis requires a researcher to specify the sample size. This sample size itself requires a justification, so a compromise power analysis will typically be performed together with a resource constraint justification for a sample size. It is especially important to perform a compromise power analysis if your resource constraint justification is strongly based on the need to make a decision, in which case a researcher should think carefully about the Type I and Type II error rates stakeholders are willing to accept. However, a compromise power analysis also makes sense if the sample size is very large, but a researcher did not have the freedom to set the sample size. This might happen if, for example, data collection is part of a larger international study and the sample size is based on other research questions. In designs where the Type II error rate is very small (and power is very high) some statisticians have also recommended to lower the alpha level to prevent Lindley's paradox, a situation where a significant effect (*p* < $\alpha$) is evidence for the null hypothesis [@jeffreys_theory_1939; @good_bayes_1992]. Lowering the alpha level as a function of the statistical power of the test can prevent this paradox, providing another argument for a compromise power analysis when sample sizes are large [@maier_justify_2022]. Finally, a compromise power analysis needs a justification for the effect size, either based on a smallest effect size of interest or an effect size that is expected. @tbl-table-compromise-just lists three aspects that should be discussed alongside a reported compromise power analysis.
 
-```{r tbl-table-compromise-just, echo = FALSE}
+```{r tbl-table-compromise-just, echo = FALSE, results = 'asis'}
 #| tbl-cap: "Overview of recommendations when justifying error rates based on a compromise power analysis."
 
 table_compromise <- data.frame(c(
@@ -724,11 +741,12 @@ table_compromise <- data.frame(c(
 
 colnames(table_compromise) <- c("What to take into account", "How to take it into account?")
 
-table_print <- knitr::kable(table_compromise)
-
-table_print <- kableExtra::column_spec(table_print, 1, width = "5cm")
-table_print <- kableExtra::column_spec(table_print, 2, width = "10cm")
-table_print
+# table_print <- knitr::kable(table_compromise, "html", booktabs = T) 
+# 
+# table_print <- kableExtra::column_spec(table_print, 1, width = "5cm")
+# table_print <- kableExtra::column_spec(table_print, 2, width = "10cm")
+# table_print
+df_2_MD(table_compromise)
 
 ```
 
@@ -786,7 +804,7 @@ When editors or reviewers ask researchers to report post-hoc power analyses they
 
 ## Sequential Analyses {#sec-sequentialsamplesize}
 
-Whenever the sample size is justified based on an a-priori power analysis it can be very efficient to collect data in a sequential design. Sequential designs control error rates across multiple looks at the data (e.g., after 50, 100, and 150 observations have been collected) and can reduce the average expected sample size that is collected compared to a fixed design where data is only analyzed after the maximum sample size is collected [@wassmer_group_2016; @proschan_statistical_2006]. Sequential designs have a long history [@dodge_method_1929], and exist in many variations, such as the Sequential Probability Ratio Test [@wald_sequential_1945], combining independent statistical tests [@westberg_combining_1985], group sequential designs [@jennison_group_2000], sequential Bayes factors [@schonbrodt_sequential_2017], and safe testing [@grunwald_safe_2019]. Of these approaches, the Sequential Probability Ratio Test is most efficient if data can be analyzed after every observation [@schnuerch_controlling_2020]. Group sequential designs, where data is collected in batches, provide more flexibility in data collection, error control, and corrections for effect size estimates [@wassmer_group_2016]. Safe tests provide optimal flexibility if there are dependencies between observations [@ter_schure_accumulation_2019].
+Whenever the sample size is justified based on an a-priori power analysis it can be very efficient to collect data in a sequential design. Sequential designs control error rates across multiple looks at the data (e.g., after 50, 100, and 150 observations have been collected) and can reduce the average expected sample size that is collected compared to a fixed design where data is only analyzed after the maximum sample size is collected [@wassmer_group_2016; @proschan_statistical_2006]. Sequential designs have a long history [@dodge_method_1929], and exist in many variations, such as the Sequential Probability Ratio Test [@wald_sequential_1945], combining independent statistical tests [@westberg_combining_1985], group sequential designs [@jennison_group_2000], sequential Bayes factors [@schonbrodt_sequential_2017], and safe testing [@grunwald_safe_2019]. Of these approaches, the Sequential Probability Ratio Test is most efficient if data can be analyzed after every observation [@schnuerch_controlling_2020]. Group sequential designs, where data is collected in batches, provide more flexibility in data collection, error control, and corrections for effect size estimates [@wassmer_group_2016]. Safe tests provide optimal flexibility if there are dependencies between observations [@terschure_accumulation_2019].
 
 Sequential designs are especially useful when there is considerable uncertainty about the effect size, or when it is plausible that the true effect size is larger than the smallest effect size of interest the study is designed to detect [@lakens_performing_2014]. In such situations data collection has the possibility to terminate early if the effect size is larger than the smallest effect size of interest, but data collection can continue to the maximum sample size if needed. Sequential designs can prevent waste when testing hypotheses, both by stopping early when the null hypothesis can be rejected, as by stopping early if the presence of a smallest effect size of interest can be rejected (i.e., stopping for futility). Group sequential designs are currently the most widely used approach to sequential analyses, and can be planned and analyzed using `rpact` or `gsDesign`. Shiny apps are available for both [rpact](https://rpact.shinyapps.io/public/) and [gsDesign](https://gsdesign.shinyapps.io/prod/). 
 
@@ -794,7 +812,7 @@ Sequential designs are especially useful when there is considerable uncertainty 
 
 The most straightforward approach to increase the informational value of studies is to increase the sample size. Because resources are often limited, it is also worthwhile to explore different approaches to increasing the power of a test without increasing the sample size. The first option is to use directional (one-sided) tests where relevant, instead of two-sided tests. Researchers often make directional predictions, such as ‘we predict X is larger than Y’. The statistical test that logically follows from this prediction is a directional (or one-sided) *t* test. A directional test moves the Type I error rate to one side of the tail of the distribution, which lowers the critical value, and therefore requires less observations to achieve the same statistical power. 
 
-Although there is some discussion about when directional tests are appropriate, they are perfectly defensible from a Neyman-Pearson perspective on hypothesis testing [@cho_is_2013], which makes a (preregistered) directional test a straightforward approach to both increase the power of a test, as the riskiness of the prediction. However, there might be situations where you do not want to ask a directional question. Sometimes, especially in research with applied consequences, it might be important to examine if a null effect can be rejected, even if the effect is in the opposite direction as predicted. For example, when you are evaluating a recently introduced educational intervention, and you predict the intervention will increase the performance of students, you might want to explore the possibility that students perform worse, to be able to recommend abandoning the new intervention. In such cases it is also possible to distribute the error rate in a 'lop-sided' manner, for example assigning a stricter error rate to effects in the negative than in the positive direction [@rice_heads_1994]. 
+Although there is some discussion about when directional tests are appropriate, they are perfectly defensible from a Neyman-Pearson perspective on hypothesis testing [@cho_twotailed_2013], which makes a (preregistered) directional test a straightforward approach to both increase the power of a test, as the riskiness of the prediction. However, there might be situations where you do not want to ask a directional question. Sometimes, especially in research with applied consequences, it might be important to examine if a null effect can be rejected, even if the effect is in the opposite direction as predicted. For example, when you are evaluating a recently introduced educational intervention, and you predict the intervention will increase the performance of students, you might want to explore the possibility that students perform worse, to be able to recommend abandoning the new intervention. In such cases it is also possible to distribute the error rate in a 'lop-sided' manner, for example assigning a stricter error rate to effects in the negative than in the positive direction [@rice_heads_1994]. 
 
 Another approach to increase the power without increasing the sample size, is to increase the alpha level of the test, as explained in the section on compromise power analysis. Obviously, this comes at an increased probability of making a Type I error. The risk of making either type of error should be carefully weighed, which typically requires taking into account the prior probability that the null hypothesis is true [@cascio_open_1983; @mudge_setting_2012; @murphy_statistical_2014; @miller_quest_2019]. If you *have* to make a decision, or want to make a claim, and the data you can feasibly collect is limited, increasing the alpha level is justified, either based on a compromise power analysis, or based on a cost-benefit analysis [@field_minimizing_2004; @baguley_understanding_2004].
 
@@ -996,7 +1014,7 @@ If we calculate a standard deviation from a sample, this value is an estimate of
 
 $$(N - 1)s^2/\chi^2_{N-1:\alpha/2},(N - 1)s^2/\chi^2_{N-1:1-\alpha/2}$$
 
-Whenever there is uncertainty about parameters, researchers can use sequential designs to perform an *internal pilot study* [@wittes_role_1990]. The idea behind an internal pilot study is that researchers specify a tentative sample size for the study, perform an interim analysis, use the data from the internal pilot study to update parameters such as the variance of the measure, and finally update the final sample size that will be collected. As long as interim looks at the data are blinded (e.g., information about the conditions is not taken into account) the sample size can be adjusted based on an updated estimate of the variance without any practical consequences for the Type I error rate [@friede_sample_2006; @proschan_two-stage_2005]. Therefore, if researchers are interested in designing an informative study where the Type I and Type II error rates are controlled, but they lack information about the standard deviation, an internal pilot study might be an attractive approach to consider [@chang_adaptive_2016]. 
+Whenever there is uncertainty about parameters, researchers can use sequential designs to perform an *internal pilot study* [@wittes_role_1990]. The idea behind an internal pilot study is that researchers specify a tentative sample size for the study, perform an interim analysis, use the data from the internal pilot study to update parameters such as the variance of the measure, and finally update the final sample size that will be collected. As long as interim looks at the data are blinded (e.g., information about the conditions is not taken into account) the sample size can be adjusted based on an updated estimate of the variance without any practical consequences for the Type I error rate [@friede_sample_2006; @proschan_twostage_2005]. Therefore, if researchers are interested in designing an informative study where the Type I and Type II error rates are controlled, but they lack information about the standard deviation, an internal pilot study might be an attractive approach to consider [@chang_adaptive_2016]. 
 
 ## Conventions as meta-heuristics
 
@@ -1012,7 +1030,7 @@ A value of information perspective to sample size justification also applies to 
 
 When sampling, the goal is often not to pick a representative sample, but a sample that contains a sufficiently diverse number of subjects such that saturation is reached efficiently. Fugard and Potts [-@fugard_supporting_2015] show how to move towards a more informed justification for the sample size in qualitative research based on 1) the number of codes that exist in the population (e.g., the number of reasons people have pets), 2) the probability a code can be observed in a single information source (e.g., the probability that someone you interview will mention each possible reason for having a pet), and 3)  the number of times you want to observe each code. They provide an R formula based on binomial probabilities to compute a required sample size to reach a desired probability of observing codes.
 
-A more advanced approach is used in Rijnsoever [-@rijnsoever_i_2017], which also explores the importance of different sampling strategies. In general, purposefully sampling information from sources you expect will yield novel information is much more efficient than random sampling, but this also requires a good overview of the expected codes, and the sub-populations in which each code can be observed. Sometimes, it is possible to identify information sources that, when interviewed, would at least yield one new code (e.g., based on informal communication before an interview). A good sample size justification in qualitative research is based on 1) an identification of the populations, including any sub-populations, 2) an estimate of the number of codes in the (sub-)population, 3) the probability a code is encountered in an information source, and 4) the sampling strategy that is used.
+A more advanced approach is used in Rijnsoever [-@rijnsoever_can_2017], which also explores the importance of different sampling strategies. In general, purposefully sampling information from sources you expect will yield novel information is much more efficient than random sampling, but this also requires a good overview of the expected codes, and the sub-populations in which each code can be observed. Sometimes, it is possible to identify information sources that, when interviewed, would at least yield one new code (e.g., based on informal communication before an interview). A good sample size justification in qualitative research is based on 1) an identification of the populations, including any sub-populations, 2) an estimate of the number of codes in the (sub-)population, 3) the probability a code is encountered in an information source, and 4) the sampling strategy that is used.
 
 ## Discussion
 
@@ -1020,7 +1038,7 @@ Providing a coherent sample size justification is an essential step in designing
 
 The process of justifying a sample size when designing a study should sometimes lead to the conclusion that it is not worthwhile to collect the data, because the study does not have sufficient informational value to justify the costs. There will be cases where it is unlikely there will ever be enough data to perform a meta-analysis (for example because of a lack of general interest in the topic), the information will not be used to make a decision or claim, and the statistical tests do not allow you to test a hypothesis with reasonable error rates or to estimate an effect size with sufficient accuracy. If there is no good justification to collect the maximum number of observations that one can feasibly collect, performing the study anyway is a waste of time and/or money [@button_power_2013; @brown_errors_1983; @halpern_continuing_2002].
 
-The awareness that sample sizes in past studies were often too small to meet any realistic inferential goals is growing among psychologists [@lindsay_replication_2015; @sedlmeier_studies_1989; @fraley_n-pact_2014; @button_power_2013]. As an increasing number of journals start to require sample size justifications, some researchers will realize they need to collect larger samples than they were used to. This means researchers will need to request more money for participant payment in grant proposals, or that researchers will need to increasingly collaborate [@moshontz_psychological_2018]. If you believe your research question is important enough to be answered, but you are not able to answer the question with your current resources, one approach to consider is to organize a research collaboration with peers, and pursue an answer to this question collectively.
+The awareness that sample sizes in past studies were often too small to meet any realistic inferential goals is growing among psychologists [@lindsay_replication_2015; @sedlmeier_studies_1989; @fraley_npact_2014; @button_power_2013]. As an increasing number of journals start to require sample size justifications, some researchers will realize they need to collect larger samples than they were used to. This means researchers will need to request more money for participant payment in grant proposals, or that researchers will need to increasingly collaborate [@moshontz_psychological_2018]. If you believe your research question is important enough to be answered, but you are not able to answer the question with your current resources, one approach to consider is to organize a research collaboration with peers, and pursue an answer to this question collectively.
 
 ## Test Yourself
 ::: {.webex-check .webex-box}
@@ -1193,7 +1211,7 @@ cat(longmcq(opts_p))
 
 10. What is the goal in a compromise power analysis? 
 
-11. Why is ‘post-hoc’ or ‘retrospective’ power not a useful way to draw inferences about non-significant results? 
+11. Why is ‘post-hoc’ or ‘retrospective’ power not a useful way to draw inferences about non-significant results? BEST
 
 12. When would you perform a sensitivity power analysis? 
 

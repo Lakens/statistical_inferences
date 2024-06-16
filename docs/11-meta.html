@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.310">
+<meta name="generator" content="quarto-1.4.555">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="This open educational resource contains information to improve statistical inferences, design better experiments, and report scientific research more transparently.">
 <title>Improving Your Statistical Inferences - 11&nbsp; Meta-analysis</title>
@@ -20,7 +20,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -56,6 +56,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -99,7 +100,13 @@ div.csl-indent {
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -108,8 +115,10 @@ div.csl-indent {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script><script async="" src="https://www.googletagmanager.com/gtag/js?id=G-0MK2WTGRM3"></script><script type="text/javascript">
 
@@ -117,7 +126,33 @@ window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
-</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><link rel="stylesheet" href="include/booktem.css">
+</script><script src="site_libs/kePrint-0.0.1/kePrint.js"></script><link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script><link rel="stylesheet" href="include/booktem.css">
 <link rel="stylesheet" href="include/style.css">
 <link rel="stylesheet" href="include/webex.css">
 </head>
@@ -125,19 +160,19 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./11-meta.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Meta-analysis</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./11-meta.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Meta-analysis</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
   </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Improving Your Statistical Inferences</a> 
         <div class="sidebar-tools-main tools-wide">
@@ -287,7 +322,7 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
 </li>
     </ul>
 </div>
-</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
@@ -309,7 +344,7 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
 <li><a href="#open-questions" id="toc-open-questions" class="nav-link" data-scroll-target="#open-questions"><span class="header-section-number">11.11.1</span> Open Questions</a></li>
   </ul>
 </li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/Lakens/statistical_inferences/edit/master/11-meta.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/Lakens/statistical_inferences/issues/new" class="toc-action">Report an issue</a></p><p><a href="https://github.com/Lakens/statistical_inferences/blob/master/11-meta.qmd" class="toc-action">View source</a></p></div></div></nav>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/Lakens/statistical_inferences/edit/master/11-meta.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Lakens/statistical_inferences/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/Lakens/statistical_inferences/blob/master/11-meta.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
@@ -325,6 +360,7 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
     
   </div>
   
+
 
 </header><p>Every single study is just a data-point in a future meta-analysis. If you draw small samples from a population, the mean and standard deviation in the sample can differ considerably from the mean and standard deviation in the population. There is great variability in small samples. Parameter estimates from small samples are very imprecise, and therefore the 95% confidence intervals around effect sizes are very wide. Indeed, this led Cohen <span class="citation" data-cites="cohen_earth_1994">(<a href="references.html#ref-cohen_earth_1994" role="doc-biblioref">1994</a>)</span> to write “I suspect that the main reason [confidence intervals] are not reported is that they are so embarrassingly large!” If we want a more precise estimate of our parameter of interest, such as the mean difference or correlation in the population, we need either run extremely large single studies, or alternatively, combine data from several studies by performing a meta-analysis. The most common approach to combine studies is to perform a meta-analysis of effect size estimates.</p>
 <p>You can perform a meta-analysis for a set of studies in a single article you plan to publish (often called an internal meta-analysis), or you can search the literature for multiple studies reported in as many different articles as possible, and perform a meta-analysis on all studies others have published. An excellent introduction to meta-analyses is provided in the book by <span class="citation" data-cites="borenstein_introduction_2009">Borenstein (<a href="references.html#ref-borenstein_introduction_2009" role="doc-biblioref">2009</a>)</span>. There is commercial software you can use to perform meta-analyses, but I highly recommend against using such software. Almost all commercial software packages lack transparency, and do not allow you to share your analysis code and data with other researchers. In this chapter, we will be using R to perform a meta-analysis of effect sizes, using the <code>metafor</code> package by <span class="citation" data-cites="viechtbauer_conducting_2010">Viechtbauer (<a href="references.html#ref-viechtbauer_conducting_2010" role="doc-biblioref">2010</a>)</span>. An important benefit of using <code>metafor</code> is that your meta-analysis can be made completely reproducible. If you plan to perform a narrative review, it is relatively little additional effort to also code the effect sizes and sample size, and perform an effect size meta-analysis, and to code the statistical tests and <em>p</em>-values, to perform a <em>p</em>-curve or <em>z</em>-curve analysis (which will be discussed in the next chapter on <a href="12-bias.html">bias detection</a>).</p>
@@ -353,10 +389,13 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
 <span id="cb1-17"><a href="#cb1-17"></a>  <span class="fu">theme</span>(<span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#fffafa"</span>)) <span class="sc">+</span> </span>
 <span id="cb1-18"><a href="#cb1-18"></a>  <span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#fffafa"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="fig-plot-hist-iq-1" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="11-meta_files/figure-html/fig-plot-hist-iq-1-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;11.1: Simulation of 10 random datapoints with mean = 100 and sd = 15 in the population.</figcaption><p></p>
-</figure>
+<div id="fig-plot-hist-iq-1" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-plot-hist-iq-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="11-meta_files/figure-html/fig-plot-hist-iq-1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plot-hist-iq-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.1: Simulation of 10 random datapoints with mean = 100 and sd = 15 in the population.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -364,7 +403,7 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="11-meta_files/figure-html/sim-4-iq-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="11-meta_files/figure-html/sim-4-iq-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -373,50 +412,65 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
 <p>A new simulated sample with 100 participants is plotted below. We are slowly seeing what is known as the <strong>normal distribution</strong> (and the frequency scores start to resemble the red dotted line illustrating the normal distribution of the population). This is the well-known bell shaped curve that represents the distribution of many variables in scientific research (although some other types of distributions are quite common as well). The mean and standard deviation are much closer to the true mean and standard deviation, and this is true for most of the simulated samples if you set n &lt;- 100 in the code above and run additional simulations.</p>
 <div class="cell" data-layout-align="center" data-fig.margin="false">
 <div class="cell-output-display">
-<div id="fig-plot-hist-iq-2" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="11-meta_files/figure-html/fig-plot-hist-iq-2-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;11.2: 100 random datapoints with mean = 100 and sd = 15 in the population.</figcaption><p></p>
-</figure>
+<div id="fig-plot-hist-iq-2" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-plot-hist-iq-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="11-meta_files/figure-html/fig-plot-hist-iq-2-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plot-hist-iq-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.2: 100 random datapoints with mean = 100 and sd = 15 in the population.
+</figcaption></figure>
 </div>
 </div>
 </div>
 <p>If we simulate a really large sample of 1000 observations, we will see the benefits of collecting a large sample size in terms of accuracy of the measurement. Not every simulated study of 1000 people will yield the true mean and standard deviation, but it will happen quite often. And note how although the distribution is very close to a normal distribution, even with 1000 people it is not perfect.</p>
 <div class="cell" data-layout-align="center" data-fig.margin="false">
 <div class="cell-output-display">
-<div id="fig-plot-hist-iq-3" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="11-meta_files/figure-html/fig-plot-hist-iq-3-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;11.3: 1000 random datapoints with mean = 100 and sd = 15 in the population.</figcaption><p></p>
-</figure>
+<div id="fig-plot-hist-iq-3" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-plot-hist-iq-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="11-meta_files/figure-html/fig-plot-hist-iq-3-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plot-hist-iq-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.3: 1000 random datapoints with mean = 100 and sd = 15 in the population.
+</figcaption></figure>
 </div>
 </div>
 </div>
 <p>So far, we have simulated only a single group of observations, but it is also informative to examine the variation we will observe when we compare the means in two independent groups. Assume we have a new IQ training program that will increase people’s IQ score by 6 points. People in condition 1 are in the control condition – they do not get IQ training. People in condition 2 get IQ training. Let’s simulate 10 people in each group, assuming mean IQ in the control condition is 100 and in the experimental group is 106 (the SD is still 15 in each group).</p>
 <div class="cell" data-layout-align="center" data-fig.margin="false">
 <div class="cell-output-display">
-<div id="fig-plot-group1" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="11-meta_files/figure-html/fig-plot-group1-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;11.4: Simulation of 10 observations in two independent groups.</figcaption><p></p>
-</figure>
+<div id="fig-plot-group1" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-plot-group1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="11-meta_files/figure-html/fig-plot-group1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plot-group1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.4: Simulation of 10 observations in two independent groups.
+</figcaption></figure>
 </div>
 </div>
 </div>
 <p>The two groups differ in how close they are to their true means, and as a consequence, the difference between groups varies as well. Note that this difference is the main variable in statistical analyses when comparing two groups in for example a <em>t</em>-test. In this specific simulation, we got quite extreme results, with a score of 96 (when the population mean is 100) and a score of 111 (when the population mean is 106). So in this sample, due to random variation, we calculate an effect size estimate that is quite a bit larger than the true effect size. Let’s simulate 4 additional datasets to see the variation.</p>
 <div class="cell" data-layout-align="center" data-fig.margin="false">
 <div class="cell-output-display">
-<div id="fig-plot-group2" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="11-meta_files/figure-html/fig-plot-group2-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;11.5: Four simulated samples of independent groups.</figcaption><p></p>
-</figure>
+<div id="fig-plot-group2" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-plot-group2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="11-meta_files/figure-html/fig-plot-group2-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plot-group2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.5: Four simulated samples of independent groups.
+</figcaption></figure>
 </div>
 </div>
 </div>
-<p>We see that there is quite some variation, up to the point that in one simulation the sample means are in the opposite direction of the population means. Again, increasing the sample size will mean that, in the long run, the sample means will get closer to the population means, and that we are more accurately estimating the difference between conditions. With 250 observations in each group, a randomly simulated set of observations for the two groups might look like <a href="#fig-plotgroup3">Figure&nbsp;<span>11.6</span></a>. Note that this difference might not look impressive. However, the difference would pass a significance test (an independent <em>t</em>-test) with a very low alpha level.</p>
+<p>We see that there is quite some variation, up to the point that in one simulation the sample means are in the opposite direction of the population means. Again, increasing the sample size will mean that, in the long run, the sample means will get closer to the population means, and that we are more accurately estimating the difference between conditions. With 250 observations in each group, a randomly simulated set of observations for the two groups might look like <a href="#fig-plotgroup3" class="quarto-xref">Figure&nbsp;<span>11.6</span></a>. Note that this difference might not look impressive. However, the difference would pass a significance test (an independent <em>t</em>-test) with a very low alpha level.</p>
 <div class="cell" data-layout-align="center" data-fig.margin="false">
 <div class="cell-output-display">
-<div id="fig-plotgroup3" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="11-meta_files/figure-html/fig-plotgroup3-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;11.6: Simulated sample of 250 independent observations.</figcaption><p></p>
-</figure>
+<div id="fig-plotgroup3" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-plotgroup3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="11-meta_files/figure-html/fig-plotgroup3-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plotgroup3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.6: Simulated sample of 250 independent observations.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -427,10 +481,13 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
 <p><span class="math display">\[r=\frac{n \Sigma x y-(\Sigma x )(\Sigma y)}{\sqrt{[n \Sigma x^{2}-(\Sigma x)^{2}][n \Sigma y^{2}-(\Sigma y)^{2}]}}\]</span> When we randomly simulate observations for 30 twins, we get the following result.</p>
 <div class="cell" data-layout-align="center" data-fig.margin="false">
 <div class="cell-output-display">
-<div id="fig-plot-cor1" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="11-meta_files/figure-html/fig-plot-cor1-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;11.7: Correlation based on 30 pairs.</figcaption><p></p>
-</figure>
+<div id="fig-plot-cor1" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-plot-cor1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="11-meta_files/figure-html/fig-plot-cor1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plot-cor1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.7: Correlation based on 30 pairs.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -438,10 +495,13 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
 <p><span class="math display">\[SE_{r_{xy}} = \frac{1 - r^2_{xy}}{\sqrt{(n - 2)}}\]</span></p>
 <div class="cell" data-layout-align="center" data-fig.margin="false">
 <div class="cell-output-display">
-<div id="fig-plot-cor2" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="11-meta_files/figure-html/fig-plot-cor2-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;11.8: Correlation based on 300 pairs.</figcaption><p></p>
-</figure>
+<div id="fig-plot-cor2" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-plot-cor2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="11-meta_files/figure-html/fig-plot-cor2-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plot-cor2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.8: Correlation based on 300 pairs.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -462,7 +522,7 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
 <span id="cb2-9"><a href="#cb2-9"></a>g</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="kable-table">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead><tr class="header">
 <th style="text-align: right;">yi</th>
 <th style="text-align: right;">vi</th>
@@ -515,23 +575,29 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>In a meta-analysis, a <em>Z</em>-test is used to examine whether the null-hypothesis can be rejected. This assumes a normally distributed random effect size model. Normally, you would analyze data from a single study with two groups using a <em>t</em>-test, which not surprisingly uses a <em>t</em>-distribution. I don’t know why statistical computations sometimes care a lot about a small amount of bias (the difference between the effect size <em>d</em> and <em>g</em>, for example) and sometimes not (the difference between <em>Z</em> and <em>t</em>), but meta-analysts seem happy with <em>Z</em>-scores (in fact, with large enough sample sizes (which is commonly true in a meta-analysis) the difference between a <em>Z</em>-test and <em>t</em>-test is tiny). If we directly compare a single-study meta-analysis based on a <em>Z</em>-test with a <em>t</em>-test, we will see some tiny differences in the results.</p>
 <p>As explained in the chapter on <a href="06-effectsize.html">effect sizes</a> we can directly calculate the effect size Hedges’ <em>g</em> (and it’s 95% confidence interval) using MOTE <span class="citation" data-cites="buchanan_mote_2017">(<a href="references.html#ref-buchanan_mote_2017" role="doc-biblioref">Buchanan et al., 2017</a>)</span>. The MOTE package uses the <em>t</em>-distribution when calculating confidence intervals around the effect size (and we can see this makes only a tiny difference compared to using the <em>Z</em>-distribution in a meta-analysis with 50 observations in each group).</p>
 <p>The <em>t</em>-value is 2.835, and the <em>p</em>-value is 0.006. The results are very similar to those computed when performing a meta-analysis, with <em>g</em> = 0.55, 95% CI[0.16; 0.94], where the effect size and the upper bound for the confidence interval differ only 0.01 after rounding.</p>
-<p>It is now common to visualize the results of a meta-analysis using a forest plot. According to <span class="citation" data-cites="cooper_handbook_2009">Cooper et al. (<a href="references.html#ref-cooper_handbook_2009" role="doc-biblioref">2009</a>)</span> the first forest plot was published in 1978 <span class="citation" data-cites="freiman_importance_1978">(<a href="references.html#ref-freiman_importance_1978" role="doc-biblioref">Freiman et al., 1978</a>)</span>, with the goal to visualize a large set of studies that had concluded the absence of an effect based on non-significant results in small studies (see <a href="#fig-freiman1978">Figure&nbsp;<span>11.9</span></a>). By plotting the width of the confidence interval for each study, it becomes possible to see that even though the studies do not reject an effect size of 0, and thus were all non-significant, many studies also did not reject the presence of a meaningful favorable treatment effect. To make large studies more noticeable in a forest plot, later versions added a square to indicate the estimated effect size, where the size of the square was proportional to the weight that will be assigned to the study when computing the combined effect.</p>
+<p>It is now common to visualize the results of a meta-analysis using a forest plot. According to <span class="citation" data-cites="cooper_handbook_2009">Cooper et al. (<a href="references.html#ref-cooper_handbook_2009" role="doc-biblioref">2009</a>)</span> the first forest plot was published in 1978 <span class="citation" data-cites="freiman_importance_1978">(<a href="references.html#ref-freiman_importance_1978" role="doc-biblioref">Freiman et al., 1978</a>)</span>, with the goal to visualize a large set of studies that had concluded the absence of an effect based on non-significant results in small studies (see <a href="#fig-freiman1978" class="quarto-xref">Figure&nbsp;<span>11.9</span></a>). By plotting the width of the confidence interval for each study, it becomes possible to see that even though the studies do not reject an effect size of 0, and thus were all non-significant, many studies also did not reject the presence of a meaningful favorable treatment effect. To make large studies more noticeable in a forest plot, later versions added a square to indicate the estimated effect size, where the size of the square was proportional to the weight that will be assigned to the study when computing the combined effect.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-freiman1978" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="images/freiman1978.jpg" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;11.9: First version of a forest plot by Freiman and colleagues, 1978 (image from https://www.jameslindlibrary.org/freiman-ja-chalmers-tc-smith-h-kuebler-rr-1978/).</figcaption><p></p>
-</figure>
+<div id="fig-freiman1978" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-freiman1978-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/freiman1978.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-freiman1978-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.9: First version of a forest plot by Freiman and colleagues, 1978 (image from https://www.jameslindlibrary.org/freiman-ja-chalmers-tc-smith-h-kuebler-rr-1978/).
+</figcaption></figure>
 </div>
 </div>
 </div>
-<p>In <a href="#fig-metaforest">Figure&nbsp;<span>11.10</span></a> we see a modern version of a forest plot, with the effect size for Study 1 marked by the black square at 0.56, and the confidence interval visualized by lines extending to 0.16 on the left and 0.95 on the right. The numbers printed on the right-hand side of the forest plot provide the exact values for the effect size estimate and the lower and upper bound of the confidence interval. On the lower half of the forest plot, we see a stretched-out diamond, in a row labeled ‘RE Model’, for ‘Random Effects model’. The diamond summarizes the meta-analytic effect size estimate, being centered on that effect size estimate with the left and right endpoints at the 95% confidence interval of the estimate. Because we only have a single study, the meta-analytic effect size estimate is the same as the effect size estimate for our single study.</p>
+<p>In <a href="#fig-metaforest" class="quarto-xref">Figure&nbsp;<span>11.10</span></a> we see a modern version of a forest plot, with the effect size for Study 1 marked by the black square at 0.56, and the confidence interval visualized by lines extending to 0.16 on the left and 0.95 on the right. The numbers printed on the right-hand side of the forest plot provide the exact values for the effect size estimate and the lower and upper bound of the confidence interval. On the lower half of the forest plot, we see a stretched-out diamond, in a row labeled ‘RE Model’, for ‘Random Effects model’. The diamond summarizes the meta-analytic effect size estimate, being centered on that effect size estimate with the left and right endpoints at the 95% confidence interval of the estimate. Because we only have a single study, the meta-analytic effect size estimate is the same as the effect size estimate for our single study.</p>
 <div class="cell" data-layout-align="center" data-fig.margin="false">
 <div class="cell-output-display">
-<div id="fig-metaforest" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="11-meta_files/figure-html/fig-metaforest-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;11.10: Forest plot for a single study.</figcaption><p></p>
-</figure>
+<div id="fig-metaforest" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-metaforest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="11-meta_files/figure-html/fig-metaforest-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-metaforest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.10: Forest plot for a single study.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -559,10 +625,13 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <span id="cb5-17"><a href="#cb5-17"></a><span class="fu">par</span>(<span class="at">bg =</span> <span class="st">"#fffafa"</span>)</span>
 <span id="cb5-18"><a href="#cb5-18"></a>metafor<span class="sc">::</span><span class="fu">forest</span>(result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="fig-meta-sim" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="11-meta_files/figure-html/fig-meta-sim-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;11.11: Forest plot for 12 simulated studies.</figcaption><p></p>
-</figure>
+<div id="fig-meta-sim" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-meta-sim-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="11-meta_files/figure-html/fig-meta-sim-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-meta-sim-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.11: Forest plot for 12 simulated studies.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -597,7 +666,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </section><section id="simulating-meta-analyses-for-dichotomous-outcomes" class="level2" data-number="11.5"><h2 data-number="11.5" class="anchored" data-anchor-id="simulating-meta-analyses-for-dichotomous-outcomes">
 <span class="header-section-number">11.5</span> Simulating meta-analyses for dichotomous outcomes</h2>
 <p>Although meta-analyses on mean differences are very common, a meta-analysis can be performed on different effect sizes measures. To show a slightly less common example, let’s simulate a meta-analysis based on odds ratios. Sometimes the main outcome in an experiment is a dichotomous variable, such as the success or failure on a task. In such study designs we can calculate risk ratios, odds ratios, or risk differences as the effect size measure. Risk differences are sometimes judged easiest to interpret, but odds ratios are most often used for a meta-analysis because they have attractive statistical properties. An <strong>odds ratio</strong> is a ratio of two odds. To illustrate how an odds ratio is calculated, it is useful to consider the four possible outcomes in a 2 x 2 table of outcomes:</p>
-<table class="table">
+<table class="caption-top table">
 <thead><tr class="header">
 <th style="text-align: left;"></th>
 <th style="text-align: center;">Success</th>
@@ -621,7 +690,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </table>
 <p>The odds ratio is calculated as: <span class="math display">\[OR = \ \frac{\text{AD}}{\text{BC}}\]</span> The meta-analysis is performed on log transformed odds ratios (because log transformed odds ratios are symmetric around 1, see Borenstein et al., 2009), and thus the log of the odds ratio is used, which has a variance which is approximated by: <span class="math display">\[\text{Var}\left( \log\text{OR} \right) = \ \frac{1}{A} + \frac{1}{B} + \frac{1}{C} + \frac{1}{D}\]</span></p>
 <p>Let’s assume that we train students in using a spaced learning strategy (they work through a textbook every week instead of cramming the week before the exam). Without such training, 70 out of 100 students succeed in passing the course after the first exam, but with this training, 80 out of 100 students pass.</p>
-<table class="table">
+<table class="caption-top table">
 <thead><tr class="header">
 <th></th>
 <th>Success</th>
@@ -689,7 +758,7 @@ OR = \ \frac{80 \times 30}{20\  \times 70} = 1.714
 <span id="cb7-38"><a href="#cb7-38"></a><span class="fu">text</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">7</span>, <span class="sc">-</span><span class="dv">6</span>, <span class="sc">-</span><span class="dv">5</span>, <span class="sc">-</span><span class="dv">4</span>), <span class="fl">14.7</span>, <span class="fu">c</span>(<span class="st">"E+"</span>, <span class="st">"E-"</span>, <span class="st">"C+"</span>, <span class="st">"C-"</span>), <span class="at">font =</span> <span class="dv">2</span>, <span class="at">cex =</span> .<span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="11-meta_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="11-meta_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -803,13 +872,16 @@ I^2(%)  45.4253 11.8823 68.5417
 H^2      1.8324  1.1348  3.1788 </code></pre>
 </div>
 </div>
-<p>The forest plot in <a href="#fig-plot-heterogeneity">Figure&nbsp;<span>11.12</span></a> shows there is more variation around the meta-analytic effect size estimate than expected purely based on random variation. The plot has 2 vertical lines, one at 0.2, and one at 0.5. Of course, in a real meta-analysis we would not know what the true effect sizes of subsets are, but these lines help us to see that one subset of the effects varies randomly around 0.2, and a second subset varies randomly around 0.5.</p>
+<p>The forest plot in <a href="#fig-plot-heterogeneity" class="quarto-xref">Figure&nbsp;<span>11.12</span></a> shows there is more variation around the meta-analytic effect size estimate than expected purely based on random variation. The plot has 2 vertical lines, one at 0.2, and one at 0.5. Of course, in a real meta-analysis we would not know what the true effect sizes of subsets are, but these lines help us to see that one subset of the effects varies randomly around 0.2, and a second subset varies randomly around 0.5.</p>
 <div class="cell" data-layout-align="center" data-fig.margin="false">
 <div class="cell-output-display">
-<div id="fig-plot-heterogeneity" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="11-meta_files/figure-html/fig-plot-heterogeneity-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;11.12: Forest plot of 30 studies with 2 subsets of studies, one set with a true effect size of 0.2, and one set with a true effect size of 0.5.</figcaption><p></p>
-</figure>
+<div id="fig-plot-heterogeneity" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-plot-heterogeneity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="11-meta_files/figure-html/fig-plot-heterogeneity-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plot-heterogeneity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.12: Forest plot of 30 studies with 2 subsets of studies, one set with a true effect size of 0.2, and one set with a true effect size of 0.5.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -850,13 +922,16 @@ groupManipulation B    -0.303  0.073  -4.151  &lt;.001  -0.446  -0.160  ***
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
-<p>If we plot the two subgroups, we see in <a href="#fig-plot-subgroup">Figure&nbsp;<span>11.13</span></a> that effect sizes vary randomly across the true effect sizes. Again, in real meta-analyses these true effect sizes would not be known.</p>
+<p>If we plot the two subgroups, we see in <a href="#fig-plot-subgroup" class="quarto-xref">Figure&nbsp;<span>11.13</span></a> that effect sizes vary randomly across the true effect sizes. Again, in real meta-analyses these true effect sizes would not be known.</p>
 <div class="cell" data-layout-align="center" data-fig.margin="false">
 <div class="cell-output-display">
-<div id="fig-plot-subgroup" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="11-meta_files/figure-html/fig-plot-subgroup-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;11.13: Two forest plots for the 2 different subgroups with Manipulation A or B.</figcaption><p></p>
-</figure>
+<div id="fig-plot-subgroup" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-plot-subgroup-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="11-meta_files/figure-html/fig-plot-subgroup-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plot-subgroup-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.13: Two forest plots for the 2 different subgroups with Manipulation A or B.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -876,48 +951,48 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </section><section id="sec-metareporting" class="level2" data-number="11.10"><h2 data-number="11.10" class="anchored" data-anchor-id="sec-metareporting">
 <span class="header-section-number">11.10</span> Improving the reproducibility of meta-analyses</h2>
 <p>Although meta-analyses do not provide definitive conclusions, they are typically interpreted as state-of-the-art empirical knowledge about a specific effect or research area. Large-scale meta-analyses often accumulate a massive number of citations and influence future research and theory development. It is therefore essential that published meta-analyses are of the highest possible quality.</p>
-<p>At the same time, the conclusions from meta-analyses are often open for debate and are subject to change as new data becomes available. We recently proposed practical recommendations to increase the reproducibility of meta-analyses to facilitate quality control, improve reporting guidelines, allow researchers to re-analyze meta-analyses based on alternative inclusion criteria, and future-proof meta-analyses by making sure the collected meta-analytic data is shared so that continuously accumulating meta-analyses can be performed, and so that novel statistical techniques can be applied on the collected data as they become available <span class="citation" data-cites="lakens_reproducibility_2016">(<a href="references.html#ref-lakens_reproducibility_2016" role="doc-biblioref">Lakens et al., 2016</a>)</span>. The need for the improvement in reproducibility of meta-analysis is clear - a recent review of 150 meta-analyses in Psychological Bulletin revealed that only 1 meta-analysis shared the statistical code <span class="citation" data-cites="polanin_transparency_2020">(<a href="references.html#ref-polanin_transparency_2020" role="doc-biblioref">Polanin et al., 2020</a>)</span>. This is unacceptable in the current day and age. In addition to inspecting how well your meta-analysis adheres to the <a href="https://apastyle.apa.org/jars/quant-table-9.pdf">JARS Quantitative Meta-Analysis Reporting Standards</a>, following the recommendations summarized in <a href="#tbl-table-rec1">Table&nbsp;<span>11.1</span></a> should substantially improve the state-of-the-art in meta-analyses.</p>
+<p>At the same time, the conclusions from meta-analyses are often open for debate and are subject to change as new data becomes available. We recently proposed practical recommendations to increase the reproducibility of meta-analyses to facilitate quality control, improve reporting guidelines, allow researchers to re-analyze meta-analyses based on alternative inclusion criteria, and future-proof meta-analyses by making sure the collected meta-analytic data is shared so that continuously accumulating meta-analyses can be performed, and so that novel statistical techniques can be applied on the collected data as they become available <span class="citation" data-cites="lakens_reproducibility_2016">(<a href="references.html#ref-lakens_reproducibility_2016" role="doc-biblioref">Lakens et al., 2016</a>)</span>. The need for the improvement in reproducibility of meta-analysis is clear - a recent review of 150 meta-analyses in Psychological Bulletin revealed that only 1 meta-analysis shared the statistical code <span class="citation" data-cites="polanin_transparency_2020">(<a href="references.html#ref-polanin_transparency_2020" role="doc-biblioref">Polanin et al., 2020</a>)</span>. This is unacceptable in the current day and age. In addition to inspecting how well your meta-analysis adheres to the <a href="https://apastyle.apa.org/jars/quant-table-9.pdf">JARS Quantitative Meta-Analysis Reporting Standards</a>, following the recommendations summarized in <a href="#tbl-table-rec1" class="quarto-xref">Table&nbsp;<span>11.1</span></a> should substantially improve the state-of-the-art in meta-analyses.</p>
 <div class="cell" data-layout-align="center">
+<div id="tbl-table-rec1" class="cell quarto-float anchored" data-layout-align="center">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-table-rec1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;11.1: Six practical recommendations to improve the quality and reproducibility of meta-analyses.
+</figcaption><div aria-describedby="tbl-table-rec1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="tbl-table-rec1" class="anchored">
-<table class="table table-sm table-striped small">
-<caption>Table&nbsp;11.1: Six practical recommendations to improve the quality and reproducibility of meta-analyses.</caption>
-<colgroup>
-<col style="width: 5%">
-<col style="width: 94%">
-</colgroup>
-<thead><tr class="header">
-<th style="text-align: left;">What?</th>
-<th style="text-align: left;">How?</th>
-</tr></thead>
+<table>
+<thead><tr>
+<th style="text-align:left;"> What? </th>
+   <th style="text-align:left;"> How? </th>
+  </tr></thead>
 <tbody>
-<tr class="odd">
-<td style="text-align: left;">Facilitate cumulative science</td>
-<td style="text-align: left;">Disclose all meta-analytic data (effect sizes, sample sizes for each condition, test statistics and degrees of freedom, means, standard deviations, and correlations between dependent observations) for each data point. Quote relevant text from studies that describe the meta-analytic data to prevent confusion, such as when one effect size is selected from a large number of tests reported in a study. When analyzing subgroups, include quotes from the original study that underlie this classification, and specify any subjective decisions.</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Facilitate quality control</td>
-<td style="text-align: left;">Specify which effect size calculations are used and which assumptions are made for missing data (e.g., assuming equal sample sizes in each condition, imputed values for unreported effect sizes), if necessary for each effect size extracted from the literature. Specify who extracted and coded the data, knowing it is preferable that two researchers independently extract effect sizes from the literature.</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Use reporting guidelines</td>
-<td style="text-align: left;">A minimal requirement when reporting meta-analyses is to adhere to one of the reporting standards (e.g., PRISMA). The reporting guidelines ask authors of meta-analyses to report essential information that should be made available either in the main text of the article, or by providing a completed checklist as supplementary material during review and after publication.</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Preregister</td>
-<td style="text-align: left;">Whenever possible, pre-register the meta-analysis research protocol (e.g., using PROSPERO) to distinguish between confirmatory and exploratory analyses. Perform a prospective meta-analysis where possible.</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Facilitate reproducibility</td>
-<td style="text-align: left;">Allow others to re-analyze the data to examine how sensitive the results are to subjective choices such as inclusion criteria. Always include a link to data files that can be directly analyzed with statistical software, either by providing completely reproducible scripts containing both the data and the reported analyses in free software (e.g., R), or at the very minimum a spreadsheet that contains all meta-analytic data that can easily analyzed in any statistical program.</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Recruit expertise</td>
-<td style="text-align: left;">Consider consulting a librarian before you start the literature search, and a statistician before coding the effect sizes, for advice on how to make the literature search and effect size calculations reproducible.</td>
-</tr>
+<tr>
+<td style="text-align:left;width: 5cm; "> Facilitate cumulative science </td>
+   <td style="text-align:left;width: 10cm; "> Disclose all meta-analytic data (effect sizes, sample sizes for each condition, test statistics and degrees of freedom, means, standard deviations, and correlations between dependent observations) for each data point. Quote relevant text from studies that describe the meta-analytic data to prevent confusion, such as when one effect size is selected from a large number of tests reported in a study. When analyzing subgroups, include quotes from the original study that underlie this classification, and specify any subjective decisions. </td>
+  </tr>
+<tr>
+<td style="text-align:left;width: 5cm; "> Facilitate quality control </td>
+   <td style="text-align:left;width: 10cm; "> Specify which effect size calculations are used and which assumptions are made for missing data (e.g., assuming equal sample sizes in each condition, imputed values for unreported effect sizes), if necessary for each effect size extracted from the literature. Specify who extracted and coded the data, knowing it is preferable that two researchers independently extract effect sizes from the literature. </td>
+  </tr>
+<tr>
+<td style="text-align:left;width: 5cm; "> Use reporting guidelines </td>
+   <td style="text-align:left;width: 10cm; "> A minimal requirement when reporting meta-analyses is to adhere to one of the reporting standards (e.g., PRISMA). The reporting guidelines ask authors of meta-analyses to report essential information that should be made available either in the main text of the article, or by providing a completed checklist as supplementary material during review and after publication. </td>
+  </tr>
+<tr>
+<td style="text-align:left;width: 5cm; "> Preregister </td>
+   <td style="text-align:left;width: 10cm; "> Whenever possible, pre-register the meta-analysis research protocol (e.g., using PROSPERO) to distinguish between confirmatory and exploratory analyses. Perform a prospective meta-analysis where possible. </td>
+  </tr>
+<tr>
+<td style="text-align:left;width: 5cm; "> Facilitate reproducibility </td>
+   <td style="text-align:left;width: 10cm; "> Allow others to re-analyze the data to examine how sensitive the results are to subjective choices such as inclusion criteria. Always include a link to data files that can be directly analyzed with statistical software, either by providing completely reproducible scripts containing both the data and the reported analyses in free software (e.g., R), or at the very minimum a spreadsheet that contains all meta-analytic data that can easily analyzed in any statistical program. </td>
+  </tr>
+<tr>
+<td style="text-align:left;width: 5cm; "> Recruit expertise </td>
+   <td style="text-align:left;width: 10cm; "> Consider consulting a librarian before you start the literature search, and a statistician before coding the effect sizes, for advice on how to make the literature search and effect size calculations reproducible. </td>
+  </tr>
 </tbody>
 </table>
 </div>
+</div>
+</figure>
 </div>
 </div>
 <p>For another open educational resource on meta-analysis in R, see <a href="https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R">Doing Meta-Analysis in R</a>.</p>
@@ -951,19 +1026,25 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p><strong>Q5</strong>: When there is no heterogeneity in the effect size estimates included in a meta-analysis, a fixed effect and random effects model will yield similar conclusions. If there is variability in the effect size estimates, the two models can yield different results. Below, we see two forest plots based on the same 5 simulated studies. The top plot is based on a random effects meta-analysis, the bottom plot based on a fixed effect meta-analysis. A random effects meta-analysis incorporates uncertainty about the variability of effect size estimates into the final meta-analytic estimate. How does this translate into a difference between the two plots?</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-meta-sim-rand" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="11-meta_files/figure-html/fig-meta-sim-rand-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;11.14: Simulated studies under a random effects model.</figcaption><p></p>
-</figure>
+<div id="fig-meta-sim-rand" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-meta-sim-rand-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="11-meta_files/figure-html/fig-meta-sim-rand-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-meta-sim-rand-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.14: Simulated studies under a random effects model.
+</figcaption></figure>
 </div>
 </div>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-meta-sim-fixed" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="11-meta_files/figure-html/fig-meta-sim-fixed-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;11.15: Simulated studies under a fixed effect model.</figcaption><p></p>
-</figure>
+<div id="fig-meta-sim-fixed" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-meta-sim-fixed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="11-meta_files/figure-html/fig-meta-sim-fixed-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-meta-sim-fixed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.15: Simulated studies under a fixed effect model.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1005,27 +1086,27 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </ol>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
 <div id="ref-borenstein_introduction_2009" class="csl-entry" role="listitem">
-Borenstein, M. (Ed.). (2009). <em>Introduction to meta-analysis</em>. <span>John Wiley &amp; Sons</span>.
+Borenstein, M. (Ed.). (2009). <em>Introduction to meta-analysis</em>. John Wiley &amp; Sons.
 </div>
 <div id="ref-bryan_behavioural_2021" class="csl-entry" role="listitem">
 Bryan, C. J., Tipton, E., &amp; Yeager, D. S. (2021). Behavioural science is unlikely to change the world without a heterogeneity revolution. <em>Nature Human Behaviour</em>, 1–10. <a href="https://doi.org/10.1038/s41562-021-01143-3">https://doi.org/10.1038/s41562-021-01143-3</a>
 </div>
 <div id="ref-buchanan_mote_2017" class="csl-entry" role="listitem">
-Buchanan, E. M., Scofield, J., &amp; Valentine, K. D. (2017). <em><span>MOTE</span>: <span>Effect Size</span> and <span>Confidence Interval Calculator</span>.</em>
+Buchanan, E. M., Scofield, J., &amp; Valentine, K. D. (2017). <em><span>MOTE</span>: <span>Effect Size</span> and <span>Confidence Interval Calculator</span>.</em> (Version 0.0.0.9100.).
 </div>
 <div id="ref-cohen_earth_1994" class="csl-entry" role="listitem">
 Cohen, J. (1994). The earth is round (p <span><span class="math inline">\(&lt;\)</span></span> .05). <em>American Psychologist</em>, <em>49</em>(12), 997–1003. <a href="https://doi.org/10.1037/0003-066X.49.12.997">https://doi.org/10.1037/0003-066X.49.12.997</a>
 </div>
 <div id="ref-cooper_handbook_2009" class="csl-entry" role="listitem">
-Cooper, H. M., Hedges, L. V., &amp; Valentine, J. C. (Eds.). (2009). <em>The handbook of research synthesis and meta-analysis</em> (2nd ed). <span>Russell Sage Foundation</span>.
+Cooper, H. M., Hedges, L. V., &amp; Valentine, J. C. (Eds.). (2009). <em>The handbook of research synthesis and meta-analysis</em> (2nd ed). Russell Sage Foundation.
 </div>
 <div id="ref-eysenck_exercise_1978" class="csl-entry" role="listitem">
 Eysenck, H. J. (1978). An exercise in mega-silliness. <em>American Psychologist</em>, <em>33</em>(5), 517–517. <a href="https://doi.org/10.1037/0003-066X.33.5.517.a">https://doi.org/10.1037/0003-066X.33.5.517.a</a>
 </div>
 <div id="ref-ferguson_comment_2014" class="csl-entry" role="listitem">
-Ferguson, C. J. (2014). Comment: <span>Why</span> meta-analyses rarely resolve ideological debates. <em>Emotion Review</em>, <em>6</em>(3), 251–252.
+Ferguson, C. J. (2014). Comment: <span>Why</span> meta-analyses rarely resolve ideological debates. <em>Emotion Review</em>, <em>6</em>(3), 251–252. <a href="http://journals.sagepub.com/doi/abs/10.1177/1754073914523046">http://journals.sagepub.com/doi/abs/10.1177/1754073914523046</a>
 </div>
 <div id="ref-freiman_importance_1978" class="csl-entry" role="listitem">
 Freiman, J. A., Chalmers, T. C., Smith, H., &amp; Kuebler, R. R. (1978). The importance of beta, the type <span>II</span> error and sample size in the design and interpretation of the randomized control trial. <span>Survey</span> of 71 "negative" trials. <em>The New England Journal of Medicine</em>, <em>299</em>(13), 690–694. <a href="https://doi.org/10.1056/NEJM197809282991304">https://doi.org/10.1056/NEJM197809282991304</a>
@@ -1037,7 +1118,7 @@ Goodyear-Smith, F. A., van Driel, M. L., Arroll, B., &amp; Del Mar, C. (2012). A
 Harrer, M., Cuijpers, P., Furukawa, T. A., &amp; Ebert, D. D. (2021). <em>Doing <span>Meta-Analysis</span> with <span>R</span>: <span>A Hands-On Guide</span></em>. <span>Chapman and Hall/CRC</span>. <a href="https://doi.org/10.1201/9781003107347">https://doi.org/10.1201/9781003107347</a>
 </div>
 <div id="ref-huedo-medina_assessing_2006" class="csl-entry" role="listitem">
-Huedo-Medina, T. B., Sánchez-Meca, J., Marín-Martínez, F., &amp; Botella, J. (2006). Assessing heterogeneity in meta-analysis: <span>Q</span> statistic or <span>I</span>$2̂$ index? <em>Psychological Methods</em>, <em>11</em>(2), 193.
+Huedo-Medina, T. B., Sánchez-Meca, J., Marín-Martínez, F., &amp; Botella, J. (2006). Assessing heterogeneity in meta-analysis: <span>Q</span> statistic or <span>I</span>$^2$ index? <em>Psychological Methods</em>, <em>11</em>(2), 193. <a href="http://psycnet.apa.org/journals/met/11/2/193/">http://psycnet.apa.org/journals/met/11/2/193/</a>
 </div>
 <div id="ref-kenny_unappreciated_2019" class="csl-entry" role="listitem">
 Kenny, D. A., &amp; Judd, C. M. (2019). The unappreciated heterogeneity of effect sizes: <span>Implications</span> for power, precision, planning of research, and replication. <em>Psychological Methods</em>, <em>24</em>(5), 578–589. <a href="https://doi.org/10.1037/met0000209">https://doi.org/10.1037/met0000209</a>
@@ -1046,7 +1127,7 @@ Kenny, D. A., &amp; Judd, C. M. (2019). The unappreciated heterogeneity of effec
 Lakens, D., Hilgard, J., &amp; Staaks, J. (2016). On the reproducibility of meta-analyses: Six practical recommendations. <em>BMC Psychology</em>, <em>4</em>, 24. <a href="https://doi.org/10.1186/s40359-016-0126-3">https://doi.org/10.1186/s40359-016-0126-3</a>
 </div>
 <div id="ref-lawrence_lesson_2021" class="csl-entry" role="listitem">
-Lawrence, J. M., Meyerowitz-Katz, G., Heathers, J. A. J., Brown, N. J. L., &amp; Sheldrick, K. A. (2021). The lesson of ivermectin: Meta-analyses based on summary data alone are inherently unreliable. <em>Nature Medicine</em>, <em>27</em>(11), 1853–1854. <a href="https://doi.org/10.1038/s41591-021-01535-y">https://doi.org/10.1038/s41591-021-01535-y</a>
+Lawrence, J. M., Meyerowitz-Katz, G., Heathers, J. A. J., Brown, N. J. L., &amp; Sheldrick, K. A. (2021). The lesson of ivermectin: Meta-analyses based on summary data alone are inherently unreliable. <em>Nature Medicine</em>, <em>27</em>(11, 11), 1853–1854. <a href="https://doi.org/10.1038/s41591-021-01535-y">https://doi.org/10.1038/s41591-021-01535-y</a>
 </div>
 <div id="ref-linden_heterogeneity_2021" class="csl-entry" role="listitem">
 Linden, A. H., &amp; Hönekopp, J. (2021). Heterogeneity of <span>Research Results</span>: <span>A New Perspective From Which</span> to <span>Assess</span> and <span>Promote Progress</span> in <span>Psychological Science</span>. <em>Perspectives on Psychological Science</em>, <em>16</em>(2), 358–376. <a href="https://doi.org/10.1177/1745691620964193">https://doi.org/10.1177/1745691620964193</a>
@@ -1348,6 +1429,33 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
     }
   }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
   const toggleColorMode = (alternate) => {
     // Switch the stylesheets
     const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
@@ -1414,13 +1522,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return localAlternateSentinel;
     }
   }
-  let localAlternateSentinel = 'default';
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
   // Dark / light mode switch
   window.quartoToggleColorScheme = () => {
     // Read the current dark / light value 
     let toAlternate = !hasAlternateSentinel();
     toggleColorMode(toAlternate);
     setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
   };
   // Ensure there is a toggle, if there isn't float one in the top right
   if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -1499,10 +1609,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1512,8 +1639,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1525,7 +1661,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1569,6 +1828,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1594,6 +1854,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1653,22 +1939,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./10-sequential.html" class="pagination-link">
+      <a href="./10-sequential.html" class="pagination-link" aria-label="Sequential Analysis">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Sequential Analysis</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./12-bias.html" class="pagination-link">
+      <a href="./12-bias.html" class="pagination-link" aria-label="Bias detection">
         <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Bias detection</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
-    <div class="nav-footer-left">Lakens, D. (2022). Improving Your Statistical Inferences. Retrieved from https://lakens.github.io/statistical_inferences/. https://doi.org/10.5281/zenodo.6409077</div>   
+    <div class="nav-footer-left">
+<p>Lakens, D. (2022). Improving Your Statistical Inferences. Retrieved from https://lakens.github.io/statistical_inferences/. https://doi.org/10.5281/zenodo.6409077</p>
+</div>   
     <div class="nav-footer-center">
       &nbsp;
-    </div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Lakens/statistical_inferences/edit/master/11-meta.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Lakens/statistical_inferences/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/Lakens/statistical_inferences/blob/master/11-meta.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div>
     <div class="nav-footer-right">
       &nbsp;
     </div>

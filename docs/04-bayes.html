@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.310">
+<meta name="generator" content="quarto-1.4.555">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="This open educational resource contains information to improve statistical inferences, design better experiments, and report scientific research more transparently.">
 <title>Improving Your Statistical Inferences - 4&nbsp; Bayesian statistics</title>
@@ -20,7 +20,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -56,6 +56,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -99,7 +100,13 @@ div.csl-indent {
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -108,8 +115,10 @@ div.csl-indent {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script><script async="" src="https://www.googletagmanager.com/gtag/js?id=G-0MK2WTGRM3"></script><script type="text/javascript">
 
@@ -117,7 +126,32 @@ window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
-</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><link rel="stylesheet" href="include/booktem.css">
+</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script><link rel="stylesheet" href="include/booktem.css">
 <link rel="stylesheet" href="include/style.css">
 <link rel="stylesheet" href="include/webex.css">
 </head>
@@ -125,19 +159,19 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-bayes.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Bayesian statistics</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-bayes.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Bayesian statistics</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
   </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Improving Your Statistical Inferences</a> 
         <div class="sidebar-tools-main tools-wide">
@@ -287,7 +321,7 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
 </li>
     </ul>
 </div>
-</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
@@ -312,7 +346,7 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
 <li><a href="#open-questions" id="toc-open-questions" class="nav-link" data-scroll-target="#open-questions"><span class="header-section-number">4.5.1</span> Open Questions</a></li>
   </ul>
 </li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/Lakens/statistical_inferences/edit/master/04-bayes.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/Lakens/statistical_inferences/issues/new" class="toc-action">Report an issue</a></p><p><a href="https://github.com/Lakens/statistical_inferences/blob/master/04-bayes.qmd" class="toc-action">View source</a></p></div></div></nav>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/Lakens/statistical_inferences/edit/master/04-bayes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Lakens/statistical_inferences/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/Lakens/statistical_inferences/blob/master/04-bayes.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
@@ -328,6 +362,7 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
     
   </div>
   
+
 
 </header><blockquote class="blockquote">
 <p>“Logic!” said the Professor half to himself. “Why don’t they teach logic at these schools? There are only three possibilities. Either your sister is telling lies, or she is mad, or she is telling the truth. You know she doesn’t tell lies and it is obvious that she is not mad. For the moment then and unless any further evidence turns up, we must assume that she is telling the truth.”</p>
@@ -351,13 +386,16 @@ Posterior\ Probability = \ Bayes\ Factor\  \times \ Prior\ Probability
 <p><span class="math display">\[
 f{}^{}{\left(x;\ \alpha,\ \beta \right) = \ \frac{1}{B(\alpha,\beta)}}x^{\alpha - 1}{(1 - x)}^{\beta - 1}
 \]</span></p>
-<p>where <em>B(</em><span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span>) is the beta function. Understanding the mathematical basis of this function is beyond the scope of this chapter, but you can read more on <a href="https://en.wikipedia.org/wiki/Beta_distribution">Wikipedia</a> or Kruschke’s book on Doing Bayesian Data Analysis <span class="citation" data-cites="kruschke_doing_2014">(<a href="references.html#ref-kruschke_doing_2014" role="doc-biblioref">Kruschke, 2014</a>)</span>. The beta prior for a variety of values for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> can be seen in <a href="#fig-bayes1">Figure&nbsp;<span>4.1</span></a>.</p>
+<p>where <em>B(</em><span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span>) is the beta function. Understanding the mathematical basis of this function is beyond the scope of this chapter, but you can read more on <a href="https://en.wikipedia.org/wiki/Beta_distribution">Wikipedia</a> or Kruschke’s book on Doing Bayesian Data Analysis <span class="citation" data-cites="kruschke_doing_2014">(<a href="references.html#ref-kruschke_doing_2014" role="doc-biblioref">Kruschke, 2014</a>)</span>. The beta prior for a variety of values for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> can be seen in <a href="#fig-bayes1" class="quarto-xref">Figure&nbsp;<span>4.1</span></a>.</p>
 <div class="cell" data-layout-align="center" data-fig.margin="false">
 <div class="cell-output-display">
-<div id="fig-bayes1" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="04-bayes_files/figure-html/fig-bayes1-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;4.1: Four examples of Bayesian priors.</figcaption><p></p>
-</figure>
+<div id="fig-bayes1" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-bayes1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="04-bayes_files/figure-html/fig-bayes1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bayes1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.1: Four examples of Bayesian priors.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -370,13 +408,16 @@ f{}^{}{\left(x;\ \alpha,\ \beta \right) = \ \frac{1}{B(\alpha,\beta)}}x^{\alpha 
 <p><span class="math inline">\(\alpha\)</span>* = <span class="math inline">\(\alpha\)</span>prior + <span class="math inline">\(\alpha\)</span>likelihood – 1 = 1 + 11 - 1 = 11</p>
 <p><span class="math inline">\(\beta\)</span>* = <span class="math inline">\(\beta\)</span>prior + <span class="math inline">\(\beta\)</span>likelihood – 1 = 1 + 11 – 1 = 11</p>
 <p>Thus, the posterior distribution for the newborn is a Beta(11,11) distribution. This equals a binomial likelihood function for 10 heads out of 20 trials, or Beta(11,11) distribution. In other words, the posterior distribution is identical to the likelihood function when a uniform prior is used.</p>
-<p>Take a look at <a href="#fig-bayes2">Figure&nbsp;<span>4.2</span></a>. For the newborn baby, given 10 heads out of 20 coin flips, we see the prior distribution (the horizontal grey line), the likelihood (the blue dotted line), and the posterior (the black line).</p>
+<p>Take a look at <a href="#fig-bayes2" class="quarto-xref">Figure&nbsp;<span>4.2</span></a>. For the newborn baby, given 10 heads out of 20 coin flips, we see the prior distribution (the horizontal grey line), the likelihood (the blue dotted line), and the posterior (the black line).</p>
 <div class="cell" data-layout-align="center" data-fig.margin="false">
 <div class="cell-output-display">
-<div id="fig-bayes2" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="04-bayes_files/figure-html/fig-bayes2-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;4.2: Four examples of how different priors are updated to the posterior based on data.</figcaption><p></p>
-</figure>
+<div id="fig-bayes2" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-bayes2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="04-bayes_files/figure-html/fig-bayes2-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bayes2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.2: Four examples of how different priors are updated to the posterior based on data.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -386,10 +427,13 @@ f{}^{}{\left(x;\ \alpha,\ \beta \right) = \ \frac{1}{B(\alpha,\beta)}}x^{\alpha 
 <p>Now that we have a distribution for the prior, and a distribution for the posterior, we can see in the graphs below for which values of <em>p</em> our belief has increased. Everywhere where the black line (of the posterior) is higher than the grey line (of the prior) our belief in that <em>p</em> has increased.</p>
 <div class="cell" data-layout-align="center" data-fig.margin="false">
 <div class="cell-output-display">
-<div id="fig-bayes4" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="04-bayes_files/figure-html/fig-bayes4-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;4.3: Plot for the prior, likelihood, and posterior.</figcaption><p></p>
-</figure>
+<div id="fig-bayes4" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-bayes4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="04-bayes_files/figure-html/fig-bayes4-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bayes4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.3: Plot for the prior, likelihood, and posterior.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -403,20 +447,26 @@ f{}^{}{\left(x;\ \alpha,\ \beta \right) = \ \frac{1}{B(\alpha,\beta)}}x^{\alpha 
 <p>We can calculate and plot the Bayes Factor, and show the prior (grey), likelihood (dashed blue) and posterior (black). For the example of 20 flips, 10 heads, and the newborn baby’s prior, the plot looks like this:</p>
 <div class="cell" data-layout-align="center" data-fig.margin="false">
 <div class="cell-output-display">
-<div id="fig-bayes6" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="04-bayes_files/figure-html/fig-bayes6-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;4.4: Plot for a uniform prior, the likelihood, and the posterior.</figcaption><p></p>
-</figure>
+<div id="fig-bayes6" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-bayes6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="04-bayes_files/figure-html/fig-bayes6-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bayes6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.4: Plot for a uniform prior, the likelihood, and the posterior.
+</figcaption></figure>
 </div>
 </div>
 </div>
 <p>We see that for the newborn, <em>p</em> = 0.5 has become more probable, but so has <em>p</em> = 0.4. Now let’s examine the curves for the extreme skeptic, who believes the coin is fair with a prior of Beta(100, 100), buys the coin, and flips it 100 times. Surprisingly, the coin comes up heads 90 out of 100 flips. The plot of the prior, likelihood, and posterior now looks much more extreme, because we had a very informed prior, and extremely different data. We see the grey prior distribution, the dashed blue likelihood based on the data, and the posterior distribution in black. The Bayes factor of 0 (note that the value is rounded, and is extremely small, but not exactly zero) represents the substantial drop in belief that the coin is fair – indeed, this now seems an untenable hypothesis, even for the extreme skeptic. It shows how data can update your belief. Where a newborn would now completely believe that the true <em>p</em> for the coin is somewhere around 0.9, the extreme skeptic has more reason to believe the <em>p</em> is around 0.65, due to the strong prior conviction that the coin is fair. Given enough data, even this extreme skeptic will become convinced that the coin will return heads most of the time as well.</p>
 <div class="cell" data-layout-align="center" data-fig.margin="false">
 <div class="cell-output-display">
-<div id="fig-bayes7" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="04-bayes_files/figure-html/fig-bayes7-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;4.5: Plot for a strongly informed prior, the likelihood, and the posterior.</figcaption><p></p>
-</figure>
+<div id="fig-bayes7" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-bayes7-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="04-bayes_files/figure-html/fig-bayes7-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bayes7-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.5: Plot for a strongly informed prior, the likelihood, and the posterior.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -436,18 +486,18 @@ f{}^{}{\left(x;\ \alpha,\ \beta \right) = \ \frac{1}{B(\alpha,\beta)}}x^{\alpha 
 </section><section id="sec-bfgmisconception2" class="level3" data-number="4.3.2"><h3 data-number="4.3.2" class="anchored" data-anchor-id="sec-bfgmisconception2">
 <span class="header-section-number">4.3.2</span> Misunderstanding 2: Failing to interpret Bayes Factors as relative evidence.</h3>
 <p>One benefit of Bayes factors that is often mentioned by Bayesians is that, unlike NHST, Bayes factors can provide support for the null hypothesis, and thereby falsify predictions. It is true that NHST can only reject the null hypothesis (that is, it can never accept the null hypothesis), although it is important to add that in frequentist statistics <a href="09-equivalencetest.html">equivalence tests</a> can be used to reject the alternative hypothesis, and therefore there is no need to switch to Bayes factors to meaningfully interpret the results of non-significant null hypothesis tests.</p>
-<p>Bayes factors quantify support for one hypothesis relative to another hypothesis. As with likelihood ratios (and as illustrated in <a href="03-likelihoods.html#fig-like7">Figure&nbsp;<span>3.7</span></a>), it is possible that one hypothesis is supported more than another hypothesis, while both hypotheses are actually false. It is incorrect to interpret Bayes factors in an absolute manner, for example by stating that a Bayes factor of 0.09 provides support for the null hypothesis. The correct interpretation is that the Bayes factor provides relative support for <span class="math inline">\(H_0\)</span> compared to H1. With a different alternative model, the Bayes factor would change. As with a significant equivalence test, even a Bayes factor strongly supporting <span class="math inline">\(H_0\)</span> does not mean there is no effect at all; there could be a true, but small, effect.</p>
+<p>Bayes factors quantify support for one hypothesis relative to another hypothesis. As with likelihood ratios (and as illustrated in <a href="03-likelihoods.html#fig-like7" class="quarto-xref">Figure&nbsp;<span>3.7</span></a>), it is possible that one hypothesis is supported more than another hypothesis, while both hypotheses are actually false. It is incorrect to interpret Bayes factors in an absolute manner, for example by stating that a Bayes factor of 0.09 provides support for the null hypothesis. The correct interpretation is that the Bayes factor provides relative support for <span class="math inline">\(H_0\)</span> compared to H1. With a different alternative model, the Bayes factor would change. As with a significant equivalence test, even a Bayes factor strongly supporting <span class="math inline">\(H_0\)</span> does not mean there is no effect at all; there could be a true, but small, effect.</p>
 <p>For example, after Daryl Bem <span class="citation" data-cites="bem_feeling_2011">(<a href="references.html#ref-bem_feeling_2011" role="doc-biblioref">2011</a>)</span> published 9 studies demonstrating support for pre-cognition (that is, conscious cognitive awareness of a future event that could not otherwise be known) a team of Bayesian statisticians re-analyzed the studies, and concluded “Out of the 10 critical tests, only one yields “substantial” evidence for <span class="math inline">\(H_1\)</span>, whereas three yield “substantial” evidence in favor of H0. The results of the remaining six tests provide evidence that is only “anecdotal”” <span class="citation" data-cites="wagenmakers_why_2011">(<a href="references.html#ref-wagenmakers_why_2011" role="doc-biblioref">Wagenmakers et al., 2011</a>)</span>. In a reply, Bem and Utts <span class="citation" data-cites="bem_must_2011">(<a href="references.html#ref-bem_must_2011" role="doc-biblioref">2011</a>)</span> reply by arguing that the set of studies provide convincing evidence for the alternative hypothesis, if the Bayes factors are computed as relative evidence between the null hypothesis and a more realistically specified alternative hypothesis, where the effects of pre-cognition are expected to be small. This back-and-forth illustrates how Bayes factors are relative evidence, and a change in the alternative model specification changes whether the null or the alternative hypothesis receives relatively more support given the data.</p>
 </section><section id="sec-bfgmisconception3" class="level3" data-number="4.3.3"><h3 data-number="4.3.3" class="anchored" data-anchor-id="sec-bfgmisconception3">
 <span class="header-section-number">4.3.3</span> Misunderstanding 3: Not specifying the null and/or alternative model.</h3>
-<p>Given that Bayes factors are relative evidence for or against one model compared to another model, it might be surprising that many researchers fail to specify the alternative model to begin with when reporting their analysis. And yet, in a systematic review of how psychologists use Bayes factors, <span class="citation" data-cites="van_de_schoot_systematic_2017">van de Schoot et al. (<a href="references.html#ref-van_de_schoot_systematic_2017" role="doc-biblioref">2017</a>)</span> found that “31.1% of the articles did not even discuss the priors implemented”. Whereas in a null hypothesis significance test researchers do not need to specify the model that the test is based on, as the test is by definition a test against an effect of 0, and the alternative model consists of any non-zero effect size (in a two-sided test), this is not true when computing Bayes factors. The null model when computing Bayes factors is often (but not necessarily) a point null as in NHST, but the alternative model is typically only one of many possible alternative hypotheses that a researcher could test against. It has become common to use ‘default’ priors, but as with any heuristic, defaults will most often give an answer to a nonsensical question, and quickly become a form of mindless statistics. When introducing Bayes factors as an alternative to frequentist <em>t</em>-tests, <span class="citation" data-cites="rouder_bayesian_2009">Rouder et al. (<a href="references.html#ref-rouder_bayesian_2009" role="doc-biblioref">2009</a>)</span> write:</p>
+<p>Given that Bayes factors are relative evidence for or against one model compared to another model, it might be surprising that many researchers fail to specify the alternative model to begin with when reporting their analysis. And yet, in a systematic review of how psychologists use Bayes factors, <span class="citation" data-cites="vandeschoot_systematic_2017">van de Schoot et al. (<a href="references.html#ref-vandeschoot_systematic_2017" role="doc-biblioref">2017</a>)</span> found that “31.1% of the articles did not even discuss the priors implemented”. Whereas in a null hypothesis significance test researchers do not need to specify the model that the test is based on, as the test is by definition a test against an effect of 0, and the alternative model consists of any non-zero effect size (in a two-sided test), this is not true when computing Bayes factors. The null model when computing Bayes factors is often (but not necessarily) a point null as in NHST, but the alternative model is typically only one of many possible alternative hypotheses that a researcher could test against. It has become common to use ‘default’ priors, but as with any heuristic, defaults will most often give an answer to a nonsensical question, and quickly become a form of mindless statistics. When introducing Bayes factors as an alternative to frequentist <em>t</em>-tests, <span class="citation" data-cites="rouder_bayesian_2009">Rouder et al. (<a href="references.html#ref-rouder_bayesian_2009" role="doc-biblioref">2009</a>)</span> write:</p>
 <blockquote class="blockquote">
 <p>This commitment to specify judicious and reasoned alternatives places a burden on the analyst. We have provided default settings appropriate to generic situations. Nonetheless, these recommendations are just that and should not be used blindly. Moreover, analysts can and should consider their goals and expectations when specifying priors. Simply put, principled inference is a thoughtful process that cannot be performed by rigid adherence to defaults.</p>
 </blockquote>
 <p>The priors used when computing a Bayes factor should therefore be both specified and justified.</p>
 </section><section id="sec-bfgmisconception4" class="level3" data-number="4.3.4"><h3 data-number="4.3.4" class="anchored" data-anchor-id="sec-bfgmisconception4">
 <span class="header-section-number">4.3.4</span> Misunderstanding 4: Claims based on Bayes Factors do not require error control.</h3>
-<p>In a paper with the provocative title “Optional stopping: No problem for Bayesians” <span class="citation" data-cites="rouder_optional_2014">Rouder (<a href="references.html#ref-rouder_optional_2014" role="doc-biblioref">2014</a>)</span> argues that “Researchers using Bayesian methods may employ optional stopping in their own research and may provide Bayesian analysis of secondary data regardless of the employed stopping rule.” A reader who merely read the title and abstract of that paper might come to the conclusion that Bayes factors are a wonderful solution to the error inflation due to <a href="02-errorcontrol.html#sec-optionalstopping">optional stopping</a> in the frequentist framework, but this is not correct <span class="citation" data-cites="de_heide_why_2017">(<a href="references.html#ref-de_heide_why_2017" role="doc-biblioref">de Heide &amp; Grünwald, 2017</a>)</span>.</p>
+<p>In a paper with the provocative title “Optional stopping: No problem for Bayesians” <span class="citation" data-cites="rouder_optional_2014">Rouder (<a href="references.html#ref-rouder_optional_2014" role="doc-biblioref">2014</a>)</span> argues that “Researchers using Bayesian methods may employ optional stopping in their own research and may provide Bayesian analysis of secondary data regardless of the employed stopping rule.” A reader who merely read the title and abstract of that paper might come to the conclusion that Bayes factors are a wonderful solution to the error inflation due to <a href="02-errorcontrol.html#sec-optionalstopping">optional stopping</a> in the frequentist framework, but this is not correct <span class="citation" data-cites="deheide_why_2017">(<a href="references.html#ref-deheide_why_2017" role="doc-biblioref">de Heide &amp; Grünwald, 2017</a>)</span>.</p>
 <p>There is a big caveat about the type of statistical inferences that is unaffected by optional stopping. Optional stopping is no problem for Bayesians only if they refrain from a) making a dichotomous claim about the presence or absence of an effect, or b) when they refrain from drawing conclusions about a prediction being supported or falsified. Rouder notes how “Even with optional stopping, a researcher can interpret the posterior odds as updated beliefs about hypotheses in light of data.” In other words, even after optional stopping, a Bayes factor tells researchers how much they should update their belief in a hypothesis. Importantly, when researchers make dichotomous claims based on Bayes factors (e.g., “The effect did not differ significantly between the condition, <span class="math inline">\(BF_{10}\)</span> = 0.17”) then this claim can be either correct or an error, so that error rates become a relevant consideration, unlike when researchers simply present the Bayes factor for readers to update their personal beliefs.</p>
 <p>Bayesians disagree among each other about whether Bayes factors should be the basis of dichotomous claims, or not. Those who promote the use of Bayes factors to make claims often refer to thresholds proposed by <span class="citation" data-cites="jeffreys_theory_1939">Jeffreys (<a href="references.html#ref-jeffreys_theory_1939" role="doc-biblioref">1939</a>)</span>, where a BF &gt; 3 is “substantial evidence”, and a BF &gt; 10 is considered “strong evidence”. Some journals, such as <em>Nature Human Behavior</em>, have the following requirement for researchers who submit a Registered Report (a novel article publication format where a preregistration is peer reviewed before the data is analyzed, and authors receive a decision about whether their article will be published before the results are known): “For inference by Bayes factors, authors must be able to guarantee data collection until the Bayes factor is at least 10 times in favour of the experimental hypothesis over the null hypothesis (or vice versa).” When researchers decide to collect data until a specific threshold is crossed to make a claim about a test, their claim can be correct or wrong, just as when <em>p</em>-values are the statistical basis for a claim. As both the Bayes factor and the <em>p</em>-value can be computed based on the sample size and the <em>t</em>-value <span class="citation" data-cites="rouder_bayesian_2009 francis_equivalent_2016">(<a href="references.html#ref-francis_equivalent_2016" role="doc-biblioref">Francis, 2016</a>; <a href="references.html#ref-rouder_bayesian_2009" role="doc-biblioref">Rouder et al., 2009</a>)</span>, there is nothing special about using Bayes factors as the basis of an ordinal claim. The exact long-run error rates can not be directly controlled when computing Bayes factors, and the Type 1 and Type 2 error rate depends on the choice of the prior and the choice for the cut-off used to decide to make a claim. Simulations studies show that for commonly used priors and a BF &gt; 3 cut-off to make claims, the Type 1 error rate is somewhat smaller, but the Type 2 error rate is considerably larger <span class="citation" data-cites="kelter_analysis_2021">(<a href="references.html#ref-kelter_analysis_2021" role="doc-biblioref">Kelter, 2021</a>)</span>.</p>
 <p>In summary, whenever researchers make claims, they can make erroneous claims, and error control should be a worthy goal. Error control is not a consideration when researchers do not make ordinal claims (e.g., X is larger than Y, there is a non-zero correlation between X and Y, etc). If Bayes factors are used to quantify how much researchers should update personal beliefs in a hypothesis, there is no need to consider error control, but, as a corollary, researchers should also refrain from making any ordinal claims based on Bayes factors in the Results section or Discussion sections of their paper. Giving up error control also means giving up claims dichotomous claims about the presence or absence of effects.</p>
@@ -458,13 +508,16 @@ f{}^{}{\left(x;\ \alpha,\ \beta \right) = \ \frac{1}{B(\alpha,\beta)}}x^{\alpha 
 <span class="header-section-number">4.4</span> Bayesian Estimation</h2>
 <p>The posterior distribution summarizes our belief about the expected number of heads when flipping a coin after seeing the data, by averaging over our prior beliefs and the data (or the likelihood). The mean of a Beta distribution can be calculated by <span class="math inline">\(\alpha\)</span>/(<span class="math inline">\(\alpha\)</span>+<span class="math inline">\(\beta\)</span>). We can thus easily calculate the mean of a posterior distribution, which is the expected value based on our prior beliefs and the data.</p>
 <p>We can also calculate a <strong>credible interval</strong> around the mean, which is a Bayesian version of a <a href="07-CI.html">confidence interval</a> with a slightly different interpretation. Instead of the frequentist interpretation where a parameter has one (unknown) true value, the Bayesian approach considers the data fixed, but allow the parameter to vary. In Bayesian approaches, probability distributions represent our degree of belief. When calculating a credible interval, one is saying ‘I believe it is 95% probable (given my prior and the data) that the true parameter falls within this credible interval’. A 95% credible interval is simply the area of the posterior distribution between the 0.025 and 0.975 quantiles.</p>
-<p>A credible interval and a confidence interval are the same, when a uniform prior such as Beta(1,1) is used. In this case, credible interval is numerically identical to the confidence interval. For an example, see <a href="#fig-bayes8">Figure&nbsp;<span>4.6</span></a> where the mean and 95% credible interval are plotted for the posterior when 10 heads out of 20 coin flips are observed, given a uniform prior. In this example, the credible interval is identical to the confidence interval. Only the interpretation differs. Whenever an informed prior is used, the credible interval and confidence interval differ. If the chosen prior is not representative of the truth, the credible interval will not be representative of the truth, but it is always a correct formalization of your beliefs. As will be explained in more detail in Chapter 7, for a <a href="07-CI.html#sec-singleCI">single confidence interval</a>, the probability that it contains the true population parameter is either 0 or 1. Only in the long run will 95% of confidence intervals contain the true population parameter. These are important differences between Bayesian credible intervals and frequentist confidence intervals to keep in mind.</p>
+<p>A credible interval and a confidence interval are the same, when a uniform prior such as Beta(1,1) is used. In this case, credible interval is numerically identical to the confidence interval. For an example, see <a href="#fig-bayes8" class="quarto-xref">Figure&nbsp;<span>4.6</span></a> where the mean and 95% credible interval are plotted for the posterior when 10 heads out of 20 coin flips are observed, given a uniform prior. In this example, the credible interval is identical to the confidence interval. Only the interpretation differs. Whenever an informed prior is used, the credible interval and confidence interval differ. If the chosen prior is not representative of the truth, the credible interval will not be representative of the truth, but it is always a correct formalization of your beliefs. As will be explained in more detail in Chapter 7, for a <a href="07-CI.html#sec-singleCI">single confidence interval</a>, the probability that it contains the true population parameter is either 0 or 1. Only in the long run will 95% of confidence intervals contain the true population parameter. These are important differences between Bayesian credible intervals and frequentist confidence intervals to keep in mind.</p>
 <div class="cell" data-layout-align="center" data-fig.margin="false">
 <div class="cell-output-display">
-<div id="fig-bayes8" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="04-bayes_files/figure-html/fig-bayes8-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;4.6: Plot for the mean of the posterior when 10 out of 20 heads are observed given a uniform prior.</figcaption><p></p>
-</figure>
+<div id="fig-bayes8" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-bayes8-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="04-bayes_files/figure-html/fig-bayes8-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bayes8-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.6: Plot for the mean of the posterior when 10 out of 20 heads are observed given a uniform prior.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -481,7 +534,7 @@ f{}^{}{\left(x;\ \alpha,\ \beta \right) = \ \frac{1}{B(\alpha,\beta)}}x^{\alpha 
 <span id="cb1-9"><a href="#cb1-9"></a><span class="fu">binom.bayes</span>(x, n, <span class="at">type =</span> <span class="st">"highest"</span>, <span class="at">prior.shape1 =</span> aprior, <span class="at">prior.shape2 =</span> bprior)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="kable-table">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead><tr class="header">
 <th style="text-align: left;">method</th>
 <th style="text-align: right;">x</th>
@@ -507,7 +560,7 @@ f{}^{}{\left(x;\ \alpha,\ \beta \right) = \ \frac{1}{B(\alpha,\beta)}}x^{\alpha 
 </table>
 </div>
 <div class="kable-table">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead><tr class="header">
 <th style="text-align: left;">method</th>
 <th style="text-align: right;">x</th>
@@ -541,14 +594,14 @@ f{}^{}{\left(x;\ \alpha,\ \beta \right) = \ \frac{1}{B(\alpha,\beta)}}x^{\alpha 
 <div class="webex-check webex-box">
 <p><strong>Q1</strong>: The true believer had a prior of Beta(1,0.5). After observing 10 heads out of 20 coin flips, what is the posterior distribution, given that <span class="math inline">\(\alpha\)</span> = <span class="math inline">\(\alpha\)</span> + x and <span class="math inline">\(\beta\)</span> = <span class="math inline">\(\beta\)</span> + n – x?</p>
 <div class="cell" data-layout-align="center">
-<div id="radio_KSGGHYJACX" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_KSGGHYJACX" value=""><span>Beta(10, 10)</span></label><label><input type="radio" autocomplete="off" name="radio_KSGGHYJACX" value="answer"><span>Beta(11, 10.5)</span></label><label><input type="radio" autocomplete="off" name="radio_KSGGHYJACX" value=""><span>Beta(10, 20)</span></label><label><input type="radio" autocomplete="off" name="radio_KSGGHYJACX" value=""><span>Beta(11, 20.5)</span></label>
+<div id="radio_WLGVUDSLCB" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_WLGVUDSLCB" value=""><span>Beta(10, 10)</span></label><label><input type="radio" autocomplete="off" name="radio_WLGVUDSLCB" value="answer"><span>Beta(11, 10.5)</span></label><label><input type="radio" autocomplete="off" name="radio_WLGVUDSLCB" value=""><span>Beta(10, 20)</span></label><label><input type="radio" autocomplete="off" name="radio_WLGVUDSLCB" value=""><span>Beta(11, 20.5)</span></label>
 </div>
 </div>
 <p><strong>Q2</strong>: The extreme skeptic had a prior of Beta(100,100). After observing 50 heads out of 100 coin flips, what is the posterior distribution, given that <span class="math inline">\(\alpha\)</span> = <span class="math inline">\(\alpha\)</span> + x and <span class="math inline">\(\beta\)</span> = <span class="math inline">\(\beta\)</span> + n – x?</p>
 <div class="cell" data-layout-align="center">
-<div id="radio_VPJSKOVMDN" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_VPJSKOVMDN" value=""><span>Beta(50, 50)</span></label><label><input type="radio" autocomplete="off" name="radio_VPJSKOVMDN" value=""><span>Beta(51, 51)</span></label><label><input type="radio" autocomplete="off" name="radio_VPJSKOVMDN" value="answer"><span>Beta(150, 150)</span></label><label><input type="radio" autocomplete="off" name="radio_VPJSKOVMDN" value=""><span>Beta(11, 20.5)</span></label>
+<div id="radio_XRDIOFJVZU" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_XRDIOFJVZU" value=""><span>Beta(50, 50)</span></label><label><input type="radio" autocomplete="off" name="radio_XRDIOFJVZU" value=""><span>Beta(51, 51)</span></label><label><input type="radio" autocomplete="off" name="radio_XRDIOFJVZU" value="answer"><span>Beta(150, 150)</span></label><label><input type="radio" autocomplete="off" name="radio_XRDIOFJVZU" value=""><span>Beta(11, 20.5)</span></label>
 </div>
 </div>
 <p>Copy the R script below into R. This script requires 5 input parameters (identical to the Bayes Factor calculator website used above). These are the hypothesis you want to examine (e.g., when evaluating whether a coin is fair, <em>p</em> = 0.5), the total number of trials (e.g., 20 flips), the number of successes (e.g., 10 heads), and the <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> values for the Beta distribution for the prior (e.g., <span class="math inline">\(\alpha\)</span> = 1 and <span class="math inline">\(\beta\)</span> = 1 for a uniform prior). Run the script. It will calculate the Bayes Factor, and plot the prior (grey), likelihood (dashed blue), and posterior (black).</p>
@@ -580,7 +633,7 @@ f{}^{}{\left(x;\ \alpha,\ \beta \right) = \ \frac{1}{B(\alpha,\beta)}}x^{\alpha 
 <span id="cb2-25"><a href="#cb2-25"></a><span class="fu">title</span>(<span class="fu">paste</span>(<span class="st">"Bayes Factor:"</span>, <span class="fu">round</span>(BF10, <span class="at">digits =</span> <span class="dv">2</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="04-bayes_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="04-bayes_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -588,17 +641,17 @@ f{}^{}{\left(x;\ \alpha,\ \beta \right) = \ \frac{1}{B(\alpha,\beta)}}x^{\alpha 
 <p>We see that for the newborn baby, <em>p</em> = 0.5 has become more probable, but so has <em>p</em> = 0.4.</p>
 <p><strong>Q3</strong>: Change the hypothesis in the first line from 0.5 to 0.675, and run the script. If you were testing the idea that this coin returns 67.5% heads, which statement is true?</p>
 <div class="cell" data-layout-align="center">
-<div id="radio_ADKUPNVAIA" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_ADKUPNVAIA" value=""><span>Your belief in this hypothesis, given the data, would have decreased.</span></label><label><input type="radio" autocomplete="off" name="radio_ADKUPNVAIA" value="answer"><span>Your belief in this hypothesis, given the data, would have stayed the same.</span></label><label><input type="radio" autocomplete="off" name="radio_ADKUPNVAIA" value=""><span>Your belief in this hypothesis, given the data, would have increased.</span></label>
+<div id="radio_MZLDOUVYJV" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_MZLDOUVYJV" value=""><span>Your belief in this hypothesis, given the data, would have decreased.</span></label><label><input type="radio" autocomplete="off" name="radio_MZLDOUVYJV" value="answer"><span>Your belief in this hypothesis, given the data, would have stayed the same.</span></label><label><input type="radio" autocomplete="off" name="radio_MZLDOUVYJV" value=""><span>Your belief in this hypothesis, given the data, would have increased.</span></label>
 </div>
 </div>
 <p><strong>Q4</strong>: Change the hypothesis in the first line back to 0.5. Let’s look at the increase in the belief of the hypothesis <em>p</em> = 0.5 for the extreme skeptic after 10 heads out of 20 coin flips. Change the <span class="math inline">\(\alpha\)</span> for the prior in line 4 to 100 and the <span class="math inline">\(\beta\)</span> for the prior in line 5 to 100. Run the script. Compare the figure from R to the increase in belief for the newborn baby. Which statement is true?</p>
 <div class="cell" data-layout-align="center">
-<div id="radio_BZZPDABOLW" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_BZZPDABOLW" value="answer"><span>The belief in the hypothesis that <em>p</em> = 0.5, given the data, has <strong>increased</strong> for the extreme skeptic, but <strong>not</strong> as much as it has for the newborn.</span></label><label><input type="radio" autocomplete="off" name="radio_BZZPDABOLW" value=""><span>The belief in the hypothesis that <em>p</em> = 0.5, given the data, has <strong>increased</strong> for the extreme skeptic, <strong>exactly as much</strong> as it has for the newborn.</span></label><label><input type="radio" autocomplete="off" name="radio_BZZPDABOLW" value=""><span>The belief in the hypothesis that <em>p</em> = 0.5, given the data, has <strong>increased</strong> for the extreme skeptic, and <strong>much more</strong> than it has for the newborn.</span></label><label><input type="radio" autocomplete="off" name="radio_BZZPDABOLW" value=""><span>The belief in the hypothesis that <em>p</em> = 0.5, given the data, has <strong>decreased</strong> for the extreme skeptic.</span></label>
+<div id="radio_VIPUSZUQMM" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_VIPUSZUQMM" value="answer"><span>The belief in the hypothesis that <em>p</em> = 0.5, given the data, has <strong>increased</strong> for the extreme skeptic, but <strong>not</strong> as much as it has for the newborn.</span></label><label><input type="radio" autocomplete="off" name="radio_VIPUSZUQMM" value=""><span>The belief in the hypothesis that <em>p</em> = 0.5, given the data, has <strong>increased</strong> for the extreme skeptic, <strong>exactly as much</strong> as it has for the newborn.</span></label><label><input type="radio" autocomplete="off" name="radio_VIPUSZUQMM" value=""><span>The belief in the hypothesis that <em>p</em> = 0.5, given the data, has <strong>increased</strong> for the extreme skeptic, and <strong>much more</strong> than it has for the newborn.</span></label><label><input type="radio" autocomplete="off" name="radio_VIPUSZUQMM" value=""><span>The belief in the hypothesis that <em>p</em> = 0.5, given the data, has <strong>decreased</strong> for the extreme skeptic.</span></label>
 </div>
 </div>
-<p>Copy the R script below and run it. The script will plot the mean for the posterior when 10 heads out of 20 coin flips are observed, given a uniform prior (as in <a href="#fig-bayes8">Figure&nbsp;<span>4.6</span></a>). The script will also use the ‘binom’ package to calculate the posterior mean, credible interval, and highest density interval is an alternative to the credible interval.</p>
+<p>Copy the R script below and run it. The script will plot the mean for the posterior when 10 heads out of 20 coin flips are observed, given a uniform prior (as in <a href="#fig-bayes8" class="quarto-xref">Figure&nbsp;<span>4.6</span></a>). The script will also use the ‘binom’ package to calculate the posterior mean, credible interval, and highest density interval is an alternative to the credible interval.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>n <span class="ot">&lt;-</span> <span class="dv">20</span> <span class="co"># set total trials</span></span>
 <span id="cb3-2"><a href="#cb3-2"></a>x <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="co"># set successes</span></span>
@@ -629,7 +682,7 @@ f{}^{}{\left(x;\ \alpha,\ \beta \right) = \ \frac{1}{B(\alpha,\beta)}}x^{\alpha 
 <span id="cb3-27"><a href="#cb3-27"></a><span class="fu">title</span>(<span class="fu">paste</span>(<span class="st">"Mean posterior: "</span>, <span class="fu">round</span>((aposterior <span class="sc">/</span> (aposterior <span class="sc">+</span> bposterior)), <span class="at">digits =</span> <span class="dv">5</span>), <span class="st">", 95% Credible Interval: "</span>, <span class="fu">round</span>(LL, <span class="at">digits =</span> <span class="dv">2</span>), <span class="st">";"</span>, <span class="fu">round</span>(UL, <span class="at">digits =</span> <span class="dv">2</span>), <span class="at">sep =</span> <span class="st">""</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="04-bayes_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="04-bayes_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -641,7 +694,7 @@ f{}^{}{\left(x;\ \alpha,\ \beta \right) = \ \frac{1}{B(\alpha,\beta)}}x^{\alpha 
 <span id="cb4-6"><a href="#cb4-6"></a><span class="fu">binom.bayes</span>(x, n, <span class="at">type =</span> <span class="st">"highest"</span>, <span class="at">prior.shape1 =</span> aprior, <span class="at">prior.shape2 =</span> bprior)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="kable-table">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead><tr class="header">
 <th style="text-align: left;">method</th>
 <th style="text-align: right;">x</th>
@@ -667,7 +720,7 @@ f{}^{}{\left(x;\ \alpha,\ \beta \right) = \ \frac{1}{B(\alpha,\beta)}}x^{\alpha 
 </table>
 </div>
 <div class="kable-table">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead><tr class="header">
 <th style="text-align: left;">method</th>
 <th style="text-align: right;">x</th>
@@ -697,8 +750,8 @@ f{}^{}{\left(x;\ \alpha,\ \beta \right) = \ \frac{1}{B(\alpha,\beta)}}x^{\alpha 
 <p>The posterior mean is identical to the Frequentist mean, but this is only the case when the mean of the prior equals the mean of the likelihood.</p>
 <p><strong>Q5</strong>: Assume the outcome of 20 coin flips had been 18 heads. Change x to 18 in line 2 and run the script. Remember that the mean of the prior Beta(1,1) distribution is <span class="math inline">\(\alpha\)</span> / (<span class="math inline">\(\alpha\)</span> + <span class="math inline">\(\beta\)</span>), or 1/(1+1) = 0.5. The Frequentist mean is simply x/n, or 18/20=0.9. Which statement is true?</p>
 <div class="cell" data-layout-align="center">
-<div id="radio_TUGCWOPMMU" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_TUGCWOPMMU" value="answer"><span>The frequentist mean is <strong>higher</strong> than the mean of the posterior, because by combining the prior with the data, the mean of the posterior is <strong>closer</strong> to the mean of the prior distribution.</span></label><label><input type="radio" autocomplete="off" name="radio_TUGCWOPMMU" value=""><span>The frequentist mean is <strong>lower</strong> than the mean of the posterior, because by combining the prior with the data, the mean of the posterior is <strong>closer</strong> to the mean of the prior distribution.</span></label><label><input type="radio" autocomplete="off" name="radio_TUGCWOPMMU" value="answer"><span>The frequentist mean is <strong>higher</strong> than the mean of the posterior, because by combining the prior with the data, the mean of the posterior is <strong>further from</strong> the mean of the prior distribution.</span></label><label><input type="radio" autocomplete="off" name="radio_TUGCWOPMMU" value=""><span>The frequentist mean is <strong>lower</strong> than the mean of the posterior, because by combining the prior with the data, the mean of the posterior is <strong>further from</strong> the mean of the prior distribution.</span></label>
+<div id="radio_UBQGHMUIEB" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_UBQGHMUIEB" value="answer"><span>The frequentist mean is <strong>higher</strong> than the mean of the posterior, because by combining the prior with the data, the mean of the posterior is <strong>closer</strong> to the mean of the prior distribution.</span></label><label><input type="radio" autocomplete="off" name="radio_UBQGHMUIEB" value=""><span>The frequentist mean is <strong>lower</strong> than the mean of the posterior, because by combining the prior with the data, the mean of the posterior is <strong>closer</strong> to the mean of the prior distribution.</span></label><label><input type="radio" autocomplete="off" name="radio_UBQGHMUIEB" value="answer"><span>The frequentist mean is <strong>higher</strong> than the mean of the posterior, because by combining the prior with the data, the mean of the posterior is <strong>further from</strong> the mean of the prior distribution.</span></label><label><input type="radio" autocomplete="off" name="radio_UBQGHMUIEB" value=""><span>The frequentist mean is <strong>lower</strong> than the mean of the posterior, because by combining the prior with the data, the mean of the posterior is <strong>further from</strong> the mean of the prior distribution.</span></label>
 </div>
 </div>
 <p><strong>Q6</strong>: What is, today, your best estimate of the probability that the sun will rise tomorrow? Assume you were born with an uniform Beta(1,1) prior. The sun can either rise, or not. Assume you have seen the sun rise every day since you were born, which means there has been a continuous string of successes for every day you have been alive. It is OK to estimate the days you have been alive by just multiplying your age by 365 days. What is your best estimate of the probability that the sun will rise tomorrow?</p>
@@ -730,9 +783,9 @@ f{}^{}{\left(x;\ \alpha,\ \beta \right) = \ \frac{1}{B(\alpha,\beta)}}x^{\alpha 
 </ol>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
 <div id="ref-albers_credible_2018" class="csl-entry" role="listitem">
-Albers, C. J., Kiers, H. A. L., &amp; Ravenzwaaij, D. van. (2018). Credible <span>Confidence</span>: <span>A Pragmatic View</span> on the <span>Frequentist</span> vs <span>Bayesian Debate</span>. <em>Collabra: Psychology</em>, <em>4</em>(1), 31. <a href="https://doi.org/10.1525/collabra.149">https://doi.org/10.1525/collabra.149</a>
+Albers, C. J., Kiers, H. A. L., &amp; Ravenzwaaij, D. van. (2018). Credible <span>Confidence</span>: <span>A Pragmatic View</span> on the <span>Frequentist</span> vs <span>Bayesian Debate</span>. <em>Collabra: Psychology</em>, <em>4</em>(1, 1), 31. <a href="https://doi.org/10.1525/collabra.149">https://doi.org/10.1525/collabra.149</a>
 </div>
 <div id="ref-bem_feeling_2011" class="csl-entry" role="listitem">
 Bem, D. J. (2011). Feeling the future: Experimental evidence for anomalous retroactive influences on cognition and affect. <em>Journal of Personality and Social Psychology</em>, <em>100</em>(3), 407–425. <a href="https://doi.org/10.1037/a0021524">https://doi.org/10.1037/a0021524</a>
@@ -746,11 +799,11 @@ Berger, J. O., &amp; Bayarri, M. J. (2004). The <span>Interplay</span> of <span>
 <div id="ref-cohen_earth_1994" class="csl-entry" role="listitem">
 Cohen, J. (1994). The earth is round (p <span><span class="math inline">\(&lt;\)</span></span> .05). <em>American Psychologist</em>, <em>49</em>(12), 997–1003. <a href="https://doi.org/10.1037/0003-066X.49.12.997">https://doi.org/10.1037/0003-066X.49.12.997</a>
 </div>
-<div id="ref-de_heide_why_2017" class="csl-entry" role="listitem">
-de Heide, R., &amp; Grünwald, P. D. (2017). Why optional stopping is a problem for <span>Bayesians</span>. <em>arXiv:1708.08278 [Math, Stat]</em>. <a href="https://arxiv.org/abs/1708.08278">https://arxiv.org/abs/1708.08278</a>
+<div id="ref-deheide_why_2017" class="csl-entry" role="listitem">
+de Heide, R., &amp; Grünwald, P. D. (2017). <em>Why optional stopping is a problem for <span>Bayesians</span></em>. <a href="http://arxiv.org/abs/1708.08278">http://arxiv.org/abs/1708.08278</a>
 </div>
 <div id="ref-dienes_understanding_2008" class="csl-entry" role="listitem">
-Dienes, Z. (2008). <em>Understanding psychology as a science: <span>An</span> introduction to scientific and statistical inference</em>. <span>Palgrave Macmillan</span>.
+Dienes, Z. (2008). <em>Understanding psychology as a science: <span>An</span> introduction to scientific and statistical inference</em>. Palgrave Macmillan.
 </div>
 <div id="ref-dienes_using_2014" class="csl-entry" role="listitem">
 Dienes, Z. (2014). Using <span>Bayes</span> to get the most out of non-significant results. <em>Frontiers in Psychology</em>, <em>5</em>. <a href="https://doi.org/10.3389/fpsyg.2014.00781">https://doi.org/10.3389/fpsyg.2014.00781</a>
@@ -762,7 +815,7 @@ Francis, G. (2016). Equivalent statistics and data interpretation. <em>Behavior 
 Frick, R. W. (1996). The appropriate use of null hypothesis testing. <em>Psychological Methods</em>, <em>1</em>(4), 379–390. <a href="https://doi.org/10.1037/1082-989X.1.4.379">https://doi.org/10.1037/1082-989X.1.4.379</a>
 </div>
 <div id="ref-jeffreys_theory_1939" class="csl-entry" role="listitem">
-Jeffreys, H. (1939). <em>Theory of probability</em> (1st ed). <span>Oxford University Press</span>.
+Jeffreys, H. (1939). <em>Theory of probability</em> (1st ed). Oxford University Press.
 </div>
 <div id="ref-kass_bayes_1995" class="csl-entry" role="listitem">
 Kass, R. E., &amp; Raftery, A. E. (1995). Bayes factors. <em>Journal of the American Statistical Association</em>, <em>90</em>(430), 773–795. <a href="https://doi.org/10.1080/01621459.1995.10476572">https://doi.org/10.1080/01621459.1995.10476572</a>
@@ -771,16 +824,16 @@ Kass, R. E., &amp; Raftery, A. E. (1995). Bayes factors. <em>Journal of the Amer
 Kelter, R. (2021). Analysis of type <span>I</span> and <span>II</span> error rates of <span>Bayesian</span> and frequentist parametric and nonparametric two-sample hypothesis tests under preliminary assessment of normality. <em>Computational Statistics</em>, <em>36</em>(2), 1263–1288. <a href="https://doi.org/10.1007/s00180-020-01034-7">https://doi.org/10.1007/s00180-020-01034-7</a>
 </div>
 <div id="ref-kruschke_doing_2014" class="csl-entry" role="listitem">
-Kruschke, J. K. (2014). <em>Doing <span>Bayesian Data Analysis</span>, <span>Second Edition</span>: <span>A Tutorial</span> with <span>R</span>, <span>JAGS</span>, and <span>Stan</span></em> (2 edition). <span>Academic Press</span>.
+Kruschke, J. K. (2014). <em>Doing <span>Bayesian Data Analysis</span>, <span>Second Edition</span>: <span>A Tutorial</span> with <span>R</span>, <span>JAGS</span>, and <span>Stan</span></em> (2 edition). Academic Press.
 </div>
 <div id="ref-lakens_improving_2020" class="csl-entry" role="listitem">
 Lakens, D., McLatchie, N., Isager, P. M., Scheel, A. M., &amp; Dienes, Z. (2020). Improving <span>Inferences About Null Effects With Bayes Factors</span> and <span>Equivalence Tests</span>. <em>The Journals of Gerontology: Series B</em>, <em>75</em>(1), 45–57. <a href="https://doi.org/10.1093/geronb/gby065">https://doi.org/10.1093/geronb/gby065</a>
 </div>
 <div id="ref-mcelreath_statistical_2016" class="csl-entry" role="listitem">
-McElreath, R. (2016). <em>Statistical <span>Rethinking</span>: <span>A Bayesian Course</span> with <span>Examples</span> in <span>R</span> and <span>Stan</span></em> (Vol. 122). <span>CRC Press</span>.
+McElreath, R. (2016). <em>Statistical <span>Rethinking</span>: <span>A Bayesian Course</span> with <span>Examples</span> in <span>R</span> and <span>Stan</span></em> (Vol. 122). CRC Press. <a href="http://books.google.com/books?hl=en&amp;lr=&amp;id=mDo0CwAAQBAJ&amp;oi=fnd&amp;pg=PP1&amp;dq=%22Maximum+entropy%22+%2213.+Adventures+in%22+%22sure+that+planks+won%E2%80%99t+slip+at+busy%22+%22Ordered+categorical%22+%2214.+Missing+Data+and+Other%22+%22Other+count%22+%22Continuous+categories+and+the+Gaussian%22+&amp;ots=fD6h3iyM2m&amp;sig=pEXBn5Ex-ps9Fhw-b6juTVKIngY">http://books.google.com/books?hl=en&amp;lr=&amp;id=mDo0CwAAQBAJ&amp;oi=fnd&amp;pg=PP1&amp;dq=%22Maximum+entropy%22+%2213.+Adventures+in%22+%22sure+that+planks+won%E2%80%99t+slip+at+busy%22+%22Ordered+categorical%22+%2214.+Missing+Data+and+Other%22+%22Other+count%22+%22Continuous+categories+and+the+Gaussian%22+&amp;ots=fD6h3iyM2m&amp;sig=pEXBn5Ex-ps9Fhw-b6juTVKIngY</a>
 </div>
 <div id="ref-rouder_optional_2014" class="csl-entry" role="listitem">
-Rouder, J. N. (2014). Optional stopping: <span>No</span> problem for <span>Bayesians</span>. <em>Psychonomic Bulletin &amp; Review</em>, <em>21</em>(2), 301–308.
+Rouder, J. N. (2014). Optional stopping: <span>No</span> problem for <span>Bayesians</span>. <em>Psychonomic Bulletin &amp; Review</em>, <em>21</em>(2), 301–308. <a href="http://link.springer.com/article/10.3758/s13423-014-0595-4">http://link.springer.com/article/10.3758/s13423-014-0595-4</a>
 </div>
 <div id="ref-rouder_bayesian_2009" class="csl-entry" role="listitem">
 Rouder, J. N., Speckman, P. L., Sun, D., Morey, R. D., &amp; Iverson, G. (2009). Bayesian t tests for accepting and rejecting the null hypothesis. <em>Psychonomic Bulletin &amp; Review</em>, <em>16</em>(2), 225–237. <a href="https://doi.org/10.3758/PBR.16.2.225">https://doi.org/10.3758/PBR.16.2.225</a>
@@ -791,7 +844,7 @@ Rozeboom, W. W. (1960). The fallacy of the null-hypothesis significance test. <e
 <div id="ref-tendeiro_diagnosing_2024" class="csl-entry" role="listitem">
 Tendeiro, J. N., Kiers, H. A. L., Hoekstra, R., Wong, T. K., &amp; Morey, R. D. (2024). Diagnosing the <span>Misuse</span> of the <span>Bayes Factor</span> in <span>Applied Research</span>. <em>Advances in Methods and Practices in Psychological Science</em>, <em>7</em>(1), 25152459231213371. <a href="https://doi.org/10.1177/25152459231213371">https://doi.org/10.1177/25152459231213371</a>
 </div>
-<div id="ref-van_de_schoot_systematic_2017" class="csl-entry" role="listitem">
+<div id="ref-vandeschoot_systematic_2017" class="csl-entry" role="listitem">
 van de Schoot, R., Winter, S. D., Ryan, O., Zondervan-Zwijnenburg, M., &amp; Depaoli, S. (2017). A systematic review of <span>Bayesian</span> articles in psychology: <span>The</span> last 25 years. <em>Psychological Methods</em>, <em>22</em>(2), 217–239. <a href="https://doi.org/10.1037/met0000100">https://doi.org/10.1037/met0000100</a>
 </div>
 <div id="ref-wagenmakers_why_2011" class="csl-entry" role="listitem">
@@ -1076,6 +1129,33 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
     }
   }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
   const toggleColorMode = (alternate) => {
     // Switch the stylesheets
     const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
@@ -1142,13 +1222,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return localAlternateSentinel;
     }
   }
-  let localAlternateSentinel = 'default';
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
   // Dark / light mode switch
   window.quartoToggleColorScheme = () => {
     // Read the current dark / light value 
     let toAlternate = !hasAlternateSentinel();
     toggleColorMode(toAlternate);
     setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
   };
   // Ensure there is a toggle, if there isn't float one in the top right
   if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -1227,10 +1309,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1240,8 +1339,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1253,7 +1361,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1297,6 +1528,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1322,6 +1554,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1381,22 +1639,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./03-likelihoods.html" class="pagination-link">
+      <a href="./03-likelihoods.html" class="pagination-link" aria-label="Likelihoods">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Likelihoods</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./05-questions.html" class="pagination-link">
+      <a href="./05-questions.html" class="pagination-link" aria-label="Asking Statistical Questions">
         <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Asking Statistical Questions</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
-    <div class="nav-footer-left">Lakens, D. (2022). Improving Your Statistical Inferences. Retrieved from https://lakens.github.io/statistical_inferences/. https://doi.org/10.5281/zenodo.6409077</div>   
+    <div class="nav-footer-left">
+<p>Lakens, D. (2022). Improving Your Statistical Inferences. Retrieved from https://lakens.github.io/statistical_inferences/. https://doi.org/10.5281/zenodo.6409077</p>
+</div>   
     <div class="nav-footer-center">
       &nbsp;
-    </div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Lakens/statistical_inferences/edit/master/04-bayes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Lakens/statistical_inferences/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/Lakens/statistical_inferences/blob/master/04-bayes.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div>
     <div class="nav-footer-right">
       &nbsp;
     </div>
