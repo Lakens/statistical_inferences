@@ -141,6 +141,15 @@ In a study where researchers are manipulating fatigue by asking participants to 
 
 The TOSTER package (originally created by myself but recently redesigned by [Aaron Caldwell](https://aaroncaldwell.us/)) can be used to plot two *t*-distributions and their critical regions indicating when we can reject the presence of effects smaller than -0.5 and larger than 0.5. It can take some time to get used to the idea that we are rejecting values more extreme than the equivalence bounds. Try to consistently ask in any hypothesis test: Which values can the test reject? In a nil null hypothesis test, we can reject an effect of 0, and in the equivalence test in the Figure below, we can reject values lower than -0.5 and higher than 0.5. In @fig-tdistequivalence we see two *t*-distributions centered on the upper and lower bound of the specified equivalence range (-0.5 and 0.5). 
 
+```{r eval = FALSE}
+res <- TOSTER::tsum_TOST(m1 = 4.55, m2 = 4.87, sd1 = 1.05, sd2 = 1.11,
+                  n1 = 15, n2 = 15, low_eqbound = -0.5, high_eqbound = 0.5)
+
+plot(res, type = "tnull")
+
+```
+
+
 ```{r fig-tdistequivalence, echo = FALSE, warning = FALSE, message = FALSE}
 #| fig-cap: "The mean difference and its confidence interval plotted below the *t*-distributions used to perform the two-one-sided tests against -0.5 and 0.5."
 
@@ -175,8 +184,17 @@ res <- TOSTER::tsum_TOST(m1 = 4.55, m2 = 4.87, sd1 = 1.05, sd2 = 1.11,
                   n1 = 200, n2 = 200, low_eqbound = -0.5, high_eqbound = 0.5)
 ```
 
-
 One way to reduce the probability of an inconclusive effect is to collect sufficient data. Let's imagine the researchers had not collected 15 participants in each condition, but 200 participants. They otherwise observe exactly the same data. As explained in the chapter on [confidence intervals](#sec-confint), as the sample size increases, the confidence interval becomes more narrow. For a TOST equivalence test to be able to reject both the upper and lower bound of the equivalence range, the confidence interval needs to fall completely within the equivalence range. In @fig-ciequivalence1 we see the same result as in @fig-tdistequivalence, but now if we had collected 200 observations. Because of the larger sample size, the confidence is more narrow than when we collected 15 participants. We see that the 90% confidence interval around the observed mean difference now excludes both the upper and lower equivalence bound. This means that we can now reject effects outside of the equivalence range (even though barely, with a *p* = `r round(res$TOST$p[2],3)` as the one-sided test against the lower equivalence bound is only just statistically significant).
+
+```{r eval = FALSE}
+result <- TOSTER::tsum_TOST(m1 = 4.55, m2 = 4.87, sd1 = 1.05, sd2 = 1.11, n1 = 200, n2 = 200, low_eqbound = -0.5, high_eqbound = 0.5)
+
+# plot the result
+plot(result, type = "tnull", estimates = "raw")
+
+# print the result
+result
+```
 
 ```{r fig-ciequivalence1, echo = FALSE}
 #| fig-cap: "The mean difference and its confidence interval for an equivalence test with an equivalence range of -0.5 and 0.5."
@@ -437,7 +455,7 @@ cat(longmcq(opts_p))
 
 <!-- ```{r eval = FALSE} -->
 
-<!-- TOSTER::tsum_TOST(m1 = 7.35, -->
+<!-- result <- TOSTER::tsum_TOST(m1 = 7.35, -->
 <!--                   sd1 = 1.15, -->
 <!--                   n1 = 50, -->
 <!--                   m2 = 7.13, -->
@@ -447,12 +465,11 @@ cat(longmcq(opts_p))
 <!--                   high_eqbound = 0.5, -->
 <!--                   eqbound_type = "raw", -->
 <!--                   alpha = 0.05) -->
-
 <!-- ``` -->
 
 
 ```{r eval = FALSE}
-TOSTER::tsum_TOST(
+result <- TOSTER::tsum_TOST(
   m1 = 0.00,
   sd1 = 0.00,
   n1 = 0,
@@ -464,6 +481,12 @@ TOSTER::tsum_TOST(
   eqbound_type = "raw",
   alpha = 0.05
 )
+
+# print the result
+result
+
+# plot the result
+plot(result, type = "tnull", estimates = "raw")
 
 ```
 
@@ -678,6 +701,7 @@ TOSTER::TOSTmeta(
   high_eqbound_d = 0.0,
   alpha = 0.05
 )
+
 ```
 
 ```{r, echo = FALSE, results = 'asis'}
