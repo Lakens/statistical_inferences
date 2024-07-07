@@ -193,7 +193,6 @@ window.Quarto = {
           </li>
       </ul>
 </div>
-    <a href="https://twitter.com/intent/tweet?url=%7Curl%7C" title="Twitter" class="quarto-navigation-tool px-1" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
     </div>
@@ -474,6 +473,69 @@ Figure&nbsp;17.2: Forest plot for an original study (N = 60, d = 0.6) and a repl
 </div>
 </div>
 </div>
+<p>It is also possible to test the difference between correlations, where the formula is:</p>
+<p><span class="math display">\[
+Z = \frac{ln(1+r)-ln(1-r)}{2}
+\]</span></p>
+<p>This test can for example be performed in the cocor package in R:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">library</span>(cocor)</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">cocor.indep.groups</span>(<span class="at">n1 =</span> <span class="dv">30</span>, <span class="at">r1.jk =</span> .<span class="dv">4</span>, <span class="at">n2 =</span> <span class="dv">200</span>, <span class="at">r2.hm =</span> .<span class="dv">01</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  Results of a comparison of two correlations based on independent groups
+
+Comparison between r1.jk = 0.4 and r2.hm = 0.01
+Difference: r1.jk - r2.hm = 0.39
+Group sizes: n1 = 30, n2 = 200
+Null hypothesis: r1.jk is equal to r2.hm
+Alternative hypothesis: r1.jk is not equal to r2.hm (two-sided)
+Alpha: 0.05
+
+fisher1925: Fisher's z (1925)
+  z = 2.0157, p-value = 0.0438
+  Null hypothesis rejected
+
+zou2007: Zou's (2007) confidence interval
+  95% confidence interval for r1.jk - r2.hm: 0.0102 0.6888
+  Null hypothesis rejected (Interval does not include 0)</code></pre>
+</div>
+</div>
+<p>We see that the difference between an original study with 30 participants that observed an effect of <em>r</em> = 0.4 and a replication study that observed an effect of <em>r</em> = 0.01 is just statistically significant. We can use the pwrss package <span class="citation" data-cites="bulus_pwrss_2023">(<a href="references.html#ref-bulus_pwrss_2023" role="doc-biblioref">Bulus &amp; Polat, 2023</a>)</span> to examine the sample size we would need to achieve sufficient power for such difference between correlations with 90% power.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">library</span>(pwrss)</span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">pwrss.z.2corrs</span>(<span class="at">r1 =</span> <span class="fl">0.4</span>, <span class="at">r2 =</span> <span class="fl">0.01</span>,</span>
+<span id="cb6-3"><a href="#cb6-3"></a>               <span class="at">power =</span> .<span class="dv">90</span>, <span class="at">alpha =</span> <span class="fl">0.05</span>, </span>
+<span id="cb6-4"><a href="#cb6-4"></a>               <span class="at">alternative =</span> <span class="st">"not equal"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Difference between Two Correlations 
+ (Independent Samples z Test) 
+ H0: r1 = r2 
+ HA: r1 != r2 
+ ------------------------------ 
+  Statistical power = 0.9 
+  n1 = 126 
+  n2 = 126 
+ ------------------------------ 
+ Alternative = "not equal" 
+ Non-centrality parameter = 3.242 
+ Type I error rate = 0.05 
+ Type II error rate = 0.1 </code></pre>
+</div>
+</div>
+<p>The same calculation can be performed in G*Power.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-powerdifcor" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-powerdifcor-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/powerdifcor.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-powerdifcor-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;17.3: Power analysis for the difference between two independent correlations in G*Power.
+</figcaption></figure>
+</div>
+</div>
+</div>
 <p>Although a statistical difference between effect sizes is one coherent approach to decide whether a study has been replicated, researchers are sometimes interested in a different question: Was there a significant result in the replication study? In this approach to analyzing replication studies there is no direct comparison with the effect observed in the original study. The question is therefore not so much ‘is the original effect replicated?’ but ‘if we repeat the original study is a statistically significant effect observed?’. In other words, we are not testing whether an effect has been replicated, but whether a predicted effect has been observed. Another way of saying this is that we are not asking whether the observed effect replicated, but whether the original ordinal claim of the presence of an non-zero effect is replicated. In the example in <a href="#fig-rep-1" class="quarto-xref">Figure&nbsp;<span>17.2</span></a> the replication study has an effect size of 0, so there is no statistically significant effect, and the original effect did not replicate (in the sense that repeated the procedure did not yield a significant result).</p>
 <p>Let’s take a step back, and consider which statistical test best reflects the question ‘did this study replicate’. On the one hand it seems reasonable to consider an effect ‘not replicated’ if there is a statistically significant difference between the effect sizes. However, this can mean that a non-significant effect in the replication studies leads to a ‘replication’ just because the effect size estimate is not statistically smaller than the original effect size. On the other hand, it seems reasonable to consider an effect replicated if it is statistically significant in the replication study. These two approaches can lead to a conflict, however. Some statistically significant effects are statistically smaller than the original study. Should these be considered ‘replicated’ or not? We might want to combine both statistical tests, and consider a study a replication if the effect is both statistically different from 0 (i.e., <em>p</em> &lt; .05 in a traditional significance test), and the difference in effect sizes is not statistically different from 0 (i.e., <em>p</em> &gt; .05 for a test of heterogeneity in a meta-analysis of both effect sizes). We can perform both tests, and only consider a finding replicated if both conditions are met. Logically, a finding should then be considered as a non-replication if the opposite is true (i.e., <em>p</em> &gt; .05 for significance test of the replication study, and <em>p</em> &lt; .05 for the test of heterogeneity).</p>
 <p>However, due to the low power of the test for a difference between the effect sizes in the original and replication study, it is not easy to meet the bar of an informative result. In practice, many replication studies that do not yield a statistically significant result will also not show a statistically significant difference as part of the test of heterogeneity. In a preprint (that we never bothered to resubmit after we received positive reviews) Richard Morey and I <span class="citation" data-cites="morey_why_2016">(<a href="references.html#ref-morey_why_2016" role="doc-biblioref">Richard D. Morey &amp; Lakens, 2016</a>)</span> summarized this problem in our title “Why most of psychology is statistically unfalsiﬁable”. If we want to have an informative test for replication following the criteria outlined above, most tests will be uninformative, and lead to inconclusive results.</p>
@@ -483,13 +545,13 @@ Figure&nbsp;17.2: Forest plot for an original study (N = 60, d = 0.6) and a repl
 <p>As noted above, although ideally we directly test the difference between effect sizes, the uncertainty in the original effect size estimate when sample sizes are small can make lead to a test with very low power. As we can never increase the sample size of original studies, and we also can not do science if we can not conclude claims in the literature can not be replicated, we will need to be pragmatic and develop alternative statistical procedures to claim an effect can not be replicated. As the large uncertainty in the original effect sizes are the main cause of the problem, a logical solution is to move to statistical approaches where this uncertainty is not part of the test. An intuitive approach would be to test if the effect size in the replication study is statistically smaller than the effect in the original study. In the example above we would test whether the 95% confidence interval around the effect size in the replication study excludes the effect in the original study (i.e., 0.6, or 0.592 when converted to Hedges’<em>g</em>). In essence this is a two-sided test against the original effect size. This is the equivalent of changing a independent <em>t</em>-test where two groups are compared to a one-sample <em>t</em>-test where the 95% confidence interval in one group is compared against the observed mean in the other group, ignoring uncertainty in this other group. We do not accept this approach when we compare two means, and we should not accept this approach when we compare two standardized mean differences from an original and replication study. The problem is that this test will too easily reject the null-hypothesis that the two effects are equal, because it ignores the variability in one of the two effect sizes.</p>
 <p>An alternative approach is to test against a more conservative effect size, and consider an original finding not replicated if this conservative effect size can be rejected. In practice researchers are primarily interested in the question whether the effect size in the replication study is statistically smaller that the effect size in the original study. This questions is answered by an <em>inferiority test</em>, which is statistically significant if the 90% confidence interval around the effect size in the replication study does not contain the conservative effect size estimate. One implementation of an inferiority test is the <em>small telescopes</em> approach <span class="citation" data-cites="simonsohn_small_2015">(<a href="references.html#ref-simonsohn_small_2015" role="doc-biblioref">Simonsohn, 2015</a>)</span>. In the small telescopes approach a test is performed against the effect the original study had 33% power to detect. In the example in <a href="#fig-rep-1" class="quarto-xref">Figure&nbsp;<span>17.2</span></a> the original study had 33% power to detect and effect of <em>d</em> = 0.4.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>pwr<span class="sc">::</span><span class="fu">pwr.t.test</span>(</span>
-<span id="cb4-2"><a href="#cb4-2"></a>  <span class="at">n =</span> <span class="dv">30</span>,</span>
-<span id="cb4-3"><a href="#cb4-3"></a>  <span class="at">sig.level =</span> <span class="fl">0.05</span>,</span>
-<span id="cb4-4"><a href="#cb4-4"></a>  <span class="at">power =</span> <span class="fl">0.33</span>,</span>
-<span id="cb4-5"><a href="#cb4-5"></a>  <span class="at">type =</span> <span class="st">"two.sample"</span>,</span>
-<span id="cb4-6"><a href="#cb4-6"></a>  <span class="at">alternative =</span> <span class="st">"two.sided"</span></span>
-<span id="cb4-7"><a href="#cb4-7"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>pwr<span class="sc">::</span><span class="fu">pwr.t.test</span>(</span>
+<span id="cb8-2"><a href="#cb8-2"></a>  <span class="at">n =</span> <span class="dv">30</span>,</span>
+<span id="cb8-3"><a href="#cb8-3"></a>  <span class="at">sig.level =</span> <span class="fl">0.05</span>,</span>
+<span id="cb8-4"><a href="#cb8-4"></a>  <span class="at">power =</span> <span class="fl">0.33</span>,</span>
+<span id="cb8-5"><a href="#cb8-5"></a>  <span class="at">type =</span> <span class="st">"two.sample"</span>,</span>
+<span id="cb8-6"><a href="#cb8-6"></a>  <span class="at">alternative =</span> <span class="st">"two.sided"</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
      Two-sample t test power calculation 
@@ -513,7 +575,7 @@ NOTE: n is number in *each* group</code></pre>
 <p>There is another reason why it is more beneficial to use independent replication studies to reduce the error rate, compared to performing studies with a lower alpha level. If others are able to independently replicate the same effect, it becomes less likely that the original finding was due to systematic error. Systematic errors do not average out to zero in the long run (as random errors do). There can be many sources of systematic error in a study. One source is the measures that are used. For example, if a researcher uses a weighing scale that is limited to a maximum weight of 150 kilo, they might fail to identify an increase in weight, while different researchers who use a weighting scale with a higher maximum weight will identify the difference. An experimenter might be another source of systematic error. An observed effect might not be due to a manipulation, but due to the way the experimenter treats participants in different conditions. Other experimenters who repeat the manipulation, but do not show the same experimenter bias, would observe different results.</p>
 <p>When a researcher repeats their own experiment this is referred to as a <strong>self-replication</strong>, while in an <strong>independent replication</strong> other researchers repeat the experiment. As explained above, self-replication can reduce the Type 1 error rate of a claim, while independent replication can in addition reduce the probability of a claim being caused by a systematic error. Both self-replication and independent replication are useful in science. For example, research collaborations such as the Large Hadron Collider at CERN prefer to not only replicate studies with the same detector, but also replicate studies across different detectors. The Large Hadron Collider has four detectors (ATLAS, CMS, ALICE, and LHCb). Experiments can be self-replicated in the same detector by collecting more data (referred to by physicists as a ‘replica’), but they can also be replicated in a different detector. As Junk and Lyons <span class="citation" data-cites="junk_reproducibility_2020">(<a href="references.html#ref-junk_reproducibility_2020" role="doc-biblioref">2020</a>)</span> note, in self-replications: “The statistical variations are expected to be different in the replica and the original, but the sources of systematic errors are expected to be unchanged.” One way to examine systematic errors is to perform the same experiment in different detectors. The detectors at CERN are not exact copies of each other, and by performing studies in two different detectors, the research collaboration increases its confidence in the reliability of the conclusions if a replication study yields the same observations, despite minor differences in the experimental set-up.</p>
 <p>The value of an independent replication is not only the reduction in the probability of a Type 1 error, but at the same time the reduction in concerns about systematic error influencing the conclusion <span class="citation" data-cites="neher_probability_1967">(<a href="references.html#ref-neher_probability_1967" role="doc-biblioref">Neher, 1967</a>)</span>. As already highlighted by Mack <span class="citation" data-cites="mack_need_1951">(<a href="references.html#ref-mack_need_1951" role="doc-biblioref">1951</a>)</span>: “Indeed, the introduction of different techniques gives the replication the additional advantage of serving as a check on the validity of the original research”. Similarly, Lubin <span class="citation" data-cites="lubin_replicability_1957">(<a href="references.html#ref-lubin_replicability_1957" role="doc-biblioref">1957</a>)</span> notes: “Our confidence in a study will be a positive monotonic function of the extent to which replication designs are used which vary these supposedly irrelevant factors”. To conclude, although both self-replications (a replication by the same researchers) and independent replication (a replication by different researchers) reduce the probability of a false positive claim, independent replications have the added benefit of testing the generalizability of the findings across factors that are deemed irrelevant to observe the effect.</p>
-<p>From a purely statistical level is it interesting to ask whether it is less costly in terms of the required sample size to perform a single study at an alpha level of 0.0025, or two studies at an alpha level of 0.05. If the sample size required to achieve a desired power is much lower for a single test at an alpha of 0.0025 this would be a reason to perform larger single studies to achieve a low Type 1 error rate instead of performing two smaller studies at an alpha of 0.05. For an independent <em>t</em>-test the more efficient approach depends on the power of the test and whether the test is two-sided or one-sided. In <a href="#fig-alphalevels1" class="quarto-xref">Figure&nbsp;<span>17.3</span></a> a ratio of 1 means the sample size required to reach 70% to 95% power for an alpha level of 0.0025 is identical to two single studies with an alpha level of 0.05, and the two approaches would be equally efficient for a two-sided independent <em>t</em>-test. We see the ratio is below 1 for studies with high power. For example, the total sample size required to detect an effect of <em>d</em> = 0.5 with an alpha level of 0.0025 and with 80% power is 244. With an alpha of 0.05 the total required sample size is 128 in each study, which makes the ratio 244/(128+128) = 0.95, and the number of observations saved is (2*128)-244 = 12.</p>
+<p>From a purely statistical level is it interesting to ask whether it is less costly in terms of the required sample size to perform a single study at an alpha level of 0.0025, or two studies at an alpha level of 0.05. If the sample size required to achieve a desired power is much lower for a single test at an alpha of 0.0025 this would be a reason to perform larger single studies to achieve a low Type 1 error rate instead of performing two smaller studies at an alpha of 0.05. For an independent <em>t</em>-test the more efficient approach depends on the power of the test and whether the test is two-sided or one-sided. In <a href="#fig-alphalevels1" class="quarto-xref">Figure&nbsp;<span>17.4</span></a> a ratio of 1 means the sample size required to reach 70% to 95% power for an alpha level of 0.0025 is identical to two single studies with an alpha level of 0.05, and the two approaches would be equally efficient for a two-sided independent <em>t</em>-test. We see the ratio is below 1 for studies with high power. For example, the total sample size required to detect an effect of <em>d</em> = 0.5 with an alpha level of 0.0025 and with 80% power is 244. With an alpha of 0.05 the total required sample size is 128 in each study, which makes the ratio 244/(128+128) = 0.95, and the number of observations saved is (2*128)-244 = 12.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-alphalevels1" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
@@ -521,7 +583,7 @@ NOTE: n is number in *each* group</code></pre>
 <img src="17-replication_files/figure-html/fig-alphalevels1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-alphalevels1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;17.3: Ratio of the sample size required to run one study at an alpha of 0.0025 or two studies at an alpha of 0.05 for a two-sided independent <em>t</em>-test.
+Figure&nbsp;17.4: Ratio of the sample size required to run one study at an alpha of 0.0025 or two studies at an alpha of 0.05 for a two-sided independent <em>t</em>-test.
 </figcaption></figure>
 </div>
 </div>
@@ -534,7 +596,7 @@ Figure&nbsp;17.3: Ratio of the sample size required to run one study at an alpha
 <img src="17-replication_files/figure-html/fig-alphalevels2-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-alphalevels2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;17.4: Ratio of the sample size required to run one study at an alpha of 0.0025 or two studies at an alpha of 0.05 for a one-sided independent <em>t</em>-test.
+Figure&nbsp;17.5: Ratio of the sample size required to run one study at an alpha of 0.0025 or two studies at an alpha of 0.05 for a one-sided independent <em>t</em>-test.
 </figcaption></figure>
 </div>
 </div>
@@ -550,7 +612,7 @@ Figure&nbsp;17.4: Ratio of the sample size required to run one study at an alpha
 <p>‘If we do not achieve an effect which others formerly achieved, it must be that we lack something in our operation which was the cause of this effect succeeding, and if we lack one thing only, then this alone can be the true cause. Now we do not lack eggs, or slings, or sturdy fellows to whirl them, and still they do not cook, but rather cool down faster if hot. And since we lack nothing except being Babylonians, then being Babylonian is the cause of the egg hardening.’</p>
 </blockquote>
 <p>At the same time, some failures to replicate <em>are</em> due to a difference in auxiliary hypotheses. In the most interesting study examining whether failures to replicate are due to differences in auxiliary assumptions, Ebersole and colleagues <span class="citation" data-cites="ebersole_many_2020">(<a href="references.html#ref-ebersole_many_2020" role="doc-biblioref">2020</a>)</span> performed additional replications of 10 studies that were replicated in the Reproducibility Project: Psychology (RP:P, <span class="citation" data-cites="opensciencecollaboration_estimating_2015">Open Science Collaboration (<a href="references.html#ref-opensciencecollaboration_estimating_2015" role="doc-biblioref">2015</a>)</span>). When the replication studies were designed the authors of original studies were approached for feedback on the design of the replication study. For each of these 10 studies the original authors had raised concerns, but these were not incorporated in the replication study. For example, authors raised the concern that the replication study included participants who had taken prior psychology or economics courses, or who had participated in prior psychology studies. The authors predicted that the effects should be larger in ‘naive’ participants. Other authors pointed out the possibility that the stimuli were not sufficiently pilot tested, the fact that data was collected in a different country, differences in the materials or stimuli, or they pointed out differences in screen resolution of the computer set-up. All these concerns involve predictions about the effects of auxiliary hypotheses, and a team of 172 researchers collaborated with original authors to examine these auxiliary hypotheses in Many Labs 5 <span class="citation" data-cites="ebersole_many_2020">(<a href="references.html#ref-ebersole_many_2020" role="doc-biblioref">Ebersole et al., 2020</a>)</span>. What makes this project especially interesting is that large replication studies were performed both of the RP:P version of the study, as of the revised protocol that addressed the concerns raised by the researchers.</p>
-<p>The results of this project provide a nice illustration of how difficult it is to predict whether findings will replicate, until you try to replicate them <span class="citation" data-cites="miller_what_2009">(<a href="references.html#ref-miller_what_2009" role="doc-biblioref">Miller, 2009</a>)</span>. Two of the studies that did not replicate in the RP:P also did not replicate when a larger new sample was collected, but did replicate with the revised protocol. However, these replication effect sizes were arguably trivially small (Albarracin et al., Study 5 and Shnabel &amp; Nadler in <a href="#fig-manylabs5" class="quarto-xref">Figure&nbsp;<span>17.5</span></a>). A third study (Van Dijk et al) showed a similar pattern but only just failed to show a significant effect in the revised protocol. A fourth study (Albarracin et al., Study 7) was just significant in the original study, and the RP:P study found a very similar effect size which was just non-significant. A meta-analysis pooling these two studies would have yielded a significant meta-analytic effect. And yet, surprisingly, both the replication of the RP:P and the revised protocol based on feedback by the original authors yielded clear null results. A fifth study (Crosby et al) found the same pattern in the original and RP:P study as the second study. Neither the much larger RP:P replication, nor the replication based on the revised protocol yielded a significant result. And yet, the pattern of effect sizes is extremely similar in all four studies, and a meta-analysis across all studies reveals a small but statistically significant effect. In total six of the studies can clearly be regarded as a non-replication where the original authors’ concerns did not matter, as only the original study showed a significant effect, and none of the replication studies yielded a significant result.</p>
+<p>The results of this project provide a nice illustration of how difficult it is to predict whether findings will replicate, until you try to replicate them <span class="citation" data-cites="miller_what_2009">(<a href="references.html#ref-miller_what_2009" role="doc-biblioref">Miller, 2009</a>)</span>. Two of the studies that did not replicate in the RP:P also did not replicate when a larger new sample was collected, but did replicate with the revised protocol. However, these replication effect sizes were arguably trivially small (Albarracin et al., Study 5 and Shnabel &amp; Nadler in <a href="#fig-manylabs5" class="quarto-xref">Figure&nbsp;<span>17.6</span></a>). A third study (Van Dijk et al) showed a similar pattern but only just failed to show a significant effect in the revised protocol. A fourth study (Albarracin et al., Study 7) was just significant in the original study, and the RP:P study found a very similar effect size which was just non-significant. A meta-analysis pooling these two studies would have yielded a significant meta-analytic effect. And yet, surprisingly, both the replication of the RP:P and the revised protocol based on feedback by the original authors yielded clear null results. A fifth study (Crosby et al) found the same pattern in the original and RP:P study as the second study. Neither the much larger RP:P replication, nor the replication based on the revised protocol yielded a significant result. And yet, the pattern of effect sizes is extremely similar in all four studies, and a meta-analysis across all studies reveals a small but statistically significant effect. In total six of the studies can clearly be regarded as a non-replication where the original authors’ concerns did not matter, as only the original study showed a significant effect, and none of the replication studies yielded a significant result.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-manylabs5" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
@@ -558,32 +620,32 @@ Figure&nbsp;17.4: Ratio of the sample size required to run one study at an alpha
 <img src="images/manylabs5.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-manylabs5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;17.5: Forest plot for the original study, RP:P replication study, the larger replication of the RP:P replication study, and the revised protocol based on author feedback, and a meta-analysis of all data, for all 10 studies in Many Labs 5
+Figure&nbsp;17.6: Forest plot for the original study, RP:P replication study, the larger replication of the RP:P replication study, and the revised protocol based on author feedback, and a meta-analysis of all data, for all 10 studies in Many Labs 5
 </figcaption></figure>
 </div>
 </div>
 </div>
 <p>Note that we can not conclude that the concerns the authors raised in the other four studies mattered. Despite the large sample sizes, only one statistical difference between the RP:P protocol and the revised protocol was observed (Payne et al.), and here the changes suggested by the authors led to an effect sizes were even <em>further</em> away from the effect size in the original study, if we test the effect sizes directlyagainst each other in a test for heterogeneity:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Payne, Burkley, &amp; Stokes (2008)</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="co"># Note that the CI in the figure is wide because there is considerable variability across the sites where data was collected, especially for the revised protocol.</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a></span>
-<span id="cb6-4"><a href="#cb6-4"></a>r1 <span class="ot">&lt;-</span> <span class="fu">escalc</span>(<span class="at">ni =</span> <span class="dv">545</span>, </span>
-<span id="cb6-5"><a href="#cb6-5"></a>             <span class="at">ri =</span> <span class="fl">0.05</span>, </span>
-<span id="cb6-6"><a href="#cb6-6"></a>             <span class="at">measure =</span> <span class="st">"ZCOR"</span>)</span>
-<span id="cb6-7"><a href="#cb6-7"></a>r2 <span class="ot">&lt;-</span> <span class="fu">escalc</span>(<span class="at">ni =</span> <span class="dv">558</span>, </span>
-<span id="cb6-8"><a href="#cb6-8"></a>             <span class="at">ri =</span> <span class="sc">-</span><span class="fl">0.16</span>, </span>
-<span id="cb6-9"><a href="#cb6-9"></a>             <span class="at">measure =</span> <span class="st">"ZCOR"</span>)</span>
-<span id="cb6-10"><a href="#cb6-10"></a>metadata <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">yi =</span> <span class="fu">c</span>(r1<span class="sc">$</span>yi, r2<span class="sc">$</span>yi), </span>
-<span id="cb6-11"><a href="#cb6-11"></a>                       <span class="at">vi =</span> <span class="fu">c</span>(r1<span class="sc">$</span>vi, r2<span class="sc">$</span>vi), </span>
-<span id="cb6-12"><a href="#cb6-12"></a>                       <span class="at">study =</span> <span class="fu">c</span>(<span class="st">"original"</span>, <span class="st">"replication"</span>))</span>
-<span id="cb6-13"><a href="#cb6-13"></a></span>
-<span id="cb6-14"><a href="#cb6-14"></a><span class="co"># Test based on heterogeneity analysis</span></span>
-<span id="cb6-15"><a href="#cb6-15"></a>res_h <span class="ot">&lt;-</span> <span class="fu">rma</span>(yi, </span>
-<span id="cb6-16"><a href="#cb6-16"></a>             vi, </span>
-<span id="cb6-17"><a href="#cb6-17"></a>             <span class="at">data =</span> metadata, </span>
-<span id="cb6-18"><a href="#cb6-18"></a>             <span class="at">method =</span> <span class="st">"FE"</span>)</span>
-<span id="cb6-19"><a href="#cb6-19"></a>res_h</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># Payne, Burkley, &amp; Stokes (2008)</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="co"># Note that the CI in the figure is wide because there is considerable variability across the sites where data was collected, especially for the revised protocol.</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a></span>
+<span id="cb10-4"><a href="#cb10-4"></a>r1 <span class="ot">&lt;-</span> <span class="fu">escalc</span>(<span class="at">ni =</span> <span class="dv">545</span>, </span>
+<span id="cb10-5"><a href="#cb10-5"></a>             <span class="at">ri =</span> <span class="fl">0.05</span>, </span>
+<span id="cb10-6"><a href="#cb10-6"></a>             <span class="at">measure =</span> <span class="st">"ZCOR"</span>)</span>
+<span id="cb10-7"><a href="#cb10-7"></a>r2 <span class="ot">&lt;-</span> <span class="fu">escalc</span>(<span class="at">ni =</span> <span class="dv">558</span>, </span>
+<span id="cb10-8"><a href="#cb10-8"></a>             <span class="at">ri =</span> <span class="sc">-</span><span class="fl">0.16</span>, </span>
+<span id="cb10-9"><a href="#cb10-9"></a>             <span class="at">measure =</span> <span class="st">"ZCOR"</span>)</span>
+<span id="cb10-10"><a href="#cb10-10"></a>metadata <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">yi =</span> <span class="fu">c</span>(r1<span class="sc">$</span>yi, r2<span class="sc">$</span>yi), </span>
+<span id="cb10-11"><a href="#cb10-11"></a>                       <span class="at">vi =</span> <span class="fu">c</span>(r1<span class="sc">$</span>vi, r2<span class="sc">$</span>vi), </span>
+<span id="cb10-12"><a href="#cb10-12"></a>                       <span class="at">study =</span> <span class="fu">c</span>(<span class="st">"original"</span>, <span class="st">"replication"</span>))</span>
+<span id="cb10-13"><a href="#cb10-13"></a></span>
+<span id="cb10-14"><a href="#cb10-14"></a><span class="co"># Test based on heterogeneity analysis</span></span>
+<span id="cb10-15"><a href="#cb10-15"></a>res_h <span class="ot">&lt;-</span> <span class="fu">rma</span>(yi, </span>
+<span id="cb10-16"><a href="#cb10-16"></a>             vi, </span>
+<span id="cb10-17"><a href="#cb10-17"></a>             <span class="at">data =</span> metadata, </span>
+<span id="cb10-18"><a href="#cb10-18"></a>             <span class="at">method =</span> <span class="st">"FE"</span>)</span>
+<span id="cb10-19"><a href="#cb10-19"></a>res_h</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Fixed-Effects Model (k = 2)
@@ -622,6 +684,9 @@ Bonett, D. G. (2012). Replication-<span>Extension Studies</span>. <em>Current Di
 </div>
 <div id="ref-borenstein_introduction_2009" class="csl-entry" role="listitem">
 Borenstein, M. (Ed.). (2009). <em>Introduction to meta-analysis</em>. John Wiley &amp; Sons.
+</div>
+<div id="ref-bulus_pwrss_2023" class="csl-entry" role="listitem">
+Bulus, M., &amp; Polat, C. (2023). <em>pwrss R paketi ile istatistiksel güç analizi [Statistical power analysis with pwrss R package]</em>. <a href="https://osf.io/https://osf.io/ua5fc">https://osf.io/https://osf.io/ua5fc</a>
 </div>
 <div id="ref-degroot_methodology_1969" class="csl-entry" role="listitem">
 de Groot, A. D. (1969). <em>Methodology</em> (Vol. 6). Mouton &amp; Co.

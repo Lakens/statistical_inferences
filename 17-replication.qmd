@@ -5,6 +5,8 @@
 library(metafor)
 library(ggplot2)
 library(pwr)
+library(cocor)
+library(pwrss)
 ```
 
 In 2015 a team of 270 authors published the results of a research project where they replicated 100 studies [@opensciencecollaboration_estimating_2015]. The original studies had all been published in three psychology journals in the year 2008. The authors of the replication project selected the last study of papers that could feasibly be replicated, performed a study with high power to detect the observed effect size, and attempted to design the best possible replication study. They stayed close to the original study where possible, but deviated where this was deemed necessary. For the original studies published in 2008 97 of the 100 studies were interpreted as significant. Given an estimated 92% power for the effect sizes observed in the original studies 97 $\times$ 0.92 = 89 of the replication studies could be expected to observe a significant effect, if the effects in the original studies were at least as large as reported. Yet, only 35 out of the 97 original studies that were significant replicated, for a replication rate of 36%. This result was a surprise for most researchers, and led to the realization that it is much more difficult to replicate findings than one might intuitively think. This result solidified the idea of a *replication crisis*, a sudden loss of confidence in the reliability of published results, which led to confusion and uncertainty about how scientists worked. Since 2015 the field of **metascience** has emerged to use empirical methods to study science itself and identify some of the causes of low replicability rates, and develop possible solutions to increase it. 
@@ -134,6 +136,35 @@ metafor::forest(res_h,
 )
 
 
+```
+
+It is also possible to test the difference between correlations, where the formula is: 
+
+$$
+Z = \frac{ln(1+r)-ln(1-r)}{2}
+$$
+
+This test can for example be performed in the cocor package in R:
+
+```{r}
+library(cocor)
+cocor.indep.groups(n1 = 30, r1.jk = .4, n2 = 200, r2.hm = .01)
+```
+
+We see that the difference between an original study with 30 participants that observed an effect of *r* = 0.4 and a replication study that observed an effect of *r* = 0.01 is just statistically significant. We can use the pwrss package [@bulus_pwrss_2023] to examine the sample size we would need to achieve sufficient power for such difference between correlations with 90% power.
+
+```{r}
+library(pwrss)
+pwrss.z.2corrs(r1 = 0.4, r2 = 0.01,
+               power = .90, alpha = 0.05, 
+               alternative = "not equal")
+```
+
+The same calculation can be performed in G\*Power. 
+
+```{r fig-powerdifcor, echo=FALSE}
+#| fig-cap: "Power analysis for the difference between two independent correlations in G\\*Power."
+knitr::include_graphics("images/powerdifcor.png")
 ```
 
 Although a statistical difference between effect sizes is one coherent approach to decide whether a study has been replicated, researchers are sometimes interested in a different question: Was there a significant result in the replication study? In this approach to analyzing replication studies there is no direct comparison with the effect observed in the original study. The question is therefore not so much 'is the original effect replicated?' but 'if we repeat the original study is a statistically significant effect observed?'. In other words, we are not testing whether an effect has been replicated, but whether a predicted effect has been observed. Another way of saying this is that we are not asking whether the observed effect replicated, but whether the original ordinal claim of the presence of an non-zero effect is replicated. In the example in @fig-rep-1 the replication study has an effect size of 0, so there is no statistically significant effect, and the original effect did not replicate (in the sense that repeated the procedure did not yield a significant result). 
