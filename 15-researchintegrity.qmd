@@ -36,7 +36,7 @@ Many researchers selectively publish only those results or analyses with signifi
 Researchers also flexibly analyse their data by selectively reporting conditions, measures, covariates, and a host of other data analytic strategies that inflate the Type 1 error rate, and increase the probability of obtaining a statistically significant result. Preregistration has been an important step of increasing the transparency of data-driven choices in the analyses reported in scientific articles, and allows researchers to evaluate whether any deviations from the statistical analysis plan decrease the severity of the test, or increase it  [@lakens_value_2019]. With increasing awareness of the problematic nature of these practices, hopefully we will see a strong decline in their occurrence, and researchers will learn correct approaches to maintain some flexibility in their analyses (for example by replacing optional stopping by [sequential analysis](#sec-sequential). @wigboldus_encourage_2016 make the important distinction between questionable research practices, and questionable reporting practices. Whenever in doubt, transparently reporting the decisions you made while analyzing data should give researchers all the information they need to evaluate the reported results.
 
 ```{r, fig-qrp, echo = FALSE, fig.height = 12}
-#| fig-cap: "Self-admittance of engaging in a questionable research practices at least once from 14 surveys among a variety of samples of researchers."
+#| fig-cap: "Self-admittance of engaging in a questionable research practices at least once from 14 surveys among a variety of samples of researchers (red vertical line denotes the pooled estimate from meta-analysis of the logit transformed proportions across surveys)."
 
 john <- c(45.8, 63.4, 27.7, NA, 55.9, 38.2, NA, NA, 27, 22, 3, 0.6)
 fiedler <- c(42, 34, 24, NA, 33, 40, NA, NA, 47, 22, 3, 3) #retrieved using get data graph digitizer as data are not shared beyond the graph
@@ -62,6 +62,68 @@ long <- reshape2::melt(df, id.vars = c("labels"))
 long$labels <- as.factor(long$labels)
 long = subset(long, !is.na(value))
 
+sample_size <- data.frame(
+  variable = as.factor(c(
+    "john", 
+  "agnoli", 
+  "motyl", 
+  "rabelo", 
+  "fraser_eco", 
+  "fraser_evo", 
+  "makel", 
+  "bakker", 
+  "chin", 
+  "fiedler", 
+  "moran", 
+  "swift", 
+  "latan",
+  "garciagarzon", 
+  "brachem"
+  )),
+  n = c(
+    2155,
+    277,
+    1414,
+    232,
+    494,
+    313,
+    1488,
+    1166,
+    1612,
+    1138,
+    425,
+    164,
+    472,
+    131, # Not cited in chapter except in figure but assume this paper -https://doi.org/10.1007/s12144-022-02797-6
+    1398  # Not cited in chapter except in figure but assume this paper - https://doi.org/10.5281/zenodo.3561440 
+  )
+)
+
+long <- dplyr::left_join(long, sample_size, by = "variable")
+
+# logit transformation proportions
+long$prop <- long$value/100
+long$prop_logit <- log(long$prop / (1 - long$prop))
+long$prop_logit_vi <- 1 / (4*long$n)
+
+
+# meta-analyse proportions
+long <- subset(long, !is.na(prop_logit) & !is.infinite(prop_logit) & !is.na(prop_logit_vi))
+
+meta <- metafor::rma.mv(yi = prop_logit, V = prop_logit_vi, 
+            data=long,
+            mods = ~ 0 + labels,
+            method="REML")
+
+# get meta-analysis estimates
+meta_tidy <- broom::tidy(meta)
+
+meta_tidy$labels <- stringr::str_remove(meta_tidy$term, "labels")
+
+# inverse logit transformation back to proportion scale
+meta_tidy$prop_estimate <- plogis(meta_tidy$estimate)
+meta_tidy$prop_lower <- plogis(meta_tidy$estimate - meta_tidy$std.error * 1.96) # note, intervals very narrow so only point estimate plotted
+meta_tidy$prop_upper <- plogis(meta_tidy$estimate + meta_tidy$std.error * 1.96) # note, intervals very narrow so only point estimate plotted
 
 # ggplot(long, aes(x = labels, y = value, fill = variable)) +
 #   geom_bar(stat = "identity", colour = "black", width = 0.8, position = position_dodge2(.8, preserve = "total")) +
@@ -77,6 +139,14 @@ long = subset(long, !is.na(value))
 ggplot(long, aes(x = variable, y = value, fill = variable)) +
   coord_flip() +
   geom_bar(stat = "identity", colour = "black", width = 0.8, position = position_dodge(.8, preserve = "single")) +
+geom_hline(
+    data = meta_tidy,
+    aes(yintercept = prop_estimate*100),
+    linewidth = 0.8,
+    colour = "red",
+    alpha = 0.5,
+    inherit.aes = FALSE
+  ) +
  theme(plot.margin = margin(0, 0, 0, 0, "cm"), plot.background = element_rect(fill = backgroundcolor), panel.background = element_rect(fill = backgroundcolor), legend.background = element_rect(fill= backgroundcolor), legend.direction = "horizontal", legend.position = "bottom", axis.title = element_text(size = 13), axis.text.x = element_text(size = 10), axis.text.y = element_text(size = 20), panel.grid.major.x = element_line(linewidth = .1, color = "black"), axis.ticks.x = element_blank()) +
   ggtitle("Self-admittance rates of engaging in QRP's at least once") +
   scale_fill_manual(values = c("#000000", "#88CCEE", "#CC6677", "#DDCC77", "#117733", "#332288", "#AA4499", "#E69F00", "#44AA99", "#999933", "#882255", "#661100", "#6699CC", "#888888", "#ffffff"),
