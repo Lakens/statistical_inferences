@@ -36,7 +36,7 @@ Many researchers selectively publish only those results or analyses with signifi
 Researchers also flexibly analyse their data by selectively reporting conditions, measures, covariates, and a host of other data analytic strategies that inflate the Type 1 error rate, and increase the probability of obtaining a statistically significant result. Preregistration has been an important step of increasing the transparency of data-driven choices in the analyses reported in scientific articles, and allows researchers to evaluate whether any deviations from the statistical analysis plan decrease the severity of the test, or increase it  [@lakens_value_2019]. With increasing awareness of the problematic nature of these practices, hopefully we will see a strong decline in their occurrence, and researchers will learn correct approaches to maintain some flexibility in their analyses (for example by replacing optional stopping by [sequential analysis](#sec-sequential). @wigboldus_encourage_2016 make the important distinction between questionable research practices, and questionable reporting practices. Whenever in doubt, transparently reporting the decisions you made while analyzing data should give researchers all the information they need to evaluate the reported results.
 
 ```{r, fig-qrp, echo = FALSE, fig.height = 12}
-#| fig-cap: "Self-admittance of engaging in a questionable research practices at least once from 14 surveys among a variety of samples of researchers (red vertical line denotes the pooled estimate from meta-analysis of the logit transformed proportions across surveys)."
+#| fig-cap: "Self-admittance of engaging in a questionable research practices at least once from 14 surveys among a variety of samples of researchers (red vertical line denotes the pooled estimate and band the 95% confidence interval from meta-analysis of the logit transformed proportions across surveys)."
 
 john <- c(45.8, 63.4, 27.7, NA, 55.9, 38.2, NA, NA, 27, 22, 3, 0.6)
 fiedler <- c(42, 34, 24, NA, 33, 40, NA, NA, 47, 22, 3, 3) #retrieved using get data graph digitizer as data are not shared beyond the graph
@@ -104,16 +104,17 @@ long <- dplyr::left_join(long, sample_size, by = "variable")
 # logit transformation proportions
 long$prop <- long$value/100
 long$prop_logit <- log(long$prop / (1 - long$prop))
-long$prop_logit_vi <- 1 / (4*long$n)
+long$prop_logit_vi <- 1 / ((long$n * long$prop) * (1 - long$prop))
 
 
 # meta-analyse proportions
 long <- subset(long, !is.na(prop_logit) & !is.infinite(prop_logit) & !is.na(prop_logit_vi))
 
-meta <- metafor::rma.mv(yi = prop_logit, V = prop_logit_vi, 
-            data=long,
-            mods = ~ 0 + labels,
-            method="REML")
+meta <- metafor::rma.mv(yi = prop_logit, V = prop_logit_vi,
+                        random =  ~ 1 | variable,
+                        data=long,
+                        mods = ~ 0 + labels,
+                        method="REML")
 
 # get meta-analysis estimates
 meta_tidy <- broom::tidy(meta)
@@ -139,7 +140,14 @@ meta_tidy$prop_upper <- plogis(meta_tidy$estimate + meta_tidy$std.error * 1.96) 
 ggplot(long, aes(x = variable, y = value, fill = variable)) +
   coord_flip() +
   geom_bar(stat = "identity", colour = "black", width = 0.8, position = position_dodge(.8, preserve = "single")) +
-geom_hline(
+geom_rect(
+    data = meta_tidy,
+    aes(ymin = prop_lower*100, ymax=prop_upper*100, xmin = -Inf, xmax = Inf),
+    fill = "red",
+    alpha = 0.25,
+    inherit.aes = FALSE
+  ) +
+  geom_hline(
     data = meta_tidy,
     aes(yintercept = prop_estimate*100),
     linewidth = 0.8,
