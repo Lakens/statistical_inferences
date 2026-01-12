@@ -109,9 +109,10 @@ long$prop_logit_vi <- 1 / ((long$n * long$prop) * (1 - long$prop))
 
 # meta-analyse proportions
 long <- subset(long, !is.na(prop_logit) & !is.infinite(prop_logit) & !is.na(prop_logit_vi))
+long$effect <- 1:nrow(long)
 
 meta <- metafor::rma.mv(yi = prop_logit, V = prop_logit_vi,
-                        random =  ~ 1 | variable,
+                        random =  ~ 1 | variable/effect,
                         data=long,
                         mods = ~ 0 + labels,
                         method="REML")
