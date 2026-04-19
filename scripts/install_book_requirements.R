@@ -13,6 +13,7 @@ repos <- getOption("repos")
 if (length(repos) == 0 || any(repos == "@CRAN@")) {
   repos <- c(CRAN = "https://cloud.r-project.org")
 }
+options(repos = repos)
 message("Using repos: ", paste(repos, collapse = ", "))
 
 installed <- rownames(installed.packages())
@@ -22,7 +23,6 @@ if (length(missing_cran) > 0) {
   message("Installing missing CRAN packages: ", paste(missing_cran, collapse = ", "))
   install.packages(
     missing_cran,
-    repos = repos,
     dependencies = TRUE
   )
 } else {
