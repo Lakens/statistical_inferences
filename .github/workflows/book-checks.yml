@@ -24,18 +24,39 @@ jobs:
         with:
           use-public-rspm: true
 
-      - name: Cache R packages
-        uses: actions/cache@v4
+      - name: Install R package dependencies
+        uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          path: ${{ env.R_LIBS_USER }}
-          key: r-${{ runner.os }}-${{ hashFiles('requirements-r.txt') }}
-          restore-keys: r-${{ runner.os }}-
+          packages: |
+            binom
+            BUCSS
+            cocor
+            effectsize
+            gert
+            ggplot2
+            gridExtra
+            JustifyAlpha
+            kableExtra
+            knitr
+            MBESS
+            metafor
+            MOTE
+            patchwork
+            puniform
+            pwr
+            pwrss
+            reshape2
+            rmarkdown
+            rpact
+            Superpower
+            tidyr
+            TOSTER
+            truncnorm
+            webexercises
+            zcurve
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
-
-      - name: Install R package dependencies
-        run: Rscript scripts/install_book_requirements.R
 
       - name: Render book (HTML)
         run: quarto render --to html
