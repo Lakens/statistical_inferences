@@ -806,12 +806,7 @@ Figure&nbsp;2.9: Simulation of 500000 studies performing 5 interim analyses at a
 <p>Nevertheless, some researchers have proposed to move away from the default use of a 5% alpha level. For example, <span class="citation" data-cites="johnson_revised_2013">Johnson (<a href="references.html#ref-johnson_revised_2013" role="doc-biblioref">2013</a>)</span> proposes a default significance level of 0.005 or 0.001. Others have cautioned against such blanket recommendation because the additional resources required to reduce the Type 1 error rate might not be worth the costs <span class="citation" data-cites="lakens_justify_2018">(<a href="references.html#ref-lakens_justify_2018" role="doc-biblioref">Lakens et al., 2018</a>)</span>. A lower alpha level requires a larger sample size to achieve the same statistical power. If the sample size cannot be increased, a lower alpha level reduces the statistical power, and increases the Type 2 error rate. Whether that is desirable should be evaluated on a case by case basis.</p>
 <p>There are two main reasons to abandon the universal use of a 5% alpha level. The first is that decision-making becomes more efficient <span class="citation" data-cites="mudge_setting_2012 gannon_blending_2019">(<a href="references.html#ref-gannon_blending_2019" role="doc-biblioref"><span class="nocase">Gannon et al.</span>, 2019</a>; <a href="references.html#ref-mudge_setting_2012" role="doc-biblioref">Mudge et al., 2012</a>)</span>. If researchers use hypothesis tests to make dichotomous decisions from a methodological falsificationist approach to statistical inferences, and have a certain maximum sample size they are willing or able to collect, it is typically possible to make decisions more efficiently by choosing error rates such that the combined cost of Type 1 and Type 2 errors is minimized. If we aim to either minimize or balance Type 1 and Type 2 error rates for a given sample size and effect size, the alpha level should be set not based on convention, but by weighting the relative cost of both types of errors <span class="citation" data-cites="maier_justify_2022">(<a href="references.html#ref-maier_justify_2022" role="doc-biblioref">Maier &amp; Lakens, 2022</a>)</span>.</p>
 <p>For example, imagine a researcher plans to collect 64 participants per condition to detect a d = 0.5 effect, and weighs the cost of Type 1 errors 4 times as much as Type 2 errors. This is exactly the scenario Cohen (1988) described, and with 64 participants per condition the relative weight of Type 1 and Type 2 errors yields a 5% Type 1 error rate and a 20% Type 2 error rate. Now imagine that this researcher realizes they have the resources to collect 80 observations instead of just 64. With an interest in an effect size of d = 0.5, the relative weight of Type 1 and Type 2 errors of 4 (a as suggested by Cohen) would be satisfied if they were to set the alpha level to 0.037, as the Type 2 error rate would be 0.147. Alternatively, the researcher might have decided to collect 64 observations, but rather than balance the error rates, instead set the alpha level such that the weighted combined error rate is minimized, which is achieved when the alpha level is set to 0.033, as visualized in <a href="#fig-minerror" class="quarto-xref">Figure&nbsp;<span>2.10</span></a> (for further information, see <span class="citation" data-cites="maier_justify_2022">Maier &amp; Lakens (<a href="references.html#ref-maier_justify_2022" role="doc-biblioref">2022</a>)</span>).</p>
-<div class="cell" data-layout-align="center" data-warnings="false">
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in ggplot2::geom_point(ggplot2::aes(x = res$minimum, y = (costT1T2 * : All aesthetics have length 1, but the data has 9999 rows.
-ℹ Please consider using `annotate()` or provide this layer with data containing
-  a single row.</code></pre>
-</div>
+<div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-minerror" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-minerror-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -898,34 +893,34 @@ Figure&nbsp;2.11: Distribution of <em>d</em> = 0 and <em>d</em> = 0.5 for an ind
 <span class="header-section-number">2.8.2</span> Questions about optional stopping</h3>
 <p>For Questions 1 to 4, use the script below:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>n <span class="ot">&lt;-</span> <span class="dv">200</span> <span class="co"># total number of datapoints (per condition) after initial 10</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a>d <span class="ot">&lt;-</span> <span class="fl">0.0</span> <span class="co"># effect size d</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a></span>
-<span id="cb4-4"><a href="#cb4-4"></a>p <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n) <span class="co"># store p-values</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a>x <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n) <span class="co"># store x-values</span></span>
-<span id="cb4-6"><a href="#cb4-6"></a>y <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n) <span class="co"># store y-values</span></span>
-<span id="cb4-7"><a href="#cb4-7"></a></span>
-<span id="cb4-8"><a href="#cb4-8"></a>n <span class="ot">&lt;-</span> n <span class="sc">+</span> <span class="dv">10</span> <span class="co"># add 10 to number of datapoints</span></span>
-<span id="cb4-9"><a href="#cb4-9"></a></span>
-<span id="cb4-10"><a href="#cb4-10"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">10</span><span class="sc">:</span>n) { <span class="co"># for each simulated participants after the first 10</span></span>
-<span id="cb4-11"><a href="#cb4-11"></a>  x[i] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
-<span id="cb4-12"><a href="#cb4-12"></a>  y[i] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">mean =</span> d, <span class="at">sd =</span> <span class="dv">1</span>)</span>
-<span id="cb4-13"><a href="#cb4-13"></a>  p[i] <span class="ot">&lt;-</span> <span class="fu">t.test</span>(x[<span class="dv">1</span><span class="sc">:</span>i], y[<span class="dv">1</span><span class="sc">:</span>i], <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span>
-<span id="cb4-14"><a href="#cb4-14"></a>}</span>
-<span id="cb4-15"><a href="#cb4-15"></a></span>
-<span id="cb4-16"><a href="#cb4-16"></a>p <span class="ot">&lt;-</span> p[<span class="dv">10</span><span class="sc">:</span>n] <span class="co"># Remove first 10 empty p-values</span></span>
-<span id="cb4-17"><a href="#cb4-17"></a></span>
-<span id="cb4-18"><a href="#cb4-18"></a><span class="co"># Create the plot</span></span>
-<span id="cb4-19"><a href="#cb4-19"></a><span class="fu">par</span>(<span class="at">bg =</span> <span class="st">"#fffafa"</span>)</span>
-<span id="cb4-20"><a href="#cb4-20"></a><span class="fu">plot</span>(<span class="dv">0</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">lwd =</span> <span class="dv">3</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">10</span>, n), </span>
-<span id="cb4-21"><a href="#cb4-21"></a>     <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">xlab =</span> <span class="st">"sample size"</span>, <span class="at">ylab =</span> <span class="st">"p-value"</span>)</span>
-<span id="cb4-22"><a href="#cb4-22"></a><span class="fu">lines</span>(p, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb4-23"><a href="#cb4-23"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="fl">0.05</span>, <span class="at">col =</span> <span class="st">"darkgrey"</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">2</span>) <span class="co"># draw line at p = 0.05</span></span>
-<span id="cb4-24"><a href="#cb4-24"></a></span>
-<span id="cb4-25"><a href="#cb4-25"></a><span class="fu">min</span>(p) <span class="co"># Return lowest p-value from all looks</span></span>
-<span id="cb4-26"><a href="#cb4-26"></a><span class="fu">cat</span>(<span class="st">"The lowest p-value was observed at sample size"</span>, <span class="fu">which.min</span>(p) <span class="sc">+</span> <span class="dv">10</span>) </span>
-<span id="cb4-27"><a href="#cb4-27"></a><span class="fu">cat</span>(<span class="st">"The p-value dropped below 0.05 for the first time at sample size:"</span>, </span>
-<span id="cb4-28"><a href="#cb4-28"></a>    <span class="fu">ifelse</span>(<span class="fu">is.na</span>(<span class="fu">which</span>(p <span class="sc">&lt;</span> <span class="fl">0.05</span>)[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">10</span>), <span class="st">"NEVER"</span>, <span class="fu">which</span>(p <span class="sc">&lt;</span> <span class="fl">0.05</span>)[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">10</span>)) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>n <span class="ot">&lt;-</span> <span class="dv">200</span> <span class="co"># total number of datapoints (per condition) after initial 10</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>d <span class="ot">&lt;-</span> <span class="fl">0.0</span> <span class="co"># effect size d</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a></span>
+<span id="cb3-4"><a href="#cb3-4"></a>p <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n) <span class="co"># store p-values</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>x <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n) <span class="co"># store x-values</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>y <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n) <span class="co"># store y-values</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a></span>
+<span id="cb3-8"><a href="#cb3-8"></a>n <span class="ot">&lt;-</span> n <span class="sc">+</span> <span class="dv">10</span> <span class="co"># add 10 to number of datapoints</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a></span>
+<span id="cb3-10"><a href="#cb3-10"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">10</span><span class="sc">:</span>n) { <span class="co"># for each simulated participants after the first 10</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a>  x[i] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb3-12"><a href="#cb3-12"></a>  y[i] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">mean =</span> d, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb3-13"><a href="#cb3-13"></a>  p[i] <span class="ot">&lt;-</span> <span class="fu">t.test</span>(x[<span class="dv">1</span><span class="sc">:</span>i], y[<span class="dv">1</span><span class="sc">:</span>i], <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span>
+<span id="cb3-14"><a href="#cb3-14"></a>}</span>
+<span id="cb3-15"><a href="#cb3-15"></a></span>
+<span id="cb3-16"><a href="#cb3-16"></a>p <span class="ot">&lt;-</span> p[<span class="dv">10</span><span class="sc">:</span>n] <span class="co"># Remove first 10 empty p-values</span></span>
+<span id="cb3-17"><a href="#cb3-17"></a></span>
+<span id="cb3-18"><a href="#cb3-18"></a><span class="co"># Create the plot</span></span>
+<span id="cb3-19"><a href="#cb3-19"></a><span class="fu">par</span>(<span class="at">bg =</span> <span class="st">"#fffafa"</span>)</span>
+<span id="cb3-20"><a href="#cb3-20"></a><span class="fu">plot</span>(<span class="dv">0</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">lwd =</span> <span class="dv">3</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">10</span>, n), </span>
+<span id="cb3-21"><a href="#cb3-21"></a>     <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">xlab =</span> <span class="st">"sample size"</span>, <span class="at">ylab =</span> <span class="st">"p-value"</span>)</span>
+<span id="cb3-22"><a href="#cb3-22"></a><span class="fu">lines</span>(p, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb3-23"><a href="#cb3-23"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="fl">0.05</span>, <span class="at">col =</span> <span class="st">"darkgrey"</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">2</span>) <span class="co"># draw line at p = 0.05</span></span>
+<span id="cb3-24"><a href="#cb3-24"></a></span>
+<span id="cb3-25"><a href="#cb3-25"></a><span class="fu">min</span>(p) <span class="co"># Return lowest p-value from all looks</span></span>
+<span id="cb3-26"><a href="#cb3-26"></a><span class="fu">cat</span>(<span class="st">"The lowest p-value was observed at sample size"</span>, <span class="fu">which.min</span>(p) <span class="sc">+</span> <span class="dv">10</span>) </span>
+<span id="cb3-27"><a href="#cb3-27"></a><span class="fu">cat</span>(<span class="st">"The p-value dropped below 0.05 for the first time at sample size:"</span>, </span>
+<span id="cb3-28"><a href="#cb3-28"></a>    <span class="fu">ifelse</span>(<span class="fu">is.na</span>(<span class="fu">which</span>(p <span class="sc">&lt;</span> <span class="fl">0.05</span>)[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">10</span>), <span class="st">"NEVER"</span>, <span class="fu">which</span>(p <span class="sc">&lt;</span> <span class="fl">0.05</span>)[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">10</span>)) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Q1</strong>: The script above plots the <em>p</em>-value as the sample size increases. Run it 20 times, and count how often the lowest <em>p</em>-value ends up below 0.05 (we will calculate the long run probability of this happening through more extensive simulations later). Remember that you can click the ‘clipboard’ icon on the top right of the code section to copy all the code to your clipboard, and paste it into RStudio.</p>
 <p><strong>Q2</strong>: If there is a true effect, we can only observe a true positive or a false negative. Change the effect size in the second line of the script from d &lt;- 0.0 to d &lt;- 0.3. This is a relatively small true effect, and with 200 participants in each condition, we have 85% power (that is, an 85% probability of finding a significant effect). Run the script again. Run the script 20 times. Take a good look at the variation in the <em>p</em>-value trajectory. Remember that with N = 200, in 85% of the cases (17 out of 20), the <em>p</em>-value should have ended up below 0.05. The script returns the sample size at which the <em>p</em>-value is the lowest and the sample size at which the <em>p</em>-value drops below 0.05 for the first time. Which statement is true?</p>
@@ -948,46 +943,46 @@ Figure&nbsp;2.11: Distribution of <em>d</em> = 0 and <em>d</em> = 0.5 for an ind
 </div>
 <p>For Questions 5 to 8, use the script below:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>N <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="co"># total datapoints (per condition)</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a>looks <span class="ot">&lt;-</span> <span class="dv">5</span> <span class="co"># set number of looks at the data</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a>nsims <span class="ot">&lt;-</span> <span class="dv">50000</span> <span class="co"># number of simulated studies</span></span>
-<span id="cb5-4"><a href="#cb5-4"></a>alphalevel <span class="ot">&lt;-</span> <span class="fl">0.05</span> <span class="co"># set alphalevel</span></span>
-<span id="cb5-5"><a href="#cb5-5"></a></span>
-<span id="cb5-6"><a href="#cb5-6"></a><span class="cf">if</span>(looks <span class="sc">&gt;</span> <span class="dv">1</span>){</span>
-<span id="cb5-7"><a href="#cb5-7"></a>  look_at_n <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(<span class="fu">seq</span>(N <span class="sc">/</span> looks, N, (N <span class="sc">-</span> (N <span class="sc">/</span> looks)) <span class="sc">/</span> (looks <span class="sc">-</span> <span class="dv">1</span>)))</span>
-<span id="cb5-8"><a href="#cb5-8"></a>}  <span class="cf">else</span> {</span>
-<span id="cb5-9"><a href="#cb5-9"></a>  look_at_n <span class="ot">&lt;-</span> N</span>
-<span id="cb5-10"><a href="#cb5-10"></a>}</span>
-<span id="cb5-11"><a href="#cb5-11"></a>look_at_n <span class="ot">&lt;-</span> look_at_n[look_at_n <span class="sc">&gt;</span> <span class="dv">2</span>] <span class="co"># Remove looks at N of 1 or 2</span></span>
-<span id="cb5-12"><a href="#cb5-12"></a>looks<span class="ot">&lt;-</span><span class="fu">length</span>(look_at_n) <span class="co"># if looks are removed, update number of looks</span></span>
-<span id="cb5-13"><a href="#cb5-13"></a></span>
-<span id="cb5-14"><a href="#cb5-14"></a>matp <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow =</span> nsims, <span class="at">ncol =</span> looks) <span class="co"># Matrix for p-values l tests</span></span>
-<span id="cb5-15"><a href="#cb5-15"></a>p <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nsims) <span class="co"># Variable to save pvalues</span></span>
-<span id="cb5-16"><a href="#cb5-16"></a></span>
-<span id="cb5-17"><a href="#cb5-17"></a><span class="co"># Loop data generation for each study, then loop to perform a test for each N</span></span>
-<span id="cb5-18"><a href="#cb5-18"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nsims) {</span>
-<span id="cb5-19"><a href="#cb5-19"></a>  x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> N, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
-<span id="cb5-20"><a href="#cb5-20"></a>  y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> N, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
-<span id="cb5-21"><a href="#cb5-21"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>looks) {</span>
-<span id="cb5-22"><a href="#cb5-22"></a>    matp[i, j] <span class="ot">&lt;-</span> <span class="fu">t.test</span>(x[<span class="dv">1</span><span class="sc">:</span>look_at_n[j]], y[<span class="dv">1</span><span class="sc">:</span>look_at_n[j]], </span>
-<span id="cb5-23"><a href="#cb5-23"></a>                         <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value <span class="co"># perform the t-test, store</span></span>
-<span id="cb5-24"><a href="#cb5-24"></a>  }</span>
-<span id="cb5-25"><a href="#cb5-25"></a>  <span class="fu">cat</span>(<span class="st">"Loop"</span>, i, <span class="st">"of"</span>, nsims, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb5-26"><a href="#cb5-26"></a>}</span>
-<span id="cb5-27"><a href="#cb5-27"></a></span>
-<span id="cb5-28"><a href="#cb5-28"></a><span class="co"># Save Type 1 error rate smallest p at all looks</span></span>
-<span id="cb5-29"><a href="#cb5-29"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nsims) {</span>
-<span id="cb5-30"><a href="#cb5-30"></a>  p[i] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">length</span>(matp[i,<span class="fu">which</span>(matp[i,] <span class="sc">&lt;</span> alphalevel)]) <span class="sc">==</span> <span class="dv">0</span>, </span>
-<span id="cb5-31"><a href="#cb5-31"></a>                 matp[i,looks], matp[i,<span class="fu">which</span>(matp[i,] <span class="sc">&lt;</span> alphalevel)])</span>
-<span id="cb5-32"><a href="#cb5-32"></a>}</span>
-<span id="cb5-33"><a href="#cb5-33"></a></span>
-<span id="cb5-34"><a href="#cb5-34"></a><span class="fu">hist</span>(p, <span class="at">breaks =</span> <span class="dv">100</span>, <span class="at">col =</span> <span class="st">"grey"</span>) <span class="co"># create plot</span></span>
-<span id="cb5-35"><a href="#cb5-35"></a><span class="fu">abline</span>(<span class="at">h =</span> nsims <span class="sc">/</span> <span class="dv">100</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">3</span>)</span>
-<span id="cb5-36"><a href="#cb5-36"></a></span>
-<span id="cb5-37"><a href="#cb5-37"></a><span class="fu">cat</span>(<span class="st">"Type 1 error rates for look 1 to"</span>, looks, <span class="st">":"</span>, </span>
-<span id="cb5-38"><a href="#cb5-38"></a>    <span class="fu">colSums</span>(matp <span class="sc">&lt;</span> alphalevel) <span class="sc">/</span> nsims)</span>
-<span id="cb5-39"><a href="#cb5-39"></a><span class="fu">cat</span>(<span class="st">"Type 1 error rate when only the lowest p-value for all looks is reported:"</span>, </span>
-<span id="cb5-40"><a href="#cb5-40"></a>    <span class="fu">sum</span>(p <span class="sc">&lt;</span> alphalevel) <span class="sc">/</span> nsims)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>N <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="co"># total datapoints (per condition)</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>looks <span class="ot">&lt;-</span> <span class="dv">5</span> <span class="co"># set number of looks at the data</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a>nsims <span class="ot">&lt;-</span> <span class="dv">50000</span> <span class="co"># number of simulated studies</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>alphalevel <span class="ot">&lt;-</span> <span class="fl">0.05</span> <span class="co"># set alphalevel</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="cf">if</span>(looks <span class="sc">&gt;</span> <span class="dv">1</span>){</span>
+<span id="cb4-7"><a href="#cb4-7"></a>  look_at_n <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(<span class="fu">seq</span>(N <span class="sc">/</span> looks, N, (N <span class="sc">-</span> (N <span class="sc">/</span> looks)) <span class="sc">/</span> (looks <span class="sc">-</span> <span class="dv">1</span>)))</span>
+<span id="cb4-8"><a href="#cb4-8"></a>}  <span class="cf">else</span> {</span>
+<span id="cb4-9"><a href="#cb4-9"></a>  look_at_n <span class="ot">&lt;-</span> N</span>
+<span id="cb4-10"><a href="#cb4-10"></a>}</span>
+<span id="cb4-11"><a href="#cb4-11"></a>look_at_n <span class="ot">&lt;-</span> look_at_n[look_at_n <span class="sc">&gt;</span> <span class="dv">2</span>] <span class="co"># Remove looks at N of 1 or 2</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a>looks<span class="ot">&lt;-</span><span class="fu">length</span>(look_at_n) <span class="co"># if looks are removed, update number of looks</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a></span>
+<span id="cb4-14"><a href="#cb4-14"></a>matp <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow =</span> nsims, <span class="at">ncol =</span> looks) <span class="co"># Matrix for p-values l tests</span></span>
+<span id="cb4-15"><a href="#cb4-15"></a>p <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nsims) <span class="co"># Variable to save pvalues</span></span>
+<span id="cb4-16"><a href="#cb4-16"></a></span>
+<span id="cb4-17"><a href="#cb4-17"></a><span class="co"># Loop data generation for each study, then loop to perform a test for each N</span></span>
+<span id="cb4-18"><a href="#cb4-18"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nsims) {</span>
+<span id="cb4-19"><a href="#cb4-19"></a>  x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> N, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb4-20"><a href="#cb4-20"></a>  y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> N, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb4-21"><a href="#cb4-21"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>looks) {</span>
+<span id="cb4-22"><a href="#cb4-22"></a>    matp[i, j] <span class="ot">&lt;-</span> <span class="fu">t.test</span>(x[<span class="dv">1</span><span class="sc">:</span>look_at_n[j]], y[<span class="dv">1</span><span class="sc">:</span>look_at_n[j]], </span>
+<span id="cb4-23"><a href="#cb4-23"></a>                         <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value <span class="co"># perform the t-test, store</span></span>
+<span id="cb4-24"><a href="#cb4-24"></a>  }</span>
+<span id="cb4-25"><a href="#cb4-25"></a>  <span class="fu">cat</span>(<span class="st">"Loop"</span>, i, <span class="st">"of"</span>, nsims, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb4-26"><a href="#cb4-26"></a>}</span>
+<span id="cb4-27"><a href="#cb4-27"></a></span>
+<span id="cb4-28"><a href="#cb4-28"></a><span class="co"># Save Type 1 error rate smallest p at all looks</span></span>
+<span id="cb4-29"><a href="#cb4-29"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nsims) {</span>
+<span id="cb4-30"><a href="#cb4-30"></a>  p[i] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">length</span>(matp[i,<span class="fu">which</span>(matp[i,] <span class="sc">&lt;</span> alphalevel)]) <span class="sc">==</span> <span class="dv">0</span>, </span>
+<span id="cb4-31"><a href="#cb4-31"></a>                 matp[i,looks], matp[i,<span class="fu">which</span>(matp[i,] <span class="sc">&lt;</span> alphalevel)])</span>
+<span id="cb4-32"><a href="#cb4-32"></a>}</span>
+<span id="cb4-33"><a href="#cb4-33"></a></span>
+<span id="cb4-34"><a href="#cb4-34"></a><span class="fu">hist</span>(p, <span class="at">breaks =</span> <span class="dv">100</span>, <span class="at">col =</span> <span class="st">"grey"</span>) <span class="co"># create plot</span></span>
+<span id="cb4-35"><a href="#cb4-35"></a><span class="fu">abline</span>(<span class="at">h =</span> nsims <span class="sc">/</span> <span class="dv">100</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">3</span>)</span>
+<span id="cb4-36"><a href="#cb4-36"></a></span>
+<span id="cb4-37"><a href="#cb4-37"></a><span class="fu">cat</span>(<span class="st">"Type 1 error rates for look 1 to"</span>, looks, <span class="st">":"</span>, </span>
+<span id="cb4-38"><a href="#cb4-38"></a>    <span class="fu">colSums</span>(matp <span class="sc">&lt;</span> alphalevel) <span class="sc">/</span> nsims)</span>
+<span id="cb4-39"><a href="#cb4-39"></a><span class="fu">cat</span>(<span class="st">"Type 1 error rate when only the lowest p-value for all looks is reported:"</span>, </span>
+<span id="cb4-40"><a href="#cb4-40"></a>    <span class="fu">sum</span>(p <span class="sc">&lt;</span> alphalevel) <span class="sc">/</span> nsims)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Q5</strong>: The script to simulate optional stopping provides written output. The first line of output gives you the Type 1 error rate for each individual look at the results, and the second summary gives the Type 1 error rate when optional stopping is used. When running the script with the default values, which statement is true?</p>
 <div class="cell" data-layout-align="center">

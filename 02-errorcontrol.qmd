@@ -271,6 +271,7 @@ Start by running the simulation without changing any values, so simulating 100 p
 ```{r fig-optionalstopfig, eval=TRUE, echo=FALSE, cache=TRUE}
 #| fig-cap: "Simulation of 500000 studies performing 5 interim analyses at an alpha level of 5%."
 
+set.seed(1626)
 N <- 100 # total datapoints (per condition)
 looks <- 5 # set number of looks at the data
 nsims <- 500000 # number of simulated studies
@@ -336,7 +337,7 @@ suppressWarnings({
 
 For example, imagine a researcher plans to collect 64 participants per condition to detect a d = 0.5 effect, and weighs the cost of Type 1 errors 4 times as much as Type 2 errors. This is exactly the scenario Cohen (1988) described, and with 64 participants per condition the relative weight of Type 1 and Type 2 errors yields a 5% Type 1 error rate and a 20% Type 2 error rate. Now imagine that this researcher realizes they have the resources to collect 80 observations instead of just 64. With an interest in an effect size of d = 0.5, the relative weight of Type 1 and Type 2 errors of 4 (a as suggested by Cohen) would be satisfied if they were to set the alpha level to `r round(res1$alpha, 3)`, as the Type 2 error rate would be `r round(res1$beta, 3)`. Alternatively, the researcher might have decided to collect 64 observations, but rather than balance the error rates, instead set the alpha level such that the weighted combined error rate is minimized, which is achieved when the alpha level is set to `r round(res2$alpha, 3)`, as visualized in @fig-minerror (for further information, see @maier_justify_2022).
 
-```{r fig-minerror, echo=FALSE, warnings = FALSE, fig.cap='Weighted combined error rate, minimized at alpha = 0.037.'}
+```{r fig-minerror, echo=FALSE, warning = FALSE, fig.cap='Weighted combined error rate, minimized at alpha = 0.037.'}
 suppressWarnings({
   res2$plot
 })

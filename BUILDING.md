@@ -8,8 +8,7 @@ Install these tools first:
 
 1. R (>= 4.5 recommended)
 2. Quarto CLI
-3. JAGS (required for `BEST` via `rjags` in the equivalence chapter)
-4. TinyTeX (only needed if you want PDF output)
+3. TinyTeX (only needed if you want PDF output)
 
 Notes:
 
@@ -24,9 +23,7 @@ From the repository root, run:
 & "C:\Program Files\R\R-4.5.2\bin\Rscript.exe" scripts/install_book_requirements.R
 ```
 
-This installs packages listed in [requirements-r.txt](requirements-r.txt), plus BEST 0.5.4 from CRAN archive.
-
-If BEST installation fails with `rjags` errors, install JAGS first, restart R/terminal, and run the script again.
+This installs packages listed in [requirements-r.txt](requirements-r.txt).
 
 ## 3) Install TinyTeX (optional, for PDF)
 
@@ -56,14 +53,46 @@ quarto render 17-replication.qmd
 2. `d.ind.t is not an exported object from namespace:MOTE`:
    - This repo uses `MOTE::d_ind_t` (updated API).
    - Pull latest changes and re-render.
-3. BEST/rjags errors:
-   - Confirm JAGS is installed.
-   - Reinstall with:
-   - `Rscript -e "install.packages('rjags', repos='https://cloud.r-project.org')"`
-4. PDF failures:
+3. PDF failures:
    - Ensure TinyTeX is installed.
 
-## 6) Reproducibility note
+## 6) Run automated book checks
+
+Run integrity checks for:
+
+1. Figure cross-references in source (`@fig-...`) resolve to figure labels.
+2. Rendered HTML has no unresolved references (e.g., `quarto-unresolved-ref` or `Figure ?`).
+3. Rendered HTML warning output (e.g., `Warning:` or `Warning in ...`) is reported as notes.
+4. Multiple-choice option vectors used by `longmcq`/`mcq`/`shortmcq` contain exactly one `answer =` entry.
+
+From the repository root:
+
+```powershell
+& "C:\Program Files\R\R-4.5.2\bin\Rscript.exe" scripts/check_book_tests.R
+```
+
+To treat rendered warnings as blocking failures, run:
+
+```powershell
+& "C:\Program Files\R\R-4.5.2\bin\Rscript.exe" scripts/check_book_tests.R --strict-warnings
+```
+
+If checks fail, the script exits with a non-zero status and prints file/line hints.
+
+## 7) Automatic checks in GitHub
+
+This repository includes a GitHub Actions workflow at `.github/workflows/book-checks.yml`.
+
+On every push and pull request (and manual trigger), it will:
+
+1. Install R and Quarto.
+2. Install R package dependencies via `scripts/install_book_requirements.R`.
+3. Render the book to HTML (`quarto render --to html`).
+4. Run `scripts/check_book_tests.R`.
+
+Rendered warning text is reported as notes by default (non-blocking), while figure reference errors, unresolved rendered references, and MC option errors remain blocking.
+
+## 8) Reproducibility note
 
 For fully pinned package versions over time, consider adding `renv` in a future update.
 Current setup uses an explicit package list plus an install script.

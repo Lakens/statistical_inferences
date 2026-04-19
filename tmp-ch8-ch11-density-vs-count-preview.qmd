@@ -1,0 +1,445 @@
+---
+title: "Ch 8 & 11: Density vs Count Preview"
+format: html
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r}
+library(ggplot2)
+library(MASS)
+library(patchwork)
+
+backgroundcolor <- "#fffafa"
+cbbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
+show_pair <- function(p_density, p_count) {
+  (p_density + ggtitle("Current (Density)")) | (p_count + ggtitle("Count Version"))
+}
+```
+
+This temporary document previews all affected histogram figure blocks from Chapters 8 and 11 as Current (density) vs Count versions.
+
+## Chapter 8: fig-plot-1 Block
+
+```{r}
+set.seed(419)
+n <- 10000
+mx <- 100
+sdx <- 15
+my <- 106
+sdy <- 15
+cor.true <- 0.0
+cov.mat <- matrix(c(1.0, cor.true, cor.true, 1.0), nrow = 2, byrow = TRUE)
+mat <- MASS::mvrnorm(n, Sigma = cov.mat, mu = c(0, 0), empirical = FALSE)
+x <- mat[, 1] * sdx + mx
+y <- mat[, 2] * sdy + my
+dif <- x - y
+dataset <- data.frame(x, y)
+DV <- c(x, y)
+IV <- as.factor(c(rep("1", n), rep("2", n)))
+datasetplot <- data.frame(IV, DV)
+
+p1_d <- ggplot(datasetplot, aes(DV, fill = as.factor(IV))) +
+  geom_histogram(alpha = 0.4, binwidth = 2, position = "identity", colour = "black", aes(y = after_stat(density))) +
+  scale_fill_manual(values = cbbPalette, name = "Condition") +
+  stat_function(fun = dnorm, args = c(mean = mx, sd = sdx), linewidth = 1, color = "#E69F00", lty = 2) +
+  stat_function(fun = dnorm, args = c(mean = my, sd = sdy), linewidth = 1, color = "#56B4E9", lty = 2) +
+  xlab("IQ") + ylab("Density") +
+  theme_bw(base_size = 10) +
+  theme(plot.background = element_rect(fill = backgroundcolor), panel.background = element_rect(fill = backgroundcolor)) +
+  theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) +
+  geom_vline(xintercept = mean(x), colour = "black", linetype = "dashed", linewidth = 1) +
+  geom_vline(xintercept = mean(y), colour = "black", linetype = "dashed", linewidth = 1) +
+  coord_cartesian(xlim = c(50, 150)) +
+  scale_x_continuous(breaks = c(60, 80, 100, 120, 140)) +
+  annotate("text", size = 3, x = 70, y = 0.02, label = paste("Mean X = ", round(mean(x)), "\n", "SD = ", round(sd(x)), sep = "")) +
+  annotate("text", size = 3, x = 130, y = 0.02, label = paste("Mean Y = ", round(mean(y)), "\n", "SD = ", round(sd(y)), sep = "")) +
+  theme(legend.position = "none")
+
+p1_c <- ggplot(datasetplot, aes(DV, fill = as.factor(IV))) +
+  geom_histogram(alpha = 0.4, binwidth = 2, position = "identity", colour = "black") +
+  scale_fill_manual(values = cbbPalette, name = "Condition") +
+  stat_function(fun = function(z) dnorm(z, mean = mx, sd = sdx) * n * 2, linewidth = 1, color = "#E69F00", lty = 2) +
+  stat_function(fun = function(z) dnorm(z, mean = my, sd = sdy) * n * 2, linewidth = 1, color = "#56B4E9", lty = 2) +
+  xlab("IQ") + ylab("Count") +
+  theme_bw(base_size = 10) +
+  theme(plot.background = element_rect(fill = backgroundcolor), panel.background = element_rect(fill = backgroundcolor)) +
+  theme(plot.subtitle = element_text(hjust = 0.5, size = 10)) +
+  theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) +
+  geom_vline(xintercept = mean(x), colour = "black", linetype = "dashed", linewidth = 1) +
+  geom_vline(xintercept = mean(y), colour = "black", linetype = "dashed", linewidth = 1) +
+  coord_cartesian(xlim = c(50, 150)) +
+  scale_x_continuous(breaks = c(60, 80, 100, 120, 140)) +
+  labs(subtitle = paste("Mean X =", round(mean(x)), "(SD =", round(sd(x)), ") | Mean Y =", round(mean(y)), "(SD =", round(sd(y)), ")")) +
+  theme(legend.position = "none")
+
+p2_d <- ggplot(as.data.frame(dif), aes(dif)) +
+  geom_histogram(colour = "black", fill = "grey", aes(y = after_stat(density)), binwidth = 2) +
+  xlab("IQ dif") + ylab("Density") +
+  theme_bw(base_size = 10) +
+  theme(plot.background = element_rect(fill = backgroundcolor), panel.background = element_rect(fill = backgroundcolor)) +
+  theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) +
+  geom_vline(xintercept = mean(dif), colour = "gray20", linetype = "dashed") +
+  coord_cartesian(xlim = c(-80, 80)) +
+  scale_x_continuous(breaks = c(seq(-80, 80, 20))) +
+  annotate("text", x = mean(dif), y = 0.01, label = paste("Mean = ", round(mean(dif)), "\n", "SD = ", round(sd(dif)), sep = ""))
+
+p2_c <- ggplot(as.data.frame(dif), aes(dif)) +
+  geom_histogram(colour = "black", fill = "grey", binwidth = 2) +
+  xlab("IQ dif") + ylab("Count") +
+  theme_bw(base_size = 10) +
+  theme(plot.background = element_rect(fill = backgroundcolor), panel.background = element_rect(fill = backgroundcolor)) +
+  theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) +
+  geom_vline(xintercept = mean(dif), colour = "gray20", linetype = "dashed") +
+  coord_cartesian(xlim = c(-80, 80)) +
+  scale_x_continuous(breaks = c(seq(-80, 80, 20)))
+
+p3 <- ggplot(dataset, aes(x = x, y = y)) +
+  geom_point(size = 2) +
+  geom_smooth(formula = y ~ x, method = lm, colour = "#E69F00", size = 1, fill = "#56B4E9") +
+  coord_cartesian(xlim = c(40, 160), ylim = c(40, 160)) +
+  scale_x_continuous(breaks = c(seq(40, 160, 20))) +
+  scale_y_continuous(breaks = c(seq(40, 160, 20))) +
+  xlab("IQ twin 1") + ylab("IQ twin 2") +
+  ggtitle(paste("Correlation = ", round(cor(x, y), digits = 2), sep = "")) +
+  theme_bw(base_size = 10) +
+  theme(plot.background = element_rect(fill = backgroundcolor), panel.background = element_rect(fill = backgroundcolor)) +
+  theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank()) +
+  theme(plot.title = element_text(hjust = 0.5))
+
+combined_d <- p1_d + p2_d + p3
+combined_c <- p1_c + p2_c + p3
+show_pair(combined_d, combined_c)
+```
+
+## Chapter 8: fig-plot-4 Block
+
+```{r}
+set.seed(419)
+n <- 10000
+mx <- 100
+sdx <- 15
+my <- 106
+sdy <- 15
+cor.true <- 0.7
+cov.mat <- matrix(c(1.0, cor.true, cor.true, 1.0), nrow = 2, byrow = TRUE)
+mat <- MASS::mvrnorm(n, Sigma = cov.mat, mu = c(0, 0), empirical = FALSE)
+x <- mat[, 1] * sdx + mx
+y <- mat[, 2] * sdy + my
+dif <- x - y
+dataset <- data.frame(x, y)
+DV <- c(x, y)
+IV <- as.factor(c(rep("1", n), rep("2", n)))
+datasetplot <- data.frame(IV, DV)
+
+p4_d <- ggplot(datasetplot, aes(DV, fill = as.factor(IV))) +
+  geom_histogram(alpha = 0.4, binwidth = 2, position = "identity", colour = "black", aes(y = after_stat(density))) +
+  scale_fill_manual(values = cbbPalette, name = "Condition") +
+  stat_function(fun = dnorm, args = c(mean = mx, sd = sdx), linewidth = 1, color = "#E69F00", lty = 2) +
+  stat_function(fun = dnorm, args = c(mean = my, sd = sdy), linewidth = 1, color = "#56B4E9", lty = 2) +
+  xlab("IQ") + ylab("Density") +
+  theme_bw(base_size = 12) +
+  theme(plot.background = element_rect(fill = backgroundcolor), panel.background = element_rect(fill = backgroundcolor)) +
+  theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) +
+  geom_vline(xintercept = mean(x), colour = "black", linetype = "dashed", linewidth = 1) +
+  geom_vline(xintercept = mean(y), colour = "black", linetype = "dashed", linewidth = 1) +
+  coord_cartesian(xlim = c(50, 150)) +
+  scale_x_continuous(breaks = c(60, 80, 100, 120, 140)) +
+  theme(legend.position = "none")
+
+p4_c <- ggplot(datasetplot, aes(DV, fill = as.factor(IV))) +
+  geom_histogram(alpha = 0.4, binwidth = 2, position = "identity", colour = "black") +
+  scale_fill_manual(values = cbbPalette, name = "Condition") +
+  stat_function(fun = function(z) dnorm(z, mean = mx, sd = sdx) * n * 2, linewidth = 1, color = "#E69F00", lty = 2) +
+  stat_function(fun = function(z) dnorm(z, mean = my, sd = sdy) * n * 2, linewidth = 1, color = "#56B4E9", lty = 2) +
+  xlab("IQ") + ylab("Count") +
+  theme_bw(base_size = 12) +
+  theme(plot.background = element_rect(fill = backgroundcolor), panel.background = element_rect(fill = backgroundcolor)) +
+  theme(plot.subtitle = element_text(hjust = 0.5, size = 12)) +
+  theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) +
+  geom_vline(xintercept = mean(x), colour = "black", linetype = "dashed", linewidth = 1) +
+  geom_vline(xintercept = mean(y), colour = "black", linetype = "dashed", linewidth = 1) +
+  coord_cartesian(xlim = c(50, 150)) +
+  scale_x_continuous(breaks = c(60, 80, 100, 120, 140)) +
+  labs(subtitle = paste("Mean X =", round(mean(x)), "(SD =", round(sd(x)), ") | Mean Y =", round(mean(y)), "(SD =", round(sd(y)), ")")) +
+  theme(legend.position = "none")
+
+p5_d <- ggplot(as.data.frame(dif), aes(dif)) +
+  geom_histogram(colour = "black", fill = "grey", aes(y = after_stat(density)), binwidth = 2) +
+  xlab("IQ dif") + ylab("Density") +
+  theme_bw(base_size = 10) +
+  theme(plot.background = element_rect(fill = backgroundcolor), panel.background = element_rect(fill = backgroundcolor)) +
+  theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) +
+  geom_vline(xintercept = mean(dif), colour = "gray20", linetype = "dashed") +
+  coord_cartesian(xlim = c(-80, 80)) +
+  scale_x_continuous(breaks = c(seq(-80, 80, 20)))
+
+p5_c <- ggplot(as.data.frame(dif), aes(dif)) +
+  geom_histogram(colour = "black", fill = "grey", binwidth = 2) +
+  xlab("IQ dif") + ylab("Count") +
+  theme_bw(base_size = 10) +
+  theme(plot.background = element_rect(fill = backgroundcolor), panel.background = element_rect(fill = backgroundcolor)) +
+  theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) +
+  geom_vline(xintercept = mean(dif), colour = "gray20", linetype = "dashed") +
+  coord_cartesian(xlim = c(-80, 80)) +
+  scale_x_continuous(breaks = c(seq(-80, 80, 20)))
+
+p6 <- ggplot(dataset, aes(x = x, y = y)) +
+  geom_point(size = 2) +
+  geom_smooth(formula = y ~ x, method = lm, colour = "#E69F00", size = 1, fill = "#56B4E9") +
+  coord_cartesian(xlim = c(40, 160), ylim = c(40, 160)) +
+  scale_x_continuous(breaks = c(seq(40, 160, 20))) +
+  scale_y_continuous(breaks = c(seq(40, 160, 20))) +
+  xlab("IQ twin 1") + ylab("IQ twin 2") +
+  ggtitle(paste("Correlation = ", round(cor(x, y), digits = 2), sep = "")) +
+  theme_bw(base_size = 10) +
+  theme(plot.background = element_rect(fill = backgroundcolor), panel.background = element_rect(fill = backgroundcolor)) +
+  theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank()) +
+  theme(plot.title = element_text(hjust = 0.5))
+
+combined_d <- p4_d + p5_d + p6
+combined_c <- p4_c + p5_c + p6
+show_pair(combined_d, combined_c)
+```
+
+## Chapter 11: fig-plot-hist-iq-1
+
+```{r}
+set.seed(3190)
+n <- 10
+x <- rnorm(n = n, mean = 100, sd = 15)
+
+p_d <- ggplot(as.data.frame(x), aes(x)) +
+  geom_histogram(colour = "black", fill = "grey", aes(y = after_stat(density)), binwidth = 2) +
+  stat_function(fun = dnorm, args = c(mean = 100, sd = 15), linewidth = 1, color = "red", lty = 2) +
+  xlab("IQ") + ylab("Density") + theme_bw(base_size = 20) +
+  geom_vline(xintercept = mean(x), colour = "gray20", linetype = "dashed") +
+  coord_cartesian(xlim = c(50, 150)) +
+  scale_x_continuous(breaks = seq(50, 150, 10)) +
+  annotate("text", x = mean(x), y = 0.02, label = paste("Mean = ", round(mean(x)), "\n", "SD = ", round(sd(x)), sep = ""), size = 8) +
+  theme(plot.background = element_rect(fill = "#fffafa"), panel.background = element_rect(fill = "#fffafa"))
+
+p_c <- ggplot(as.data.frame(x), aes(x)) +
+  geom_histogram(colour = "black", fill = "grey", binwidth = 2) +
+  stat_function(fun = function(z) dnorm(z, mean = 100, sd = 15) * n * 2, linewidth = 1, color = "red", lty = 2) +
+  xlab("IQ") + ylab("Count") + theme_bw(base_size = 20) +
+  theme(plot.subtitle = element_text(hjust = 0.5, size = 20)) +
+  geom_vline(xintercept = mean(x), colour = "gray20", linetype = "dashed") +
+  coord_cartesian(xlim = c(50, 150)) +
+  scale_x_continuous(breaks = seq(50, 150, 10)) +
+  labs(subtitle = paste("Mean =", round(mean(x)), "| SD =", round(sd(x)))) +
+  theme(plot.background = element_rect(fill = "#fffafa"), panel.background = element_rect(fill = "#fffafa"))
+
+show_pair(p_d, p_c)
+```
+
+## Chapter 11: sim-4-iq Block
+
+```{r}
+set.seed(3190)
+make_p <- function(x, base_size = 12, text_size = 5) {
+  p_d <- ggplot(as.data.frame(x), aes(x)) +
+    geom_histogram(colour = "black", fill = "grey", aes(y = after_stat(density)), binwidth = 2) +
+    stat_function(fun = dnorm, args = c(mean = 100, sd = 15), linewidth = 1, color = "red", lty = 2) +
+    xlab("IQ") + ylab("Density") + theme_bw(base_size = base_size) +
+    geom_vline(xintercept = mean(x), colour = "gray20", linetype = "dashed") +
+    coord_cartesian(xlim = c(50, 150)) +
+    scale_x_continuous(breaks = seq(50, 150, 10)) +
+    annotate("text", x = mean(x), y = 0.02, label = paste("Mean = ", round(mean(x)), "\n", "SD = ", round(sd(x)), sep = ""), size = text_size) +
+    theme(plot.background = element_rect(fill = backgroundcolor), panel.background = element_rect(fill = backgroundcolor))
+
+  p_c <- ggplot(as.data.frame(x), aes(x)) +
+    geom_histogram(colour = "black", fill = "grey", binwidth = 2) +
+    stat_function(fun = function(z) dnorm(z, mean = 100, sd = 15) * length(x) * 2, linewidth = 1, color = "red", lty = 2) +
+    xlab("IQ") + ylab("Count") + theme_bw(base_size = base_size) +
+    theme(plot.subtitle = element_text(hjust = 0.5, size = base_size)) +
+    geom_vline(xintercept = mean(x), colour = "gray20", linetype = "dashed") +
+    coord_cartesian(xlim = c(50, 150)) +
+    scale_x_continuous(breaks = seq(50, 150, 10)) +
+    labs(subtitle = paste("Mean =", round(mean(x)), "| SD =", round(sd(x)))) +
+    theme(plot.background = element_rect(fill = backgroundcolor), panel.background = element_rect(fill = backgroundcolor))
+
+  list(d = p_d, c = p_c)
+}
+
+x1 <- rnorm(10, 100, 15)
+x2 <- rnorm(10, 100, 15)
+x3 <- rnorm(10, 100, 15)
+x4 <- rnorm(10, 100, 15)
+
+p1 <- make_p(x1)
+p2 <- make_p(x2)
+p3 <- make_p(x3)
+p4 <- make_p(x4)
+
+combined_d <- (p1$d + p2$d + p3$d + p4$d)
+combined_c <- (p1$c + p2$c + p3$c + p4$c)
+show_pair(combined_d, combined_c)
+```
+
+## Chapter 11: fig-plot-hist-iq-2 and fig-plot-hist-iq-3
+
+```{r}
+make_single <- function(seed, n, base_size = 20) {
+  set.seed(seed)
+  x <- rnorm(n = n, mean = 100, sd = 15)
+  p_d <- ggplot(as.data.frame(x), aes(x)) +
+    geom_histogram(colour = "black", fill = "grey", aes(y = after_stat(density)), binwidth = 2) +
+    stat_function(fun = dnorm, args = c(mean = 100, sd = 15), linewidth = 1, color = "red", lty = 2) +
+    xlab("IQ") + ylab("Density") + theme_bw(base_size = base_size) +
+    theme(plot.background = element_rect(fill = backgroundcolor), panel.background = element_rect(fill = backgroundcolor)) +
+    geom_vline(xintercept = mean(x), colour = "gray20", linetype = "dashed") +
+    coord_cartesian(xlim = c(50, 150)) +
+    scale_x_continuous(breaks = seq(50, 150, 10)) +
+    annotate("text", x = mean(x), y = 0.02, label = paste("Mean = ", round(mean(x)), "\n", "SD = ", round(sd(x)), sep = ""), size = 8)
+
+  p_c <- ggplot(as.data.frame(x), aes(x)) +
+    geom_histogram(colour = "black", fill = "grey", binwidth = 2) +
+    stat_function(fun = function(z) dnorm(z, mean = 100, sd = 15) * n * 2, linewidth = 1, color = "red", lty = 2) +
+    xlab("IQ") + ylab("Count") + theme_bw(base_size = base_size) +
+    theme(plot.subtitle = element_text(hjust = 0.5, size = base_size)) +
+    theme(plot.background = element_rect(fill = backgroundcolor), panel.background = element_rect(fill = backgroundcolor)) +
+    geom_vline(xintercept = mean(x), colour = "gray20", linetype = "dashed") +
+    coord_cartesian(xlim = c(50, 150)) +
+    scale_x_continuous(breaks = seq(50, 150, 10)) +
+    labs(subtitle = paste("Mean =", round(mean(x)), "| SD =", round(sd(x))))
+  list(d = p_d, c = p_c)
+}
+
+p100 <- make_single(519, 100)
+show_pair(p100$d, p100$c)
+
+p1000 <- make_single(618, 1000)
+show_pair(p1000$d, p1000$c)
+```
+
+## Chapter 11: fig-plot-group1
+
+```{r}
+set.seed(811)
+n1 <- 10; n2 <- 10; mx <- 100; sdx <- 15; my <- 106; sdy <- 15
+x <- rnorm(n1, mx, sdx); y <- rnorm(n2, my, sdy)
+DV <- c(x, y)
+IV <- as.factor(c(rep("1", n1), rep("2", n2)))
+dataset <- as.data.frame(cbind(IV, DV))
+
+p_d <- ggplot(dataset, aes(DV, fill = as.factor(IV))) +
+  geom_histogram(alpha = 0.4, binwidth = 2, position = "dodge", colour = "black", aes(y = after_stat(density))) +
+  scale_fill_manual(values = cbbPalette, name = "Condition") +
+  stat_function(fun = dnorm, args = c(mean = mx, sd = sdx), linewidth = 1, color = "#E69F00", lty = 2, inherit.aes = FALSE) +
+  stat_function(fun = dnorm, args = c(mean = my, sd = sdy), linewidth = 1, color = "#56B4E9", lty = 2, inherit.aes = FALSE) +
+  xlab("IQ") + ylab("Density") + ggtitle("Data") +
+  theme_bw(base_size = 20) +
+  theme(plot.background = element_rect(fill = backgroundcolor), panel.background = element_rect(fill = backgroundcolor)) +
+  theme(legend.key = element_rect(fill = backgroundcolor)) +
+  theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) +
+  geom_vline(xintercept = mean(x), colour = "black", linetype = "dashed", linewidth = 1) +
+  geom_vline(xintercept = mean(y), colour = "black", linetype = "dashed", linewidth = 1) +
+  coord_cartesian(xlim = c(50, 150))
+
+p_c <- ggplot(dataset, aes(DV, fill = as.factor(IV))) +
+  geom_histogram(alpha = 0.4, binwidth = 2, position = "dodge", colour = "black") +
+  scale_fill_manual(values = cbbPalette, name = "Condition") +
+  stat_function(fun = function(z) dnorm(z, mean = mx, sd = sdx) * n1 * 2, linewidth = 1, color = "#E69F00", lty = 2, inherit.aes = FALSE) +
+  stat_function(fun = function(z) dnorm(z, mean = my, sd = sdy) * n2 * 2, linewidth = 1, color = "#56B4E9", lty = 2, inherit.aes = FALSE) +
+  xlab("IQ") + ylab("Count") + ggtitle("Data") +
+  theme_bw(base_size = 20) +
+  theme(plot.background = element_rect(fill = backgroundcolor), panel.background = element_rect(fill = backgroundcolor)) +
+  theme(plot.subtitle = element_text(hjust = 0.5, size = 20)) +
+  theme(legend.key = element_rect(fill = backgroundcolor)) +
+  theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) +
+  geom_vline(xintercept = mean(x), colour = "black", linetype = "dashed", linewidth = 1) +
+  geom_vline(xintercept = mean(y), colour = "black", linetype = "dashed", linewidth = 1) +
+  coord_cartesian(xlim = c(50, 150)) +
+  labs(subtitle = paste("Mean X =", round(mean(x)), "(SD =", round(sd(x)), ") | Mean Y =", round(mean(y)), "(SD =", round(sd(y)), ")"))
+
+show_pair(p_d, p_c)
+```
+
+## Chapter 11: fig-plot-group2 Block
+
+```{r}
+set.seed(1420)
+n1 <- 10; n2 <- 10; mx <- 100; sdx <- 15; my <- 106; sdy <- 15
+
+make_group_plot <- function() {
+  x <- rnorm(n1, mx, sdx)
+  y <- rnorm(n2, my, sdy)
+  DV <- c(x, y)
+  IV <- as.factor(c(rep("1", n1), rep("2", n2)))
+  dataset <- as.data.frame(cbind(IV, DV))
+
+  p_d <- ggplot(dataset, aes(DV, fill = as.factor(IV))) +
+    geom_histogram(alpha = 0.4, binwidth = 2, position = "dodge", colour = "black", aes(y = after_stat(density))) +
+    scale_fill_manual(values = cbbPalette, name = "Condition") +
+    stat_function(fun = dnorm, args = c(mean = mx, sd = sdx), linewidth = 1, color = "#E69F00", lty = 2, inherit.aes = FALSE) +
+    stat_function(fun = dnorm, args = c(mean = my, sd = sdy), linewidth = 1, color = "#56B4E9", lty = 2, inherit.aes = FALSE) +
+    xlab("IQ") + ylab("Density") + ggtitle("Data") +
+    theme_bw(base_size = 10) +
+    theme(plot.background = element_rect(fill = backgroundcolor), panel.background = element_rect(fill = backgroundcolor)) +
+    theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) +
+    coord_cartesian(xlim = c(50, 150))
+
+  p_c <- ggplot(dataset, aes(DV, fill = as.factor(IV))) +
+    geom_histogram(alpha = 0.4, binwidth = 2, position = "dodge", colour = "black") +
+    scale_fill_manual(values = cbbPalette, name = "Condition") +
+    stat_function(fun = function(z) dnorm(z, mean = mx, sd = sdx) * n1 * 2, linewidth = 1, color = "#E69F00", lty = 2, inherit.aes = FALSE) +
+    stat_function(fun = function(z) dnorm(z, mean = my, sd = sdy) * n2 * 2, linewidth = 1, color = "#56B4E9", lty = 2, inherit.aes = FALSE) +
+    xlab("IQ") + ylab("Count") + ggtitle("Data") +
+    theme_bw(base_size = 10) +
+    theme(plot.background = element_rect(fill = backgroundcolor), panel.background = element_rect(fill = backgroundcolor)) +
+    theme(plot.subtitle = element_text(hjust = 0.5, size = 10)) +
+    theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) +
+    coord_cartesian(xlim = c(50, 150)) +
+    labs(subtitle = paste("Mean X =", round(mean(x)), "(SD =", round(sd(x)), ") | Mean Y =", round(mean(y)), "(SD =", round(sd(y)), ")"))
+
+  list(d = p_d, c = p_c)
+}
+
+g1 <- make_group_plot(); g2 <- make_group_plot(); g3 <- make_group_plot(); g4 <- make_group_plot()
+combined_d <- g1$d + g2$d + g3$d + g4$d
+combined_c <- g1$c + g2$c + g3$c + g4$c
+show_pair(combined_d, combined_c)
+```
+
+## Chapter 11: fig-plotgroup3
+
+```{r}
+set.seed(811)
+n1 <- 250; n2 <- 250; mx <- 100; sdx <- 15; my <- 106; sdy <- 15
+x <- rnorm(n1, mx, sdx); y <- rnorm(n2, my, sdy)
+DV <- c(x, y)
+IV <- as.factor(c(rep("1", n1), rep("2", n2)))
+dataset <- as.data.frame(cbind(IV, DV))
+
+p_d <- ggplot(dataset, aes(DV, fill = as.factor(IV))) +
+  geom_histogram(alpha = 0.4, binwidth = 2, position = "dodge", colour = "black", aes(y = after_stat(density))) +
+  scale_fill_manual(values = cbbPalette, name = "Condition") +
+  stat_function(fun = dnorm, args = c(mean = mx, sd = sdx), linewidth = 1, color = "#E69F00", lty = 2, inherit.aes = FALSE) +
+  stat_function(fun = dnorm, args = c(mean = my, sd = sdy), linewidth = 1, color = "#56B4E9", lty = 2, inherit.aes = FALSE) +
+  xlab("IQ") + ylab("Density") + ggtitle("Data") +
+  theme_bw(base_size = 20) +
+  theme(plot.background = element_rect(fill = backgroundcolor), panel.background = element_rect(fill = backgroundcolor)) +
+  theme(legend.key = element_rect(fill = backgroundcolor)) +
+  theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) +
+  coord_cartesian(xlim = c(50, 150))
+
+p_c <- ggplot(dataset, aes(DV, fill = as.factor(IV))) +
+  geom_histogram(alpha = 0.4, binwidth = 2, position = "dodge", colour = "black") +
+  scale_fill_manual(values = cbbPalette, name = "Condition") +
+  stat_function(fun = function(z) dnorm(z, mean = mx, sd = sdx) * n1 * 2, linewidth = 1, color = "#E69F00", lty = 2, inherit.aes = FALSE) +
+  stat_function(fun = function(z) dnorm(z, mean = my, sd = sdy) * n2 * 2, linewidth = 1, color = "#56B4E9", lty = 2, inherit.aes = FALSE) +
+  xlab("IQ") + ylab("Count") + ggtitle("Data") +
+  theme_bw(base_size = 20) +
+  theme(plot.background = element_rect(fill = backgroundcolor), panel.background = element_rect(fill = backgroundcolor)) +
+  theme(plot.subtitle = element_text(hjust = 0.5, size = 20)) +
+  theme(legend.key = element_rect(fill = backgroundcolor)) +
+  theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) +
+  coord_cartesian(xlim = c(50, 150)) +
+  labs(subtitle = paste("Mean X =", round(mean(x)), "(SD =", round(sd(x)), ") | Mean Y =", round(mean(y)), "(SD =", round(sd(y)), ")"))
+
+show_pair(p_d, p_c)
+```
