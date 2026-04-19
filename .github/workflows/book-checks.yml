@@ -24,6 +24,13 @@ jobs:
         with:
           use-public-rspm: true
 
+      - name: Cache R packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: r-${{ runner.os }}-${{ hashFiles('requirements-r.txt') }}
+          restore-keys: r-${{ runner.os }}-
+
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
