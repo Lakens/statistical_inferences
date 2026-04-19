@@ -9,6 +9,12 @@ required_packages <- trimws(required_packages)
 required_packages <- required_packages[nzchar(required_packages)]
 required_packages <- required_packages[!grepl("^#", required_packages)]
 
+repos <- getOption("repos")
+if (length(repos) == 0 || any(repos == "@CRAN@")) {
+  repos <- c(CRAN = "https://cloud.r-project.org")
+}
+message("Using repos: ", paste(repos, collapse = ", "))
+
 installed <- rownames(installed.packages())
 missing_cran <- setdiff(required_packages, installed)
 
@@ -16,7 +22,7 @@ if (length(missing_cran) > 0) {
   message("Installing missing CRAN packages: ", paste(missing_cran, collapse = ", "))
   install.packages(
     missing_cran,
-    repos = getOption("repos"),
+    repos = repos,
     dependencies = TRUE
   )
 } else {
