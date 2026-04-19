@@ -4,10 +4,16 @@
 # 1) Figure cross-references in source resolve to defined figure labels.
 # 2) Rendered HTML contains no unresolved cross-reference markers.
 # 3) Multiple-choice question option blocks contain exactly one `answer =` entry.
-# 4) Rendered warnings are reported as notes (non-blocking by default).
+# 4) Rendered warnings are treated as blocking errors by default.
 
 args <- commandArgs(trailingOnly = TRUE)
-strict_warnings <- "--strict-warnings" %in% args
+strict_warnings <- TRUE
+if ("--no-strict-warnings" %in% args || "--allow-warnings" %in% args) {
+  strict_warnings <- FALSE
+}
+if ("--strict-warnings" %in% args) {
+  strict_warnings <- TRUE
+}
 
 book_root <- getwd()
 quarto_yml <- file.path(book_root, "_quarto.yml")
@@ -31,6 +37,28 @@ read_output_dir <- function(yml_path) {
   if (length(hit) == 0) return("docs")
   out <- sub("^\\s*output-dir\\s*:\\s*", "", hit[1], perl = TRUE)
   trimws(out)
+}
+
+missing_download_formats <- function(output_dir, formats = c("pdf", "epub"), fallback_dir = ".") {
+  candidate_dirs <- unique(c(output_dir, fallback_dir))
+  existing_dirs <- candidate_dirs[dir.exists(candidate_dirs)]
+
+  if (length(existing_dirs) == 0L) {
+    return(formats)
+  }
+
+  missing_formats <- formats[vapply(
+    formats,
+    function(fmt) {
+      files <- unlist(lapply(existing_dirs, function(d) {
+        list.files(d, pattern = paste0("\\.", fmt, "$"), full.names = TRUE)
+      }), use.names = FALSE)
+      length(files) == 0L
+    },
+    logical(1)
+  )]
+
+  missing_formats
 }
 
 count_pattern <- function(text, pattern) {
@@ -278,6 +306,7 @@ mc_warnings <- unique(mc_warnings)
 
 # Check 3: rendered HTML unresolved refs
 output_dir <- read_output_dir(quarto_yml)
+missing_downloads <- missing_download_formats(output_dir, fallback_dir = book_root)
 html_res <- check_html_unresolved_refs(output_dir)
 html_errors <- unique(html_res$errors)
 
@@ -285,7 +314,16 @@ html_errors <- unique(html_res$errors)
 warn_res <- collect_html_warning_notes(output_dir)
 warn_notes <- unique(warn_res$notes)
 
-all_errors <- c(fig_errors, mc_errors, html_errors)
+download_errors <- character(0)
+if (length(missing_downloads) > 0) {
+  download_errors <- sprintf(
+    "Missing required book download output(s): %s in '%s'. Run `quarto render` (full book compile).",
+    paste(missing_downloads, collapse = ", "),
+    output_dir
+  )
+}
+
+all_errors <- c(fig_errors, mc_errors, html_errors, download_errors)
 if (strict_warnings) {
   all_errors <- c(all_errors, warn_notes)
 }
@@ -296,9 +334,13 @@ if (length(mc_warnings) > 0) {
 }
 
 if (length(warn_notes) > 0) {
-  cat("\nNotes (rendered warnings found):\n")
-  for (n in warn_notes) cat("-", n, "\n")
-  if (!strict_warnings) {
+  if (strict_warnings) {
+    cat("\nRendered warning errors:\n")
+    for (n in warn_notes) cat("-", n, "\n")
+    cat("- Blocking: rendered warnings are treated as errors. Use --no-strict-warnings to allow them.\n")
+  } else {
+    cat("\nNotes (rendered warnings found):\n")
+    for (n in warn_notes) cat("-", n, "\n")
     cat("- Non-blocking: warnings are reported as notes. Use --strict-warnings to fail on these.\n")
   }
 }
@@ -312,5 +354,6 @@ if (length(all_errors) > 0) {
 cat("\nAll checks passed.\n")
 cat("- Figure references: OK\n")
 cat("- MC answer options (exactly one answer=): OK\n")
+cat("- Download outputs (pdf, epub): OK\n")
 cat("- Rendered HTML unresolved refs: OK (", html_res$checked, "files checked)\n", sep = "")
 cat("- Rendered HTML warnings: OK (", warn_res$checked, "files checked)\n", sep = "")
