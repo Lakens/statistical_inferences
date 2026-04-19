@@ -4,10 +4,6 @@
 # needed to make the chapter (not visible)
 library(ggplot2)
 library(gridExtra)
-# Install JAGS https://sourceforge.net/projects/mcmc-jags/files/ 
-# library(remotes)
-# install_version("BEST", "0.5.4")
-library(BEST)
 
 
 # for students
@@ -23,7 +19,7 @@ There should be many situations where researchers are interested in examining wh
 
 It is never possible to show an effect is *exactly* 0. Even if you collected data from every person in the world, the effect in any single study will randomly vary around the true effect size of 0 - you might end up with a mean difference that is very close to, but not exactly, zero, in any finite sample. @hodges_testing_1954 were the first to discuss the statistical problem of testing whether two populations have the same mean. They suggest (p. 264) to: “test that their means do not differ by more than an amount specified to represent the smallest difference of practical interest”. @nunnally_place_1960 similarly proposed a ‘fixed-increment’ hypothesis where researchers compare an observed effect against a range of values that is deemed too small to be meaningful. Defining a range of values considered practically equivalent to the absence of an effect is known as an **equivalence range** [@bauer_unifying_1996] or a **region of practical equivalence** [@kruschke_bayesian_2013]. The equivalence range should be specified in advance, and requires careful consideration of the smallest effect size of interest. 
 
-Although researchers have repeatedly attempted to introduce tests against an equivalence range in the social sciences [@cribbie_recommendations_2004; @levine_communication_2008; @hoenig_abuse_2001; @rogers_using_1993; @quertemont_how_2011], this statistical approach has only recently become popular. During the replication crisis, researchers searched for tools to interpret null results when performing replication studies. Researchers wanted to be able to publish informative null results when replicating findings in the literature that they suspected were false positives. One notable example were the studies on pre-cognition by Daryl Bem, which ostensibly showed that participants were able to predict the future [@bem_feeling_2011]. Equivalence tests were proposed as a statistical approach to answer the question whether an observed effect is small enough to conclude that a previous study could not be replicated [@anderson_there_2016; @lakens_equivalence_2017; @simonsohn_small_2015]. Researchers specify a smallest effect size of interest (for example an effect of 0.5, so for a two-sided test any value outside a range from -0.5 to 0.5) and test whether effects more extreme than this range can be rejected. If so, they can reject the presence of effects that are deemed large enough to be meaningful.
+Although researchers have repeatedly attempted to introduce tests against an equivalence range in the social sciences [@cribbie_recommendations_2004; @levine_communication_2008; @hoenig_abuse_2001; @rogers_using_1993; @quertemont_how_2011], this statistical approach has only recently become popular. During the replication crisis, researchers searched for tools to interpret null results when performing replication studies. Researchers wanted to be able to publish informative null results when replicating findings in the literature that they suspected were false positives. One notable example were the studies on pre-cognition by Daryl Bem, which ostensibly showed that participants were able to predict the future [@bem_feeling_2011]. Equivalence tests were proposed as a statistical approach to answer the question whether an observed effect is small enough to conclude that a previous study could not be replicated [@anderson_theres_2016; @lakens_equivalence_2017; @simonsohn_small_2015]. Researchers specify a smallest effect size of interest (for example an effect of 0.5, so for a two-sided test any value outside a range from -0.5 to 0.5) and test whether effects more extreme than this range can be rejected. If so, they can reject the presence of effects that are deemed large enough to be meaningful.
 
 One can distinguish a **nil null hypothesis**, where the null hypothesis is an effect of 0, from a **non-nil null hypothesis**, where the null hypothesis is any other effect than 0, for example effects more extreme than the smallest effect size of interest [@nickerson_null_2000]. As Nickerson writes: 
 
@@ -283,27 +279,18 @@ Statistical software offers options for power analyses for some statistical test
 
 In Bayesian estimation, one way to argue for the absence of a meaningful effect is the **region of practical equivalence** (ROPE) procedure [@kruschke_bayesian_2013], which is “somewhat analogous to frequentist equivalence testing” [@kruschke_bayesian_2017]. In the ROPE procedure, an equivalence range is specified, just as in equivalence testing, but the Bayesian highest density interval based on a posterior distribution (as explained in the chapter on [Bayesian statistics](#sec-bayes)) is used instead of the confidence interval. 
 
-If the prior used by Kruschke was perfectly uniform, and the ROPE procedure and an equivalence test used the same confidence interval (e.g., 90%), the two tests would yield  identical results. There would only be philosophical differences in how the numbers are interpreted. The `BEST` package in R that can be used to perform the ROPE procedure by default uses a ‘broad’ prior, and therefore results of the ROPE procedure and an equivalence test are not exactly the same, but they are very close. One might even argue the two tests are 'practically equivalent'. In the R code below, random normally distributed data for two conditions is generated (with means of 0 and a standard deviation of 1) and the ROPE procedure and a TOST equivalence test are performed. 
+If the prior used by Kruschke was perfectly uniform, and the ROPE procedure and an equivalence test used the same confidence interval (e.g., 90%), the two tests would yield  identical results. There would only be philosophical differences in how the numbers are interpreted. In practice, with broad priors, results of the ROPE procedure and an equivalence test are often not exactly the same, but very close. One might even argue the two tests are 'practically equivalent'. The figures below show an archived example from a previous successful render for simulated normally distributed data in two conditions (means of 0 and a standard deviation of 1).
 
-```{r, echo = FALSE, warning = FALSE, message = FALSE, cache = TRUE}
-set.seed(1)
+```{r, echo = FALSE}
+#| fig-cap: "Archived ROPE and TOST outputs for the same simulated dataset."
 
-x<-rnorm(100) #Generate 100 random normally distributed observations
-y<-rnorm(100) #Generate 100 random normally distributed observations
-
-#ROPE test
-BESTout<-BEST::BESTmcmc(x,y)
-plot(BESTout, ROPE = c(-0.5, 0.5), showCurve = TRUE, xlim = c(-0.5,0.6),
-     credMass = 0.90)
-
-#TOST test
-TOSTout <- TOSTER::t_TOST(x = x, y = y, low_eqbound = -0.5, high_eqbound = 0.5, alpha = 0.05)
-
-plot(TOSTout, estimates = "raw")
-
+knitr::include_graphics(c(
+   "09-equivalencetest_files/figure-html/unnamed-chunk-8-1.png",
+   "09-equivalencetest_files/figure-html/unnamed-chunk-8-2.png"
+))
 ```
 
-The 90% HDI ranges from -0.06 to 0.39, with an estimated mean based on the prior and the data of 0.164. The HDI falls completely between the upper and the lower bound of the equivalence range, and therefore values more extreme than -0.5 or 0.5 are deemed implausible. The 95% CI ranges from `r round(TOSTout$effsize$lower.ci[1], 2)` to `r round(TOSTout$effsize$upper.ci[1], 2)` with an observed mean difference of `r round(TOSTout$effsize$estimate[1], 2)`. We see that the numbers are not identical, because in Bayesian estimation the observed values are combined with a prior, and the mean estimate is not purely based on the data. But the results are very similar, and will in most cases lead to similar inferences. The BEST R package also enables researchers to perform simulation based power analyses, which take a long time but, when using a broad prior, yield a result that is basically identical to the sample size from a power analysis for an equivalence test. The biggest benefit of ROPE over TOST is that it allows you to incorporate prior information. If you have reliable prior information, ROPE can use this information, which is especially useful if you don’t have a lot of data. If you use informed priors, check the robustness of the posterior against reasonable changes in the prior in sensitivity analyses.
+In this archived example, the 90% HDI ranges from -0.06 to 0.39, with an estimated mean based on the prior and the data of 0.164. The HDI falls completely between the upper and the lower bound of the equivalence range, and therefore values more extreme than -0.5 or 0.5 are deemed implausible. The 95% CI ranges from -0.07 to 0.36 with an observed mean difference of 0.15. We see that the numbers are not identical, because in Bayesian estimation the observed values are combined with a prior, and the mean estimate is not purely based on the data. But the results are very similar, and will in most cases lead to similar inferences. The biggest benefit of ROPE over TOST is that it allows you to incorporate prior information. If you have reliable prior information, ROPE can use this information, which is especially useful if you don’t have a lot of data. If you use informed priors, check the robustness of the posterior against reasonable changes in the prior in sensitivity analyses.
 
 ## Which interval width should be used? {#sec-whichinterval}
 
@@ -341,7 +328,7 @@ For another example, economists have examined the value of a statistical life, b
 
 ## Specifying the SESOI using the small telescopes approach
 
-Ideally, researchers who publish empirical claims would always specify which observations would falsify their claim. Regrettably, this is not yet common practice. This is particularly problematic when a researcher performs a close replication of earlier work. Because it is never possible to prove an effect is exactly zero, and the original authors seldom specify which range of effect sizes would falsify their hypotheses, it has proven to be very difficult to interpret the outcome of a replication study [@anderson_there_2016]. When does the new data contradict the original finding?
+Ideally, researchers who publish empirical claims would always specify which observations would falsify their claim. Regrettably, this is not yet common practice. This is particularly problematic when a researcher performs a close replication of earlier work. Because it is never possible to prove an effect is exactly zero, and the original authors seldom specify which range of effect sizes would falsify their hypotheses, it has proven to be very difficult to interpret the outcome of a replication study [@anderson_theres_2016]. When does the new data contradict the original finding?
 
 Consider a study in which you want to test the idea of the wisdom of crowds. You ask 20 people to estimate the number of coins in a jar, expecting the average to be very close to the true value. The research question is whether the people can on average correctly guess the number of coins, which is 500. The observed mean guess by 20 people is 550, with a standard deviation of 100. The observed difference from the true value is statistically significant, *t*(19)=2.37, *p* = 0.0375, with a Cohen’s *d* of 0.5. Can it really be that the group average is so far off? Is there no Wisdom of Crowds? Was there something special about the coins you used that make it especially difficult to guess their number? Or was it just a fluke? You set out to perform a close replication of this study.
 

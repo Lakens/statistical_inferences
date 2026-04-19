@@ -40,7 +40,7 @@ The belief that basic claims in psychology are not repeatable events lead to **s
 
 Over the last half century, researchers have repeatedly observed that replication studies were rarely performed or published. In an editorial in the Journal of Personality and Social Psychology, Greenwald [@greenwald_editorial_1976] writes: “There may be a crisis in personality and social psychology, associated with the difficulty often experienced by researchers in attempting to replicate published work. A precise statement of the magnitude of this problem cannot be made, since most failures to replicate do not receive public report”. A similar concern about the replicability of findings is expressed by Epstein [@epstein_stability_1980, p. 790]: “Not only are experimental findings often difficult to replicate when there are the slightest alterations in conditions, but even attempts at exact replication frequently fail.” Neher [-@neher_probability_1967, p. 262] concludes: “The general adoption of independent replication as a requirement for acceptance of findings in the behavioral sciences will require the efforts of investigators, readers, and publishing editors alike. It seems clear that such a policy is both long overdue and crucial to the development of a sound body of knowledge concerning human behavior.” Lubin [@lubin_replicability_1957] suggests that, where relevant, manuscripts that demonstrate the replicability of findings should receive a higher publication priority. N. C. Smith [-@smith_replication_1970, p. 974] notes how replication studies are neglected: “The review of the literature on replication and cross-validation research has revealed that psychologists in both research 'disciplines' have tended to ignore replication research. Thus, one cannot help but wonder what the impact might be if every investigator repeated the study which he believed to be his most significant contribution to the field.” One problem in the past was the difficulty of describing the methods and analyses in sufficient detail to allow others to repeat the study as closely as possible [@mack_need_1951]. For example, Pereboom [-@pereboom_fundamental_1971, p. 442] writes: “Related to the above is the common difficulty of communicating all important details of a psychological experiment to one's audience. […] Investigators attempting to replicate the work of others are painfully aware of these informational gaps.” Open science practices, such as sharing [computationally reproducible](#sec-computationalreproducibility) code and materials, are an important way to solve this problem, and a lot of progress has been made over the last decade to address these problems.
 
-Many researchers have suggested that performing replication studies should be common practice. Lykken [-@lykken_statistical_1968, p. 159] writes: “Ideally, all experiments would be replicated before publication but this goal is impractical”. Loevinger [-@loevinger_information_1968, p. 455] makes a similar point: “Most studies should be replicated prior to publication. This recommendation is particularly pertinent in cases where the results are in the predicted direction, but not significant, or barely so, or only by one-tailed tests”. Samelson [-@samelson_watson_1980, p. 623] notes in the specific context of Watson’s ‘Little Albert’ study: “Beyond this apparent failure of internal criticism of the data is another one that is even less debatable: the clear neglect of a cardinal rule of scientific method, that is, replication”.
+Many researchers have suggested that performing replication studies should be common practice. Lykken [-@lykken_statistical_1968, p. 159] writes: “Ideally, all experiments would be replicated before publication but this goal is impractical”. Loevinger [-@loevinger_information_1968, p. 455] makes a similar point: “Most studies should be replicated prior to publication. This recommendation is particularly pertinent in cases where the results are in the predicted direction, but not significant, or barely so, or only by one-tailed tests”. Samelson [-@samelson_watsons_1980, p. 623] notes in the specific context of Watson’s ‘Little Albert’ study: “Beyond this apparent failure of internal criticism of the data is another one that is even less debatable: the clear neglect of a cardinal rule of scientific method, that is, replication”.
 
 The idea that replication is a 'cardinal rule' or 'cornerstone' of the scientific method follows directly from a methodological falsificationist philosophy of science. Popper [-@popper_logic_2002] discusses how we increase our confidence in theories that make predictions that withstand attempts to falsify the theory. To be able to falsify predictions, predictions need to rule out certain observable data patterns. For example, if our theory predicts that people will be faster at naming the colour of words when their meaning matches the colour (e.g., "blue" written in blue instead of "blue" written in red), the observation that people are not faster (or even slower) would falsify our prediction. A problem is that given variability in observed data any possible data pattern will occur, exactly as often as dictated by chance. This means that in the long run, just based on chance, a study will show people are *slower* at naming the colour of words when their meaning matches the colour. This fluke will be observed by chance, even though our theory is correct. Popper realized this was a problem for his account of falsification, because it means that "probability statements will not be falsifiable". After all, if all possible data patterns have a non-zero probability, even if they are extremely rare, they are not logically ruled out. This would make falsification impossible if we demanded that science works according to perfectly formal logical rules.
 
@@ -64,7 +64,7 @@ A direct replication study that yields no statistically significant effect can h
 
 ## Analyzing Replication Studies.
 
-There are multiple ways to statistically analyze a replication study [@anderson_there_2016]. The most straightforward statistical approach is also the least common: Testing whether the effect sizes in the original and replication studies are statistically different from each other. Two effect sizes from an independent *t*-test can be tested against each other using:
+There are multiple ways to statistically analyze a replication study [@anderson_theres_2016]. The most straightforward statistical approach is also the least common: Testing whether the effect sizes in the original and replication studies are statistically different from each other. Two effect sizes from an independent *t*-test can be tested against each other using:
 
 
 $$
@@ -73,7 +73,7 @@ $$
 
 where the difference between the two Cohen's *d* effect sizes is divided by the standard error of the difference score, based on the square root of the combined variances of the effect sizes [@borenstein_introduction_2009, formula 19.6 and 19.7]. This formula provides a hint why researchers rarely test for differences between effect sizes. The standard error of the difference score is based on the variance in the original and replication study. If the original study has a small sample size, the variance will be large, and a test of the difference between effect sizes can have very low power.
 
-Let's take a look at an original non-preregistered study which observed an effect size of *d* = 0.6 in an independent *t*-test with 30 participants in each group. A preregistered replication study is performed which observed an effect size of 0 with 150 participants in each group. Testing the two effect sizes against each other can be achieved in three ways that are in principle identical (although the exact implementation, such as computing Cohen's *d* or Hedges' *g*, might yield slightly different *p*-values). The first is to compute the corresponding *p*-value for the *Z*-test in the formula above. The other two ways are implemented in the `metafor` package and consist of a heterogeneity analysis and a moderator analysis. These two approaches are mathematically identical. In the heterogeneity analysis we test if the variability in effect sizes (even though there are only two) is greater than expected based only on random variation.
+Let's take a look at an original non-preregistered study which observed an effect size of *d* = 0.6 in an independent *t*-test with 30 participants in each group. A preregistered replication study is performed which observed an effect size of 0 with 100 participants in each group. Testing the two effect sizes against each other can be achieved in three ways that are in principle identical (although the exact implementation, such as computing Cohen's *d* or Hedges' *g*, might yield slightly different *p*-values). The first is to compute the corresponding *p*-value for the *Z*-test in the formula above. The other two ways are implemented in the `metafor` package and consist of a heterogeneity analysis and a moderator analysis. These two approaches are mathematically identical. In the heterogeneity analysis we test if the variability in effect sizes (even though there are only two) is greater than expected based only on random variation.
 
 ```{r}
 d1 <- escalc(n1i = 30,
@@ -141,21 +141,47 @@ metafor::forest(res_h,
 It is also possible to test the difference between correlations, where the formula is:
 
 $$
-Z = \frac{\ln(1+r) - \ln(1-r)}{2}
+z_1 = \frac{1}{2}\ln\left(\frac{1+r_1}{1-r_1}\right), \quad z_2 = \frac{1}{2}\ln\left(\frac{1+r_2}{1-r_2}\right)
+$$
+
+$$
+Z = \frac{z_1 - z_2}{\sqrt{\frac{1}{n_1 - 3} + \frac{1}{n_2 - 3}}}
 $$
 
 This test can for example be performed in the cocor package in R:
 
 ```{r}
 library(cocor)
-cocor.indep.groups(n1 = 30, r1.jk = .4, n2 = 200, r2.hm = .01)
+cocor.indep.groups(n1 = 20, r1.jk = .6, n2 = 25, r2.hm = .8)
 ```
 
-We see that the difference between an original study with 30 participants that observed an effect of *r* = 0.4 and a replication study that observed an effect of *r* = 0.01 is just statistically significant. We can use the `pwrss` package [@bulus_pwrss_2023] to examine the sample size we would need to achieve sufficient power for such difference between correlations with 90% power.
+Fisher [@fisher_statistical_1925] provides an example to test whether two correlations are statistically different. The first correlation is *r* = 0.6 based on 20 pairs, and the second correlation is *r* = 0.8 based on 25 pairs. To test whether the difference between these two correlations is significant, both correlations are transformed into *z*-scores using the Fisher *z* transformation:
+
+$$
+z_1 = \frac{1}{2}\ln\left(\frac{1+r_1}{1-r_1}\right) = \frac{1}{2}\ln\left(\frac{1+0.6}{1-0.6}\right) = 0.6931
+$$
+
+$$
+z_2 = \frac{1}{2}\ln\left(\frac{1+r_2}{1-r_2}\right) = \frac{1}{2}\ln\left(\frac{1+0.8}{1-0.8}\right) = 1.0986
+$$
+
+The standard deviation of the difference can be computed by:
+
+$$
+\sigma_{z_1-z_2} = \sqrt{\frac{1}{n_1-3}+\frac{1}{n_2-3}} = \sqrt{\frac{1}{20-3}+\frac{1}{25-3}} = 0.3229
+$$
+
+And finally, the test statistic can be computed under the null hypothesis:
+
+$$
+z = \frac{z_1-z_2}{\sigma_{z_1-z_2}} = \frac{0.6931-1.0986}{0.3229} = \frac{-0.4055}{0.3229} = -1.256
+$$
+
+The test statistic of *z* = -1.256 corresponds to a two-tailed *p*-value of .209, indicating the difference is not statistically significant at an alpha level of 0.05. We can use the `pwrss` package [@bulus_pwrss_2023] to examine the sample size we would need to achieve sufficient power for such difference between correlations with 90% power.
 
 ```{r}
 library(pwrss)
-pwrss.z.2corrs(r1 = 0.4, r2 = 0.01,
+pwrss.z.2corrs(r1 = 0.6, r2 = 0.8,
                power = .90, alpha = 0.05,
                alternative = "not equal")
 ```
@@ -173,7 +199,7 @@ Let's take a step back, and consider which statistical test best reflects the qu
 
 However, due to the low power of the test for a difference between the effect sizes in the original and replication study, it is not easy to meet the bar of an informative result. In practice, many replication studies that do not yield a statistically significant result will also not show a statistically significant difference as part of the test of heterogeneity. In a preprint (that we never bothered to resubmit after we received positive reviews) Richard Morey and I [@morey_why_2016] summarized this problem in our title "Why most of psychology is statistically unfalsifiable". If we want to have an informative test for replication following the criteria outlined above, most tests will be uninformative, and lead to inconclusive results.
 
-This problem becomes even bigger if we admit that we often consider some effects too small to matter. @anderson_there_2016 mention an additional approach to analyzing replication studies where we do not just test the difference in effect sizes between an original and replication study, but combine this with an equivalence test to examine if the difference -- if any -- is too small to matter. With very large sample sizes tiny differences between studies can become statistically significant, which would result in the conclusion that a study did not replicate, even if the difference is considered too small to matter.
+This problem becomes even bigger if we admit that we often consider some effects too small to matter. @anderson_theres_2016 mention an additional approach to analyzing replication studies where we do not just test the difference in effect sizes between an original and replication study, but combine this with an equivalence test to examine if the difference -- if any -- is too small to matter. With very large sample sizes tiny differences between studies can become statistically significant, which would result in the conclusion that a study did not replicate, even if the difference is considered too small to matter.
 
 Anderson and Maxwell also point out the importance of incorporating a [smallest effect size of interest](#sec-sesoi) when interpreting whether a replication study yields a null effect. For example, @mccarthy_registered_2018 replicated a hostility priming study with an effect size of *d* = 3.01 in the original study. In a multi-lab replication they observed an effect very close to zero: *d* = 0.06, 95% CI = [0.01, 0.12]. This effect was statistically different from the original, but statistically significant. McCarthy and colleagues argue this effect, even if significant, is too small to matter, and conclude "Our results suggest that the procedures we used in this replication study are unlikely to produce an assimilative priming effect that researchers could practically and routinely detect. Indeed, to detect priming effects as small as the 0.08-scale-unit difference we observed (which works out to approximately d = 0.06, 95% CI = [0.01, 0.12]), a study would need 4,362 participants in each priming condition to have 80% power with an alpha set to .05."
 
