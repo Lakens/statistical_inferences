@@ -25,35 +25,8 @@ jobs:
           use-public-rspm: true
 
       - name: Install R package dependencies
-        uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          packages: |
-            any::binom
-            any::BUCSS
-            any::cocor
-            any::effectsize
-            any::gert
-            any::ggplot2
-            any::gridExtra
-            any::JustifyAlpha
-            any::kableExtra
-            any::knitr
-            any::MBESS
-            any::metafor
-            any::MOTE
-            any::patchwork
-            any::puniform
-            any::pwr
-            any::pwrss
-            any::reshape2
-            any::rmarkdown
-            any::rpact
-            any::Superpower
-            any::tidyr
-            any::TOSTER
-            any::truncnorm
-            any::webexercises
-            any::zcurve
+        run: |
+          Rscript --vanilla -e "pkgs <- readLines('requirements-r.txt', warn=FALSE); pkgs <- trimws(pkgs); pkgs <- pkgs[nzchar(pkgs) & !grepl('^#', pkgs)]; missing <- setdiff(pkgs, rownames(installed.packages())); if (length(missing) > 0) { message('Installing: ', paste(missing, collapse=', ')); install.packages(missing, repos='https://cloud.r-project.org', dependencies=TRUE) } else { message('All required R packages already installed.') }; missing_after <- setdiff(pkgs, rownames(installed.packages())); if (length(missing_after) > 0) stop('Still missing packages: ', paste(missing_after, collapse=', '))"
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
