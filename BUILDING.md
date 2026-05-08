@@ -41,6 +41,8 @@ quarto render
 
 This project is configured to build HTML, PDF, and EPUB for full book renders.
 
+Important: when HTML chapters contain figures, publish the generated `docs/*_files/` folders together with the `.html` files. The online book pages reference those files directly, so missing chapter asset folders lead to broken images on GitHub Pages even if the HTML itself was updated.
+
 Render one chapter:
 
 ```powershell
@@ -66,8 +68,9 @@ Run integrity checks for:
 
 1. Figure cross-references in source (`@fig-...`) resolve to figure labels.
 2. Rendered HTML has no unresolved references (e.g., `quarto-unresolved-ref` or `Figure ?`).
-3. Rendered HTML warning output (e.g., `Warning:` or `Warning in ...`) is treated as a blocking error by default.
-4. Multiple-choice option vectors used by `longmcq`/`mcq`/`shortmcq` contain exactly one `answer =` entry.
+3. Rendered HTML local asset references resolve to actual files under the output directory.
+4. Rendered HTML warning output (e.g., `Warning:` or `Warning in ...`) is treated as a blocking error by default.
+5. Multiple-choice option vectors used by `longmcq`/`mcq`/`shortmcq` contain exactly one `answer =` entry.
 
 From the repository root:
 
