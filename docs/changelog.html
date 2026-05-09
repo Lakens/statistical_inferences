@@ -828,7 +828,53 @@ function add_accessibility_controls() {
   apply_accessibility_preferences();
 }
 
+function resolve_unresolved_xrefs() {
+  var links = document.querySelectorAll("a.quarto-xref");
+  if (!links || links.length === 0) {
+    return;
+  }
+
+  for (var i = 0; i < links.length; i++) {
+    var link = links[i];
+    var unresolved = link.querySelector("span.quarto-unresolved-ref");
+    if (!unresolved) {
+      continue;
+    }
+
+    var href = link.getAttribute("href") || "";
+    if (!href || href.charAt(0) !== "#") {
+      continue;
+    }
+
+    var target_id = href.slice(1);
+    if (!target_id) {
+      continue;
+    }
+
+    var target = document.getElementById(target_id);
+    if (!target) {
+      continue;
+    }
+
+    var caption = target.querySelector("figcaption.quarto-float-caption");
+    if (!caption) {
+      continue;
+    }
+
+    var caption_text = (caption.textContent || "").trim();
+    if (!caption_text) {
+      continue;
+    }
+
+    var num_match = caption_text.match(/^(Figure|Table|Equation|Listing|Lemma|Theorem|Corollary|Proposition)\s+([0-9]+(?:\.[0-9]+)*)\s*:/i);
+    if (num_match && num_match[2]) {
+      unresolved.textContent = num_match[2];
+    }
+  }
+}
+
 add_accessibility_controls();
+resolve_unresolved_xrefs();
 </script><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right

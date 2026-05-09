@@ -499,7 +499,7 @@ gtag('config', 'G-0MK2WTGRM3', { 'anonymize_ip': true});
 <p>Thanks to Dale Barr and Lisa DeBruine for the <a href="https://psyteachr.github.io/webexercises/">webexercises</a> package that is used to create the interactive questions at the end of each chapter. Thanks to Nick Brown for his editing service.</p>
 <p>If you find any mistakes, or have suggestions for improvement, you can <a href="https://github.com/Lakens/statistical_inferences/issues">submit an issue on the GitHub page</a> of this open educational resource. You can also download a pdf or epub version (click the download button in the menu on the top left). This work is shared under a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC-BY-NC-SA License</a>. You can cite this resource as:</p>
 <p>Lakens, D. (2022). Improving Your Statistical Inferences. Retrieved from https://lakens.github.io/statistical_inferences/. https://doi.org/10.5281/zenodo.6409077</p>
-<p>You can check the <a href="#sec-changelog">Change Log</a> at the end of this book to track updates over time, or to find the version number if you prefer to cite a specific version of this regularly updated textbook.</p>
+<p>You can check the <a href="changelog.html#sec-changelog">Change Log</a> at the end of this book to track updates over time, or to find the version number if you prefer to cite a specific version of this regularly updated textbook.</p>
 <p>This work is dedicated to Kyra, the love of my life.</p>
 <div class="quarto-figure quarto-figure-left">
 <figure class="figure">
@@ -1193,7 +1193,99 @@ function add_accessibility_controls() {
 
 
 
+function resolve_unresolved_xrefs() {
+
+  var links = document.querySelectorAll("a.quarto-xref");
+
+  if (!links || links.length === 0) {
+
+    return;
+
+  }
+
+
+
+  for (var i = 0; i < links.length; i++) {
+
+    var link = links[i];
+
+    var unresolved = link.querySelector("span.quarto-unresolved-ref");
+
+    if (!unresolved) {
+
+      continue;
+
+    }
+
+
+
+    var href = link.getAttribute("href") || "";
+
+    if (!href || href.charAt(0) !== "#") {
+
+      continue;
+
+    }
+
+
+
+    var target_id = href.slice(1);
+
+    if (!target_id) {
+
+      continue;
+
+    }
+
+
+
+    var target = document.getElementById(target_id);
+
+    if (!target) {
+
+      continue;
+
+    }
+
+
+
+    var caption = target.querySelector("figcaption.quarto-float-caption");
+
+    if (!caption) {
+
+      continue;
+
+    }
+
+
+
+    var caption_text = (caption.textContent || "").trim();
+
+    if (!caption_text) {
+
+      continue;
+
+    }
+
+
+
+    var num_match = caption_text.match(/^(Figure|Table|Equation|Listing|Lemma|Theorem|Corollary|Proposition)\s+([0-9]+(?:\.[0-9]+)*)\s*:/i);
+
+    if (num_match && num_match[2]) {
+
+      unresolved.textContent = num_match[2];
+
+    }
+
+  }
+
+}
+
+
+
 add_accessibility_controls();
+
+resolve_unresolved_xrefs();
 
 </script>
 <script id="quarto-html-after-body" type="application/javascript">

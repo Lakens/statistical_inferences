@@ -5,7 +5,8 @@
 # 2) Rendered HTML contains no unresolved cross-reference markers.
 # 3) Multiple-choice question option blocks contain exactly one `answer =` entry.
 # 4) Rendered HTML local asset references resolve to files in the output directory.
-# 5) Rendered warnings are treated as blocking errors by default.
+# 5) Rendered figure image references (e.g., *_files/figure-html/*) resolve to files.
+# 6) Rendered warnings are treated as blocking errors by default.
 
 args <- commandArgs(trailingOnly = TRUE)
 strict_warnings <- TRUE
@@ -208,15 +209,83 @@ check_html_unresolved_refs <- function(output_dir) {
 
   for (f in html_files) {
     lines <- readLines(f, warn = FALSE)
+    file_text <- paste(lines, collapse = "\n")
 
     idx_unresolved <- grep("quarto-unresolved-ref", lines, fixed = TRUE)
     if (length(idx_unresolved) > 0) {
-      errors <- c(errors, sprintf("%s:%d - contains quarto-unresolved-ref", f, idx_unresolved))
+      for (line_idx in idx_unresolved) {
+        line <- lines[line_idx]
+        href_match <- regexec('href="#([^"]+)"', line, perl = TRUE)
+        href_groups <- regmatches(line, href_match)[[1]]
+
+        # Only fail unresolved spans when their anchor target is actually missing.
+        if (length(href_groups) > 1) {
+          target_id <- href_groups[2]
+          target_pat <- paste0('id="', gsub('([\\^$.|?*+(){}\\[\\]\\\\])', '\\\\\\1', target_id, perl = TRUE), '"')
+          if (!grepl(target_pat, file_text, perl = TRUE)) {
+            errors <- c(errors, sprintf("%s:%d - unresolved cross-reference target is missing in HTML: #%s", f, line_idx, target_id))
+          }
+        }
+      }
     }
 
     idx_qmark <- grep("(Figure|Table|Section|Chapter)[[:space:]]*\\?", lines, perl = TRUE)
     if (length(idx_qmark) > 0) {
       errors <- c(errors, sprintf("%s:%d - contains possible unresolved '?' cross-reference", f, idx_qmark))
+    }
+
+    # Catch raw Quarto labels left in prose, e.g. "Figure fig-metaci".
+    idx_raw_labels <- grep(
+      "\\b(Figure|Table|Section|Chapter)\\s+(fig|tbl|sec|eq|lem|thm|cor|prp|lst)-[A-Za-z0-9_-]+\\b",
+      lines,
+      perl = TRUE,
+      ignore.case = TRUE
+    )
+    if (length(idx_raw_labels) > 0) {
+      errors <- c(errors, sprintf("%s:%d - contains unresolved raw label text (e.g., Figure fig-...)", f, idx_raw_labels))
+    }
+  }
+
+  list(errors = unique(errors), checked = length(html_files))
+}
+
+check_html_figure_assets <- function(output_dir) {
+  html_files <- character(0)
+  if (dir.exists(output_dir)) {
+    html_files <- list.files(output_dir, pattern = "\\.html$", recursive = TRUE, full.names = TRUE)
+    if (length(html_files) == 0) {
+      return(list(errors = sprintf("No rendered HTML files found in output directory '%s'. Run `quarto render` first.", output_dir), checked = 0L))
+    }
+  } else {
+    html_files <- list.files(".", pattern = "\\.html$", recursive = FALSE, full.names = TRUE)
+  }
+
+  if (length(html_files) == 0) {
+    return(list(errors = "No rendered HTML files found. Run `quarto render` first.", checked = 0L))
+  }
+
+  errors <- character(0)
+
+  for (f in html_files) {
+    lines <- readLines(f, warn = FALSE)
+    matches <- gregexpr('src="([^"]+)"', lines, perl = TRUE)
+    refs <- regmatches(lines, matches)
+
+    for (line_idx in seq_along(refs)) {
+      if (length(refs[[line_idx]]) == 0) next
+
+      for (raw_ref in refs[[line_idx]]) {
+        asset_path <- sub('^src="([^"]+)"$', "\\1", raw_ref, perl = TRUE)
+        asset_path <- sub("[#?].*$", "", asset_path, perl = TRUE)
+
+        # Only enforce rendered figure output assets.
+        if (!grepl("_files/figure-html/", asset_path, fixed = TRUE)) next
+
+        local_asset <- normalizePath(file.path(dirname(f), asset_path), winslash = "/", mustWork = FALSE)
+        if (!file.exists(local_asset)) {
+          errors <- c(errors, sprintf("%s:%d - missing rendered figure asset referenced by HTML: %s", f, line_idx, asset_path))
+        }
+      }
     }
   }
 
@@ -363,7 +432,11 @@ html_errors <- unique(html_res$errors)
 asset_res <- check_html_local_assets(output_dir)
 asset_errors <- unique(asset_res$errors)
 
-# Check 5: rendered HTML warnings
+# Check 5: rendered figure assets
+fig_asset_res <- check_html_figure_assets(output_dir)
+fig_asset_errors <- unique(fig_asset_res$errors)
+
+# Check 6: rendered HTML warnings
 warn_res <- collect_html_warning_notes(output_dir)
 warn_notes <- unique(warn_res$notes)
 
@@ -376,7 +449,7 @@ if (length(missing_downloads) > 0) {
   )
 }
 
-all_errors <- c(fig_errors, mc_errors, html_errors, asset_errors, download_errors)
+all_errors <- c(fig_errors, mc_errors, html_errors, asset_errors, fig_asset_errors, download_errors)
 if (strict_warnings) {
   all_errors <- c(all_errors, warn_notes)
 }
@@ -410,4 +483,5 @@ cat("- MC answer options (exactly one answer=): OK\n")
 cat("- Download outputs (pdf, epub): OK\n")
 cat("- Rendered HTML unresolved refs: OK (", html_res$checked, "files checked)\n", sep = "")
 cat("- Rendered HTML local assets: OK (", asset_res$checked, "files checked)\n", sep = "")
+cat("- Rendered figure assets: OK (", fig_asset_res$checked, "files checked)\n", sep = "")
 cat("- Rendered HTML warnings: OK (", warn_res$checked, "files checked)\n", sep = "")
