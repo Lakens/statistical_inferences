@@ -150,13 +150,34 @@ To not just *report* but *interpret* an effect size, nothing is gained by the co
 
 ## Correlations and Variance Explained 
 
-The *r* family effect sizes are based on the proportion of variance that is explained by group membership (e.g., a correlation of *r* = 0.5 indicates 25% of the variance ($r^2$ is explained by the difference between groups). You might remember that *r* is used to refer to a correlation. The correlation of two continuous variables can range from 0 (completely unrelated) to 1 (perfect positive relationship) or -1 (perfect negative relationship). To get a better feel of correlations, play the online game [guess the correlation](http://guessthecorrelation.com/) where you will see a scatterplot, and have to guess the correlation between the variables (see @fig-guesscorrelation). 
+The *r* family effect sizes are based on the proportion of variance that is explained by group membership (e.g., a correlation of *r* = 0.5 indicates 25% of the variance ($r^2$ is explained by the difference between groups). You might remember that *r* is used to refer to a correlation. The correlation of two continuous variables can range from 0 (completely unrelated) to 1 (perfect positive relationship) or -1 (perfect negative relationship). To get a better feel of correlations, play the interactive game below where you guess the correlation between two variables based on a scatterplot. The game will compute your accuracy across the guesses.
 
-```{r fig-guesscorrelation, echo=FALSE}
-#| fig-cap: "Screenshot from Guess the Correlation game (the correct answer is *r* = 0.24)."
+::: {.content-visible when-format="html"}
 
-knitr::include_graphics("images/guesscorrelation.png")
+```{=html}
+<iframe id="guess-corr-iframe"
+        src="guess_correlation_app_book.html"
+        width="100%"
+        height="600"
+        scrolling="no"
+        style="border:none;display:block;margin:1.5rem 0;overflow:hidden;"
+        title="Guess the Correlation">
+</iframe>
+<script>
+window.addEventListener('message', function(e) {
+  if (e.data && typeof e.data.iframeHeight === 'number') {
+    var f = document.getElementById('guess-corr-iframe');
+    if (f) f.style.height = (e.data.iframeHeight + 4) + 'px';
+  }
+});
+</script>
 ```
+
+:::
+
+::: {.content-visible unless-format="html"}
+An interactive version of this game is available in the online edition of this textbook.
+:::
 
 The *r* family effect sizes are calculated from the sum of squares (the difference between individual observations and the mean for the group, squared and summed) for the effect, divided by the sums of squares for other factors in the design. Earlier, I mentioned that the median effect size in psychology is $d_s$ = 0.43. However, the authors actually report their results as a correlation, *r* = 0.21. We can convert Cohen's *d* into *r* (but take care that this only applies to $d_s$, not $d_z$):
 
@@ -356,7 +377,7 @@ Just stating that you expect a 'medium' Cohen's *f* effect size for an interacti
 
 ## Why Effect Sizes Selected for Significance are Inflated {#sec-effectinflated}
 
-Another way to think about this is through the concept of a **truncated distribution**. If effect sizes are only reported if the *p*-value is statistically significant, then we only have access to effect sizes that are larger than some minimal value [@taylor_bias_1996; @anderson_samplesize_2017]. In @fig-inflated only effects larger than d = 0.4 can be significant, so all effect sizes below this threshold are censored, and only effect sizes in the gray part of the distribution will be available to researchers. Without the lower part of the effect size distribution effect sizes will on average be inflated. 
+Another way to think about this is through the concept of a **truncated distribution**. If effect sizes are only reported if the *p*-value is statistically significant, then we only have access to effect sizes that are larger than some minimal value [@taylor_bias_1996; @anderson_samplesize_2017]. In the calculator above only effects larger than d = 0.4 can be significant, so all effect sizes below this threshold are censored, and only effect sizes in the gray part of the distribution will be available to researchers. Without the lower part of the effect size distribution effect sizes will on average be inflated. 
 
 Estimates based on samples from the population will show variability. The larger the sample, the closer our estimates will be to the true population values, as explained in the next chapter on [confidence intervals](#sec-confint). Sometimes we will observe larger estimates than the population value, and sometimes we will observe smaller values. As long as we have an unbiased collection of effect size estimates, combining effect sizes estimates through a meta-analysis can increase the accuracy of the estimate. Regrettably, the scientific literature is often biased. It is specifically common that statistically significant studies are published (e.g., studies with p values smaller than 0.05) while studies with p values larger than 0.05 remain unpublished [@franco_publication_2014; @sterling_publication_1959]. Instead of having access to all effect sizes, anyone reading the literature only has access to effects that passed a significance filter. This will introduce systematic bias in our effect size estimates.
 
@@ -364,41 +385,38 @@ To explain how selection for significance introduces bias, it is useful to under
 
 The scientific literature suffers from publication bias. Non-significant test results – based on whether a p value is smaller than 0.05 or not – are often less likely to be published. When an effect size estimate is 0 the p value is 1. The further removed effect sizes are from 0, the smaller the p value. All else equal (e.g., studies have the same sample size, and measures have the same distribution and variability) if results are selected for statistical significance (e.g., p < .05) they are also selected for larger effect sizes. As small effect sizes will be observed with their corresponding probabilities, their absence will inflate effect size estimates. Every study in the scientific literature provides it’s own estimate of the true effect size, just as every individual provides it’s own estimate of the average height of people in a country. When these estimates are combined – as happens in [meta-analyses](#sec-meta) in the scientific literature – the meta-analytic effect size estimate will be biased (or systematically different from the true population value) whenever the distribution is truncated. To achieve unbiased estimates of population values when combining individual studies in the scientific literature in meta-analyses researchers need access to the complete distribution of values – or all studies that are performed, regardless of whether they yielded a *p* value above or below 0.05.
 
-In @fig-inflated we see a distribution centered at an effect size of Cohen’s *d* = 0.5 for a two-sided *t*-test with 50 observations in each independent condition. Given an alpha level of 0.05 in this test only effect sizes larger than *d* = 0.4 will be statistically significant (i.e., all observed effect sizes in the grey area). The threshold for which observed effect sizes will be statistically significant is determined by the sample size and the alpha level (and not influenced by the true effect size). The white  area under the curve illustrates Type 2 errors – non-significant results that will be observed if the alternative hypothesis is true. If researchers only have access to the effect sizes estimates in the grey area – a truncated distribution where non-significant results are removed – a weighted average effect size from only these studies will be upwardly biased.
+In the interactive calculator below we see a distribution centered at an effect size of Cohen’s *d* = 0.5 for a two-sided *t*-test with 50 observations in each independent condition. Given an alpha level of 0.05 in this test only effect sizes larger than *d* = 0.4 will be statistically significant (i.e., all observed effect sizes in the grey area). The threshold for which observed effect sizes will be statistically significant is determined by the sample size and the alpha level (and not influenced by the true effect size). Play around with the values in the calculator to confirm this. The white area under the curve illustrates Type 2 errors – non-significant results that will be observed if the alternative hypothesis is true.
 
-```{r fig-inflated, fig.margin=FALSE, echo=FALSE}
-#| fig-cap: "Range of effect sizes that will be statisticially significant in an independent t-test with 50 participants per group and a true effect size of d = 0.5."
+::: {.content-visible when-format="html"}
 
-N <- 50
-d <- 0.5
-p_upper <- 0.05
-ncp <- (d * sqrt(N / 2)) # Calculate non-centrality parameter d
-crit_d <- abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
-low_x <- min(- crit_d)
-high_x <- max(d + 0.5 + crit_d)
-# calc d-distribution
-x <- seq(low_x, high_x, length = 10000) # create x values
-# Set max Y for graph
-d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2) # calculate distribution of d based on t-distribution
-y_max <- max(d_dist) + 1
-# create plot
-par(bg = backgroundcolor)
-d <- round(d, 2)
-plot(-10, xlim = c(low_x, high_x), ylim = c(0, y_max), xlab = substitute(paste("Cohen's d")), ylab = "Density", main = "", cex.lab = 1.3, cex.axis = 1.2)
-# abline(v = seq(low_x,high_x,0.1), h = seq(0,0.5,0.1), col = "lightgrey", lty = 1)
-#    axis(side = 1, at = seq(low_x,high_x,0.1), labels = FALSE)
-
-# Add Type II error rate
-crit_d <- abs(qt(p_upper / 2, (N * 2) - 2)) / sqrt(N / 2)
-y <- seq(crit_d, 2, length = 10000)
-z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2)) # determine upperbounds polygon
-polygon(c(crit_d, y, 2), c(0, z, 0), col = rgb(0.7, 0.7, 0.7), border = rgb(0.7, 0.7, 0.7))
-segments(crit_d, 0, crit_d, y_max - 0.7, col = "black", lwd = 3, lty = 2)
-text(crit_d, y_max - 0.4, paste("Critical d = ", round(crit_d, 2)), cex = 1.3)
-# add effect line
-d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2) # calculate distribution of d based on t-distribution
-lines(x, d_dist, col = "black", type = "l", lwd = 3)
+```{=html}
+<iframe id="cohens-d-iframe"
+        src="cohens_d_app_book.html"
+        width="100%"
+        height="600"
+        scrolling="no"
+        style="border:none;display:block;margin:1.5rem 0;overflow:hidden;"
+        title="Cohen’s d Distribution">
+</iframe>
+<script>
+window.addEventListener(‘message’, function(e) {
+  if (e.data && typeof e.data.iframeHeight === ‘number’) {
+    var f = document.getElementById(‘cohens-d-iframe’);
+    if (f) f.style.height = (e.data.iframeHeight + 4) + ‘px’;
+  }
+});
+</script>
 ```
+
+:::
+
+::: {.content-visible unless-format="html"}
+
+*An interactive Cohen’s d distribution calculator is available in the online version of this book.*
+
+:::
+
+If researchers only have access to the effect sizes estimates in the grey area – a truncated distribution where non-significant results are removed – a weighted average effect size from only these studies will be upwardly biased.
 
 We can see this in the two forest plots visualizing meta-analyses in @fig-metabias. In the top meta-analysis all 5 studies are included, even though study C and D yield non-significant results (as can be seen from the fact that the 95% CI overlaps with 0). The estimated effect size based on all 5 studies is *d* = 0.4. In the bottom meta-analysis the two non-significant studies are removed - as would happen when there is publication bias. Without these two studies the estimated effect size in the meta-analysis, *d* = 0.5, is inflated. The extent to which meta-analyses are inflated depends on the true effect size and the sample size of the studies.
 

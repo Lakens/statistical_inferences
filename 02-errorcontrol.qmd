@@ -75,11 +75,36 @@ The PPV and FPRP combine classic Frequentist concepts of statistical power and a
 
 When you perform studies, you will be aware of all outcomes of your studies (both the significant and the non-significant findings). In contrast, when you read the literature, there is publication bias, and you often only have access to significant results. This is when thinking about the PPV (and the FPRP) becomes important. If we set the alpha level to 5%, in the long run 5% of studies where $H_0$ is true (FP + TN) will be significant. But in a literature with only significant results, we do not have access to all of the true negatives, and so it is possible that the proportion of false positives in the literature is much larger than 5%.
 
-If we continue the example above, we see there are 85 positive results (80 + 5) in the 200 studies. The false positive report probability is 5/85 = 0.0588. At the same time, the alpha level of 5% guarantees that (in the long run) 5% of the 100 studies where the null hypothesis is true will be Type 1 errors: 5% × 100 = 5. When we do 200 studies, at most 5% × 200 = 10 could possibly be false positives (if $H_0$ was true in all experiments). In the 200 studies we performed (and where $H_0$ was true in only 50% of the studies), the **proportion of false positives for all experiments** is only 2.5%. Thus, for all experiments you do, the proportion of false positives will, in the long run, never be higher than the Type I error rate set by the researcher (e.g., 5% when $H_0$ is true in all experiments), but it can be lower (when $H_0$ is true in less than 100% of the experiments).
+If we continue the example above, we see there are 85 positive results (80 + 5) in the 200 studies. The false positive report probability is 5/85 = 0.0588. At the same time, the alpha level of 5% guarantees that (in the long run) 5% of the 100 studies where the null hypothesis is true will be Type 1 errors: 5% × 100 = 5. When we do 200 studies, at most 5% × 200 = 10 could possibly be false positives (if $H_0$ was true in all experiments). In the 200 studies we performed (and where $H_0$ was true in only 50% of the studies), the **proportion of false positives for all experiments** is only 2.5%. Thus, for all experiments you do, the proportion of false positives will, in the long run, never be higher than the Type I error rate set by the researcher (e.g., 5% when $H_0$ is true in all experiments), but it can be lower (when $H_0$ is true in less than 100% of the experiments). You can check these calculations in the interactive PPV calculator below.
 
-```{r fig-ppvexample, echo = FALSE, fig.cap='Screenshot of the output of the results of the PPV Shiny app by <a href="http://shinyapps.org/apps/PPV/">Michael Zehetleitner and Felix Schönbrodt </a>'}
-knitr::include_graphics("images/PPVexample.png")
+::: {.content-visible when-format="html"}
+
+```{=html}
+<iframe id="ppv-calc-iframe"
+        src="ppv_app_book.html"
+        width="100%"
+        height="600"
+        scrolling="no"
+        style="border:none;display:block;margin:1.5rem 0;overflow:hidden;"
+        title="Positive Predictive Value Calculator">
+</iframe>
+<script>
+window.addEventListener('message', function(e) {
+  if (e.data && typeof e.data.iframeHeight === 'number') {
+    var f = document.getElementById('ppv-calc-iframe');
+    if (f) f.style.height = (e.data.iframeHeight + 4) + 'px';
+  }
+});
+</script>
 ```
+
+:::
+
+::: {.content-visible unless-format="html"}
+
+*An interactive PPV calculator is available in the online version of this book.*
+
+:::
 
 *(Note: FDR and FPRP are different abbreviations for the same thing.)*
   
@@ -111,39 +136,34 @@ knitr::include_graphics("images/optionalstoppingexample.png")
     
 One practice that inflates the Type 1 error rate is known as **optional stopping**. In optional stopping a researcher repeatedly analyzes the data, continues the data collection when the test result is not statistically significant, but stops when a significant effect is observed. The quote from a published article in @fig-optionalstoppingexample is an example where researchers transparently report they used optional stopping, but more commonly people do not disclose the use of optional stopping in their methods sections. In recent years, many researchers have learned that optional stopping is problematic. This has led some to the general idea that you should *never* collect data, look at whether the results are significant, and stop data collection when the result is significant, or if not, continue data collection. That is not the correct conclusion, and is an example of becoming too inflexible. The correct approach — to collect data in batches, called **sequential analysis** — has been extensively developed by statisticians, and is used in many medical trials. We  discuss [sequential analyses in Chapter 10](#sec-sequential). The main lesson is that certain research practices can increase the flexibility and efficiency of studies you perform, when done right, but the same practices can inflate the Type 1 error rate when done wrong. Let’s therefore try to get a better understanding of when and how we risk inflating our Type 1 error rate with optional stopping, and how to do this correctly using sequential analysis. 
     
-Copy the code below into R and run it. This script will simulate an ongoing data collection. After 10 participants in each condition, a *p*-value is calculated by performing an independent *t*-test, and this *t*-test is then repeated after every additional participant that is collected. Then, all these *p*-values are plotted as a function of the increasing sample size.
-    
-```{r, eval=FALSE}
-n <- 200 # total number of datapoints (per condition) after initial 10
-d <- 0.0 # effect size d
+Using the interactive app below, you can simulate an ongoing data collection. After 10 participants in each condition, a *p*-value is calculated by performing an independent *t*-test, and this *t*-test is then repeated after every additional participant that is collected. Then, all these *p*-values are plotted as a function of the increasing sample size. Click the 'simulate' button and explore which patterns you can expect if you would continuously analyze the data as it comes in, even if there is no true effect.
 
-p <- numeric(n) # store p-values
-x <- numeric(n) # store x-values
-y <- numeric(n) # store y-values
+::: {.content-visible when-format="html"}
 
-n <- n + 10 # add 10 to number of datapoints
-
-for (i in 10:n) { # for each simulated participants after the first 10
-  x[i] <- rnorm(n = 1, mean = 0, sd = 1)
-  y[i] <- rnorm(n = 1, mean = d, sd = 1)
-  p[i] <- t.test(x[1:i], y[1:i], var.equal = TRUE)$p.value
-}
-
-p <- p[10:n] # Remove first 10 empty p-values
-
-# Create the plot
-par(bg = "transparent")
-plot(0, col = "red", lty = 1, lwd = 3, ylim = c(0, 1), xlim = c(10, n), 
-     type = "l", xlab = "sample size", ylab = "p-value")
-lines(p, lwd = 2)
-abline(h = 0.05, col = "darkgrey", lty = 2, lwd = 2) # draw line at p = 0.05
-
-min(p) # Return lowest p-value from all looks
-cat("The lowest p-value was observed at sample size", which.min(p) + 10) 
-cat("The p-value dropped below 0.05 for the first time at sample size:", 
-    ifelse(is.na(which(p < 0.05)[1] + 10), "NEVER", which(p < 0.05)[1] + 10)) 
-
+```{=html}
+<iframe id="seq-test-iframe"
+        src="sequential_testing_app_book.html"
+        width="100%"
+        height="600"
+        scrolling="no"
+        style="border:none;display:block;margin:1.5rem 0;overflow:hidden;"
+        title="Sequential Testing Simulation">
+</iframe>
+<script>
+window.addEventListener('message', function(e) {
+  if (e.data && typeof e.data.iframeHeight === 'number') {
+    var f = document.getElementById('seq-test-iframe');
+    if (f) f.style.height = (e.data.iframeHeight + 4) + 'px';
+  }
+});
+</script>
 ```
+
+:::
+
+::: {.content-visible unless-format="html"}
+An interactive version of this simulation is available in the online edition of this textbook.
+:::
     
 For example, in @fig-animatep you see the *p*-value plotted on the y-axis (from 0 to 1) and the sample size plotted on the x-axis (from 0 to 200). For this simulation, the true effect size was d = 0, meaning there is no true effect. We can thus only observe true negatives or false positives. As the sample size increases, the *p*-value slowly moves up and down (remember from the Chapter 1 on [*p*-values](#sec-pvalues) that when there is no true effect, *p*-values are uniformly distributed). In @fig-animatep the *p*-value drops below the grey line (indicating an alpha level 0.05) after collecting 83 participants in each condition, only to drift back upwards to larger *p*-values. From this figure, it becomes clear that the more often we look at the data, and the larger the total sample size, the higher the probability that one of the analyses will yield a p < $\alpha$. If resources are infinite, the Type 1 error rate will be 1, and a researcher can always find a significant result through optional stopping.  
 
@@ -377,50 +397,36 @@ So far we have largely focused on Type 1 error control. As was clear from @fig-a
 
 It is important to highlight that the goal of an a-priori power analysis is *not* to achieve sufficient power for the true effect size. The true effect size is always unknown when designing a study. The goal of an a-priori power analysis is to achieve sufficient power, given a specific *assumption* of the effect size a researcher wants to detect. Just as a Type I error rate is the maximum probability of making a Type I error conditional on the assumption that the null hypothesis is true, an a-priori power analysis is computed under the assumption of a specific effect size. It is unknown if this assumption is correct. All a researcher can do is to make sure their assumptions are well justified. Statistical inferences based on a test where the Type II error is controlled are conditional on the assumption of a specific effect size. They allow the inference that, assuming the true effect size is at least as large as that used in the a-priori power analysis, the maximum Type II error rate in a study is not larger than a desired value.
 
-In @fig-powerd we see the expected distribution of observed standardized effect sizes (Cohen's *d*) for an independent *t*-test with 50 observations in each condition. The bell-shaped curve on the left represents the expectations if the null is true, and the red areas in the tail represent Type 1 errors. The bell-shaped curve on the right represents the expectations if the alternative hypothesis is true, and an effect size of d = 0.5. The vertical line at d = 0.4 represents the **critical effect size**. With this sample size and an alpha level of 0.05, observed effect sizes smaller than d = 0.4 will not be statistically significant. The critical effect size is independent of the true effect size (you can change d = 0.5 to any other value). If there is a true effect, these outcomes will be Type 2 errors, illustrated by the blue shaded area. The remainder of the curve reflects true positives, when there is a true effect, and the observed effect sizes are statistically significant. The power of the test is the proportion of the distribution on the right that is larger than the critical value.  
+In the interactive calculator below we see the expected distribution of observed standardized effect sizes (Cohen's *d*) for an independent *t*-test with 50 observations in each condition. The bell-shaped curve on the left represents the expectations if the null is true, and the red areas in the tail represent Type 1 errors. The bell-shaped curve on the right represents the expectations if the alternative hypothesis is true, and an effect size of d = 0.5. The vertical line at d = 0.4 represents the **critical effect size**. With this sample size and an alpha level of 0.05, observed effect sizes smaller than d = 0.4 will not be statistically significant. The critical effect size is independent of the true effect size (you can change d = 0.5 to any other value). If there is a true effect, these outcomes will be Type 2 errors, illustrated by the blue shaded area. The remainder of the curve reflects true positives, when there is a true effect, and the observed effect sizes are statistically significant. The power of the test is the proportion of the distribution on the right that is larger than the critical value.
 
-```{r fig-powerd, eval=TRUE, echo=FALSE, cache=TRUE}
-#| fig-cap: "Distribution of *d* = 0 and *d* = 0.5 for an independent *t*-test with *n* = 50."
+::: {.content-visible when-format="html"}
 
-N <- 50
-d <- 0.5
-alpha_level <- 0.05
-ncp <- (d * sqrt(N / 2)) # Calculate non-centrality parameter d
-low_x <- -1
-high_x <- 1.7
-# calc d-distribution
-x <- seq(low_x, high_x, length = 10000) # create x values
-d_dist <- suppressWarnings(dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2)) # calculate distribution of d based on t-distribution
-# Set max Y for graph
-y_max <- max(d_dist) + 1
-# create plot
-par(bg = backgroundcolor)
-d <- round(d, 2)
-plot(-10, xlim = c(low_x, high_x), ylim = c(0, y_max), xlab = substitute(paste("Cohen's d")), ylab = "Density", main = substitute(paste("Distribution of Cohen's d, n = 50")))
-# abline(v = seq(low_x,high_x,0.1), h = seq(0,0.5,0.1), col = "lightgray", lty = 1)
-axis(side = 1, at = seq(low_x, high_x, 0.1), labels = FALSE)
-lines(x, d_dist, col = "black", type = "l", lwd = 2)
-# add d = 0 line
-d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = 0) * sqrt(N / 2)
-lines(x, d_dist, col = "grey", type = "l", lwd = 1)
-# Add Type 1 error rate right
-crit_d <- abs(qt(alpha_level / 2, (N * 2) - 2)) / sqrt(N / 2)
-y <- seq(crit_d, 10, length = 10000)
-z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2) * sqrt(N / 2)) # determine upperbounds polygon
-polygon(c(crit_d, y, 10), c(0, z, 0), col = rgb(1, 0, 0, 0.5))
-# Add Type 1 error rate left
-crit_d <- -abs(qt(alpha_level / 2, (N * 2) - 2)) / sqrt(N / 2)
-y <- seq(-10, crit_d, length = 10000)
-z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2) * sqrt(N / 2)) # determine upperbounds polygon
-polygon(c(y, crit_d, crit_d), c(z, 0, 0), col = rgb(1, 0, 0, 0.5))
-# Add Type 2 error rate
-crit_d <- abs(qt(alpha_level / 2, (N * 2) - 2)) / sqrt(N / 2)
-y <- seq(-10, crit_d, length = 10000)
-z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2)) # determine upperbounds polygon
-polygon(c(y, crit_d, crit_d), c(0, z, 0), col = rgb(0, 0, 1, 0.5))
-segments(crit_d, 0, crit_d, y_max - 0.8, col = "black", lwd = 2)
-text(crit_d, y_max - 0.5, paste("Effects larger than d = ", round(crit_d, 2), "will be statistically significant"), cex = 1)
+```{=html}
+<iframe id="cohens-d-ch2-iframe"
+        src="cohens_d_app_book.html"
+        width="100%"
+        height="600"
+        scrolling="no"
+        style="border:none;display:block;margin:1.5rem 0;overflow:hidden;"
+        title="Cohen's d Distribution">
+</iframe>
+<script>
+window.addEventListener('message', function(e) {
+  if (e.data && typeof e.data.iframeHeight === 'number') {
+    var f = document.getElementById('cohens-d-ch2-iframe');
+    if (f) f.style.height = (e.data.iframeHeight + 4) + 'px';
+  }
+});
+</script>
 ```
+
+:::
+
+::: {.content-visible unless-format="html"}
+
+*An interactive Cohen's d distribution calculator is available in the online version of this book.*
+
+:::
 
 The issue of Type 2 error control will be discussed in more detail in Chapter 8 on [sample size justification](#sec-aprioripower). Even though the topic of Type 2 error control is only briefly discussed here, it is at least as important as Type 1 error control. An informative study should have a high probability of observing an effect if there is an effect. Indeed, the default recommendation to aim for 80% power leaves a surprisingly large (20%) probability of a Type 2 error. If a researcher only cares about not making a decision error, but the researcher does not care about whether this decision error is a false positive or a false negative, an argument could be made that Type 1 and Type 2 errors are weighed equally. Therefore, desiging a study with balanced error rates (e.g., a 5% Type 1 error rate and 95% power) would make sense. 
 
@@ -440,7 +446,7 @@ opts_p <- c(
 cat(longmcq(opts_p))
 ```
 
-**Q2**: What will make the biggest difference in improving the probability that you will find a true positive? Check your answer by shifting the sliders in the online PPV app at http://shinyapps.org/apps/PPV/ or https://shiny.ieis.tue.nl/PPV/ 
+**Q2**: What will make the biggest difference in improving the probability that you will find a true positive? Check your answer by shifting the sliders in the interactive calculator in the chapter above.
 
 
 ```{r, echo = FALSE, results = 'asis'}

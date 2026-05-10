@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confidence Intervals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans:ital,wght@0,400;0,600;1,400&family=Fira+Code&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:     #fffafa;
+  --bg2:    #f7f7f7;
+  --ink:    #1c1717;
+  --ink2:   #3d3535;
+  --ink3:   #666060;
+  --rule:   #d6dadc;
+  --red:    #a60a0a;
+  --red-l:  #c41010;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  padding: 20px 20px 32px;
+  overflow: hidden;
+}
+
+.calc-label {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 5px;
+}
+
+.calc-heading {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--ink);
+  margin-bottom: 16px;
+  padding-bottom: 9px;
+  border-bottom: 2px solid var(--red);
+}
+
+.input-panel {
+  background: var(--bg2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--red);
+  padding: 14px 18px;
+  margin-bottom: 18px;
+}
+
+.input-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 20px;
+  align-items: end;
+}
+
+.input-group { display: flex; flex-direction: column; gap: 5px; }
+
+.input-label {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink3);
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 2px;
+  background: var(--rule);
+  outline: none;
+  cursor: pointer;
+  border-radius: 1px;
+  margin-top: 5px;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--red);
+  cursor: pointer;
+  transition: transform .15s;
+}
+input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.25); }
+input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--red);
+  cursor: pointer;
+}
+
+.slider-value {
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  color: var(--red);
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+.action-btn {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  background: var(--red);
+  color: #fff;
+  border: none;
+  padding: 10px 22px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .15s;
+}
+.action-btn:hover { background: var(--red-l); }
+
+.plot-wrap {
+  border: 1px solid var(--rule);
+  background: var(--bg);
+  margin-bottom: 14px;
+}
+
+#ciSvg { display: block; width: 100%; }
+
+.text-block {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  padding: 11px 14px;
+  background: var(--bg2);
+  border-left: 3px solid var(--rule);
+  color: var(--ink2);
+}
+.text-block strong { color: var(--ink); }
+</style>
+</head>
+<body>
+
+<p class="calc-label">Interactive simulation</p>
+<h2 class="calc-heading">Confidence Intervals Over Time</h2>
+
+<div class="input-panel">
+  <div class="input-grid">
+    <div class="input-group">
+      <label class="input-label" for="levelSlider">Confidence level</label>
+      <input type="range" id="levelSlider" min="50" max="99" step="1" value="95">
+      <div class="slider-value" id="levelVal">95%</div>
+    </div>
+    <button class="action-btn" id="btnPause" onclick="togglePause()">Pause</button>
+  </div>
+</div>
+
+<div class="plot-wrap">
+  <svg id="ciSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+</div>
+
+<div id="statsBlock" class="text-block"></div>
+
+<script>
+// ── Constants ────────────────────────────────────────────────────────
+var MAX_CIS = 50;   // rows visible at once
+var ROW_H   = 9;    // px per CI row
+var N       = 30;   // fixed sample size
+var SPEED   = 900;  // ms between new CIs
+var X_MIN   = -1.8;
+var X_MAX   = 1.8;
+var M       = { l: 52, r: 22, t: 22, b: 38 }; // margins
+
+// ── State ────────────────────────────────────────────────────────────
+var CIs      = [];
+var paused   = false;
+var totalCI  = 0;
+var hitCount = 0;
+
+// ── Normal distribution helpers ───────────────────────────────────────
+function rnorm() {
+  var u1, u2;
+  do { u1 = Math.random(); } while (u1 === 0);
+  u2 = Math.random();
+  return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+}
+
+// Rational approximation to the standard normal quantile (A&S 26.2.17)
+function qnorm(p) {
+  if (p <= 0) return -Infinity;
+  if (p >= 1) return  Infinity;
+  var t = p < 0.5 ? Math.sqrt(-2 * Math.log(p)) : Math.sqrt(-2 * Math.log(1 - p));
+  var z = t - (2.515517 + 0.802853*t + 0.010328*t*t)
+            / (1 + 1.432788*t + 0.189269*t*t + 0.001308*t*t*t);
+  return p < 0.5 ? -z : z;
+}
+
+// ── CI generation ─────────────────────────────────────────────────────
+// Samples N obs from N(0,1); true mean = 0; sigma known = 1.
+function makeCI(level) {
+  var alpha = 1 - level / 100;
+  var z  = qnorm(1 - alpha / 2);
+  var se = 1 / Math.sqrt(N);
+  var mean = 0;
+  for (var i = 0; i < N; i++) mean += rnorm();
+  mean /= N;
+  return {
+    mean: mean,
+    lo:   mean - z * se,
+    hi:   mean + z * se,
+    hit:  mean - z * se <= 0 && mean + z * se >= 0
+  };
+}
+
+// ── SVG rendering ─────────────────────────────────────────────────────
+function xpx(val, plotW) {
+  return M.l + (val - X_MIN) / (X_MAX - X_MIN) * plotW;
+}
+
+function redraw() {
+  var svg  = document.getElementById('ciSvg');
+  var W    = svg.getBoundingClientRect().width || 600;
+  var plotW = W - M.l - M.r;
+  var plotH = MAX_CIS * ROW_H;
+  var H    = plotH + M.t + M.b;
+
+  svg.style.height = H + 'px';
+
+  var x0   = xpx(0, plotW);
+  var axY  = M.t + plotH;
+  var html = '';
+
+  // Clip path so CI bars don't bleed outside the plot area
+  html += '<defs><clipPath id="pc">'
+        + '<rect x="'+M.l+'" y="'+M.t+'" width="'+plotW+'" height="'+plotH+'"/>'
+        + '</clipPath></defs>';
+
+  // Alternating row shading
+  for (var i = 0; i < MAX_CIS; i++) {
+    if (i % 2 === 0) {
+      html += '<rect x="'+M.l+'" y="'+(M.t+i*ROW_H)+'" width="'+plotW
+            + '" height="'+ROW_H+'" fill="#f5f4f2"/>';
+    }
+  }
+
+  // Plot border
+  html += '<rect x="'+M.l+'" y="'+M.t+'" width="'+plotW+'" height="'+plotH
+        + '" fill="none" stroke="#d6dadc" stroke-width="0.8"/>';
+
+  // True mean vertical line (dashed)
+  html += '<line x1="'+x0+'" y1="'+M.t+'" x2="'+x0+'" y2="'+axY
+        + '" stroke="#1c1717" stroke-width="1.2" stroke-dasharray="4,3"/>';
+
+  // μ label above the line
+  html += '<text x="'+x0+'" y="'+(M.t-7)+'" text-anchor="middle"'
+        + ' font-family="Open Sans,sans-serif" font-size="10" fill="#1c1717">μ = 0</text>';
+
+  // CI bars (clipped)
+  html += '<g clip-path="url(#pc)">';
+  for (var i = 0; i < CIs.length; i++) {
+    var ci  = CIs[i];
+    var y   = M.t + i * ROW_H + ROW_H / 2;
+    var xLo = xpx(ci.lo, plotW);
+    var xHi = xpx(ci.hi, plotW);
+    var xM  = xpx(ci.mean, plotW);
+    var col = ci.hit ? '#2d7a50' : '#a60a0a';
+    var op  = Math.max(0.18, 0.88 - i * 0.014).toFixed(3);
+    var cap = 2.5;
+
+    html += '<line x1="'+xLo.toFixed(1)+'" y1="'+y+'" x2="'+xHi.toFixed(1)+'" y2="'+y
+          + '" stroke="'+col+'" stroke-width="2.5" stroke-opacity="'+op+'"/>';
+    html += '<line x1="'+xLo.toFixed(1)+'" y1="'+(y-cap)+'" x2="'+xLo.toFixed(1)+'" y2="'+(y+cap)
+          + '" stroke="'+col+'" stroke-width="1.2" stroke-opacity="'+op+'"/>';
+    html += '<line x1="'+xHi.toFixed(1)+'" y1="'+(y-cap)+'" x2="'+xHi.toFixed(1)+'" y2="'+(y+cap)
+          + '" stroke="'+col+'" stroke-width="1.2" stroke-opacity="'+op+'"/>';
+    html += '<circle cx="'+xM.toFixed(1)+'" cy="'+y+'" r="2.5"'
+          + ' fill="'+col+'" fill-opacity="'+op+'"/>';
+  }
+  html += '</g>';
+
+  // x-axis
+  html += '<line x1="'+M.l+'" y1="'+axY+'" x2="'+(M.l+plotW)+'" y2="'+axY
+        + '" stroke="#666060" stroke-width="0.8"/>';
+
+  [-1.5, -1, -0.5, 0, 0.5, 1, 1.5].forEach(function(v) {
+    var tx = xpx(v, plotW).toFixed(1);
+    html += '<line x1="'+tx+'" y1="'+axY+'" x2="'+tx+'" y2="'+(axY+4)
+          + '" stroke="#666060" stroke-width="0.8"/>';
+    html += '<text x="'+tx+'" y="'+(axY+15)+'" text-anchor="middle"'
+          + ' font-family="Open Sans,sans-serif" font-size="10" fill="#666060">'+v+'</text>';
+  });
+
+  html += '<text x="'+(M.l+plotW/2).toFixed(1)+'" y="'+(axY+31)+'" text-anchor="middle"'
+        + ' font-family="Open Sans,sans-serif" font-size="11" fill="#3d3535">'
+        + 'Sample mean &#160;(&#963; known = 1, n = '+N+')</text>';
+
+  svg.innerHTML = html;
+}
+
+// ── Stats text ────────────────────────────────────────────────────────
+function updateStats() {
+  var el    = document.getElementById('statsBlock');
+  var level = parseInt(document.getElementById('levelSlider').value);
+  if (totalCI === 0) {
+    el.innerHTML = 'Each horizontal bar is one confidence interval. '
+      + '<span style="color:#2d7a50;font-weight:600">Green</span> = contains μ = 0; '
+      + '<span style="color:#a60a0a;font-weight:600">red</span> = does not. '
+      + 'The dot marks the sample mean.';
+    return;
+  }
+  var pct = (100 * hitCount / totalCI).toFixed(1);
+  el.innerHTML =
+    '<strong>' + hitCount + '</strong> of <strong>' + totalCI + '</strong> intervals '
+    + '(<strong>' + pct + '%</strong>) contained the true mean. '
+    + 'Nominal coverage: <strong>' + level + '%</strong>.';
+}
+
+// ── Simulation tick ───────────────────────────────────────────────────
+function tick() {
+  var level = parseInt(document.getElementById('levelSlider').value);
+  var ci = makeCI(level);
+  CIs.unshift(ci);
+  if (CIs.length > MAX_CIS) CIs.pop();
+  totalCI++;
+  if (ci.hit) hitCount++;
+  redraw();
+  updateStats();
+}
+
+function togglePause() {
+  paused = !paused;
+  document.getElementById('btnPause').textContent = paused ? 'Resume' : 'Pause';
+}
+
+// Level slider: reset when changed
+document.getElementById('levelSlider').addEventListener('input', function() {
+  document.getElementById('levelVal').textContent = this.value + '%';
+  CIs = []; totalCI = 0; hitCount = 0;
+  redraw(); updateStats();
+});
+
+// Redraw on resize (next tick redraws anyway, but instant response is nicer)
+window.addEventListener('resize', redraw);
+
+// ── iframe height ─────────────────────────────────────────────────────
+function postHeight() {
+  var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+  window.parent.postMessage({ iframeHeight: h }, '*');
+}
+window.addEventListener('load', function() { setTimeout(postHeight, 300); });
+if (typeof ResizeObserver !== 'undefined') {
+  new ResizeObserver(postHeight).observe(document.body);
+}
+
+// ── Start ─────────────────────────────────────────────────────────────
+redraw();
+updateStats();
+tick(); // first CI immediately
+setInterval(function() { if (!paused) tick(); }, SPEED);
+</script>
+</body>
+</html>

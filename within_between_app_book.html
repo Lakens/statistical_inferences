@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Within vs Between Design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans:ital,wght@0,400;0,600;1,400&family=Fira+Code&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.26.0/plotly.min.js"></script>
+<style>
+:root {
+  --bg:     #fffafa;
+  --bg2:    #f7f7f7;
+  --ink:    #1c1717;
+  --ink2:   #3d3535;
+  --ink3:   #666060;
+  --rule:   #d6dadc;
+  --red:    #a60a0a;
+  --red-l:  #c41010;
+  --red-bg: #fff5f5;
+  --green:  #2d7a50;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  padding: 20px 20px 32px;
+  overflow: hidden;
+}
+
+.calc-label {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 5px;
+}
+
+.calc-heading {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--ink);
+  margin-bottom: 16px;
+  padding-bottom: 9px;
+  border-bottom: 2px solid var(--red);
+}
+
+.input-panel {
+  background: var(--bg2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--red);
+  padding: 14px 18px;
+  margin-bottom: 16px;
+}
+
+.input-row1 {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 16px;
+  align-items: end;
+  margin-bottom: 12px;
+}
+
+.input-row2 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.input-group { display: flex; flex-direction: column; gap: 5px; }
+
+.input-label {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink3);
+}
+
+.input-label .sym {
+  font-style: italic;
+  font-size: 0.88rem;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+  color: var(--red);
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 2px;
+  background: var(--rule);
+  outline: none;
+  cursor: pointer;
+  border-radius: 1px;
+  margin-top: 5px;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--red);
+  cursor: pointer;
+  transition: transform .15s;
+}
+input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.25); }
+input[type="range"]::-moz-range-thumb {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--red);
+  cursor: pointer;
+}
+
+input[type="number"] {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--red);
+  padding: 6px 8px;
+  color: var(--ink);
+  outline: none;
+  width: 100%;
+  transition: border-color .2s;
+}
+input[type="number"]:focus { border-bottom-color: var(--red-l); }
+
+.slider-value {
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  color: var(--red);
+  font-weight: 500;
+}
+
+.action-btn {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  background: var(--red);
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .15s;
+}
+.action-btn:hover { background: var(--red-l); }
+
+.text-block {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  padding: 11px 14px;
+  margin-bottom: 12px;
+  background: var(--bg2);
+  border-left: 3px solid var(--rule);
+  color: var(--ink2);
+}
+.text-block strong { color: var(--ink); }
+.text-block.result { border-left-color: var(--red); }
+
+.plots-row {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 0;
+}
+
+.plot-wrap {
+  border: 1px solid var(--rule);
+  background: var(--bg);
+}
+
+@media (max-width: 600px) {
+  .input-row1 { grid-template-columns: 1fr; }
+  .input-row2 { grid-template-columns: 1fr 1fr; }
+  .plots-row  { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<p class="calc-label">Interactive simulation</p>
+<h2 class="calc-heading">Within-Subject vs Between-Subject Designs</h2>
+
+<div class="input-panel">
+  <div class="input-row1">
+    <div class="input-group">
+      <label class="input-label" for="rSlider">
+        Correlation between measurements <span class="sym">r</span>
+      </label>
+      <input type="range" id="rSlider" min="-1" max="1" step="0.01" value="0.25">
+      <div class="slider-value" id="rVal">0.25</div>
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="nInput">Sample size <span class="sym">n</span></label>
+      <input type="number" id="nInput" min="10" max="1000" step="10" value="100">
+    </div>
+    <button class="action-btn" id="simBtn">New simulation</button>
+  </div>
+  <div class="input-row2">
+    <div class="input-group">
+      <label class="input-label" for="mx">Mean Group 1</label>
+      <input type="number" id="mx" min="50" max="150" step="1" value="100">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="sdx">SD Group 1</label>
+      <input type="number" id="sdx" min="1" max="30" step="1" value="10">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="my">Mean Group 2</label>
+      <input type="number" id="my" min="50" max="150" step="1" value="105">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="sdy">SD Group 2</label>
+      <input type="number" id="sdy" min="1" max="30" step="1" value="10">
+    </div>
+  </div>
+</div>
+
+<div id="tResult" class="text-block result"></div>
+
+<div class="plots-row">
+  <div class="plot-wrap"><div id="plot1"></div></div>
+  <div class="plot-wrap"><div id="plot2"></div></div>
+  <div class="plot-wrap"><div id="plot3"></div></div>
+</div>
+
+<script>
+// ── Helpers ───────────────────────────────────────────────────────────
+function rnorm() {
+  var u1, u2;
+  do { u1 = Math.random(); } while (u1 === 0);
+  u2 = Math.random();
+  return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+}
+
+function dnorm(x, mu, sigma) {
+  var z = (x - mu) / sigma;
+  return Math.exp(-0.5 * z * z) / (sigma * Math.sqrt(2 * Math.PI));
+}
+
+function amean(arr) { return arr.reduce(function(a,b){return a+b;},0)/arr.length; }
+
+function asd(arr) {
+  var m = amean(arr);
+  return Math.sqrt(arr.reduce(function(s,x){return s+(x-m)*(x-m);},0)/(arr.length-1));
+}
+
+function acor(x, y) {
+  var mx = amean(x), my = amean(y), num=0, d1=0, d2=0;
+  for (var i=0; i<x.length; i++) {
+    num += (x[i]-mx)*(y[i]-my);
+    d1  += (x[i]-mx)*(x[i]-mx);
+    d2  += (y[i]-my)*(y[i]-my);
+  }
+  return num / Math.sqrt(d1*d2);
+}
+
+function linreg(x, y) {
+  var mx=amean(x), my=amean(y), num=0, den=0;
+  for (var i=0; i<x.length; i++) {
+    num += (x[i]-mx)*(y[i]-my);
+    den += (x[i]-mx)*(x[i]-mx);
+  }
+  var b = den>0 ? num/den : 0;
+  return {slope: b, intercept: my - b*mx};
+}
+
+// ── Stored raw (standard normal) variates — reused when only params change ──
+var rawZ1 = [], rawZ2 = [];
+
+function generateRaw(n) {
+  rawZ1 = []; rawZ2 = [];
+  for (var i=0; i<n; i++) { rawZ1.push(rnorm()); rawZ2.push(rnorm()); }
+}
+
+function computeData(r, mx, my, sdx, sdy) {
+  var x=[], y=[], dif=[];
+  var sq = Math.sqrt(Math.max(0, 1 - r*r));
+  for (var i=0; i<rawZ1.length; i++) {
+    var xi = mx + sdx * rawZ1[i];
+    var yi = my + sdy * (r * rawZ1[i] + sq * rawZ2[i]);
+    x.push(xi); y.push(yi); dif.push(yi - xi);
+  }
+  return {x:x, y:y, dif:dif};
+}
+
+function pairedT(x, y) {
+  var n = x.length;
+  var dif = x.map(function(xi,i){return y[i]-xi;});
+  var md  = amean(dif);
+  var sd  = asd(dif);
+  var t   = md / (sd / Math.sqrt(n));
+  var df  = n - 1;
+  var p   = 2*(1 - jStat.studentt.cdf(Math.abs(t), df));
+  return {t:t, df:df, p:p, md:md, sd:sd};
+}
+
+// ── postHeight ────────────────────────────────────────────────────────
+function postHeight() {
+  var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+  window.parent.postMessage({iframeHeight: h}, '*');
+}
+
+// ── Shared Plotly layout fragments ────────────────────────────────────
+var FONT  = {family:"'Open Sans',sans-serif", color:'#1c1717', size:11};
+var AXIS  = {zeroline:false, gridcolor:'#ede8e8', linecolor:'#d6dadc'};
+var BASE  = {plot_bgcolor:'#fffafa', paper_bgcolor:'#fffafa', font:FONT,
+             showlegend:false, hovermode:'closest'};
+var MARG1 = {l:50, r:16, t:52, b:42};
+var MARG2 = {l:50, r:16, t:36, b:42};
+
+// ── Build density curve x-values ─────────────────────────────────────
+function range(a, b, steps) {
+  var arr=[], step=(b-a)/steps;
+  for (var i=0; i<=steps; i++) arr.push(a+i*step);
+  return arr;
+}
+
+// ── Main update ───────────────────────────────────────────────────────
+function update() {
+  var r   = parseFloat(document.getElementById('rSlider').value);
+  var mx  = parseFloat(document.getElementById('mx').value)  || 100;
+  var my  = parseFloat(document.getElementById('my').value)  || 105;
+  var sdx = Math.max(0.1, parseFloat(document.getElementById('sdx').value) || 10);
+  var sdy = Math.max(0.1, parseFloat(document.getElementById('sdy').value) || 10);
+
+  document.getElementById('rVal').textContent = r.toFixed(2);
+
+  var dat  = computeData(r, mx, my, sdx, sdy);
+  var tres = pairedT(dat.x, dat.y);
+  var reg  = linreg(dat.x, dat.y);
+  var obsR = acor(dat.x, dat.y);
+
+  var obsMx  = amean(dat.x), obsSdx = asd(dat.x);
+  var obsMy  = amean(dat.y), obsSdy = asd(dat.y);
+
+  // Measure one column; all three plots share the same square dimensions
+  var w = Math.round(document.getElementById('plot1').getBoundingClientRect().width) || 280;
+
+  // ── Plot 1: overlapping histograms with density curves ───────────
+  var xCurve = range(45, 155, 300);
+  Plotly.react('plot1', [
+    {
+      x: dat.x, type:'histogram', histnorm:'probability density',
+      xbins:{size:2}, opacity:0.45,
+      marker:{color:'#a60a0a', line:{color:'#1c1717', width:0.5}},
+      name:'Group 1', showlegend:true
+    },
+    {
+      x: dat.y, type:'histogram', histnorm:'probability density',
+      xbins:{size:2}, opacity:0.45,
+      marker:{color:'#2d7a50', line:{color:'#1c1717', width:0.5}},
+      name:'Group 2', showlegend:true
+    },
+    {
+      x:xCurve, y:xCurve.map(function(t){return dnorm(t,mx,sdx);}),
+      type:'scatter', mode:'lines',
+      line:{color:'#a60a0a', width:2, dash:'dot'}, showlegend:false
+    },
+    {
+      x:xCurve, y:xCurve.map(function(t){return dnorm(t,my,sdy);}),
+      type:'scatter', mode:'lines',
+      line:{color:'#2d7a50', width:2, dash:'dot'}, showlegend:false
+    }
+  ], Object.assign({}, BASE, {
+    barmode: 'overlay',
+    title: {
+      text: 'G1: M='+obsMx.toFixed(1)+', SD='+obsSdx.toFixed(1)+
+            '<br>G2: M='+obsMy.toFixed(1)+', SD='+obsSdy.toFixed(1),
+      font:{size:10}, x:0.5
+    },
+    width: w, height: w,
+    xaxis: Object.assign({title:'Score', range:[50,150]}, AXIS),
+    yaxis: Object.assign({title:'Density'}, AXIS),
+    legend:{x:0.98, y:0.98, xanchor:'right', yanchor:'top', font:{size:10}},
+    showlegend:true,
+    margin: MARG1
+  }), {displayModeBar:false});
+
+  // ── Plot 2: difference scores histogram ───────────────────────────
+  Plotly.react('plot2', [
+    {
+      x:dat.dif, type:'histogram', histnorm:'probability density',
+      xbins:{size:2},
+      marker:{color:'#1a6e9a', opacity:0.7, line:{color:'#1c1717', width:0.5}},
+      name:'Differences'
+    }
+  ], Object.assign({}, BASE, {
+    title: {
+      text: 'Differences (G2−G1):<br>M='+tres.md.toFixed(1)+
+            ', SD='+tres.sd.toFixed(1),
+      font:{size:10}, x:0.5
+    },
+    shapes:[{
+      type:'line', x0:tres.md, x1:tres.md, y0:0, y1:1, yref:'paper',
+      xref:'x', line:{color:'#1c1717', dash:'dash', width:1.5}
+    }],
+    width: w, height: w,
+    xaxis: Object.assign({title:'Difference score', range:[-80,80]}, AXIS),
+    yaxis: Object.assign({title:'Density'}, AXIS),
+    margin: MARG1
+  }), {displayModeBar:false});
+
+  // ── Plot 3: scatter with regression (styled like Guess the Correlation) ──
+  var sc = [40, 160];
+  var rxY = [reg.intercept + reg.slope*sc[0], reg.intercept + reg.slope*sc[1]];
+
+  Plotly.react('plot3', [
+    {
+      x: dat.x, y: dat.y,
+      type: 'scatter', mode: 'markers',
+      marker: {color: '#a60a0a', size: 5, opacity: 0.55},
+      hovertemplate: 'G1: %{x:.1f}  G2: %{y:.1f}<extra></extra>'
+    },
+    {
+      x: sc, y: rxY,
+      type: 'scatter', mode: 'lines',
+      line: {color: '#2d7a50', width: 2.5},
+      hoverinfo: 'skip'
+    }
+  ], Object.assign({}, BASE, {
+    width:  w,
+    height: w,
+    title: {text: 'r = '+obsR.toFixed(2), font:{size:10.5}, x:0.5},
+    xaxis: Object.assign({title:'Group 1', range:sc}, AXIS),
+    yaxis: Object.assign({title:'Group 2', range:sc, scaleanchor:'x', scaleratio:1}, AXIS),
+    margin: MARG2
+  }), {displayModeBar:false});
+
+  // ── t-test text ───────────────────────────────────────────────────
+  var pStr  = tres.p < 0.001 ? '< .001' : '= ' + tres.p.toFixed(3);
+  var sdExp = Math.sqrt(sdx*sdx + sdy*sdy - 2*r*sdx*sdy);
+
+  document.getElementById('tResult').innerHTML =
+    '<strong>Paired t-test:</strong> '
+    + 't = ' + tres.t.toFixed(2)
+    + ', df = ' + tres.df
+    + ', p ' + pStr + '. '
+    + 'SD of differences = ' + tres.sd.toFixed(2)
+    + ' (theoretical = ' + sdExp.toFixed(2)
+    + ' = √(SD₁² + SD₂² − 2r·SD₁·SD₂)). '
+    + 'Higher correlation reduces SD of differences and increases power.';
+
+  postHeight();
+}
+
+function newSimulation() {
+  var n = Math.max(10, parseInt(document.getElementById('nInput').value) || 100);
+  generateRaw(n);
+  update();
+}
+
+// ── Event listeners ───────────────────────────────────────────────────
+document.getElementById('rSlider').addEventListener('input', update);
+document.getElementById('simBtn').addEventListener('click', newSimulation);
+
+['mx','my','sdx','sdy'].forEach(function(id) {
+  document.getElementById(id).addEventListener('change', update);
+});
+document.getElementById('nInput').addEventListener('change', function() {
+  var n = Math.max(10, parseInt(this.value) || 100);
+  generateRaw(n);
+  update();
+});
+
+window.addEventListener('resize', function() { update(); postHeight(); });
+
+window.addEventListener('load', function() { setTimeout(postHeight, 400); });
+if (typeof ResizeObserver !== 'undefined') {
+  new ResizeObserver(function() { update(); postHeight(); }).observe(document.body);
+}
+
+// ── Start ─────────────────────────────────────────────────────────────
+newSimulation();
+</script>
+</body>
+</html>

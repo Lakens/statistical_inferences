@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Means and Difference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans:ital,wght@0,400;0,600;1,400&family=Fira+Code&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.26.0/plotly.min.js"></script>
+<style>
+:root {
+  --bg:    #fffafa;
+  --bg2:   #f7f7f7;
+  --ink:   #1c1717;
+  --ink2:  #3d3535;
+  --ink3:  #666060;
+  --rule:  #d6dadc;
+  --red:   #a60a0a;
+  --red-l: #c41010;
+  --green: #2d7a50;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px; line-height: 1.65;
+  padding: 20px 20px 32px; overflow: hidden;
+}
+.calc-label {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--ink3); margin-bottom: 5px;
+}
+.calc-heading {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600; font-size: 1.1rem;
+  color: var(--ink); margin-bottom: 16px;
+  padding-bottom: 9px; border-bottom: 2px solid var(--red);
+}
+.input-panel {
+  background: var(--bg2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--red);
+  padding: 14px 18px; margin-bottom: 16px;
+}
+.input-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+}
+.input-group { display: flex; flex-direction: column; gap: 5px; }
+.input-label {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink3);
+}
+.input-label .sym {
+  font-style: italic; font-size: 0.88rem;
+  text-transform: none; letter-spacing: 0;
+  font-weight: 400; color: var(--red);
+}
+input[type="number"] {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px; background: var(--bg);
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--red);
+  padding: 6px 8px; color: var(--ink);
+  outline: none; width: 100%;
+  transition: border-color .2s;
+  -moz-appearance: textfield;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+input[type="number"]:focus { border-bottom-color: var(--red-l); }
+.action-btn {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600; font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  background: var(--red); color: #fff;
+  border: none; padding: 10px 18px;
+  cursor: pointer; white-space: nowrap;
+  transition: background .15s; align-self: end;
+}
+.action-btn:hover { background: var(--red-l); }
+.plot-wrap {
+  border: 1px solid var(--rule);
+  background: var(--bg); margin-bottom: 14px;
+}
+#mdPlot { width: 100%; height: 400px; }
+.text-block {
+  font-size: 0.9rem; line-height: 1.6;
+  padding: 11px 14px;
+  background: var(--bg2);
+  border-left: 3px solid var(--rule);
+  color: var(--ink2);
+}
+.text-block strong { color: var(--ink); }
+.text-block.sig { border-left-color: var(--red); }
+.text-block.ns  { border-left-color: var(--ink3); }
+@media (max-width: 560px) {
+  .input-grid { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<p class="calc-label">Interactive simulation</p>
+<h2 class="calc-heading">Means and Difference</h2>
+
+<div class="input-panel">
+  <div class="input-grid">
+    <div class="input-group">
+      <label class="input-label" for="nInput">
+        Sample size <span class="sym">n</span>
+      </label>
+      <input type="number" id="nInput" min="2" max="500" step="1" value="50">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="mxInput">
+        Mean X <span class="sym">&#x3bc;&#x2081;</span>
+      </label>
+      <input type="number" id="mxInput" step="0.5" value="3">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="myInput">
+        Mean Y <span class="sym">&#x3bc;&#x2082;</span>
+      </label>
+      <input type="number" id="myInput" step="0.5" value="5">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="sdInput">
+        SD <span class="sym">&#x3c3;</span>
+      </label>
+      <input type="number" id="sdInput" min="0.1" step="0.5" value="5">
+    </div>
+    <button class="action-btn" id="simBtn">New sample</button>
+  </div>
+</div>
+
+<div class="plot-wrap"><div id="mdPlot"></div></div>
+<div id="mdText" class="text-block"></div>
+
+<script>
+// ── Normal random variate (Box-Muller) ────────────────────────────────────
+function rnorm(mu, sigma) {
+  var u1, u2;
+  do { u1 = Math.random(); } while (u1 === 0);
+  u2 = Math.random();
+  return mu + sigma * Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+}
+
+// ── One-sample t CI ───────────────────────────────────────────────────────
+function tCI(arr) {
+  var n = arr.length;
+  var m = arr.reduce(function(a, b) { return a + b; }, 0) / n;
+  var ss = arr.reduce(function(s, x) { return s + (x - m) * (x - m); }, 0);
+  var se = Math.sqrt(ss / (n * (n - 1)));
+  var tc = jStat.studentt.inv(0.975, n - 1);
+  return { mean: m, lower: m - tc * se, upper: m + tc * se, se: se, n: n };
+}
+
+// ── Welch two-sample t-test ───────────────────────────────────────────────
+function twoSampleT(a, b) {
+  var ca = tCI(a), cb = tCI(b);
+  var diff = cb.mean - ca.mean;
+  var seD  = Math.sqrt(ca.se * ca.se + cb.se * cb.se);
+  var dfD  = Math.pow(ca.se * ca.se + cb.se * cb.se, 2) /
+             (Math.pow(ca.se, 4) / (ca.n - 1) + Math.pow(cb.se, 4) / (cb.n - 1));
+  var tc   = jStat.studentt.inv(0.975, dfD);
+  var tStat = diff / seD;
+  var p    = 2 * (1 - jStat.studentt.cdf(Math.abs(tStat), dfD));
+  return { diff: diff, lower: diff - tc * seD, upper: diff + tc * seD,
+           p: p, t: tStat, df: dfD };
+}
+
+// ── Hard-coded initial state (matches user's R output) ───────────────────
+var _init = {
+  ciX:  { mean: 3.006988, lower: 1.867556, upper: 4.146421 },
+  ciY:  { mean: 5.592023, lower: 3.806091, upper: 7.377955 },
+  diff: { diff: 2.585035, lower: 0.488393, upper: 4.681677,
+          t: 2.4522, df: 83.221, p: 0.01629 }
+};
+var _currentCiX = null, _currentCiY = null, _currentDiff = null;
+
+// ── Raw data ──────────────────────────────────────────────────────────────
+var rawX = [], rawY = [];
+
+function generateData() {
+  var n  = Math.max(2, parseInt(document.getElementById('nInput').value, 10) || 50);
+  var mx = parseFloat(document.getElementById('mxInput').value) || 3;
+  var my = parseFloat(document.getElementById('myInput').value) || 5;
+  var sd = Math.max(0.1, parseFloat(document.getElementById('sdInput').value) || 5);
+  rawX = []; rawY = [];
+  for (var i = 0; i < n; i++) {
+    rawX.push(rnorm(mx, sd));
+    rawY.push(rnorm(my, sd));
+  }
+  _currentCiX  = tCI(rawX);
+  _currentCiY  = tCI(rawY);
+  _currentDiff = twoSampleT(rawX, rawY);
+}
+
+// ── Debounced postHeight ──────────────────────────────────────────────────
+var _phTimer = null;
+function postHeight() {
+  clearTimeout(_phTimer);
+  _phTimer = setTimeout(function() {
+    var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+    window.parent.postMessage({ iframeHeight: h }, '*');
+  }, 150);
+}
+
+// ── Draw ──────────────────────────────────────────────────────────────────
+function draw(ciX, ciY, diff) {
+  // anchor: left-axis value = ciX.mean; corresponds to 0 on difference axis
+  var anchor    = ciX.mean;
+  var diffAbsLo = anchor + diff.lower;   // Difference lower in left-axis coords
+  var diffAbsHi = anchor + diff.upper;   // Difference upper in left-axis coords
+  var diffAbsPt = anchor + diff.diff;    // Difference point = ciY.mean
+
+  // Y-axis: [0, max(X upper, Y upper) + 1] — matches R ylim
+  var yMin = 0;
+  var yMax = Math.max(ciX.upper, ciY.upper) + 1;
+
+  // Right (difference) axis: same physical height, offset by -anchor
+  var y2Min = yMin - anchor;
+  var y2Max = yMax - anchor;
+
+  var AXIS = { zeroline: false, gridcolor: '#ede8e8', linecolor: '#d6dadc' };
+  var FONT = { family: "'Open Sans', sans-serif", color: '#1c1717', size: 12 };
+  var pStr = diff.p < 0.001 ? '< .001' : '= ' + diff.p.toFixed(3);
+
+  var traces = [
+    // Dashed at X mean — spans left edge to Difference column (matches R segment 1)
+    { x: [0.4, 3], y: [ciX.mean, ciX.mean],
+      type: 'scatter', mode: 'lines',
+      line: { color: '#888', dash: 'dash', width: 1.8 },
+      showlegend: false, hoverinfo: 'skip' },
+
+    // Dashed at Y mean — goes LEFT from Y column to left edge (matches R segment 2)
+    { x: [0.4, 2], y: [ciY.mean, ciY.mean],
+      type: 'scatter', mode: 'lines',
+      line: { color: '#888', dash: 'dash', width: 1.8 },
+      showlegend: false, hoverinfo: 'skip' },
+
+    // Dashed at Y mean — goes RIGHT from Difference column (matches R segment 3)
+    { x: [3, 3.5], y: [ciY.mean, ciY.mean],
+      type: 'scatter', mode: 'lines',
+      line: { color: '#888', dash: 'dash', width: 1.8 },
+      showlegend: false, hoverinfo: 'skip' },
+
+    // Dotted bracket: X upper CI from X column to Y column (matches R lty=3 upper)
+    { x: [1, 2], y: [ciX.upper, ciX.upper],
+      type: 'scatter', mode: 'lines',
+      line: { color: '#888', dash: 'dot', width: 1.5 },
+      showlegend: false, hoverinfo: 'skip' },
+
+    // Dotted bracket: Y lower CI from X column to Y column (matches R lty=3 lower)
+    { x: [1, 2], y: [ciY.lower, ciY.lower],
+      type: 'scatter', mode: 'lines',
+      line: { color: '#888', dash: 'dot', width: 1.5 },
+      showlegend: false, hoverinfo: 'skip' },
+
+    // Group X CI bar (black, default width)
+    { x: [1, 1], y: [ciX.lower, ciX.upper],
+      type: 'scatter', mode: 'lines',
+      line: { color: '#1c1717', width: 2 },
+      showlegend: false, hoverinfo: 'skip' },
+
+    // Group X mean dot (black)
+    { x: [1], y: [ciX.mean],
+      type: 'scatter', mode: 'markers',
+      marker: { color: '#1c1717', size: 9 },
+      showlegend: false,
+      hovertemplate: 'X: M = %{y:.3f}<extra></extra>' },
+
+    // Group Y CI bar (black, default width)
+    { x: [2, 2], y: [ciY.lower, ciY.upper],
+      type: 'scatter', mode: 'lines',
+      line: { color: '#1c1717', width: 2 },
+      showlegend: false, hoverinfo: 'skip' },
+
+    // Group Y mean dot (black)
+    { x: [2], y: [ciY.mean],
+      type: 'scatter', mode: 'markers',
+      marker: { color: '#1c1717', size: 9 },
+      showlegend: false,
+      hovertemplate: 'Y: M = %{y:.3f}<extra></extra>' },
+
+    // Difference CI bar (black, thicker — matches R lwd=2)
+    { x: [3, 3], y: [diffAbsLo, diffAbsHi],
+      type: 'scatter', mode: 'lines',
+      line: { color: '#1c1717', width: 3 },
+      showlegend: false, hoverinfo: 'skip' },
+
+    // Difference mean dot (black, slightly larger — matches R cex=1.5)
+    { x: [3], y: [diffAbsPt],
+      type: 'scatter', mode: 'markers',
+      marker: { color: '#1c1717', size: 12 },
+      showlegend: false,
+      hovertemplate: 'Diff: %{y:.3f}<extra></extra>' },
+
+    // Phantom trace on yaxis2 — forces Plotly to render the right axis
+    { x: [3, 3], y: [y2Min, y2Max],
+      type: 'scatter', mode: 'markers',
+      marker: { opacity: 0, size: 1 },
+      yaxis: 'y2',
+      showlegend: false, hoverinfo: 'skip' }
+  ];
+
+  var layout = {
+    xaxis: Object.assign({
+      range: [0.4, 3.5],
+      tickvals: [1, 2, 3],
+      ticktext: ['X', 'Y', 'Difference']
+    }, AXIS),
+    yaxis: Object.assign({
+      title: { text: 'Mean', font: { size: 13 } },
+      range: [yMin, yMax]
+    }, AXIS),
+    yaxis2: {
+      title: { text: 'Difference', font: { size: 13 } },
+      range: [y2Min, y2Max],
+      overlaying: 'y',
+      side: 'right',
+      dtick: 1,
+      showgrid: false,
+      zeroline: false,
+      linecolor: '#d6dadc',
+      tickcolor: '#d6dadc',
+      tickfont: { color: '#666060', family: "'Open Sans', sans-serif", size: 11 }
+    },
+    annotations: [{
+      x: 3, xref: 'x',
+      y: 1, yref: 'y',
+      text: 'p ' + pStr,
+      showarrow: false,
+      xanchor: 'center', yanchor: 'bottom',
+      font: { size: 11.5, color: '#1c1717', family: "'Open Sans', sans-serif" }
+    }],
+    plot_bgcolor:  '#fffafa',
+    paper_bgcolor: '#fffafa',
+    font: FONT,
+    margin: { l: 55, r: 70, t: 16, b: 40 },
+    showlegend: false,
+    hovermode: 'closest'
+  };
+
+  Plotly.react('mdPlot', traces, layout, { responsive: true, displayModeBar: false });
+
+  // ── Text summary ──────────────────────────────────────────────────────
+  var el = document.getElementById('mdText');
+  el.className = 'text-block ' + (diff.p < 0.05 ? 'sig' : 'ns');
+  el.innerHTML =
+    'X: <strong>M = ' + ciX.mean.toFixed(3) + '</strong> '
+    + '[' + ciX.lower.toFixed(3) + ', ' + ciX.upper.toFixed(3) + ']'
+    + ' &nbsp;&nbsp; '
+    + 'Y: <strong>M = ' + ciY.mean.toFixed(3) + '</strong> '
+    + '[' + ciY.lower.toFixed(3) + ', ' + ciY.upper.toFixed(3) + ']'
+    + ' &nbsp;&nbsp; '
+    + 'Difference: <strong>' + diff.diff.toFixed(3) + '</strong> '
+    + '[' + diff.lower.toFixed(3) + ', ' + diff.upper.toFixed(3) + ']'
+    + ' &nbsp;&nbsp; '
+    + '<em>t</em>(' + diff.df.toFixed(1) + ') = ' + diff.t.toFixed(3)
+    + ', <em>p</em> ' + pStr + '.';
+
+  postHeight();
+}
+
+function newSample() {
+  generateData();
+  draw(_currentCiX, _currentCiY, _currentDiff);
+}
+
+// ── Event listeners ───────────────────────────────────────────────────────
+document.getElementById('simBtn').addEventListener('click', newSample);
+['nInput', 'mxInput', 'myInput', 'sdInput'].forEach(function(id) {
+  document.getElementById(id).addEventListener('change', newSample);
+});
+
+window.addEventListener('resize', function() {
+  var cx = _currentCiX || _init.ciX;
+  var cy = _currentCiY || _init.ciY;
+  var d  = _currentDiff || _init.diff;
+  draw(cx, cy, d);
+  postHeight();
+});
+window.addEventListener('load', function() { setTimeout(postHeight, 400); });
+if (typeof ResizeObserver !== 'undefined') {
+  new ResizeObserver(postHeight).observe(document.body);
+}
+
+// First load: use hard-coded initial values
+draw(_init.ciX, _init.ciY, _init.diff);
+</script>
+</body>
+</html>

@@ -313,7 +313,8 @@ collect_html_warning_notes <- function(output_dir) {
     lines <- readLines(f, warn = FALSE)
 
     # Catch common rendered warning signatures from knitr/R output.
-    idx <- grep("(^|[>[:space:]])Warning(:| in )", lines, perl = TRUE)
+    # Matches "Warning:", "Warning in ", "Warning message:" (all R formats).
+    idx <- grep("(^|[>[:space:]])Warning(\\s+message)?(:| in )", lines, perl = TRUE)
     if (length(idx) > 0) {
       notes <- c(notes, sprintf("%s:%d - contains rendered warning text", f, idx))
     }

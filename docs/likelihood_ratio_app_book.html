@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Likelihood Ratio Calculator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans:ital,wght@0,400;0,600;1,400&family=Fira+Code&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.26.0/plotly.min.js"></script>
+<style>
+:root {
+  --bg:     #fffafa;
+  --bg2:    #f7f7f7;
+  --ink:    #1c1717;
+  --ink2:   #3d3535;
+  --ink3:   #666060;
+  --rule:   #d6dadc;
+  --red:    #a60a0a;
+  --red-l:  #c41010;
+  --red-bg: #fff5f5;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  padding: 20px 20px 32px;
+  overflow: hidden;
+}
+
+.calc-label {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 5px;
+}
+
+.calc-heading {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--ink);
+  margin-bottom: 16px;
+  padding-bottom: 9px;
+  border-bottom: 2px solid var(--red);
+}
+
+.input-panel {
+  background: var(--bg2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--red);
+  padding: 16px 18px;
+  margin-bottom: 20px;
+}
+
+.input-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.input-group { display: flex; flex-direction: column; gap: 5px; }
+
+.input-label {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink3);
+}
+
+.input-label .sym {
+  font-style: italic;
+  font-size: 0.88rem;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+  color: var(--red);
+}
+
+input[type="number"] {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--red);
+  padding: 6px 8px;
+  color: var(--ink);
+  outline: none;
+  width: 100%;
+  transition: border-color .2s;
+}
+input[type="number"]:focus { border-bottom-color: var(--red-l); }
+
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 2px;
+  background: var(--rule);
+  outline: none;
+  cursor: pointer;
+  border-radius: 1px;
+  margin-top: 5px;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--red);
+  cursor: pointer;
+  transition: transform .15s;
+}
+input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.25); }
+input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--red);
+  cursor: pointer;
+}
+
+.slider-value {
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  color: var(--red);
+  font-weight: 500;
+}
+
+.plot-wrap {
+  margin-bottom: 18px;
+  border: 1px solid var(--rule);
+  background: var(--bg);
+}
+#likelihoodPlot { width: 100%; height: 360px; }
+
+.text-block {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  padding: 11px 14px;
+  margin-bottom: 10px;
+  background: var(--bg2);
+  border-left: 3px solid var(--rule);
+  color: var(--ink2);
+}
+.text-block strong { color: var(--ink); }
+.text-block.h1-result { border-left-color: var(--red); }
+.text-block.h0-result { border-left-color: #999; }
+.text-block.lr-result {
+  border-left-color: var(--red);
+  background: var(--red-bg);
+}
+
+.benchmarks {
+  font-size: 0.88rem;
+  padding: 11px 14px;
+  margin-bottom: 18px;
+  background: var(--bg2);
+  border: 1px solid var(--rule);
+  color: var(--ink3);
+}
+.benchmarks strong { color: var(--ink); }
+
+.table-heading {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--ink);
+  margin: 18px 0 9px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  margin-bottom: 18px;
+}
+table th {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  text-align: left;
+  padding: 8px 11px;
+  border-bottom: 2px solid var(--ink);
+  background: var(--bg2);
+}
+table td {
+  padding: 7px 11px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink2);
+  font-family: 'Fira Code', monospace;
+  font-size: 12.5px;
+}
+table tr.selected td {
+  background: var(--red-bg);
+  font-weight: 600;
+  color: var(--ink);
+}
+table tr:hover:not(.selected) td { background: var(--bg2); }
+
+@media (max-width: 560px) {
+  .input-grid { grid-template-columns: 1fr 1fr; }
+  table th, table td { padding: 6px 7px; }
+  #likelihoodPlot { height: 280px; }
+}
+</style>
+</head>
+<body>
+
+<p class="calc-label">Interactive calculator</p>
+<h2 class="calc-heading">Likelihood Ratio for Mixed Results</h2>
+
+<div class="input-panel">
+  <div class="input-grid">
+
+    <div class="input-group">
+      <label class="input-label" for="n">Number of studies <span class="sym">n</span></label>
+      <input type="number" id="n" min="1" max="100" value="3">
+    </div>
+
+    <div class="input-group">
+      <label class="input-label" for="x">Significant results <span class="sym">x</span></label>
+      <input type="number" id="x" min="0" max="100" value="2">
+    </div>
+
+    <div class="input-group">
+      <label class="input-label" for="H0">Type I error <span class="sym">α</span> &mdash; H₀</label>
+      <input type="range" id="H0" min="0.01" max="0.5" step="0.01" value="0.05">
+      <div class="slider-value" id="H0Val">0.05</div>
+    </div>
+
+    <div class="input-group">
+      <label class="input-label" for="H1">Statistical power <span class="sym">1&minus;β</span> &mdash; H₁</label>
+      <input type="range" id="H1" min="0" max="1" step="0.01" value="0.80">
+      <div class="slider-value" id="H1Val">0.80</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="plot-wrap">
+  <div id="likelihoodPlot"></div>
+</div>
+
+<div id="textH1" class="text-block h1-result"></div>
+<div id="textH0" class="text-block h0-result"></div>
+
+<div class="benchmarks">
+  <strong>Interpretation benchmarks (Royall, 1997):</strong>
+  LR&nbsp;=&nbsp;1: equal evidence for both hypotheses.
+  1&nbsp;&lt;&nbsp;LR&nbsp;&lt;&nbsp;8: <strong>weak</strong> evidence.
+  8&nbsp;&le;&nbsp;LR&nbsp;&lt;&nbsp;32: <strong>moderate</strong> evidence.
+  LR&nbsp;&ge;&nbsp;32: <strong>strong</strong> evidence.
+</div>
+
+<div id="textLR" class="text-block lr-result"></div>
+
+<div class="table-heading">Probability Distribution</div>
+<table>
+  <thead>
+    <tr>
+      <th>Significant studies (k)</th>
+      <th>P(k | H₀)</th>
+      <th>P(k | H₁)</th>
+    </tr>
+  </thead>
+  <tbody id="tableBody"></tbody>
+</table>
+
+<script>
+function dbinom(k, n, p) {
+  if (k < 0 || k > n) return 0;
+  var c = 1;
+  for (var i = 0; i < k; i++) c *= (n - i) / (i + 1);
+  return c * Math.pow(p, k) * Math.pow(1 - p, n - k);
+}
+
+function fmt(num, d) {
+  d = (d === undefined) ? 4 : d;
+  if (!isFinite(num)) return '∞';
+  if (num === 0) return '0';
+  if (num < 0.0001) return num.toExponential(2);
+  return Number(num.toFixed(d));
+}
+
+function postHeight() {
+  var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+  window.parent.postMessage({ iframeHeight: h }, '*');
+}
+
+function update() {
+  var n  = Math.max(1, parseInt(document.getElementById('n').value)  || 1);
+  var xRaw = parseInt(document.getElementById('x').value);
+  var x  = Math.min(Math.max(0, isNaN(xRaw) ? 0 : xRaw), n);
+  var H0 = parseFloat(document.getElementById('H0').value) || 0.05;
+  var H1 = parseFloat(document.getElementById('H1').value) || 0.80;
+
+  document.getElementById('H0Val').textContent = H0.toFixed(2);
+  document.getElementById('H1Val').textContent = H1.toFixed(2);
+
+  var p0  = dbinom(x, n, H0);
+  var p1  = dbinom(x, n, H1);
+  var LR  = (p0 > 0 && p1 > 0) ? Math.max(p0 / p1, p1 / p0) : Infinity;
+  var H1wins = p1 >= p0;
+  var mle = n > 0 ? x / n : 0;
+
+  var theta = [], like = [];
+  for (var i = 0; i <= 1000; i++) {
+    theta.push(i / 1000);
+    like.push(dbinom(x, n, i / 1000));
+  }
+
+  var shapes = [
+    { type: 'line', x0: H0, x1: H0, y0: 0, y1: 1, xref: 'x', yref: 'paper',
+      line: { color: '#999', dash: 'dot', width: 1.5 } },
+    { type: 'line', x0: H1, x1: H1, y0: 0, y1: 1, xref: 'x', yref: 'paper',
+      line: { color: '#999', dash: 'dot', width: 1.5 } },
+    { type: 'line', x0: H0, x1: mle, y0: p0, y1: p0, xref: 'x', yref: 'y',
+      line: { color: '#1c1717', dash: 'dash', width: 1.5 } },
+    { type: 'line', x0: H1, x1: mle, y0: p1, y1: p1, xref: 'x', yref: 'y',
+      line: { color: '#1c1717', dash: 'dash', width: 1.5 } },
+    { type: 'line', x0: mle, x1: mle, y0: p0, y1: p1, xref: 'x', yref: 'y',
+      line: { color: '#1c1717', dash: 'solid', width: 2 } }
+  ];
+
+  Plotly.react('likelihoodPlot', [
+    {
+      x: theta, y: like, type: 'scatter', mode: 'lines', name: 'Likelihood',
+      line: { color: '#a60a0a', width: 2.5 },
+      hovertemplate: 'θ: %{x:.3f}<br>L(θ): %{y:.4f}<extra></extra>'
+    },
+    {
+      x: [H0], y: [p0], type: 'scatter', mode: 'markers',
+      name: 'H₀ (α = ' + H0.toFixed(2) + ')',
+      marker: { size: 9, color: '#fffafa', line: { color: '#1c1717', width: 2 } },
+      hovertemplate: 'H₀: θ = %{x:.3f}<br>L(θ) = %{y:.4f}<extra></extra>'
+    },
+    {
+      x: [H1], y: [p1], type: 'scatter', mode: 'markers',
+      name: 'H₁ (power = ' + H1.toFixed(2) + ')',
+      marker: { size: 9, color: '#fffafa', line: { color: '#a60a0a', width: 2 } },
+      hovertemplate: 'H₁: θ = %{x:.3f}<br>L(θ) = %{y:.4f}<extra></extra>'
+    }
+  ], {
+    xaxis: {
+      title: { text: 'θ (effect probability)', font: { size: 13 } },
+      zeroline: false, gridcolor: '#ede8e8', linecolor: '#d6dadc'
+    },
+    yaxis: {
+      title: { text: 'Likelihood L(θ)', font: { size: 13 } },
+      gridcolor: '#ede8e8', linecolor: '#d6dadc'
+    },
+    shapes: shapes,
+    annotations: [
+      {
+        x: H0, xref: 'x',
+        y: 0.97, yref: 'paper',
+        text: 'L(H₀) = ' + fmt(p0, 4),
+        showarrow: false,
+        xanchor: 'center', yanchor: 'top',
+        font: { size: 11.5, color: '#555', family: "'Open Sans', sans-serif" }
+      },
+      {
+        x: H1, xref: 'x',
+        y: 0.97, yref: 'paper',
+        text: 'L(H₁) = ' + fmt(p1, 4),
+        showarrow: false,
+        xanchor: 'center', yanchor: 'top',
+        font: { size: 11.5, color: '#a60a0a', family: "'Open Sans', sans-serif" }
+      },
+      {
+        x: mle, xref: 'x',
+        y: (p0 + p1) / 2, yref: 'y',
+        text: '<b>LR = ' + (isFinite(LR) ? LR.toFixed(2) : '∞') + '</b>',
+        showarrow: false,
+        xanchor: mle > 0.65 ? 'right' : 'left',
+        yanchor: 'middle',
+        xshift: mle > 0.65 ? -6 : 6,
+        font: { size: 12, color: '#1c1717', family: "'Open Sans', sans-serif" }
+      }
+    ],
+    plot_bgcolor:  '#fffafa',
+    paper_bgcolor: '#fffafa',
+    font: { family: "'Open Sans', sans-serif", color: '#1c1717', size: 12 },
+    margin: { l: 55, r: 24, t: 16, b: 48 },
+    legend: {
+      x: 0.5, y: 1.02, xanchor: 'center', yanchor: 'bottom',
+      orientation: 'h', font: { size: 11 },
+      bgcolor: 'rgba(255,250,250,0.85)'
+    },
+    hovermode: 'closest'
+  }, { responsive: true }).then(postHeight);
+
+  document.getElementById('textH1').innerHTML =
+    '<strong>Under H₁ (power = ' + H1.toFixed(2) + '):</strong> ' +
+    'The probability of observing ' + x + ' out of ' + n + ' significant results is ' +
+    '<strong>' + fmt(p1, 6) + '</strong>. ' +
+    'If all ' + n + ' studies examine true effects with ' + (100 * H1).toFixed(0) + '% power, ' +
+    (100 * fmt(p1, 4)).toFixed(2) + '% of article sets with ' + n + ' studies ' +
+    'would be expected to show exactly ' + x + ' significant result' + (x === 1 ? '' : 's') + '.';
+
+  document.getElementById('textH0').innerHTML =
+    '<strong>Under H₀ (α = ' + H0.toFixed(2) + '):</strong> ' +
+    'The probability of observing ' + x + ' out of ' + n + ' significant results is ' +
+    '<strong>' + fmt(p0, 6) + '</strong>. ' +
+    'If all ' + n + ' studies examine null effects with a ' + (100 * H0).toFixed(0) + '% Type I error rate, ' +
+    (100 * fmt(p0, 4)).toFixed(2) + '% of article sets with ' + n + ' studies ' +
+    'would be expected to show exactly ' + x + ' significant result' + (x === 1 ? '' : 's') + '.';
+
+  var strength  = LR < 8 ? 'weak' : LR < 32 ? 'moderate' : 'strong';
+  var direction = H1wins
+    ? 'more likely under H₁ (alternative) than under H₀ (null)'
+    : 'more likely under H₀ (null) than under H₁ (alternative)';
+  document.getElementById('textLR').innerHTML =
+    '<strong>Likelihood ratio: ' + (isFinite(LR) ? LR.toFixed(2) : '∞') + '</strong> — ' +
+    'the data are ' + (isFinite(LR) ? LR.toFixed(2) + '× ' : '') + direction + '. ' +
+    'This constitutes <strong>' + strength + '</strong> evidence.';
+
+  var tbody = document.getElementById('tableBody');
+  tbody.innerHTML = '';
+  for (var k = 0; k <= n; k++) {
+    var tr = document.createElement('tr');
+    if (k === x) tr.className = 'selected';
+    tr.innerHTML =
+      '<td><strong>' + k + '</strong></td>' +
+      '<td>' + fmt(dbinom(k, n, H0), 6) + '</td>' +
+      '<td>' + fmt(dbinom(k, n, H1), 6) + '</td>';
+    tbody.appendChild(tr);
+  }
+
+  postHeight();
+}
+
+['n', 'x'].forEach(function(id) {
+  document.getElementById(id).addEventListener('input', update);
+  document.getElementById(id).addEventListener('change', update);
+});
+['H0', 'H1'].forEach(function(id) {
+  document.getElementById(id).addEventListener('input', update);
+});
+
+window.addEventListener('load', function() { setTimeout(postHeight, 400); });
+if (typeof ResizeObserver !== 'undefined') {
+  new ResizeObserver(postHeight).observe(document.body);
+}
+
+update();
+</script>
+</body>
+</html>

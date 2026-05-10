@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Distribution of Cohen's d</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans:ital,wght@0,400;0,600;1,400&family=Fira+Code&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.26.0/plotly.min.js"></script>
+<style>
+:root {
+  --bg:     #fffafa;
+  --bg2:    #f7f7f7;
+  --ink:    #1c1717;
+  --ink2:   #3d3535;
+  --ink3:   #666060;
+  --rule:   #d6dadc;
+  --red:    #a60a0a;
+  --red-l:  #c41010;
+  --red-bg: #fff5f5;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  padding: 20px 20px 32px;
+  overflow: hidden;
+}
+
+.calc-label {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 5px;
+}
+
+.calc-heading {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--ink);
+  margin-bottom: 16px;
+  padding-bottom: 9px;
+  border-bottom: 2px solid var(--red);
+}
+
+.input-panel {
+  background: var(--bg2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--red);
+  padding: 16px 18px;
+  margin-bottom: 20px;
+}
+
+.input-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.input-group { display: flex; flex-direction: column; gap: 5px; }
+
+.input-label {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink3);
+}
+
+.input-label .sym {
+  font-style: italic;
+  font-size: 0.88rem;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+  color: var(--red);
+}
+
+input[type="number"] {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--red);
+  padding: 6px 8px;
+  color: var(--ink);
+  outline: none;
+  width: 100%;
+  transition: border-color .2s;
+}
+input[type="number"]:focus { border-bottom-color: var(--red-l); }
+
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 2px;
+  background: var(--rule);
+  outline: none;
+  cursor: pointer;
+  border-radius: 1px;
+  margin-top: 5px;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--red);
+  cursor: pointer;
+  transition: transform .15s;
+}
+input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.25); }
+input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--red);
+  cursor: pointer;
+}
+
+.slider-value {
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  color: var(--red);
+  font-weight: 500;
+}
+
+.plot-wrap {
+  margin-bottom: 18px;
+  border: 1px solid var(--rule);
+  background: var(--bg);
+}
+#dPlot { width: 100%; height: 400px; }
+
+.text-block {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  padding: 11px 14px;
+  margin-bottom: 10px;
+  background: var(--bg2);
+  border-left: 3px solid var(--rule);
+  color: var(--ink2);
+}
+.text-block strong { color: var(--ink); }
+.text-block.desc   { border-left-color: var(--rule); }
+.text-block.power  { border-left-color: var(--red); background: var(--red-bg); }
+
+@media (max-width: 560px) {
+  .input-grid { grid-template-columns: 1fr; }
+  #dPlot { height: 300px; }
+}
+</style>
+</head>
+<body>
+
+<p class="calc-label">Interactive calculator</p>
+<h2 class="calc-heading">Distribution of Cohen's <em>d</em></h2>
+
+<div class="input-panel">
+  <div class="input-grid">
+
+    <div class="input-group">
+      <label class="input-label" for="N">Participants per group <span class="sym">N</span></label>
+      <input type="number" id="N" min="2" max="1000" value="50">
+    </div>
+
+    <div class="input-group">
+      <label class="input-label" for="d">Cohen's <span class="sym">d</span> (true effect)</label>
+      <input type="range" id="d" min="0" max="2" step="0.01" value="0.5">
+      <div class="slider-value" id="dVal">0.50</div>
+    </div>
+
+    <div class="input-group">
+      <label class="input-label" for="alpha">Alpha level <span class="sym">α</span></label>
+      <input type="range" id="alpha" min="0.01" max="0.5" step="0.01" value="0.05">
+      <div class="slider-value" id="alphaVal">0.05</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="plot-wrap">
+  <div id="dPlot"></div>
+</div>
+
+<div id="textDesc"  class="text-block desc"></div>
+<div id="textPower" class="text-block power"></div>
+
+<script>
+function linspace(a, b, n) {
+  var arr = new Array(n);
+  var step = (b - a) / (n - 1);
+  for (var i = 0; i < n; i++) arr[i] = a + step * i;
+  return arr;
+}
+
+function postHeight() {
+  var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+  window.parent.postMessage({ iframeHeight: h }, '*');
+}
+
+function densityH1(x, N, trueD) {
+  var df     = 2 * N - 2;
+  var sqrtN2 = Math.sqrt(N / 2);
+  var ncp    = trueD * sqrtN2;
+  return jStat.noncentralt.pdf(x * sqrtN2, df, ncp) * sqrtN2;
+}
+
+function densityH0(x, N) {
+  var df     = 2 * N - 2;
+  var sqrtN2 = Math.sqrt(N / 2);
+  return jStat.studentt.pdf(x * sqrtN2, df) * sqrtN2;
+}
+
+function critD(N, alpha) {
+  var df = 2 * N - 2;
+  return Math.abs(jStat.studentt.inv(alpha / 2, df)) / Math.sqrt(N / 2);
+}
+
+function computePower(N, trueD, alpha) {
+  var df     = 2 * N - 2;
+  var ncp    = trueD * Math.sqrt(N / 2);
+  var tLower = jStat.studentt.inv(alpha / 2, df);
+  var tUpper = -tLower;
+  return 1 + jStat.noncentralt.cdf(tLower, df, ncp)
+           - jStat.noncentralt.cdf(tUpper, df, ncp);
+}
+
+function seD(N, trueD) {
+  return Math.sqrt(2 / N + (trueD * trueD) / (4 * N));
+}
+
+function update() {
+  var N     = Math.max(2, parseInt(document.getElementById('N').value) || 2);
+  var trueD = parseFloat(document.getElementById('d').value) || 0;
+  var alpha = parseFloat(document.getElementById('alpha').value) || 0.05;
+
+  document.getElementById('dVal').textContent    = trueD.toFixed(2);
+  document.getElementById('alphaVal').textContent = alpha.toFixed(2);
+
+  var cd  = critD(N, alpha);
+  var se0 = Math.sqrt(2 / N);
+  var se1 = seD(N, trueD);
+
+  // Dynamic x-range: cover 4 SEs either side of each distribution's centre,
+  // and always include the critical region ±cd with a small margin.
+  var lowX  = Math.min(-4 * se0, -cd - 0.05);
+  var highX = Math.max(trueD + 4 * se1, cd + 0.05);
+  var pad   = (highX - lowX) * 0.04;
+  lowX  -= pad;
+  highX += pad;
+
+  var xFull = linspace(lowX, highX, 1000);
+  var yH1   = xFull.map(function(x) { return densityH1(x, N, trueD); });
+  var yH0   = xFull.map(function(x) { return densityH0(x, N); });
+
+  var yMax = Math.max.apply(null, yH1.concat(yH0));
+
+  var xBlue = linspace(lowX, cd, 500);
+  var yBlue = xBlue.map(function(x) { return densityH1(x, N, trueD); });
+
+  var xRedR = linspace(cd, highX, 300);
+  var yRedR = xRedR.map(function(x) { return densityH0(x, N); });
+
+  var xRedL = linspace(lowX, -cd, 300);
+  var yRedL = xRedL.map(function(x) { return densityH0(x, N); });
+
+  var traces = [
+    {
+      x: xBlue, y: yBlue, type: 'scatter', mode: 'lines',
+      fill: 'tozeroy', fillcolor: 'rgba(20,90,200,0.22)',
+      line: { width: 0, color: 'transparent' },
+      name: 'Type II error β', showlegend: true, hoverinfo: 'skip'
+    },
+    {
+      x: xRedR, y: yRedR, type: 'scatter', mode: 'lines',
+      fill: 'tozeroy', fillcolor: 'rgba(166,10,10,0.28)',
+      line: { width: 0, color: 'transparent' },
+      name: 'Type I error α', showlegend: true, hoverinfo: 'skip'
+    },
+    {
+      x: xRedL, y: yRedL, type: 'scatter', mode: 'lines',
+      fill: 'tozeroy', fillcolor: 'rgba(166,10,10,0.28)',
+      line: { width: 0, color: 'transparent' },
+      name: 'Type I error α (left)', showlegend: false, hoverinfo: 'skip'
+    },
+    {
+      x: xFull, y: yH0, type: 'scatter', mode: 'lines',
+      name: 'H₀ (d = 0)',
+      line: { color: '#888', width: 1.5 },
+      hovertemplate: 'd: %{x:.3f}<br>Density: %{y:.4f}<extra>H₀</extra>'
+    },
+    {
+      x: xFull, y: yH1, type: 'scatter', mode: 'lines',
+      name: 'H₁ (d = ' + trueD.toFixed(2) + ')',
+      line: { color: '#1c1717', width: 2.5 },
+      hovertemplate: 'd: %{x:.3f}<br>Density: %{y:.4f}<extra>H₁</extra>'
+    }
+  ];
+
+  var shapes = [
+    {
+      type: 'line', x0: cd, x1: cd, y0: 0, y1: yMax * 0.92,
+      xref: 'x', yref: 'y',
+      line: { color: '#1c1717', width: 2 }
+    }
+  ];
+
+  var annotations = [
+    {
+      x: cd + (highX - cd) * 0.03, y: yMax * 1.06,
+      xref: 'x', yref: 'y',
+      text: '|d| > ' + cd.toFixed(2) + ': significant',
+      showarrow: false, xanchor: 'left', yanchor: 'bottom',
+      font: { family: "'Open Sans', sans-serif", size: 11, color: '#1c1717' }
+    }
+  ];
+
+  Plotly.react('dPlot', traces, {
+    xaxis: {
+      title: { text: "Cohen's d", font: { size: 13 } },
+      zeroline: false, gridcolor: '#ede8e8', linecolor: '#d6dadc',
+      range: [lowX, highX]
+    },
+    yaxis: {
+      title: { text: 'Density', font: { size: 13 } },
+      gridcolor: '#ede8e8', linecolor: '#d6dadc',
+      range: [0, yMax * 1.2]
+    },
+    shapes: shapes,
+    annotations: annotations,
+    plot_bgcolor: '#fffafa', paper_bgcolor: '#fffafa',
+    font: { family: "'Open Sans', sans-serif", color: '#1c1717', size: 12 },
+    margin: { l: 55, r: 24, t: 16, b: 48 },
+    legend: {
+      x: 0.5, y: 1.02, xanchor: 'center', yanchor: 'bottom',
+      orientation: 'h', font: { size: 11 },
+      bgcolor: 'rgba(255,250,250,0.85)'
+    },
+    hovermode: 'closest'
+  }, { responsive: true }).then(postHeight);
+
+  var se    = seD(N, trueD);
+  var pow   = computePower(N, trueD, alpha);
+  var powPct = (100 * pow).toFixed(1);
+
+  document.getElementById('textDesc').innerHTML =
+    'The <strong>black curve</strong> shows the sampling distribution of Cohen’s <em>d</em> ' +
+    'when the true effect is δ = ' + trueD.toFixed(2) + '. ' +
+    'The <strong>grey curve</strong> shows the distribution when H₀ is true (δ = 0). ' +
+    'Only observed effects larger than |<em>d</em>| = ' + cd.toFixed(2) +
+    ' will be statistically significant with N = ' + N + ' per group. ' +
+    '<span style="color:#a60a0a;font-weight:600">Red areas</span> show Type I errors (false positives); ' +
+    '<span style="color:#145ac8;font-weight:600">blue area</span> shows the Type II error rate (false negatives). ' +
+    'The standard error of the distribution is SE = ' + se.toFixed(3) + '.';
+
+  document.getElementById('textPower').innerHTML =
+    '<strong>Statistical power</strong> at α = ' + alpha.toFixed(2) +
+    ' with N = ' + N + ' per group and δ = ' + trueD.toFixed(2) +
+    ': <strong>' + powPct + '%</strong>. ' +
+    'The Type II error rate (β) is ' + (100 - parseFloat(powPct)).toFixed(1) + '%.';
+
+  postHeight();
+}
+
+document.getElementById('N').addEventListener('input', update);
+document.getElementById('N').addEventListener('change', update);
+document.getElementById('d').addEventListener('input', update);
+document.getElementById('alpha').addEventListener('input', update);
+
+window.addEventListener('load', function() { setTimeout(postHeight, 400); });
+if (typeof ResizeObserver !== 'undefined') {
+  new ResizeObserver(postHeight).observe(document.body);
+}
+
+update();
+</script>
+</body>
+</html>

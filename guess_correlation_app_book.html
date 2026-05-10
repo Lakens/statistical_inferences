@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guess the Correlation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans:ital,wght@0,400;0,600;1,400&family=Fira+Code&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.26.0/plotly.min.js"></script>
+<style>
+:root {
+  --bg:      #fffafa;
+  --bg2:     #f7f7f7;
+  --ink:     #1c1717;
+  --ink2:    #3d3535;
+  --ink3:    #666060;
+  --rule:    #d6dadc;
+  --red:     #a60a0a;
+  --red-l:   #c41010;
+  --red-bg:  #fff5f5;
+  --green:   #2d7a50;
+  --green-bg:#e6f4ec;
+  --amber:   #b5621a;
+  --amber-bg:#fdf2e4;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  padding: 20px 20px 32px;
+  overflow: hidden;
+}
+
+.calc-label {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 5px;
+}
+
+.calc-heading {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--ink);
+  margin-bottom: 16px;
+  padding-bottom: 9px;
+  border-bottom: 2px solid var(--red);
+}
+
+/* ── Action panel ── */
+.action-panel {
+  background: var(--bg2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--red);
+  padding: 16px 18px;
+  margin-bottom: 20px;
+}
+
+.action-grid {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 16px;
+  align-items: end;
+}
+
+.input-group { display: flex; flex-direction: column; gap: 5px; }
+
+.input-label {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink3);
+}
+
+.input-label .sym {
+  font-style: italic;
+  font-size: 0.88rem;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+  color: var(--red);
+}
+
+input[type="number"] {
+  font-family: 'Fira Code', monospace;
+  font-size: 15px;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--red);
+  padding: 6px 10px;
+  color: var(--ink);
+  outline: none;
+  width: 100%;
+  transition: border-color .2s;
+  -moz-appearance: textfield;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+input[type="number"]:focus { border-bottom-color: var(--red-l); }
+input[type="number"]:disabled {
+  background: var(--bg2);
+  color: var(--ink3);
+  border-bottom-color: var(--rule);
+}
+
+.action-btn {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  background: var(--red);
+  color: #fff;
+  border: none;
+  padding: 10px 22px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .15s, opacity .15s;
+}
+.action-btn:hover:not(:disabled) { background: var(--red-l); }
+.action-btn:disabled { opacity: 0.32; cursor: not-allowed; }
+
+/* ── Plot area ── */
+.plot-wrap {
+  border: 1px solid var(--rule);
+  background: var(--bg);
+  margin-bottom: 18px;
+  display: flex;
+  justify-content: center;
+}
+
+.plot-placeholder, #plotDiv {
+  width: 100%;
+  max-width: 520px;
+}
+
+.plot-placeholder {
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink3);
+  font-style: italic;
+}
+
+#plotDiv { display: none; }
+
+/* ── Text blocks ── */
+.text-block {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  padding: 11px 14px;
+  margin-bottom: 10px;
+  background: var(--bg2);
+  border-left: 3px solid var(--rule);
+  color: var(--ink2);
+}
+.text-block strong { color: var(--ink); }
+.text-block.correct  { border-left-color: var(--green);  background: var(--green-bg); }
+.text-block.close    { border-left-color: var(--amber);  background: var(--amber-bg); }
+.text-block.miss     { border-left-color: var(--red);    background: var(--red-bg);   }
+.text-block.stats    { border-left-color: var(--rule); }
+
+@media (max-width: 520px) {
+  .action-grid { grid-template-columns: 1fr 1fr; }
+  .input-group { grid-column: span 2; }
+}
+</style>
+</head>
+<body>
+
+<p class="calc-label">Interactive game</p>
+<h2 class="calc-heading">Guess the Correlation</h2>
+
+<div class="action-panel">
+  <div class="action-grid">
+
+    <button class="action-btn" id="btnNew" onclick="newPlot()">New Plot</button>
+
+    <div class="input-group">
+      <label class="input-label" for="guessInput">
+        Your guess <span class="sym">r</span> &nbsp;(−1 to 1)
+      </label>
+      <input type="number" id="guessInput" min="-1" max="1" step="0.01"
+             value="0" disabled>
+    </div>
+
+    <button class="action-btn" id="btnCheck" onclick="checkGuess()" disabled>
+      Check Guess
+    </button>
+
+  </div>
+</div>
+
+<div class="plot-wrap">
+  <div class="plot-placeholder" id="plotPlaceholder">
+    Click "New Plot" to begin
+  </div>
+  <div id="plotDiv"></div>
+</div>
+
+<div id="resultArea" class="text-block" style="display:none;"></div>
+<div id="statsArea"  class="text-block stats" style="display:none;"></div>
+
+<script>
+// ── State ─────────────────────────────────────────────────────────────
+var appState = 'start';   // 'start' | 'guessing' | 'result'
+var currentX = null;
+var currentY = null;
+var trueR    = null;
+var trialLog  = [];        // [{guess, trueR, error}]
+
+// ── Math helpers ──────────────────────────────────────────────────────
+function rnorm(mu, sigma) {
+  var u1, u2;
+  do { u1 = Math.random(); } while (u1 === 0);
+  u2 = Math.random();
+  return mu + sigma * Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+}
+
+function standardize(arr) {
+  var n = arr.length;
+  var m = arr.reduce(function(a, b) { return a + b; }, 0) / n;
+  var s = Math.sqrt(arr.reduce(function(ss, v) { return ss + (v - m) * (v - m); }, 0) / (n - 1));
+  return s === 0 ? arr.map(function() { return 0; }) : arr.map(function(v) { return (v - m) / s; });
+}
+
+function pearsonR(x, y) {
+  var num = 0, dx2 = 0, dy2 = 0;
+  for (var i = 0; i < x.length; i++) {
+    num += x[i] * y[i];   // mean = 0 since both are standardized
+    dx2 += x[i] * x[i];
+    dy2 += y[i] * y[i];
+  }
+  return num / Math.sqrt(dx2 * dy2);
+}
+
+// ── Data generation ───────────────────────────────────────────────────
+function generateData() {
+  var n = 50 + Math.floor(Math.random() * 201);  // 50–250
+  var r = Math.random() * 2 - 1;                 // −1 to 1
+
+  var xRaw = [], eps = [];
+  for (var i = 0; i < n; i++) {
+    xRaw.push(rnorm(0, 1));
+    eps.push(rnorm(0, 1));
+  }
+  var x = standardize(xRaw);
+  var sqrtTerm = Math.sqrt(Math.max(0, 1 - r * r));
+  var yRaw = x.map(function(xi, i) { return r * xi + sqrtTerm * eps[i]; });
+  var y = standardize(yRaw);
+
+  return { x: x, y: y, r: pearsonR(x, y) };
+}
+
+// ── postHeight for iframe ─────────────────────────────────────────────
+function postHeight() {
+  var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+  window.parent.postMessage({ iframeHeight: h }, '*');
+}
+
+// ── Plot ──────────────────────────────────────────────────────────────
+var lastShowLine = false;
+
+function drawPlot(showLine) {
+  lastShowLine = showLine;
+  var traces = [
+    {
+      x: currentX, y: currentY,
+      type: 'scatter', mode: 'markers',
+      marker: { color: '#a60a0a', size: 5, opacity: 0.55 },
+      hovertemplate: 'x: %{x:.2f}  y: %{y:.2f}<extra></extra>'
+    }
+  ];
+
+  if (showLine) {
+    var xMin = Math.min.apply(null, currentX);
+    var xMax = Math.max.apply(null, currentX);
+    traces.push({
+      x: [xMin, xMax],
+      y: [trueR * xMin, trueR * xMax],
+      type: 'scatter', mode: 'lines',
+      line: { color: '#2d7a50', width: 2.5 },
+      hoverinfo: 'skip'
+    });
+  }
+
+  var w = Math.round(document.getElementById('plotDiv').getBoundingClientRect().width) || 400;
+
+  Plotly.react('plotDiv', traces, {
+    width: w,
+    height: w,
+    xaxis: {
+      title: { text: 'X', font: { size: 13 } },
+      zeroline: false, gridcolor: '#ede8e8', linecolor: '#d6dadc'
+    },
+    yaxis: {
+      title: { text: 'Y', font: { size: 13 } },
+      zeroline: false, gridcolor: '#ede8e8', linecolor: '#d6dadc',
+      scaleanchor: 'x', scaleratio: 1
+    },
+    plot_bgcolor: '#fffafa', paper_bgcolor: '#fffafa',
+    font: { family: "'Open Sans', sans-serif", color: '#1c1717', size: 12 },
+    margin: { l: 50, r: 20, t: 20, b: 50 },
+    showlegend: false,
+    hovermode: 'closest'
+  }, { displayModeBar: false });
+}
+
+// ── Game flow ─────────────────────────────────────────────────────────
+function newPlot() {
+  var data = generateData();
+  currentX = data.x;
+  currentY = data.y;
+  trueR    = data.r;
+  appState = 'guessing';
+
+  document.getElementById('plotPlaceholder').style.display = 'none';
+  document.getElementById('plotDiv').style.display = 'block';
+  document.getElementById('resultArea').style.display = 'none';
+
+  drawPlot(false);
+
+  var inp = document.getElementById('guessInput');
+  inp.value = '0';
+  inp.disabled = false;
+  inp.focus();
+
+  document.getElementById('btnNew').disabled   = true;
+  document.getElementById('btnCheck').disabled = false;
+}
+
+function checkGuess() {
+  var raw = parseFloat(document.getElementById('guessInput').value);
+  if (isNaN(raw)) {
+    document.getElementById('guessInput').focus();
+    return;
+  }
+  var guess = Math.max(-1, Math.min(1, raw));
+  var error = guess - trueR;
+
+  trialLog.push({ guess: guess, trueR: trueR, error: error });
+  appState = 'result';
+
+  drawPlot(true);
+  showResult(guess, error);
+  updateStats();
+
+  document.getElementById('guessInput').disabled   = true;
+  document.getElementById('btnCheck').disabled     = true;
+  document.getElementById('btnNew').disabled       = false;
+  document.getElementById('btnNew').focus();
+
+  postHeight();
+}
+
+function showResult(guess, error) {
+  var absErr = Math.abs(error);
+  var label, cls;
+  if      (absErr < 0.05) { label = 'Excellent'; cls = 'correct'; }
+  else if (absErr < 0.10) { label = 'Good';      cls = 'close';   }
+  else if (absErr < 0.20) { label = 'Fair';      cls = 'miss';    }
+  else                    { label = 'Keep practising'; cls = 'miss'; }
+
+  var sign = error >= 0 ? '+' : '';
+  var el = document.getElementById('resultArea');
+  el.className = 'text-block ' + cls;
+  el.style.display = 'block';
+  el.innerHTML =
+    '<strong>Your guess:</strong> ' + guess.toFixed(2) +
+    ' &nbsp;&middot;&nbsp; ' +
+    '<strong>True <em>r</em>:</strong> ' + trueR.toFixed(2) +
+    ' &nbsp;&middot;&nbsp; ' +
+    '<strong>Difference:</strong> ' + sign + error.toFixed(2) +
+    ' &nbsp;&mdash;&nbsp; <em>' + label + '</em>';
+}
+
+function updateStats() {
+  var n   = trialLog.length;
+  var mae = trialLog.reduce(function(s, t) { return s + Math.abs(t.error); }, 0) / n;
+  var el  = document.getElementById('statsArea');
+  el.style.display = 'block';
+  el.innerHTML =
+    'Trials completed: <strong>' + n + '</strong>' +
+    ' &nbsp;&nbsp;&middot;&nbsp;&nbsp; ' +
+    'Mean absolute error: <strong>' + mae.toFixed(3) + '</strong>';
+}
+
+// ── Redraw square plot on resize ─────────────────────────────────────
+window.addEventListener('resize', function() {
+  if (appState !== 'start') { drawPlot(lastShowLine); }
+});
+
+// ── Enter key on guess input ──────────────────────────────────────────
+document.getElementById('guessInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    if (appState === 'guessing') { checkGuess(); }
+  }
+});
+
+// ── Iframe resize ─────────────────────────────────────────────────────
+window.addEventListener('load', function() { setTimeout(postHeight, 400); });
+if (typeof ResizeObserver !== 'undefined') {
+  new ResizeObserver(postHeight).observe(document.body);
+}
+</script>
+</body>
+</html>

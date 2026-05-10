@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Positive Predictive Value</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans:ital,wght@0,400;0,600;1,400&family=Fira+Code&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#fffafa; --bg2:#f7f7f7; --ink:#1c1717; --ink2:#3d3535; --ink3:#666060;
+  --rule:#d6dadc; --red:#a60a0a; --red-l:#c41010; --red-bg:#fff5f5;
+  --green:#2d7a50; --green-bg:#e6f4ec;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:'Open Sans',sans-serif;
+  font-size:15px;line-height:1.65;padding:20px 20px 32px;overflow:hidden}
+.calc-label{font-family:'Open Sans',sans-serif;font-size:10px;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--ink3);margin-bottom:5px}
+.calc-heading{font-family:'Montserrat',sans-serif;font-weight:600;font-size:1.1rem;
+  color:var(--ink);margin-bottom:16px;padding-bottom:9px;border-bottom:2px solid var(--red)}
+.input-panel{background:var(--bg2);border:1px solid var(--rule);border-left:3px solid var(--red);
+  padding:16px 18px;margin-bottom:16px}
+.input-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.input-group{display:flex;flex-direction:column;gap:5px}
+.input-label{font-family:'Open Sans',sans-serif;font-size:10px;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)}
+.input-label .sym{font-style:italic;font-size:.88rem;text-transform:none;
+  letter-spacing:0;font-weight:400;color:var(--red)}
+input[type="range"]{-webkit-appearance:none;width:100%;height:2px;background:var(--rule);
+  outline:none;cursor:pointer;border-radius:1px;margin-top:5px}
+input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;
+  border-radius:50%;background:var(--bg);border:2px solid var(--red);cursor:pointer;transition:transform .15s}
+input[type="range"]::-webkit-slider-thumb:hover{transform:scale(1.25)}
+input[type="range"]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;
+  background:var(--bg);border:2px solid var(--red);cursor:pointer}
+.slider-value{font-family:'Fira Code',monospace;font-size:12px;color:var(--red);font-weight:500}
+.plot-wrap{border:1px solid var(--rule);background:var(--bg);margin-bottom:12px}
+#ppvSvg{display:block;width:100%}
+.text-block{font-size:.9rem;line-height:1.6;padding:11px 14px;margin-bottom:10px;
+  background:var(--bg2);border-left:3px solid var(--rule);color:var(--ink2)}
+.text-block strong{color:var(--ink)}
+.text-block.good{border-left-color:var(--green);background:var(--green-bg)}
+.text-block.warn{border-left-color:var(--red);background:var(--red-bg)}
+@media(max-width:500px){.input-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<p class="calc-label">Interactive calculator</p>
+<h2 class="calc-heading">Positive Predictive Value</h2>
+
+<div class="input-panel">
+  <div class="input-grid">
+    <div class="input-group">
+      <label class="input-label" for="prior">H&#x2081; is true <span class="sym">&#x3d5;</span></label>
+      <input type="range" id="prior" min="0.00" max="1.00" step="0.01" value="0.50">
+      <div class="slider-value" id="priorVal">50%</div>
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="alpha">Type I error <span class="sym">&#x3b1;</span></label>
+      <input type="range" id="alpha" min="0.01" max="1.00" step="0.01" value="0.05">
+      <div class="slider-value" id="alphaVal">0.05</div>
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="power">Power <span class="sym">1&#x2212;&#x3b2;</span></label>
+      <input type="range" id="power" min="0.00" max="1.00" step="0.01" value="0.80">
+      <div class="slider-value" id="powerVal">80%</div>
+    </div>
+  </div>
+</div>
+
+<div class="plot-wrap"><svg id="ppvSvg" xmlns="http://www.w3.org/2000/svg"></svg></div>
+<div id="ppvResult" class="text-block good"></div>
+<div id="ppvExplain" class="text-block"></div>
+
+<script>
+var N    = 200;   // imaginary studies
+var VW   = 580;   // SVG viewBox width
+var UNIT = 110;   // base px: radius = UNIT * sqrt(fraction)
+var DR   = 5;     // dot radius
+
+// ── Area of a circle to the LEFT of a vertical chord ─────────────────
+// offset = lineX - centerX   (positive → line is right of centre → most area left)
+function areaLeft(r, offset) {
+  var o = Math.max(-r + 1e-9, Math.min(r - 1e-9, offset));
+  return r * r * Math.acos(-o / r) + o * Math.sqrt(r * r - o * o);
+}
+
+// ── Find the x-offset of C3's centre so PPV% of C3 is left of junction ─
+function findOffset(r3, ppv) {
+  var target = ppv * Math.PI * r3 * r3;
+  var lo = -r3 + 1e-9, hi = r3 - 1e-9;
+  for (var i = 0; i < 64; i++) {
+    var mid = (lo + hi) / 2;
+    if (areaLeft(r3, mid) < target) lo = mid; else hi = mid;
+  }
+  return (lo + hi) / 2;
+}
+
+// ── Point-in-circle test ──────────────────────────────────────────────
+function inC(x, y, cx, cy, r) { var dx=x-cx, dy=y-cy; return dx*dx+dy*dy <= r*r; }
+
+// ── Rejection sampling: inside A AND inside B ─────────────────────────
+function sampleIntersect(n, cxa, cya, ra, cxb, cyb, rb) {
+  if (n <= 0 || ra <= 0 || rb <= 0) return [];
+  var xLo = Math.max(cxa-ra, cxb-rb), xHi = Math.min(cxa+ra, cxb+rb);
+  var yLo = cya - Math.min(ra, rb),   yHi = cya + Math.min(ra, rb);
+  if (xLo >= xHi) return [];
+  var pts = [], tries = 0, maxT = n * 600;
+  while (pts.length < n && tries++ < maxT) {
+    var x = xLo + Math.random()*(xHi-xLo);
+    var y = yLo + Math.random()*(yHi-yLo);
+    if (inC(x,y,cxa,cya,ra) && inC(x,y,cxb,cyb,rb)) pts.push([x, y]);
+  }
+  return pts;
+}
+
+// ── Rejection sampling: inside A, NOT inside B ───────────────────────
+function sampleExclude(n, cxa, cya, ra, cxb, cyb, rb) {
+  if (n <= 0 || ra <= 0) return [];
+  var pts = [], tries = 0, maxT = n * 300;
+  while (pts.length < n && tries++ < maxT) {
+    var x = cxa + (Math.random()*2-1)*ra;
+    var y = cya + (Math.random()*2-1)*ra;
+    if (inC(x,y,cxa,cya,ra) && !inC(x,y,cxb,cyb,rb)) pts.push([x, y]);
+  }
+  return pts;
+}
+
+// ── postHeight (debounced to prevent push-down on load) ──────────────
+var _phTimer = null;
+function postHeight() {
+  clearTimeout(_phTimer);
+  _phTimer = setTimeout(function() {
+    var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+    window.parent.postMessage({iframeHeight: h}, '*');
+  }, 150);
+}
+
+// ── Main draw ─────────────────────────────────────────────────────────
+function redraw() {
+  var prior = parseFloat(document.getElementById('prior').value);
+  var alpha = parseFloat(document.getElementById('alpha').value);
+  var power = parseFloat(document.getElementById('power').value);
+
+  document.getElementById('priorVal').textContent = Math.round(prior*100) + '%';
+  document.getElementById('alphaVal').textContent = alpha.toFixed(2);
+  document.getElementById('powerVal').textContent = Math.round(power*100) + '%';
+
+  // Study counts (N imaginary studies)
+  var tp  = Math.round(power * prior * N);
+  var fp  = Math.round(alpha * (1-prior) * N);
+  var fn  = Math.round((1-power) * prior * N);
+  var tn  = N - tp - fp - fn;
+  if (tn < 0) { fn = Math.max(0, fn+tn); tn = 0; }
+  var sig = tp + fp;
+  var ppv = sig > 0 ? tp / sig : (prior >= 1 ? 1 : 0);
+
+  // ── Circle radii (area proportional to fraction of N) ─────────────
+  var R1 = UNIT * Math.sqrt(prior);          // H1 true
+  var R2 = UNIT * Math.sqrt(1 - prior);      // H0 true
+  var R3 = sig > 0 ? UNIT * Math.sqrt(sig / N) : 0; // Significant
+
+  // ── Positions in normalised coords (junction of C1/C2 at x=0) ────
+  var cx1n = -R1, cx2n = R2;
+
+  var cx3n = 0;
+  if (R3 > 0) {
+    var offset = findOffset(R3, ppv);
+    cx3n = -offset;
+  }
+
+  // ── Bounding box → SVG scaling ────────────────────────────────────
+  var xVals = [];
+  if (R1 > 0) { xVals.push(cx1n - R1, cx1n + R1); }
+  if (R2 > 0) { xVals.push(cx2n - R2, cx2n + R2); }
+  if (R3 > 0) { xVals.push(cx3n - R3, cx3n + R3); }
+  if (xVals.length === 0) { xVals = [-UNIT, UNIT]; }
+  var xMin = Math.min.apply(null, xVals);
+  var xMax = Math.max.apply(null, xVals);
+  if (xMax - xMin < 1) { xMin -= 0.5; xMax += 0.5; }
+  var yExt = Math.max(R1, R2, R3, UNIT * 0.1);
+
+  var padX = 28, padY = 32;
+  var scaleX = (VW - 2*padX) / (xMax - xMin);
+  var maxCH  = 300;
+  var scaleY = maxCH / (2 * yExt);
+  var S = Math.min(scaleX, scaleY);
+
+  // SVG coordinates
+  var xShift = VW/2 - ((xMin+xMax)/2) * S;
+  var cy     = yExt * S + padY;
+  var cx1    = cx1n * S + xShift;
+  var cx2    = cx2n * S + xShift;
+  var cx3    = cx3n * S + xShift;
+  var jX     = xShift;
+  var s1 = R1*S, s2 = R2*S, s3 = R3*S;
+
+  var VH = Math.round(cy + Math.max(s1,s2,s3) + 70);
+
+  // ── Sample dots ───────────────────────────────────────────────────
+  var ptTP = sampleIntersect(tp, cx3, cy, s3, cx1, cy, s1);
+  var ptFP = sampleIntersect(fp, cx3, cy, s3, cx2, cy, s2);
+  var ptFN = sampleExclude (fn, cx1, cy, s1, cx3, cy, s3);
+  var ptTN = sampleExclude (tn, cx2, cy, s2, cx3, cy, s3);
+
+  // ── Build SVG ─────────────────────────────────────────────────────
+  var f = function(v) { return v.toFixed(1); };
+  var html = '';
+
+  // Circle fills (drawn first, dots on top)
+  if (s1 > 0) html += '<circle cx="'+f(cx1)+'" cy="'+f(cy)+'" r="'+f(s1)+'"'
+        + ' fill="rgba(45,122,80,0.07)"/>';
+  if (s2 > 0) html += '<circle cx="'+f(cx2)+'" cy="'+f(cy)+'" r="'+f(s2)+'"'
+        + ' fill="rgba(160,160,160,0.08)"/>';
+  if (s3 > 0) html += '<circle cx="'+f(cx3)+'" cy="'+f(cy)+'" r="'+f(s3)+'"'
+        + ' fill="rgba(255,245,180,0.55)"/>';
+
+  // Dots — non-significant first, significant on top
+  [
+    {pts: ptFN, col: '#86c4a0'},
+    {pts: ptTN, col: '#bdbdbd'},
+    {pts: ptTP, col: '#2d7a50'},
+    {pts: ptFP, col: '#a60a0a'},
+  ].forEach(function(ds) {
+    ds.pts.forEach(function(p) {
+      html += '<circle cx="'+f(p[0])+'" cy="'+f(p[1])+'" r="'+DR+'"'
+            + ' fill="'+ds.col+'" fill-opacity="0.9"/>';
+    });
+  });
+
+  // Circle outlines (on top of dots so they stay crisp)
+  if (s1 > 0) html += '<circle cx="'+f(cx1)+'" cy="'+f(cy)+'" r="'+f(s1)+'"'
+        + ' fill="none" stroke="#2d7a50" stroke-width="2.2"/>';
+  if (s2 > 0) html += '<circle cx="'+f(cx2)+'" cy="'+f(cy)+'" r="'+f(s2)+'"'
+        + ' fill="none" stroke="#888" stroke-width="2"/>';
+  if (s3 > 0) html += '<circle cx="'+f(cx3)+'" cy="'+f(cy)+'" r="'+f(s3)+'"'
+        + ' fill="none" stroke="#1c1717" stroke-width="2.5" stroke-dasharray="8,4"/>';
+
+  // Junction mark (only meaningful when both circles exist)
+  if (s1 > 0 && s2 > 0) {
+    html += '<line x1="'+f(jX)+'" y1="'+f(cy-18)+'" x2="'+f(jX)+'" y2="'+f(cy+18)+'"'
+          + ' stroke="#aaa" stroke-width="1" stroke-dasharray="3,2"/>';
+  }
+
+  // Labels above each circle
+  var LF = ' font-family="Open Sans,sans-serif" font-size="11.5" font-weight="600"';
+  var labelTop = function(cx, r, colour, txt) {
+    return '<text x="'+f(cx)+'" y="'+f(cy-r-11)+'" text-anchor="middle"'+LF
+         + ' fill="'+colour+'">'+txt+'</text>';
+  };
+  if (s1 > 0) html += labelTop(cx1, s1, '#2d7a50', 'H₁ true ('+Math.round(prior*100)+'%)');
+  if (s2 > 0) html += labelTop(cx2, s2, '#888',    'H₀ true ('+Math.round((1-prior)*100)+'%)');
+  if (s3 > 0) html += labelTop(cx3, s3, '#1c1717', 'Significant (n = '+sig+')');
+
+  // PPV / FDR summary below the circles
+  var maxR  = Math.max(s1, s2, s3);
+  var belowY = cy + maxR + 16;
+  html += '<text x="'+f(VW/2)+'" y="'+f(belowY)+'" text-anchor="middle"'
+        + ' font-family="Open Sans,sans-serif" font-size="12.5" font-weight="600" fill="#1c1717">'
+        + 'PPV = '+(ppv*100).toFixed(1)
+        + '% • FDR = '+((1-ppv)*100).toFixed(1)+'%</text>';
+
+  // Legend (2x2)
+  var legY  = belowY + 22;
+  var col0  = VW/2 - 130, col1 = VW/2 + 10;
+  [
+    {col:'#2d7a50', lbl:'True positive (TP = '+tp+')'},
+    {col:'#a60a0a', lbl:'False positive (FP = '+fp+')'},
+    {col:'#86c4a0', lbl:'False negative (FN = '+fn+')'},
+    {col:'#bdbdbd', lbl:'True negative (TN = '+tn+')'},
+  ].forEach(function(it, i) {
+    var lx = i%2===0 ? col0 : col1;
+    var ly = legY + Math.floor(i/2)*18;
+    html += '<circle cx="'+(lx+7)+'" cy="'+(ly+1)+'" r="5" fill="'+it.col+'" fill-opacity="0.9"/>';
+    html += '<text x="'+(lx+17)+'" y="'+(ly+5)+'"'
+          + ' font-family="Open Sans,sans-serif" font-size="10.5" fill="#3d3535">'+it.lbl+'</text>';
+  });
+
+  var svg = document.getElementById('ppvSvg');
+  svg.setAttribute('viewBox', '0 0 '+VW+' '+VH);
+  svg.innerHTML = html;
+  svg.style.height = Math.round(VH * svg.clientWidth / VW) + 'px';
+
+  // ── Text blocks ───────────────────────────────────────────────────
+  var el = document.getElementById('ppvResult');
+  el.className = 'text-block ' + (ppv >= 0.5 ? 'good' : 'warn');
+  el.innerHTML = 'PPV = <strong>'+(ppv*100).toFixed(1)+'%</strong> of significant results'
+    + ' are true positives.'
+    + ' FDR = <strong>'+((1-ppv)*100).toFixed(1)+'%</strong> are false positives.';
+
+  var priorPct  = Math.round(prior*100);
+  var h0Pct     = Math.round((1-prior)*100);
+  var h1part    = priorPct > 0  ? priorPct+'% test a true effect (left circle)'   : 'none test a true effect';
+  var h0part    = h0Pct   > 0  ? h0Pct+'% test a null effect (right circle)'     : 'none test a null effect';
+  document.getElementById('ppvExplain').innerHTML =
+    'Out of '+N+' imaginary studies, '+h1part+' and '+h0part+'. '
+    + 'The dashed circle marks all <strong>'+sig+' significant findings</strong>: '
+    + tp+' are true positives (overlap with H₁) and '+fp+' are false positives (overlap with H₀).';
+
+  postHeight();
+}
+
+['prior','alpha','power'].forEach(function(id) {
+  document.getElementById(id).addEventListener('input', redraw);
+});
+
+window.addEventListener('resize', function() {
+  var svg = document.getElementById('ppvSvg');
+  var vb  = svg.getAttribute('viewBox');
+  if (vb) {
+    var p = vb.split(' ');
+    svg.style.height = Math.round(+p[3] * svg.clientWidth / +p[2]) + 'px';
+  }
+  postHeight();
+});
+
+window.addEventListener('load', function() { setTimeout(postHeight, 300); });
+if (typeof ResizeObserver !== 'undefined') {
+  new ResizeObserver(postHeight).observe(document.body);
+}
+
+redraw();
+</script>
+</body>
+</html>

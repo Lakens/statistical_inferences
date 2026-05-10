@@ -240,34 +240,35 @@ If we perform multiple studies, we can calculate the binomial probability that w
 
 To calculate the likelihood assuming $H_1$ is true, we need to make an assumption about the power in each study. Let’s provisionally assume all studies were powered at 80% and thus *p* = .80. The probability of observing exactly two significant results in three studies, assuming a power of 0.8, is 0.384 (0.8 × 0.8 × 0.2 = 0.128, and with three orders in which two of the three results can be significant, 0.128 × 3 = 0.384). In other words, if you set out to perform 3 studies, your hypothesis is correct, and you test your hypothesis with 80% power, there is a 38.4% probability of observing 2 out of 3 significant results, and a 9.6% probability of observing 1 out of 3 significant results (and for an extremely unlucky individual, a 0.8% probability of not finding any significant results in three studies, even though there is a true effect). Unless power is extremely high, mixed results should be expected in sets of studies.
 
-Both likelihoods at *p* = .05 and *p* = .80 are highlighted in @fig-like8 by the circles on the dotted vertical lines. We can use the likelihood of the data assuming $H_0$ or $H_1$ is true to calculate the likelihood ratio, 0.384/0.007 = 53.89, which tells us that the observed outcome of exactly two significant results out of three studies is 53.89 times more likely when $H_1$ is true and studies had 80% power, than when $H_0$ is true and studies have a carefully controlled 5% Type 1 error rate. Using Royall's [-@royall_statistical_1997] proposed values for likelihood ratios of 8 and 32 as benchmarks of moderately strong and strong evidence, respectively, this implies that finding two significant results out of the three studies could be considered strong evidence for $H_1$, assuming 80% power. A Shiny app to perform these calculations is available [here](https://shiny.ieis.tue.nl/mixed_results_likelihood/).
+Both likelihoods at *p* = .05 and *p* = .80 are highlighted in the interactive figure below by the circles on the dotted vertical lines. We can use the likelihood of the data assuming $H_0$ or $H_1$ is true to calculate the likelihood ratio, 0.384/0.007 = 53.89, which tells us that the observed outcome of exactly two significant results out of three studies is 53.89 times more likely when $H_1$ is true and studies had 80% power, than when $H_0$ is true and studies have a carefully controlled 5% Type 1 error rate. Using Royall's [-@royall_statistical_1997] proposed values for likelihood ratios of 8 and 32 as benchmarks of moderately strong and strong evidence, respectively, this implies that finding two significant results out of the three studies could be considered strong evidence for $H_1$, assuming 80% power. The interactive calculator below allows you to explore these calculations for any combination of studies, significant results, Type I error rate, and power.
 
-```{r fig-like8,  echo = FALSE}
-#| fig-cap: "Computing a likelihood ratio for two out of three significant results, assuming an alpha of 5% and 80% power."
+::: {.content-visible when-format="html"}
 
-#Calculate the likelihood ratio----
-n <- 3 # set total studies
-x <- 2 # set total significant studies
-H0 <- 0.05 # specify H0 (alpha)
-H1 <- 0.8 # specify H1 (power)
-LR <- round(max(dbinom(x, n, H0) / dbinom(
-  x, n,
-  H1
-), dbinom(x, n, H1) /
-  dbinom(x, n, H0)), digits = 2)
-theta <- seq(0, 1, len = 1000)
-like <- dbinom(x, n, theta)
-par(bg = backgroundcolor)
-plot(theta, like, type = "l", xlab = substitute(paste(italic('p'))), ylab = "Likelihood", lwd = 2)
-points(H0, dbinom(x, n, H0), lwd = 2)
-points(H1, dbinom(x, n, H1), lwd = 2)
-segments(H0, dbinom(x, n, H0), x / n, dbinom(x, n, H0), lty = 2, lwd = 2)
-segments(H1, dbinom(x, n, H1), x / n, dbinom(x, n, H1), lty = 2, lwd = 2)
-segments(x / n, dbinom(x, n, H0), x / n, dbinom(x, n, H1), lwd = 2)
-abline(v = 0.05, col = "gray40", lty = 3, lwd = 2)
-abline(v = 0.8, col = "gray40", lty = 3, lwd = 2)
-title(paste("Likelihood Ratio:", LR))
+```{=html}
+<iframe id="lr-calc-iframe"
+        src="likelihood_ratio_app_book.html"
+        width="100%"
+        height="700"
+        scrolling="no"
+        style="border:none;display:block;margin:1.5rem 0;overflow:hidden;"
+        title="Likelihood Ratio Calculator">
+</iframe>
+<script>
+window.addEventListener('message', function(e) {
+  if (e.data && typeof e.data.iframeHeight === 'number') {
+    var f = document.getElementById('lr-calc-iframe');
+    if (f) f.style.height = (e.data.iframeHeight + 4) + 'px';
+  }
+});
+</script>
 ```
+
+:::
+
+::: {.content-visible unless-format="html"}
+An interactive calculator for these calculations is available at <https://shiny.ieis.tue.nl/mixed_results_likelihood/>.
+:::
+
 
 In sets of studies, the likelihood ratio in favor of $H_1$ versus $H_0$ after observing a mix of significant and nonsignificant findings can become surprisingly large. Even though the evidence appears to be mixed, there is actually strong evidence in favor of a true effect. For example, when a researcher performs six studies with 80% power and a 5% alpha level and finds three significant outcomes and three nonsignificant outcomes, the cumulative likelihood ratio is convincingly large at 38-to-1 in favor of $H_1$ to consider the set of studies strong evidence for a true effect. Intuitively, researchers might not feel convinced by a set of studies where three out of six results were statistically significant. But if we do the math, we see that such a set of studies can be very strong evidence in favor of a true effect. A better understanding of these probabilities might be an important step in mitigating the negative effects of publication bias. 
 
@@ -393,7 +394,7 @@ cat(longmcq(opts_p))
 
 ### Questions about mixed results
 
-A Shiny app to perform the calculations is available [here](https://shiny.ieis.tue.nl/mixed_results_likelihood/).
+Use the interactive calculator above to explore these calculations.
 
 **Q8:** Which statement is correct when you perform 3 studies?
 

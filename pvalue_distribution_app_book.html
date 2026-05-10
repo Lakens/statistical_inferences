@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>p-value Distribution</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans:ital,wght@0,400;0,600;1,400&family=Fira+Code&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.26.0/plotly.min.js"></script>
+<style>
+:root {
+  --bg:    #fffafa;
+  --bg2:   #f7f7f7;
+  --ink:   #1c1717;
+  --ink2:  #3d3535;
+  --ink3:  #666060;
+  --rule:  #d6dadc;
+  --red:   #a60a0a;
+  --red-l: #c41010;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  padding: 20px 20px 32px;
+  overflow: hidden;
+}
+.calc-label {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 5px;
+}
+.calc-heading {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--ink);
+  margin-bottom: 16px;
+  padding-bottom: 9px;
+  border-bottom: 2px solid var(--red);
+}
+.input-panel {
+  background: var(--bg2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--red);
+  padding: 14px 18px;
+  margin-bottom: 20px;
+}
+.input-group { display: flex; flex-direction: column; gap: 5px; }
+.input-label {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink3);
+}
+.input-label .sym {
+  font-style: italic;
+  font-size: 0.88rem;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+  color: var(--red);
+}
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 2px;
+  background: var(--rule);
+  outline: none;
+  cursor: pointer;
+  border-radius: 1px;
+  margin-top: 5px;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--red);
+  cursor: pointer;
+  transition: transform .15s;
+}
+input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.25); }
+input[type="range"]::-moz-range-thumb {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--red);
+  cursor: pointer;
+}
+.slider-value {
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  color: var(--red);
+  font-weight: 500;
+}
+.plot-wrap {
+  border: 1px solid var(--rule);
+  background: var(--bg);
+  margin-bottom: 18px;
+}
+#pvalPlot { width: 100%; height: 360px; }
+.text-block {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  padding: 11px 14px;
+  background: var(--bg2);
+  border-left: 3px solid var(--rule);
+  color: var(--ink2);
+}
+.text-block strong { color: var(--ink); }
+.text-block.paradox { border-left-color: var(--red); }
+@media (max-width: 500px) { #pvalPlot { height: 260px; } }
+</style>
+</head>
+<body>
+
+<p class="calc-label">Interactive visualization</p>
+<h2 class="calc-heading">p-value Distribution</h2>
+
+<div class="input-panel">
+  <div class="input-group">
+    <label class="input-label" for="powerSlider">
+      Power <span class="sym">1&#x2212;&#x3b2;</span>
+    </label>
+    <input type="range" id="powerSlider" min="5" max="100" step="1" value="50">
+    <div class="slider-value" id="powerVal">50%</div>
+  </div>
+</div>
+
+<div class="plot-wrap"><div id="pvalPlot"></div></div>
+<div id="pvalText" class="text-block"></div>
+
+<script>
+// ── Math helpers ──────────────────────────────────────────────────────────
+function phi(x) {
+  return Math.exp(-0.5 * x * x) / Math.sqrt(2 * Math.PI);
+}
+
+// Normal CDF — Abramowitz & Stegun 26.2.17
+function Phi(x) {
+  var t = 1 / (1 + 0.2316419 * Math.abs(x));
+  var p = 1 - phi(x) * t * (0.319381530
+                           + t * (-0.356563782
+                           + t * (1.781477937
+                           + t * (-1.821255978
+                           + t * 1.330274429))));
+  return x >= 0 ? p : 1 - p;
+}
+
+// Inverse normal CDF — rational approximation
+function qnorm(p) {
+  if (p <= 0) return -7;
+  if (p >= 1) return  7;
+  var c0 = 2.515517, c1 = 0.802853, c2 = 0.010328;
+  var d1 = 1.432788, d2 = 0.189269, d3 = 0.001308;
+  var t = Math.sqrt(-2 * Math.log(p < 0.5 ? p : 1 - p));
+  var z = t - (c0 + t * (c1 + t * c2)) / (1 + t * (d1 + t * (d2 + t * d3)));
+  return p < 0.5 ? -z : z;
+}
+
+// ── p-value density for a two-sided z-test with non-centrality ncp ────────
+// Derives from the Jacobian of p = 2*(1 - Phi(|Z|)), Z ~ N(ncp, 1)
+// f(p | ncp) = [phi(z - ncp) + phi(z + ncp)] / (2 * phi(z))
+// where z = qnorm(1 - p/2)  (positive for small p)
+function pvalDensity(p, ncp) {
+  if (p <= 0 || p >= 1) return 0;
+  var z     = qnorm(1 - p / 2);
+  var base  = 2 * phi(z);
+  if (base < 1e-15) return 0;
+  return (phi(z - ncp) + phi(z + ncp)) / base;
+}
+
+// Power of two-sided z-test given ncp and alpha = 0.05
+function powerFromNcp(ncp) {
+  return 1 - Phi(1.96 - ncp) + Phi(-1.96 - ncp);
+}
+
+// Binary search: ncp from power (works for power >= 0.05; below that ncp < 0)
+function ncpFromPower(power) {
+  var p = power / 100;
+  if (Math.abs(p - 0.05) < 0.001) return 0;
+  var lo, hi;
+  if (p > 0.05) { lo = 0;   hi = 12; }
+  else          { lo = -12; hi = 0;  }
+  for (var i = 0; i < 80; i++) {
+    var mid = (lo + hi) / 2;
+    if (powerFromNcp(mid) < p) lo = mid; else hi = mid;
+  }
+  return (lo + hi) / 2;
+}
+
+// ── Debounced postHeight ──────────────────────────────────────────────────
+var _phTimer = null;
+function postHeight() {
+  clearTimeout(_phTimer);
+  _phTimer = setTimeout(function() {
+    var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+    window.parent.postMessage({ iframeHeight: h }, '*');
+  }, 150);
+}
+
+// ── Build traces ──────────────────────────────────────────────────────────
+function makeCurve(ncp, pStart, pEnd, nPoints) {
+  var xs = [], ys = [];
+  for (var i = 0; i <= nPoints; i++) {
+    var p = pStart + (pEnd - pStart) * i / nPoints;
+    xs.push(p);
+    ys.push(pvalDensity(p, ncp));
+  }
+  return { x: xs, y: ys };
+}
+
+// ── Main update ───────────────────────────────────────────────────────────
+function update() {
+  var power = parseInt(document.getElementById('powerSlider').value, 10);
+  document.getElementById('powerVal').textContent = power + '%';
+
+  var ncp   = ncpFromPower(power);
+  var alpha = 0.05;
+
+  // Curve: dense from 0.001 to 0.999
+  var full  = makeCurve(ncp, 0.001, 0.999, 600);
+
+  // Significant region fill: 0.001 to alpha
+  var sig   = makeCurve(ncp, 0.001, alpha, 80);
+
+  // Non-significant fill: alpha to 0.999
+  var ns    = makeCurve(ncp, alpha, 0.999, 400);
+
+  // Lindley's paradox: density at p just below 0.05 is < 1 (below uniform)
+  var lindley = pvalDensity(0.04, ncp) < 1.0;
+
+  Plotly.react('pvalPlot', [
+    // Significant fill (red)
+    {
+      x: sig.x, y: sig.y,
+      type: 'scatter', mode: 'none',
+      fill: 'tozeroy', fillcolor: 'rgba(166,10,10,0.13)',
+      showlegend: false, hoverinfo: 'skip'
+    },
+    // Non-significant fill (grey)
+    {
+      x: ns.x, y: ns.y,
+      type: 'scatter', mode: 'none',
+      fill: 'tozeroy', fillcolor: 'rgba(100,100,100,0.06)',
+      showlegend: false, hoverinfo: 'skip'
+    },
+    // Uniform reference line (null distribution)
+    {
+      x: [0, 1], y: [1, 1],
+      type: 'scatter', mode: 'lines',
+      line: { color: '#bdbdbd', dash: 'dot', width: 1.5 },
+      showlegend: false, hoverinfo: 'skip'
+    },
+    // Main density curve
+    {
+      x: full.x, y: full.y,
+      type: 'scatter', mode: 'lines',
+      line: { color: '#a60a0a', width: 2.5 },
+      showlegend: false,
+      hovertemplate: 'p = %{x:.3f}<br>density = %{y:.3f}<extra></extra>'
+    }
+  ], {
+    shapes: [{
+      type: 'line', x0: alpha, x1: alpha, y0: 0, y1: 1, yref: 'paper',
+      line: { color: '#888', dash: 'dot', width: 1.5 }
+    }],
+    annotations: [
+      {
+        x: alpha, xref: 'x', y: 1, yref: 'paper',
+        text: 'α = 0.05',
+        showarrow: false, xanchor: 'left', yanchor: 'top', xshift: 5,
+        font: { size: 11, color: '#666060', family: "'Open Sans', sans-serif" }
+      },
+      {
+        x: 0.025, xref: 'x', y: 0.12, yref: 'paper',
+        text: '<b>' + power + '%</b>',
+        showarrow: false, xanchor: 'center', yanchor: 'bottom',
+        font: { size: 13, color: '#a60a0a', family: "'Open Sans', sans-serif" }
+      }
+    ],
+    xaxis: {
+      title: { text: 'p-value', font: { size: 13 } },
+      range: [0, 1], zeroline: false,
+      gridcolor: '#ede8e8', linecolor: '#d6dadc',
+      tickvals: [0, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+      ticktext: ['0', '0.05', '0.10', '0.20', '0.30', '0.40', '0.50',
+                 '0.60', '0.70', '0.80', '0.90', '1.00']
+    },
+    yaxis: {
+      title: { text: 'Density', font: { size: 13 } },
+      range: [0, 80],
+      gridcolor: '#ede8e8', linecolor: '#d6dadc'
+    },
+    plot_bgcolor:  '#fffafa',
+    paper_bgcolor: '#fffafa',
+    font: { family: "'Open Sans', sans-serif", color: '#1c1717', size: 12 },
+    margin: { l: 55, r: 20, t: 16, b: 48 },
+    hovermode: 'x'
+  }, { responsive: true, displayModeBar: false });
+
+  // ── Text interpretation ───────────────────────────────────────────────
+  var el = document.getElementById('pvalText');
+  var msg;
+
+  if (power <= 5) {
+    msg = 'With power at or below α = 5%, p-values are approximately '
+        + '<strong>uniformly distributed</strong> — every p-value between 0 and 1 '
+        + 'is equally likely. The red area equals exactly α.';
+    el.className = 'text-block';
+  } else if (lindley) {
+    msg = 'With <strong>' + power + '% power</strong>, ' + power + '% of p-values '
+        + 'from true effects fall below α = 0.05 (red area). '
+        + 'At this high power level, a p-value just below 0.05 (e.g., p = 0.04) '
+        + 'is <strong>more likely under H₀ than under H₁</strong> — '
+        + 'this is Lindley’s paradox. The dotted line marks the uniform (null) distribution.';
+    el.className = 'text-block paradox';
+  } else {
+    msg = 'With <strong>' + power + '% power</strong>, ' + power + '% of p-values '
+        + 'from true effects fall below α = 0.05 (red area). '
+        + 'Small p-values are more likely than large ones when there is a true effect. '
+        + 'The dotted line marks the uniform distribution expected when H₀ is true.';
+    el.className = 'text-block';
+  }
+  el.innerHTML = msg;
+
+  postHeight();
+}
+
+document.getElementById('powerSlider').addEventListener('input', update);
+
+window.addEventListener('load', function() { setTimeout(postHeight, 400); });
+if (typeof ResizeObserver !== 'undefined') {
+  new ResizeObserver(postHeight).observe(document.body);
+}
+
+update();
+</script>
+</body>
+</html>

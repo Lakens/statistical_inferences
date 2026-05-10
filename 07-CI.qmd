@@ -29,13 +29,34 @@ where *N* is the size of the population, and *n* is the size of the sample. When
 
 ## What is a Confidence Interval?
 
-Confidence intervals are a statement about the percentage of confidence intervals that contain the true parameter value. This behavior of confidence intervals is nicely visualized on this website by Kristoffer Magnusson: <http://rpsychologist.com/d3/CI/>. In @fig-cisim we see blue dots that represent means from a sample, and that fall around an orange dashed vertical line, which represents the true value of the parameter in the population. Due to variation in the sample, the estimates do not all fall on the orange dashed line. The horizontal lines around the blue dots are the confidence intervals. By default, the visualization shows 95% confidence intervals. Most of the lines are black (which means the confidence interval overlaps with the orange dashed line indicating the true population value), but some are red (indicating they do not capture the true population value). In the long run, 95% of the horizontal bars will be black, and 5% will be red. 
+Confidence intervals are a statement about the percentage of confidence intervals that contain the true parameter value. This behavior of confidence intervals is visualized in the interactive simulation below. We see dots that represent means from a sample, and that fall around a dashed vertical line, which represents the true value of the parameter in the population (μ = 0). Due to variation in the sample, the estimates do not all fall on the dashed line. The horizontal lines around the dots are the confidence intervals. By default, the visualization shows 95% confidence intervals. Most of the lines are green (which means the confidence interval overlaps with the dashed line indicating the true population value), but some are red (indicating they do not capture the true population value). In the long run, 95% of the horizontal bars will be green, and 5% will be red.
 
-```{r fig-cisim, fig.margin = FALSE, echo = FALSE}
-#| fig-cap: "Series of simulated point estimates and confidence intervals."
+::: {.content-visible when-format="html"}
 
-knitr::include_graphics("images/cisim.png")
+```{=html}
+<iframe id="ci-app-iframe"
+        src="confidence_interval_app_book.html"
+        width="100%"
+        height="600"
+        scrolling="no"
+        style="border:none;display:block;margin:1.5rem 0;overflow:hidden;"
+        title="Confidence Intervals Over Time">
+</iframe>
+<script>
+window.addEventListener('message', function(e) {
+  if (e.data && typeof e.data.iframeHeight === 'number') {
+    var f = document.getElementById('ci-app-iframe');
+    if (f) f.style.height = (e.data.iframeHeight + 4) + 'px';
+  }
+});
+</script>
 ```
+
+:::
+
+::: {.content-visible unless-format="html"}
+An interactive version of this simulation is available in the online edition of this textbook.
+:::
 
 We can now see what is meant by the sentence “Confidence intervals are a statement about the percentage of confidence intervals that contain the true parameter value“. In the long run, for 95% of the samples, the orange dashed line (the population parameter) is contained within the 95% confidence interval around the sample mean, and in 5% of the confidence intervals this is not true. As we will see when we turn to the formula for confidence intervals, the width of a confidence interval depends on the sample size and the standard deviation. The larger the sample size, the smaller the confidence intervals. In @fig-cisamplesize we see how the confidence interval around the mean becomes more narrow as the sample size increases (assuming a standard deviation of 1). If we imagine confidence interval lines around each observed mean with a width equal to the width of the difference between the upper and lower confidence interval around 1, we see that in the long run 95% of the observed means would have a 95% confidence interval that contains the true population parameter (a mean of 1), but that approximately 5% of the means are more extreme and do not have a confidence interval that contains the population parameter of 1. 
 
@@ -165,43 +186,38 @@ With a 95% confidence interval, the $\alpha$ = 0.05, and thus the critical *t*-v
 
 ## Overlapping Confidence Intervals
 
-Confidence intervals are often used in plots. In @fig-cioverlap below, three estimates are visualized (the dots), surrounded by three lines (the 95% confidence intervals). The left two dots (X and Y) represent the *means* of the independent groups X and Y on a scale from 0 to 8 (see the axis from 0-8 on the left side of the plot). The dotted lines between the two confidence intervals visualize the overlap between the confidence intervals around the means. The two confidence intervals around the means of X and Y are commonly shown in a figure in a scientific article. The third dot, slightly larger, is the *mean difference* between X and Y, and the slightly thicker line visualizes the confidence interval of this mean difference. The difference score is expressed using the axis on the right (from -3 to 5). In the plot below, the mean of group X is 3, the mean of group Y is 5.6, and the difference is 2.6. The plot is based on 50 observations per group, and the confidence interval around the mean difference ranges from 0.49 to 4.68, which is quite wide. 
+Confidence intervals are often used in plots. In the interactive simulation below, three estimates are visualized (the dots), surrounded by three lines (the 95% confidence intervals). The left two dots (X and Y) represent the *means* of the independent groups X and Y on a scale from 0 to 8 (see the axis from 0-8 on the left side of the plot). The dotted lines between the two confidence intervals visualize the overlap between the confidence intervals around the means. The two confidence intervals around the means of X and Y are commonly shown in a figure in a scientific article. The third dot, slightly larger, is the *mean difference* between X and Y, and the slightly thicker line visualizes the confidence interval of this mean difference. The difference score is expressed using the axis on the right (from -3 to 5). In the plot below, the mean of group X is 3, the mean of group Y is 5.6, and the difference is 2.6. The plot is based on 50 observations per group, and the confidence interval around the mean difference ranges from 0.49 to 4.68, which is quite wide.
 
-```{r fig-cioverlap, echo=FALSE}
-#| fig-cap: "Means and 95% confidence intervals of two independent groups and the mean difference between the two groups and its 95% confidence interval."
+::: {.content-visible when-format="html"}
 
-set.seed(629)
-
-x <- rnorm(n = 50, mean = 3, sd = 5) # get sample group 1
-y <- rnorm(n = 50, mean = 5, sd = 5) # get sample group 2
-
-d <- data.frame(
-  labels = c("X", "Y", "Difference"),
-  mean = c(mean(x), mean(y), mean(y) - mean(x)),
-  lower = c(t.test(x)[[4]][1], t.test(y)[[4]][1], t.test(y, x)[[4]][1]),
-  upper = c(t.test(x)[[4]][2], t.test(y)[[4]][2], t.test(y, x)[[4]][2])
-)
-
-par(bg = backgroundcolor)
-plot(NA, xlim = c(.5, 3.5), ylim = c(0, max(d$upper[1:2] + 1)), bty = "l", 
-     xaxt = "n", xlab = "", ylab = "Mean")
-points(d$mean[1:2], pch = 19)
-segments(0, d$mean[1], 3, d$mean[1], lty = 2)
-segments(2, d$mean[2], -1, d$mean[2], lty = 2)
-axis(1, 1:3, d$labels)
-segments(1:2, d$lower[1:2], 1:2, d$upper[1:2])
-axis(4, seq((d$mean[1] - 3), (d$mean[1] + 5), by = 1), seq(-3, 5, by = 1))
-points(3, d$mean[1] + d$mean[3], pch = 19, cex = 1.5)
-segments(3, d$mean[1] + d$lower[3], 3, d$mean[1] + d$upper[3], lwd = 2)
-segments(3, d$mean[2], 5, d$mean[2], lty = 2)
-mtext("Difference", side = 4, at = d$mean[1], line = 3)
-segments(1:1, d$upper[1:1], 1:2, d$upper[1:1], lty = 3)
-segments(1:1, d$lower[1:2], 1:2, d$lower[1:2], lty = 3)
-text(3, 1, paste("P-value", sprintf("%.3f",t.test(x, y)$p.value)))
-
+```{=html}
+<iframe id="means-diff-iframe"
+        src="means_difference_app_book.html"
+        width="100%"
+        height="550"
+        scrolling="no"
+        style="border:none;display:block;margin:1.5rem 0;overflow:hidden;"
+        title="Means and Difference">
+</iframe>
+<script>
+window.addEventListener('message', function(e) {
+  if (e.data && typeof e.data.iframeHeight === 'number') {
+    var f = document.getElementById('means-diff-iframe');
+    if (f) f.style.height = (e.data.iframeHeight + 4) + 'px';
+  }
+});
+</script>
 ```
 
-As mentioned earlier, when a 95% confidence interval does not contain 0, the effect is statistically different from 0. In @fig-cioverlap above, the mean difference and the 95% confidence interval around it are indicated by the 'difference' label. As the 95% confidence interval does not contain 0, the *t*-test is significant at an alpha of 0.05. The *p*-value is indicated in the plot as 0.016. Even though the two means differ statistically significantly from each other, the confidence interval around each mean overlap. One might intuitively believe that an effect is only statistically significant if the confidence interval around the individual means do not overlap, but this is not true. The significance test is related to the confidence interval around the mean difference. 
+:::
+
+::: {.content-visible unless-format="html"}
+
+*An interactive means and difference plot is available in the online version of this book.*
+
+:::
+
+As mentioned earlier, when a 95% confidence interval does not contain 0, the effect is statistically different from 0. In the simulation above, the mean difference and the 95% confidence interval around it are indicated by the 'difference' label. As the 95% confidence interval does not contain 0, the *t*-test is significant at an alpha of 0.05. The *p*-value is indicated in the plot as 0.016. Even though the two means differ statistically significantly from each other, the confidence interval around each mean overlap. One might intuitively believe that an effect is only statistically significant if the confidence interval around the individual means do not overlap, but this is not true. The significance test is related to the confidence interval around the mean difference. 
 
 ## Prediction Intervals
 
@@ -473,36 +489,36 @@ opts_p <- c(
 cat(longmcq(opts_p))
 ```
 
-Copy the code below into R and run the code. It will generate plots like the one in @fig-cioverlap. Run the entire script as often as you want (notice the variability in the *p*-values due to the relatively low power in the test!), to answer the following question. The *p*-value in the plot will tell you if the difference is statistically significant, and what the *p*-value is. Run the simulation until you find a *p*-value close to *p* = 0.05.
+Use the interactive simulation below to answer the following question. Click 'New sample' to generate a new plot (notice the variability in the *p*-values due to the relatively low power in the test!). The *p*-value in the plot will tell you if the difference is statistically significant. Run the simulation until you find a *p*-value close to *p* = 0.05.
 
-```{r, evaluate=FALSE}
-x <- rnorm(n = 50, mean = 3, sd = 5) # get sample group 1
-y <- rnorm(n = 50, mean = 5, sd = 5) # get sample group 2
+::: {.content-visible when-format="html"}
 
-d <- data.frame(
-  labels = c("X", "Y", "Difference"),
-  mean = c(mean(x), mean(y), mean(y) - mean(x)),
-  lower = c(t.test(x)[[4]][1], t.test(y)[[4]][1], t.test(y, x)[[4]][1]),
-  upper = c(t.test(x)[[4]][2], t.test(y)[[4]][2], t.test(y, x)[[4]][2])
-)
-
-plot(NA, xlim = c(.5, 3.5), ylim = c(0, max(d$upper[1:2] + 1)), bty = "l", 
-     xaxt = "n", xlab = "", ylab = "Mean")
-points(d$mean[1:2], pch = 19)
-segments(0, d$mean[1], 3, d$mean[1], lty = 2)
-segments(2, d$mean[2], -1, d$mean[2], lty = 2)
-axis(1, 1:3, d$labels)
-segments(1:2, d$lower[1:2], 1:2, d$upper[1:2])
-axis(4, seq((d$mean[1] - 3), (d$mean[1] + 5), by = 1), seq(-3, 5, by = 1))
-points(3, d$mean[1] + d$mean[3], pch = 19, cex = 1.5)
-segments(3, d$mean[1] + d$lower[3], 3, d$mean[1] + d$upper[3], lwd = 2)
-segments(3, d$mean[2], 5, d$mean[2], lty = 2)
-mtext("Difference", side = 4, at = d$mean[1], line = 3)
-segments(1:1, d$upper[1:1], 1:2, d$upper[1:1], lty = 3)
-segments(1:1, d$lower[1:2], 1:2, d$lower[1:2], lty = 3)
-text(3, 1, paste("P-value", sprintf("%.3f",t.test(x, y)$p.value)))
-
+```{=html}
+<iframe id="means-diff-q-iframe"
+        src="means_difference_app_book.html"
+        width="100%"
+        height="550"
+        scrolling="no"
+        style="border:none;display:block;margin:1.5rem 0;overflow:hidden;"
+        title="Means and Difference">
+</iframe>
+<script>
+window.addEventListener('message', function(e) {
+  if (e.data && typeof e.data.iframeHeight === 'number') {
+    var f = document.getElementById('means-diff-q-iframe');
+    if (f) f.style.height = (e.data.iframeHeight + 4) + 'px';
+  }
+});
+</script>
 ```
+
+:::
+
+::: {.content-visible unless-format="html"}
+
+*An interactive means and difference plot is available in the online version of this book.*
+
+:::
 
 **Q6**: How much do two 95% confidence intervals around individual means from independent groups overlap when the mean difference between the two means is only just statistically significant (*p* ≈ 0.05 at an alpha of 0.05)?
 

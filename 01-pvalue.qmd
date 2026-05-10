@@ -193,32 +193,36 @@ abline(h=nSims/bars, col = "red", lty=3)
 
 On the x-axis we see *p*-values from 0 to 1 in 20 bars, and on the y-axis we see how frequently these *p*-values were observed. There is a horizontal red dotted line that indicates an alpha of 5% (located at a frequency of 100000 \* 0.05 = 5000) – but you can ignore this line for now. In the title of the graph, the statistical power that is achieved in the simulated studies is given (assuming an alpha of 0.05): The studies have 50% power.
 
-The simulation result illustrates the **probability density function** of *p*-values for a *t*-test. A probability density function provides the probability that a random variable has a specific value (such as @fig-tdist) of the *t*-distribution). Because the *p*-value is a random variable, we can use its probability density function to plot the *p*-value distribution [@hung_behavior_1997; @ulrich_properties_2018], as in @fig-pdft). In [this online Shiny app](http://shiny.ieis.tue.nl/d_p_power/) you can vary the sample size, effect size, and alpha level to examine the effect on the *p*-value distribution. Increasing the sample size or the effect size will increase the steepness of the *p*-value distribution, which means that the probability to observe small *p*-values increases. The *p*-value distribution is a function of the statistical power of the test.
+The simulation result illustrates the **probability density function** of *p*-values for a *t*-test. A probability density function provides the probability that a random variable has a specific value (such as @fig-tdist) of the *t*-distribution). Because the *p*-value is a random variable, we can use its probability density function to plot the *p*-value distribution [@hung_behavior_1997; @ulrich_properties_2018], as in the interactive figure below. In [this online Shiny app](http://shiny.ieis.tue.nl/d_p_power/) you can vary the sample size, effect size, and alpha level to examine the effect on the *p*-value distribution. Increasing the sample size or the effect size will increase the steepness of the *p*-value distribution, which means that the probability to observe small *p*-values increases. The *p*-value distribution is a function of the statistical power of the test. You can explore this by increasing or decreasing the power by moving the slider in the interactive visualization below.
 
-```{r fig-pdft, echo = FALSE}
-#| fig-cap: "Probability density function for *p*-values from a two-sided *t*-test."
+::: {.content-visible when-format="html"}
 
-n <- 71 # sample size per independent group
-d <- 0.33 # effect size
-se <- sqrt(2 / n) # standard error
-ncp <- (d * sqrt(n / 2)) # non-centrality parameter d
-
-pdf2_t <- function(p) { #probability density function
-  0.5 * dt(qt(p / 2, 2 * n - 2, 0), 2 * n - 2, ncp) / 
-      dt(qt(p / 2, 2 * n - 2, 0), 2 * n - 2, 0) +
-    dt(qt(1 - p / 2, 2 * n - 2, 0), 2 * n - 2, ncp) / 
-      dt(qt(1 - p / 2, 2 * n - 2, 0), 2 * n - 2, 0)
-}
-
-par(bg = backgroundcolor)
-plot(-10, xlab = "p-value", ylab = "Density", axes = FALSE,
-     main = "p-value distribution", xlim = c(0, 1), ylim = c(0, 50), 
-     cex.lab = 1.5, cex.main = 1.5, cex.sub = 1
-)
-curve(pdf2_t, 0, 1, n = 1000, col = "black", lty = 1, lwd = 3, add = TRUE)
-axis(side = 1, at = seq(0, 1, 0.05), 
-     labels = formatC(seq(0, 1, 0.05), format = "f", digits = 2), cex.axis = 1)
+```{=html}
+<iframe id="pval-dist-iframe"
+        src="pvalue_distribution_app_book.html"
+        width="100%"
+        height="500"
+        scrolling="no"
+        style="border:none;display:block;margin:1.5rem 0;overflow:hidden;"
+        title="p-value Distribution">
+</iframe>
+<script>
+window.addEventListener('message', function(e) {
+  if (e.data && typeof e.data.iframeHeight === 'number') {
+    var f = document.getElementById('pval-dist-iframe');
+    if (f) f.style.height = (e.data.iframeHeight + 4) + 'px';
+  }
+});
+</script>
 ```
+
+:::
+
+::: {.content-visible unless-format="html"}
+
+*An interactive p-value distribution app is available in the online version of this book.*
+
+:::
 
 When there is no true effect, and test assumptions are met, *p*-values for a *t*-test are **uniformly distributed**. This means that every *p*-value is equally likely to be observed when the null hypothesis is true. In other words, when there is no true effect, a *p*-value of 0.08 is just as likely as a *p*-value of 0.98. I remember thinking this was very counterintuitive when I first learned about uniform *p*-value distributions (after completing my PhD). But it makes sense that *p*-values are uniformly distributed when we remember that, when $H_0$ is true, alpha % of the *p*-values should fall below the alpha level, whichever alpha level we set. Hence, if we set alpha to 0.01, 1% of the observed *p*-values should fall below 0.01, and if we set alpha to 0.12, 12% of the observed *p*-values should fall below 0.12. This can only happen if *p*-values are uniformly distributed when the null hypothesis is true. Note that the uniform *p*-value distribution only emerges if the distribution of the test statistic is continuous (e.g., such as for the *t*-test), and not if the distribution of the test statistic is discrete (e.g., in the case of the chi-squared test see @wang_pvalue_2019).
 
