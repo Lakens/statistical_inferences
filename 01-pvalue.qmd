@@ -146,52 +146,40 @@ In a very educational video about the '[Dance of the *p*-values](https://www.you
 
 Take a moment to try to answer the following two questions. Which *p*-values can you expect to observe if there is a true effect, and you repeat the same study 100000 times? And which *p*-values can you expect if there is no true effect, and you repeat the same study one-hundred thousand times? If you don't know the answer, don't worry - you will learn it now. But if you don't know the answer, it is worth reflecting on why you don't know the answer about such an essential aspect of *p*-values. If you are like me, you were simply never taught this. But as we will see, it is essential to a solid understanding of how to interpret *p*-values.
 
-Which *p*-values you can expect is completely determined by the statistical power of the study, or in other words the probability that you will observe a significant effect if there is a true effect. The statistical power ranges from 0 to 1. We can illustrate this by simulating independent *t*-tests. The idea is that we simulate IQ scores for a group of people. We know the standard deviation of IQ scores is 15. For now, we will set the mean IQ score in one simulated group to 100, and in the other simulated group to 105. We are testing if the people in one group have an IQ that differs from the other group (and we know the correct answer is ‘yes’, because we made it so in the simulation).
+Which *p*-values you can expect is completely determined by the statistical power of the study, or in other words the probability that you will observe a significant effect if there is a true effect. The statistical power ranges from 0 to 1. We can illustrate this by simulating independent *t*-tests. The idea is that we simulate reaction times for two groups of people. We know the standard deviation of reaction times in this task is 75 ms. We will set the mean reaction time in one simulated group to 100 ms, and in the other simulated group to 130 ms. We are testing whether people in one group have a different reaction time from the other group (and we know the correct answer is 'yes', because we made it so in the simulation).
 
-```{r, eval = FALSE, cache = TRUE}
-p <- numeric(100000) # store all simulated *p*-values
+The interactive visualization below runs this simulation. In each simulated experiment, *n* = 49 reaction times are drawn from a normal distribution for each group (by default: *M* = 100 ms and *M* = 130 ms, SD = 75 ms), an independent *t*-test is performed, and the *p*-value is stored. After all simulations are complete, the distribution of *p*-values is plotted as a histogram. Use the inputs to change the group means, the standard deviation, the sample size, the number of simulations, and the alpha level, then click **Run simulation**.
 
-for (i in 1:100000) { # for each simulated experiment
-  x <- rnorm(n = 71, mean = 100, sd = 15) # Simulate data
-  y <- rnorm(n = 71, mean = 105, sd = 15) # Simulate data
-  p[i] <- t.test(x, y)$p.value # store the *p*-value
-}
+::: {.content-visible when-format="html"}
 
-(sum(p < 0.05) / 100000) # compute power
-
-hist(p, breaks = 20) # plot a histogram
+```{=html}
+<iframe id="pval-sim-iframe"
+        src="p_value_simulation_app_book.html"
+        width="100%"
+        height="580"
+        scrolling="no"
+        style="border:none;display:block;margin:1.5rem 0;overflow:hidden;"
+        title="P-value Distribution Simulation">
+</iframe>
+<script>
+window.addEventListener('message', function(e) {
+  if (e.data && typeof e.data.iframeHeight === 'number') {
+    var f = document.getElementById('pval-sim-iframe');
+    if (f && e.source === f.contentWindow) f.style.height = e.data.iframeHeight + 'px';
+  }
+});
+</script>
 ```
 
-In the simulation, we generate n = 71 normally distributed IQ scores with means of M (100 and 105 by default) and a standard deviation of 15. We then perform an independent *t*-test, store the *p*-value, and generate a plot of the *p*-value distribution.
+:::
 
-```{r fig-pdistr1, cache = TRUE, echo=FALSE}
-#| fig-cap: "Distribution of *p*-values when power = 50%." 
+::: {.content-visible unless-format="html"}
 
-#Set number of simulations
-set.seed(1605)
-nSims <- 100000 # number of simulated experiments
-p <- numeric(nSims) # set up empty variable to store all simulated *p*-values
-bars <- 20
+*An interactive p-value distribution simulation is available in the online version of this book.*
 
-for (i in 1:nSims) { # for each simulated experiment
-  x <- rnorm(n = 71, mean = 100, sd = 15) # Simulate data
-  y <- rnorm(n = 71, mean = 105, sd = 15) # Simulate data
-  p[i] <- t.test(x, y)$p.value # store the *p*-value
-}
-  
-#Plot figure
-par(bg = backgroundcolor)
-op <- par(mar = c(5,7,4,4)) #change white-space around graph
-hist(p, breaks=bars, xlab="p-values", ylab="number of p-values\n", axes=FALSE,
-     main=paste("p-value Distribution with 50% power"),
-     col="grey", xlim=c(0,1), ylim=c(0, nSims))
-axis(side=1, at=seq(0,1, 0.1), labels=seq(0,1,0.1))
-axis(side=2, at=seq(0,nSims, nSims/4), labels=seq(0,nSims, nSims/4), las=2)
-abline(h=nSims/bars, col = "red", lty=3)
+:::
 
-```
-
-On the x-axis we see *p*-values from 0 to 1 in 20 bars, and on the y-axis we see how frequently these *p*-values were observed. There is a horizontal red dotted line that indicates an alpha of 5% (located at a frequency of 100000 \* 0.05 = 5000) – but you can ignore this line for now. In the title of the graph, the statistical power that is achieved in the simulated studies is given (assuming an alpha of 0.05): The studies have 50% power.
+On the x-axis we see *p*-values from 0 to 1 in 20 bars, and on the y-axis we see how frequently these *p*-values were observed. The red dotted horizontal line shows the expected frequency per bar if H₀ were true — with 100,000 simulations and 20 bars, that is 5,000 per bar. In the title of the simulation, the statistical power achieved in the simulated studies is given (assuming α = 0.05). With the default settings (*n* = 49, *M* = 100 ms vs *M* = 130 ms, SD = 75 ms), the studies have approximately 50% power.
 
 The simulation result illustrates the **probability density function** of *p*-values for a *t*-test. A probability density function provides the probability that a random variable has a specific value (such as @fig-tdist) of the *t*-distribution). Because the *p*-value is a random variable, we can use its probability density function to plot the *p*-value distribution [@hung_behavior_1997; @ulrich_properties_2018], as in the interactive figure below. In [this online Shiny app](http://shiny.ieis.tue.nl/d_p_power/) you can vary the sample size, effect size, and alpha level to examine the effect on the *p*-value distribution. Increasing the sample size or the effect size will increase the steepness of the *p*-value distribution, which means that the probability to observe small *p*-values increases. The *p*-value distribution is a function of the statistical power of the test. You can explore this by increasing or decreasing the power by moving the slider in the interactive visualization below.
 

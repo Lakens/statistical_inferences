@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P-value Distribution Simulation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans:ital,wght@0,400;0,600;1,400&family=Fira+Code&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.26.0/plotly.min.js"></script>
+<style>
+:root {
+  --bg:    #fffafa;
+  --bg2:   #f7f7f7;
+  --ink:   #1c1717;
+  --ink2:  #3d3535;
+  --ink3:  #666060;
+  --rule:  #d6dadc;
+  --red:   #a60a0a;
+  --red-l: #c41010;
+  --blue:  #1a6e9a;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px; line-height: 1.65;
+  padding: 20px 20px 8px; overflow: hidden;
+}
+.calc-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink3); margin-bottom: 5px;
+}
+.calc-heading {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600; font-size: 1.1rem;
+  color: var(--ink); margin-bottom: 16px;
+  padding-bottom: 9px; border-bottom: 2px solid var(--red);
+}
+.input-panel {
+  background: var(--bg2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--red);
+  padding: 14px 18px; margin-bottom: 16px;
+}
+.input-row { display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap; }
+.input-group { display: flex; flex-direction: column; gap: 5px; }
+.input-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--ink3);
+}
+.sym {
+  font-style: italic; font-size: .88rem;
+  text-transform: none; letter-spacing: 0;
+  font-weight: 400; color: var(--red);
+}
+input[type="number"] {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px; background: var(--bg);
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--red);
+  padding: 6px 8px; color: var(--ink);
+  outline: none; width: 90px;
+  transition: border-color .2s;
+  -moz-appearance: textfield;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+input[type="number"]:focus { border-bottom-color: var(--red-l); }
+.btn {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 11px; font-weight: 600;
+  background: var(--red); color: #fff;
+  border: none; padding: 8px 16px;
+  cursor: pointer; letter-spacing: .06em;
+  text-transform: uppercase;
+  transition: background .15s;
+  white-space: nowrap;
+}
+.btn:hover { background: var(--red-l); }
+.btn:disabled { background: #aaa; cursor: default; }
+.plot-wrap {
+  border: 1px solid var(--rule);
+  background: var(--bg); margin-bottom: 10px;
+}
+#plot { width: 100%; height: 340px; }
+.text-block {
+  font-size: .88rem; line-height: 1.6;
+  padding: 10px 14px;
+  background: var(--bg2);
+  border-left: 3px solid var(--rule);
+  color: var(--ink2);
+}
+.text-block strong { color: var(--ink); }
+</style>
+</head>
+<body>
+
+<p class="calc-label">Interactive simulation</p>
+<h2 class="calc-heading">P-value Distribution from Simulated t-tests</h2>
+
+<div class="input-panel">
+  <div class="input-row">
+    <div class="input-group">
+      <label class="input-label" for="nIn">n per group</label>
+      <input type="number" id="nIn" min="5" max="500" step="1" value="49">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="m1In">Mean 1 <span class="sym">&#956;&#8321;</span></label>
+      <input type="number" id="m1In" step="1" value="100">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="m2In">Mean 2 <span class="sym">&#956;&#8322;</span></label>
+      <input type="number" id="m2In" step="1" value="130">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="sigmaIn">SD <span class="sym">&#963;</span></label>
+      <input type="number" id="sigmaIn" min="0.1" step="1" value="75">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="alphaIn">Alpha <span class="sym">&#945;</span></label>
+      <input type="number" id="alphaIn" min="0.001" max="0.5" step="0.001" value="0.05">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="simIn">Simulations <span class="sym">m</span></label>
+      <input type="number" id="simIn" min="1000" max="1000000" step="1000" value="100000">
+    </div>
+    <div class="input-group">
+      <div class="input-label">&nbsp;</div>
+      <button class="btn" id="runBtn">Run simulation</button>
+    </div>
+  </div>
+</div>
+
+<div class="plot-wrap"><div id="plot"></div></div>
+<div id="statsBlock" class="text-block">Click <strong>Run simulation</strong> to start.</div>
+
+<script>
+var NBINS = 20;
+
+var FONT = { family: "'Open Sans', sans-serif", color: '#1c1717', size: 12 };
+var AXIS = { zeroline: false, gridcolor: '#ede8e8', linecolor: '#d6dadc' };
+
+var _phTimer = null;
+function postHeight() {
+  clearTimeout(_phTimer);
+  _phTimer = setTimeout(function() {
+    var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+    window.parent.postMessage({ iframeHeight: h }, '*');
+  }, 150);
+}
+
+function startSim() {
+  var btn = document.getElementById('runBtn');
+  btn.disabled = true;
+  btn.textContent = 'Simulating…';
+  document.getElementById('statsBlock').innerHTML =
+    '<span style="color:var(--ink3);">Simulating… this may take a moment.</span>';
+  setTimeout(doSim, 20);
+}
+
+function doSim() {
+  var n     = Math.max(5, Math.min(500, parseInt(document.getElementById('nIn').value, 10) || 71));
+  var mu1   = parseFloat(document.getElementById('m1In').value);
+  var mu2   = parseFloat(document.getElementById('m2In').value);
+  var SIGMA = Math.max(0.01, parseFloat(document.getElementById('sigmaIn').value) || 75);
+  var alphaRaw = parseFloat(document.getElementById('alphaIn').value);
+  var ALPHA = isNaN(alphaRaw) ? 0.05 : Math.min(0.5, Math.max(0.001, alphaRaw));
+  var m     = Math.max(1000, Math.min(1000000,
+                parseInt(document.getElementById('simIn').value, 10) || 100000));
+
+  if (isNaN(mu1)) mu1 = 100;
+  if (isNaN(mu2)) mu2 = 130;
+
+  // Pooled t-test: same true SD and equal n → df = 2n-2 is constant
+  var df = 2 * n - 2;
+
+  var bins = new Int32Array(NBINS);
+  var sig  = 0;
+
+  for (var sim = 0; sim < m; sim++) {
+    // Compute group means and sum-of-squares using Welford's online algorithm.
+    // Box-Muller generates two independent normals per call; one goes to each group.
+    var mean1 = 0, mean2 = 0, ss1 = 0, ss2 = 0;
+    for (var i = 1; i <= n; i++) {
+      var u = Math.random(); if (u === 0) u = 1e-14;
+      var r = Math.sqrt(-2 * Math.log(u));
+      var theta = 2 * Math.PI * Math.random();
+      var x = mu1 + SIGMA * r * Math.cos(theta);
+      var y = mu2 + SIGMA * r * Math.sin(theta);
+      var dx = x - mean1; mean1 += dx / i; ss1 += dx * (x - mean1);
+      var dy = y - mean2; mean2 += dy / i; ss2 += dy * (y - mean2);
+    }
+
+    // Pooled variance and t-statistic
+    var sp2  = (ss1 + ss2) / df;
+    var tstat = (mean1 - mean2) / Math.sqrt(2 * sp2 / n);
+    var p    = 2 * jStat.studentt.cdf(-Math.abs(tstat), df);
+
+    if (p < ALPHA) sig++;
+    bins[Math.min(NBINS - 1, Math.floor(p * NBINS))]++;
+  }
+
+  // Build bar chart arrays
+  var barX = [], barY = [];
+  for (var i = 0; i < NBINS; i++) {
+    barX.push((i + 0.5) / NBINS);
+    barY.push(bins[i]);
+  }
+
+  var power    = (sig / m * 100).toFixed(1);
+  var h0Count  = m / NBINS;           // expected count per bin under H₀
+  var cohensd  = Math.abs(mu2 - mu1) / SIGMA;
+
+  Plotly.react('plot', [
+    {
+      x: barX, y: barY, type: 'bar',
+      width: 1 / NBINS,
+      marker: { color: 'rgba(160,160,160,0.85)', line: { color: '#555', width: 0.6 } },
+      showlegend: false,
+      hovertemplate: 'p ∈ [%{x:.2f}−%{x:.2f}): %{y}<extra></extra>'
+    }
+  ], {
+    title: {
+      text: 'Power = <b>' + power + '%</b>  (&#945; = ' + ALPHA + ', <i>m</i> = ' + m.toLocaleString() + ')',
+      font: { size: 13, color: '#1c1717', family: "'Montserrat', sans-serif" },
+      x: 0.5
+    },
+    xaxis: Object.assign({
+      title: { text: 'p-value', font: { size: 13 } },
+      range: [0, 1], dtick: 0.1
+    }, AXIS),
+    yaxis: Object.assign({
+      title: { text: 'Frequency', font: { size: 13 } }
+    }, AXIS),
+    shapes: [{
+      type: 'line', x0: 0, x1: 1, y0: h0Count, y1: h0Count,
+      xref: 'x', yref: 'y',
+      line: { color: '#a60a0a', width: 1.8, dash: 'dot' }
+    }],
+    annotations: [{
+      x: 1, xref: 'paper', y: h0Count, yref: 'y',
+      text: 'H₀ expected',
+      showarrow: false, xanchor: 'right', yanchor: 'bottom',
+      font: { size: 10, color: '#a60a0a', family: "'Open Sans', sans-serif" }
+    }],
+    plot_bgcolor:  '#fffafa',
+    paper_bgcolor: '#fffafa',
+    font: FONT,
+    margin: { l: 60, r: 20, t: 40, b: 50 },
+    showlegend: false,
+    bargap: 0
+  }, { responsive: true, displayModeBar: false });
+
+  document.getElementById('statsBlock').innerHTML =
+    '<strong>' + sig.toLocaleString() + '</strong> / <strong>' + m.toLocaleString()
+    + '</strong> simulations had <em>p</em> &lt; ' + ALPHA
+    + ' &nbsp;→&nbsp; simulated power = <strong>' + power + '%</strong>'
+    + ' &nbsp;|&nbsp; Cohen\'s <em>d</em> = |' + mu2 + ' − ' + mu1 + '| / ' + SIGMA
+    + ' = <strong>' + cohensd.toFixed(2) + '</strong>'
+    + '<br><span style="font-size:.82rem;color:var(--ink3);">'
+    + 'Red dotted line = expected frequency per bar if H₀ were true'
+    + ' (uniform <em>p</em>-values): '
+    + Math.round(h0Count).toLocaleString() + ' per bar.'
+    + '</span>';
+
+  var btn = document.getElementById('runBtn');
+  btn.disabled = false;
+  btn.textContent = 'Run simulation';
+  postHeight();
+}
+
+document.getElementById('runBtn').addEventListener('click', startSim);
+
+window.addEventListener('resize', postHeight);
+window.addEventListener('load', function() {
+  setTimeout(function() { startSim(); }, 100);
+});
+if (typeof ResizeObserver !== 'undefined') {
+  new ResizeObserver(postHeight).observe(document.body);
+}
+</script>
+</body>
+</html>
