@@ -37,170 +37,126 @@ $$
 f(x; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} x^{\alpha - 1}(1 - x)^{\beta - 1}
 $$
 
-where *B(*$\alpha$, $\beta$) is the beta function. Understanding the mathematical basis of this function is beyond the scope of this chapter, but you can read more on [Wikipedia](https://en.wikipedia.org/wiki/Beta_distribution) or Kruschke's book on Doing Bayesian Data Analysis [@kruschke_doing_2014]. The beta prior for a variety of values for $\alpha$ and $\beta$ can be seen in @fig-bayes1.
+where *B(*$\alpha$, $\beta$) is the beta function. Understanding the mathematical basis of this function is beyond the scope of this chapter, but you can read more on [Wikipedia](https://en.wikipedia.org/wiki/Beta_distribution) or Kruschke's book on Doing Bayesian Data Analysis [@kruschke_doing_2014]. The beta prior for a variety of values for $\alpha$ and $\beta$ can be explored in the interactive visualization below. Each panel shows a different Beta distribution; you can adjust $\alpha$ and $\beta$ freely to see how the shape changes, and the mean and mode update automatically.
 
-```{r fig-bayes1, fig.margin = FALSE, echo = FALSE}
-#| fig-cap: "Four examples of Bayesian priors."
+::: {.content-visible when-format="html"}
 
-x <- seq(0, 1, 0.001)
-
-par(mfrow = c(2, 2))
-par(bg = backgroundcolor)
-like <- dbeta(x, 1, 1)
-plot(x, like, type = "l", lwd = 3, xlab = "p", ylab = "Density", las = 1, main = expression(paste(alpha, " = 1, ", beta, " = 1")))
-like <- dbeta(x, 1, 1 / 2)
-plot(x, like, type = "l", lwd = 3, xlab = "p", ylab = "Density", las = 1, main = expression(paste(alpha, " = 1, ", beta, " = 1/2")))
-like <- dbeta(x, 4, 4)
-plot(x, like, type = "l", lwd = 3, xlab = "p", ylab = "Density", las = 1, main = expression(paste(alpha, " = 4, ", beta, " = 4")))
-like <- dbeta(x, 100, 100)
-plot(x, like, type = "l", lwd = 3, xlab = "p", ylab = "Density", las = 1, main = expression(paste(alpha, " = 100, ", beta, " = 100")))
-par(mfrow = c(1, 1))
+```{=html}
+<iframe id="beta-prior-iframe"
+        src="beta_prior_app_book.html"
+        width="100%"
+        height="620"
+        scrolling="no"
+        style="border:none;display:block;margin:1.5rem 0;overflow:hidden;"
+        title="Beta Prior Distributions">
+</iframe>
+<script>
+window.addEventListener('message', function(e) {
+  if (e.data && typeof e.data.iframeHeight === 'number') {
+    var f = document.getElementById('beta-prior-iframe');
+    if (f && e.source === f.contentWindow) f.style.height = e.data.iframeHeight + 'px';
+  }
+});
+</script>
 ```
+
+:::
+
+::: {.content-visible unless-format="html"}
+
+*An interactive Beta distribution visualization is available in the online version of this book.*
+
+:::
 
 These beta densities reflect different types of priors. Let’s imagine that you are approached by a street merchant who tries to sell you a special coin with heads and tails that, when flipped, will almost always turn up heads. The $\alpha$ = 1, $\beta$ = 1 prior is what a newborn baby would have as a prior, without any idea of what to expect when you flip a coin, and thus every value of *p* is equally likely. The $\alpha$ = 1, $\beta$ = 1/2 prior is what a true believer would have as a prior. The sales merchant tells you the coin will turn up heads almost every time, and thus, you believe it will turn up heads almost every time. The $\alpha$ = 4, $\beta$ = 4, and the $\alpha$ = 100, $\beta$ = 100 priors are for slightly and extremely skeptical people. With an $\alpha$ = 4, $\beta$ = 4 prior, you expect the coin will be fair, but you are willing to believe a wide range of other true values is possible (the curve is centered on 0.5, but the curve is wide, allowing for very high and low values of *p*). With the $\alpha$ = 100, $\beta$ = 100 prior you are really convinced coins are fair, and believe there will be only a very slight bias, at most (the curve is again centered on 0.5, and a skeptic believes that *p* will lie between 0.4 and 0.6 – a much narrower range compared to the slightly skeptic individual).
 
 Let’s assume the newborn baby, the true believer, the slight skeptic, and the extreme skeptic all buy the coin, flip it n = 20 times, and observe x = 10 heads. This outcome can be plotted as a binomial distribution with 10 heads out of 20 trials, or as a Beta(11, 11) distribution.
 
-The newborn baby had a prior Beta distribution with $\alpha$ = 1 and $\beta$ = 1, which equals a binomial likelihood distribution for 0 heads out of 0 trials. The posterior is a Beta distribution with Beta($\alpha$\*, $\beta$\*), where:
+The newborn baby had a prior Beta distribution with $\alpha$ = 1 and $\beta$ = 1, which equals a binomial likelihood distribution for 0 heads out of 0 trials. The posterior is a Beta distribution with Beta($\alpha^*$, $\beta^*$), where:
 
-$\alpha$\* = $\alpha$ + x = 1 + 10 = 11
+$$\alpha^* = \alpha + x = 1 + 10 = 11$$
 
-$\beta$\* = $\beta$ + n – x = 1 + 20 – 10 = 11
+$$\beta^* = \beta + (n - x) = 1 + 20 - 10 = 11$$
 
 Or calculating these values more directly from the $\alpha$ and $\beta$ of the prior and likelihood:
 
-$\alpha$\* = $\alpha$prior + $\alpha$likelihood – 1 = 1 + 11 - 1 = 11
+$$\alpha^* = \alpha_\text{prior} + \alpha_\text{likelihood} - 1 = 1 + 11 - 1 = 11$$
 
-$\beta$\* = $\beta$prior + $\beta$likelihood – 1 = 1 + 11 – 1 = 11
+$$\beta^* = \beta_\text{prior} + \beta_\text{likelihood} - 1 = 1 + 11 - 1 = 11$$
 
 Thus, the posterior distribution for the newborn is a Beta(11,11) distribution. This equals a binomial likelihood function for 10 heads out of 20 trials, or Beta(11,11) distribution. In other words, the posterior distribution is identical to the likelihood function when a uniform prior is used.
 
-Take a look at @fig-bayes2. For the newborn baby, given 10 heads out of 20 coin flips, we see the prior distribution (the horizontal grey line), the likelihood (the blue dotted line), and the posterior (the black line).
+The interactive visualization below shows how each prior is updated to a posterior after observing the data. In each panel the grey line is the prior, the blue dashed line is the likelihood, and the red line is the posterior. Use the n (flips) and x (heads) inputs to see how the prior, likelihood, and posterior shift with different data. The default is n = 20, x = 10. Note that the Strong Believer uses a Beta(10, 0.5) prior — strong enough that with only 20 flips the posterior remains biased toward heads even when exactly 50% heads are observed.
 
-```{r fig-bayes2, fig.margin = FALSE, echo = FALSE}
-#| fig-cap: "Four examples of how different priors are updated to the posterior based on data."
+::: {.content-visible when-format="html"}
 
-x<-seq(0,1,0.001)
-par(mfrow = c(2, 2))
-par(bg = backgroundcolor)
-prior <- dbeta(x, 1, 1)
-likelihood <- dbeta(x, 11, 11)
-posterior<-dbeta(x, 11, 11)
-plot(x, posterior, ylim=c(0, 10), type = "l", lwd = 3, xlab = "p", ylab = "Density", las = 1, main = "Newborn")
-lines(x, prior, col="grey", lwd = 4)
-lines(x, likelihood, lty = 2, lwd = 4, col="dodgerblue")
-
-prior <- dbeta(x, 1, 0.5)
-likelihood <- dbeta(x, 11, 11)
-posterior<-dbeta(x, 11, 10.5)
-par(bg = backgroundcolor)
-plot(x, posterior, ylim=c(0, 10), type = "l", lwd = 3, xlab ="p", ylab = "Density", las = 1, main =  "Believer")
-lines(x, prior, col="grey", lwd = 4)
-lines(x, likelihood, lty = 3, lwd = 4, col="dodgerblue")
-
-prior <- dbeta(x, 4, 4)
-likelihood <- dbeta(x, 11, 11)
-posterior<-dbeta(x, 14, 14)
-plot(x, posterior, ylim=c(0, 10), type = "l", lwd = 3, xlab = "p", ylab = "Density", las = 1, main = "Slight Skeptic")
-lines(x, prior, col="grey", lwd = 4)
-lines(x, likelihood, lty = 3, lwd = 4, col="dodgerblue")
-
-prior <- dbeta(x, 50, 50)
-likelihood <- dbeta(x, 11, 11)
-posterior<-dbeta(x, 60, 60)
-plot(x, posterior, ylim=c(0, 10), type = "l", lwd = 3, xlab = "p", ylab = "Density", las = 1, main = "Strong Skeptic")
-lines(x, prior, col="grey", lwd = 4)
-lines(x, likelihood, lty = 3, lwd = 4, col="dodgerblue")
-
+```{=html}
+<iframe id="bayes-update-iframe"
+        src="bayesian_updating_app_book.html"
+        width="100%"
+        height="680"
+        scrolling="no"
+        style="border:none;display:block;margin:1.5rem 0;overflow:hidden;"
+        title="Bayesian Updating">
+</iframe>
+<script>
+window.addEventListener('message', function(e) {
+  if (e.data && typeof e.data.iframeHeight === 'number') {
+    var f = document.getElementById('bayes-update-iframe');
+    if (f && e.source === f.contentWindow) f.style.height = e.data.iframeHeight + 'px';
+  }
+});
+</script>
 ```
 
-For the true believer the posterior distribution is not centered on the maximum likelihood of the observed data, but just a bit in the direction of the prior. The slight skeptic and the skeptic end up with a much stronger belief in a fair coin after observing the data than the newborn and believer, but mainly because they already had a stronger prior that the coin was fair.
+:::
+
+::: {.content-visible unless-format="html"}
+
+*An interactive Bayesian updating visualization is available in the online version of this book.*
+
+:::
+
+For the strong believer the posterior is pulled noticeably toward the prior: the data show 50% heads, but the posterior still leans toward heads because the prior carries substantial weight (Beta(10, 0.5) is equivalent to having previously seen around 9 extra heads with little counter-evidence). The slight skeptic and the strong skeptic end up with a much stronger belief in a fair coin after observing the data than the newborn and the strong believer, but primarily because they already started with a stronger prior that the coin was fair.
 
 ## Updating our belief
 
-Now that we have a distribution for the prior, and a distribution for the posterior, we can see in the graphs below for which values of *p* our belief has increased. Everywhere where the black line (of the posterior) is higher than the grey line (of the prior) our belief in that *p* has increased.
+Now that we have a distribution for the prior, and a distribution for the posterior, we can compare where the posterior is higher than the prior to see for which values of *p* our belief has increased. Everywhere where the posterior (red) is higher than the prior (grey), our belief in that value of *p* has increased.
 
-```{r fig-bayes4, fig.margin = FALSE, echo = FALSE}
-#| fig-cap: "Plot for the prior, likelihood, and posterior."
+The Bayes Factor quantifies this change in relative evidence at a specific point null $H_0$. It is simply the value of the posterior distribution at $H_0$ divided by the value of the prior distribution at $H_0$ — a ratio known as the **Savage-Dickey density ratio**. For the newborn baby's prior of Beta(1, 1) and 10 heads out of 20 flips, where $H_0$: *p* = 0.5:
 
-n <- 20 # set total trials
-x <- 10 # set successes
-aprior <- 1 # Set the alpha for the Beta distribution for the prior
-bprior <- 1 # Set the beta for the Beta distribution for the prior
+$$BF_{10} = \frac{\text{Beta}(p = 0.5,\; 11,\; 11)}{\text{Beta}(p = 0.5,\; 1,\; 1)} = \frac{3.70}{1} = 3.70$$
 
-ymax <- 10 # set max y-axis
+Use the interactive calculator below to explore how the Bayes Factor changes with different priors and data. The grey line is the prior, the blue dashed line is the likelihood (which is only visible if you change the settings from a uniform to an informed prior), and the red line is the posterior. The grey dot marks the prior density at $H_0$, the red dot marks the posterior density at $H_0$, and the dashed segment between them illustrates the ratio that gives $BF_{10}$.
 
-alikelihood <- x + 1 # Calculate the alpha for the Beta distribution for the likelihood
-blikelihood <- n - x + 1 # Calculate the beta for the Beta distribution for the likelihood
-aposterior <- aprior + alikelihood - 1 # Calculate the alpha for the Beta distribution for the posterior
-bposterior <- bprior + blikelihood - 1 # Calculate the beta for the Beta distribution for the posterior
+::: {.content-visible when-format="html"}
 
-theta <- seq(0, 1, 0.001) # create theta range from 0 to 1
-
-prior <- dbeta(theta, aprior, bprior) # determine prior distribution
-likelihood <- dbeta(theta, alikelihood, blikelihood) # determine likelihood distribution
-posterior <- dbeta(theta, aposterior, bposterior) # determine posterior distribution
-par(bg = backgroundcolor)
-plot(theta, posterior, ylim = c(0, ymax), type = "l", lwd = 3, xlab = "p", ylab = "Density", las = 1) # draw posterior distribution
-lines(theta, prior, col = "grey", lwd = 3) # draw prior distribution
-lines(theta, likelihood, lty = 2, lwd = 3, col = "dodgerblue") # draw likelihood distribution
-LL <- qbeta(.025, aposterior, bposterior) # calculate lower limit credible interval
-UL <- qbeta(.975, aposterior, bposterior) # calculate upper limit credible interval
-abline(v = aposterior / (aposterior + bposterior)) # draw line mean
-abline(v = LL, col = "grey", lty = 3) # draw line lower limit
-abline(v = UL, col = "grey", lty = 3) # draw line upper limit
-polygon(c(theta[theta < LL], rev(theta[theta < LL])), c(posterior[theta < LL], rep(0, sum(theta < LL))), col = "lightgrey", border = NA)
-polygon(c(theta[theta > UL], rev(theta[theta > UL])), c(posterior[theta > UL], rep(0, sum(theta > UL))), col = "lightgrey", border = NA)
-title(paste("Mean posterior:", round((aposterior / (aposterior + bposterior)), digits = 5), ", 95% Credible Interval:", round(LL, digits = 2), ";", round(UL, digits = 2)))
-
+```{=html}
+<iframe id="bayes-factor-iframe"
+        src="bayes_factor_app_book.html"
+        width="100%"
+        height="600"
+        scrolling="no"
+        style="border:none;display:block;margin:1.5rem 0;overflow:hidden;"
+        title="Bayes Factor Calculator">
+</iframe>
+<script>
+window.addEventListener('message', function(e) {
+  if (e.data && typeof e.data.iframeHeight === 'number') {
+    var f = document.getElementById('bayes-factor-iframe');
+    if (f && e.source === f.contentWindow) f.style.height = e.data.iframeHeight + 'px';
+  }
+});
+</script>
 ```
 
-The Bayes Factor is used to quantify this increase in relative evidence. Let’s calculate the Bayes Factor for the hypothesis that the coin is fair for the newborn. The Bayes Factor is simply the value of the posterior distribution at *p* = 0.5, divided by the value of the prior distribution at *p* = 0.5:
+:::
 
-$BF_{10}$ = Beta(*p* = 0.5, 11, 11)/Beta(*p* = 0.5, 1, 1) = 3.70/1 = 3.70
+::: {.content-visible unless-format="html"}
 
-<!-- You can check this in an [online Bayes Factor calculator](http://pcl.missouri.edu/bf-binomial) [@rouder_bayesian_2009]. At successes, fill in 10, at trials, fill in 20. We want to calculate the Bayes Factor for the point null value of *p* = 0.5, so fill in 0.5. The $\alpha$ and $\beta$ for the prior are both 1, given the newborns prior of Beta(1,1). Clicking ‘submit query’ will give you the Bayes factor of 3.70.  -->
+*An interactive Bayes Factor calculator is available in the online version of this book.*
 
-<!-- (ref:gpower-screenshot-bayeslab) Screenshot of the online calculator for binomially distributed observations. -->
-
-<!-- ```{r gpower-screenshot-bayes, echo=FALSE, fig.cap="(ref:gpower-screenshot-bayeslab)"} -->
-
-<!-- knitr::include_graphics("images/binombayesonline.png") -->
-
-<!-- ``` -->
-
-We can calculate and plot the Bayes Factor, and show the prior (grey), likelihood (dashed blue) and posterior (black). For the example of 20 flips, 10 heads, and the newborn baby's prior, the plot looks like this:
-
-```{r fig-bayes6, fig.margin = FALSE, echo = FALSE}
-#| fig-cap: "Plot for a uniform prior, the likelihood, and the posterior."
-
-H0 <- 0.5 # Set the point null hypothesis you want to calculate the Bayes Factor for
-n <- 20 # set total trials
-x <- 10 # set successes
-aprior <- 1 # Set the alpha for the Beta distribution for the prior
-bprior <- 1 # Set the beta for the Beta distribution for the prior
-
-alikelihood <- x + 1 # Calculate the alpha for the Beta distribution for the likelihood
-blikelihood <- n - x + 1 # Calculate the beta for the Beta distribution for the likelihood
-aposterior <- aprior + alikelihood - 1 # Calculate the alpha for the Beta distribution for the posterior
-bposterior <- bprior + blikelihood - 1 # Calculate the beta for the Beta distribution for the posterior
-
-theta <- seq(0, 1, 0.001) # create theta range from 0 to 1
-
-prior <- dbeta(theta, aprior, bprior)
-likelihood <- dbeta(theta, alikelihood, blikelihood)
-posterior <- dbeta(theta, aposterior, bposterior)
-par(bg = backgroundcolor)
-plot(theta, posterior, ylim = c(0, 15), type = "l", lwd = 3, xlab = bquote(theta), ylab = "Density", las = 1)
-lines(theta, prior, col = "grey", lwd = 3)
-lines(theta, likelihood, lty = 2, lwd = 3, col = "dodgerblue")
-BF10 <- dbeta(H0, aposterior, bposterior) / dbeta(H0, aprior, bprior)
-points(H0, dbeta(H0, aposterior, bposterior), pch = 19)
-points(H0, dbeta(H0, aprior, bprior), pch = 19, col = "grey")
-segments(H0, dbeta(H0, aposterior, bposterior), H0, dbeta(H0, aprior, bprior), lty = 2)
-title(paste("Bayes Factor:", round(BF10, digits = 2)))
-
-```
+:::
 
 We see that for the newborn, *p* = 0.5 has become more probable, but so has *p* = 0.4. Now let’s examine the curves for the extreme skeptic, who believes the coin is fair with a prior of Beta(100, 100), buys the coin, and flips it 100 times. Surprisingly, the coin comes up heads 90 out of 100 flips. The plot of the prior, likelihood, and posterior now looks much more extreme, because we had a very informed prior, and extremely different data. We see the grey prior distribution, the dashed blue likelihood based on the data, and the posterior distribution in black. The Bayes factor of 0 (note that the value is rounded, and is extremely small, but not exactly zero) represents the substantial drop in belief that the coin is fair – indeed, this now seems an untenable hypothesis, even for the extreme skeptic. It shows how data can update your belief. Where a newborn would now completely believe that the true *p* for the coin is somewhere around 0.9, the extreme skeptic has more reason to believe the *p* is around 0.65, due to the strong prior conviction that the coin is fair. Given enough data, even this extreme skeptic will become convinced that the coin will return heads most of the time as well.
 
@@ -371,40 +327,9 @@ opts_p <- c(
 cat(longmcq(opts_p))
 ```
 
-Copy the R script below into R. This script requires 5 input parameters (identical to the Bayes Factor calculator website used above). These are the hypothesis you want to examine (e.g., when evaluating whether a coin is fair, *p* = 0.5), the total number of trials (e.g., 20 flips), the number of successes (e.g., 10 heads), and the $\alpha$ and $\beta$ values for the Beta distribution for the prior (e.g., $\alpha$ = 1 and $\beta$ = 1 for a uniform prior). Run the script. It will calculate the Bayes Factor, and plot the prior (grey), likelihood (dashed blue), and posterior (black).
+Use the Bayes Factor calculator above (with default settings: $H_0$ = 0.5, *n* = 20, *x* = 10, $\alpha$ = 1, $\beta$ = 1). The calculator plots the prior (grey), likelihood (blue dashed), and posterior (red), and shows $BF_{10}$ as the ratio of the posterior to prior density at $H_0$.
 
-```{r}
-H0 <- 0.5 # Set the point null hypothesis you want to calculate the Bayes Factor for
-n <- 20 # set total trials
-x <- 10 # set successes
-aprior <- 1 # Set the alpha for the Beta distribution for the prior
-bprior <- 1 # Set the beta for the Beta distribution for the prior
-
-alikelihood <- x + 1 # Calculate the alpha for the Beta distribution for the likelihood
-blikelihood <- n - x + 1 # Calculate the beta for the Beta distribution for the likelihood
-aposterior <- aprior + alikelihood - 1 # Calculate the alpha for the Beta distribution for the posterior
-bposterior <- bprior + blikelihood - 1 # Calculate the beta for the Beta distribution for the posterior
-
-theta <- seq(0, 1, 0.001) # create probability range p from 0 to 1
-prior <- dbeta(theta, aprior, bprior)
-likelihood <- dbeta(theta, alikelihood, blikelihood)
-posterior <- dbeta(theta, aposterior, bposterior)
-
-# Create plot
-plot(theta, posterior, ylim = c(0, 15), type = "l", lwd = 3, xlab = "p", ylab = "Density", las = 1)
-lines(theta, prior, col = "grey", lwd = 3)
-lines(theta, likelihood, lty = 2, lwd = 3, col = "dodgerblue")
-BF10 <- dbeta(H0, aposterior, bposterior) / dbeta(H0, aprior, bprior)
-points(H0, dbeta(H0, aposterior, bposterior), pch = 19)
-points(H0, dbeta(H0, aprior, bprior), pch = 19, col = "grey")
-segments(H0, dbeta(H0, aposterior, bposterior), H0, dbeta(H0, aprior, bprior), lty = 2)
-title(paste("Bayes Factor:", round(BF10, digits = 2)))
-
-```
-
-We see that for the newborn baby, *p* = 0.5 has become more probable, but so has *p* = 0.4.
-
-**Q3**: Change the hypothesis in the first line from 0.5 to 0.675, and run the script. If you were testing the idea that this coin returns 67.5% heads, which statement is true?
+**Q3**: In the calculator, change $H_0$ to 0.675 (keep everything else at default). If you were testing the idea that this coin returns 67.5% heads, which statement is true?
 
 ```{r, echo = FALSE, results = 'asis'}
 opts_p <- c(
@@ -415,7 +340,7 @@ opts_p <- c(
 cat(longmcq(opts_p))
 ```
 
-**Q4**: Change the hypothesis in the first line back to 0.5. Let’s look at the increase in the belief of the hypothesis *p* = 0.5 for the extreme skeptic after 10 heads out of 20 coin flips. Change the $\alpha$ for the prior in line 4 to 100 and the $\beta$ for the prior in line 5 to 100. Run the script. Compare the figure from R to the increase in belief for the newborn baby. Which statement is true?
+**Q4**: Set $H_0$ back to 0.5 in the calculator. Now set $\alpha$ = 100 and $\beta$ = 100 (keeping *n* = 20, *x* = 10) to examine the extreme skeptic's belief update. Compare $BF_{10}$ to the newborn's $BF_{10}$ = 3.70. Which statement is true?
 
 ```{r, echo = FALSE, results = 'asis'}
 opts_p <- c(

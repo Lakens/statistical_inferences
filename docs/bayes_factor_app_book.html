@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bayes Factor Calculator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans:ital,wght@0,400;0,600;1,400&family=Fira+Code&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.26.0/plotly.min.js"></script>
+<style>
+:root {
+  --bg:    #fffafa;
+  --bg2:   #f7f7f7;
+  --ink:   #1c1717;
+  --ink2:  #3d3535;
+  --ink3:  #666060;
+  --rule:  #d6dadc;
+  --red:   #a60a0a;
+  --red-l: #c41010;
+  --red-bg:#fff5f5;
+  --blue:  #1a6e9a;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px; line-height: 1.65;
+  padding: 20px 20px 32px; overflow: hidden;
+}
+.calc-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink3); margin-bottom: 5px;
+}
+.calc-heading {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600; font-size: 1.1rem;
+  color: var(--ink); margin-bottom: 16px;
+  padding-bottom: 9px; border-bottom: 2px solid var(--red);
+}
+.input-panel {
+  background: var(--bg2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--red);
+  padding: 14px 18px; margin-bottom: 16px;
+}
+.input-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+}
+.input-group { display: flex; flex-direction: column; gap: 5px; }
+.input-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--ink3);
+}
+.input-label .sym {
+  font-style: italic; font-size: .88rem;
+  text-transform: none; letter-spacing: 0;
+  font-weight: 400; color: var(--red);
+}
+input[type="number"] {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px; background: var(--bg);
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--red);
+  padding: 6px 8px; color: var(--ink);
+  outline: none; width: 100%;
+  transition: border-color .2s;
+  -moz-appearance: textfield;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+input[type="number"]:focus { border-bottom-color: var(--red-l); }
+.plot-wrap {
+  border: 1px solid var(--rule);
+  background: var(--bg); margin-bottom: 14px;
+}
+#bfPlot { width: 100%; height: 380px; }
+.text-block {
+  font-size: .9rem; line-height: 1.6;
+  padding: 11px 14px; margin-bottom: 10px;
+  background: var(--bg2);
+  border-left: 3px solid var(--rule);
+  color: var(--ink2);
+}
+.text-block strong { color: var(--ink); }
+.text-block.h0  { border-left-color: var(--red); background: var(--red-bg); }
+.text-block.h1  { border-left-color: var(--blue); background: #edf4f9; }
+.text-block.weak { border-left-color: #b5a; }
+.legend-row {
+  display: flex; gap: 18px; align-items: center;
+  font-size: 0.85rem; color: var(--ink2);
+  padding-bottom: 10px;
+}
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.leg-solid { width: 26px; height: 3px; display: inline-block; }
+@media (max-width: 560px) {
+  .input-grid { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<p class="calc-label">Interactive calculator</p>
+<h2 class="calc-heading">Bayes Factor (Savage-Dickey Density Ratio)</h2>
+
+<div class="input-panel">
+  <div class="input-grid">
+    <div class="input-group">
+      <label class="input-label" for="H0in">
+        Point null <span class="sym">H&#x2080;</span>
+      </label>
+      <input type="number" id="H0in" min="0.001" max="0.999" step="0.05" value="0.5">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="nIn">
+        Trials <span class="sym">n</span>
+      </label>
+      <input type="number" id="nIn" min="1" step="1" value="20">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="xIn">
+        Successes <span class="sym">x</span>
+      </label>
+      <input type="number" id="xIn" min="0" step="1" value="10">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="apIn">
+        Prior <span class="sym">&alpha;</span>
+      </label>
+      <input type="number" id="apIn" min="0.01" step="0.5" value="1">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="bpIn">
+        Prior <span class="sym">&beta;</span>
+      </label>
+      <input type="number" id="bpIn" min="0.01" step="0.5" value="1">
+    </div>
+  </div>
+</div>
+
+<div class="legend-row">
+  <div class="legend-item">
+    <span class="leg-solid" style="background:#888;"></span>Prior
+  </div>
+  <div class="legend-item">
+    <span class="leg-solid" style="background:var(--blue);border-top:3px dashed var(--blue);height:0;"></span>Likelihood
+  </div>
+  <div class="legend-item">
+    <span class="leg-solid" style="background:var(--red);"></span>Posterior
+  </div>
+</div>
+
+<div class="plot-wrap"><div id="bfPlot"></div></div>
+<div id="bfResult" class="text-block"></div>
+
+<script>
+var XS = [];
+for (var i = 1; i <= 999; i++) XS.push(i / 1000);
+
+var FONT = { family: "'Open Sans', sans-serif", color: '#1c1717', size: 12 };
+var AXIS = { zeroline: false, gridcolor: '#ede8e8', linecolor: '#d6dadc' };
+
+// ── Debounced postHeight ──────────────────────────────────────────────────
+var _phTimer = null;
+function postHeight() {
+  clearTimeout(_phTimer);
+  _phTimer = setTimeout(function() {
+    var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+    window.parent.postMessage({ iframeHeight: h }, '*');
+  }, 150);
+}
+
+// ── Main update ───────────────────────────────────────────────────────────
+function update() {
+  var H0 = Math.min(0.999, Math.max(0.001,
+            parseFloat(document.getElementById('H0in').value) || 0.5));
+  var n  = Math.max(1,  parseInt(document.getElementById('nIn').value, 10) || 20);
+  var x  = Math.min(n, Math.max(0, parseInt(document.getElementById('xIn').value, 10) || 10));
+  var ap = Math.max(0.01, parseFloat(document.getElementById('apIn').value) || 1);
+  var bp = Math.max(0.01, parseFloat(document.getElementById('bpIn').value) || 1);
+
+  // Enforce x <= n
+  document.getElementById('xIn').max = n;
+
+  // Derived parameters
+  var al   = x + 1;        // alpha likelihood
+  var bl   = n - x + 1;    // beta likelihood
+  var apost = ap + x;       // alpha posterior
+  var bpost = bp + (n - x); // beta posterior
+
+  // Curves
+  var priorY = XS.map(function(xi) { return jStat.beta.pdf(xi, ap, bp); });
+  var likeY  = XS.map(function(xi) { return jStat.beta.pdf(xi, al, bl); });
+  var postY  = XS.map(function(xi) { return jStat.beta.pdf(xi, apost, bpost); });
+
+  // Savage-Dickey density ratio
+  var postH0  = jStat.beta.pdf(H0, apost, bpost);
+  var priorH0 = jStat.beta.pdf(H0, ap, bp);
+  var BF10    = (priorH0 > 0) ? postH0 / priorH0 : Infinity;
+
+  // y-axis max from interior to avoid poles
+  var rawMax = 0;
+  for (var k = 0; k < XS.length; k++) {
+    if (XS[k] < 0.01 || XS[k] > 0.99) continue;
+    rawMax = Math.max(rawMax, priorY[k], likeY[k], postY[k]);
+  }
+  // Also include the dot heights
+  rawMax = Math.max(rawMax, postH0, priorH0);
+  var yMax = Math.max(rawMax * 1.2, 2);
+
+  // BF segment midpoint y for annotation
+  var segMidY = (postH0 + priorH0) / 2;
+  var bfStr   = isFinite(BF10) ? BF10.toFixed(2) : '∞';
+
+  Plotly.react('bfPlot', [
+    // Prior
+    { x: XS, y: priorY, type: 'scatter', mode: 'lines',
+      name: 'Prior', line: { color: '#888', width: 2.5 },
+      showlegend: false,
+      hovertemplate: 'p=%{x:.3f}<br>Prior=%{y:.3f}<extra></extra>' },
+
+    // Likelihood
+    { x: XS, y: likeY, type: 'scatter', mode: 'lines',
+      name: 'Likelihood', line: { color: '#1a6e9a', width: 2.5, dash: 'dash' },
+      showlegend: false,
+      hovertemplate: 'p=%{x:.3f}<br>Likelihood=%{y:.3f}<extra></extra>' },
+
+    // Posterior
+    { x: XS, y: postY, type: 'scatter', mode: 'lines',
+      name: 'Posterior', line: { color: '#a60a0a', width: 3 },
+      showlegend: false,
+      hovertemplate: 'p=%{x:.3f}<br>Posterior=%{y:.3f}<extra></extra>' },
+
+    // Segment at H0 connecting prior to posterior densities
+    { x: [H0, H0], y: [priorH0, postH0],
+      type: 'scatter', mode: 'lines',
+      line: { color: '#1c1717', width: 1.5, dash: 'dash' },
+      showlegend: false, hoverinfo: 'skip' },
+
+    // Dot at prior density (grey)
+    { x: [H0], y: [priorH0],
+      type: 'scatter', mode: 'markers',
+      marker: { color: '#888', size: 10, line: { color: '#1c1717', width: 1.5 } },
+      showlegend: false,
+      hovertemplate: 'Prior at H₀: %{y:.4f}<extra></extra>' },
+
+    // Dot at posterior density (red)
+    { x: [H0], y: [postH0],
+      type: 'scatter', mode: 'markers',
+      marker: { color: '#a60a0a', size: 10, line: { color: '#1c1717', width: 1.5 } },
+      showlegend: false,
+      hovertemplate: 'Posterior at H₀: %{y:.4f}<extra></extra>' }
+
+  ], {
+    xaxis: Object.assign({ title: { text: 'p', font: { size: 13 } }, range: [0, 1] }, AXIS),
+    yaxis: Object.assign({ title: { text: 'Density', font: { size: 13 } }, range: [0, yMax] }, AXIS),
+    annotations: [
+      // Vertical line label at H0
+      { x: H0, xref: 'x', y: 1, yref: 'paper',
+        text: 'H₀ = ' + H0,
+        showarrow: false, xanchor: H0 > 0.7 ? 'right' : 'left',
+        yanchor: 'top', xshift: H0 > 0.7 ? -6 : 6,
+        font: { size: 11, color: '#1c1717', family: "'Open Sans', sans-serif" } },
+      // BF label beside the segment
+      { x: H0, xref: 'x', y: segMidY, yref: 'y',
+        text: '<b>BF₁₀ = ' + bfStr + '</b>',
+        showarrow: false,
+        xanchor: H0 > 0.6 ? 'right' : 'left',
+        yanchor: 'middle',
+        xshift: H0 > 0.6 ? -10 : 10,
+        font: { size: 12, color: '#1c1717', family: "'Open Sans', sans-serif" } }
+    ],
+    shapes: [
+      // Vertical dotted line at H0
+      { type: 'line', x0: H0, x1: H0, y0: 0, y1: 1, yref: 'paper',
+        line: { color: '#bbb', dash: 'dot', width: 1.2 } }
+    ],
+    plot_bgcolor:  '#fffafa',
+    paper_bgcolor: '#fffafa',
+    font: FONT,
+    margin: { l: 55, r: 20, t: 16, b: 48 },
+    showlegend: false,
+    hovermode: 'closest'
+  }, { responsive: true, displayModeBar: false });
+
+  // ── Interpretation text ───────────────────────────────────────────────
+  var el = document.getElementById('bfResult');
+  var postRnd  = postH0.toFixed(3),  priorRnd = priorH0.toFixed(3);
+
+  if (!isFinite(BF10) || isNaN(BF10)) {
+    el.className = 'text-block';
+    el.innerHTML = 'The Bayes Factor cannot be computed (prior density at H₀ is 0 or undefined).';
+    postHeight();
+    return;
+  }
+
+  if (BF10 >= 1) {
+    // Evidence for H0
+    el.className = 'text-block h0';
+    el.innerHTML =
+      '<strong>BF₁₀ = ' + bfStr + '</strong> &mdash; '
+      + 'the posterior density at p = ' + H0 + ' is <strong>' + postRnd + '</strong> '
+      + 'and the prior density is <strong>' + priorRnd + '</strong>. '
+      + 'The data are <strong>' + bfStr + ' times</strong> more consistent with H₀ '
+      + '(p = ' + H0 + ') than expected under the prior.';
+  } else {
+    // Evidence against H0 (for H1)
+    var BF01 = 1 / BF10;
+    el.className = 'text-block h1';
+    el.innerHTML =
+      '<strong>BF₁₀ = ' + bfStr + '</strong> (BF₀₁ = ' + BF01.toFixed(2) + ') &mdash; '
+      + 'the posterior density at p = ' + H0 + ' is <strong>' + postRnd + '</strong> '
+      + 'and the prior density is <strong>' + priorRnd + '</strong>. '
+      + 'The data are <strong>' + BF01.toFixed(2) + ' times</strong> less consistent with H₀ '
+      + 'than expected under the prior (i.e., evidence for p &ne; ' + H0 + ').';
+  }
+
+  postHeight();
+}
+
+// ── Event listeners ───────────────────────────────────────────────────────
+['H0in','nIn','xIn','apIn','bpIn'].forEach(function(id) {
+  document.getElementById(id).addEventListener('input',  update);
+  document.getElementById(id).addEventListener('change', update);
+});
+
+window.addEventListener('resize', function() { update(); postHeight(); });
+window.addEventListener('load', function() { setTimeout(postHeight, 400); });
+if (typeof ResizeObserver !== 'undefined') {
+  new ResizeObserver(postHeight).observe(document.body);
+}
+
+update();
+</script>
+</body>
+</html>

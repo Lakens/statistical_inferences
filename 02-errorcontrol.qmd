@@ -234,96 +234,44 @@ if (knitr::is_html_output()){
 
 ```
 
-Let's more formally examine the inflation of the Type 1 error rate through optional stopping in a **simulation study**. Copy the code below into R and run the code. Note that the 50000 simulations (needed to get the error rates reasonably accurate) take some time to run. 
+Let's more formally examine the inflation of the Type 1 error rate through optional stopping in a **simulation study**. The interactive app below runs this simulation directly in your browser. For each simulated study --- all conducted under H₀ with no true effect --- data are collected up to N observations per group and a two-sample *t*-test is performed at each of the k interim looks. The histogram shows the distribution of reported *p*-values (the first significant result, or the final look's *p*-value if none were significant), and the red dotted line marks where bars would fall if *p*-values were uniformly distributed.
 
-```{r optionalstopsim, eval=FALSE, cache = TRUE}
-N <- 100 # total datapoints (per condition)
-looks <- 5 # set number of looks at the data
-nsims <- 50000 # number of simulated studies
-alphalevel <- 0.05 # set alphalevel
+::: {.content-visible when-format="html"}
 
-if(looks > 1){
-  look_at_n <- ceiling(seq(N / looks, N, (N - (N / looks)) / (looks - 1)))
-}  else {
-  look_at_n <- N
-}
-look_at_n <- look_at_n[look_at_n > 2] # Remove looks at N of 1 or 2
-looks<-length(look_at_n) # if looks are removed, update number of looks
-
-matp <- matrix(NA, nrow = nsims, ncol = looks) # Matrix for p-values l tests
-p <- numeric(nsims) # Variable to save pvalues
-
-# Loop data generation for each study, then loop to perform a test for each N
-for (i in 1:nsims) {
-  x <- rnorm(n = N, mean = 0, sd = 1)
-  y <- rnorm(n = N, mean = 0, sd = 1)
-  for (j in 1:looks) {
-    matp[i, j] <- t.test(x[1:look_at_n[j]], y[1:look_at_n[j]], 
-                         var.equal = TRUE)$p.value # perform the t-test, store
+```{=html}
+<iframe id="opt-stop-iframe"
+        src="optional_stopping_app_book.html"
+        width="100%"
+        height="600"
+        scrolling="no"
+        style="border:none;display:block;margin:1.5rem 0;overflow:hidden;"
+        title="Optional Stopping Simulation">
+</iframe>
+<script>
+window.addEventListener('message', function(e) {
+  if (e.data && typeof e.data.iframeHeight === 'number') {
+    var f = document.getElementById('opt-stop-iframe');
+    if (f && e.source === f.contentWindow) f.style.height = e.data.iframeHeight + 'px';
   }
-  cat("Loop", i, "of", nsims, "\n")
-}
-
-# Save Type 1 error rate smallest p at all looks
-for (i in 1:nsims) {
-  p[i] <- ifelse(length(matp[i,which(matp[i,] < alphalevel)]) == 0, 
-                 matp[i,looks], matp[i,which(matp[i,] < alphalevel)])
-}
-
-hist(p, breaks = 100, col = "grey") # create plot
-abline(h = nsims / 100, col = "red", lty = 3)
-
-cat("Type 1 error rates for look 1 to", looks, ":", 
-    colSums(matp < alphalevel) / nsims)
-cat("Type 1 error rate when only the lowest p-value for all looks is reported:", 
-    sum(p < alphalevel) / nsims)
-
+});
+</script>
 ```
 
-This simulation will perform multiple independent *t*-tests on simulated data, looking multiple times until the maximum sample size is reached. In the first four lines, you can set the most important parameters of the simulation. First, the maximum sample size in each condition (e.g., 100). Then, the number of looks (e.g., 5). At best, you can look at the data after every participant (e.g., with 100 participants, you can look 100 times – or actually 98 times, because you need more than 2 participants in each condition for a *t*-test!). You can set the number of simulations (the more, the clearer the pattern will be, but the longer the simulation takes), and the alpha level (e.g., 0.05). Since you can only make a Type 1 error when there is no true effect, the effect size is set to 0 in these simulations.
+:::
+
+::: {.content-visible unless-format="html"}
+
+*An interactive optional stopping simulation is available in the online version of this book.*
+
+:::
+
+In the app, you can set the most important parameters: the maximum sample size per condition (N), the number of looks (k), the alpha level, and the number of simulations. At most you can look after every participant (e.g., with 100 participants you can look up to 98 times, because a *t*-test requires more than 2 observations per group). Since you can only make a Type 1 error when there is no true effect, the effect size is set to 0 in all simulations.
 
 When you perform only a single test, the Type 1 error rate is the probability of finding a *p*-value lower than your alpha level, when there is no effect. In an optional stopping scenario where you look at the data twice, the Type 1 error rate is the probability of finding a *p*-value lower than your alpha level at the first look, plus the probability of **not** finding a *p*-value lower than your alpha level at the **first** look, but finding a *p*-value lower than your alpha level at the **second** look. This is a *conditional probability*, which makes error control a little bit more complex than when multiple looks are completely independent.
 
 So how much does optional stopping inflate the Type 1 error rate? And which *p*-values can we expect under optional stopping?
 
-Start by running the simulation without changing any values, so simulating 100 participants in each condition, looking 5 times at your data, with an alpha of 0.05. Note the 50.000 simulations take a while! You should see something similar to @fig-optionalstopfig below (which is based on 500.000 simulations to make the pattern very clear).
-
-```{r fig-optionalstopfig, eval=TRUE, echo=FALSE, cache=TRUE}
-#| fig-cap: "Simulation of 500000 studies performing 5 interim analyses at an alpha level of 5%."
-
-set.seed(1626)
-N <- 100 # total datapoints (per condition)
-looks <- 5 # set number of looks at the data
-nsims <- 500000 # number of simulated studies
-alphalevel <- 0.05 # set alphalevel
-
-look_at_n <- ceiling(seq(N / looks, N, (N - (N / looks)) / (looks-1))) # looks
-look_at_n <- look_at_n[look_at_n > 2] # Remove looks at N of 1 or 2
-looks <- length(look_at_n) # if looks are removed, update number of looks
-
-matp <- matrix(NA, nrow = nsims, ncol = looks) # Matrix for p-values l tests
-p <- numeric(nsims) # Variable to save pvalues
-
-# Loop data generation for each study, then loop to perform a test for each N
-for (i in 1:nsims) {
-  x <- rnorm(n = N, mean = 0, sd = 1)
-  y <- rnorm(n = N, mean = 0, sd = 1)
-  for (j in 1:looks) {
-    matp[i, j] <- t.test(x[1:look_at_n[j]], y[1:look_at_n[j]], 
-                         var.equal = TRUE)$p.value # perform the t-test, store
-  }
-}
-
-# Save Type 1 error rate smallest p at all looks
-for (i in 1:nsims) {
-  p[i] <- ifelse(length(matp[i,which(matp[i,] < alphalevel)]) == 0, 
-                 matp[i,looks], matp[i,which(matp[i,] < alphalevel)])
-}
-
-par(bg = backgroundcolor)
-hist(p, breaks = 100, col = "grey") # create plot
-abline(h = nsims / 100, col = "red", lty = 3)
-```
+Start by running the simulation with the default values (N = 100, 5 looks, α = 0.05, 50,000 simulations). The per-look Type I error rates are shown below the histogram.
 
 We see 100 bars, one for each percentile (so one for all *p*-values between 0.00 and 0.01, one for *p*-values between 0.01 and 0.02, etc.). There is a horizontal line that indicates where all *p*-values would fall, if they were uniformly distributed (as they should be when there is no true effect, as explained in Chapter 1 on [*p*-values](#sec-pvalues)). 
 
@@ -567,7 +515,7 @@ opts_p <- c(
 cat(longmcq(opts_p))
 ```
 
-**Q4**: Looking at @fig-optionalstopfig, which statement is true?
+**Q4**: Looking at the interactive vizualization of optional stopping above, which statement is true?
 
 
 ```{r, echo = FALSE, results = 'asis'}

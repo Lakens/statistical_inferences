@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bayesian Updating</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans:ital,wght@0,400;0,600;1,400&family=Fira+Code&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.26.0/plotly.min.js"></script>
+<style>
+:root {
+  --bg:    #fffafa;
+  --bg2:   #f7f7f7;
+  --ink:   #1c1717;
+  --ink2:  #3d3535;
+  --ink3:  #666060;
+  --rule:  #d6dadc;
+  --red:   #a60a0a;
+  --red-l: #c41010;
+  --blue:  #1a6e9a;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px; line-height: 1.65;
+  padding: 20px 20px 8px; overflow: hidden;
+}
+.calc-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink3); margin-bottom: 5px;
+}
+.calc-heading {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600; font-size: 1.1rem;
+  color: var(--ink); margin-bottom: 16px;
+  padding-bottom: 9px; border-bottom: 2px solid var(--red);
+}
+.input-panel {
+  background: var(--bg2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--red);
+  padding: 14px 18px; margin-bottom: 16px;
+}
+.input-row {
+  display: flex; gap: 20px; align-items: end; flex-wrap: wrap;
+}
+.input-group { display: flex; flex-direction: column; gap: 5px; }
+.input-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--ink3);
+}
+.input-label .sym {
+  font-style: italic; font-size: .88rem;
+  text-transform: none; letter-spacing: 0;
+  font-weight: 400; color: var(--red);
+}
+input[type="number"] {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px; background: var(--bg);
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--red);
+  padding: 6px 8px; color: var(--ink);
+  outline: none; width: 90px;
+  transition: border-color .2s;
+  -moz-appearance: textfield;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+input[type="number"]:focus { border-bottom-color: var(--red-l); }
+.legend-row {
+  display: flex; gap: 20px; align-items: center;
+  font-size: 0.85rem; color: var(--ink2);
+  padding: 8px 0 14px;
+}
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.leg-line {
+  width: 28px; height: 3px; display: inline-block;
+}
+.plots-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 0;
+}
+.plot-cell {
+  border: 1px solid var(--rule);
+  background: var(--bg);
+}
+.plot-cell > div:first-child { width: 100%; height: 240px; }
+.stats-bar {
+  font-size: 0.78rem; color: var(--ink3);
+  padding: 5px 10px 7px;
+  background: var(--bg2);
+  border-top: 1px solid var(--rule);
+  line-height: 1.5;
+}
+.stats-bar strong { color: var(--ink); }
+.stats-bar .shift-pos { color: var(--red); font-weight: 600; }
+.stats-bar .shift-neg { color: var(--blue); font-weight: 600; }
+.stats-bar .shift-zero { color: var(--ink3); }
+@media (max-width: 520px) {
+  .plots-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<p class="calc-label">Interactive visualization</p>
+<h2 class="calc-heading">Bayesian Updating with Different Priors</h2>
+
+<div class="input-panel">
+  <div class="input-row">
+    <div class="input-group">
+      <label class="input-label" for="nInput">
+        Coin flips <span class="sym">n</span>
+      </label>
+      <input type="number" id="nInput" min="1" max="10000" step="1" value="20">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="xInput">
+        Heads observed <span class="sym">x</span>
+      </label>
+      <input type="number" id="xInput" min="0" step="1" value="10">
+    </div>
+  </div>
+</div>
+
+<div class="legend-row">
+  <div class="legend-item">
+    <span class="leg-line" style="background:#888;"></span>
+    <span>Prior</span>
+  </div>
+  <div class="legend-item">
+    <span class="leg-line" style="background:var(--blue);border-top:3px dashed var(--blue);height:0;"></span>
+    <span>Likelihood</span>
+  </div>
+  <div class="legend-item">
+    <span class="leg-line" style="background:var(--red);"></span>
+    <span>Posterior</span>
+  </div>
+</div>
+
+<div class="plots-grid">
+  <div class="plot-cell">
+    <div id="plot0"></div>
+    <div class="stats-bar" id="stats0"></div>
+  </div>
+  <div class="plot-cell">
+    <div id="plot1"></div>
+    <div class="stats-bar" id="stats1"></div>
+  </div>
+  <div class="plot-cell">
+    <div id="plot2"></div>
+    <div class="stats-bar" id="stats2"></div>
+  </div>
+  <div class="plot-cell">
+    <div id="plot3"></div>
+    <div class="stats-bar" id="stats3"></div>
+  </div>
+</div>
+
+<p style="font-size:0.78rem;color:var(--ink3);margin-top:8px;">
+  CrI = equal-tailed credible interval (Bayesian). Note: for skewed posteriors the HDI would differ slightly.
+</p>
+
+<script>
+// ── Prior configurations ──────────────────────────────────────────────────
+var PRIORS = [
+  { title: 'Newborn',       a: 1,  b: 1,   desc: 'Beta(1, 1) — uniform, no expectation' },
+  { title: 'Strong Believer', a: 10, b: 0.5, desc: 'Beta(10, 0.5) — strongly expects heads' },
+  { title: 'Slight Skeptic',a: 4,  b: 4,   desc: 'Beta(4, 4) — mild belief coin is fair' },
+  { title: 'Strong Skeptic',a: 50, b: 50,  desc: 'Beta(50, 50) — strong belief coin is fair' }
+];
+
+// ── x values for curves ───────────────────────────────────────────────────
+var XS = [];
+for (var i = 1; i <= 999; i++) XS.push(i / 1000);
+
+// ── Beta PDF (safe wrapper) ───────────────────────────────────────────────
+function bpdf(x, a, b) {
+  return (a > 0 && b > 0) ? jStat.beta.pdf(x, a, b) : 0;
+}
+
+// ── Beta mean and 95% credible interval ──────────────────────────────────
+function betaStats(a, b) {
+  var mean = a / (a + b);
+  var lo   = jStat.beta.inv(0.025, a, b);
+  var hi   = jStat.beta.inv(0.975, a, b);
+  return { mean: mean, lo: lo, hi: hi };
+}
+
+// ── Debounced postHeight ──────────────────────────────────────────────────
+var _phTimer = null;
+function postHeight() {
+  clearTimeout(_phTimer);
+  _phTimer = setTimeout(function() {
+    var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+    window.parent.postMessage({ iframeHeight: h }, '*');
+  }, 150);
+}
+
+// ── Shared Plotly layout constants ───────────────────────────────────────
+var FONT = { family: "'Open Sans', sans-serif", color: '#1c1717', size: 11 };
+var AXIS = { zeroline: false, gridcolor: '#ede8e8', linecolor: '#d6dadc' };
+
+// ── Main update ───────────────────────────────────────────────────────────
+function update() {
+  var n = Math.max(1, parseInt(document.getElementById('nInput').value, 10) || 20);
+  var x = Math.min(n, Math.max(0, parseInt(document.getElementById('xInput').value, 10) || 10));
+
+  // Enforce x <= n
+  document.getElementById('xInput').max = n;
+  if (parseInt(document.getElementById('xInput').value, 10) > n) {
+    document.getElementById('xInput').value = n;
+  }
+
+  // Likelihood: Beta(x+1, n-x+1)
+  var la = x + 1, lb = n - x + 1;
+
+  // Compute all curves to find a shared y-axis scale
+  var allData = PRIORS.map(function(pr) {
+    var pa = pr.a + x, pb = pr.b + (n - x);
+    var priorY = XS.map(function(xi) { return bpdf(xi, pr.a, pr.b); });
+    var likeY  = XS.map(function(xi) { return bpdf(xi, la, lb); });
+    var postY  = XS.map(function(xi) { return bpdf(xi, pa, pb); });
+    return { priorY: priorY, likeY: likeY, postY: postY, pa: pa, pb: pb };
+  });
+
+  // Global y-max — use only the interior [0.01, 0.99] range so that poles
+  // (e.g. Beta(10, 0.5) near p = 1) don't collapse the other curves.
+  // Curves that exceed yMax will run off the top, which is informative.
+  var rawMax = 0;
+  allData.forEach(function(d) {
+    for (var i = 0; i < XS.length; i++) {
+      if (XS[i] < 0.01 || XS[i] > 0.99) continue;
+      rawMax = Math.max(rawMax, d.priorY[i], d.likeY[i], d.postY[i]);
+    }
+  });
+  var yMax = Math.max(rawMax * 1.1, 3);
+
+  var dataPropPct = (x / n * 100).toFixed(1);
+
+  PRIORS.forEach(function(pr, i) {
+    var d = allData[i];
+    var ps = betaStats(d.pa, d.pb);
+    var priorMean = pr.a / (pr.a + pr.b);
+    var shift = (ps.mean - priorMean) * 100;
+    var shiftStr, shiftClass;
+    if (Math.abs(shift) < 0.05) {
+      shiftStr = '±0.0 pp'; shiftClass = 'shift-zero';
+    } else if (shift > 0) {
+      shiftStr = '+' + shift.toFixed(1) + ' pp'; shiftClass = 'shift-pos';
+    } else {
+      shiftStr = shift.toFixed(1) + ' pp'; shiftClass = 'shift-neg';
+    }
+
+    Plotly.react('plot' + i, [
+      // Prior
+      { x: XS, y: d.priorY, type: 'scatter', mode: 'lines',
+        line: { color: '#888', width: 2 },
+        showlegend: false, hovertemplate: 'p=%{x:.3f}, Prior=%{y:.3f}<extra></extra>' },
+      // Likelihood
+      { x: XS, y: d.likeY, type: 'scatter', mode: 'lines',
+        line: { color: '#1a6e9a', width: 2, dash: 'dash' },
+        showlegend: false, hovertemplate: 'p=%{x:.3f}, Likelihood=%{y:.3f}<extra></extra>' },
+      // Posterior
+      { x: XS, y: d.postY, type: 'scatter', mode: 'lines',
+        line: { color: '#a60a0a', width: 3 },
+        showlegend: false, hovertemplate: 'p=%{x:.3f}, Posterior=%{y:.3f}<extra></extra>' }
+    ], Object.assign({}, {
+      title: { text: pr.title, font: { family: "'Montserrat', sans-serif", size: 12, color: '#1c1717' }, x: 0.5 },
+      xaxis: Object.assign({ title: { text: 'p', font: { size: 11 } }, range: [0, 1] }, AXIS),
+      yaxis: Object.assign({ title: { text: 'Density', font: { size: 11 } }, range: [0, yMax] }, AXIS),
+      plot_bgcolor:  '#fffafa',
+      paper_bgcolor: '#fffafa',
+      font: FONT,
+      margin: { l: 46, r: 10, t: 36, b: 40 },
+      showlegend: false,
+      hovermode: 'x'
+    }), { responsive: true, displayModeBar: false });
+
+    // Stats below plot
+    document.getElementById('stats' + i).innerHTML =
+      'Prior: Beta(' + pr.a + ', ' + pr.b + ') — mean ' + (priorMean * 100).toFixed(1) + '% &nbsp;|&nbsp; '
+      + 'Data: ' + x + '/' + n + ' = ' + dataPropPct + '% &nbsp;|&nbsp; '
+      + 'Posterior: Beta(' + d.pa.toFixed(1) + ', ' + d.pb.toFixed(1) + ')'
+      + ' — mean <strong>' + (ps.mean * 100).toFixed(1) + '%</strong>'
+      + ', 95% CrI [' + (ps.lo * 100).toFixed(1) + '%, ' + (ps.hi * 100).toFixed(1) + '%]'
+      + ' &nbsp;|&nbsp; Mean shifted <span class="' + shiftClass + '">' + shiftStr + '</span>';
+  });
+
+  postHeight();
+}
+
+// ── Event listeners ───────────────────────────────────────────────────────
+document.getElementById('nInput').addEventListener('change', update);
+document.getElementById('xInput').addEventListener('change', update);
+document.getElementById('nInput').addEventListener('input', update);
+document.getElementById('xInput').addEventListener('input', update);
+
+window.addEventListener('resize', function() { update(); postHeight(); });
+window.addEventListener('load', function() { setTimeout(postHeight, 400); });
+if (typeof ResizeObserver !== 'undefined') {
+  new ResizeObserver(postHeight).observe(document.body);
+}
+
+update();
+</script>
+</body>
+</html>

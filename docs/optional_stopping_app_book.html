@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Optional Stopping Simulation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans:ital,wght@0,400;0,600;1,400&family=Fira+Code&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.26.0/plotly.min.js"></script>
+<style>
+:root {
+  --bg:    #fffafa;
+  --bg2:   #f7f7f7;
+  --ink:   #1c1717;
+  --ink2:  #3d3535;
+  --ink3:  #666060;
+  --rule:  #d6dadc;
+  --red:   #a60a0a;
+  --red-l: #c41010;
+  --red-bg:#fff5f5;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px; line-height: 1.65;
+  padding: 20px 20px 32px; overflow: hidden;
+}
+.calc-label {
+  font-size: 10px; font-weight: 600; font-family: 'Open Sans', sans-serif;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink3); margin-bottom: 5px;
+}
+.calc-heading {
+  font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 1.1rem;
+  color: var(--ink); margin-bottom: 16px;
+  padding-bottom: 9px; border-bottom: 2px solid var(--red);
+}
+.input-panel {
+  background: var(--bg2); border: 1px solid var(--rule);
+  border-left: 3px solid var(--red);
+  padding: 14px 18px; margin-bottom: 16px;
+}
+.input-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr auto;
+  gap: 16px; align-items: end;
+}
+.input-group { display: flex; flex-direction: column; gap: 5px; }
+.input-label {
+  font-family: 'Open Sans', sans-serif; font-size: 10px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--ink3);
+}
+.input-label .sym {
+  font-style: italic; font-size: .88rem; text-transform: none;
+  letter-spacing: 0; font-weight: 400; color: var(--red);
+}
+input[type="range"] {
+  -webkit-appearance: none; width: 100%; height: 2px;
+  background: var(--rule); outline: none; cursor: pointer;
+  border-radius: 1px; margin-top: 5px;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 14px; height: 14px;
+  border-radius: 50%; background: var(--bg);
+  border: 2px solid var(--red); cursor: pointer; transition: transform .15s;
+}
+input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.25); }
+input[type="range"]::-moz-range-thumb {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--bg); border: 2px solid var(--red); cursor: pointer;
+}
+.slider-value {
+  font-family: 'Fira Code', monospace; font-size: 12px;
+  color: var(--red); font-weight: 500;
+}
+input[type="number"] {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px; background: var(--bg);
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--red);
+  padding: 6px 8px; color: var(--ink);
+  outline: none; width: 100%;
+  transition: border-color .2s;
+  -moz-appearance: textfield;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+input[type="number"]:focus { border-bottom-color: var(--red-l); }
+.action-btn {
+  font-family: 'Montserrat', sans-serif; font-weight: 600;
+  font-size: .85rem; letter-spacing: .06em;
+  background: var(--red); color: #fff; border: none;
+  padding: 10px 20px; cursor: pointer; white-space: nowrap;
+  transition: background .15s;
+}
+.action-btn:hover:not(:disabled) { background: var(--red-l); }
+.action-btn:disabled { opacity: .45; cursor: not-allowed; }
+.plot-wrap {
+  border: 1px solid var(--rule); background: var(--bg); margin-bottom: 14px;
+}
+#stopPlot { width: 100%; height: 340px; }
+.text-block {
+  font-size: .9rem; line-height: 1.6; padding: 11px 14px;
+  margin-bottom: 10px; background: var(--bg2);
+  border-left: 3px solid var(--rule); color: var(--ink2);
+}
+.text-block strong { color: var(--ink); }
+.text-block.warn { border-left-color: var(--red); background: var(--red-bg); }
+.looks-row {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-top: 8px; font-family: 'Fira Code', monospace; font-size: 12px;
+}
+.look-chip {
+  background: var(--bg); border: 1px solid var(--rule);
+  padding: 3px 9px; color: var(--ink2);
+}
+.look-chip.sig { border-color: var(--red); color: var(--red); font-weight: 600; }
+@media (max-width: 580px) {
+  .input-grid { grid-template-columns: 1fr 1fr; }
+  .action-btn { grid-column: span 2; }
+}
+</style>
+</head>
+<body>
+
+<p class="calc-label">Interactive simulation</p>
+<h2 class="calc-heading">Optional Stopping &amp; Type I Error Inflation</h2>
+
+<div class="input-panel">
+  <div class="input-grid">
+    <div class="input-group">
+      <label class="input-label" for="slN">
+        Observations per group <span class="sym">N</span>
+      </label>
+      <input type="number" id="slN" min="3" step="10" value="100">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="slLooks">
+        Number of looks <span class="sym">k</span>
+      </label>
+      <input type="number" id="slLooks" min="1" step="1" value="5">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="slAlpha">
+        Alpha level <span class="sym">&#x3b1;</span>
+      </label>
+      <input type="number" id="slAlpha" min="0.0001" max="1" step="0.01" value="0.05">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="slSims">
+        Simulations <span class="sym">m</span>
+      </label>
+      <input type="number" id="slSims" min="100" step="1000" value="50000">
+    </div>
+    <button class="action-btn" id="runBtn">Run simulation</button>
+  </div>
+</div>
+
+<div class="plot-wrap"><div id="stopPlot"></div></div>
+<div id="resultText" class="text-block"></div>
+<div id="looksText" class="text-block" style="display:none;"></div>
+
+<script>
+// ── Normal random variate (Box-Muller) ────────────────────────────────────
+function rnorm() {
+  var u1, u2;
+  do { u1 = Math.random(); } while (u1 === 0);
+  u2 = Math.random();
+  return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+}
+
+// ── Pooled-variance two-sample t-test p-value ─────────────────────────────
+// Takes prefix sums for efficiency: sumX, sumX2, sumY, sumY2, n per group
+function pooledTpValue(sumX, sumX2, sumY, sumY2, n) {
+  if (n < 3) return 1;
+  var mX  = sumX / n,  mY  = sumY / n;
+  var ssX = sumX2 - n * mX * mX;
+  var ssY = sumY2 - n * mY * mY;
+  var sp2 = (ssX + ssY) / (2 * n - 2);
+  if (sp2 <= 0) return 1;
+  var se  = Math.sqrt(sp2 * 2 / n);
+  var t   = (mX - mY) / se;
+  var df  = 2 * n - 2;
+  return 2 * (1 - jStat.studentt.cdf(Math.abs(t), df));
+}
+
+// ── Debounced postHeight ──────────────────────────────────────────────────
+var _phTimer = null;
+function postHeight() {
+  clearTimeout(_phTimer);
+  _phTimer = setTimeout(function() {
+    var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+    window.parent.postMessage({ iframeHeight: h }, '*');
+  }, 150);
+}
+
+// ── Build look schedule ───────────────────────────────────────────────────
+function buildLooks(N, k) {
+  if (k <= 1) return [N];
+  var arr = [];
+  for (var j = 1; j <= k; j++) {
+    arr.push(Math.ceil(N * j / k));
+  }
+  // deduplicate and remove n < 3
+  var seen = {}, out = [];
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i] >= 3 && !seen[arr[i]]) { seen[arr[i]] = true; out.push(arr[i]); }
+  }
+  return out;
+}
+
+// ── Run simulation ────────────────────────────────────────────────────────
+function runSim() {
+  var N     = Math.max(3, parseInt(document.getElementById('slN').value, 10) || 100);
+  var k     = Math.max(1, parseInt(document.getElementById('slLooks').value, 10) || 5);
+  var alpha = Math.min(1, Math.max(0.0001, parseFloat(document.getElementById('slAlpha').value) || 0.05));
+  var nsims = Math.max(100, parseInt(document.getElementById('slSims').value, 10) || 50000);
+
+  var btn = document.getElementById('runBtn');
+  btn.disabled = true;
+  btn.textContent = 'Running…';
+
+  // Defer to next tick so the button state renders first
+  setTimeout(function() {
+    var lookNs = buildLooks(N, k);
+    var nLooks = lookNs.length;
+
+    // Per-look type-1 error counts
+    var lookSig = new Array(nLooks).fill(0);
+    // Reported p (first significant, or last look)
+    var reportedP = new Float64Array(nsims);
+
+    for (var i = 0; i < nsims; i++) {
+      // Generate x and y (H0 true: both N(0,1))
+      var xs = new Float64Array(N), ys = new Float64Array(N);
+      for (var t = 0; t < N; t++) { xs[t] = rnorm(); ys[t] = rnorm(); }
+
+      // Prefix sums for O(1) t-test at each look
+      var sumX = 0, sumX2 = 0, sumY = 0, sumY2 = 0;
+      var firstSigP = NaN, lastP = NaN;
+      var lookIdx = 0;
+
+      for (var obs = 0; obs < N; obs++) {
+        sumX  += xs[obs]; sumX2 += xs[obs] * xs[obs];
+        sumY  += ys[obs]; sumY2 += ys[obs] * ys[obs];
+
+        if (lookIdx < nLooks && obs + 1 === lookNs[lookIdx]) {
+          var pij = pooledTpValue(sumX, sumX2, sumY, sumY2, obs + 1);
+          lastP = pij;
+          if (pij < alpha) { lookSig[lookIdx]++; }
+          if (isNaN(firstSigP) && pij < alpha) { firstSigP = pij; }
+          lookIdx++;
+        }
+      }
+      reportedP[i] = isNaN(firstSigP) ? lastP : firstSigP;
+    }
+
+    // ── Histogram ────────────────────────────────────────────────────────
+    var nBins = 100;
+    var counts = new Array(nBins).fill(0);
+    for (var i = 0; i < nsims; i++) {
+      var bin = Math.min(nBins - 1, Math.floor(reportedP[i] * nBins));
+      counts[bin]++;
+    }
+    var binMids = [], binCounts = [];
+    for (var b = 0; b < nBins; b++) {
+      binMids.push((b + 0.5) / nBins);
+      binCounts.push(counts[b]);
+    }
+    var refH = nsims / nBins;  // uniform reference height
+
+    Plotly.react('stopPlot', [
+      {
+        x: binMids, y: binCounts,
+        type: 'bar',
+        width: 1 / nBins * 0.96,
+        marker: { color: '#b0b8c0', line: { color: '#9098a0', width: 0.4 } },
+        name: 'Reported p-value',
+        hovertemplate: 'p ≈ %{x:.2f}<br>count: %{y}<extra></extra>'
+      }
+    ], {
+      shapes: [{
+        type: 'line', x0: 0, x1: 1, y0: refH, y1: refH,
+        xref: 'x', yref: 'y',
+        line: { color: '#a60a0a', dash: 'dot', width: 1.8 }
+      }],
+      annotations: [{
+        x: 0.98, xref: 'x', y: refH, yref: 'y',
+        text: 'Uniform (H₀)',
+        showarrow: false, xanchor: 'right', yanchor: 'bottom',
+        font: { size: 10.5, color: '#a60a0a', family: "'Open Sans', sans-serif" }
+      }],
+      xaxis: {
+        title: { text: 'p-value', font: { size: 13 } },
+        range: [0, 1], zeroline: false,
+        gridcolor: '#ede8e8', linecolor: '#d6dadc'
+      },
+      yaxis: {
+        title: { text: 'Count', font: { size: 13 } },
+        zeroline: false, gridcolor: '#ede8e8', linecolor: '#d6dadc'
+      },
+      bargap: 0,
+      plot_bgcolor: '#fffafa', paper_bgcolor: '#fffafa',
+      font: { family: "'Open Sans', sans-serif", color: '#1c1717', size: 12 },
+      margin: { l: 55, r: 20, t: 16, b: 48 },
+      showlegend: false
+    }, { responsive: true, displayModeBar: false });
+
+    // ── Type 1 error rates ────────────────────────────────────────────────
+    var overallRate = 0;
+    for (var i = 0; i < nsims; i++) {
+      if (reportedP[i] < alpha) overallRate++;
+    }
+    overallRate /= nsims;
+
+    var el = document.getElementById('resultText');
+    el.className = 'text-block ' + (overallRate > alpha * 1.05 ? 'warn' : '');
+    el.innerHTML =
+      'Out of <strong>' + nsims.toLocaleString() + '</strong> simulated studies (H₀ true in all), '
+      + '<strong>' + (overallRate * 100).toFixed(1) + '%</strong> were reported as significant '
+      + '(α = ' + alpha.toFixed(2) + '). '
+      + (nLooks > 1
+        ? 'With ' + nLooks + ' looks, the true Type I error rate is inflated '
+          + 'above the nominal α = ' + alpha.toFixed(2) + '.'
+        : 'With a single look, the Type I error rate matches the nominal α.');
+
+    // Per-look rates
+    var looksEl = document.getElementById('looksText');
+    looksEl.style.display = 'block';
+    var chips = lookNs.map(function(n, j) {
+      var rate = (lookSig[j] / nsims * 100).toFixed(1);
+      var sig  = lookSig[j] / nsims > alpha * 1.02;
+      return '<span class="look-chip' + (sig ? ' sig' : '') + '">'
+           + 'Look ' + (j + 1) + ' (n=' + n + '): ' + rate + '%</span>';
+    }).join('');
+    looksEl.innerHTML =
+      '<strong>Type I error at each individual look:</strong>'
+      + '<div class="looks-row">' + chips + '</div>';
+
+    btn.disabled = false;
+    btn.textContent = 'Run simulation';
+    postHeight();
+  }, 20);
+}
+
+// ── Slider live labels ────────────────────────────────────────────────────
+
+
+
+document.getElementById('runBtn').addEventListener('click', runSim);
+
+window.addEventListener('load', function() { setTimeout(postHeight, 400); });
+if (typeof ResizeObserver !== 'undefined') {
+  new ResizeObserver(postHeight).observe(document.body);
+}
+
+// Auto-run on load
+runSim();
+</script>
+</body>
+</html>
