@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Random Variation: Single Sample</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans:ital,wght@0,400;0,600;1,400&family=Fira+Code&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.26.0/plotly.min.js"></script>
+<style>
+:root {
+  --bg:    #fffafa;
+  --bg2:   #f7f7f7;
+  --ink:   #1c1717;
+  --ink2:  #3d3535;
+  --ink3:  #666060;
+  --rule:  #d6dadc;
+  --red:   #a60a0a;
+  --red-l: #c41010;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px; line-height: 1.65;
+  padding: 20px 20px 8px; overflow: hidden;
+}
+.calc-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink3); margin-bottom: 5px;
+}
+.calc-heading {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600; font-size: 1.1rem;
+  color: var(--ink); margin-bottom: 16px;
+  padding-bottom: 9px; border-bottom: 2px solid var(--red);
+}
+.input-panel {
+  background: var(--bg2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--red);
+  padding: 14px 18px; margin-bottom: 14px;
+}
+.input-row { display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap; }
+.input-group { display: flex; flex-direction: column; gap: 5px; }
+.input-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--ink3);
+}
+.sym {
+  font-style: italic; font-size: .88rem;
+  text-transform: none; letter-spacing: 0;
+  font-weight: 400; color: var(--red);
+}
+input[type="number"] {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px; background: var(--bg);
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--red);
+  padding: 6px 8px; color: var(--ink);
+  outline: none; width: 90px;
+  transition: border-color .2s;
+  -moz-appearance: textfield;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+input[type="number"]:focus { border-bottom-color: var(--red-l); }
+.btn {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 11px; font-weight: 600;
+  background: var(--red); color: #fff;
+  border: none; padding: 8px 14px;
+  cursor: pointer; letter-spacing: .06em;
+  text-transform: uppercase;
+  transition: background .15s;
+}
+.btn:hover { background: var(--red-l); }
+.plots-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.plot-cell {
+  border: 1px solid var(--rule);
+  background: var(--bg);
+}
+.plot-cell > div:first-child { width: 100%; height: 210px; }
+</style>
+</head>
+<body>
+
+<p class="calc-label">Interactive simulation</p>
+<h2 class="calc-heading">Random Variation: Single Sample</h2>
+
+<div class="input-panel">
+  <div class="input-row">
+    <div class="input-group">
+      <label class="input-label" for="nIn">Sample size <span class="sym">n</span></label>
+      <input type="number" id="nIn" min="2" max="10000" step="1" value="10">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="muIn">Population mean <span class="sym">&#956;</span></label>
+      <input type="number" id="muIn" step="1" value="100">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="sigmaIn">Population SD <span class="sym">&#963;</span></label>
+      <input type="number" id="sigmaIn" min="0.1" step="1" value="15">
+    </div>
+    <div class="input-group">
+      <div class="input-label">&nbsp;</div>
+      <button class="btn" id="resampleBtn">New samples</button>
+    </div>
+  </div>
+</div>
+
+<div class="plots-grid">
+  <div class="plot-cell"><div id="plot0"></div></div>
+  <div class="plot-cell"><div id="plot1"></div></div>
+  <div class="plot-cell"><div id="plot2"></div></div>
+  <div class="plot-cell"><div id="plot3"></div></div>
+</div>
+
+<script>
+var FONT = { family: "'Open Sans', sans-serif", color: '#1c1717', size: 11 };
+var AXIS = { zeroline: false, gridcolor: '#ede8e8', linecolor: '#d6dadc' };
+var BW = 2;
+
+function randn() {
+  var u, v;
+  do { u = Math.random(); } while (u === 0);
+  do { v = Math.random(); } while (v === 0);
+  return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+}
+
+var _phTimer = null;
+function postHeight() {
+  clearTimeout(_phTimer);
+  _phTimer = setTimeout(function() {
+    var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+    window.parent.postMessage({ iframeHeight: h }, '*');
+  }, 150);
+}
+
+function normalPDF(x, mu, sigma) {
+  return Math.exp(-0.5 * Math.pow((x - mu) / sigma, 2)) / (sigma * Math.sqrt(2 * Math.PI));
+}
+
+function maxBinCount(data) {
+  var counts = {};
+  for (var i = 0; i < data.length; i++) {
+    var b = Math.floor((data[i] - 50) / BW);
+    if (b >= 0 && b < 50) counts[b] = (counts[b] || 0) + 1;
+  }
+  var m = 0;
+  for (var k in counts) if (counts[k] > m) m = counts[k];
+  return m;
+}
+
+function sampleStats(data) {
+  var n = data.length, sm = 0, sv = 0;
+  for (var i = 0; i < n; i++) sm += data[i];
+  sm /= n;
+  for (var i = 0; i < n; i++) sv += (data[i] - sm) * (data[i] - sm);
+  return { mean: sm, sd: n > 1 ? Math.sqrt(sv / (n - 1)) : 0 };
+}
+
+function update() {
+  var n     = Math.max(2, parseInt(document.getElementById('nIn').value, 10) || 10);
+  var mu    = parseFloat(document.getElementById('muIn').value) || 100;
+  var sigma = Math.max(0.1, parseFloat(document.getElementById('sigmaIn').value) || 15);
+
+  // Generate 4 independent datasets
+  var datasets = [];
+  for (var p = 0; p < 4; p++) {
+    var d = [];
+    for (var i = 0; i < n; i++) d.push(mu + sigma * randn());
+    datasets.push(d);
+  }
+
+  // Shared y-axis max across all panels
+  var globalHistMax = 0;
+  for (var p = 0; p < 4; p++) {
+    var m = maxBinCount(datasets[p]);
+    if (m > globalHistMax) globalHistMax = m;
+  }
+  var curveMax = normalPDF(mu, mu, sigma) * n * BW;
+  var yMax = Math.max(globalHistMax * 1.3, curveMax * 1.5, 2);
+
+  // Normal curve (same for all panels — population curve)
+  var curveX = [], curveY = [];
+  for (var xi = 50; xi <= 150.01; xi += 0.5) {
+    curveX.push(xi);
+    curveY.push(normalPDF(xi, mu, sigma) * n * BW);
+  }
+
+  for (var p = 0; p < 4; p++) {
+    var st = sampleStats(datasets[p]);
+    var lblAnchor = st.mean <= mu ? 'left' : 'right';
+    var lblShift  = st.mean <= mu ? 6 : -6;
+
+    Plotly.react('plot' + p, [
+      {
+        x: datasets[p], type: 'histogram',
+        autobinx: false,
+        xbins: { start: 50, end: 152, size: BW },
+        marker: { color: 'rgba(160,160,160,0.8)', line: { color: '#555', width: 0.8 } },
+        showlegend: false,
+        hovertemplate: 'Count: %{y}<extra></extra>'
+      },
+      {
+        x: curveX, y: curveY,
+        type: 'scatter', mode: 'lines',
+        line: { color: '#a60a0a', width: 2, dash: 'dash' },
+        showlegend: false, hoverinfo: 'skip'
+      }
+    ], {
+      title: {
+        text: 'Sample ' + (p + 1),
+        font: { family: "'Montserrat', sans-serif", size: 12, color: '#1c1717' },
+        x: 0.5
+      },
+      xaxis: Object.assign({
+        title: { text: 'IQ', font: { size: 11 } },
+        range: [50, 150], dtick: 10
+      }, AXIS),
+      yaxis: Object.assign({
+        title: { text: 'Count', font: { size: 11 } },
+        range: [0, yMax]
+      }, AXIS),
+      shapes: [{
+        type: 'line', x0: st.mean, x1: st.mean, y0: 0, y1: 1, yref: 'paper',
+        line: { color: '#333', width: 1.5, dash: 'dash' }
+      }],
+      annotations: [{
+        x: st.mean, xref: 'x', y: 0.97, yref: 'paper',
+        text: 'M = ' + st.mean.toFixed(1) + '<br>SD = ' + st.sd.toFixed(1),
+        showarrow: false,
+        xanchor: lblAnchor, xshift: lblShift,
+        yanchor: 'top', align: lblAnchor === 'left' ? 'left' : 'right',
+        font: { size: 10, color: '#333', family: "'Open Sans', sans-serif" },
+        bgcolor: 'rgba(255,250,250,0.8)'
+      }],
+      plot_bgcolor:  '#fffafa',
+      paper_bgcolor: '#fffafa',
+      font: FONT,
+      margin: { l: 46, r: 10, t: 36, b: 40 },
+      showlegend: false,
+      bargap: 0
+    }, { responsive: true, displayModeBar: false });
+  }
+
+  postHeight();
+}
+
+document.getElementById('resampleBtn').addEventListener('click', update);
+['nIn', 'muIn', 'sigmaIn'].forEach(function(id) {
+  document.getElementById(id).addEventListener('change', update);
+});
+window.addEventListener('resize', function() { update(); postHeight(); });
+window.addEventListener('load', function() { setTimeout(postHeight, 400); });
+if (typeof ResizeObserver !== 'undefined') {
+  new ResizeObserver(postHeight).observe(document.body);
+}
+
+update();
+</script>
+</body>
+</html>

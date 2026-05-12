@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Random Variation: Two Independent Groups</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans:ital,wght@0,400;0,600;1,400&family=Fira+Code&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.26.0/plotly.min.js"></script>
+<style>
+:root {
+  --bg:    #fffafa;
+  --bg2:   #f7f7f7;
+  --ink:   #1c1717;
+  --ink2:  #3d3535;
+  --ink3:  #666060;
+  --rule:  #d6dadc;
+  --red:   #a60a0a;
+  --red-l: #c41010;
+  --blue:  #1a6e9a;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px; line-height: 1.65;
+  padding: 20px 20px 8px; overflow: hidden;
+}
+.calc-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink3); margin-bottom: 5px;
+}
+.calc-heading {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600; font-size: 1.1rem;
+  color: var(--ink); margin-bottom: 16px;
+  padding-bottom: 9px; border-bottom: 2px solid var(--red);
+}
+.input-panel {
+  background: var(--bg2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--red);
+  padding: 14px 18px; margin-bottom: 12px;
+}
+.input-row { display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap; }
+.input-group { display: flex; flex-direction: column; gap: 5px; }
+.input-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--ink3);
+}
+.sym {
+  font-style: italic; font-size: .88rem;
+  text-transform: none; letter-spacing: 0;
+  font-weight: 400; color: var(--red);
+}
+input[type="number"] {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px; background: var(--bg);
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--red);
+  padding: 6px 8px; color: var(--ink);
+  outline: none; width: 80px;
+  transition: border-color .2s;
+  -moz-appearance: textfield;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+input[type="number"]:focus { border-bottom-color: var(--red-l); }
+.btn {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 11px; font-weight: 600;
+  background: var(--red); color: #fff;
+  border: none; padding: 8px 14px;
+  cursor: pointer; letter-spacing: .06em;
+  text-transform: uppercase;
+  transition: background .15s;
+}
+.btn:hover { background: var(--red-l); }
+.legend-row {
+  display: flex; gap: 18px; align-items: center;
+  font-size: 0.85rem; color: var(--ink2);
+  padding-bottom: 10px;
+}
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.leg-solid { width: 26px; height: 3px; display: inline-block; }
+.plots-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.plot-cell {
+  border: 1px solid var(--rule);
+  background: var(--bg);
+}
+.plot-cell > div:first-child { width: 100%; height: 210px; }
+</style>
+</head>
+<body>
+
+<p class="calc-label">Interactive simulation</p>
+<h2 class="calc-heading">Random Variation: Two Independent Groups</h2>
+
+<div class="input-panel">
+  <div class="input-row">
+    <div class="input-group">
+      <label class="input-label" for="nIn">n per group</label>
+      <input type="number" id="nIn" min="2" max="10000" step="1" value="10">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="mu1In">Group 1 mean <span class="sym">&#956;&#8321;</span></label>
+      <input type="number" id="mu1In" step="1" value="100">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="mu2In">Group 2 mean <span class="sym">&#956;&#8322;</span></label>
+      <input type="number" id="mu2In" step="1" value="106">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="sigmaIn">SD <span class="sym">&#963;</span></label>
+      <input type="number" id="sigmaIn" min="0.1" step="1" value="15">
+    </div>
+    <div class="input-group">
+      <div class="input-label">&nbsp;</div>
+      <button class="btn" id="resampleBtn">New samples</button>
+    </div>
+  </div>
+</div>
+
+<div class="legend-row">
+  <div class="legend-item">
+    <span class="leg-solid" style="background:rgba(26,110,154,0.75);"></span>Group 1 (Control)
+  </div>
+  <div class="legend-item">
+    <span class="leg-solid" style="background:rgba(166,10,10,0.75);"></span>Group 2 (Training)
+  </div>
+  <div class="legend-item">
+    <span class="leg-solid" style="border-top:2px dashed #888;height:0;width:26px;display:inline-block;"></span>Population curves
+  </div>
+</div>
+
+<div class="plots-grid">
+  <div class="plot-cell"><div id="plot0"></div></div>
+  <div class="plot-cell"><div id="plot1"></div></div>
+  <div class="plot-cell"><div id="plot2"></div></div>
+  <div class="plot-cell"><div id="plot3"></div></div>
+</div>
+
+<script>
+var FONT = { family: "'Open Sans', sans-serif", color: '#1c1717', size: 11 };
+var AXIS = { zeroline: false, gridcolor: '#ede8e8', linecolor: '#d6dadc' };
+var BW = 2;
+var C1 = '#1a6e9a';
+var C2 = '#a60a0a';
+
+function randn() {
+  var u, v;
+  do { u = Math.random(); } while (u === 0);
+  do { v = Math.random(); } while (v === 0);
+  return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+}
+
+var _phTimer = null;
+function postHeight() {
+  clearTimeout(_phTimer);
+  _phTimer = setTimeout(function() {
+    var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+    window.parent.postMessage({ iframeHeight: h }, '*');
+  }, 150);
+}
+
+function normalPDF(x, mu, sigma) {
+  return Math.exp(-0.5 * Math.pow((x - mu) / sigma, 2)) / (sigma * Math.sqrt(2 * Math.PI));
+}
+
+function sampleStats(data) {
+  var n = data.length, sm = 0, sv = 0;
+  for (var i = 0; i < n; i++) sm += data[i];
+  sm /= n;
+  for (var i = 0; i < n; i++) sv += (data[i] - sm) * (data[i] - sm);
+  return { mean: sm, sd: n > 1 ? Math.sqrt(sv / (n - 1)) : 0 };
+}
+
+function maxBinCount(data) {
+  var counts = {};
+  for (var i = 0; i < data.length; i++) {
+    var b = Math.floor((data[i] - 50) / BW);
+    if (b >= 0 && b < 50) counts[b] = (counts[b] || 0) + 1;
+  }
+  var m = 0;
+  for (var k in counts) if (counts[k] > m) m = counts[k];
+  return m;
+}
+
+function update() {
+  var n     = Math.max(2, parseInt(document.getElementById('nIn').value, 10) || 10);
+  var mu1   = parseFloat(document.getElementById('mu1In').value) || 100;
+  var mu2   = parseFloat(document.getElementById('mu2In').value) || 106;
+  var sigma = Math.max(0.1, parseFloat(document.getElementById('sigmaIn').value) || 15);
+
+  // Generate 4 pairs of datasets
+  var pairs = [];
+  for (var p = 0; p < 4; p++) {
+    var g1 = [], g2 = [];
+    for (var i = 0; i < n; i++) g1.push(mu1 + sigma * randn());
+    for (var i = 0; i < n; i++) g2.push(mu2 + sigma * randn());
+    pairs.push({ g1: g1, g2: g2 });
+  }
+
+  // Shared y-axis max across all 8 datasets
+  var globalHistMax = 0;
+  for (var p = 0; p < 4; p++) {
+    var m1 = maxBinCount(pairs[p].g1);
+    var m2 = maxBinCount(pairs[p].g2);
+    if (m1 > globalHistMax) globalHistMax = m1;
+    if (m2 > globalHistMax) globalHistMax = m2;
+  }
+  var curve1Max = normalPDF(mu1, mu1, sigma) * n * BW;
+  var curve2Max = normalPDF(mu2, mu2, sigma) * n * BW;
+  var yMax = Math.max(globalHistMax * 1.3, curve1Max * 1.5, curve2Max * 1.5, 2);
+
+  // Population curves (same for all panels)
+  var curveX = [];
+  for (var xi = 50; xi <= 150.01; xi += 0.5) curveX.push(xi);
+  var curve1Y = curveX.map(function(xi) { return normalPDF(xi, mu1, sigma) * n * BW; });
+  var curve2Y = curveX.map(function(xi) { return normalPDF(xi, mu2, sigma) * n * BW; });
+
+  for (var p = 0; p < 4; p++) {
+    var s1 = sampleStats(pairs[p].g1);
+    var s2 = sampleStats(pairs[p].g2);
+
+    // Annotation anchors: each label points outward from the other mean line
+    // so they don't overlap when means are close
+    var a1anchor, a1shift, a2anchor, a2shift;
+    if (s1.mean <= s2.mean) {
+      a1anchor = 'right'; a1shift = -5;   // G1 label left of its line
+      a2anchor = 'left';  a2shift =  5;   // G2 label right of its line
+    } else {
+      a1anchor = 'left';  a1shift =  5;
+      a2anchor = 'right'; a2shift = -5;
+    }
+
+    Plotly.react('plot' + p, [
+      {
+        x: pairs[p].g1, type: 'histogram',
+        autobinx: false,
+        xbins: { start: 50, end: 152, size: BW },
+        marker: { color: 'rgba(26,110,154,0.5)', line: { color: C1, width: 0.8 } },
+        showlegend: false,
+        hovertemplate: 'Group 1 count: %{y}<extra></extra>'
+      },
+      {
+        x: pairs[p].g2, type: 'histogram',
+        autobinx: false,
+        xbins: { start: 50, end: 152, size: BW },
+        marker: { color: 'rgba(166,10,10,0.4)', line: { color: C2, width: 0.8 } },
+        showlegend: false,
+        hovertemplate: 'Group 2 count: %{y}<extra></extra>'
+      },
+      {
+        x: curveX, y: curve1Y, type: 'scatter', mode: 'lines',
+        line: { color: C1, width: 1.8, dash: 'dash' },
+        showlegend: false, hoverinfo: 'skip'
+      },
+      {
+        x: curveX, y: curve2Y, type: 'scatter', mode: 'lines',
+        line: { color: C2, width: 1.8, dash: 'dash' },
+        showlegend: false, hoverinfo: 'skip'
+      }
+    ], {
+      barmode: 'overlay',
+      title: {
+        text: 'Sample ' + (p + 1),
+        font: { family: "'Montserrat', sans-serif", size: 12, color: '#1c1717' },
+        x: 0.5
+      },
+      xaxis: Object.assign({
+        title: { text: 'IQ', font: { size: 11 } },
+        range: [50, 150], dtick: 10
+      }, AXIS),
+      yaxis: Object.assign({
+        title: { text: 'Count', font: { size: 11 } },
+        range: [0, yMax]
+      }, AXIS),
+      shapes: [
+        { type: 'line', x0: s1.mean, x1: s1.mean, y0: 0, y1: 1, yref: 'paper',
+          line: { color: C1, width: 1.8, dash: 'dash' } },
+        { type: 'line', x0: s2.mean, x1: s2.mean, y0: 0, y1: 1, yref: 'paper',
+          line: { color: C2, width: 1.8, dash: 'dash' } }
+      ],
+      annotations: [
+        { x: s1.mean, xref: 'x', y: 0.97, yref: 'paper',
+          text: 'M&#8321; = ' + s1.mean.toFixed(1) + '<br>SD = ' + s1.sd.toFixed(1),
+          showarrow: false,
+          xanchor: a1anchor, xshift: a1shift,
+          yanchor: 'top', align: a1anchor,
+          font: { size: 10, color: C1, family: "'Open Sans', sans-serif" },
+          bgcolor: 'rgba(255,250,250,0.8)' },
+        { x: s2.mean, xref: 'x', y: 0.97, yref: 'paper',
+          text: 'M&#8322; = ' + s2.mean.toFixed(1) + '<br>SD = ' + s2.sd.toFixed(1),
+          showarrow: false,
+          xanchor: a2anchor, xshift: a2shift,
+          yanchor: 'top', align: a2anchor,
+          font: { size: 10, color: C2, family: "'Open Sans', sans-serif" },
+          bgcolor: 'rgba(255,250,250,0.8)' }
+      ],
+      plot_bgcolor:  '#fffafa',
+      paper_bgcolor: '#fffafa',
+      font: FONT,
+      margin: { l: 46, r: 10, t: 36, b: 40 },
+      showlegend: false,
+      bargap: 0
+    }, { responsive: true, displayModeBar: false });
+  }
+
+  postHeight();
+}
+
+document.getElementById('resampleBtn').addEventListener('click', update);
+['nIn', 'mu1In', 'mu2In', 'sigmaIn'].forEach(function(id) {
+  document.getElementById(id).addEventListener('change', update);
+});
+window.addEventListener('resize', function() { update(); postHeight(); });
+window.addEventListener('load', function() { setTimeout(postHeight, 400); });
+if (typeof ResizeObserver !== 'undefined') {
+  new ResizeObserver(postHeight).observe(document.body);
+}
+
+update();
+</script>
+</body>
+</html>

@@ -23,151 +23,42 @@ People find it difficult to think about random variation. Our mind is more stron
 
 Intelligence tests have been designed such that the mean Intelligence Quotient of the entire population of adults is 100, with a standard deviation of 15. This will not be true for every sample we draw from the population. Let’s get a feel for what the IQ scores from a sample look like. Which IQ scores will people in our sample have?
 
-We will start by manually calculating the mean and standard deviation of a random sample of 10 individuals. Their IQ scores are: 91.15, 86.52, 75.64, 115.72, 95.83, 105.44, 87.10, 100.81, 82.63, and 106.22. If we sum these 10 scores and divide them by 10, we get the mean of our sample: 94.71. We can also calculate the standard deviation from our sample. First, we subtract the overall mean (94.71) from each individual IQ score. Then, we square these differences and then sum these squared differences (giving 1374.79). We divide this sum of the squared difference by the sample size minus 1 (10-1=9), and finally take the square root of this value, which gives the standard deviation: 12.36. Copy the code below, remove the `set.seed(3190)` line (which makes the code reproducible but creates the same data as in the plot below each time) and run it to randomly simulate 10 IQ scores and plot them.
+We will start by manually calculating the mean and standard deviation of a hypothetical random sample of 10 individuals. Imagine their IQ scores are: 91, 87, 76, 116, 96, 105, 87, 101, 83, and 106. If we sum these 10 scores and divide them by 10, we get a sample mean of 94.8. We can also calculate the standard deviation: subtract the mean (94.8) from each individual score, square those differences, and sum them (giving approximately 1356). Dividing by n − 1 = 9 and taking the square root gives a standard deviation of approximately 12.3.
 
-```{r fig-plot-hist-iq-1, echo = TRUE}
-#| fig-cap: "Simulation of 10 random datapoints with mean = 100 and sd = 15 in the population."
+The interactive visualization below simultaneously draws four independent random samples from a population with mean = 100 and SD = 15. Each panel shows a histogram of the simulated IQ scores, the red dashed curve shows the population’s theoretical normal distribution scaled to the sample size, and the vertical dashed line marks the sample mean. The sample mean (M) and standard deviation (SD) are shown inside each panel. Click **New samples** to draw four new independent samples and observe how much the mean and standard deviation vary.
 
-library(ggplot2)
-set.seed(3190) # set seed for reproducibility
-n <- 10 # set sample size
-x <- rnorm(n = n, mean = 100, sd = 15) # simulate data
+::: {.content-visible when-format="html"}
 
-# plot data adding normal distribution and annotations
-ggplot(as.data.frame(x), aes(x)) +
-  geom_histogram(colour = "black", fill = "grey", binwidth = 2) +
-  stat_function(fun = function(z) dnorm(z, mean = 100, sd = 15) * n * 2, linewidth = 1, color = "red", lty = 2) +
-  xlab("IQ") +
-  ylab("Count") +
-  theme_bw(base_size = 20) +
-  theme(plot.subtitle = element_text(hjust = 0.5, size = 11)) +
-  geom_vline(xintercept = mean(x), colour = "gray20", linetype = "dashed") +
-  coord_cartesian(xlim = c(50, 150)) +
-  scale_x_continuous(breaks = seq(50, 150, 10)) +
-  labs(subtitle = paste("Mean =", round(mean(x)), "\nSD =", round(sd(x)))) +
-  theme(plot.background = element_rect(fill = "transparent")) + 
-  theme(panel.background = element_rect(fill = "transparent"))
-
-
+```{=html}
+<iframe id="rv-single-iframe"
+        src="random_variation_single_app_book.html"
+        width="100%"
+        height="600"
+        scrolling="no"
+        style="border:none;display:block;margin:1.5rem 0;overflow:hidden;"
+        title="Random Variation: Single Sample">
+</iframe>
+<script>
+window.addEventListener('message', function(e) {
+  if (e.data && typeof e.data.iframeHeight === 'number') {
+    var f = document.getElementById('rv-single-iframe');
+    if (f && e.source === f.contentWindow) f.style.height = e.data.iframeHeight + 'px';
+  }
+});
+</script>
 ```
 
-The plot above provides one example of a randomly simulated dataset of 10 points drawn from a normal distribution with a mean of 100 and a standard deviation of 15. The grey bars indicate the frequency with which each IQ score was observed. The red dotted line illustrates the normal distribution based on the mean and sd of the population. Both the observed mean (97; thin vertical dashed line), as well as the observed standard deviation (14), differ from the true population values. If we simulate 4 additional datasets, we see both the mean and the standard deviation vary.
+:::
 
-```{r sim-4-iq, echo = FALSE}
+::: {.content-visible unless-format="html"}
 
-set.seed(3190)
-n <- 10 # set sample size
-x <- rnorm(n = n, mean = 100, sd = 15) # create sample from normal distribution
+*An interactive visualization of random variation in a single sample is available in the online version of this book.*
 
-# plot data adding normal distribution and annotations
-p1 <- ggplot(as.data.frame(x), aes(x)) +
-  geom_histogram(colour = "black", fill = "grey", binwidth = 2) +
-  stat_function(fun = function(z) dnorm(z, mean = 100, sd = 15) * n * 2, linewidth = 1, color = "red", lty = 2) +
-  xlab("IQ") +
-  ylab("Count") +
-  theme_bw(base_size = 12) +
-  theme(plot.subtitle = element_text(hjust = 0.5, size = 9)) +
-  geom_vline(xintercept = mean(x), colour = "gray20", linetype = "dashed") +
-  coord_cartesian(xlim = c(50, 150)) +
-  scale_x_continuous(breaks = seq(50, 150, 10)) +
-  labs(subtitle = paste("Mean =", round(mean(x)), "\nSD =", round(sd(x)))) +
-  theme(plot.background = element_rect(fill = backgroundcolor)) + 
-  theme(panel.background = element_rect(fill = backgroundcolor))
+:::
 
+Each of the four samples illustrates how much the mean and standard deviation can differ from the true population values when n = 10. The histograms look quite irregular — far from the smooth bell curve — and the observed mean and SD vary noticeably across samples. Imagine we did not yet know what the mean IQ was in our population (where *M* = 100), or the standard deviation (where *SD* = 15), and that we would only have access to one dataset. Our estimate might be rather far off. This type of variation is to be expected in small samples, given the true standard deviation. The variability in the mean is determined by the standard deviation of the measurement. In real life, the standard deviation can be reduced by for example using multiple and reliable measurements (which is why an IQ test has not just one question, but many different questions). But we can also make sure our sample mean is closer to the population mean by increasing the sample size.
 
-n <- 10 # set sample size
-x <- rnorm(n = n, mean = 100, sd = 15) # create sample from normal distribution
-
-# plot data adding normal distribution and annotations
-p2 <- ggplot(as.data.frame(x), aes(x)) +
-  geom_histogram(colour = "black", fill = "grey", binwidth = 2) +
-  stat_function(fun = function(z) dnorm(z, mean = 100, sd = 15) * n * 2, linewidth = 1, color = "red", lty = 2) +
-  xlab("IQ") +
-  ylab("Count") +
-  theme_bw(base_size = 12) +
-  theme(plot.subtitle = element_text(hjust = 0.5, size = 9)) +
-  geom_vline(xintercept = mean(x), colour = "gray20", linetype = "dashed") +
-  coord_cartesian(xlim = c(50, 150)) +
-  scale_x_continuous(breaks = seq(50, 150, 10)) +
-  labs(subtitle = paste("Mean =", round(mean(x)), "\nSD =", round(sd(x)))) +
-  theme(plot.background = element_rect(fill = backgroundcolor)) + 
-  theme(panel.background = element_rect(fill = backgroundcolor))
-
-
-n <- 10 # set sample size
-x <- rnorm(n = n, mean = 100, sd = 15) # create sample from normal distribution
-
-# plot data adding normal distribution and annotations
-p3 <- ggplot(as.data.frame(x), aes(x)) +
-  geom_histogram(colour = "black", fill = "grey", binwidth = 2) +
-  stat_function(fun = function(z) dnorm(z, mean = 100, sd = 15) * n * 2, linewidth = 1, color = "red", lty = 2) +
-  xlab("IQ") +
-  ylab("Count") +
-  theme_bw(base_size = 12) +
-  theme(plot.subtitle = element_text(hjust = 0.5, size = 9)) +
-  geom_vline(xintercept = mean(x), colour = "gray20", linetype = "dashed") +
-  coord_cartesian(xlim = c(50, 150)) +
-  scale_x_continuous(breaks = seq(50, 150, 10)) +
-  labs(subtitle = paste("Mean =", round(mean(x)), "\nSD =", round(sd(x)))) +
-  theme(plot.background = element_rect(fill = backgroundcolor)) + 
-  theme(panel.background = element_rect(fill = backgroundcolor))
-
-
-n <- 10 # set sample size
-x <- rnorm(n = n, mean = 100, sd = 15) # create sample from normal distribution
-
-# plot data adding normal distribution and annotations
-p4 <- ggplot(as.data.frame(x), aes(x)) +
-  geom_histogram(colour = "black", fill = "grey", binwidth = 2) +
-  stat_function(fun = function(z) dnorm(z, mean = 100, sd = 15) * n * 2, linewidth = 1, color = "red", lty = 2) +
-  xlab("IQ") +
-  ylab("Count") +
-  theme_bw(base_size = 12) +
-  theme(plot.subtitle = element_text(hjust = 0.5, size = 9)) +
-  geom_vline(xintercept = mean(x), colour = "gray20", linetype = "dashed") +
-  coord_cartesian(xlim = c(50, 150)) +
-  scale_x_continuous(breaks = seq(50, 150, 10)) +
-  labs(subtitle = paste("Mean =", round(mean(x)), "\nSD =", round(sd(x)))) +
-  theme(plot.background = element_rect(fill = backgroundcolor)) + 
-  theme(panel.background = element_rect(fill = backgroundcolor))
-
-
-# Use patchwork to combine and plot only 1 legend without title.
-combined <- p1 + p2 + p3 + p4 & theme(
-  legend.position = "bottom",
-  legend.title = element_blank()
-)
-combined + plot_layout(guides = "collect")
-```
-
-Imagine we did not yet know what the mean IQ was in our population (where *M* = 100), or the standard deviation (where *SD* = 15), and that we would only have access to one dataset. Our estimate might be rather far off. This type of variation is to be expected in small samples of 10 participants, given the true standard deviation. The variability in the mean is determined by the standard deviation of the measurement. In real life, the standard deviation can be reduced by for example using multiple and reliable measurements (which is why an IQ test has not just one question, but many different questions). But we can also make sure our sample mean is closer to the population mean by increasing the sample size.
-
-A new simulated sample with 100 participants is plotted below. We are slowly seeing what is known as the **normal distribution** (and the frequency scores start to resemble the red dotted line illustrating the normal distribution of the population). This is the well-known
-bell shaped curve that represents the distribution of many variables in scientific research (although some other types of distributions are quite common as well). The mean and standard deviation are much closer to the true mean and standard deviation, and this is true for most of the simulated samples if you set n <- 100 in the code above and run additional simulations.
-
-```{r fig-plot-hist-iq-2, fig.margin = FALSE, echo = FALSE}
-#| fig-cap: "100 random datapoints with mean = 100 and sd = 15 in the population."
-
-set.seed(519)
-n <- 100 # set sample size
-x <- rnorm(n = n, mean = 100, sd = 15) # create sample from normal distribution
-
-# plot data adding normal distribution and annotations
-ggplot(as.data.frame(x), aes(x)) +
-  geom_histogram(colour = "black", fill = "grey", binwidth = 2) +
-  stat_function(fun = function(z) dnorm(z, mean = 100, sd = 15) * n * 2, linewidth = 1, color = "red", lty = 2) +
-  xlab("IQ") +
-  ylab("Count") +
-  theme_bw(base_size = 20) + 
-  theme(plot.background = element_rect(fill = backgroundcolor)) + 
-  theme(panel.background = element_rect(fill = backgroundcolor)) +
-  theme(plot.subtitle = element_text(hjust = 0.5, size = 11)) +
-  geom_vline(xintercept = mean(x), colour = "gray20", linetype = "dashed") +
-  coord_cartesian(xlim = c(50, 150)) +
-  scale_x_continuous(breaks = seq(50, 150, 10)) +
-  labs(subtitle = paste("Mean =", round(mean(x)), "\nSD =", round(sd(x))))
-
-```
+Increase *n* to 100 in the interactive visualization and draw a few new samples. We are slowly seeing what is known as the **normal distribution** (and the frequency scores start to resemble the red dotted line illustrating the normal distribution of the population). This is the well-known bell shaped curve that represents the distribution of many variables in scientific research (although some other types of distributions are quite common as well). The mean and standard deviation are much closer to the true mean and standard deviation across the four samples.
 
 If we simulate a really large sample of 1000 observations, we will see the benefits of collecting a large sample size in terms of accuracy of the measurement. Not every simulated study of 1000 people will yield the true mean and standard deviation, but it will happen quite often. And note how although the distribution is very close to a normal distribution, even with 1000 people it is not perfect.
 
@@ -195,188 +86,36 @@ ggplot(as.data.frame(x), aes(x)) +
 
 ```
 
-So far, we have simulated only a single group of observations, but it is also informative to examine the variation we will observe when we compare the means in two independent groups. Assume we have a new IQ training program that will increase people's IQ score by 6 points. People in condition 1 are in the control condition – they do not get IQ training. People in condition 2 get IQ training. Let’s simulate 10 people in each group, assuming mean IQ in the control condition is 100 and in the experimental group is 106 (the SD is still 15 in each group).
+So far, we have simulated only a single group of observations, but it is also informative to examine the variation we will observe when we compare the means in two independent groups. Assume we have a new IQ training program that will increase people's IQ score by 6 points. People in condition 1 are in the control condition – they do not get IQ training. People in condition 2 get IQ training. The interactive visualization below simulates this scenario — by default with n = 10 per group, though you can increase the sample size to explore its effect. The blue histograms show Group 1 (Control) and the red histograms show Group 2 (Training); the dashed curves show the population distributions and the dashed vertical lines mark the observed group means. Click **New samples** to observe how the observed group means and their difference vary across samples.
 
-```{r fig-plot-group1, warning=FALSE, fig.margin = FALSE, echo = FALSE}
-#| fig-cap: "Simulation of 10 observations in two independent groups."
+::: {.content-visible when-format="html"}
 
-# Set color palette
-cbbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
-
-set.seed(811)
-
-n1 <- 10 # set the sample size in Group 1
-n2 <- 10 # set the sample size in Group 2
-mx <- 100 # set the mean in Group 1
-sdx <- 15 # set the standard deviation in Group 1
-my <- 106 # set the mean in Group 2
-sdy <- 15 # set the standard deviation in Group 2
-
-# randomly draw data
-x <- rnorm(n = n1, mean = mx, sd = sdx)
-y <- rnorm(n = n2, mean = my, sd = sdy)
-DV <- c(x, y) # combine the two samples into a single variable
-IV <- as.factor(c(rep("1", n1), rep("2", n2))) # create the independent variable (1 and 2)
-dataset <- as.data.frame(cbind(IV, DV)) # create a dataframe (to make the plot)
-
-# plot graph
-ggplot(dataset, aes(DV, fill = as.factor(IV))) +
-  geom_histogram(alpha = 0.4, binwidth = 2, position = "dodge", colour = "black") +
-  scale_fill_manual(values = cbbPalette, name = "Condition") +
-  stat_function(fun = function(z) dnorm(z, mean = mx, sd = sdx) * n1 * 2, linewidth = 1, color = "#E69F00", lty = 2, inherit.aes = FALSE) +
-  stat_function(fun = function(z) dnorm(z, mean = my, sd = sdy) * n2 * 2, linewidth = 1, color = "#56B4E9", lty = 2, inherit.aes = FALSE) +
-  xlab("IQ") +
-  ylab("Count") +
-  theme_bw(base_size = 20) + 
-  theme(plot.background = element_rect(fill = backgroundcolor)) + 
-  theme(panel.background = element_rect(fill = backgroundcolor)) +
-  theme(plot.subtitle = element_text(hjust = 0.5, size = 11)) +
-  theme(legend.key = element_rect(fill = backgroundcolor)) +
-  theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) +
-  geom_vline(xintercept = mean(x), colour = "black", linetype = "dashed", linewidth = 1) +
-  geom_vline(xintercept = mean(y), colour = "black", linetype = "dashed", linewidth = 1) +
-  coord_cartesian(xlim = c(50, 150)) +
-  scale_x_continuous(breaks = c(50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150)) +
-  labs(subtitle = paste("Mean X =", round(mean(x)), "(SD =", round(sd(x)), ")\nMean Y =", round(mean(y)), "(SD =", round(sd(y)), ")")) +
-  theme(plot.title = element_text(hjust = 0.5))
-
+```{=html}
+<iframe id="rv-two-groups-iframe"
+        src="random_variation_two_groups_app_book.html"
+        width="100%"
+        height="600"
+        scrolling="no"
+        style="border:none;display:block;margin:1.5rem 0;overflow:hidden;"
+        title="Random Variation: Two Independent Groups">
+</iframe>
+<script>
+window.addEventListener('message', function(e) {
+  if (e.data && typeof e.data.iframeHeight === 'number') {
+    var f = document.getElementById('rv-two-groups-iframe');
+    if (f && e.source === f.contentWindow) f.style.height = e.data.iframeHeight + 'px';
+  }
+});
+</script>
 ```
 
-The two groups differ in how close they are to their true means, and as a consequence, the difference between groups varies as well. Note that this difference is the main variable in statistical analyses when comparing two groups in for example a *t*-test. In this specific simulation, we got quite extreme results, with a score of 96 (when the population mean is 100) and a score of 111 (when the population mean is 106). So in this sample, due to random variation, we calculate an effect size estimate that is quite a bit larger than the true effect size. Let's simulate 4 additional datasets to see the variation. 
+:::
 
-```{r fig-plot-group2, warning=FALSE, fig.margin = FALSE, echo = FALSE}
-#| fig-cap: "Four simulated samples of independent groups."
+::: {.content-visible unless-format="html"}
 
-# Set color palette
-cbbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+*An interactive visualization of random variation in two independent groups is available in the online version of this book.*
 
-set.seed(1420)
-
-n1 <- 10 # set the sample size in Group 1
-n2 <- 10 # set the sample size in Group 2
-mx <- 100 # set the mean in Group 1
-sdx <- 15 # set the standard deviation in Group 1
-my <- 106 # set the mean in Group 2
-sdy <- 15 # set the standard deviation in Group 2
-
-# randomly draw data
-x <- rnorm(n = n1, mean = mx, sd = sdx)
-y <- rnorm(n = n2, mean = my, sd = sdy)
-DV <- c(x, y) # combine the two samples into a single variable
-IV <- as.factor(c(rep("1", n1), rep("2", n2))) # create the independent variable (1 and 2)
-dataset <- as.data.frame(cbind(IV, DV)) # create a dataframe (to make the plot)
-
-# plot graph
-p1 <- ggplot(dataset, aes(DV, fill = as.factor(IV))) +
-  geom_histogram(alpha = 0.4, binwidth = 2, position = "dodge", colour = "black") +
-  scale_fill_manual(values = cbbPalette, name = "Condition") +
-  stat_function(fun = function(z) dnorm(z, mean = mx, sd = sdx) * n1 * 2, linewidth = 1, color = "#E69F00", lty = 2, inherit.aes = FALSE) +
-  stat_function(fun = function(z) dnorm(z, mean = my, sd = sdy) * n2 * 2, linewidth = 1, color = "#56B4E9", lty = 2, inherit.aes = FALSE) +
-  xlab("IQ") +
-  ylab("Count") +
-  theme_bw(base_size = 10) + 
-  theme(plot.background = element_rect(fill = backgroundcolor)) + 
-  theme(panel.background = element_rect(fill = backgroundcolor)) +
-  theme(plot.subtitle = element_text(hjust = 0.5, size = 8)) +
-    theme(legend.key = element_rect(fill = backgroundcolor)) +
-  theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) +
-  geom_vline(xintercept = mean(x), colour = "black", linetype = "dashed", linewidth = 1) +
-  geom_vline(xintercept = mean(y), colour = "black", linetype = "dashed", linewidth = 1) +
-  coord_cartesian(xlim = c(50, 150)) +
-  scale_x_continuous(breaks = c(50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150)) +
-  labs(subtitle = paste("Mean X =", round(mean(x)), "(SD =", round(sd(x)), ")\nMean Y =", round(mean(y)), "(SD =", round(sd(y)), ")")) +
-  theme(plot.title = element_text(hjust = 0.5))
-
-# randomly draw data
-x <- rnorm(n = n1, mean = mx, sd = sdx)
-y <- rnorm(n = n2, mean = my, sd = sdy)
-DV <- c(x, y) # combine the two samples into a single variable
-IV <- as.factor(c(rep("1", n1), rep("2", n2))) # create the independent variable (1 and 2)
-dataset <- as.data.frame(cbind(IV, DV)) # create a dataframe (to make the plot)
-
-# plot graph
-p2 <- ggplot(dataset, aes(DV, fill = as.factor(IV))) +
-  geom_histogram(alpha = 0.4, binwidth = 2, position = "dodge", colour = "black") +
-  scale_fill_manual(values = cbbPalette, name = "Condition") +
-  stat_function(fun = function(z) dnorm(z, mean = mx, sd = sdx) * n1 * 2, linewidth = 1, color = "#E69F00", lty = 2, inherit.aes = FALSE) +
-  stat_function(fun = function(z) dnorm(z, mean = my, sd = sdy) * n2 * 2, linewidth = 1, color = "#56B4E9", lty = 2, inherit.aes = FALSE) +
-  xlab("IQ") +
-  ylab("Count") +
-  theme_bw(base_size = 10) + 
-  theme(plot.background = element_rect(fill = backgroundcolor)) + 
-  theme(panel.background = element_rect(fill = backgroundcolor)) +
-  theme(plot.subtitle = element_text(hjust = 0.5, size = 8)) +
-  theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) +
-  geom_vline(xintercept = mean(x), colour = "black", linetype = "dashed", linewidth = 1) +
-  geom_vline(xintercept = mean(y), colour = "black", linetype = "dashed", linewidth = 1) +
-  coord_cartesian(xlim = c(50, 150)) +
-  scale_x_continuous(breaks = c(50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150)) +
-  labs(subtitle = paste("Mean X =", round(mean(x)), "(SD =", round(sd(x)), ")\nMean Y =", round(mean(y)), "(SD =", round(sd(y)), ")")) +
-  theme(plot.title = element_text(hjust = 0.5))
-
-# randomly draw data
-x <- rnorm(n = n1, mean = mx, sd = sdx)
-y <- rnorm(n = n2, mean = my, sd = sdy)
-DV <- c(x, y) # combine the two samples into a single variable
-IV <- as.factor(c(rep("1", n1), rep("2", n2))) # create the independent variable (1 and 2)
-dataset <- as.data.frame(cbind(IV, DV)) # create a dataframe (to make the plot)
-
-# plot graph
-p3 <- ggplot(dataset, aes(DV, fill = as.factor(IV))) +
-  geom_histogram(alpha = 0.4, binwidth = 2, position = "dodge", colour = "black") +
-  scale_fill_manual(values = cbbPalette, name = "Condition") +
-  stat_function(fun = function(z) dnorm(z, mean = mx, sd = sdx) * n1 * 2, linewidth = 1, color = "#E69F00", lty = 2, inherit.aes = FALSE) +
-  stat_function(fun = function(z) dnorm(z, mean = my, sd = sdy) * n2 * 2, linewidth = 1, color = "#56B4E9", lty = 2, inherit.aes = FALSE) +
-  xlab("IQ") +
-  ylab("Count") +
-  theme_bw(base_size = 10) + 
-  theme(plot.background = element_rect(fill = backgroundcolor)) + 
-  theme(panel.background = element_rect(fill = backgroundcolor)) +
-  theme(plot.subtitle = element_text(hjust = 0.5, size = 8)) +
-  theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) +
-  geom_vline(xintercept = mean(x), colour = "black", linetype = "dashed", linewidth = 1) +
-  geom_vline(xintercept = mean(y), colour = "black", linetype = "dashed", linewidth = 1) +
-  coord_cartesian(xlim = c(50, 150)) +
-  scale_x_continuous(breaks = c(50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150)) +
-  labs(subtitle = paste("Mean X =", round(mean(x)), "(SD =", round(sd(x)), ")\nMean Y =", round(mean(y)), "(SD =", round(sd(y)), ")")) +
-  theme(plot.title = element_text(hjust = 0.5))
-
-# randomly draw data
-x <- rnorm(n = n1, mean = mx, sd = sdx)
-y <- rnorm(n = n2, mean = my, sd = sdy)
-DV <- c(x, y) # combine the two samples into a single variable
-IV <- as.factor(c(rep("1", n1), rep("2", n2))) # create the independent variable (1 and 2)
-dataset <- as.data.frame(cbind(IV, DV)) # create a dataframe (to make the plot)
-
-# plot graph
-p4 <- ggplot(dataset, aes(DV, fill = as.factor(IV))) +
-  geom_histogram(alpha = 0.4, binwidth = 2, position = "dodge", colour = "black") +
-  scale_fill_manual(values = cbbPalette, name = "Condition") +
-  stat_function(fun = function(z) dnorm(z, mean = mx, sd = sdx) * n1 * 2, linewidth = 1, color = "#E69F00", lty = 2, inherit.aes = FALSE) +
-  stat_function(fun = function(z) dnorm(z, mean = my, sd = sdy) * n2 * 2, linewidth = 1, color = "#56B4E9", lty = 2, inherit.aes = FALSE) +
-  xlab("IQ") +
-  ylab("Count") +
-  theme_bw(base_size = 10) + 
-  theme(plot.background = element_rect(fill = backgroundcolor)) + 
-  theme(panel.background = element_rect(fill = backgroundcolor)) +
-  theme(plot.subtitle = element_text(hjust = 0.5, size = 8)) +
-  theme(panel.grid.major.x = element_blank(), axis.text.y = element_blank(), panel.grid.minor.x = element_blank()) +
-  geom_vline(xintercept = mean(x), colour = "black", linetype = "dashed", linewidth = 1) +
-  geom_vline(xintercept = mean(y), colour = "black", linetype = "dashed", linewidth = 1) +
-  coord_cartesian(xlim = c(50, 150)) +
-  scale_x_continuous(breaks = c(50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150)) +
-  labs(subtitle = paste("Mean X =", round(mean(x)), "(SD =", round(sd(x)), ")\nMean Y =", round(mean(y)), "(SD =", round(sd(y)), ")")) +
-  theme(plot.title = element_text(hjust = 0.5))
-
-
-# Use patchwork to combine and plot only 1 legend without title.
-combined <- p1 + p2 + p3 + p4 & theme(
-  legend.position = "bottom",
-  legend.title = element_blank()
-)
-combined + plot_layout(guides = "collect")
-
-```
+:::
 
 We see that there is quite some variation, up to the point that in one simulation the sample means are in the opposite direction of the population means. Again, increasing the sample size will mean that, in the long run, the sample means will get closer to the population means, and that we are more accurately estimating the difference between conditions. With 250 observations in each group, a randomly simulated set of observations for the two groups might look like @fig-plotgroup3. Note that this difference might not look impressive. However, the difference would pass a significance test (an independent *t*-test) with a very low alpha level. 
 ```{r fig-plotgroup3, warning=FALSE, fig.margin = FALSE, echo = FALSE}
@@ -434,85 +173,40 @@ So far we have seen random variation in means, but correlations will show simila
 The correlation is calculated based on the IQ scores of one fraternal twin (x) and the IQ scores of the other fraternal twin (y) for each pair of twins, and the total number of pairs (N). In the numerator of the formula, the number of pairs is multiplied by the sum of the product of x and y, and from this value the sum of x multiplied by the sum of y is subtracted. In the denominator, the square root is taken from the number of pairs multiplied by the sum of x squared, from which the sum of x, which is then squared, is subtracted, and multiplied by the same calculation but now for y. 
 
 $$r=\frac{n \Sigma x y-(\Sigma x )(\Sigma y)}{\sqrt{[n \Sigma x^{2}-(\Sigma x)^{2}][n \Sigma y^{2}-(\Sigma y)^{2}]}}$$
-When we randomly simulate observations for 30 twins, we get the following result.
+When we randomly simulate observations for 30 twins, the interactive visualization below shows the result.
 
-```{r, fig-plot-cor1, warning=FALSE, fig.margin = FALSE, echo = FALSE}
-#| fig-cap: "Correlation based on 30 pairs."
+::: {.content-visible when-format="html"}
 
-set.seed(4130)
-n <- 30 # set sample size
-cor.true <- 0.55 # set true correlation
-mx <- 106 # set the mean in Group 1
-sdx <- 15 # set the standard deviation in Group 1
-my <- 100 # set the mean in Group 2
-sdy <- 15 # set the standard deviation in Group 2
-# randomly create correlated data using the mvrnorm function in the MASS package
-cov.mat <- matrix(c(1.0, cor.true, cor.true, 1.0), nrow = 2, byrow = T)
-mu <- c(0, 0)
-mat <- MASS::mvrnorm(n, Sigma = cov.mat, mu = mu, empirical = FALSE)
-x <- mat[, 1] * sdx + mx
-y <- mat[, 2] * sdy + my
-dataset <- as.data.frame(cbind(x, y))
-
-# Plot graph
-ggplot(dataset, aes(x = x, y = y)) +
-  geom_point(size = 2) + # Use hollow circles
-  geom_smooth(method = lm, colour = "#E69F00", size = 1, fill = "#56B4E9", formula = "y ~ x") + # Add linear regression line
-  geom_abline(intercept = (my - (cor.true * mx)), slope = cor.true, colour = "black", linetype = "dotted", size = 1) +
-  coord_cartesian(xlim = c(40, 160), ylim = c(40, 160)) +
-  scale_x_continuous(breaks = c(40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160)) +
-  scale_y_continuous(breaks = c(40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160)) +
-  xlab("IQ twin 1") +
-  ylab("IQ twin 2") +
-  ggtitle(paste("Correlation = ", round(cor(x, y), digits = 2), sep = "")) +
-  theme_bw(base_size = 20) + 
-  theme(plot.background = element_rect(fill = backgroundcolor)) + 
-  theme(panel.background = element_rect(fill = backgroundcolor)) +
-  theme(legend.key = element_rect(fill = backgroundcolor)) +
-  theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank()) +
-  theme(plot.title = element_text(hjust = 0.5))
+```{=html}
+<iframe id="rv-correlation-iframe"
+        src="random_variation_correlation_app_book.html"
+        width="100%"
+        height="600"
+        scrolling="no"
+        style="border:none;display:block;margin:1.5rem 0;overflow:hidden;"
+        title="Random Variation in Correlations">
+</iframe>
+<script>
+window.addEventListener('message', function(e) {
+  if (e.data && typeof e.data.iframeHeight === 'number') {
+    var f = document.getElementById('rv-correlation-iframe');
+    if (f && e.source === f.contentWindow) f.style.height = e.data.iframeHeight + 'px';
+  }
+});
+</script>
 ```
 
-On the x-axis, we see the IQ score of one twin, and on the y-axis we see the IQ score of the second twin, for each pair. The black dotted diagonal line illustrates the true correlation (0.55), while the yellow line shows the observed correlation (in this case, *r* = 0.43). The slope of the yellow line is determined by the observed correlation, but the position of the line is influenced by the mean IQ scores in both groups (in this simulation, the mean on the y-axis is `r round(mean(x),0)`, somewhat above 100, and the mean on the x-axis is `r round(mean(y),0)`, also slightly above 100. The blue area is the 95% confidence interval around the observed correlation. As we saw in the chapter on [confidence intervals](#confint), 95% of the time (in the long run) the blue area will contain the true correlation (the dotted black line). As in the examples based on means, increasing the sample size to 300 narrows the confidence interval considerably, and will mean that most of the time the correlation in the sample is much closer to the correlation in the population. As the sample size increases, the estimate of the correlation becomes more precise, following the formula of the standard error of a correlation:
+:::
+
+::: {.content-visible unless-format="html"}
+
+*An interactive visualization of random variation in correlations is available in the online version of this book.*
+
+:::
+
+On the x-axis, we see the IQ score of one twin, and on the y-axis we see the IQ score of the second twin, for each pair. The black dotted diagonal line illustrates the true correlation (0.55), while the red line shows the observed correlation (in this case, *r* = 0.43). The slope of the red line is determined by the observed correlation. The blue shaded area is the 95% confidence interval around the observed correlation coefficient. As we saw in the chapter on [confidence intervals](#confint), 95% of the time (in the long run) the blue area will contain the true correlation (the dotted black line). As in the examples based on means, if we increase the sample size in the interactive visualization to *N* = 300 we see that the confidence interval is considerably more narrow. As a consequence, most of the time the correlation in the sample is much closer to the true correlation in the population. As the sample size increases, the estimate of the correlation becomes more precise, following the formula of the standard error of a correlation:
 
 $$SE_{r_{xy}} = \frac{1 - r^2_{xy}}{\sqrt{(n - 2)}}$$
-
-```{r, fig-plot-cor2, warning=FALSE, fig.margin = FALSE, echo = FALSE}
-#| fig-cap: "Correlation based on 300 pairs."
-
-set.seed(4130)
-n <- 300 # set sample size
-cor.true <- 0.55 # set true correlation
-mx <- 106 # set the mean in Group 1
-sdx <- 15 # set the standard deviation in Group 1
-my <- 100 # set the mean in Group 2
-sdy <- 15 # set the standard deviation in Group 2
-# randomly create correlated data using the mvrnorm function in the MASS package
-cov.mat <- matrix(c(1.0, cor.true, cor.true, 1.0), nrow = 2, byrow = T)
-mu <- c(0, 0)
-mat <- MASS::mvrnorm(n, Sigma = cov.mat, mu = mu, empirical = FALSE)
-x <- mat[, 1] * sdx + mx
-y <- mat[, 2] * sdy + my
-dataset <- as.data.frame(cbind(x, y))
-
-# Plot graph
-ggplot(dataset, aes(x = x, y = y)) +
-  geom_point(size = 2) + # Use hollow circles
-  geom_smooth(method = lm, colour = "#E69F00", size = 1, fill = "#56B4E9", formula = "y ~ x") + # Add linear regression line
-  geom_abline(intercept = (my - (cor.true * mx)), slope = cor.true, colour = "black", linetype = "dotted", size = 1) +
-  coord_cartesian(xlim = c(40, 160), ylim = c(40, 160)) +
-  scale_x_continuous(breaks = c(40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160)) +
-  scale_y_continuous(breaks = c(40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160)) +
-  xlab("IQ twin 1") +
-  ylab("IQ twin 2") +
-  ggtitle(paste("Correlation = ", round(cor(x, y), digits = 2), sep = "")) +
-  theme_bw(base_size = 20) + 
-  theme(plot.background = element_rect(fill = backgroundcolor)) + 
-  theme(panel.background = element_rect(fill = backgroundcolor)) +
-  theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank()) +
-  theme(plot.title = element_text(hjust = 0.5))
-
-```
 
 Because estimates of means, standard deviations, or correlations based on small samples have relatively large uncertainty, it is preferable to collect larger samples. However, this is not always possible, and often the goal of a study is not to provide an accurate estimate, but to test a hypothesis. A study often requires less observations to achieve sufficient power for a hypothesis test, than are required to be able to accurately estimate a parameter [@maxwell_sample_2008]. Therefore, scientists often rely on meta-analyses, where data from multiple studies are combined, to provide accurate estimates.
 

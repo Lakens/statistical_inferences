@@ -549,61 +549,19 @@ window.Quarto = {
 <span class="header-section-number">11.1</span> Random Variation</h2>
 <p>People find it difficult to think about random variation. Our mind is more strongly geared towards recognizing patterns than randomness. In this section, the goal is to learn what random variation looks like, and how the number of observations collected determines the amount of variation.</p>
 <p>Intelligence tests have been designed such that the mean Intelligence Quotient of the entire population of adults is 100, with a standard deviation of 15. This will not be true for every sample we draw from the population. Let’s get a feel for what the IQ scores from a sample look like. Which IQ scores will people in our sample have?</p>
-<p>We will start by manually calculating the mean and standard deviation of a random sample of 10 individuals. Their IQ scores are: 91.15, 86.52, 75.64, 115.72, 95.83, 105.44, 87.10, 100.81, 82.63, and 106.22. If we sum these 10 scores and divide them by 10, we get the mean of our sample: 94.71. We can also calculate the standard deviation from our sample. First, we subtract the overall mean (94.71) from each individual IQ score. Then, we square these differences and then sum these squared differences (giving 1374.79). We divide this sum of the squared difference by the sample size minus 1 (10-1=9), and finally take the square root of this value, which gives the standard deviation: 12.36. Copy the code below, remove the <code>set.seed(3190)</code> line (which makes the code reproducible but creates the same data as in the plot below each time) and run it to randomly simulate 10 IQ scores and plot them.</p>
-<div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">3190</span><span class="op">)</span> <span class="co"># set seed for reproducibility</span></span>
-<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">10</span> <span class="co"># set sample size</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">n</span>, mean <span class="op">=</span> <span class="fl">100</span>, sd <span class="op">=</span> <span class="fl">15</span><span class="op">)</span> <span class="co"># simulate data</span></span>
-<span></span>
-<span><span class="co"># plot data adding normal distribution and annotations</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"black"</span>, fill <span class="op">=</span> <span class="st">"grey"</span>, binwidth <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_function.html">stat_function</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">dnorm</a></span><span class="op">(</span><span class="va">z</span>, mean <span class="op">=</span> <span class="fl">100</span>, sd <span class="op">=</span> <span class="fl">15</span><span class="op">)</span> <span class="op">*</span> <span class="va">n</span> <span class="op">*</span> <span class="fl">2</span>, linewidth <span class="op">=</span> <span class="fl">1</span>, color <span class="op">=</span> <span class="st">"red"</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"IQ"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="st">"Count"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">20</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>plot.subtitle <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>hjust <span class="op">=</span> <span class="fl">0.5</span>, size <span class="op">=</span> <span class="fl">11</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, colour <span class="op">=</span> <span class="st">"gray20"</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html">coord_cartesian</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">150</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">150</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>subtitle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Mean ="</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>, <span class="st">"\nSD ="</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>plot.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"#fffafa"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"#fffafa"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div id="fig-plot-hist-iq-1" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
-<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-plot-hist-iq-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="11-meta_files/figure-html/fig-plot-hist-iq-1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plot-hist-iq-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.1: Simulation of 10 random datapoints with mean = 100 and sd = 15 in the population.
-</figcaption></figure>
-</div>
-</div>
-</div>
-<p>The plot above provides one example of a randomly simulated dataset of 10 points drawn from a normal distribution with a mean of 100 and a standard deviation of 15. The grey bars indicate the frequency with which each IQ score was observed. The red dotted line illustrates the normal distribution based on the mean and sd of the population. Both the observed mean (97; thin vertical dashed line), as well as the observed standard deviation (14), differ from the true population values. If we simulate 4 additional datasets, we see both the mean and the standard deviation vary.</p>
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="11-meta_files/figure-html/sim-4-iq-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>Imagine we did not yet know what the mean IQ was in our population (where <em>M</em> = 100), or the standard deviation (where <em>SD</em> = 15), and that we would only have access to one dataset. Our estimate might be rather far off. This type of variation is to be expected in small samples of 10 participants, given the true standard deviation. The variability in the mean is determined by the standard deviation of the measurement. In real life, the standard deviation can be reduced by for example using multiple and reliable measurements (which is why an IQ test has not just one question, but many different questions). But we can also make sure our sample mean is closer to the population mean by increasing the sample size.</p>
-<p>A new simulated sample with 100 participants is plotted below. We are slowly seeing what is known as the <strong>normal distribution</strong> (and the frequency scores start to resemble the red dotted line illustrating the normal distribution of the population). This is the well-known bell shaped curve that represents the distribution of many variables in scientific research (although some other types of distributions are quite common as well). The mean and standard deviation are much closer to the true mean and standard deviation, and this is true for most of the simulated samples if you set n &lt;- 100 in the code above and run additional simulations.</p>
-<div class="cell" data-layout-align="center" data-fig.margin="false">
-<div class="cell-output-display">
-<div id="fig-plot-hist-iq-2" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
-<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-plot-hist-iq-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="11-meta_files/figure-html/fig-plot-hist-iq-2-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plot-hist-iq-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.2: 100 random datapoints with mean = 100 and sd = 15 in the population.
-</figcaption></figure>
-</div>
-</div>
-</div>
+<p>We will start by manually calculating the mean and standard deviation of a hypothetical random sample of 10 individuals. Imagine their IQ scores are: 91, 87, 76, 116, 96, 105, 87, 101, 83, and 106. If we sum these 10 scores and divide them by 10, we get a sample mean of 94.8. We can also calculate the standard deviation: subtract the mean (94.8) from each individual score, square those differences, and sum them (giving approximately 1356). Dividing by n − 1 = 9 and taking the square root gives a standard deviation of approximately 12.3.</p>
+<p>The interactive visualization below simultaneously draws four independent random samples from a population with mean = 100 and SD = 15. Each panel shows a histogram of the simulated IQ scores, the red dashed curve shows the population’s theoretical normal distribution scaled to the sample size, and the vertical dashed line marks the sample mean. The sample mean (M) and standard deviation (SD) are shown inside each panel. Click <strong>New samples</strong> to draw four new independent samples and observe how much the mean and standard deviation vary.</p>
+<iframe id="rv-single-iframe" src="random_variation_single_app_book.html" width="100%" height="600" scrolling="no" style="border:none;display:block;margin:1.5rem 0;overflow:hidden;" title="Random Variation: Single Sample">
+</iframe>
+<script>
+window.addEventListener('message', function(e) {
+  if (e.data && typeof e.data.iframeHeight === 'number') {
+    var f = document.getElementById('rv-single-iframe');
+    if (f && e.source === f.contentWindow) f.style.height = e.data.iframeHeight + 'px';
+  }
+});
+</script><p>Each of the four samples illustrates how much the mean and standard deviation can differ from the true population values when n = 10. The histograms look quite irregular — far from the smooth bell curve — and the observed mean and SD vary noticeably across samples. Imagine we did not yet know what the mean IQ was in our population (where <em>M</em> = 100), or the standard deviation (where <em>SD</em> = 15), and that we would only have access to one dataset. Our estimate might be rather far off. This type of variation is to be expected in small samples, given the true standard deviation. The variability in the mean is determined by the standard deviation of the measurement. In real life, the standard deviation can be reduced by for example using multiple and reliable measurements (which is why an IQ test has not just one question, but many different questions). But we can also make sure our sample mean is closer to the population mean by increasing the sample size.</p>
+<p>Increase <em>n</em> to 100 in the interactive visualization and draw a few new samples. We are slowly seeing what is known as the <strong>normal distribution</strong> (and the frequency scores start to resemble the red dotted line illustrating the normal distribution of the population). This is the well-known bell shaped curve that represents the distribution of many variables in scientific research (although some other types of distributions are quite common as well). The mean and standard deviation are much closer to the true mean and standard deviation across the four samples.</p>
 <p>If we simulate a really large sample of 1000 observations, we will see the benefits of collecting a large sample size in terms of accuracy of the measurement. Not every simulated study of 1000 people will yield the true mean and standard deviation, but it will happen quite often. And note how although the distribution is very close to a normal distribution, even with 1000 people it is not perfect.</p>
 <div class="cell" data-layout-align="center" data-fig.margin="false">
 <div class="cell-output-display">
@@ -612,38 +570,22 @@ Figure&nbsp;11.2: 100 random datapoints with mean = 100 and sd = 15 in the popul
 <img src="11-meta_files/figure-html/fig-plot-hist-iq-3-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plot-hist-iq-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.3: 1000 random datapoints with mean = 100 and sd = 15 in the population.
+Figure&nbsp;11.1: 1000 random datapoints with mean = 100 and sd = 15 in the population.
 </figcaption></figure>
 </div>
 </div>
 </div>
-<p>So far, we have simulated only a single group of observations, but it is also informative to examine the variation we will observe when we compare the means in two independent groups. Assume we have a new IQ training program that will increase people’s IQ score by 6 points. People in condition 1 are in the control condition – they do not get IQ training. People in condition 2 get IQ training. Let’s simulate 10 people in each group, assuming mean IQ in the control condition is 100 and in the experimental group is 106 (the SD is still 15 in each group).</p>
-<div class="cell" data-layout-align="center" data-fig.margin="false">
-<div class="cell-output-display">
-<div id="fig-plot-group1" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
-<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-plot-group1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="11-meta_files/figure-html/fig-plot-group1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plot-group1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.4: Simulation of 10 observations in two independent groups.
-</figcaption></figure>
-</div>
-</div>
-</div>
-<p>The two groups differ in how close they are to their true means, and as a consequence, the difference between groups varies as well. Note that this difference is the main variable in statistical analyses when comparing two groups in for example a <em>t</em>-test. In this specific simulation, we got quite extreme results, with a score of 96 (when the population mean is 100) and a score of 111 (when the population mean is 106). So in this sample, due to random variation, we calculate an effect size estimate that is quite a bit larger than the true effect size. Let’s simulate 4 additional datasets to see the variation.</p>
-<div class="cell" data-layout-align="center" data-fig.margin="false">
-<div class="cell-output-display">
-<div id="fig-plot-group2" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
-<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-plot-group2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="11-meta_files/figure-html/fig-plot-group2-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plot-group2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.5: Four simulated samples of independent groups.
-</figcaption></figure>
-</div>
-</div>
-</div>
-<p>We see that there is quite some variation, up to the point that in one simulation the sample means are in the opposite direction of the population means. Again, increasing the sample size will mean that, in the long run, the sample means will get closer to the population means, and that we are more accurately estimating the difference between conditions. With 250 observations in each group, a randomly simulated set of observations for the two groups might look like <a href="#fig-plotgroup3" class="quarto-xref">Figure&nbsp;<span>11.6</span></a>. Note that this difference might not look impressive. However, the difference would pass a significance test (an independent <em>t</em>-test) with a very low alpha level.</p>
+<p>So far, we have simulated only a single group of observations, but it is also informative to examine the variation we will observe when we compare the means in two independent groups. Assume we have a new IQ training program that will increase people’s IQ score by 6 points. People in condition 1 are in the control condition – they do not get IQ training. People in condition 2 get IQ training. The interactive visualization below simulates this scenario — by default with n = 10 per group, though you can increase the sample size to explore its effect. The blue histograms show Group 1 (Control) and the red histograms show Group 2 (Training); the dashed curves show the population distributions and the dashed vertical lines mark the observed group means. Click <strong>New samples</strong> to observe how the observed group means and their difference vary across samples.</p>
+<iframe id="rv-two-groups-iframe" src="random_variation_two_groups_app_book.html" width="100%" height="600" scrolling="no" style="border:none;display:block;margin:1.5rem 0;overflow:hidden;" title="Random Variation: Two Independent Groups">
+</iframe>
+<script>
+window.addEventListener('message', function(e) {
+  if (e.data && typeof e.data.iframeHeight === 'number') {
+    var f = document.getElementById('rv-two-groups-iframe');
+    if (f && e.source === f.contentWindow) f.style.height = e.data.iframeHeight + 'px';
+  }
+});
+</script><p>We see that there is quite some variation, up to the point that in one simulation the sample means are in the opposite direction of the population means. Again, increasing the sample size will mean that, in the long run, the sample means will get closer to the population means, and that we are more accurately estimating the difference between conditions. With 250 observations in each group, a randomly simulated set of observations for the two groups might look like <a href="#fig-plotgroup3" class="quarto-xref">Figure&nbsp;<span>11.2</span></a>. Note that this difference might not look impressive. However, the difference would pass a significance test (an independent <em>t</em>-test) with a very low alpha level.</p>
 <div class="cell" data-layout-align="center" data-fig.margin="false">
 <div class="cell-output-display">
 <div id="fig-plotgroup3" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
@@ -651,7 +593,7 @@ Figure&nbsp;11.5: Four simulated samples of independent groups.
 <img src="11-meta_files/figure-html/fig-plotgroup3-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plotgroup3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.6: Simulated sample of 250 independent observations.
+Figure&nbsp;11.2: Simulated sample of 250 independent observations.
 </figcaption></figure>
 </div>
 </div>
@@ -660,40 +602,25 @@ Figure&nbsp;11.6: Simulated sample of 250 independent observations.
 <p><span class="math display">\[SE = \sigma_{\overline{x}} = \frac{\sigma_x}{\sqrt{n}}\]</span> Based on this formula, and assuming an observed standard deviation of the sample of 15, the standard error of the mean is 4.74 for a sample size of 10, and 0.95 for a sample size of 250. Because estimates with a lower standard error are more precise, the effect size estimates in a meta-analysis are weighed based on the standard error, with the more precise estimates getting more weight.</p>
 <p>So far we have seen random variation in means, but correlations will show similar variation as a function of the sample size. We will continue with our example of measuring IQ scores, but now we search for fraternal (so not identical) twins, and measure their IQ. Estimates from the literature suggest the true correlation of IQ scores between fraternal twins is around <em>r</em> = 0.55. We find 30 fraternal twins, measure their IQ scores, and plot the relation between the IQ of both individuals. In this simulation, we assume all twins have a mean IQ of 100 with a standard deviation of 15.</p>
 <p>The correlation is calculated based on the IQ scores of one fraternal twin (x) and the IQ scores of the other fraternal twin (y) for each pair of twins, and the total number of pairs (N). In the numerator of the formula, the number of pairs is multiplied by the sum of the product of x and y, and from this value the sum of x multiplied by the sum of y is subtracted. In the denominator, the square root is taken from the number of pairs multiplied by the sum of x squared, from which the sum of x, which is then squared, is subtracted, and multiplied by the same calculation but now for y.</p>
-<p><span class="math display">\[r=\frac{n \Sigma x y-(\Sigma x )(\Sigma y)}{\sqrt{[n \Sigma x^{2}-(\Sigma x)^{2}][n \Sigma y^{2}-(\Sigma y)^{2}]}}\]</span> When we randomly simulate observations for 30 twins, we get the following result.</p>
-<div class="cell" data-layout-align="center" data-fig.margin="false">
-<div class="cell-output-display">
-<div id="fig-plot-cor1" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
-<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-plot-cor1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="11-meta_files/figure-html/fig-plot-cor1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plot-cor1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.7: Correlation based on 30 pairs.
-</figcaption></figure>
-</div>
-</div>
-</div>
-<p>On the x-axis, we see the IQ score of one twin, and on the y-axis we see the IQ score of the second twin, for each pair. The black dotted diagonal line illustrates the true correlation (0.55), while the yellow line shows the observed correlation (in this case, <em>r</em> = 0.43). The slope of the yellow line is determined by the observed correlation, but the position of the line is influenced by the mean IQ scores in both groups (in this simulation, the mean on the y-axis is 105, somewhat above 100, and the mean on the x-axis is 102, also slightly above 100. The blue area is the 95% confidence interval around the observed correlation. As we saw in the chapter on <a href="#confint">confidence intervals</a>, 95% of the time (in the long run) the blue area will contain the true correlation (the dotted black line). As in the examples based on means, increasing the sample size to 300 narrows the confidence interval considerably, and will mean that most of the time the correlation in the sample is much closer to the correlation in the population. As the sample size increases, the estimate of the correlation becomes more precise, following the formula of the standard error of a correlation:</p>
+<p><span class="math display">\[r=\frac{n \Sigma x y-(\Sigma x )(\Sigma y)}{\sqrt{[n \Sigma x^{2}-(\Sigma x)^{2}][n \Sigma y^{2}-(\Sigma y)^{2}]}}\]</span> When we randomly simulate observations for 30 twins, the interactive visualization below shows the result.</p>
+<iframe id="rv-correlation-iframe" src="random_variation_correlation_app_book.html" width="100%" height="600" scrolling="no" style="border:none;display:block;margin:1.5rem 0;overflow:hidden;" title="Random Variation in Correlations">
+</iframe>
+<script>
+window.addEventListener('message', function(e) {
+  if (e.data && typeof e.data.iframeHeight === 'number') {
+    var f = document.getElementById('rv-correlation-iframe');
+    if (f && e.source === f.contentWindow) f.style.height = e.data.iframeHeight + 'px';
+  }
+});
+</script><p>On the x-axis, we see the IQ score of one twin, and on the y-axis we see the IQ score of the second twin, for each pair. The black dotted diagonal line illustrates the true correlation (0.55), while the red line shows the observed correlation (in this case, <em>r</em> = 0.43). The slope of the red line is determined by the observed correlation. The blue shaded area is the 95% confidence interval around the observed correlation coefficient. As we saw in the chapter on <a href="#confint">confidence intervals</a>, 95% of the time (in the long run) the blue area will contain the true correlation (the dotted black line). As in the examples based on means, if we increase the sample size in the interactive visualization to <em>N</em> = 300 we see that the confidence interval is considerably more narrow. As a consequence, most of the time the correlation in the sample is much closer to the true correlation in the population. As the sample size increases, the estimate of the correlation becomes more precise, following the formula of the standard error of a correlation:</p>
 <p><span class="math display">\[SE_{r_{xy}} = \frac{1 - r^2_{xy}}{\sqrt{(n - 2)}}\]</span></p>
-<div class="cell" data-layout-align="center" data-fig.margin="false">
-<div class="cell-output-display">
-<div id="fig-plot-cor2" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
-<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-plot-cor2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="11-meta_files/figure-html/fig-plot-cor2-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plot-cor2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.8: Correlation based on 300 pairs.
-</figcaption></figure>
-</div>
-</div>
-</div>
 <p>Because estimates of means, standard deviations, or correlations based on small samples have relatively large uncertainty, it is preferable to collect larger samples. However, this is not always possible, and often the goal of a study is not to provide an accurate estimate, but to test a hypothesis. A study often requires less observations to achieve sufficient power for a hypothesis test, than are required to be able to accurately estimate a parameter <span class="citation" data-cites="maxwell_sample_2008">(<a href="references.html#ref-maxwell_sample_2008" role="doc-biblioref">Maxwell et al., 2008</a>)</span>. Therefore, scientists often rely on meta-analyses, where data from multiple studies are combined, to provide accurate estimates.</p>
 </section><section id="a-single-study-meta-analysis" class="level2" data-number="11.2"><h2 data-number="11.2" class="anchored" data-anchor-id="a-single-study-meta-analysis">
 <span class="header-section-number">11.2</span> A single study meta-analysis</h2>
 <p>Let’s first begin with something you will hardly ever do in real life: a meta-analysis of a single study. This is a little silly, because a simple <em>t</em>-test or correlation will tell you the same thing – but it is educational to compare a <em>t</em>-test with a meta-analysis of a single study, before we look at how multiple studies are combined into a meta-analysis.</p>
 <p>A difference between an independent <em>t</em>-test and a meta-analysis is that a <em>t</em>-test is performed on the raw data, while a meta-analysis is typically performed on the effect size(s) of individual studies. The <code>metafor</code> R package contains a very useful function called <code>escalc</code> that can be used to calculate effect sizes, their variances, and confidence intervals around effect size estimates. So let’s start by calculating the effect size to enter into our meta-analysis. As explained in the chapter on <a href="06-effectsize.html">effect sizes</a> the two main effect sizes used for meta-analyses of continuous variables are the standardized mean difference (<em>d</em>) or the correlation (<em>r</em>), although it is of course also possible to perform meta-analyses on dichotomous variables (we will see an example below). The code below will calculate the <strong>standardized mean difference</strong> (SMD) from two independent groups from <strong>means</strong> (specified by m1i and m2i), <strong>standard deviations</strong> (sd1i and sd2i), and the number of observations in each group (n1i and n2i). By default, <code>metafor</code> computes the effect size ‘<strong>Hedges’ g</strong>’ which is the unbiased version of Cohen’s <em>d</em> (see the section on <a href="06-effectsize.html#sec-cohend">Cohen’s <em>d</em></a> in the chapter on Effect Sizes).</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.metafor-project.org">metafor</a></span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.metafor-project.org">metafor</a></span><span class="op">)</span></span>
 <span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://wviechtb.github.io/metafor/reference/escalc.html">escalc</a></span><span class="op">(</span>measure <span class="op">=</span> <span class="st">"SMD"</span>,</span>
 <span>            n1i <span class="op">=</span> <span class="fl">50</span>, <span class="co"># sample size in Group 1</span></span>
 <span>            m1i <span class="op">=</span> <span class="fl">5.6</span>, <span class="co"># observed mean in Group 1</span></span>
@@ -730,7 +657,7 @@ Vg = J^{2} \times \left( \frac{n_{1} + n_{2}}{n_{1}n_{2}} + \frac{g^{2}}{2(n_{1}
 \]</span></p>
 <p>The variance of the standardized mean difference depends only on the sample size (n1 and n2) and the value of the standardized mean difference itself. <strong>To perform the required calculations for a meta-analysis, you need the effect sizes and their variance</strong>. This means that if you have coded the effect sizes and the sample sizes (per group) from studies in the literature, you have the information you need to perform a meta-analysis. You do not need to manually calculate the effect size and its variance using the two formula above – the <code>escalc</code> function does this for you. We can now easily perform a single study meta-analysis using the <code>rma</code> function in the <code>metafor</code> package:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">meta_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://wviechtb.github.io/metafor/reference/rma.uni.html">rma</a></span><span class="op">(</span><span class="va">yi</span>, <span class="va">vi</span>, data <span class="op">=</span> <span class="va">g</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">meta_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://wviechtb.github.io/metafor/reference/rma.uni.html">rma</a></span><span class="op">(</span><span class="va">yi</span>, <span class="va">vi</span>, data <span class="op">=</span> <span class="va">g</span><span class="op">)</span></span>
 <span><span class="va">meta_res</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -757,7 +684,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>In a meta-analysis, a <em>Z</em>-test is used to examine whether the null-hypothesis can be rejected. This assumes a normally distributed random effect size model. Normally, you would analyze data from a single study with two groups using a <em>t</em>-test, which not surprisingly uses a <em>t</em>-distribution. I don’t know why statistical computations sometimes care a lot about a small amount of bias (the difference between the effect size <em>d</em> and <em>g</em>, for example) and sometimes not (the difference between <em>Z</em> and <em>t</em>), but meta-analysts seem happy with <em>Z</em>-scores (in fact, with large enough sample sizes (which is commonly true in a meta-analysis) the difference between a <em>Z</em>-test and <em>t</em>-test is tiny). If we directly compare a single-study meta-analysis based on a <em>Z</em>-test with a <em>t</em>-test, we will see some tiny differences in the results.</p>
 <p>As explained in the chapter on <a href="06-effectsize.html">effect sizes</a> we can directly calculate the effect size Hedges’ <em>g</em> (and it’s 95% confidence interval) using MOTE <span class="citation" data-cites="buchanan_mote_2017">(<a href="references.html#ref-buchanan_mote_2017" role="doc-biblioref">Buchanan et al., 2017</a>)</span>. The MOTE package uses the <em>t</em>-distribution when calculating confidence intervals around the effect size (and we can see this makes only a tiny difference compared to using the <em>Z</em>-distribution in a meta-analysis with 50 observations in each group).</p>
 <p>The <em>t</em>-value is 2.835, and the <em>p</em>-value is 0.006. The results are very similar to those computed when performing a meta-analysis, with <em>g</em> = 0.55, 95% CI[0.16; 0.94], where the effect size and the upper bound for the confidence interval differ only 0.01 after rounding.</p>
-<p>It is now common to visualize the results of a meta-analysis using a forest plot. According to <span class="citation" data-cites="cooper_handbook_2009">Cooper et al. (<a href="references.html#ref-cooper_handbook_2009" role="doc-biblioref">2009</a>)</span> the first forest plot was published in 1978 <span class="citation" data-cites="freiman_importance_1978">(<a href="references.html#ref-freiman_importance_1978" role="doc-biblioref">Freiman et al., 1978</a>)</span>, with the goal to visualize a large set of studies that had concluded the absence of an effect based on non-significant results in small studies (see <a href="#fig-freiman1978" class="quarto-xref">Figure&nbsp;<span>11.9</span></a>). By plotting the width of the confidence interval for each study, it becomes possible to see that even though the studies do not reject an effect size of 0, and thus were all non-significant, many studies also did not reject the presence of a meaningful favorable treatment effect. To make large studies more noticeable in a forest plot, later versions added a square to indicate the estimated effect size, where the size of the square was proportional to the weight that will be assigned to the study when computing the combined effect.</p>
+<p>It is now common to visualize the results of a meta-analysis using a forest plot. According to <span class="citation" data-cites="cooper_handbook_2009">Cooper et al. (<a href="references.html#ref-cooper_handbook_2009" role="doc-biblioref">2009</a>)</span> the first forest plot was published in 1978 <span class="citation" data-cites="freiman_importance_1978">(<a href="references.html#ref-freiman_importance_1978" role="doc-biblioref">Freiman et al., 1978</a>)</span>, with the goal to visualize a large set of studies that had concluded the absence of an effect based on non-significant results in small studies (see <a href="#fig-freiman1978" class="quarto-xref">Figure&nbsp;<span>11.3</span></a>). By plotting the width of the confidence interval for each study, it becomes possible to see that even though the studies do not reject an effect size of 0, and thus were all non-significant, many studies also did not reject the presence of a meaningful favorable treatment effect. To make large studies more noticeable in a forest plot, later versions added a square to indicate the estimated effect size, where the size of the square was proportional to the weight that will be assigned to the study when computing the combined effect.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-freiman1978" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
@@ -765,12 +692,12 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <img src="images/freiman1978.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-freiman1978-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.9: First version of a forest plot by Freiman and colleagues, 1978 (image from https://www.jameslindlibrary.org/freiman-ja-chalmers-tc-smith-h-kuebler-rr-1978/).
+Figure&nbsp;11.3: First version of a forest plot by Freiman and colleagues, 1978 (image from https://www.jameslindlibrary.org/freiman-ja-chalmers-tc-smith-h-kuebler-rr-1978/).
 </figcaption></figure>
 </div>
 </div>
 </div>
-<p>In <a href="#fig-metaforest" class="quarto-xref">Figure&nbsp;<span>11.10</span></a> we see a modern version of a forest plot, with the effect size for Study 1 marked by the black square at 0.56, and the confidence interval visualized by lines extending to 0.16 on the left and 0.95 on the right. The numbers printed on the right-hand side of the forest plot provide the exact values for the effect size estimate and the lower and upper bound of the confidence interval. On the lower half of the forest plot, we see a stretched-out diamond, in a row labeled ‘RE Model’, for ‘Random Effects model’. The diamond summarizes the meta-analytic effect size estimate, being centered on that effect size estimate with the left and right endpoints at the 95% confidence interval of the estimate. Because we only have a single study, the meta-analytic effect size estimate is the same as the effect size estimate for our single study.</p>
+<p>In <a href="#fig-metaforest" class="quarto-xref">Figure&nbsp;<span>11.4</span></a> we see a modern version of a forest plot, with the effect size for Study 1 marked by the black square at 0.56, and the confidence interval visualized by lines extending to 0.16 on the left and 0.95 on the right. The numbers printed on the right-hand side of the forest plot provide the exact values for the effect size estimate and the lower and upper bound of the confidence interval. On the lower half of the forest plot, we see a stretched-out diamond, in a row labeled ‘RE Model’, for ‘Random Effects model’. The diamond summarizes the meta-analytic effect size estimate, being centered on that effect size estimate with the left and right endpoints at the 95% confidence interval of the estimate. Because we only have a single study, the meta-analytic effect size estimate is the same as the effect size estimate for our single study.</p>
 <div class="cell" data-layout-align="center" data-fig.margin="false">
 <div class="cell-output-display">
 <div id="fig-metaforest" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
@@ -778,7 +705,7 @@ Figure&nbsp;11.9: First version of a forest plot by Freiman and colleagues, 1978
 <img src="11-meta_files/figure-html/fig-metaforest-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-metaforest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.10: Forest plot for a single study.
+Figure&nbsp;11.4: Forest plot for a single study.
 </figcaption></figure>
 </div>
 </div>
@@ -788,7 +715,7 @@ Figure&nbsp;11.10: Forest plot for a single study.
 <p>Meta-analyses get a bit more exciting when we are using them to analyze results from multiple studies. When multiple studies are combined in a meta-analysis, effect size estimates are not simply averaged, but they are <strong>weighed</strong> by the <strong>precision</strong> of the effect size estimate, which is determined by standard error, which is in turn determined by the sample size of the study. Thus, the larger the sample size of an individual study, the more weight it gets in the meta-analysis, meaning that it has more influence on the meta-analytic effect size estimate.</p>
 <p>One intuitive way to learn about meta-analyses is to simulate studies and meta-analyze them. The code below simulates 12 studies. There is a true effect in the simulated studies, as the difference in means in the population is 0.4 (and given the standard deviation of 1, Cohen’s <em>d</em> = 0.4 as well). The studies vary in their sample size between 30 observations and 100 observations per condition. The meta-analysis is performed, and a forest plot is created.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">94</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">94</span><span class="op">)</span></span>
 <span><span class="va">nSims</span> <span class="op">&lt;-</span> <span class="fl">12</span> <span class="co"># number of simulated studies</span></span>
 <span><span class="va">m1</span> <span class="op">&lt;-</span> <span class="fl">0.4</span> <span class="co"># population mean Group 1</span></span>
 <span><span class="va">sd1</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="co"># standard deviation Group 1</span></span>
@@ -823,7 +750,7 @@ Figure&nbsp;11.10: Forest plot for a single study.
 <img src="11-meta_files/figure-html/fig-meta-sim-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-meta-sim-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.11: Forest plot for 12 simulated studies.
+Figure&nbsp;11.5: Forest plot for 12 simulated studies.
 </figcaption></figure>
 </div>
 </div>
@@ -911,7 +838,7 @@ OR = \ \frac{80 \times 30}{20\  \times 70} = 1.714
 \]</span></p>
 <p>We can simulate studies with dichotomous outcomes, where we set the percentage of successes and failures in the experimental and control condition. In the script below, by default the percentage of success in the experimental condition is 70%, and in the control condition it is 50%.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.metafor-project.org">metafor</a></span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.metafor-project.org">metafor</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">5333</span><span class="op">)</span></span>
 <span><span class="va">nSims</span> <span class="op">&lt;-</span> <span class="fl">12</span> <span class="co"># Number of simulated experiments</span></span>
 <span></span>
@@ -969,7 +896,7 @@ OR = \ \frac{80 \times 30}{20\  \times 70} = 1.714
 <p>The forest plot presents the studies and four columns of data after the study label, which contain the number of successes and failures in the experimental groups (E+ and E-), and the number of successes and failures in the control group (C+ and C-). Imagine we study the percentage of people who get a job within 6 months after a job training program, compared to a control condition. In Study 1, which had 50 participants in each condition, 29 people in the job training condition got a job within 6 months, and 21 did not get a job. In the control condition, 23 people got a job, but 27 did not. The effect size estimate for the random effects model is 0.65. Feel free to play around with the script, adjusting the number of studies, or the sample sizes in each study, to examine the effect it has on the meta-analytic effect size estimate.</p>
 <p>We can also get the meta-analytic test results by printing the test output. We see that there was no heterogeneity in this meta-analysis. This is true (we simulated identical studies), but is highly unlikely to ever happen in real life where variation in effect sizes between studies included in a meta-analysis is a much more realistic scenario.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Print result meta-analysis</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Print result meta-analysis</span></span>
 <span><span class="va">result</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -1000,7 +927,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>On theoretical grounds one might argue that some heterogeneity will always happen in a meta-analysis, and therefore it is more interesting to quantify the extent to which there is heterogeneity. The <span class="math inline">\(I^2\)</span> index aims to quantify statistical heterogeneity. It is calculated as follows: <span class="math display">\[I^{2} = \ \frac{(Q - k - 1)}{Q} \times 100\%\]</span> where <span class="math inline">\(k\)</span> is the number of studies (and <span class="math inline">\(k-1\)</span> is the degrees of freedom). <span class="math inline">\(I^2\)</span> ranges from 0 to 100 and can be interpreted as the percentage of the total variability in a set of effect sizes that is due to heterogeneity. When <span class="math inline">\(I^2\)</span> = 0 all variability in the effect size estimates can be explained by within-study error, and when <span class="math inline">\(I^2\)</span> = 50 half of the total variability can be explained by true heterogeneity. <span class="math inline">\(I^2\)</span> values of 25%, 50%, and 75% can be interpreted as low, medium, and high heterogeneity. Finally, in a random effects meta-analysis, <span class="math inline">\(\tau^2\)</span> estimates the variance of the true effects, and <span class="math inline">\(\tau\)</span> is the estimated standard deviation, as expressed on the same scale as the effect size. A benefit of <span class="math inline">\(\tau^2\)</span> is that it does not depend on the precision, as <span class="math inline">\(I^2\)</span> does, which tends to 100% if the studies included in the meta-analysis are very large <span class="citation" data-cites="rucker_undue_2008">(<a href="references.html#ref-rucker_undue_2008" role="doc-biblioref">Rücker et al., 2008</a>)</span>, but a downside is that <span class="math inline">\(\tau^2\)</span> is more difficult to interpret <span class="citation" data-cites="harrer_doing_2021">(<a href="references.html#ref-harrer_doing_2021" role="doc-biblioref">Harrer et al., 2021</a>)</span>.</p>
 <p>The script below simulates a similar meta-analysis to the example for standardized means above, but with a small variation. Of the 30 studies, 15 are generated based on a true mean difference of 0.2, while the other 15 studies are based on a true effect size of 0.5. Thus, in this set of studies the true effect size varies, and there is true heterogeneity. We use the <code>confint</code> function in the metafor package to report <span class="math inline">\(I^2\)</span> and <span class="math inline">\(\tau^2\)</span>, and their confidence intervals, and we see the test for heterogeneity is statisticaly significant. In other words, we would conclude that the meta-analytic effect size is statistically different form 0, but we would also conclude that there is unexplained variability in effect sizes in this set of studies, and the effect size is not the same for all studies in the meta-analysis.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.metafor-project.org">metafor</a></span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.metafor-project.org">metafor</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
 <span><span class="va">nSims</span> <span class="op">&lt;-</span> <span class="fl">30</span> <span class="co"># Number of simulated experiments (need to be divided by 2)</span></span>
 <span><span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>yi <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>, vi <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="co"># create dataframe</span></span>
@@ -1075,7 +1002,7 @@ I^2(%)  45.4253 11.8823 68.5417
 H^2      1.8324  1.1348  3.1788 </code></pre>
 </div>
 </div>
-<p>The forest plot in <a href="#fig-plot-heterogeneity" class="quarto-xref">Figure&nbsp;<span>11.12</span></a> shows there is more variation around the meta-analytic effect size estimate than expected purely based on random variation. The plot has 2 vertical lines, one at 0.2, and one at 0.5. Of course, in a real meta-analysis we would not know what the true effect sizes of subsets are, but these lines help us to see that one subset of the effects varies randomly around 0.2, and a second subset varies randomly around 0.5.</p>
+<p>The forest plot in <a href="#fig-plot-heterogeneity" class="quarto-xref">Figure&nbsp;<span>11.6</span></a> shows there is more variation around the meta-analytic effect size estimate than expected purely based on random variation. The plot has 2 vertical lines, one at 0.2, and one at 0.5. Of course, in a real meta-analysis we would not know what the true effect sizes of subsets are, but these lines help us to see that one subset of the effects varies randomly around 0.2, and a second subset varies randomly around 0.5.</p>
 <div class="cell" data-layout-align="center" data-fig.margin="false">
 <div class="cell-output-display">
 <div id="fig-plot-heterogeneity" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
@@ -1083,7 +1010,7 @@ H^2      1.8324  1.1348  3.1788 </code></pre>
 <img src="11-meta_files/figure-html/fig-plot-heterogeneity-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plot-heterogeneity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.12: Forest plot of 30 studies with 2 subsets of studies, one set with a true effect size of 0.2, and one set with a true effect size of 0.5.
+Figure&nbsp;11.6: Forest plot of 30 studies with 2 subsets of studies, one set with a true effect size of 0.2, and one set with a true effect size of 0.5.
 </figcaption></figure>
 </div>
 </div>
@@ -1094,7 +1021,7 @@ Figure&nbsp;11.12: Forest plot of 30 studies with 2 subsets of studies, one set 
 <span class="header-section-number">11.7</span> Exploring heterogeneity through subgroup analyses</h2>
 <p>Let’s imagine that while coding our meta-analysis we noticed that in the total set of studies two different manipulations were used. Manipulation A was stronger, and therefore we would theoretically expect a stronger effect, while manipulation B was more subtle. We have coded which manipulation was used in each of the studies included in our meta-analysis. This allows us to explore whether the heterogeneity observed above can be explained by the type of manipulation. In other words, we are testing if the effect size is moderated by the type of manipulation. This is a sub-group analysis. It is conceptually very similar to an ANOVA where we test whether there are differences between groups. We see the test of moderators yields a statistically significant result, which means we can reject the null hypothesis that the two groups do not differ in their effect size. Furthermore, there is no statistically significant emount of heterogeneity left after splitting up the studies in these two groups.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Based on https://www.metafor-project.org/doku.php/tips:comp_two_independent_estimates</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Based on https://www.metafor-project.org/doku.php/tips:comp_two_independent_estimates</span></span>
 <span></span>
 <span><span class="co"># We take original dataset and run a meta-regression using the "mods" argument</span></span>
 <span><span class="co"># This pools the estimates of tau, but this is often a good approach</span></span>
@@ -1125,7 +1052,7 @@ groupManipulation B    -0.303  0.073  -4.151  &lt;.001  -0.446  -0.160  ***
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
-<p>If we plot the two subgroups, we see in <a href="#fig-plot-subgroup" class="quarto-xref">Figure&nbsp;<span>11.13</span></a> that effect sizes vary randomly across the true effect sizes. Again, in real meta-analyses these true effect sizes would not be known.</p>
+<p>If we plot the two subgroups, we see in <a href="#fig-plot-subgroup" class="quarto-xref">Figure&nbsp;<span>11.7</span></a> that effect sizes vary randomly across the true effect sizes. Again, in real meta-analyses these true effect sizes would not be known.</p>
 <div class="cell" data-layout-align="center" data-fig.margin="false">
 <div class="cell-output-display">
 <div id="fig-plot-subgroup" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
@@ -1133,7 +1060,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <img src="11-meta_files/figure-html/fig-plot-subgroup-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plot-subgroup-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.13: Two forest plots for the 2 different subgroups with Manipulation A or B.
+Figure&nbsp;11.7: Two forest plots for the 2 different subgroups with Manipulation A or B.
 </figcaption></figure>
 </div>
 </div>
@@ -1234,7 +1161,7 @@ Table&nbsp;11.1: Six practical recommendations to improve the quality and reprod
 <img src="11-meta_files/figure-html/fig-meta-sim-rand-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-meta-sim-rand-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.14: Simulated studies under a random effects model.
+Figure&nbsp;11.8: Simulated studies under a random effects model.
 </figcaption></figure>
 </div>
 </div>
@@ -1246,7 +1173,7 @@ Figure&nbsp;11.14: Simulated studies under a random effects model.
 <img src="11-meta_files/figure-html/fig-meta-sim-fixed-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-meta-sim-fixed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.15: Simulated studies under a fixed effect model.
+Figure&nbsp;11.9: Simulated studies under a fixed effect model.
 </figcaption></figure>
 </div>
 </div>
