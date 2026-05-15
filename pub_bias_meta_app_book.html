@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Publication Bias &amp; Meta-Analysis Simulation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans:ital,wght@0,400;0,600;1,400&family=Fira+Code&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.26.0/plotly.min.js"></script>
+<style>
+:root {
+  --bg:    #fffafa;
+  --bg2:   #f7f7f7;
+  --ink:   #1c1717;
+  --ink2:  #3d3535;
+  --ink3:  #666060;
+  --rule:  #d6dadc;
+  --red:   #a60a0a;
+  --red-l: #c41010;
+  --blue:  #1a6e9a;
+  --blue-l:#1e83b8;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px; line-height: 1.65;
+  padding: 20px 20px 8px; overflow: hidden;
+}
+.calc-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink3); margin-bottom: 5px;
+}
+.calc-heading {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600; font-size: 1.1rem;
+  color: var(--ink); margin-bottom: 16px;
+  padding-bottom: 9px; border-bottom: 2px solid var(--red);
+}
+.input-panel {
+  background: var(--bg2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--red);
+  padding: 14px 18px; margin-bottom: 16px;
+}
+.input-row { display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap; }
+.input-group { display: flex; flex-direction: column; gap: 5px; }
+.input-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--ink3);
+}
+.sym {
+  font-style: italic; font-size: .88rem;
+  text-transform: none; letter-spacing: 0;
+  font-weight: 400; color: var(--red);
+}
+input[type="number"] {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px; background: var(--bg);
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--red);
+  padding: 6px 8px; color: var(--ink);
+  outline: none; width: 58px;
+  transition: border-color .2s;
+  -moz-appearance: textfield;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+input[type="number"]:focus { border-bottom-color: var(--red-l); }
+.btn {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 11px; font-weight: 600;
+  background: var(--red); color: #fff;
+  border: none; padding: 8px 16px;
+  cursor: pointer; letter-spacing: .06em;
+  text-transform: uppercase;
+  transition: background .15s;
+  white-space: nowrap;
+}
+.btn:hover { background: var(--red-l); }
+.btn:disabled { background: #aaa; cursor: default; }
+.btn-outline {
+  background: transparent;
+  color: var(--blue);
+  border: 2px solid var(--blue);
+  padding: 6px 14px;
+}
+.btn-outline:hover { background: var(--blue); color: #fff; }
+.btn-outline:disabled { border-color: #bbb; color: #bbb; background: transparent; cursor: default; }
+.btn-outline.active { background: var(--blue); color: #fff; }
+.plot-wrap {
+  border: 1px solid var(--rule);
+  background: var(--bg); margin-bottom: 10px;
+}
+#plot { width: 100%; height: 420px; }
+.text-block {
+  font-size: .88rem; line-height: 1.6;
+  padding: 10px 14px;
+  background: var(--bg2);
+  border-left: 3px solid var(--rule);
+  color: var(--ink2);
+}
+.text-block strong { color: var(--ink); }
+.result-row {
+  margin-top: 8px; padding-top: 8px;
+  border-top: 1px solid var(--rule);
+}
+.result-row.blue { color: var(--blue); border-color: #c5dce9; }
+.result-row.blue strong { color: var(--blue); }
+.result-row.red { color: var(--red); border-color: #e8c5c5; }
+.result-row.red strong { color: var(--red); }
+input[type="range"] {
+  -webkit-appearance: none; appearance: none;
+  width: 130px; height: 4px;
+  background: var(--rule); border-radius: 2px;
+  outline: none; cursor: pointer; padding: 0; border: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px; height: 14px;
+  background: var(--red); border-radius: 50%; cursor: pointer;
+}
+input[type="range"]::-moz-range-thumb {
+  width: 14px; height: 14px;
+  background: var(--red); border-radius: 50%;
+  border: none; cursor: pointer;
+}
+.slider-row { display: flex; align-items: center; gap: 8px; }
+.slider-val {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px; font-weight: 600;
+  color: var(--red); min-width: 36px;
+}
+</style>
+</head>
+<body>
+
+<p class="calc-label">Interactive simulation</p>
+<h2 class="calc-heading">Publication Bias &amp; Meta-Analysis — Funnel Plot</h2>
+
+<div class="input-panel">
+  <div class="input-row">
+    <div class="input-group">
+      <label class="input-label" for="nsimsIn">Studies <span class="sym">k</span></label>
+      <input type="number" id="nsimsIn" min="10" max="500" step="10" value="100">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="biasIn">Prop. significant</label>
+      <div class="slider-row">
+        <input type="range" id="biasIn" min="0.05" max="1" step="0.01" value="0.05">
+        <span class="slider-val" id="biasVal">5%</span>
+      </div>
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="dIn">True effect <span class="sym">d</span></label>
+      <div class="slider-row">
+        <input type="range" id="dIn" min="0" max="0.8" step="0.05" value="0">
+        <span class="slider-val" id="dVal">0.00</span>
+      </div>
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="minNIn">Min <span class="sym">n</span></label>
+      <input type="number" id="minNIn" min="10" step="1" value="20">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="maxNIn">Max <span class="sym">n</span></label>
+      <input type="number" id="maxNIn" min="11" step="1" value="1000">
+    </div>
+    <div class="input-group">
+      <div class="input-label">&nbsp;</div>
+      <button class="btn" id="runBtn">Run simulation</button>
+    </div>
+    <div class="input-group">
+      <div class="input-label">&nbsp;</div>
+      <button class="btn btn-outline" id="tfBtn" disabled>Trim &amp; Fill</button>
+    </div>
+    <div class="input-group">
+      <div class="input-label">&nbsp;</div>
+      <button class="btn btn-outline" id="ppBtn" disabled>PET-PEESE</button>
+    </div>
+    <div class="input-group">
+      <div class="input-label">&nbsp;</div>
+      <button class="btn btn-outline" id="lmBtn" disabled>Limit MA</button>
+    </div>
+  </div>
+</div>
+
+<div class="plot-wrap"><div id="plot"></div></div>
+<div id="statsBlock" class="text-block">Click <strong>Run simulation</strong> to start.</div>
+
+<script>
+var FONT      = { family: "'Open Sans', sans-serif", color: '#1c1717', size: 12 };
+var AXIS_BASE = { zeroline: false, gridcolor: '#ede8e8', linecolor: '#d6dadc' };
+var BLUE      = '#1a6e9a';
+var RED       = '#a60a0a';
+var GRAY      = '#707070';
+var SE_MAX    = 0.4;   // fixed y-axis upper bound for the funnel plot
+
+// ── App state ─────────────────────────────────────────────────────────────────
+var _st = {
+  yi:[], vi:[], sei:[],
+  nSig:0, nNonsig:0, pubBias:0,
+  meta:null, seMax:0, xRange:0,
+  minN:20, maxN:1000,   // read from inputs in doSim; minN floor = 10
+  ready:false,
+  tf:null,  tfOn:false,
+  pp:null,  ppOn:false,
+  lm:null,  lmOn:false
+};
+
+// ── Iframe height ─────────────────────────────────────────────────────────────
+var _phT = null;
+function postHeight() {
+  clearTimeout(_phT);
+  _phT = setTimeout(function(){
+    document.body.style.height = 'auto';
+    var h = document.body.offsetHeight;
+    window.parent.postMessage({ iframeHeight:h }, '*');
+  }, 150);
+}
+
+// ── Normal RNG (Marsaglia polar) ──────────────────────────────────────────────
+var _spare=0, _hasSpare=false;
+function randn() {
+  if (_hasSpare) { _hasSpare=false; return _spare; }
+  var u,v,s;
+  do { u=Math.random()*2-1; v=Math.random()*2-1; s=u*u+v*v; } while (s>=1||s===0);
+  var f=Math.sqrt(-2*Math.log(s)/s);
+  _spare=v*f; _hasSpare=true; return u*f;
+}
+
+function sampleN() {
+  // Truncated normal, sd=100. Mean is 100 when minN≤100 (matches textbook R code for
+  // the default range 20–1000). When minN>100 the mean shifts to minN so the normal
+  // stays inside [minN, maxN] and rejection sampling remains efficient.
+  var mean = Math.max(_st.minN, Math.min(100, _st.maxN));
+  var x;
+  do { x = Math.round(mean + 100 * randn()); } while (x < _st.minN || x > _st.maxN);
+  return x;
+}
+
+function simGroups(n,mu1,mu2) {
+  var m1=0,m2=0,ss1=0,ss2=0;
+  for (var i=1;i<=n;i++) {
+    var a=mu1+randn(), b=mu2+randn();
+    var da=a-m1; m1+=da/i; ss1+=da*(a-m1);
+    var db=b-m2; m2+=db/i; ss2+=db*(b-m2);
+  }
+  return {m1:m1,m2:m2,s1:Math.sqrt(ss1/(n-1)),s2:Math.sqrt(ss2/(n-1))};
+}
+
+function ttestP(g,n,alt) {
+  var sp2=(g.s1*g.s1+g.s2*g.s2)/2;
+  if (sp2<1e-12) return alt==='greater'?0.5:1;
+  var t=(g.m1-g.m2)/Math.sqrt(2*sp2/n), df=2*n-2;
+  return alt==='greater' ? jStat.studentt.cdf(-t,df)
+                         : 2*jStat.studentt.cdf(-Math.abs(t),df);
+}
+
+// Hedges' g and variance (equal groups, n per group)
+function hedgesG(g,n) {
+  var sp=Math.sqrt((g.s1*g.s1+g.s2*g.s2)/2);
+  if (sp<1e-12) return {yi:0,vi:1,sei:1};
+  var d=(g.m1-g.m2)/sp, df=2*n-2;
+  var J=1-3/(4*df-1), gg=J*d;
+  var vi=Math.max(J*J*(2/n+d*d/(4*n)),1e-8);
+  return {yi:gg, vi:vi, sei:Math.sqrt(vi)};
+}
+
+// REML tau² via bisection on the REML score equation
+// (matches metafor's default method="REML")
+// Score U(t) = Σwi²(yi−μ)² − (Σwi − Σwi²/Σwi) = 0 at REML tau²
+// where wi=1/(vi+t), μ=Σwi·yi/Σwi
+function remlTau2(yi, vi) {
+  var k=yi.length;
+  function score(t) {
+    var W=0,W2=0,num=0;
+    for (var i=0;i<k;i++){var w=1/(vi[i]+t);W+=w;W2+=w*w;num+=w*yi[i];}
+    var mu=num/W, q2=0;
+    for (var i=0;i<k;i++){var w=1/(vi[i]+t);q2+=w*w*(yi[i]-mu)*(yi[i]-mu);}
+    return q2-(W-W2/W);
+  }
+  if (score(0)<=0) return 0;
+  var lo=0, hi=10;
+  while (score(hi)>0) hi*=2;
+  for (var i=0;i<100;i++){
+    var mid=(lo+hi)/2;
+    if (score(mid)>0) lo=mid; else hi=mid;
+    if (hi-lo<1e-12) break;
+  }
+  return (lo+hi)/2;
+}
+
+// REML random-effects meta-analysis (matches metafor default)
+function dlMeta(yi,vi) {
+  var k=yi.length; if (k<1) return null;
+  var tau2=k>1?remlTau2(yi,vi):0;
+  var wire=vi.map(function(v){return 1/(v+tau2);}),
+      Wre=wire.reduce(function(a,b){return a+b;},0), mu=0;
+  for (var i=0;i<k;i++) mu+=wire[i]*yi[i]; mu/=Wre;
+  var se=Math.sqrt(1/Wre), z=mu/se;
+  var p=2*(1-jStat.normal.cdf(Math.abs(z),0,1));
+  // Cochran's Q with RE weights (consistent with metafor output)
+  var Q=0; for (var i=0;i<k;i++) Q+=wire[i]*(yi[i]-mu)*(yi[i]-mu);
+  return {mu:mu,se:se,z:z,p:p,
+          ci_lb:mu-1.96*se, ci_ub:mu+1.96*se,
+          tau2:tau2, Q:Q, k:k};
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+// Indices that sort arr ascending
+function argsort(arr) {
+  var idx=[]; for (var i=0;i<arr.length;i++) idx.push(i);
+  idx.sort(function(a,b){return arr[a]-arr[b];}); return idx;
+}
+
+// Ranks of |arr| values, 1 = smallest absolute value (ties by first occurrence)
+function rankAbs(arr) {
+  var n=arr.length, abs=arr.map(Math.abs);
+  var idx=argsort(abs), ranks=new Array(n);
+  for (var r=0;r<n;r++) ranks[idx[r]]=r+1;
+  return ranks;
+}
+
+// WLS simple linear regression y = b0 + b1*x with weights w
+function wlsReg(x,y,w) {
+  var n=y.length, Sw=0,Swx=0,Swx2=0,Swy=0,Swxy=0;
+  for (var i=0;i<n;i++) {
+    Sw+=w[i]; Swx+=w[i]*x[i]; Swx2+=w[i]*x[i]*x[i];
+    Swy+=w[i]*y[i]; Swxy+=w[i]*x[i]*y[i];
+  }
+  var D=Sw*Swx2-Swx*Swx;
+  if (Math.abs(D)<1e-14) return {b0:0,b1:0,se_b0:0,t:0,p:1,ci_lb:0,ci_ub:0};
+  var b0=(Swx2*Swy-Swx*Swxy)/D, b1=(Sw*Swxy-Swx*Swy)/D;
+  var se_b0=Math.sqrt(Math.max(Swx2/D,0)), df=n-2;
+  var t=se_b0>1e-14?b0/se_b0:0;
+  var p=df>0?2*jStat.studentt.cdf(-Math.abs(t),df):1;
+  var tc=df>0?jStat.studentt.inv(0.975,df):1.96;
+  return {b0:b0, b1:b1, se_b0:se_b0, t:t, p:p, df:df,
+          ci_lb:b0-tc*se_b0, ci_ub:b0+tc*se_b0};
+}
+
+// ── Trim-and-Fill (L0 estimator — exact metafor algorithm) ────────────────────
+//
+// Matches metafor::trimfill(x, estimator="L0"):
+//   1. Determine side via regression of yi on sei (slope<0 → right, else → left)
+//   2. If side=="right" flip yi = -yi
+//   3. Sort ascending
+//   4. Loop: trim k0 rightmost → fit meta → center all k → rank |centered| →
+//            Sr = sum of positive signed ranks →
+//            k0 = round((4*Sr - k*(k+1)) / (2*k-1))
+//   5. Fill: imputed[i] = 2*beta - yi_sorted[k-k0+i]  (mirror around trimmed mean)
+//   6. Flip imputed back if side=="right"; fit meta on original + imputed
+//
+function trimFill(yi_in, vi_in, sei_in) {
+  var k=yi_in.length; if (k<3) return null;
+
+  // Determine side: regress yi on sei (WLS, weights=1/vi)
+  var w=vi_in.map(function(v){return 1/v;});
+  var reg=wlsReg(sei_in, yi_in, w);
+  var side=reg.b1<0 ? 'right' : 'left';
+
+  // Flip for right side
+  var yi=yi_in.slice();
+  if (side==='right') yi=yi.map(function(y){return -y;});
+
+  // Sort ascending, keeping vi/sei aligned
+  var idx=argsort(yi);
+  var yi_s  = idx.map(function(i){return yi[i];});
+  var vi_s  = idx.map(function(i){return vi_in[i];});
+  var sei_s = idx.map(function(i){return sei_in[i];});
+
+  // Iterative L0 estimation (mirrors metafor's while loop)
+  var k0=0, k0_prev=-1, beta=0;
+  for (var iter=0; iter<100; iter++) {
+    if (k0===k0_prev) break;
+    k0_prev=k0;
+
+    // Truncate to k-k0 studies (remove k0 rightmost)
+    var trimN=Math.max(1, k-k0);
+    var res=dlMeta(yi_s.slice(0,trimN), vi_s.slice(0,trimN));
+    if (!res) break;
+    beta=res.mu;
+
+    // Center all k studies; signed ranks of absolute centered values
+    var yi_c=yi_s.map(function(y){return y-beta;});
+    var ranks=rankAbs(yi_c);
+
+    // Sr = sum of positive signed ranks (studies above the trimmed estimate)
+    var Sr=0;
+    for (var i=0;i<k;i++) if (yi_c[i]>0) Sr+=ranks[i];
+
+    // L0 formula
+    var k0raw=(4*Sr - k*(k+1)) / (2*k-1);
+    k0=Math.max(0, Math.round(k0raw));
+  }
+
+  // Fill: mirror the k0 most extreme (rightmost) studies around beta
+  var fillN=Math.min(k0, k-1);
+  var impYi_s=[], impVi=[], impSei=[];
+  for (var i=k-fillN; i<k; i++) {
+    impYi_s.push(2*beta - yi_s[i]);   // mirror in sorted (possibly-flipped) space
+    impVi.push(vi_s[i]);
+    impSei.push(sei_s[i]);
+  }
+
+  // Flip imputed back for right side
+  var impYi=impYi_s.slice();
+  if (side==='right') impYi=impYi.map(function(y){return -y;});
+
+  // Final meta-analysis on original + imputed studies
+  var tfMeta=dlMeta(yi_in.concat(impYi), vi_in.concat(impVi));
+
+  return {
+    k0:     fillN,
+    side:   side,
+    mu_center: side==='right' ? -beta : beta,
+    mu_tf:  tfMeta.mu, se_tf:  tfMeta.se,
+    ci_lb:  tfMeta.ci_lb, ci_ub: tfMeta.ci_ub,
+    z_tf:   tfMeta.z,  p_tf:   tfMeta.p,
+    impYi:  impYi, impSei: impSei
+  };
+}
+
+// ── PET-PEESE ─────────────────────────────────────────────────────────────────
+//
+// PET:   yi = b0 + b1*SEi,  WLS weights = 1/vi
+// PEESE: yi = b0 + b1*vi,   WLS weights = 1/vi
+// Decision (Stanley & Doucouliagos 2014):
+//   if PET p(two-sided) < 0.10  AND  b0_PET > 0  →  report PEESE estimate
+//   else                                           →  report PET estimate
+//
+function petPeese(yi, vi, sei) {
+  var k=yi.length; if (k<3) return null;
+  var w=vi.map(function(v){return 1/v;});
+  var pet   = wlsReg(sei,    yi, w);   // predictor = SE
+  var peese = wlsReg(vi,     yi, w);   // predictor = variance = SE²
+  var usePeese = (pet.p < 0.10 && pet.b0 > 0);
+  return { pet:pet, peese:peese, usePeese:usePeese };
+}
+
+// ── Rücker's Limit Meta-Analysis (Rücker et al. 2011) ────────────────────────
+//
+// Matches metasens::limitmeta(x, method.adjust="beta0") exactly.
+//
+// Algorithm (from limitmeta.R + radialregression.R):
+//   1. tau from base REML meta-analysis
+//   2. A_k = sqrt(vi_k + tau²)  ["seTE.tau" in metasens]
+//   3. Radial OLS: x = 1/A_k, y = TE_k/A_k  →  y = alpha_r + beta_r*x
+//      Equivalent in original space: TE_k = alpha_r*A_k + beta_r
+//   4. Shrunken: TE.limit_k = beta_r + (tau/A_k)*(TE_k − beta_r)
+//   5. Adjusted estimate: theta* = beta_r + alpha_r*tau  (curve at SE=0)
+//   6. SE via OLS variance formulas (sigma=1 after radial standardisation)
+//
+// Bias curve (hyperbola): E[g | SE=s] = alpha_r * sqrt(s² + tau²) + beta_r
+//
+function limitMeta(yi, vi) {
+  var k = yi.length;
+  if (k < 3) return null;
+
+  // Step 1: base REML tau²
+  var tau2 = remlTau2(yi, vi);
+  var tau  = Math.sqrt(tau2);
+
+  // Step 2: A_k = sqrt(vi + tau²)
+  var A = vi.map(function(v) { return Math.sqrt(v + tau2); });
+
+  // Step 3: radial OLS  x = 1/A_k,  y = TE/A_k
+  var xr = A.map(function(a) { return 1/a; });
+  var yr = yi.map(function(y, i) { return y/A[i]; });
+
+  var xbar=0, ybar=0;
+  for (var i=0; i<k; i++) { xbar+=xr[i]; ybar+=yr[i]; }
+  xbar/=k; ybar/=k;
+
+  var Sxx=0, Sxy=0;
+  for (var i=0; i<k; i++) {
+    Sxx += (xr[i]-xbar)*(xr[i]-xbar);
+    Sxy += (xr[i]-xbar)*(yr[i]-ybar);
+  }
+  var beta_r  = Sxy/Sxx;            // constant term  in original space (mu*)
+  var alpha_r = ybar - beta_r*xbar; // coeff of A_k   in original space (phi)
+
+  // Step 4: shrunken estimates: TE.limit_k = beta_r + (tau/A_k)*(TE_k - beta_r)
+  var shr_yi = yi.map(function(y, i) {
+    return beta_r + (tau/A[i]) * (y - beta_r);
+  });
+
+  // Step 5: adjusted estimate
+  var theta_star = beta_r + alpha_r * tau;
+
+  // Step 6: SE (OLS, sigma=1, same as metasens)
+  // var(1/A_k) sample, mean(1/A_k), mean(1/A_k²)
+  var varX=0, meanX=xbar, meanW=0;
+  for (var i=0; i<k; i++) {
+    varX += (xr[i]-xbar)*(xr[i]-xbar);
+    meanW += 1/(A[i]*A[i]);
+  }
+  varX /= (k-1);   // sample variance of 1/A_k
+  meanW /= k;      // mean(1/A_k²)
+
+  var varBeta  = 1/varX/(k-1);
+  var varAlpha = meanW/varX/(k-1);
+  var covAB    = -meanX/varX/(k-1);
+
+  var se_adj = Math.sqrt(Math.max(varBeta + tau2*varAlpha + 2*tau*covAB, 0));
+  var df = k-2;
+  var t  = se_adj > 1e-14 ? theta_star/se_adj : 0;
+  var p  = df > 0 ? 2*jStat.studentt.cdf(-Math.abs(t), df) : 1;
+  var tc = df > 0 ? jStat.studentt.inv(0.975, df) : 1.96;
+
+  return {
+    beta_r:beta_r, alpha_r:alpha_r, tau2:tau2, tau:tau,
+    theta_star:theta_star, se_adj:se_adj, t:t, p:p,
+    ci_lb:theta_star-tc*se_adj, ci_ub:theta_star+tc*se_adj,
+    shr_yi:shr_yi
+  };
+}
+
+// ── Funnel plot ───────────────────────────────────────────────────────────────
+function renderFunnel() {
+  var yi=_st.yi, sei=_st.sei, meta=_st.meta;
+  var xRange=_st.xRange;
+  var tf=_st.tfOn?_st.tf:null, pp=_st.ppOn?_st.pp:null, lm=_st.lmOn?_st.lm:null;
+
+  // Expand xRange to include PET/PEESE intercepts and TF estimate
+  var xR=xRange;
+  if (tf) xR=Math.max(xR, Math.abs(tf.mu_tf)*1.3+0.1, Math.abs(tf.mu_center)*1.3+0.1);
+  if (pp) xR=Math.max(xR, Math.abs(pp.pet.b0)*1.3+0.1, Math.abs(pp.peese.b0)*1.3+0.1);
+  if (lm) xR=Math.max(xR, Math.abs(lm.theta_star)*1.3+0.1,
+                           Math.abs(lm.alpha_r*Math.sqrt(SE_MAX*SE_MAX+lm.tau2)+lm.beta_r)*1.3+0.1);
+
+  // White significance funnel (centered on 0), drawn to the fixed SE_MAX boundary
+  var fBound=1.96*SE_MAX;
+  var traces=[], shapes=[];
+
+  traces.push({
+    x:[0,fBound,-fBound,0], y:[0,SE_MAX,SE_MAX,0],
+    type:'scatter', mode:'lines',
+    fill:'toself', fillcolor:'white',
+    line:{color:'rgba(80,80,80,0.35)',width:0.8},
+    showlegend:false, hoverinfo:'skip'
+  });
+
+  // Observed studies
+  traces.push({
+    x:yi, y:sei, type:'scatter', mode:'markers',
+    marker:{symbol:'circle-open',size:7,color:'#333',line:{width:1.5,color:'#333'}},
+    showlegend:false,
+    hovertemplate:'g = %{x:.3f}<br>SE = %{y:.3f}<extra></extra>'
+  });
+
+  // Meta-analytic estimate: filled triangle at SE=0
+  traces.push({
+    x:[meta.mu], y:[0], type:'scatter', mode:'markers',
+    marker:{symbol:'triangle-down',size:14,color:'#1c1717'},
+    showlegend:false,
+    hovertemplate:'Meta g = %{x:.3f}<extra></extra>'
+  });
+
+  // Solid vertical line at meta estimate
+  shapes.push({
+    type:'line', x0:meta.mu, x1:meta.mu, y0:0, y1:SE_MAX,
+    xref:'x', yref:'y', line:{color:'#111',width:2,dash:'solid'}
+  });
+
+  // ── Trim & Fill overlay ───────────────────────────────────────────────────
+  if (tf && tf.k0>0) {
+    // Imputed studies (blue open circles)
+    traces.push({
+      x:tf.impYi, y:tf.impSei, type:'scatter', mode:'markers',
+      marker:{symbol:'circle-open',size:8,color:BLUE,line:{width:2,color:BLUE}},
+      showlegend:false,
+      hovertemplate:'Imputed g = %{x:.3f}<br>SE = %{y:.3f}<extra></extra>'
+    });
+    // TF adjusted estimate: filled blue circle at SE=0
+    traces.push({
+      x:[tf.mu_tf], y:[0], type:'scatter', mode:'markers',
+      marker:{symbol:'circle',size:11,color:BLUE},
+      showlegend:false,
+      hovertemplate:'T&F adjusted g = %{x:.3f}<extra></extra>'
+    });
+    // Dotted blue vertical line at TF estimate
+    shapes.push({
+      type:'line', x0:tf.mu_tf, x1:tf.mu_tf, y0:0, y1:SE_MAX,
+      xref:'x', yref:'y', line:{color:BLUE,width:1.5,dash:'dot'}
+    });
+  }
+
+  // ── PET-PEESE overlay ─────────────────────────────────────────────────────
+  if (pp) {
+    var pet=pp.pet, peese=pp.peese;
+    var NS=60;  // points along y-axis for smooth lines
+
+    // PET line: d = b0 + b1*SE  (straight diagonal)
+    var petX=[], petY=[];
+    for (var i=0;i<=NS;i++) {
+      var s=SE_MAX*i/NS;
+      petX.push(pet.b0+pet.b1*s); petY.push(s);
+    }
+    traces.push({
+      x:petX, y:petY, type:'scatter', mode:'lines',
+      line:{color:RED,width:1.8,dash:'solid'},
+      showlegend:false, hoverinfo:'skip'
+    });
+
+    // PEESE line: d = b0 + b1*vi = b0 + b1*s²  (parabola)
+    var peeseX=[], peeseY=[];
+    for (var i=0;i<=NS;i++) {
+      var s=SE_MAX*i/NS;
+      peeseX.push(peese.b0+peese.b1*s*s); peeseY.push(s);
+    }
+    traces.push({
+      x:peeseX, y:peeseY, type:'scatter', mode:'lines',
+      line:{color:RED,width:1.8,dash:'dash'},
+      showlegend:false, hoverinfo:'skip'
+    });
+
+    // PET point estimate: open circle at SE=0
+    traces.push({
+      x:[pet.b0], y:[0], type:'scatter', mode:'markers',
+      marker:{symbol:'circle-open',size:12,color:RED,line:{width:2.5,color:RED}},
+      showlegend:false,
+      hovertemplate:'PET estimate = %{x:.3f}<extra></extra>'
+    });
+
+    // PET 95% CI: dashed horizontal segment at SE=0
+    traces.push({
+      x:[pet.ci_lb, pet.ci_ub], y:[0,0], type:'scatter', mode:'lines',
+      line:{color:RED,width:1.5,dash:'dash'},
+      showlegend:false, hoverinfo:'skip'
+    });
+
+    // PEESE point estimate: diamond at SE=0
+    traces.push({
+      x:[peese.b0], y:[0], type:'scatter', mode:'markers',
+      marker:{symbol:'diamond',size:10,color:RED,line:{width:2,color:RED}},
+      showlegend:false,
+      hovertemplate:'PEESE estimate = %{x:.3f}<extra></extra>'
+    });
+  }
+
+  // ── Limit MA overlay ──────────────────────────────────────────────────────
+  if (lm) {
+    // Bias curve (hyperbola): E[g|SE=s] = alpha_r*sqrt(s²+tau²) + beta_r
+    var NS=80, cxArr=[], cyArr=[];
+    for (var ci=0; ci<=NS; ci++) {
+      var s = SE_MAX*ci/NS;
+      cxArr.push(lm.alpha_r*Math.sqrt(s*s+lm.tau2)+lm.beta_r);
+      cyArr.push(s);
+    }
+    traces.push({
+      x:cxArr, y:cyArr, type:'scatter', mode:'lines',
+      line:{color:GRAY, width:2},
+      showlegend:false, hoverinfo:'skip'
+    });
+
+    // Lines from original to shrunken estimates
+    for (var si=0; si<_st.yi.length; si++) {
+      traces.push({
+        x:[_st.yi[si], lm.shr_yi[si]], y:[_st.sei[si], _st.sei[si]],
+        type:'scatter', mode:'lines',
+        line:{color:GRAY, width:1},
+        showlegend:false, hoverinfo:'skip'
+      });
+    }
+
+    // Shrunken study estimates: light grey fill, grey border
+    traces.push({
+      x:lm.shr_yi, y:_st.sei,
+      type:'scatter', mode:'markers',
+      marker:{symbol:'circle', size:7,
+        color:'#e8e8e8',
+        line:{color:GRAY, width:1.5}},
+      showlegend:false,
+      hovertemplate:'Shrunken g = %{x:.3f}<br>SE = %{y:.3f}<extra></extra>'
+    });
+
+    // Adjusted estimate: open square at SE=0
+    traces.push({
+      x:[lm.theta_star], y:[0],
+      type:'scatter', mode:'markers',
+      marker:{symbol:'square-open', size:12, color:GRAY, line:{width:2.5, color:GRAY}},
+      showlegend:false,
+      hovertemplate:'Limit MA adj. g = %{x:.3f}<extra></extra>'
+    });
+
+    // Vertical dotted gray line at adjusted estimate
+    shapes.push({
+      type:'line', x0:lm.theta_star, x1:lm.theta_star, y0:0, y1:SE_MAX,
+      xref:'x', yref:'y', line:{color:GRAY, width:1.5, dash:'dot'}
+    });
+  }
+
+  // Build title
+  var title="Hedges' g = <b>"+meta.mu.toFixed(3)+'</b>';
+  if (tf && tf.k0>0) title+='  |  Trim &amp; Fill g = <b>'+tf.mu_tf.toFixed(3)+'</b> (k&#8320;='+tf.k0+')';
+  if (pp) {
+    var ppEst = pp.usePeese ? pp.peese.b0 : pp.pet.b0;
+    var ppLabel = pp.usePeese ? 'PEESE' : 'PET';
+    title+='  |  PET-PEESE g = <b>'+ppEst.toFixed(3)+'</b> ('+ppLabel+')';
+  }
+  if (lm) title+='  |  Limit MA g = <b>'+lm.theta_star.toFixed(3)+'</b>';
+
+  var layout={
+    title:{
+      text:title,
+      font:{size:12,color:'#1c1717',family:"'Montserrat',sans-serif"}, x:0.5
+    },
+    xaxis:Object.assign({
+      title:{text:"Observed effect size (Hedges' g)",font:{size:13}},
+      range:[-xR,xR],
+      zeroline:true, zerolinecolor:'#888', zerolinewidth:1
+    }, AXIS_BASE),
+    yaxis:Object.assign({
+      title:{text:'Standard error',font:{size:13}},
+      range:[SE_MAX,0]  // fixed: 0.4 at bottom → 0 at top
+    }, AXIS_BASE),
+    plot_bgcolor:'#d8d8d8', paper_bgcolor:'#fffafa',
+    font:FONT, shapes:shapes,
+    margin:{l:65,r:20,t:40,b:55},
+    showlegend:false, hovermode:'closest'
+  };
+
+  Plotly.react('plot', traces, layout, {responsive:true,displayModeBar:false});
+}
+
+// ── Stats block ───────────────────────────────────────────────────────────────
+function fmtP(p) {
+  if (p<0.001) return '&lt;&nbsp;.001';
+  return '=&nbsp;'+p.toFixed(3).replace(/^0\./,'.');
+}
+function fmtCI(lb,ub) { return '['+lb.toFixed(3)+', '+ub.toFixed(3)+']'; }
+
+function renderStats(capHit) {
+  var meta=_st.meta, tf=_st.tfOn?_st.tf:null, pp=_st.ppOn?_st.pp:null, lm=_st.lmOn?_st.lm:null;
+
+  var h='<strong>Meta-analytic estimate:</strong>'
+    +' <em>g</em> = <strong>'+meta.mu.toFixed(3)+'</strong>'
+    +' (SE = '+meta.se.toFixed(3)+')'
+    +', 95% CI '+fmtCI(meta.ci_lb,meta.ci_ub)
+    +', <em>z</em> = '+meta.z.toFixed(3)
+    +', <em>p</em> '+fmtP(meta.p)
+    +'<br><strong>Studies:</strong> k = '+meta.k
+    +' ('+_st.nSig+' significant, '+_st.nNonsig+' non-significant)'
+    +' &nbsp;|&nbsp; '
+    +'<strong>Heterogeneity:</strong> &tau;&sup2; = '+meta.tau2.toFixed(4)
+    +', Q('+(meta.k-1)+') = '+meta.Q.toFixed(2);
+
+  if (capHit) h+=' <span style="color:var(--red);font-size:.80rem;">'
+    +'&#9888; Iteration cap hit — true effect may be too large.</span>';
+
+  // Trim & Fill section
+  if (tf) {
+    h+='<div class="result-row blue">';
+    h+='<strong>Trim &amp; Fill</strong> (L0 estimator, side = "'+tf.side+'"): ';
+    if (tf.k0===0) {
+      h+='funnel is symmetric — k&#8320; = 0, no studies imputed.';
+    } else {
+      h+='k&#8320; = <strong>'+tf.k0+'</strong> studies imputed'
+        +' (mirrored around trimmed mean <em>g</em> = '+tf.mu_center.toFixed(3)+')'
+        +'<br>Adjusted estimate: <em>g</em> = <strong>'+tf.mu_tf.toFixed(3)+'</strong>'
+        +' (SE = '+tf.se_tf.toFixed(3)+')'
+        +', 95% CI '+fmtCI(tf.ci_lb,tf.ci_ub)
+        +', <em>p</em> '+fmtP(tf.p_tf)
+        +'<br><span style="font-size:.81rem;color:var(--ink3);">'
+        +'Dotted blue line = adjusted estimate &nbsp;&bull;&nbsp; '
+        +'Blue open circles = imputed studies &nbsp;&bull;&nbsp; '
+        +'Blue dot &#9679; = adjusted estimate at SE = 0'
+        +'</span>';
+    }
+    h+='</div>';
+  }
+
+  // PET-PEESE section
+  if (pp) {
+    var pet=pp.pet, peese=pp.peese;
+    var decLabel = pp.usePeese
+      ? 'PET p '+fmtP(pet.p)+' &lt; .10 and <em>b</em>&#8320; &gt; 0 &rarr; <strong>PEESE estimate is used</strong>'
+      : (!pp.usePeese&&pet.p<0.10&&pet.b0<=0)
+        ? 'PET p '+fmtP(pet.p)+' &lt; .10 but <em>b</em>&#8320; &le; 0 &rarr; <strong>PET estimate is used</strong>'
+        : 'PET p '+fmtP(pet.p)+' &ge; .10 &rarr; <strong>PET estimate is used</strong>';
+    var est = pp.usePeese ? peese.b0 : pet.b0;
+    h+='<div class="result-row red">'
+      +'<strong>PET-PEESE</strong> (WLS, weights = 1/<em>v</em><sub><em>i</em></sub>):<br>'
+      +'PET &nbsp;(<em>yi</em> ~ SE) &ensp;'
+        +'<em>b</em>&#8320; = <strong>'+pet.b0.toFixed(3)+'</strong>'
+        +' (SE = '+pet.se_b0.toFixed(3)+')'
+        +', 95% CI '+fmtCI(pet.ci_lb,pet.ci_ub)
+        +', <em>p</em> '+fmtP(pet.p)+'<br>'
+      +'PEESE (<em>yi</em> ~ <em>v<sub>i</sub></em>) &ensp;'
+        +'<em>b</em>&#8320; = <strong>'+peese.b0.toFixed(3)+'</strong>'
+        +' (SE = '+peese.se_b0.toFixed(3)+')'
+        +', 95% CI '+fmtCI(peese.ci_lb,peese.ci_ub)
+        +', <em>p</em> '+fmtP(peese.p)+'<br>'
+      +decLabel+'<br>'
+      +'PET-PEESE estimate: <em>g</em> = <strong>'+est.toFixed(3)+'</strong>'
+      +'<br><span style="font-size:.81rem;color:var(--ink3);">'
+      +'Solid red line = PET &nbsp;&bull;&nbsp; '
+      +'Dashed red line = PEESE &nbsp;&bull;&nbsp; '
+      +'Open circle &#9675; = PET estimate at SE = 0 &nbsp;&bull;&nbsp; '
+      +'Diamond &#9670; = PEESE estimate at SE = 0 &nbsp;&bull;&nbsp; '
+      +'Dashed segment = 95% CI for PET'
+      +'</span></div>';
+  }
+
+  // Limit MA section
+  if (lm) {
+    h+='<div class="result-row" style="color:'+GRAY+';border-color:#ccc;">'
+      +'<strong style="color:'+GRAY+';">Rücker\'s Limit Meta-Analysis</strong>'
+      +' (radial OLS on base REML &tau;, matching metasens):<br>'
+      +'Adjusted estimate (&beta;&#8193;+&#8193;&alpha;&middot;&tau;): '
+      +'<em>g</em> = <strong>'+lm.theta_star.toFixed(3)+'</strong>'
+      +' (SE = '+lm.se_adj.toFixed(3)+')'
+      +', 95% CI '+fmtCI(lm.ci_lb,lm.ci_ub)
+      +', <em>p</em> '+fmtP(lm.p)+'<br>'
+      +'Bias parameter &alpha; = '+lm.alpha_r.toFixed(3)
+      +' &nbsp;|&nbsp; intercept &beta; = '+lm.beta_r.toFixed(3)
+      +' &nbsp;|&nbsp; &tau; = '+lm.tau.toFixed(4)+'<br>'
+      +'<span style="font-size:.81rem;color:var(--ink3);">'
+      +'Gray curve = E[g|SE] = &alpha;&middot;&radic;(SE&#178;+&tau;&#178;) + &beta; (hyperbola)'
+      +' &nbsp;&bull;&nbsp; Gray dots = shrunken estimates'
+      +' &nbsp;&bull;&nbsp; Open square &#9633; = adjusted estimate at SE = 0'
+      +'</span></div>';
+  }
+
+  document.getElementById('statsBlock').innerHTML=h;
+}
+
+// ── Simulation ────────────────────────────────────────────────────────────────
+function startSim() {
+  document.getElementById('runBtn').disabled=true;
+  document.getElementById('runBtn').textContent='Simulating…';
+  document.getElementById('tfBtn').disabled=true;
+  document.getElementById('ppBtn').disabled=true;
+  document.getElementById('lmBtn').disabled=true;
+  setActive('tfBtn',false); setActive('ppBtn',false); setActive('lmBtn',false);
+  document.getElementById('tfBtn').textContent='Trim & Fill';
+  document.getElementById('ppBtn').textContent='PET-PEESE';
+  document.getElementById('lmBtn').textContent='Limit MA';
+  document.getElementById('statsBlock').innerHTML=
+    '<span style="color:var(--ink3)">Simulating… this may take a moment.</span>';
+  _st.tfOn=false; _st.ppOn=false; _st.lmOn=false;
+  _st.tf=null;    _st.pp=null;    _st.lm=null;
+  setTimeout(doSim,20);
+}
+
+function doSim() {
+  var nsims  =Math.max(10,Math.min(500,parseInt(document.getElementById('nsimsIn').value,10)||100));
+  var pubBias=Math.max(0, Math.min(1,  parseFloat(document.getElementById('biasIn').value)||0));
+  var trueD  =Math.max(0, Math.min(0.8,parseFloat(document.getElementById('dIn').value)||0));
+  var minN   = Math.max(10, parseInt(document.getElementById('minNIn').value,10)||20);
+  var maxN   = Math.max(minN+1, parseInt(document.getElementById('maxNIn').value,10)||1000);
+  _st.minN=minN; _st.maxN=maxN;
+  var mu1=trueD, mu2=0;
+  var nSig=Math.round(nsims*pubBias), nNonsig=nsims-nSig;
+  var yi=[],vi=[],sei=[], maxIter=5000, capHit=false;
+
+  for (var i=0;i<nSig;i++) {
+    var n=sampleN(),g,p=1,it=0;
+    do { g=simGroups(n,mu1,mu2); p=ttestP(g,n,'greater'); it++; }
+    while (p>0.025&&it<maxIter);
+    if (it>=maxIter) capHit=true;
+    var es=hedgesG(g,n); yi.push(es.yi); vi.push(es.vi); sei.push(es.sei);
+  }
+  for (var i=0;i<nNonsig;i++) {
+    var n=sampleN(),g,p=0,it=0;
+    do { g=simGroups(n,mu1,mu2); p=ttestP(g,n,'two.sided'); it++; }
+    while (p<0.05&&it<maxIter);
+    if (it>=maxIter) capHit=true;
+    var es=hedgesG(g,n); yi.push(es.yi); vi.push(es.vi); sei.push(es.sei);
+  }
+
+  var meta=dlMeta(yi,vi);
+  if (!meta) {
+    document.getElementById('statsBlock').innerHTML='No studies to analyze.';
+    document.getElementById('runBtn').disabled=false;
+    document.getElementById('runBtn').textContent='Run simulation';
+    return;
+  }
+
+  var seMax=Math.max.apply(null,sei)*1.15; seMax=Math.max(seMax,0.05);
+  var absMax=0; for (var i=0;i<yi.length;i++) absMax=Math.max(absMax,Math.abs(yi[i]));
+  var xRange=Math.max(absMax*1.2, 1.96*SE_MAX*1.2, 0.4);
+
+  _st.yi=yi; _st.vi=vi; _st.sei=sei;
+  _st.nSig=nSig; _st.nNonsig=nNonsig; _st.pubBias=pubBias;
+  _st.meta=meta; _st.seMax=seMax; _st.xRange=xRange;
+  _st.ready=true;
+
+  renderFunnel();
+  renderStats(capHit);
+  document.getElementById('runBtn').disabled=false;
+  document.getElementById('runBtn').textContent='Run simulation';
+  document.getElementById('tfBtn').disabled=false;
+  document.getElementById('ppBtn').disabled=false;
+  document.getElementById('lmBtn').disabled=false;
+  postHeight();
+}
+
+// ── Button helpers ────────────────────────────────────────────────────────────
+function setActive(id,on) {
+  var el=document.getElementById(id);
+  if (on) el.classList.add('active'); else el.classList.remove('active');
+}
+
+document.getElementById('tfBtn').addEventListener('click', function(){
+  if (!_st.ready) return;
+  _st.tfOn=!_st.tfOn;
+  if (_st.tfOn && !_st.tf) _st.tf=trimFill(_st.yi,_st.vi,_st.sei);
+  setActive('tfBtn',_st.tfOn);
+  document.getElementById('tfBtn').textContent=
+    _st.tfOn ? 'Remove Trim & Fill' : 'Trim & Fill';
+  renderFunnel(); renderStats(false); postHeight();
+});
+
+document.getElementById('ppBtn').addEventListener('click', function(){
+  if (!_st.ready) return;
+  _st.ppOn=!_st.ppOn;
+  if (_st.ppOn && !_st.pp) _st.pp=petPeese(_st.yi,_st.vi,_st.sei);
+  setActive('ppBtn',_st.ppOn);
+  document.getElementById('ppBtn').textContent=
+    _st.ppOn ? 'Remove PET-PEESE' : 'PET-PEESE';
+  renderFunnel(); renderStats(false); postHeight();
+});
+
+document.getElementById('lmBtn').addEventListener('click', function(){
+  if (!_st.ready) return;
+  _st.lmOn=!_st.lmOn;
+  if (_st.lmOn && !_st.lm) _st.lm=limitMeta(_st.yi,_st.vi);
+  setActive('lmBtn',_st.lmOn);
+  document.getElementById('lmBtn').textContent=
+    _st.lmOn ? 'Remove Limit MA' : 'Limit MA';
+  renderFunnel(); renderStats(false); postHeight();
+});
+
+document.getElementById('biasIn').addEventListener('input', function(){
+  document.getElementById('biasVal').textContent = Math.round(this.value*100)+'%';
+});
+document.getElementById('dIn').addEventListener('input', function(){
+  document.getElementById('dVal').textContent = parseFloat(this.value).toFixed(2);
+});
+document.getElementById('runBtn').addEventListener('click', startSim);
+window.addEventListener('resize', postHeight);
+window.addEventListener('load', function(){ setTimeout(startSim,100); });
+if (typeof ResizeObserver!=='undefined') new ResizeObserver(postHeight).observe(document.body);
+</script>
+</body>
+</html>

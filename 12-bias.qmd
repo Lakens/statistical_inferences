@@ -72,84 +72,106 @@ One of these 44 articles had been co-authored by myself [@jostmann_weight_2009].
 New methods to detect publication bias are continuously developed, and old methods become outdated (even though you can still see them appear in meta-analyses). One outdated method is known as **fail-safe N**. The idea was to calculate the number of non-significant results one would need to have in file-drawers before an observed meta-analytic effect size estimate would no longer be statistically different from 0. It is [no longer recommended](https://handbook-5-1.cochrane.org/chapter_10/10_4_4_3_fail_safe_n.htm), and Becker [-@becker_failsafe_2005] writes "Given the other approaches that now exist for dealing with publication bias, the failsafe N should be abandoned in favor of other, more informative analyses". Currently, the only use fail-safe N has is as a tool to identify meta-analyses that are not state-of-the-art.  
 
 Before we can explain a second method (Trim-and-Fill), it’s useful to explain a common way to visualize meta-analyses, known as a **funnel plot**. In a funnel plot, the x-axis is used to plot the effect size of each study, and the y-axis is used to plot the ‘precision’ of each effect size (typically, the standard error of each effect size estimate). The larger the number of observations in a study, the more precise the effect size estimate, the smaller the standard error, and thus the higher up in the funnel plot the study will be. An infinitely precise study (with a standard error of 0) would be at the top of y-axis. 
+The script below simulates meta-analyses for `nsims` studies, and stores all the results needed to examine bias detection. In the first section of the script, statistically significant results in the desired direction are simulated, and in the second part null results are generated. The script generates a percentage of significant results as indicated by `pub.bias` - when set to 1, all results are significant. In the code below, `pub.bias` is set to 0.05. Because there is no true effect in the simulation (`m1` and `m2` are equal, so there is no difference between the groups), the only significant results that should be expected are the 5% false positives. Finally, the meta-analysis is performed, the results are printed, and a funnel plot is created.
 
-The script below simulates meta-analyses for `nsims` studies, and stores all the results needed to examine bias detection. In the first section of the script, statistically significant results in the desired direction are simulated, and in the second part null results are generated. The script generates a percentage of significant results as indicated by `pub.bias` - when set to 1, all results are significant. In the code below, `pub.bias` is set to 0.05. Because there is no true effect in the simulation (`m1` and `m2` are equal, so there is no difference between the groups), the only significant results that should be expected are the 5% false positives. Finally, the meta-analysis is performed, the results are printed, and a funnel plot is created. 
+If you prefer not to use R, you can use the interactive simulation below to explore the effects of publication bias in meta-analyses. The simulation allows you to apply the trim-and-fill method, PET-PEESE metaregression, and Rücker's Limit Meta-Analysis (for an explanation of this method, see [Doing Meta-Analysis in R](https://doing-meta.guide/pub-bias#rucker-ma)).
+
+::: {.content-visible when-format="html"}
+
+<iframe id="pub-bias-meta-iframe"
+        src="pub_bias_meta_app_book.html"
+        width="100%"
+        height="600"
+        scrolling="no"
+        style="border:none;display:block;margin:1.5rem 0;overflow:hidden;"
+        title="Publication Bias in Meta-Analysis">
+</iframe>
+<script>
+window.addEventListener('message', function(e) {
+  if (e.data && typeof e.data.iframeHeight === 'number') {
+    var f = document.getElementById('pub-bias-meta-iframe');
+    if (f && e.source === f.contentWindow) f.style.height = e.data.iframeHeight + 'px';
+  }
+});
+</script>
+
+:::
+
+::: {.content-visible unless-format="html"}
+
+*An interactive simulation of publication bias in meta-analysis is available in the online version of this book.*
+
+:::
 
 ```{r metasim, eval = FALSE}
 library(metafor)
 library(truncnorm)
 
-nsims <- 100 # number of simulated experiments
-pub.bias <- 0.05 # set percentage of significant results in the literature
+nsims    <- 100   # number of simulated experiments
+pub.bias <- 0.05  # proportion of significant results in the literature
 
-m1 <- 0 # too large effects will make non-significant results extremely rare
-sd1 <- 1
-m2 <- 0
-sd2 <- 1
-metadata.sig <- data.frame(m1 = NA, m2 = NA, sd1 = NA, sd2 = NA, 
-                           n1 = NA, n2 = NA, pvalues = NA, pcurve = NA)
-metadata.nonsig <- data.frame(m1 = NA, m2 = NA, sd1 = NA, sd2 = NA, 
-                              n1 = NA, n2 = NA, pvalues = NA, pcurve = NA)
+m1 <- 0; sd1 <- 1  # too large effects make non-significant results extremely rare
+m2 <- 0; sd2 <- 1
 
-# simulate significant effects in the expected direction
-if(pub.bias > 0){
-for (i in 1:nsims*pub.bias) { # for each simulated experiment
-  p <- 1 # reset p to 1
-  n <- round(truncnorm::rtruncnorm(1, 20, 1000, 100, 100)) # n based on truncated normal
-  while (p > 0.025) { # continue simulating as along as p is not significant
-    x <- rnorm(n = n, mean = m1, sd = sd1) 
-    y <- rnorm(n = n, mean = m2, sd = sd2) 
-    p <- t.test(x, y, alternative = "greater", var.equal = TRUE)$p.value
+n_sig    <- round(nsims * pub.bias)
+n_nonsig <- nsims - n_sig
+
+# Pre-allocate a results data frame with n rows
+make_meta_df <- function(n) {
+  data.frame(m1 = numeric(n), m2 = numeric(n), sd1 = numeric(n), sd2 = numeric(n),
+             n1 = integer(n), n2 = integer(n), pvalues = numeric(n),
+             pcurve = character(n), stringsAsFactors = FALSE)
+}
+
+# Simulate significant results: one-sided p < 0.025 in the expected direction
+sim_sig <- function(n_sig) {
+  if (n_sig == 0) return(make_meta_df(0))
+  out <- make_meta_df(n_sig)
+  for (i in seq_len(n_sig)) {
+    n <- round(rtruncnorm(1, a = 20, b = 1000, mean = 100, sd = 100))
+    p <- 1
+    while (p > 0.025) {
+      x <- rnorm(n, mean = m1, sd = sd1)
+      y <- rnorm(n, mean = m2, sd = sd2)
+      p <- t.test(x, y, alternative = "greater", var.equal = TRUE)$p.value
+    }
+    res <- t.test(x, y, var.equal = TRUE)
+    out[i, ] <- list(mean(x), mean(y), sd(x), sd(y), n, n, res$p.value,
+                     paste0("t(", res$parameter, ")=", res$statistic))
   }
-  metadata.sig[i, 1] <- mean(x)
-  metadata.sig[i, 2] <- mean(y)
-  metadata.sig[i, 3] <- sd(x)
-  metadata.sig[i, 4] <- sd(y)
-  metadata.sig[i, 5] <- n
-  metadata.sig[i, 6] <- n
-  out <- t.test(x, y, var.equal = TRUE)
-  metadata.sig[i, 7] <- out$p.value
-  metadata.sig[i, 8] <- paste0("t(", out$parameter, ")=", out$statistic)
-}}
+  out
+}
 
-# simulate non-significant effects (two-sided)
-if(pub.bias < 1){
-for (i in 1:nsims*(1-pub.bias)) { # for each simulated experiment
-  p <- 0 # reset p to 1
-  n <- round(truncnorm::rtruncnorm(1, 20, 1000, 100, 100))
-  while (p < 0.05) { # continue simulating as along as p is significant
-    x <- rnorm(n = n, mean = m1, sd = sd1) # produce simulated participants
-    y <- rnorm(n = n, mean = m2, sd = sd2) # produce simulated participants
-    p <- t.test(x, y, var.equal = TRUE)$p.value
+# Simulate non-significant results: two-sided p >= 0.05
+sim_nonsig <- function(n_nonsig) {
+  if (n_nonsig == 0) return(make_meta_df(0))
+  out <- make_meta_df(n_nonsig)
+  for (i in seq_len(n_nonsig)) {
+    n <- round(rtruncnorm(1, a = 20, b = 1000, mean = 100, sd = 100))
+    p <- 0
+    while (p < 0.05) {
+      x <- rnorm(n, mean = m1, sd = sd1)
+      y <- rnorm(n, mean = m2, sd = sd2)
+      p <- t.test(x, y, var.equal = TRUE)$p.value
+    }
+    res <- t.test(x, y, var.equal = TRUE)
+    out[i, ] <- list(mean(x), mean(y), sd(x), sd(y), n, n, res$p.value,
+                     paste0("t(", res$parameter, ")=", res$statistic))
   }
-  metadata.nonsig[i, 1] <- mean(x)
-  metadata.nonsig[i, 2] <- mean(y)
-  metadata.nonsig[i, 3] <- sd(x)
-  metadata.nonsig[i, 4] <- sd(y)
-  metadata.nonsig[i, 5] <- n
-  metadata.nonsig[i, 6] <- n
-  out <- t.test(x, y, var.equal = TRUE)
-  metadata.nonsig[i, 7] <- out$p.value
-  metadata.nonsig[i, 8] <- paste0("t(", out$parameter, ")=", out$statistic)
-}}
+  out
+}
 
-# Combine significant and non-significant effects
-metadata <- rbind(metadata.nonsig, metadata.sig)
-
-# Use escalc to compute effect sizes
-metadata <- escalc(n1i = n1, n2i = n2, m1i = m1, m2i = m2, sd1i = sd1, 
-  sd2i = sd2, measure = "SMD", data = metadata[complete.cases(metadata),])
-# add se for PET-PEESE analysis
+metadata <- rbind(sim_sig(n_sig), sim_nonsig(n_nonsig))
+metadata <- escalc(n1i = n1, n2i = n2, m1i = m1, m2i = m2, sd1i = sd1,
+                   sd2i = sd2, measure = "SMD", data = metadata)
 metadata$sei <- sqrt(metadata$vi)
 
-#Perform meta-analysis
-result <- metafor::rma(yi, vi, data = metadata)
+result <- rma(yi, vi, data = metadata)
 result
 
-# Print a Funnel Plot
-metafor::funnel(result, level = 0.95, refline = 0)
-abline(v = result$b[1], lty = "dashed") # vertical line at meta-analytic ES
-points(x = result$b[1], y = 0, cex = 1.5, pch = 17) # add point
+funnel(result, level = 0.95, refline = 0)
+abline(v = result$b[1], lty = "dashed")
+points(x = result$b[1], y = 0, cex = 1.5, pch = 17)
 
 ```
 
@@ -157,70 +179,60 @@ Let’s start by looking at what unbiased research looks like, by running the co
 
 ```{r metasim1, echo = FALSE}
 set.seed(52)
-nsims <- 100 # number of simulated experiments
-pub.bias <- 0.05 # set percentage of significant results in the literature
+nsims    <- 100
+pub.bias <- 0.05
 
-m1 <- 0 # too large effects will make non-significant results extremely rare
-sd1 <- 1
-m2 <- 0
-sd2 <- 1
-metadata.sig <- data.frame(m1 = NA, m2 = NA, sd1 = NA, sd2 = NA, 
-                           n1 = NA, n2 = NA, pvalues = NA, pcurve = NA)
-metadata.nonsig <- data.frame(m1 = NA, m2 = NA, sd1 = NA, sd2 = NA, 
-                              n1 = NA, n2 = NA, pvalues = NA, pcurve = NA)
+m1 <- 0; sd1 <- 1
+m2 <- 0; sd2 <- 1
 
-# simulate significant effects in the expected direction
-if(pub.bias > 0){
-for (i in 1:nsims*pub.bias) { # for each simulated experiment
-  p <- 1 # reset p to 1
-  n <- round(truncnorm::rtruncnorm(1, 20, 1000, 100, 100)) # n based on truncated normal
-  while (p > 0.025) { # continue simulating as along as p is not significant
-    x <- rnorm(n = n, mean = m1, sd = sd1) 
-    y <- rnorm(n = n, mean = m2, sd = sd2) 
-    p <- t.test(x, y, alternative = "greater", var.equal = TRUE)$p.value
+n_sig    <- round(nsims * pub.bias)
+n_nonsig <- nsims - n_sig
+
+make_meta_df <- function(n) {
+  data.frame(m1 = numeric(n), m2 = numeric(n), sd1 = numeric(n), sd2 = numeric(n),
+             n1 = integer(n), n2 = integer(n), pvalues = numeric(n),
+             pcurve = character(n), stringsAsFactors = FALSE)
+}
+
+sim_sig <- function(n_sig) {
+  if (n_sig == 0) return(make_meta_df(0))
+  out <- make_meta_df(n_sig)
+  for (i in seq_len(n_sig)) {
+    n <- round(rtruncnorm(1, a = 20, b = 1000, mean = 100, sd = 100))
+    p <- 1
+    while (p > 0.025) {
+      x <- rnorm(n, mean = m1, sd = sd1); y <- rnorm(n, mean = m2, sd = sd2)
+      p <- t.test(x, y, alternative = "greater", var.equal = TRUE)$p.value
+    }
+    res <- t.test(x, y, var.equal = TRUE)
+    out[i, ] <- list(mean(x), mean(y), sd(x), sd(y), n, n, res$p.value,
+                     paste0("t(", res$parameter, ")=", res$statistic))
   }
-  metadata.sig[i, 1] <- mean(x)
-  metadata.sig[i, 2] <- mean(y)
-  metadata.sig[i, 3] <- sd(x)
-  metadata.sig[i, 4] <- sd(y)
-  metadata.sig[i, 5] <- n
-  metadata.sig[i, 6] <- n
-  out <- t.test(x, y, var.equal = TRUE)
-  metadata.sig[i, 7] <- out$p.value
-  metadata.sig[i, 8] <- paste0("t(", out$parameter, ")=", out$statistic)
-}}
+  out
+}
 
-# simulate non-significant effects (two-sided)
-if(pub.bias < 1){
-for (i in 1:nsims*(1-pub.bias)) { # for each simulated experiment
-  p <- 0 # reset p to 1
-  n <- round(truncnorm::rtruncnorm(1, 20, 1000, 100, 100))
-  while (p < 0.05) { # continue simulating as along as p is significant
-    x <- rnorm(n = n, mean = m1, sd = sd1) # produce simulated participants
-    y <- rnorm(n = n, mean = m2, sd = sd2) # produce simulated participants
-    p <- t.test(x, y, var.equal = TRUE)$p.value
+sim_nonsig <- function(n_nonsig) {
+  if (n_nonsig == 0) return(make_meta_df(0))
+  out <- make_meta_df(n_nonsig)
+  for (i in seq_len(n_nonsig)) {
+    n <- round(rtruncnorm(1, a = 20, b = 1000, mean = 100, sd = 100))
+    p <- 0
+    while (p < 0.05) {
+      x <- rnorm(n, mean = m1, sd = sd1); y <- rnorm(n, mean = m2, sd = sd2)
+      p <- t.test(x, y, var.equal = TRUE)$p.value
+    }
+    res <- t.test(x, y, var.equal = TRUE)
+    out[i, ] <- list(mean(x), mean(y), sd(x), sd(y), n, n, res$p.value,
+                     paste0("t(", res$parameter, ")=", res$statistic))
   }
-  metadata.nonsig[i, 1] <- mean(x)
-  metadata.nonsig[i, 2] <- mean(y)
-  metadata.nonsig[i, 3] <- sd(x)
-  metadata.nonsig[i, 4] <- sd(y)
-  metadata.nonsig[i, 5] <- n
-  metadata.nonsig[i, 6] <- n
-  out <- t.test(x, y, var.equal = TRUE)
-  metadata.nonsig[i, 7] <- out$p.value
-  metadata.nonsig[i, 8] <- paste0("t(", out$parameter, ")=", out$statistic)
-}}
+  out
+}
 
-# Combine significant and non-significant effects
-metadata <- rbind(metadata.nonsig, metadata.sig)
-
-# Use escalc to compute effect sizes
-metadata <- escalc(n1i = n1, n2i = n2, m1i = m1, m2i = m2, sd1i = sd1, 
-  sd2i = sd2, measure = "SMD", data = metadata[complete.cases(metadata),])
-# add se for PET-PEESE analysis
+metadata <- rbind(sim_sig(n_sig), sim_nonsig(n_nonsig))
+metadata <- escalc(n1i = n1, n2i = n2, m1i = m1, m2i = m2, sd1i = sd1,
+                   sd2i = sd2, measure = "SMD", data = metadata)
 metadata$sei <- sqrt(metadata$vi)
 
-#Perform meta-analysis
 result <- metafor::rma(yi, vi, data = metadata)
 result
 
@@ -245,70 +257,60 @@ We can now compare the unbiased meta-analysis above with a biased meta-analysis.
 
 ```{r metasim2, echo = FALSE}
 set.seed(5)
-nsims <- 100 # number of simulated experiments
-pub.bias <- 0.96 # set percentage of significant results in the literature
+nsims    <- 100
+pub.bias <- 0.96
 
-m1 <- 0 # too large effects will make non-significant results extremely rare
-sd1 <- 1
-m2 <- 0
-sd2 <- 1
-metadata.sig <- data.frame(m1 = NA, m2 = NA, sd1 = NA, sd2 = NA, 
-                           n1 = NA, n2 = NA, pvalues = NA, pcurve = NA)
-metadata.nonsig <- data.frame(m1 = NA, m2 = NA, sd1 = NA, sd2 = NA, 
-                              n1 = NA, n2 = NA, pvalues = NA, pcurve = NA)
+m1 <- 0; sd1 <- 1
+m2 <- 0; sd2 <- 1
 
-# simulate significant effects in the expected direction
-if(pub.bias > 0){
-for (i in 1:nsims*pub.bias) { # for each simulated experiment
-  p <- 1 # reset p to 1
-  n <- round(truncnorm::rtruncnorm(1, 20, 1000, 100, 100)) # n based on truncated normal
-  while (p > 0.025) { # continue simulating as along as p is not significant
-    x <- rnorm(n = n, mean = m1, sd = sd1) 
-    y <- rnorm(n = n, mean = m2, sd = sd2) 
-    p <- t.test(x, y, alternative = "greater", var.equal = TRUE)$p.value
+n_sig    <- round(nsims * pub.bias)
+n_nonsig <- nsims - n_sig
+
+make_meta_df <- function(n) {
+  data.frame(m1 = numeric(n), m2 = numeric(n), sd1 = numeric(n), sd2 = numeric(n),
+             n1 = integer(n), n2 = integer(n), pvalues = numeric(n),
+             pcurve = character(n), stringsAsFactors = FALSE)
+}
+
+sim_sig <- function(n_sig) {
+  if (n_sig == 0) return(make_meta_df(0))
+  out <- make_meta_df(n_sig)
+  for (i in seq_len(n_sig)) {
+    n <- round(rtruncnorm(1, a = 20, b = 1000, mean = 100, sd = 100))
+    p <- 1
+    while (p > 0.025) {
+      x <- rnorm(n, mean = m1, sd = sd1); y <- rnorm(n, mean = m2, sd = sd2)
+      p <- t.test(x, y, alternative = "greater", var.equal = TRUE)$p.value
+    }
+    res <- t.test(x, y, var.equal = TRUE)
+    out[i, ] <- list(mean(x), mean(y), sd(x), sd(y), n, n, res$p.value,
+                     paste0("t(", res$parameter, ")=", res$statistic))
   }
-  metadata.sig[i, 1] <- mean(x)
-  metadata.sig[i, 2] <- mean(y)
-  metadata.sig[i, 3] <- sd(x)
-  metadata.sig[i, 4] <- sd(y)
-  metadata.sig[i, 5] <- n
-  metadata.sig[i, 6] <- n
-  out <- t.test(x, y, var.equal = TRUE)
-  metadata.sig[i, 7] <- out$p.value
-  metadata.sig[i, 8] <- paste0("t(", out$parameter, ")=", out$statistic)
-}}
+  out
+}
 
-# simulate non-significant effects (two-sided)
-if(pub.bias < 1){
-for (i in 1:nsims*(1-pub.bias)) { # for each simulated experiment
-  p <- 0 # reset p to 1
-  n <- round(truncnorm::rtruncnorm(1, 20, 1000, 100, 100))
-  while (p < 0.05) { # continue simulating as along as p is significant
-    x <- rnorm(n = n, mean = m1, sd = sd1) # produce simulated participants
-    y <- rnorm(n = n, mean = m2, sd = sd2) # produce simulated participants
-    p <- t.test(x, y, var.equal = TRUE)$p.value
+sim_nonsig <- function(n_nonsig) {
+  if (n_nonsig == 0) return(make_meta_df(0))
+  out <- make_meta_df(n_nonsig)
+  for (i in seq_len(n_nonsig)) {
+    n <- round(rtruncnorm(1, a = 20, b = 1000, mean = 100, sd = 100))
+    p <- 0
+    while (p < 0.05) {
+      x <- rnorm(n, mean = m1, sd = sd1); y <- rnorm(n, mean = m2, sd = sd2)
+      p <- t.test(x, y, var.equal = TRUE)$p.value
+    }
+    res <- t.test(x, y, var.equal = TRUE)
+    out[i, ] <- list(mean(x), mean(y), sd(x), sd(y), n, n, res$p.value,
+                     paste0("t(", res$parameter, ")=", res$statistic))
   }
-  metadata.nonsig[i, 1] <- mean(x)
-  metadata.nonsig[i, 2] <- mean(y)
-  metadata.nonsig[i, 3] <- sd(x)
-  metadata.nonsig[i, 4] <- sd(y)
-  metadata.nonsig[i, 5] <- n
-  metadata.nonsig[i, 6] <- n
-  out <- t.test(x, y, var.equal = TRUE)
-  metadata.nonsig[i, 7] <- out$p.value
-  metadata.nonsig[i, 8] <- paste0("t(", out$parameter, ")=", out$statistic)
-}}
+  out
+}
 
-# Combine significant and non-significant effects
-metadata <- rbind(metadata.nonsig[complete.cases(metadata.nonsig),], metadata.sig[complete.cases(metadata.sig),])
-
-# Use escalc to compute effect sizes
-metadata <- metafor::escalc(n1i = n1, n2i = n2, m1i = m1, m2i = m2, sd1i = sd1, 
-  sd2i = sd2, measure = "SMD", data = metadata)
-# add se for PET-PEESE analysis
+metadata <- rbind(sim_sig(n_sig), sim_nonsig(n_nonsig))
+metadata <- metafor::escalc(n1i = n1, n2i = n2, m1i = m1, m2i = m2, sd1i = sd1,
+                            sd2i = sd2, measure = "SMD", data = metadata)
 metadata$sei <- sqrt(metadata$vi)
 
-#Perform meta-analysis
 result.biased <- metafor::rma(yi, vi, data = metadata)
 result.biased
 
