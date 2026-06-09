@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planning for Accuracy – Correlation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans:ital,wght@0,400;0,600;1,400&family=Fira+Code&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.26.0/plotly.min.js"></script>
+<style>
+:root {
+  --bg:    #fffafa;
+  --bg2:   #f7f7f7;
+  --ink:   #1c1717;
+  --ink2:  #3d3535;
+  --ink3:  #666060;
+  --rule:  #d6dadc;
+  --red:   #a60a0a;
+  --red-l: #c41010;
+  --blue:  #1a6e9a;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px; line-height: 1.65;
+  padding: 20px 20px 8px; overflow: hidden;
+}
+.calc-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink3); margin-bottom: 5px;
+}
+.calc-heading {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600; font-size: 1.1rem;
+  color: var(--ink); margin-bottom: 16px;
+  padding-bottom: 9px; border-bottom: 2px solid var(--red);
+}
+.input-panel {
+  background: var(--bg2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--red);
+  padding: 14px 18px; margin-bottom: 16px;
+}
+.input-row { display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap; }
+.input-group { display: flex; flex-direction: column; gap: 5px; }
+.input-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--ink3);
+}
+.sym {
+  font-style: italic; font-size: .88rem;
+  text-transform: none; letter-spacing: 0;
+  font-weight: 400; color: var(--red);
+}
+input[type="number"] {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px; background: var(--bg);
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--red);
+  padding: 6px 8px; color: var(--ink);
+  outline: none; width: 80px;
+  transition: border-color .2s;
+  -moz-appearance: textfield;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+input[type="number"]:focus { border-bottom-color: var(--red-l); }
+.mode-toggle { display: flex; gap: 0; }
+.mode-btn {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 11px; font-weight: 600;
+  background: var(--bg); color: var(--ink3);
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--rule);
+  padding: 6px 14px; cursor: pointer;
+  letter-spacing: .05em; text-transform: uppercase;
+  transition: all .15s; white-space: nowrap;
+}
+.mode-btn.active {
+  background: var(--red); color: #fff;
+  border-color: var(--red); border-bottom-color: var(--red);
+}
+.mode-btn:first-child { border-radius: 2px 0 0 2px; }
+.mode-btn:last-child  { border-radius: 0 2px 2px 0; }
+.input-disabled { opacity: 0.4; pointer-events: none; }
+.plot-wrap {
+  border: 1px solid var(--rule);
+  background: var(--bg); margin-bottom: 10px;
+}
+#plot { width: 100%; height: 320px; }
+.text-block {
+  font-size: .88rem; line-height: 1.6;
+  padding: 10px 14px;
+  background: var(--bg2);
+  border-left: 3px solid var(--rule);
+  color: var(--ink2);
+}
+.text-block strong { color: var(--ink); }
+.result-highlight {
+  font-family: 'Fira Code', monospace;
+  font-size: 1.05rem; font-weight: 600;
+  color: var(--red);
+}
+</style>
+</head>
+<body>
+
+<p class="calc-label">Interactive simulation</p>
+<h2 class="calc-heading">Planning for Accuracy – Correlation</h2>
+
+<div class="input-panel">
+  <div class="input-row">
+    <div class="input-group">
+      <div class="input-label">Mode</div>
+      <div class="mode-toggle">
+        <button class="mode-btn active" id="modeN">n → accuracy</button>
+        <button class="mode-btn" id="modeW">accuracy → n</button>
+      </div>
+    </div>
+    <div class="input-group" id="grpN">
+      <label class="input-label" for="nIn">Sample size <span class="sym">n</span></label>
+      <input type="number" id="nIn" min="4" max="100000" step="1" value="50">
+    </div>
+    <div class="input-group input-disabled" id="grpW">
+      <label class="input-label" for="wIn">Desired CI width</label>
+      <input type="number" id="wIn" min="0.01" max="1.99" step="0.05" value="0.2">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="rIn">Expected <span class="sym">r</span></label>
+      <input type="number" id="rIn" min="-0.999" max="0.999" step="0.05" value="0.3">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="confIn">Conf. level</label>
+      <input type="number" id="confIn" min="0.50" max="0.9999" step="0.01" value="0.95">
+    </div>
+  </div>
+</div>
+
+<div class="plot-wrap"><div id="plot"></div></div>
+<div id="statsBlock" class="text-block">Updating…</div>
+
+<script>
+var FONT = { family: "'Open Sans', sans-serif", color: '#1c1717', size: 12 };
+var AXIS = { zeroline: false, gridcolor: '#ede8e8', linecolor: '#d6dadc' };
+var RED  = '#a60a0a';
+var BLUE = '#1a6e9a';
+var GRAY = '#909090';
+
+var _phT = null;
+function postHeight() {
+  clearTimeout(_phT);
+  _phT = setTimeout(function() {
+    document.body.style.height = 'auto';
+    window.parent.postMessage({ iframeHeight: document.body.offsetHeight }, '*');
+  }, 150);
+}
+
+// Fisher z transform
+function fisherZ(r)    { return 0.5 * Math.log((1 + r) / (1 - r)); }
+function fisherZInv(z) { var e = Math.exp(2 * z); return (e - 1) / (e + 1); }
+
+// Pearson CI via Fisher z (matches presize prec_cor: method="pearson", b=3, c=1)
+function corCI(r, n, alpha) {
+  var z    = fisherZ(r);
+  var se_z = 1 / Math.sqrt(n - 3);
+  var za   = jStat.normal.inv(1 - alpha / 2, 0, 1);
+  return { lo: fisherZInv(z - za * se_z), hi: fisherZInv(z + za * se_z) };
+}
+
+function ciWidth(r, n, alpha) {
+  var ci = corCI(r, n, alpha); return ci.hi - ci.lo;
+}
+
+function nForWidth(r, targetW, alpha) {
+  for (var n = 4; n <= 1000000; n++) {
+    if (ciWidth(r, n, alpha) <= targetW) return n;
+  }
+  return 1000000;
+}
+
+// Approximate sampling density of r via Fisher z change-of-variables:
+//   f(r_obs) = phi_{mu=z_true, sd=se_z}(arctanh(r_obs)) / (1 - r_obs^2)
+function sampDensity(r_obs, z_true, se_z) {
+  if (Math.abs(r_obs) >= 0.9999) return 0;
+  var z_obs = fisherZ(r_obs);
+  var u = (z_obs - z_true) / se_z;
+  var phi = Math.exp(-0.5 * u * u) / (se_z * Math.sqrt(2 * Math.PI));
+  return phi / (1 - r_obs * r_obs);
+}
+
+var _mode = 'n';
+
+function update() {
+  var r    = Math.max(-0.999, Math.min(0.999, parseFloat(document.getElementById('rIn').value) || 0.3));
+  var conf = Math.min(0.9999, Math.max(0.5, parseFloat(document.getElementById('confIn').value) || 0.95));
+  var alpha = 1 - conf;
+
+  var n, targetW;
+  if (_mode === 'n') {
+    n = Math.max(4, Math.round(parseFloat(document.getElementById('nIn').value) || 50));
+  } else {
+    targetW = Math.max(0.01, parseFloat(document.getElementById('wIn').value) || 0.2);
+    n = nForWidth(r, targetW, alpha);
+  }
+
+  var ci     = corCI(r, n, alpha);
+  var width  = ci.hi - ci.lo;
+  var halfLo = r - ci.lo;
+  var halfHi = ci.hi - r;
+  var se_z   = 1 / Math.sqrt(n - 3);
+  var z_true = fisherZ(r);
+
+  // x-axis: span ±4.5 se_z in z-space, transformed back to r-space
+  var xLo = Math.max(-0.999, fisherZInv(z_true - 4.5 * se_z));
+  var xHi = Math.min(0.999,  fisherZInv(z_true + 4.5 * se_z));
+
+  // Full curve
+  var nPts = 400;
+  var curveX = [], curveY = [];
+  for (var i = 0; i <= nPts; i++) {
+    var x = xLo + (xHi - xLo) * i / nPts;
+    curveX.push(x);
+    curveY.push(sampDensity(x, z_true, se_z));
+  }
+
+  // CI shaded region: points from ci.lo to ci.hi, bounded by y=0
+  var ciX = [ci.lo], ciYfill = [0];
+  for (var i = 0; i <= nPts; i++) {
+    var x = xLo + (xHi - xLo) * i / nPts;
+    if (x >= ci.lo && x <= ci.hi) { ciX.push(x); ciYfill.push(sampDensity(x, z_true, se_z)); }
+  }
+  ciX.push(ci.hi); ciYfill.push(0);
+
+  var yMax = Math.max.apply(null, curveY) * 1.28;
+  var ciBarY = yMax * 0.88;
+
+  var traces = [
+    // CI shaded fill
+    {
+      x: ciX, y: ciYfill, type: 'scatter', mode: 'lines',
+      fill: 'tozeroy', fillcolor: 'rgba(166,10,10,0.13)',
+      line: { color: 'transparent', width: 0 },
+      hoverinfo: 'skip', showlegend: false
+    },
+    // sampling distribution curve
+    {
+      x: curveX, y: curveY, type: 'scatter', mode: 'lines',
+      line: { color: RED, width: 2 },
+      hoverinfo: 'skip', showlegend: false
+    },
+    // CI bar
+    { x: [ci.lo, ci.hi], y: [ciBarY, ciBarY], type: 'scatter', mode: 'lines',
+      line: { color: RED, width: 3 }, hoverinfo: 'skip', showlegend: false },
+    // CI ticks
+    { x: [ci.lo, ci.lo], y: [ciBarY - yMax*0.03, ciBarY + yMax*0.03], type: 'scatter', mode: 'lines',
+      line: { color: RED, width: 2 }, hoverinfo: 'skip', showlegend: false },
+    { x: [ci.hi, ci.hi], y: [ciBarY - yMax*0.03, ciBarY + yMax*0.03], type: 'scatter', mode: 'lines',
+      line: { color: RED, width: 2 }, hoverinfo: 'skip', showlegend: false },
+    // r dot on CI bar
+    { x: [r], y: [ciBarY], type: 'scatter', mode: 'markers',
+      marker: { color: RED, size: 7 }, hoverinfo: 'skip', showlegend: false }
+  ];
+
+  var layout = {
+    xaxis: Object.assign({
+      title: { text: 'Pearson <i>r</i>', font: { size: 12 } },
+      range: [xLo, xHi], dtick: 0.1
+    }, AXIS),
+    yaxis: Object.assign({
+      title: { text: 'Density', font: { size: 12 } },
+      range: [0, yMax], showticklabels: false
+    }, AXIS),
+    annotations: [
+      {
+        x: r, y: ciBarY + yMax * 0.06,
+        text: (conf*100).toFixed(0) + '% CI: [' + ci.lo.toFixed(3) + ', ' + ci.hi.toFixed(3) + ']',
+        showarrow: false, xanchor: 'center', yanchor: 'bottom',
+        font: { size: 11, color: RED, family: "'Fira Code', monospace" }
+      },
+      {
+        x: r + (xHi - r) * 0.15, y: sampDensity(r, z_true, se_z) * 0.52,
+        text: 'Sampling dist. of <i>r</i><br>SE<sub>z</sub> = ' + se_z.toFixed(3),
+        showarrow: false, xanchor: 'left',
+        font: { size: 10, color: RED }
+      }
+    ],
+    shapes: [
+      // vertical dotted line at true r
+      {
+        type: 'line', x0: r, x1: r, y0: 0, y1: ciBarY * 0.9,
+        xref: 'x', yref: 'y',
+        line: { color: RED, width: 1.5, dash: 'dot' }
+      }
+    ],
+    plot_bgcolor:  '#fffafa',
+    paper_bgcolor: '#fffafa',
+    font: FONT,
+    margin: { l: 40, r: 20, t: 20, b: 45 },
+    showlegend: false
+  };
+
+  Plotly.react('plot', traces, layout, { responsive: true, displayModeBar: false });
+
+  // Stats block
+  document.getElementById('statsBlock').innerHTML =
+    'With <strong>n = ' + n + '</strong> and <em>r</em> = ' + r.toFixed(2)
+    + ' (' + (conf*100).toFixed(0) + '% CI, Fisher <em>z</em> method):'
+    + '<br>CI = [<strong>' + ci.lo.toFixed(3) + '</strong>, <strong>' + ci.hi.toFixed(3) + '</strong>]'
+    + ' &nbsp;|&nbsp; Full width = <span class="result-highlight">' + width.toFixed(3) + '</span>'
+    + ' &nbsp;|&nbsp; Lower half = ' + halfLo.toFixed(3) + ', upper half = ' + halfHi.toFixed(3)
+    + '<br><br>'
+    + 'With a sample of <strong>n = ' + n + '</strong>, a correlation of <em>r</em> = <strong>' + r.toFixed(2) + '</strong> '
+    + 'is estimated with a ' + (conf*100).toFixed(0) + '% confidence interval ranging from '
+    + '<strong>' + ci.lo.toFixed(3) + '</strong> to <strong>' + ci.hi.toFixed(3) + '</strong>, '
+    + 'a total width of <strong>' + width.toFixed(3) + '</strong>. '
+    + 'The CI is asymmetric around <em>r</em> (extending <strong>' + halfLo.toFixed(3) + '</strong> below and <strong>' + halfHi.toFixed(3) + '</strong> above), '
+    + 'which is typical when back-transforming the symmetric Fisher <em>z</em> interval into <em>r</em>-space.'
+    + '<br><br>'
+    + '<span style="font-size:.82rem;color:var(--ink3);">'
+    + 'Red curve = sampling distribution of <em>r</em> (via Fisher <em>z</em> transform, SE<sub>z</sub> = ' + se_z.toFixed(3) + ')'
+    + ' &nbsp;&bull;&nbsp; Shaded region = ' + (conf*100).toFixed(0) + '% CI'
+    + ' &nbsp;&bull;&nbsp; Red bar = CI width &nbsp;&bull;&nbsp; Dotted line = true <em>r</em>'
+    + ' &nbsp;&bull;&nbsp; Curve narrows as <em>n</em> increases'
+    + '</span>';
+
+  postHeight();
+}
+
+document.getElementById('modeN').addEventListener('click', function() {
+  _mode = 'n';
+  document.getElementById('modeN').classList.add('active');
+  document.getElementById('modeW').classList.remove('active');
+  document.getElementById('grpN').classList.remove('input-disabled');
+  document.getElementById('grpW').classList.add('input-disabled');
+  update();
+});
+document.getElementById('modeW').addEventListener('click', function() {
+  _mode = 'w';
+  document.getElementById('modeW').classList.add('active');
+  document.getElementById('modeN').classList.remove('active');
+  document.getElementById('grpW').classList.remove('input-disabled');
+  document.getElementById('grpN').classList.add('input-disabled');
+  update();
+});
+
+['nIn','wIn','rIn','confIn'].forEach(function(id) {
+  document.getElementById(id).addEventListener('input', update);
+});
+
+window.addEventListener('resize', postHeight);
+window.addEventListener('load', function() { setTimeout(update, 100); });
+if (typeof ResizeObserver !== 'undefined') {
+  new ResizeObserver(postHeight).observe(document.body);
+}
+</script>
+</body>
+</html>

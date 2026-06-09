@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CI and Sample Size</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans:ital,wght@0,400;0,600;1,400&family=Fira+Code&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.26.0/plotly.min.js"></script>
+<style>
+:root {
+  --bg:    #fffafa;
+  --bg2:   #f7f7f7;
+  --ink:   #1c1717;
+  --ink2:  #3d3535;
+  --ink3:  #666060;
+  --rule:  #d6dadc;
+  --red:   #a60a0a;
+  --red-l: #c41010;
+  --blue:  #1a6e9a;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px; line-height: 1.65;
+  padding: 20px 20px 8px; overflow: hidden;
+}
+.calc-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink3); margin-bottom: 5px;
+}
+.calc-heading {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600; font-size: 1.1rem;
+  color: var(--ink); margin-bottom: 16px;
+  padding-bottom: 9px; border-bottom: 2px solid var(--red);
+}
+.input-panel {
+  background: var(--bg2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--red);
+  padding: 14px 18px; margin-bottom: 16px;
+}
+.input-row { display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap; }
+.input-group { display: flex; flex-direction: column; gap: 5px; }
+.input-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--ink3);
+}
+.sym {
+  font-style: italic; font-size: .88rem;
+  text-transform: none; letter-spacing: 0;
+  font-weight: 400; color: var(--red);
+}
+input[type="number"] {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px; background: var(--bg);
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--red);
+  padding: 6px 8px; color: var(--ink);
+  outline: none; width: 90px;
+  transition: border-color .2s;
+  -moz-appearance: textfield;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+input[type="number"]:focus { border-bottom-color: var(--red-l); }
+.btn {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 11px; font-weight: 600;
+  background: var(--red); color: #fff;
+  border: none; padding: 8px 16px;
+  cursor: pointer; letter-spacing: .06em;
+  text-transform: uppercase;
+  transition: background .15s;
+  white-space: nowrap;
+}
+.btn:hover { background: var(--red-l); }
+.btn:disabled { background: #aaa; cursor: default; }
+.btn-secondary {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 11px; font-weight: 600;
+  background: var(--bg); color: var(--ink3);
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--rule);
+  padding: 8px 16px;
+  cursor: pointer; letter-spacing: .06em;
+  text-transform: uppercase;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.btn-secondary:hover { border-bottom-color: var(--red); color: var(--ink); }
+.toggle-btn {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 11px; font-weight: 600;
+  background: var(--bg); color: var(--ink3);
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--rule);
+  padding: 8px 16px;
+  cursor: pointer; letter-spacing: .06em;
+  text-transform: uppercase;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.toggle-btn.active {
+  background: #1a6e9a; color: #fff;
+  border-color: #1a6e9a; border-bottom-color: #1a6e9a;
+}
+.toggle-btn:hover:not(.active) { border-bottom-color: #1a6e9a; color: var(--ink); }
+.plot-wrap {
+  border: 1px solid var(--rule);
+  background: var(--bg); margin-bottom: 10px;
+}
+#plot { width: 100%; height: 360px; }
+.text-block {
+  font-size: .88rem; line-height: 1.6;
+  padding: 10px 14px;
+  background: var(--bg2);
+  border-left: 3px solid var(--rule);
+  color: var(--ink2);
+}
+.text-block strong { color: var(--ink); }
+.result-highlight {
+  font-weight: 600;
+  color: var(--red);
+}
+.loop-highlight {
+  font-weight: 600;
+  color: var(--red);
+}
+</style>
+</head>
+<body>
+
+<p class="calc-label">Interactive simulation</p>
+<h2 class="calc-heading">Confidence Interval Width as Sample Size Increases</h2>
+
+<div class="input-panel">
+  <div class="input-row">
+    <div class="input-group">
+      <label class="input-label" for="meanIn">True mean <span class="sym">&#956;</span></label>
+      <input type="number" id="meanIn" step="0.1" value="1">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="sdIn">True SD <span class="sym">&#963;</span></label>
+      <input type="number" id="sdIn" min="0.01" step="0.1" value="1">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="nIn">Max n</label>
+      <input type="number" id="nIn" min="10" max="2000" step="10" value="500">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="speedIn">Speed (ms/pt)</label>
+      <input type="number" id="speedIn" min="1" max="500" step="5" value="20">
+    </div>
+    <div class="input-group">
+      <div class="input-label">&nbsp;</div>
+      <button class="btn" id="runBtn">Pause</button>
+    </div>
+    <div class="input-group">
+      <div class="input-label">&nbsp;</div>
+      <button class="btn-secondary" id="resetBtn">Reset</button>
+    </div>
+    <div class="input-group">
+      <div class="input-label">Loop</div>
+      <button class="toggle-btn active" id="loopBtn">On</button>
+    </div>
+  </div>
+</div>
+
+<div class="plot-wrap"><div id="plot"></div></div>
+<div id="statsBlock" class="text-block">Starting simulation…</div>
+
+<script>
+var FONT = { family: "'Open Sans', sans-serif", color: '#1c1717', size: 12 };
+var AXIS = { zeroline: false, gridcolor: '#ede8e8', linecolor: '#d6dadc' };
+var RED        = '#a60a0a';
+var GREEN      = '#2e7d32';
+var GREEN_FADE = 'rgba(46,125,50,0.18)';
+var RED_FADE   = 'rgba(166,10,10,0.18)';
+
+var _phTimer = null;
+function postHeight() {
+  clearTimeout(_phTimer);
+  _phTimer = setTimeout(function() {
+    var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+    window.parent.postMessage({ iframeHeight: h }, '*');
+  }, 150);
+}
+
+function makePRNG(seed) {
+  var s = seed >>> 0;
+  return function() {
+    s += 0x6D2B79F5;
+    var t = Math.imul(s ^ (s >>> 15), 1 | s);
+    t ^= t + Math.imul(t ^ (t >>> 7), 61 | t);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function randNorm(mu, sigma, rng) {
+  var u;
+  do { u = rng(); } while (u === 0);
+  var v = rng();
+  return mu + sigma * Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+}
+
+function computeMean(data) {
+  var s = 0;
+  for (var i = 0; i < data.length; i++) s += data[i];
+  return s / data.length;
+}
+
+var _animTimer = null;
+var _running   = false;
+var _looping   = true;   // loop on by default
+
+// per-run state
+var simData = [];
+var pts = { n: [], mean: [], ciU: [], ciL: [], color: [] };
+
+// loop-level accumulators: count of runs where the n/2 point was inside/outside
+var loopCount    = 0;
+var loopInside   = 0;
+
+var zCrit = 1.959964;
+var rng;
+
+function getParams() {
+  var mu   = parseFloat(document.getElementById('meanIn').value);
+  var sd   = Math.max(0.01, parseFloat(document.getElementById('sdIn').value) || 1);
+  var nMax = Math.max(10, Math.min(2000, parseInt(document.getElementById('nIn').value, 10) || 500));
+  var spd  = Math.max(1,  Math.min(500,  parseInt(document.getElementById('speedIn').value, 10) || 20));
+  if (isNaN(mu)) mu = 1;
+  return { mu: mu, sd: sd, nMax: nMax, spd: spd };
+}
+
+function getMidN(nMax) {
+  return Math.round(nMax / 2);
+}
+
+function initPlot(mu, sd, nMax) {
+  var yPad = sd * 0.5;
+  Plotly.newPlot('plot', buildTraces([], [], [], [], []),
+    buildLayout(mu, sd, nMax, mu - yPad, mu + yPad),
+    { responsive: true, displayModeBar: false });
+}
+
+function buildLayout(mu, sd, nMax, yLo, yHi) {
+  var midN = getMidN(nMax);
+  return {
+    xaxis: Object.assign({
+      title: { text: 'Sample Size', font: { size: 13 } },
+      range: [1, nMax], tickfont: { size: 11 }
+    }, AXIS),
+    yaxis: Object.assign({
+      title: { text: 'Observed Mean', font: { size: 13 } },
+      range: [yLo, yHi], tickfont: { size: 11 }
+    }, AXIS),
+    plot_bgcolor:  '#fffafa',
+    paper_bgcolor: '#fffafa',
+    font: FONT,
+    margin: { l: 60, r: 20, t: 30, b: 55 },
+    showlegend: false,
+    shapes: [
+      // true mean dashed line
+      { type: 'line', x0: 1, x1: nMax, y0: mu, y1: mu,
+        xref: 'x', yref: 'y',
+        line: { color: '#c0c0c0', width: 1.5, dash: 'dash' } },
+      // vertical marker at n/2
+      { type: 'line', x0: midN, x1: midN, y0: 0, y1: 1,
+        xref: 'x', yref: 'paper',
+        line: { color: 'rgba(26,110,154,0.35)', width: 1.5, dash: 'dot' } }
+    ],
+    annotations: [
+      { x: midN, xref: 'x', y: 1, yref: 'paper',
+        text: 'n = ' + midN, showarrow: false,
+        xanchor: 'center', yanchor: 'bottom',
+        font: { size: 10, color: '#1a6e9a', family: "'Open Sans', sans-serif" } }
+    ]
+  };
+}
+
+function buildTraces(ns, means, ciUs, ciLs, colors) {
+  var len = ns.length;
+  var histIn_n=[], histIn_m=[];
+  var histOut_n=[], histOut_m=[];
+  var curN=null, curM=null, curColor=null;
+
+  for (var i = 0; i < len; i++) {
+    if (i === len - 1) {
+      curN = ns[i]; curM = means[i]; curColor = colors[i];
+    } else {
+      if (colors[i] === 'inside') { histIn_n.push(ns[i]); histIn_m.push(means[i]); }
+      else                        { histOut_n.push(ns[i]); histOut_m.push(means[i]); }
+    }
+  }
+
+  var traces = [];
+  traces.push({ x: ns, y: ciUs, type: 'scatter', mode: 'lines',
+    line: { color: 'rgba(120,120,120,0.7)', width: 2 },
+    hoverinfo: 'skip', showlegend: false });
+  traces.push({ x: ns, y: ciLs, type: 'scatter', mode: 'lines',
+    line: { color: 'rgba(120,120,120,0.7)', width: 2 },
+    hoverinfo: 'skip', showlegend: false });
+  traces.push({ x: histIn_n, y: histIn_m, type: 'scatter', mode: 'markers',
+    marker: { color: GREEN_FADE, size: 6, line: { color: 'rgba(46,125,50,0.3)', width: 1 } },
+    hoverinfo: 'skip', showlegend: false });
+  traces.push({ x: histOut_n, y: histOut_m, type: 'scatter', mode: 'markers',
+    marker: { color: RED_FADE, size: 6, line: { color: 'rgba(166,10,10,0.3)', width: 1 } },
+    hoverinfo: 'skip', showlegend: false });
+
+  if (curN !== null) {
+    traces.push({ x: [curN], y: [curM], type: 'scatter', mode: 'markers',
+      marker: { color: curColor === 'inside' ? GREEN : RED, size: 9,
+                line: { color: '#fff', width: 1.5 } },
+      hoverinfo: 'skip', showlegend: false });
+  }
+  return traces;
+}
+
+function yRange(means, ciUs, ciLs, mu, sd) {
+  var vals = means.concat(ciUs, ciLs, [mu]);
+  var lo = Math.min.apply(null, vals);
+  var hi = Math.max.apply(null, vals);
+  var pad = Math.max((hi - lo) * 0.15, sd * 0.1);
+  return [lo - pad, hi + pad];
+}
+
+function resetRun() {
+  simData = [];
+  pts = { n: [], mean: [], ciU: [], ciL: [], color: [] };
+  rng = makePRNG(Math.floor(Math.random() * 2147483647));
+}
+
+function stopAnim() {
+  _running = false;
+  if (_animTimer) { clearTimeout(_animTimer); _animTimer = null; }
+}
+
+function updateStatsBlock(n, m, ciL, ciU, midN) {
+  var nOut = pts.color.filter(function(c) { return c === 'outside'; }).length;
+  var pct  = pts.n.length > 0 ? (nOut / pts.n.length * 100).toFixed(1) : '0.0';
+
+  var loopStr = '';
+  if (loopCount > 0) {
+    var loopPct = (loopInside / loopCount * 100).toFixed(1);
+    loopStr = ' &nbsp;|&nbsp; At n&nbsp;=&nbsp;' + midN + ': <span class="loop-highlight">'
+      + loopInside + ' / ' + loopCount + ' runs (' + loopPct + '%)</span> inside CI';
+  }
+
+  document.getElementById('statsBlock').innerHTML =
+    '<strong>n = ' + n + '</strong> &nbsp;|&nbsp; '
+    + 'Observed mean = <span class="result-highlight">' + m.toFixed(3) + '</span> &nbsp;|&nbsp; '
+    + '95% CI: [' + ciL.toFixed(3) + ', ' + ciU.toFixed(3) + '] &nbsp;|&nbsp; '
+    + 'Points outside CI: <strong>' + nOut + ' / ' + pts.n.length + ' (' + pct + '%)</strong>'
+    + loopStr;
+}
+
+function step(p) {
+  if (!_running) return;
+
+  simData.push(randNorm(p.mu, p.sd, rng));
+  var n = simData.length + 1;  // starts at n=2
+
+  var m    = computeMean(simData);
+  var ciU  = p.mu + zCrit * (p.sd / Math.sqrt(n));
+  var ciL  = p.mu - zCrit * (p.sd / Math.sqrt(n));
+  var inside = (m >= ciL && m <= ciU);
+
+  pts.n.push(n);
+  pts.mean.push(m);
+  pts.ciU.push(ciU);
+  pts.ciL.push(ciL);
+  pts.color.push(inside ? 'inside' : 'outside');
+
+  // record loop stat at n = nMax/2
+  var midN = getMidN(p.nMax);
+  if (n === midN) {
+    loopCount++;
+    if (inside) loopInside++;
+  }
+
+  var yr     = yRange(pts.mean, pts.ciU, pts.ciL, p.mu, p.sd);
+  var layout = buildLayout(p.mu, p.sd, p.nMax, yr[0], yr[1]);
+  var traces = buildTraces(pts.n, pts.mean, pts.ciU, pts.ciL, pts.color);
+  Plotly.react('plot', traces, layout, { responsive: true, displayModeBar: false });
+
+  updateStatsBlock(n, m, ciL, ciU, midN);
+
+  if (n >= p.nMax) {
+    if (_looping) {
+      // start a new run immediately (no pause)
+      resetRun();
+      _animTimer = setTimeout(function() { step(getParams()); }, p.spd);
+    } else {
+      stopAnim();
+      document.getElementById('runBtn').textContent = 'Run';
+      document.getElementById('runBtn').disabled = true;
+      postHeight();
+    }
+    return;
+  }
+
+  _animTimer = setTimeout(function() { step(p); }, p.spd);
+}
+
+function startAnim() {
+  if (!_running) {
+    _running = true;
+    document.getElementById('runBtn').textContent = 'Pause';
+    document.getElementById('runBtn').disabled = false;
+    step(getParams());
+  } else {
+    stopAnim();
+    document.getElementById('runBtn').textContent = 'Resume';
+  }
+}
+
+function doFullReset() {
+  stopAnim();
+  loopCount  = 0;
+  loopInside = 0;
+  var p = getParams();
+  resetRun();
+  initPlot(p.mu, p.sd, p.nMax);
+  document.getElementById('statsBlock').innerHTML =
+    'Click <strong>Run</strong> to start the simulation.';
+  document.getElementById('runBtn').textContent = 'Run';
+  document.getElementById('runBtn').disabled = false;
+}
+
+document.getElementById('runBtn').addEventListener('click', function() {
+  var p = getParams();
+  if (pts.n.length === 0 && !_running) {
+    resetRun();
+    initPlot(p.mu, p.sd, p.nMax);
+  }
+  startAnim();
+});
+
+document.getElementById('resetBtn').addEventListener('click', doFullReset);
+
+document.getElementById('loopBtn').addEventListener('click', function() {
+  _looping = !_looping;
+  this.textContent = _looping ? 'On' : 'Off';
+  this.classList.toggle('active', _looping);
+  // if we just turned loop back on and the animation had stopped at end of run, restart
+  if (_looping && !_running) {
+    var runBtn = document.getElementById('runBtn');
+    if (runBtn.disabled) {
+      runBtn.disabled = false;
+      resetRun();
+      startAnim();
+    }
+  }
+});
+
+window.addEventListener('resize', postHeight);
+window.addEventListener('load', function() {
+  var p = getParams();
+  resetRun();
+  initPlot(p.mu, p.sd, p.nMax);
+  // auto-start
+  setTimeout(function() { startAnim(); }, 200);
+  postHeight();
+});
+if (typeof ResizeObserver !== 'undefined') {
+  new ResizeObserver(postHeight).observe(document.body);
+}
+</script>
+</body>
+</html>

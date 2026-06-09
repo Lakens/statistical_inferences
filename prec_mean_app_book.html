@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planning for Accuracy – Mean</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans:ital,wght@0,400;0,600;1,400&family=Fira+Code&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.26.0/plotly.min.js"></script>
+<style>
+:root {
+  --bg:    #fffafa;
+  --bg2:   #f7f7f7;
+  --ink:   #1c1717;
+  --ink2:  #3d3535;
+  --ink3:  #666060;
+  --rule:  #d6dadc;
+  --red:   #a60a0a;
+  --red-l: #c41010;
+  --blue:  #1a6e9a;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px; line-height: 1.65;
+  padding: 20px 20px 8px; overflow: hidden;
+}
+.calc-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink3); margin-bottom: 5px;
+}
+.calc-heading {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600; font-size: 1.1rem;
+  color: var(--ink); margin-bottom: 16px;
+  padding-bottom: 9px; border-bottom: 2px solid var(--red);
+}
+.input-panel {
+  background: var(--bg2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--red);
+  padding: 14px 18px; margin-bottom: 16px;
+}
+.input-row { display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap; }
+.input-group { display: flex; flex-direction: column; gap: 5px; }
+.input-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--ink3);
+}
+.sym {
+  font-style: italic; font-size: .88rem;
+  text-transform: none; letter-spacing: 0;
+  font-weight: 400; color: var(--red);
+}
+input[type="number"] {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px; background: var(--bg);
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--red);
+  padding: 6px 8px; color: var(--ink);
+  outline: none; width: 80px;
+  transition: border-color .2s;
+  -moz-appearance: textfield;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+input[type="number"]:focus { border-bottom-color: var(--red-l); }
+.mode-toggle {
+  display: flex; gap: 0; margin-bottom: 0;
+}
+.mode-btn {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 11px; font-weight: 600;
+  background: var(--bg); color: var(--ink3);
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--rule);
+  padding: 6px 14px; cursor: pointer;
+  letter-spacing: .05em; text-transform: uppercase;
+  transition: all .15s; white-space: nowrap;
+}
+.mode-btn.active {
+  background: var(--red); color: #fff;
+  border-color: var(--red); border-bottom-color: var(--red);
+}
+.mode-btn:first-child { border-radius: 2px 0 0 2px; }
+.mode-btn:last-child  { border-radius: 0 2px 2px 0; }
+.input-disabled { opacity: 0.4; pointer-events: none; }
+.plot-wrap {
+  border: 1px solid var(--rule);
+  background: var(--bg); margin-bottom: 10px;
+}
+#plot { width: 100%; height: 300px; }
+.text-block {
+  font-size: .88rem; line-height: 1.6;
+  padding: 10px 14px;
+  background: var(--bg2);
+  border-left: 3px solid var(--rule);
+  color: var(--ink2);
+}
+.text-block strong { color: var(--ink); }
+.result-highlight {
+  font-family: 'Fira Code', monospace;
+  font-size: 1.05rem; font-weight: 600;
+  color: var(--red);
+}
+</style>
+</head>
+<body>
+
+<p class="calc-label">Interactive simulation</p>
+<h2 class="calc-heading">Planning for Accuracy – Mean</h2>
+
+<div class="input-panel">
+  <div class="input-row">
+    <div class="input-group">
+      <div class="input-label">Mode</div>
+      <div class="mode-toggle">
+        <button class="mode-btn active" id="modeN">n → accuracy</button>
+        <button class="mode-btn" id="modeW">accuracy → n</button>
+      </div>
+    </div>
+    <div class="input-group" id="grpN">
+      <label class="input-label" for="nIn">Sample size <span class="sym">n</span></label>
+      <input type="number" id="nIn" min="2" max="100000" step="1" value="50">
+    </div>
+    <div class="input-group input-disabled" id="grpW">
+      <label class="input-label" for="wIn">Desired half-width</label>
+      <input type="number" id="wIn" min="0.01" step="0.1" value="2">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="muIn">Mean <span class="sym">&#956;</span></label>
+      <input type="number" id="muIn" step="1" value="100">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="sdIn">SD <span class="sym">&#963;</span></label>
+      <input type="number" id="sdIn" min="0.01" step="1" value="15">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="confIn">Conf. level</label>
+      <input type="number" id="confIn" min="0.50" max="0.9999" step="0.01" value="0.95">
+    </div>
+  </div>
+</div>
+
+<div class="plot-wrap"><div id="plot"></div></div>
+<div id="statsBlock" class="text-block">Updating…</div>
+
+<script>
+var FONT = { family: "'Open Sans', sans-serif", color: '#1c1717', size: 12 };
+var AXIS = { zeroline: false, gridcolor: '#ede8e8', linecolor: '#d6dadc' };
+var RED  = '#a60a0a';
+var BLUE = '#1a6e9a';
+var GRAY = '#909090';
+
+var _phT = null;
+function postHeight() {
+  clearTimeout(_phT);
+  _phT = setTimeout(function() {
+    document.body.style.height = 'auto';
+    window.parent.postMessage({ iframeHeight: document.body.offsetHeight }, '*');
+  }, 150);
+}
+
+// t critical value
+function tCrit(alpha, df) { return jStat.studentt.inv(1 - alpha / 2, df); }
+
+// half-width given n (exact t-based, matching presize prec_mean)
+function halfWidth(n, sd, alpha) {
+  return tCrit(alpha, n - 1) * sd / Math.sqrt(n);
+}
+
+// n given desired half-width (iterate until hw <= target, matching presize)
+function nForHalfWidth(target, sd, alpha) {
+  for (var n = 2; n <= 1000000; n++) {
+    if (halfWidth(n, sd, alpha) <= target) return n;
+  }
+  return 1000000;
+}
+
+// Normal PDF
+function normPDF(x, mu, sigma) {
+  var z = (x - mu) / sigma;
+  return Math.exp(-0.5 * z * z) / (sigma * Math.sqrt(2 * Math.PI));
+}
+
+var _mode = 'n'; // 'n' or 'w'
+
+function update() {
+  var mu    = parseFloat(document.getElementById('muIn').value)  || 100;
+  var sd    = Math.max(0.01, parseFloat(document.getElementById('sdIn').value)  || 15);
+  var conf  = Math.min(0.9999, Math.max(0.5, parseFloat(document.getElementById('confIn').value) || 0.95));
+  var alpha = 1 - conf;
+
+  var n, hw;
+  if (_mode === 'n') {
+    n  = Math.max(2, Math.round(parseFloat(document.getElementById('nIn').value) || 50));
+    hw = halfWidth(n, sd, alpha);
+  } else {
+    hw = Math.max(0.001, parseFloat(document.getElementById('wIn').value) || 2);
+    n  = nForHalfWidth(hw, sd, alpha);
+    hw = halfWidth(n, sd, alpha); // actual achieved hw
+  }
+
+  var se    = sd / Math.sqrt(n);
+  var tc    = tCrit(alpha, n - 1);
+  var ciLo  = mu - hw;
+  var ciHi  = mu + hw;
+  var fullW = 2 * hw;
+
+  // ── Plot ──────────────────────────────────────────────────────────────────
+  var nPts = 300;
+  // population distribution range: mu ± 3.5*sd
+  var xLo = mu - 3.5 * sd, xHi = mu + 3.5 * sd;
+  var step = (xHi - xLo) / nPts;
+
+  var popX = [], popY = [], sampX = [], sampY = [];
+  for (var i = 0; i <= nPts; i++) {
+    var x = xLo + i * step;
+    popX.push(x);
+    popY.push(normPDF(x, mu, sd));
+    sampX.push(x);
+    sampY.push(normPDF(x, mu, se));
+  }
+
+  // y-axis maximum
+  var yMax = Math.max(normPDF(mu, mu, se) * 1.25, normPDF(mu, mu, sd) * 1.25);
+
+  // CI bar height (near top)
+  var ciY = yMax * 0.88;
+
+  var traces = [
+    // population curve (grey fill)
+    {
+      x: popX, y: popY, type: 'scatter', mode: 'lines',
+      fill: 'tozeroy',
+      fillcolor: 'rgba(180,180,180,0.18)',
+      line: { color: GRAY, width: 1.5 },
+      name: 'Population', hoverinfo: 'skip'
+    },
+    // sampling distribution curve (red fill)
+    {
+      x: sampX, y: sampY, type: 'scatter', mode: 'lines',
+      fill: 'tozeroy',
+      fillcolor: 'rgba(166,10,10,0.12)',
+      line: { color: RED, width: 2 },
+      name: 'Sampling distribution', hoverinfo: 'skip'
+    },
+    // CI bar (horizontal line at ciY)
+    {
+      x: [ciLo, ciHi], y: [ciY, ciY], type: 'scatter', mode: 'lines',
+      line: { color: RED, width: 3 },
+      hoverinfo: 'skip', showlegend: false
+    },
+    // CI endpoints (vertical ticks)
+    {
+      x: [ciLo, ciLo], y: [ciY - yMax*0.03, ciY + yMax*0.03],
+      type: 'scatter', mode: 'lines',
+      line: { color: RED, width: 2 }, hoverinfo: 'skip', showlegend: false
+    },
+    {
+      x: [ciHi, ciHi], y: [ciY - yMax*0.03, ciY + yMax*0.03],
+      type: 'scatter', mode: 'lines',
+      line: { color: RED, width: 2 }, hoverinfo: 'skip', showlegend: false
+    },
+    // mean dot
+    {
+      x: [mu], y: [ciY], type: 'scatter', mode: 'markers',
+      marker: { color: RED, size: 7 },
+      hoverinfo: 'skip', showlegend: false
+    }
+  ];
+
+  var layout = {
+    xaxis: Object.assign({
+      title: { text: 'Value', font: { size: 12 } },
+      range: [xLo, xHi]
+    }, AXIS),
+    yaxis: Object.assign({
+      title: { text: 'Density', font: { size: 12 } },
+      range: [0, yMax],
+      showticklabels: false
+    }, AXIS),
+    annotations: [
+      {
+        x: mu, y: ciY + yMax * 0.06,
+        text: '95% CI: [' + ciLo.toFixed(1) + ', ' + ciHi.toFixed(1) + ']',
+        showarrow: false, xanchor: 'center', yanchor: 'bottom',
+        font: { size: 11, color: RED, family: "'Fira Code', monospace" }
+      },
+      {
+        x: (mu + ciHi) / 2, y: ciY + yMax * 0.015,
+        text: '± ' + hw.toFixed(2),
+        showarrow: false, xanchor: 'center', yanchor: 'bottom',
+        font: { size: 10, color: RED }
+      },
+      {
+        x: xLo + (xHi - xLo) * 0.02, y: normPDF(mu, mu, sd) * 0.55,
+        text: 'Population<br>N(' + mu.toFixed(0) + ', ' + sd.toFixed(0) + ')',
+        showarrow: false, xanchor: 'left',
+        font: { size: 10, color: GRAY }
+      },
+      {
+        x: mu + se * 0.4, y: normPDF(mu, mu, se) * 0.55,
+        text: 'Sampling dist.<br>SE = ' + se.toFixed(2),
+        showarrow: false, xanchor: 'left',
+        font: { size: 10, color: RED }
+      }
+    ],
+    plot_bgcolor:  '#fffafa',
+    paper_bgcolor: '#fffafa',
+    font: FONT,
+    margin: { l: 40, r: 20, t: 20, b: 45 },
+    showlegend: false
+  };
+
+  Plotly.react('plot', traces, layout, { responsive: true, displayModeBar: false });
+
+  // ── Stats block ───────────────────────────────────────────────────────────
+  document.getElementById('statsBlock').innerHTML =
+    'With <strong>n = ' + n + '</strong> observations'
+    + ' (SD = ' + sd.toFixed(1) + ', ' + (conf*100).toFixed(0) + '% CI,'
+    + ' <em>t</em><sub>' + (n-1) + '</sub> = ' + tc.toFixed(3) + '):'
+    + '<br>Half-width (margin of error) = <span class="result-highlight">± ' + hw.toFixed(3) + '</span>'
+    + ' &nbsp;|&nbsp; Full CI width = <strong>' + fullW.toFixed(3) + '</strong>'
+    + '<br><br>'
+    + 'With a sample of <strong>n = ' + n + '</strong>, the mean is estimated with a margin of error of '
+    + '<strong>± ' + hw.toFixed(2) + '</strong>. '
+    + 'This means that if you repeatedly sampled ' + n + ' observations from this population and computed a '
+    + (conf*100).toFixed(0) + '% confidence interval each time, '
+    + (conf*100).toFixed(0) + '% of those intervals would contain the true mean. '
+    + 'For any single sample, the CI would run approximately from '
+    + '<strong>' + ciLo.toFixed(2) + '</strong> to <strong>' + ciHi.toFixed(2) + '</strong> '
+    + '— a range of <strong>' + fullW.toFixed(2) + '</strong> units.'
+    + '<br><br>'
+    + '<span style="font-size:.82rem;color:var(--ink3);">'
+    + 'Grey curve = population distribution N(' + mu.toFixed(0) + ', ' + sd.toFixed(0) + ')'
+    + ' &nbsp;&bull;&nbsp; Red curve = sampling distribution of the mean (SE = ' + se.toFixed(3) + ')'
+    + ' &nbsp;&bull;&nbsp; Red bar = expected ' + (conf*100).toFixed(0) + '% CI width around the mean'
+    + '</span>';
+
+  postHeight();
+}
+
+// Mode toggle
+document.getElementById('modeN').addEventListener('click', function() {
+  _mode = 'n';
+  document.getElementById('modeN').classList.add('active');
+  document.getElementById('modeW').classList.remove('active');
+  document.getElementById('grpN').classList.remove('input-disabled');
+  document.getElementById('grpW').classList.add('input-disabled');
+  update();
+});
+document.getElementById('modeW').addEventListener('click', function() {
+  _mode = 'w';
+  document.getElementById('modeW').classList.add('active');
+  document.getElementById('modeN').classList.remove('active');
+  document.getElementById('grpW').classList.remove('input-disabled');
+  document.getElementById('grpN').classList.add('input-disabled');
+  update();
+});
+
+// Live updates on all inputs
+['nIn','wIn','muIn','sdIn','confIn'].forEach(function(id) {
+  document.getElementById(id).addEventListener('input', update);
+});
+
+window.addEventListener('resize', postHeight);
+window.addEventListener('load', function() { setTimeout(update, 100); });
+if (typeof ResizeObserver !== 'undefined') {
+  new ResizeObserver(postHeight).observe(document.body);
+}
+</script>
+</body>
+</html>

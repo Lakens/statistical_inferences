@@ -18,7 +18,7 @@ When we report point estimates, we should acknowledge and quantify the uncertain
 
 In statistics, we differentiate between the population and the sample. The population is everyone you are interested in, such as all people in the world, elderly who are depressed, or people who buy innovative products. Your sample is everyone you were able to measure from the population you are interested in. We similarly distinguish between a parameter and a statistic. A parameter is a characteristic of the population, while a statistic is a characteristic of a sample. Sometimes, you have data about your entire population. For example, we have measured the height of all the people who have ever walked on the moon. We can calculate the average height of these twelve individuals, and so we know the true parameter. We do not need inferential statistics. However, we do not know the average height of all people who have ever walked on the earth. Therefore, we need to estimate this parameter, using a statistic based on a sample. Although it is rare that a study includes the entire population, it is not impossible, as illustrated in @fig-population. 
 
-```{r}
+```{r, echo=FALSE}
 #| fig-cap: "Example of a registry-based study in which the entire population was included in the study. From https://doi.org/10.1093/ije/dyab066"
 #| label: fig-population
 
@@ -62,46 +62,40 @@ window.addEventListener('message', function(e) {
 An interactive version of this simulation is available in the online edition of this textbook.
 :::
 
-We can now see what is meant by the sentence “Confidence intervals are a statement about the percentage of confidence intervals that contain the true parameter value“. In the long run, for 95% of the samples, the orange dashed line (the population parameter) is contained within the 95% confidence interval around the sample mean, and in 5% of the confidence intervals this is not true. As we will see when we turn to the formula for confidence intervals, the width of a confidence interval depends on the sample size and the standard deviation. The larger the sample size, the smaller the confidence intervals. In @fig-cisamplesize we see how the confidence interval around the mean becomes more narrow as the sample size increases (assuming a standard deviation of 1). If we imagine confidence interval lines around each observed mean with a width equal to the width of the difference between the upper and lower confidence interval around 1, we see that in the long run 95% of the observed means would have a 95% confidence interval that contains the true population parameter (a mean of 1), but that approximately 5% of the means are more extreme and do not have a confidence interval that contains the population parameter of 1. 
+We can now see what is meant by the sentence “Confidence intervals are a statement about the percentage of confidence intervals that contain the true parameter value“. In the long run, for 95% of the samples, the orange dashed line (the population parameter) is contained within the 95% confidence interval around the sample mean, and in 5% of the confidence intervals this is not true. As we will see when we turn to the formula for confidence intervals, the width of a confidence interval depends on the sample size and the standard deviation. The larger the sample size, the smaller the confidence intervals. In the interactive simulation below we see how the confidence interval around the mean becomes more narrow as the sample size increases. Furthermore, as the sample size increases, the estimate gets closer and closer to the true population estimate (a mean of 1 by default in the interactive simulation. At any single sample size (for example N = 250) we see that in the long run 95% of the observed means would have a 95% confidence interval that contains the true population parameter, but that approximately 5% of the means are more extreme and do not have a confidence interval that contains the population parameter of 1. To explore the long run behavior, set the speed to 1 and reduce the max sample size (N) to for example 100.  
 
-```{r}
-#| fig-cap: "The observed mean for 500 samples drawn from a population with a true mean of 1 as the sample size increases to 500 observations. Grey lines indicate the upper and lower 95% confidence interval around the mean."
-#| label: fig-cisamplesize
+::: {.content-visible when-format="html"}
 
-library(ggplot2)
-set.seed(3)
-
-mean_x <- 1
-sd_x <- 1
-n <- 500
-
-df <- data.frame(n = numeric(0), mean = numeric(0), ci_l = numeric(0), ci_u = numeric(0))
-
-
-for (i in 2:n) {
-  
-    x <- rnorm(i, mean = mean_x, sd = sd_x)
-    df[i-1,1] = i
-    df[i-1,2] = mean(x)
-    df[i-1,3] = mean_x + (qnorm(.975) * (sd_x / sqrt(i)))
-    df[i-1,4] = mean_x - (qnorm(.975) * (sd_x / sqrt(i)))
-}
-
-ggplot() +
-  geom_point(data = df, aes(y = mean, x = n), alpha = 0.5) +
-  geom_line(data = df, aes(y = ci_u, x = n), color = "darkgrey", linewidth = 1.5, alpha = 0.8) +
-  geom_line(data = df, aes(y = ci_l, x = n), color = "darkgrey", linewidth = 1.5, alpha = 0.8) +
-  geom_hline(yintercept = 1, linetype="dashed", color = "lightgrey") +
-  xlab("Sample Size") +
-  ylab("Observed Mean") +
-  theme_bw(base_size = 12) + 
-  theme(axis.title = element_text(size = 16), axis.text = element_text(size = 14)) +
-  theme(plot.background = element_rect(fill = "transparent")) + 
-  theme(panel.background = element_rect(fill = "transparent")) + 
-  theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank()) +
-  ggtitle("Confidence Interval and Observed Means as the Sample Size Increases") +
-  theme(plot.title = element_text(hjust = 0.5))
+```{=html}
+<iframe id="ci-samplesize-iframe"
+        src="ci_sample_size_app_book.html"
+        width="100%"
+        height="600"
+        scrolling="no"
+        style="border:none;display:block;margin:1.5rem 0;overflow:hidden;"
+        title="CI Width as Sample Size Increases">
+</iframe>
+<script>
+(function() {
+  var handled = false;
+  window.addEventListener('message', function(e) {
+    if (e.data && typeof e.data.iframeHeight === 'number') {
+      var f = document.getElementById('ci-samplesize-iframe');
+      if (f && e.source === f.contentWindow) {
+        f.style.height = e.data.iframeHeight + 'px';
+        handled = true;
+      }
+    }
+  });
+})();
+</script>
 ```
+
+:::
+
+::: {.content-visible unless-format="html"}
+An interactive version of this simulation is available in the online edition of this textbook.
+:::
 
 
 
@@ -121,7 +115,7 @@ In order to maintain the direct relationship between a confidence interval and a
 
 To maintain a direct relationship between an *F*-test and its confidence interval, a 90% CI for effect sizes from an *F*-test should be provided. The reason for this is explained by [Karl Wuensch](https://web.archive.org/web/20140104080701/http://core.ecu.edu/psyc/wuenschk/docs30/CI-Eta2-Alpha.doc). Where Cohen’s *d* can take both positive and negative values, r² or η² are squared, and can therefore only take positive values. This is related to the fact that *F*-tests (as commonly used in ANOVA) are one-sided. If you calculate a 95% CI, you can get situations where the confidence interval includes 0, but the test reveals a statistical difference with a *p* < .05 (for a more mathematical explanation, see @steiger_test_2004). This means that a 95% CI around Cohen's *d* in an independent *t*-test equals a 90% CI around η² for exactly the same test performed as an ANOVA. As a final detail, because eta-squared cannot be smaller than zero, the lower bound for the confidence interval cannot be smaller than 0. This means that a confidence interval for an effect that is not statistically different from 0 has to start at 0. You report such a CI as 90% CI [.00; .XX] where the XX is the upper limit of the CI.
 
-```{r}
+```{r, echo=FALSE}
 
 set.seed(2238)
 
@@ -147,7 +141,7 @@ result <- metafor::rma(yi, vi, data = metadata, method = "FE")
 
 Confidence intervals are often used in forest plots that communicate the results from a meta-analysis. In the plot below, we see 4 rows. Each row shows the effect size estimate from one study (in Hedges’ *g*). For example, study 1 yielded an effect size estimate of 0.53, with a confidence interval around the effect size from 0.12 to 0.94. The horizontal black line, similarly to the visualization we played around with before, is the width of the confidence interval. When it does not touch the effect size 0 (indicated by a black vertical dotted line) the effect is statistically significant.
 
-```{r}
+```{r, echo=FALSE}
 #| fig-cap: "Meta-analysis of 4 studies."
 
 par(mar=c(5,4,1,1))
@@ -232,7 +226,7 @@ Even though 95% of confidence intervals will contain the true parameter in the l
 
 In @fig-predictioninterval, the orange background illustrates the 95% confidence interval around the mean, and the yellow background illustrates the 95% prediction interval (PI). 
 
-```{r}
+```{r, echo=FALSE}
 #| fig-cap: "A comparison of a 95% confidence interval (orange) and 95% prediction interval (yellow)."
 #| label: fig-predictioninterval
 
@@ -283,7 +277,7 @@ When we rewrite the formula used for the confidence interval to $\sigma\sqrt(1/n
 
 It can be difficult to understand why a 95% confidence interval does not provide us with the interval where 95% of future means will fall. The percentage of means that falls within a single confidence interval is called the **capture percentage**. A capture percentage is not something we would ever use to make inferences about data, but it is useful to learn about capture percentages to prevent misinterpreting confidence intervals. In @fig-metaci we see two randomly simulated studies with the same sample size from the same population. The true effect size in both studies is 0, and we see that the 95% confidence intervals for both studies contain the true population value of 0. However, the two confidence intervals cover quite different ranges of effect sizes, with the confidence interval in Study 1 ranging from -0.07 to 0.48, and the confidence interval in Study 2 ranging from -0.50 to 0.06. It cannot be true that in the future, we should expect 95% of the effect sizes to fall between -0.07 to 0.48 **and** 95% of the effect sizes to fall between -0.50 to 0.06. 
 
-```{r}
+```{r, echo=FALSE}
 #| fig-cap: "Meta-analysis of two simulated studies from the same population."
 #| label: fig-metaci
 
@@ -339,21 +333,21 @@ One easy solution to calculating effect sizes and confidence intervals is [MOTE]
 
 MOTE is also available as an R package [@buchanan_mote_2017]. Although many solutions exists to compute Cohen's *d*, MOTE sets itself apart by allowing researchers to compute effect sizes and confidence intervals for many additional effect sizes, such as (partial) omega squared for between subjects ANOVA ($\omega^{2}$ and $\omega^{2}_p$), generalized omega squared for ANOVA ($\omega^{2}_G$), epsilon squared for ANOVA ($\varepsilon^{2}$) and (partial) generalized eta squared for ANOVA ($\eta^{2}_G$). 
 
-```{r}
+```{r, echo=FALSE}
 MOTE::d_ind_t(m1 = 1.7, m2 = 2.1, sd1 = 1.01, sd2 = 0.96, n1 = 77, n2 = 78, a = .05)$estimate
 ```
 
 
 MBESS is another R package that has a range of options to compute effect sizes and their confidence intervals [@kelley_confidence_2007]. The code below reproduces the example for MOTE above.
 
-```{r}
+```{r, echo=FALSE}
 MBESS::smd(Mean.1 = 1.7, Mean.2 = 2.1, s.1 = 1.01, s.2 = 0.96, n.1 = 77, n.2 = 78)
 ```
 
 
 If you feel comfortable analyzing your data in R, the `effectsize` package offers a complete set of convenient solutions to compute effect sizes and confidence intervals [@ben-shachar_effectsize_2020].
 
-```{r}
+```{r, echo=FALSE}
 set.seed(33)
 x <- rnorm(n = 20, mean = 0, sd = 2.5) # create sample from normal distribution
 y <- rnorm(n = 200, mean = 1.5, sd = 3.5) # create sample from normal distribution
@@ -364,7 +358,7 @@ effectsize::cohens_d(x, y)
 
 I am personally impressed by the way the `effectsize` package incorporates the state of the art (although I might be a bit biased). For example, after our recommendation to, by default, use Welch's *t*-test instead of students *t*-test [@delacre_why_2017], and based on a recent simulation study recommended to report Hedges’ $g_s^*$ as the effect size for Welch's *t*-test [@delacre_why_2021], the `effectsize` package was the first to incorporate it. 
 
-```{r}
+```{r, echo=FALSE}
 effectsize::cohens_d(x, y, pooled_sd = FALSE)
 ```
 
@@ -373,7 +367,7 @@ Free statistical software [jamovi](https://www.jamovi.org/) and [JASP](https://j
 
 For jamovi, the ESCI module allows users to compute effect sizes and confidence intervals, and is accompanied by educational material that focuses more on estimation and less on testing [@cumming_introduction_2016]. 
 
-```{r}
+```{r, echo=FALSE}
 #| fig-cap: "Output from ESCI module in jamovi."
 
 knitr::include_graphics("images/escijamovi.png")
@@ -382,12 +376,12 @@ knitr::include_graphics("images/escijamovi.png")
 
 JASP offers a wide range of frequentist and Bayesian analyses, and in addition to Cohen's *d* also allows users to compute omega squared $\omega^{2}$, the less biased version of $\eta^{2}$ [@okada_omega_2013; @albers_when_2018].
 
-```{r}
+```{r, echo=FALSE}
 #| fig-cap: "JASP menu option allows you to select Cohen's *d* and a CI around it."
 knitr::include_graphics("images/jaspeffectci1.png")
 ```
 
-```{r}
+```{r, echo=FALSE}
 #| fig-cap: "JASP output returns Cohen's *d* and the confidence interval around it."
 
 knitr::include_graphics("images/jaspeffectci2.png")
@@ -401,7 +395,7 @@ knitr::include_graphics("images/jaspeffectci2.png")
 **Q1**: Go to the online app by Kristoffer Magnusson:
 <http://rpsychologist.com/d3/CI/>. You might want more confidence intervals to contain the true population parameter than 95%. Drag the ‘Slide me’ button to the far right, and you will see the simulation for 99% confidence intervals. Which statement is true?
 
-```{r}
+```{r, echo=FALSE, results='asis'}
 opts_p <- c(
    "The confidence intervals are larger, and the sample means fall closer to the true mean.",
    "The confidence intervals are smaller, and the sample means fall closer to the true mean.",
@@ -414,7 +408,7 @@ cat(longmcq(opts_p))
 
 **Q2**: As we could see from the formulas for confidence intervals, sample means and their confidence intervals depend on the sample size. We can change the sample size in the online app (see the setting underneath the vizualization). By default, the sample size is set to 5. Change the sample size to 50 (you can type it in). Which statement is true?
 
-```{r}
+```{r, echo=FALSE, results='asis'}
 opts_p <- c(
    "The larger the sample size, the larger the confidence intervals. The sample size does not influence how the sample means vary around the true population mean. ",
    "The larger the sample size, the smaller the confidence intervals. The sample size does not influence how the sample means vary around the true population mean.",
@@ -427,7 +421,7 @@ cat(longmcq(opts_p))
 
 **Q3**: In the forest plot below, we see the effect size (indicated by the square) and the confidence interval of the effect size (indicated by the line around the effect). Which of the studies 1 to 4 in the forest plot below were statistically significant?
 
-```{r}
+```{r, echo=FALSE}
 #| fig-cap: "Meta-analysis of 4 studies."
 
 set.seed(229)
@@ -466,7 +460,7 @@ metafor::forest(result,
 title("Forest plot for a simulated meta-analysis")
 ```
 
-```{r}
+```{r, echo=FALSE, results='asis'}
 opts_p <- c(
    "Studies 1, 2, 3, and 4",
    "Only study 3",
@@ -479,7 +473,7 @@ cat(longmcq(opts_p))
 
 **Q4**: The light black diamond in the bottom row is the fixed effects meta-analytic effect size estimate. Instead of using a black horizontal line, the upper limit and lower limit of the confidence interval are indicated by the left and right points of the diamond. The center of the diamond is the meta-analytic effect size estimate. A meta-analysis calculates the effect size by combining and weighing all studies. Which statement is true?
 
-```{r}
+```{r, echo=FALSE, results='asis'}
 opts_p <- c(
    "The confidence interval for a fixed effect meta-analytic effect size estimate is always wider than that for a single study, because of the additional variation between studies.",
    answer = "The confidence interval for a fixed effect meta-analytic effect size estimate is always more narrow than that for a single study, because of the combined sample size of all studies included in the meta-analysis.",
@@ -495,7 +489,7 @@ $$
 \mu \pm t_{df, 1-(\alpha/2)} SE
 $$
 
-```{r}
+```{r, echo=FALSE, results='asis'}
 opts_p <- c(
    "1.40",
    "2.95",
@@ -540,7 +534,7 @@ window.addEventListener('message', function(e) {
 
 **Q6**: How much do two 95% confidence intervals around individual means from independent groups overlap when the mean difference between the two means is only just statistically significant (*p* ≈ 0.05 at an alpha of 0.05)?
 
-```{r}
+```{r, echo=FALSE, results='asis'}
 opts_p <- c(
    "When the 95% confidence interval around one mean does not contain the mean of the other group, the groups always differ significantly from each other.",
    "When the 95% confidence interval around one mean does not overlap with the 95% confidence interval of the mean of the other group, the groups always differ significantly from each other.",
@@ -555,7 +549,7 @@ Note that this visual overlap rule can only be used when the comparison is made 
 
 Let’s experience this through simulation. The simulation in the R script below generates a large number of additional samples, after the initial one that was plotted. The simulation returns the number of CI that contains the mean (which should be 95% in the long run). The simulation also returns the % of means from future studies that fall within the 95% of the original study, or the capture percentage. It differs from (and is often lower, but sometimes higher, than) the confidence interval.
 
-```{r}
+```{r, echo=FALSE}
 library(ggplot2)
 
 n <- 20 # set sample size
@@ -617,7 +611,7 @@ cat("The capture percentage for the plotted study, or the % of values within
 
 **Q7**: Run the simulations multiple times. Look at the output you will get in the R console. For example: “95.077 % of the 95% confidence intervals contained the true mean” and “The capture percentage for the plotted study, or the % of values within the observed confidence interval from 88.17208 to 103.1506 is: 82.377 %”. While running the simulations multiple times, look at the confidence interval around the sample mean, and relate this to the capture percentage. Run the simulation until you have seen a range of means closer and further away from the true mean in the simulation (100). Which statement is true?
 
-```{r}
+```{r, echo=FALSE, results='asis'}
 opts_p <- c(
    answer = "The farther the sample mean is from the true population mean, the lower the capture percentage.",
    "The farther the sample mean is from the true population mean, the higher the capture percentage."
@@ -628,7 +622,7 @@ cat(longmcq(opts_p))
 
 **Q8**: Simulations in R are randomly generated, but you can make a specific simulation reproducible by setting the seed of the random generation process. Copy-paste “set.seed(1000)” to the first line of the R script, and run the simulation. The sample mean should be 94. What is the capture percentage? (Don’t forget to remove the set.seed command if you want to generate more random simulations!).
 
-```{r}
+```{r, echo=FALSE, results='asis'}
 opts_p <- c(
    "95%",
    answer = "42.1%",
@@ -643,7 +637,7 @@ Capture percentages are rarely directly used to make statistical inferences. The
 
 **Q9** So far we have looked at confidence intervals around means, but we can also compute confidence intervals around standard deviations. If you run the first lines of the code below, you will see that with an alpha level of 0.05, 100 observations, and a true standard deviation of 1, the 95% CI around the standard deviation is [0.88; 1.16]. Change the assumed population standard deviation from 1 to 2 (st_dev <- 2). Keep all other settings the same. What is the 95% CI around the standard deviation of 2 with 100 observations?
 
-```{r}
+```{r, echo=FALSE}
 alpha_level <- 0.05 # set alpha level
 n <- 100 # set number of observations
 st_dev <- 1 # set true standard deviation
@@ -669,7 +663,7 @@ pwr::pwr.t.test(d = effect/(st_dev * c_u), power = 0.9, sig.level = 0.05)
 pwr::pwr.t.test(d = effect/st_dev, power = 0.9, sig.level = 0.05)
 ```
 
-```{r}
+```{r, echo=FALSE, results='asis'}
 opts_p <- c(
    "95% CI [1.38; 3.65]",
    answer = "95% CI [1.76; 2.32]",
@@ -682,7 +676,7 @@ cat(longmcq(opts_p))
 
 **Q10**: Change the assumed population standard deviation back from 2 to 1. Lower the sample size from 100 to 20 (n <- 20). This will inform us about the width of the confidence interval for a standard deviation when we run a pilot study with 20 observations. Keep all other settings the same. What is the 95% CI around the standard deviation of 1 with 20 observations?
 
-```{r}
+```{r, echo=FALSE, results='asis'}
 opts_p <- c(
    "95% CI [0.91; 1.11]",
    "95% CI [0.82; 1.28]",
@@ -695,7 +689,7 @@ cat(longmcq(opts_p))
 
 **Q11**: If we want the 95% CI around the standard deviation of 1 to be at most 0.05 away from the assumed population standard deviation, how large should our number of observations be? Note that this means we want the 95% CI to fall within 0.95 and 1.05. But notice from the calculations above that the distribution of the sample standard deviations is not symmetrical. Standard deviations can’t be smaller than 0 (because they are the square rooted variance). So in practice the question is: What is the **smallest** number of observations for the upper 95% CI to be smaller than 1.05? Replace n with each of the values in the answer options.
 
-```{r}
+```{r, echo=FALSE, results='asis'}
 opts_p <- c(
    "n = 489",
    "n = 498",
@@ -710,7 +704,7 @@ Let’s explore what the consequences of an inaccurate estimate of the populatio
 
 **Q12**: Change the number of observations to 50. Change the assumed population standard deviation to 1.2. Keep the effect as 0.5. The 95% confidence interval for the standard deviation based on a sample of 50 observation ranges from 1.002 to 1.495. To perform an a-priori power analysis we need to calculate Cohen’s d, which is the difference divided by the standard deviation. In our example, we want to at least observe a difference of 0.5. What is Cohen’s d (effect/SD) for the lower bound of the 95% confidence interval (where SD = 1.002) or the upper bound (where SD = 1.495)? 
 
-```{r}
+```{r, echo=FALSE, results='asis'}
 opts_p <- c(
    answer = "d = 0.33 and d = 0.50",
    "d = 0.40 and d = 0.60",
@@ -725,7 +719,7 @@ If we draw a sample of 50 observations we can happen to observe a value that, du
 
 **Q13**: An a-priori power analysis is performed that uses the estimate of Cohen’s d based on the lower 95% CI of the standard deviation. Which statement is true?
 
-```{r}
+```{r, echo=FALSE, results='asis'}
 opts_p <- c(
    "Because the lower bound of the 95% CI is **smaller** than the true population SD, Cohen’s d is **smaller**, and the a-priori power analysis will yield a sample size that is **smaller** than the sample size we really need.",
    "Because the lower bound of the 95% CI is **smaller** than the true population SD, Cohen’s d is **larger**, and the a-priori power analysis will yield a sample size that is **larger** than the sample size we really need.",
@@ -738,7 +732,7 @@ cat(longmcq(opts_p))
 
 **Q14**: Let’s check if our answer on the previous question was correct. We still have an alpha level of 0.05, n = 50, a standard deviation of 1.2, and an effect of interest of 0.5. Run the power analyses using the `pwr` package. The first power analysis uses Cohen’s d based on the lower bound of the 95% confidence interval. The second power analysis uses the upper bound of the 95% confidence interval. (There is also a third power analysis based on the (in real-life situations unknown) true standard deviation, just for comparison). Which statement is true (note that the sample size for a power analysis is rounded up, as we can't collect a partial observation)?
 
-```{r}
+```{r, echo=FALSE, results='asis'}
 opts_p <- c(
    "The sample size per group is 68 when calculating the effect size based on the lower bound on the 95% CI around the standard deviation, and 86 when using the upper bound of the 95% CI around the standard deviation.",
    "The sample size per group is 68 when calculating the effect size based on the lower bound on the 95% CI around the standard deviation, and 123 when using the upper bound of the 95% CI around the standard deviation.",
