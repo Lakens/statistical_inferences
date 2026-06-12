@@ -1,41 +1,150 @@
-\usepackage{booktabs}
+% ===========================================================================
+%  Typography & layout for the PDF edition of
+%  "Improving Your Statistical Inferences"
+%
+%  Engine: LuaLaTeX (required for OpenType Literata + its ligatures).
+%  Set in _quarto.yml via  pdf-engine: lualatex.
+%
+%  Fonts are bundled in include/fonts/ so the book builds identically on any
+%  machine or CI runner without a system font install. The only extra TeX
+%  package needed beyond a default TinyTeX is the math font:
+%      tlmgr install stix2-otf
+% ===========================================================================
 
+% ---- Fonts -----------------------------------------------------------------
+\usepackage{fontspec}
+\usepackage{unicode-math}
+
+% Body: Literata (variable font). We select upright/bold from the weight (wght)
+% axis of the single variable file, and the italic faces from the companion
+% italic file. Standard + contextual ligatures are enabled for a polished,
+% readable result without ornate discretionary ligatures.
+\setmainfont{Literata}[
+  Path           = ./include/fonts/ ,
+  Extension      = .ttf ,
+  UprightFont    = Literata-Variable ,
+  ItalicFont     = Literata-Italic-Variable ,
+  BoldFont       = Literata-Variable ,
+  BoldItalicFont = Literata-Italic-Variable ,
+  UprightFeatures    = { RawFeature={+axis={wght=400}} } ,
+  ItalicFeatures     = { RawFeature={+axis={wght=400}} } ,
+  BoldFeatures       = { RawFeature={+axis={wght=700}} } ,
+  BoldItalicFeatures = { RawFeature={+axis={wght=700}} } ,
+  Ligatures      = { Common, Contextual }
+]
+
+% Math is set in STIX Two Math, designed to pair with text serifs of
+% Literata's proportions.
+\setmathfont{STIX Two Math}
+
+% Monospace for code: Latin Modern Mono ships with every TeX install, so no
+% extra font file is required.
+\setmonofont{Latin Modern Mono}[Scale=0.86]
+
+\usepackage{microtype}               % subtle protrusion polish (LuaLaTeX)
+
+% ---- Colours ---------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{brandred}{HTML}{A60A0A}   % heading / accent colour (site brand)
+\definecolor{inkdark}{HTML}{1C1717}    % near-black body ink
+\definecolor{linkcol}{HTML}{8A1B1B}    % restrained link colour (muted red)
+\definecolor{rulecol}{HTML}{C9433B}    % chapter-number rule
+
+% ---- Page geometry & spacing ----------------------------------------------
+\usepackage{geometry}
+\geometry{
+  paper=a4paper,
+  inner=2.6cm, outer=2.6cm,
+  top=2.6cm, bottom=2.8cm,
+  headsep=0.7\baselineskip
+}
+\usepackage{setspace}
+\setstretch{1.06}                      % slightly open leading for readability
+
+% ---- Running headers / footers --------------------------------------------
+\usepackage{fancyhdr}
+\usepackage{emptypage}                 % no headers on blank pages
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{mainstyle}{%
+  \fancyhf{}
+  \fancyhead[LE]{\small\textsc{\nouppercase{\leftmark}}}
+  \fancyhead[RO]{\small\textsc{\nouppercase{\rightmark}}}
+  \fancyfoot[C]{\small\thepage}
+  \renewcommand{\headrule}{\color{rulecol!55}\hrule height \headrulewidth}
+}
+\pagestyle{mainstyle}
+% Plain pages (chapter openers) get just a centered page number.
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0pt}}
+
+% ---- Chapter & section styling --------------------------------------------
+\usepackage{titlesec}
+
+% Headings are set in Literata itself at heavier weights, so the whole book
+% is one type family. \headingfont = Literata Black (800); section headings
+% use Literata Bold (700, the main \bfseries).
+\newfontfamily\headingfont{Literata}[
+  Path        = ./include/fonts/ ,
+  Extension   = .ttf ,
+  UprightFont = Literata-Variable ,
+  ItalicFont  = Literata-Italic-Variable ,
+  UprightFeatures = { RawFeature={+axis={wght=800}} } ,
+  ItalicFeatures  = { RawFeature={+axis={wght=800}} } ,
+  Ligatures   = { Common, Contextual }
+]
+
+% Chapter opener: large brand-red number on its own line, a thin rule,
+% then the chapter title beneath it.
+\titleformat{\chapter}[display]
+  {\headingfont}
+  {\flushright\fontsize{64}{64}\selectfont\color{brandred!85}\thechapter}
+  {8pt}
+  {\color{rulecol}\titlerule[1.2pt]\vspace{6pt}%
+   \Huge\color{inkdark}\headingfont}
+\titlespacing*{\chapter}{0pt}{8pt}{34pt}
+
+\titleformat{\section}
+  {\headingfont\Large\color{brandred!90}}{\thesection}{0.7em}{}
+\titleformat{\subsection}
+  {\headingfont\large\color{inkdark}}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}
+  {\headingfont\normalsize\color{inkdark}}{\thesubsubsection}{0.5em}{}
+\titlespacing*{\section}{0pt}{1.5\baselineskip}{0.5\baselineskip}
+
+% ---- Links -----------------------------------------------------------------
+% Tame Quarto's default bright blue. (colorlinks is set in _quarto.yml.)
+\hypersetup{
+  linkcolor=linkcol,
+  citecolor=linkcol,
+  urlcolor=linkcol,
+  filecolor=linkcol
+}
+
+% ---- Callout boxes (kept from the original, restyled to match) -------------
 \usepackage{tcolorbox}
-\usepackage[T1]{fontenc}
+\tcbuselibrary{skins,breakable}
 
 \definecolor{dangcol}{RGB}{152,62,130}
-\definecolor{warncol}{RGB}{245,220,112}
+\definecolor{warncol}{RGB}{200,150,20}
 \definecolor{infocol}{RGB}{70,122,172}
 \definecolor{trycol}{RGB}{97,88,156}
 
-\newtcolorbox{dangerous}{
-  colback=dangcol!10,
-  colframe=dangcol,
-  coltext=black,
-  boxsep=5pt,
-  arc=4pt
+\tcbset{
+  calloutstyle/.style={
+    enhanced, breakable, boxsep=5pt, arc=3pt, boxrule=0.9pt,
+    left=8pt, right=8pt, top=6pt, bottom=6pt,
+    coltext=black, fonttitle=\sffamily\bfseries
+  }
 }
+\newtcolorbox{dangerous}{calloutstyle, colback=dangcol!8,  colframe=dangcol}
+\newtcolorbox{warning}{calloutstyle,   colback=warncol!10, colframe=warncol!85!black}
+\newtcolorbox{info}{calloutstyle,      colback=infocol!8,  colframe=infocol}
+\newtcolorbox{try}{calloutstyle,       colback=trycol!8,   colframe=trycol}
 
-\newtcolorbox{warning}{
-  colback=warncol!10,
-  colframe=warncol,
-  coltext=black,
-  boxsep=5pt,
-  arc=4pt
-}
+% ---- Tables ----------------------------------------------------------------
+\usepackage{booktabs}
+\renewcommand{\arraystretch}{1.12}     % a little more row breathing room
 
-\newtcolorbox{info}{
-  colback=infocol!10,
-  colframe=infocol,
-  coltext=black,
-  boxsep=5pt,
-  arc=4pt
-}
-
-\newtcolorbox{try}{
-  colback=trycol!10,
-  colframe=trycol,
-  coltext=black,
-  boxsep=5pt,
-  arc=4pt
-}
+% ---- Table of contents tweak ----------------------------------------------
+% Colour the chapter entries (KOMA-friendly; avoids tocloft which clashes).
+\addtokomafont{chapterentry}{\color{inkdark}}

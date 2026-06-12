@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Equivalence Test (TOST) for an Independent t-test</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans:ital,wght@0,400;0,600;1,400&family=Fira+Code&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.26.0/plotly.min.js"></script>
+<style>
+:root {
+  --bg:    #fffafa;
+  --bg2:   #f7f7f7;
+  --ink:   #1c1717;
+  --ink2:  #3d3535;
+  --ink3:  #666060;
+  --rule:  #d6dadc;
+  --red:   #a60a0a;
+  --red-l: #c41010;
+  --red-bg:#fff5f5;
+  --blue:  #1a6e9a;
+  --green: #2e7d32;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px; line-height: 1.65;
+  padding: 20px 20px 8px; overflow: hidden;
+}
+.calc-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink3); margin-bottom: 5px;
+}
+.calc-heading {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600; font-size: 1.1rem;
+  color: var(--ink); margin-bottom: 16px;
+  padding-bottom: 9px; border-bottom: 2px solid var(--red);
+}
+.input-panel {
+  background: var(--bg2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--red);
+  padding: 14px 18px; margin-bottom: 16px;
+}
+.panel-title {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink3); margin-bottom: 12px;
+}
+.input-row { display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap; }
+.input-row + .input-row { margin-top: 14px; }
+.input-group { display: flex; flex-direction: column; gap: 5px; }
+.input-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--ink3);
+}
+.sym {
+  font-style: italic; font-size: .88rem;
+  text-transform: none; letter-spacing: 0;
+  font-weight: 400; color: var(--red);
+}
+input[type="number"] {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px; background: var(--bg);
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--red);
+  padding: 6px 8px; color: var(--ink);
+  outline: none; width: 92px;
+  transition: border-color .2s;
+  -moz-appearance: textfield;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+input[type="number"]:focus { border-bottom-color: var(--red-l); }
+select {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px; background: var(--bg);
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--red);
+  padding: 6px 8px; color: var(--ink);
+  outline: none; cursor: pointer;
+}
+.btn {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 11px; font-weight: 600;
+  background: var(--red); color: #fff;
+  border: none; padding: 9px 18px;
+  cursor: pointer; letter-spacing: .06em;
+  text-transform: uppercase;
+  transition: background .15s;
+  white-space: nowrap;
+}
+.btn:hover { background: var(--red-l); }
+.plot-wrap {
+  border: 1px solid var(--rule);
+  background: var(--bg); margin-bottom: 12px;
+}
+#tostPlot { width: 100%; height: 300px; }
+.text-block {
+  font-size: .88rem; line-height: 1.6;
+  padding: 11px 14px; margin-bottom: 10px;
+  background: var(--bg2);
+  border-left: 3px solid var(--rule);
+  color: var(--ink2);
+}
+.text-block strong { color: var(--ink); }
+.text-block.verdict { border-left-color: var(--red); background: var(--red-bg); }
+.results-table {
+  width: 100%; border-collapse: collapse;
+  font-size: .85rem; margin-bottom: 12px;
+  background: var(--bg);
+}
+.results-table caption {
+  text-align: left; font-size: 10px; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink3); padding: 8px 0 6px;
+}
+.results-table th, .results-table td {
+  border: 1px solid var(--rule);
+  padding: 6px 10px; text-align: right;
+  font-family: 'Fira Code', monospace; font-size: 12px;
+}
+.results-table th {
+  background: var(--bg2); color: var(--ink2);
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600; font-size: 11px;
+  text-align: right; letter-spacing: .02em;
+}
+.results-table td.lbl, .results-table th.lbl {
+  text-align: left;
+  font-family: 'Open Sans', sans-serif;
+  color: var(--ink2);
+}
+.sig-yes { color: var(--green); font-weight: 600; }
+.sig-no  { color: var(--red);   font-weight: 600; }
+.hint {
+  font-size: .8rem; color: var(--ink3);
+  margin-top: 6px; line-height: 1.5;
+}
+.group2-hide { display: none; }
+</style>
+</head>
+<body>
+
+<p class="calc-label">Interactive calculator</p>
+<h2 class="calc-heading">Equivalence Test (TOST) for an Independent <em>t</em>-test</h2>
+
+<div class="input-panel">
+  <div class="input-row">
+    <div class="input-group">
+      <label class="input-label" for="m1">Mean group 1</label>
+      <input type="number" id="m1" step="0.1" value="0.1">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="sd1">SD group 1</label>
+      <input type="number" id="sd1" min="0.0001" step="0.1" value="1">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="n1">n group 1</label>
+      <input type="number" id="n1" min="2" step="1" value="50">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="m2">Mean group 2</label>
+      <input type="number" id="m2" step="0.1" value="0">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="sd2">SD group 2</label>
+      <input type="number" id="sd2" min="0.0001" step="0.1" value="1">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="n2">n group 2</label>
+      <input type="number" id="n2" min="2" step="1" value="50">
+    </div>
+  </div>
+</div>
+
+<div class="input-panel">
+  <div class="input-row">
+    <div class="input-group">
+      <label class="input-label" for="boundtype">Bound type</label>
+      <select id="boundtype">
+        <option value="raw" selected>raw</option>
+        <option value="SMD">SMD (Cohen's d)</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="low">Lower bound</label>
+      <input type="number" id="low" step="0.1" value="-0.5">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="high">Upper bound</label>
+      <input type="number" id="high" step="0.1" value="0.5">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="alpha">Alpha</label>
+      <input type="number" id="alpha" min="0.0001" max="0.4999" step="0.01" value="0.05">
+    </div>
+    <div class="input-group">
+      <label class="input-label">&nbsp;</label>
+      <button class="btn" id="runBtn">Perform test</button>
+    </div>
+  </div>
+  <div class="hint">
+    The equivalence bounds can be given as raw differences (<strong>raw</strong>, recommended)
+    or as standardized mean differences (<strong>SMD</strong>, Cohen's <em>d</em>). When using
+    SMD bounds the results are slightly biased; raw bounds are preferred when possible.
+  </div>
+</div>
+
+<div class="plot-wrap"><div id="tostPlot"></div></div>
+
+<div id="verdict" class="text-block verdict"></div>
+<div id="summary" class="text-block"></div>
+<div id="explain" class="text-block"></div>
+
+<script>
+var FONT = { family: "'Open Sans', sans-serif", color: '#1c1717', size: 12 };
+var AXIS = { zeroline: false, gridcolor: '#ede8e8', linecolor: '#d6dadc' };
+var RED  = '#a60a0a';
+var BLUE = '#1a6e9a';
+
+var _phTimer = null;
+function postHeight() {
+  clearTimeout(_phTimer);
+  _phTimer = setTimeout(function() {
+    var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+    window.parent.postMessage({ iframeHeight: h }, '*');
+  }, 120);
+}
+
+function getNum(id, dflt) {
+  var v = parseFloat(document.getElementById(id).value);
+  return isNaN(v) ? dflt : v;
+}
+
+// Student-t two-sided p from a t value and df.
+function tTwoSided(t, df) {
+  return 2 * (1 - jStat.studentt.cdf(Math.abs(t), df));
+}
+
+// Confidence interval on the non-centrality parameter of a non-central t,
+// given an observed t value, df, and confidence level. Used for the
+// non-central-t confidence interval on the standardized mean difference.
+function ncpConfInt(tObs, df, conf) {
+  var lowerTail = (1 - conf) / 2;
+  var upperTail = 1 - lowerTail;
+  // P(T <= tObs | ncp) decreases as ncp increases, so bisect on ncp.
+  function solve(targetP) {
+    var lo = tObs - 40, hi = tObs + 40;
+    for (var i = 0; i < 200; i++) {
+      var mid = (lo + hi) / 2;
+      if (jStat.noncentralt.cdf(tObs, df, mid) > targetP) lo = mid; else hi = mid;
+    }
+    return (lo + hi) / 2;
+  }
+  return [solve(upperTail), solve(lowerTail)];
+}
+
+// Compute the TOST analysis for an independent (Welch) t-test from summary stats.
+function computeTOST() {
+  var m1 = getNum('m1', 0), sd1 = Math.max(1e-9, getNum('sd1', 1)), n1 = Math.max(2, Math.round(getNum('n1', 50)));
+  var m2 = getNum('m2', 0), sd2 = Math.max(1e-9, getNum('sd2', 1)), n2 = Math.max(2, Math.round(getNum('n2', 50)));
+  var alpha = Math.min(0.4999, Math.max(1e-6, getNum('alpha', 0.05)));
+  var boundType = document.getElementById('boundtype').value;
+  var lowIn  = getNum('low', -0.5);
+  var highIn = getNum('high', 0.5);
+
+  var meanDiff = m1 - m2;
+
+  // Welch standard error and df.
+  var se = Math.sqrt(sd1 * sd1 / n1 + sd2 * sd2 / n2);
+  var df = Math.pow(sd1 * sd1 / n1 + sd2 * sd2 / n2, 2) /
+           (Math.pow(sd1 * sd1 / n1, 2) / (n1 - 1) + Math.pow(sd2 * sd2 / n2, 2) / (n2 - 1));
+
+  // Pooled SD (for converting SMD bounds and for Cohen's d / Hedges' g).
+  var sdPooled = Math.sqrt(((n1 - 1) * sd1 * sd1 + (n2 - 1) * sd2 * sd2) / (n1 + n2 - 2));
+
+  // Equivalence bounds in raw units.
+  var lowRaw, highRaw;
+  if (boundType === 'SMD') {
+    lowRaw  = lowIn  * sdPooled;
+    highRaw = highIn * sdPooled;
+  } else {
+    lowRaw  = lowIn;
+    highRaw = highIn;
+  }
+  // Ensure low < high.
+  if (lowRaw > highRaw) { var tmp = lowRaw; lowRaw = highRaw; highRaw = tmp; }
+
+  // Central NHST t-test (two-sided).
+  var tNHST = meanDiff / se;
+  var pNHST = tTwoSided(tNHST, df);
+
+  // TOST: two one-sided tests against the bounds.
+  var tLower = (meanDiff - lowRaw)  / se;   // H0: diff <= lowRaw  -> upper-tail
+  var tUpper = (meanDiff - highRaw) / se;   // H0: diff >= highRaw -> lower-tail
+  var pLower = 1 - jStat.studentt.cdf(tLower, df);
+  var pUpper = jStat.studentt.cdf(tUpper, df);
+  var pTOST  = Math.max(pLower, pUpper);
+
+  // 90% CI (1 - 2*alpha) on the mean difference — the TOST-consistent interval.
+  var tCrit90 = jStat.studentt.inv(1 - alpha, df);
+  var ci90Lo = meanDiff - tCrit90 * se;
+  var ci90Hi = meanDiff + tCrit90 * se;
+
+  // 95% CI (1 - alpha) for the NHST test.
+  var tCrit95 = jStat.studentt.inv(1 - alpha / 2, df);
+  var ci95Lo = meanDiff - tCrit95 * se;
+  var ci95Hi = meanDiff + tCrit95 * se;
+
+  // Standardized effect size: Hedges' g (bias-corrected Cohen's d_s).
+  var d = meanDiff / sdPooled;
+  var J = 1 - 3 / (4 * (n1 + n2 - 2) - 1);   // small-sample correction
+  var g = d * J;
+  // 90% CI on g via the non-central t method (matches TOSTER's smd_ci="nct").
+  // The observed t for the standardized difference uses the pooled (Student) df.
+  var dfPooled = n1 + n2 - 2;
+  var seSMD    = Math.sqrt(1 / n1 + 1 / n2);
+  var tObs      = d / seSMD;
+  var ncpCI = ncpConfInt(tObs, dfPooled, 1 - 2 * alpha);  // (1 - 2*alpha) interval
+  var gLo = ncpCI[0] * seSMD * J;
+  var gHi = ncpCI[1] * seSMD * J;
+
+  // Decision: equivalence concluded if both one-sided tests significant.
+  var equiv = pTOST < alpha;
+  var nhstSig = pNHST < alpha;
+
+  return {
+    m1: m1, m2: m2, meanDiff: meanDiff, se: se, df: df, alpha: alpha,
+    lowRaw: lowRaw, highRaw: highRaw, boundType: boundType,
+    tNHST: tNHST, pNHST: pNHST,
+    tLower: tLower, pLower: pLower, tUpper: tUpper, pUpper: pUpper, pTOST: pTOST,
+    ci90Lo: ci90Lo, ci90Hi: ci90Hi, ci95Lo: ci95Lo, ci95Hi: ci95Hi,
+    g: g, gLo: gLo, gHi: gHi, d: d,
+    equiv: equiv, nhstSig: nhstSig
+  };
+}
+
+function fmt(x, dp) {
+  if (!isFinite(x)) return '—';
+  return x.toFixed(dp === undefined ? 3 : dp);
+}
+function fmtP(p) {
+  if (p < 0.001) return '< 0.001';
+  return p.toFixed(3);
+}
+
+// Report the TOST and NHST results as sentences (as TOSTER's describe() does).
+function renderSummary(r) {
+  var df = fmt(r.df, 1);
+  // The TOST is reported using the binding (larger-p) one-sided test.
+  var tostBinding = r.pUpper >= r.pLower
+    ? { t: r.tUpper, p: r.pUpper, which: 'upper' }
+    : { t: r.tLower, p: r.pLower, which: 'lower' };
+
+  var equivSentence = r.equiv
+    ? 'The equivalence test was <strong>significant</strong>, '
+    : 'The equivalence test was <strong>non-significant</strong>, ';
+  equivSentence += '<em>t</em>(' + df + ') = ' + fmt(tostBinding.t, 2) +
+    ', <em>p</em> = ' + fmtP(tostBinding.p) + '.';
+
+  var nhstSentence = r.nhstSig
+    ? 'The null-hypothesis test was <strong>significant</strong>, '
+    : 'The null-hypothesis test was <strong>non-significant</strong>, ';
+  nhstSentence += '<em>t</em>(' + df + ') = ' + fmt(r.tNHST, 2) +
+    ', <em>p</em> = ' + fmtP(r.pNHST) + '.';
+
+  var ci90Pct = Math.round((1 - 2 * r.alpha) * 100);
+  var effectSentence = 'The mean difference is ' + fmt(r.meanDiff) + ', ' + ci90Pct +
+    '% CI [' + fmt(r.ci90Lo) + ', ' + fmt(r.ci90Hi) + '] ' +
+    '(Hedges’ <em>g</em> = ' + fmt(r.g) + ', ' + ci90Pct +
+    '% CI [' + fmt(r.gLo) + ', ' + fmt(r.gHi) + ']).';
+
+  document.getElementById('summary').innerHTML =
+    equivSentence + ' ' + nhstSentence + ' ' + effectSentence;
+}
+
+function renderVerdict(r) {
+  var v = document.getElementById('verdict');
+  var msg;
+  if (r.equiv && !r.nhstSig) {
+    msg = '<strong>Statistically equivalent.</strong> The 90% CI of the mean difference falls ' +
+          'entirely within the equivalence bounds, and the difference is not statistically ' +
+          'different from zero. We can reject the presence of effects more extreme than the bounds.';
+  } else if (r.equiv && r.nhstSig) {
+    msg = '<strong>Statistically equivalent <em>and</em> significantly different.</strong> ' +
+          'The effect differs from zero, but is small enough to also be declared equivalent — ' +
+          'the difference is statistically significant yet practically negligible.';
+  } else if (!r.equiv && r.nhstSig) {
+    msg = '<strong>Statistically different, not equivalent.</strong> The difference is ' +
+          'significantly different from zero and the 90% CI is not contained within the bounds.';
+  } else {
+    msg = '<strong>Undetermined (neither significant nor equivalent).</strong> The difference ' +
+          'is not significantly different from zero, but the 90% CI is too wide to fall within ' +
+          'the equivalence bounds — the study is inconclusive.';
+  }
+  v.innerHTML = msg + ' &nbsp;|&nbsp; <em>p</em><sub>TOST</sub> = ' + fmtP(r.pTOST) +
+                ', <em>p</em><sub>NHST</sub> = ' + fmtP(r.pNHST) + '.';
+}
+
+function renderExplain(r) {
+  var bt = r.boundType === 'SMD' ? 'standardized (converted to raw using the pooled SD)' : 'raw';
+  document.getElementById('explain').innerHTML =
+    'Equivalence bounds (' + bt + '): [' + fmt(r.lowRaw) + ', ' + fmt(r.highRaw) + ']. ' +
+    'The TOST procedure runs two one-sided tests: one against the lower bound and one against ' +
+    'the upper bound. Equivalence is concluded when <strong>both</strong> are significant, i.e. ' +
+    'when the larger of the two <em>p</em>-values (<em>p</em><sub>TOST</sub> = ' + fmtP(r.pTOST) +
+    ') is below &#945; = ' + r.alpha.toFixed(3) + '. ' +
+    'Welch <em>t</em>-test with df = ' + fmt(r.df, 2) + ' and SE = ' + fmt(r.se) + '.';
+}
+
+function renderPlot(r) {
+  // Horizontal CI plot: 90% CI and 95% CI around the mean difference,
+  // with equivalence bounds drawn as vertical lines.
+  var lo = Math.min(r.ci95Lo, r.lowRaw, r.ci90Lo);
+  var hi = Math.max(r.ci95Hi, r.highRaw, r.ci90Hi);
+  var pad = (hi - lo) * 0.15 || 1;
+  var xLo = lo - pad, xHi = hi + pad;
+
+  var traces = [
+    // 95% CI (thin)
+    { x: [r.ci95Lo, r.ci95Hi], y: [0, 0], type: 'scatter', mode: 'lines',
+      line: { color: BLUE, width: 2 }, hoverinfo: 'skip', showlegend: false },
+    // 90% CI (thick)
+    { x: [r.ci90Lo, r.ci90Hi], y: [0, 0], type: 'scatter', mode: 'lines',
+      line: { color: '#1c1717', width: 6 }, hoverinfo: 'skip', showlegend: false },
+    // point estimate
+    { x: [r.meanDiff], y: [0], type: 'scatter', mode: 'markers',
+      marker: { color: RED, size: 13, line: { color: '#fff', width: 1.5 } },
+      hovertemplate: 'Mean difference: %{x:.3f}<extra></extra>', showlegend: false }
+  ];
+
+  var shapes = [
+    // zero line
+    { type: 'line', x0: 0, x1: 0, y0: -1, y1: 1, xref: 'x', yref: 'y',
+      line: { color: '#c0c0c0', width: 1, dash: 'dot' } },
+    // equivalence bounds
+    { type: 'line', x0: r.lowRaw, x1: r.lowRaw, y0: -0.7, y1: 0.7, xref: 'x', yref: 'y',
+      line: { color: RED, width: 2, dash: 'dash' } },
+    { type: 'line', x0: r.highRaw, x1: r.highRaw, y0: -0.7, y1: 0.7, xref: 'x', yref: 'y',
+      line: { color: RED, width: 2, dash: 'dash' } },
+    // shaded equivalence region
+    { type: 'rect', x0: r.lowRaw, x1: r.highRaw, y0: -1, y1: 1, xref: 'x', yref: 'y',
+      fillcolor: 'rgba(46,125,50,0.07)', line: { width: 0 } }
+  ];
+
+  var annotations = [
+    { x: r.lowRaw, y: 0.85, xref: 'x', yref: 'y', text: '&#916;<sub>L</sub>',
+      showarrow: false, font: { color: RED, size: 12 }, yanchor: 'bottom' },
+    { x: r.highRaw, y: 0.85, xref: 'x', yref: 'y', text: '&#916;<sub>U</sub>',
+      showarrow: false, font: { color: RED, size: 12 }, yanchor: 'bottom' }
+  ];
+
+  Plotly.react('tostPlot', traces, {
+    xaxis: Object.assign({ title: { text: 'Mean difference (M&#8321; &#8722; M&#8322;)', font: { size: 13 } },
+      range: [xLo, xHi] }, AXIS),
+    yaxis: { range: [-1, 1], showticklabels: false, zeroline: false,
+      gridcolor: 'rgba(0,0,0,0)', linecolor: 'rgba(0,0,0,0)' },
+    shapes: shapes, annotations: annotations,
+    plot_bgcolor: '#fffafa', paper_bgcolor: '#fffafa',
+    font: FONT, margin: { l: 24, r: 24, t: 16, b: 48 },
+    showlegend: false, hovermode: 'closest'
+  }, { responsive: true, displayModeBar: false }).then(postHeight);
+}
+
+function run() {
+  var r = computeTOST();
+  renderPlot(r);
+  renderVerdict(r);
+  renderSummary(r);
+  renderExplain(r);
+  postHeight();
+}
+
+document.getElementById('runBtn').addEventListener('click', run);
+// Recompute on Enter inside any input.
+Array.prototype.forEach.call(document.querySelectorAll('input'), function(el) {
+  el.addEventListener('keydown', function(e) { if (e.key === 'Enter') run(); });
+});
+
+window.addEventListener('resize', postHeight);
+window.addEventListener('load', function() { run(); setTimeout(postHeight, 300); });
+if (typeof ResizeObserver !== 'undefined') {
+  new ResizeObserver(postHeight).observe(document.body);
+}
+run();
+</script>
+</body>
+</html>

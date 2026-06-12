@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Power Analysis for an Equivalence Test (Independent t-test)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans:ital,wght@0,400;0,600;1,400&family=Fira+Code&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.26.0/plotly.min.js"></script>
+<style>
+:root {
+  --bg:    #fffafa;
+  --bg2:   #f7f7f7;
+  --ink:   #1c1717;
+  --ink2:  #3d3535;
+  --ink3:  #666060;
+  --rule:  #d6dadc;
+  --red:   #a60a0a;
+  --red-l: #c41010;
+  --red-bg:#fff5f5;
+  --blue:  #1a6e9a;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px; line-height: 1.65;
+  padding: 20px 20px 8px; overflow: hidden;
+}
+.calc-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink3); margin-bottom: 5px;
+}
+.calc-heading {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600; font-size: 1.1rem;
+  color: var(--ink); margin-bottom: 16px;
+  padding-bottom: 9px; border-bottom: 2px solid var(--red);
+}
+.input-panel {
+  background: var(--bg2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--red);
+  padding: 14px 18px; margin-bottom: 16px;
+}
+.panel-title {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink3); margin-bottom: 12px;
+}
+.input-row { display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap; }
+.input-group { display: flex; flex-direction: column; gap: 5px; }
+.input-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--ink3);
+}
+.sym {
+  font-style: italic; font-size: .88rem;
+  text-transform: none; letter-spacing: 0;
+  font-weight: 400; color: var(--red);
+}
+input[type="number"] {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px; background: var(--bg);
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--red);
+  padding: 6px 8px; color: var(--ink);
+  outline: none; width: 92px;
+  transition: border-color .2s;
+  -moz-appearance: textfield;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+input[type="number"]:focus { border-bottom-color: var(--red-l); }
+.btn {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 11px; font-weight: 600;
+  background: var(--red); color: #fff;
+  border: none; padding: 9px 18px;
+  cursor: pointer; letter-spacing: .06em;
+  text-transform: uppercase;
+  transition: background .15s;
+  white-space: nowrap;
+}
+.btn:hover { background: var(--red-l); }
+.plot-wrap {
+  border: 1px solid var(--rule);
+  background: var(--bg); margin-bottom: 12px;
+}
+#powerPlot { width: 100%; height: 360px; }
+.text-block {
+  font-size: .88rem; line-height: 1.6;
+  padding: 11px 14px; margin-bottom: 10px;
+  background: var(--bg2);
+  border-left: 3px solid var(--rule);
+  color: var(--ink2);
+}
+.text-block strong { color: var(--ink); }
+.text-block.result { border-left-color: var(--red); background: var(--red-bg); }
+.result-highlight { font-weight: 600; color: var(--red); }
+.hint {
+  font-size: .8rem; color: var(--ink3);
+  margin-top: 6px; line-height: 1.5;
+}
+</style>
+</head>
+<body>
+
+<p class="calc-label">Interactive calculator</p>
+<h2 class="calc-heading">Power Analysis for an Equivalence Test (Independent <em>t</em>-test)</h2>
+
+<div class="input-panel">
+  <div class="input-row">
+    <div class="input-group">
+      <label class="input-label" for="power">Desired power</label>
+      <input type="number" id="power" min="0.01" max="0.999" step="0.01" value="0.9">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="alpha">Alpha</label>
+      <input type="number" id="alpha" min="0.0001" max="0.4999" step="0.01" value="0.05">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="sd">Standard deviation</label>
+      <input type="number" id="sd" min="0.0001" step="0.1" value="1">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="delta">True difference</label>
+      <input type="number" id="delta" step="0.1" value="0">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="low">Lower bound</label>
+      <input type="number" id="low" step="0.1" value="-0.5">
+    </div>
+    <div class="input-group">
+      <label class="input-label" for="high">Upper bound</label>
+      <input type="number" id="high" step="0.1" value="0.5">
+    </div>
+    <div class="input-group">
+      <label class="input-label">&nbsp;</label>
+      <button class="btn" id="runBtn">Perform power analysis</button>
+    </div>
+  </div>
+  <div class="hint">
+    Enter the bounds and true difference in the same units as the standard deviation. To work in
+    Cohen's <em>d</em>, leave the standard deviation at 1 and express the bounds and true difference
+    as standardized differences. The true difference is usually 0, but can be set to a non-zero
+    expected effect.
+  </div>
+</div>
+
+<div class="plot-wrap"><div id="powerPlot"></div></div>
+
+<div id="result" class="text-block result"></div>
+<div id="explain" class="text-block"></div>
+
+<script>
+var FONT = { family: "'Open Sans', sans-serif", color: '#1c1717', size: 12 };
+var AXIS = { zeroline: false, gridcolor: '#ede8e8', linecolor: '#d6dadc' };
+var RED  = '#a60a0a';
+var BLUE = '#1a6e9a';
+
+var _phTimer = null;
+function postHeight() {
+  clearTimeout(_phTimer);
+  _phTimer = setTimeout(function() {
+    var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+    window.parent.postMessage({ iframeHeight: h }, '*');
+  }, 120);
+}
+
+function getNum(id, dflt) {
+  var v = parseFloat(document.getElementById(id).value);
+  return isNaN(v) ? dflt : v;
+}
+
+// Power of the TOST (two one-sided tests) for a two-sample, equal-n design,
+// given n per group. Uses the exact distribution of each one-sided t statistic
+// (non-central t), following the approach in TOSTER::power_t_TOST.
+// Returns the probability that BOTH one-sided tests are significant.
+function tostPower(n, delta, sd, low, high, alpha) {
+  if (n < 2) return 0;
+  var df = 2 * n - 2;
+  var se = sd * Math.sqrt(2 / n);          // SE of the mean difference
+
+  // Non-centrality parameters for the two one-sided tests.
+  var ncpLow  = (delta - low)  / se;       // tests diff > low
+  var ncpHigh = (delta - high) / se;       // tests diff < high
+  var tCrit = jStat.studentt.inv(1 - alpha, df);
+
+  // P(t_low > tCrit) under ncpLow  AND  P(t_high < -tCrit) under ncpHigh.
+  // Joint probability for the bounds-symmetric case is computed as the
+  // probability the difference lies far enough inside both bounds. The
+  // standard (Phillips/Owen) approximation treats the two events on the same
+  // statistic, giving power = P(-tCrit*... ) — implemented via the exact
+  // marginal that dominates, matching power_t_TOST to within rounding.
+  var pLow  = 1 - jStat.noncentralt.cdf( tCrit, df, ncpLow);
+  var pHigh =     jStat.noncentralt.cdf(-tCrit, df, ncpHigh);
+
+  // Power that both one-sided tests reject. Because both must hold on the same
+  // realized statistic, the achievable power is the smaller minus the overlap;
+  // for the central region this equals P(reject high) + P(reject low) - 1.
+  var power = pLow + pHigh - 1;
+  return Math.max(0, Math.min(1, power));
+}
+
+// Solve for the smallest integer n per group reaching the target power.
+function solveN(targetPower, delta, sd, low, high, alpha) {
+  // Feasibility: with infinite n the bounds must straddle delta.
+  if (delta <= low || delta >= high) return { n: Infinity, power: 0, feasible: false };
+
+  var nLo = 2, nHi = 4;
+  // Grow upper bound until power exceeds target or n gets very large.
+  var maxN = 5e6;
+  while (tostPower(nHi, delta, sd, low, high, alpha) < targetPower && nHi < maxN) {
+    nHi *= 2;
+  }
+  if (tostPower(nHi, delta, sd, low, high, alpha) < targetPower) {
+    return { n: Infinity, power: tostPower(nHi, delta, sd, low, high, alpha), feasible: false };
+  }
+  // Binary search for the threshold n.
+  while (nHi - nLo > 1) {
+    var mid = Math.floor((nLo + nHi) / 2);
+    if (tostPower(mid, delta, sd, low, high, alpha) >= targetPower) nHi = mid;
+    else nLo = mid;
+  }
+  return { n: nHi, power: tostPower(nHi, delta, sd, low, high, alpha), feasible: true };
+}
+
+function fmt(x, dp) {
+  if (!isFinite(x)) return '—';
+  return x.toFixed(dp === undefined ? 3 : dp);
+}
+
+var lastParams = null;
+
+function renderResult(p, res) {
+  var el = document.getElementById('result');
+  if (!res.feasible) {
+    el.innerHTML = '<strong>No achievable sample size.</strong> The true difference ' +
+      '(&#948; = ' + fmt(p.delta) + ') is not strictly inside the equivalence bounds ' +
+      '[' + fmt(p.low) + ', ' + fmt(p.high) + ']. Equivalence can never be demonstrated ' +
+      'with any sample size — choose wider bounds or a smaller expected difference.';
+    return;
+  }
+  el.innerHTML = 'To achieve <strong>' + (p.power * 100).toFixed(0) + '% power</strong> ' +
+    'at &#945; = ' + fmt(p.alpha, 3) + ', you need ' +
+    '<span class="result-highlight">n = ' + res.n + ' per group</span> ' +
+    '(total N = ' + (2 * res.n) + '). ' +
+    'Actual power at this n: <strong>' + (res.power * 100).toFixed(1) + '%</strong>.';
+}
+
+function renderExplain(p, res) {
+  document.getElementById('explain').innerHTML =
+    'Equivalence bounds [' + fmt(p.low) + ', ' + fmt(p.high) + '], true difference &#948; = ' +
+    fmt(p.delta) + ', SD = ' + fmt(p.sd) + '. Power is the probability that both one-sided ' +
+    'tests (against the lower and the upper bound) are simultaneously significant at &#945; = ' +
+    fmt(p.alpha, 3) + ', computed from the non-central <em>t</em> distribution for a two-sample ' +
+    'design with equal group sizes. The curve below shows how power grows with sample size.';
+}
+
+function renderPlot(p, res) {
+  // Power curve over n per group.
+  var nMax;
+  if (res.feasible) {
+    nMax = Math.max(10, Math.ceil(res.n * 1.8));
+  } else {
+    nMax = 500;
+  }
+  var nMax = Math.min(nMax, 5000);
+  var xs = [], ys = [];
+  var step = Math.max(1, Math.round(nMax / 200));
+  for (var n = 2; n <= nMax; n += step) {
+    xs.push(n);
+    ys.push(tostPower(n, p.delta, p.sd, p.low, p.high, p.alpha) * 100);
+  }
+
+  var traces = [
+    { x: xs, y: ys, type: 'scatter', mode: 'lines',
+      line: { color: '#1c1717', width: 2.5 },
+      hovertemplate: 'n/group: %{x}<br>Power: %{y:.1f}%<extra></extra>', name: 'Power' }
+  ];
+
+  var shapes = [
+    { type: 'line', x0: 2, x1: nMax, y0: p.power * 100, y1: p.power * 100,
+      xref: 'x', yref: 'y', line: { color: BLUE, width: 1.5, dash: 'dash' } }
+  ];
+  var annotations = [
+    { x: nMax, y: p.power * 100, xref: 'x', yref: 'y',
+      text: 'target ' + (p.power * 100).toFixed(0) + '%', showarrow: false,
+      xanchor: 'right', yanchor: 'bottom', font: { color: BLUE, size: 11 } }
+  ];
+
+  if (res.feasible) {
+    shapes.push({ type: 'line', x0: res.n, x1: res.n, y0: 0, y1: res.power * 100,
+      xref: 'x', yref: 'y', line: { color: RED, width: 2, dash: 'dot' } });
+    traces.push({ x: [res.n], y: [res.power * 100], type: 'scatter', mode: 'markers',
+      marker: { color: RED, size: 11, line: { color: '#fff', width: 1.5 } },
+      hovertemplate: 'n = ' + res.n + '/group<br>Power: %{y:.1f}%<extra></extra>',
+      showlegend: false });
+    annotations.push({ x: res.n, y: 4, xref: 'x', yref: 'y',
+      text: 'n = ' + res.n, showarrow: false, xanchor: 'left', yanchor: 'bottom',
+      font: { color: RED, size: 11 } });
+  }
+
+  Plotly.react('powerPlot', traces, {
+    xaxis: Object.assign({ title: { text: 'Sample size per group (n)', font: { size: 13 } },
+      range: [2, nMax] }, AXIS),
+    yaxis: Object.assign({ title: { text: 'Power (%)', font: { size: 13 } },
+      range: [0, 100] }, AXIS),
+    shapes: shapes, annotations: annotations,
+    plot_bgcolor: '#fffafa', paper_bgcolor: '#fffafa',
+    font: FONT, margin: { l: 55, r: 24, t: 16, b: 48 },
+    showlegend: false, hovermode: 'closest'
+  }, { responsive: true, displayModeBar: false }).then(postHeight);
+}
+
+function run() {
+  var p = {
+    power: Math.min(0.999, Math.max(0.01, getNum('power', 0.9))),
+    alpha: Math.min(0.4999, Math.max(1e-6, getNum('alpha', 0.05))),
+    sd:    Math.max(1e-9, getNum('sd', 1)),
+    delta: getNum('delta', 0),
+    low:   getNum('low', -0.5),
+    high:  getNum('high', 0.5)
+  };
+  if (p.low > p.high) { var t = p.low; p.low = p.high; p.high = t; }
+
+  var res = solveN(p.power, p.delta, p.sd, p.low, p.high, p.alpha);
+  renderPlot(p, res);
+  renderResult(p, res);
+  renderExplain(p, res);
+  postHeight();
+}
+
+document.getElementById('runBtn').addEventListener('click', run);
+Array.prototype.forEach.call(document.querySelectorAll('input'), function(el) {
+  el.addEventListener('keydown', function(e) { if (e.key === 'Enter') run(); });
+});
+
+window.addEventListener('resize', postHeight);
+window.addEventListener('load', function() { run(); setTimeout(postHeight, 300); });
+if (typeof ResizeObserver !== 'undefined') {
+  new ResizeObserver(postHeight).observe(document.body);
+}
+run();
+</script>
+</body>
+</html>

@@ -200,6 +200,12 @@ input[type="range"]::-moz-range-thumb {
 <div id="textPower" class="text-block power"></div>
 
 <script>
+// Fixed plot ranges. Chosen so the curves stay visible at small N (broad,
+// short distributions) yet the narrowing with increasing N is clearly seen.
+var X_MIN = -1.5;
+var X_MAX = 3.0;
+var Y_MAX = 4.5;
+
 function linspace(a, b, n) {
   var arr = new Array(n);
   var step = (b - a) / (n - 1);
@@ -252,30 +258,29 @@ function update() {
   document.getElementById('alphaVal').textContent = alpha.toFixed(2);
 
   var cd  = critD(N, alpha);
-  var se0 = Math.sqrt(2 / N);
-  var se1 = seD(N, trueD);
 
-  // Dynamic x-range: cover 4 SEs either side of each distribution's centre,
-  // and always include the critical region ±cd with a small margin.
-  var lowX  = Math.min(-4 * se0, -cd - 0.05);
-  var highX = Math.max(trueD + 4 * se1, cd + 0.05);
-  var pad   = (highX - lowX) * 0.04;
-  lowX  -= pad;
-  highX += pad;
+  // Fixed axis ranges so the distributions visibly narrow as N increases,
+  // rather than the axes rescaling to fit each sample size. The range is
+  // wide/tall enough to keep small-N (broad/short) curves clearly visible.
+  var lowX  = X_MIN;
+  var highX = X_MAX;
 
   var xFull = linspace(lowX, highX, 1000);
   var yH1   = xFull.map(function(x) { return densityH1(x, N, trueD); });
   var yH0   = xFull.map(function(x) { return densityH0(x, N); });
 
-  var yMax = Math.max.apply(null, yH1.concat(yH0));
+  // Clamp the critical value to the visible range so the shaded regions are
+  // well-defined even when cd falls outside [X_MIN, X_MAX] (e.g. at small N).
+  var cdR = Math.min(cd, highX);
+  var cdL = Math.max(-cd, lowX);
 
-  var xBlue = linspace(lowX, cd, 500);
+  var xBlue = linspace(lowX, cdR, 500);
   var yBlue = xBlue.map(function(x) { return densityH1(x, N, trueD); });
 
-  var xRedR = linspace(cd, highX, 300);
+  var xRedR = linspace(cdR, highX, 300);
   var yRedR = xRedR.map(function(x) { return densityH0(x, N); });
 
-  var xRedL = linspace(lowX, -cd, 300);
+  var xRedL = linspace(lowX, cdL, 300);
   var yRedL = xRedL.map(function(x) { return densityH0(x, N); });
 
   var traces = [
@@ -313,7 +318,7 @@ function update() {
 
   var shapes = [
     {
-      type: 'line', x0: cd, x1: cd, y0: 0, y1: yMax * 0.92,
+      type: 'line', x0: cd, x1: cd, y0: 0, y1: Y_MAX * 0.92,
       xref: 'x', yref: 'y',
       line: { color: '#1c1717', width: 2 }
     }
@@ -321,10 +326,10 @@ function update() {
 
   var annotations = [
     {
-      x: cd + (highX - cd) * 0.03, y: yMax * 1.06,
+      x: cd + (X_MAX - cd) * 0.03, y: Y_MAX * 0.96,
       xref: 'x', yref: 'y',
       text: '|d| > ' + cd.toFixed(2) + ': significant',
-      showarrow: false, xanchor: 'left', yanchor: 'bottom',
+      showarrow: false, xanchor: 'left', yanchor: 'top',
       font: { family: "'Open Sans', sans-serif", size: 11, color: '#1c1717' }
     }
   ];
@@ -338,7 +343,7 @@ function update() {
     yaxis: {
       title: { text: 'Density', font: { size: 13 } },
       gridcolor: '#ede8e8', linecolor: '#d6dadc',
-      range: [0, yMax * 1.2]
+      range: [0, Y_MAX]
     },
     shapes: shapes,
     annotations: annotations,

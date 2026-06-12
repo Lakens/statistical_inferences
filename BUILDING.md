@@ -31,6 +31,27 @@ This installs packages listed in [requirements-r.txt](requirements-r.txt).
 quarto install tinytex
 ```
 
+### PDF fonts and engine
+
+The PDF edition is set in **Literata** (a serif with extensive ligatures) and is
+built with the **LuaLaTeX** engine (configured via `pdf-engine: lualatex` in
+`_quarto.yml`). The typography is defined in [include/preamble.tex](include/preamble.tex).
+
+- The Literata font files are **bundled in the repo** at
+  [include/fonts/](include/fonts/) (variable upright + italic TTFs, under the SIL
+  Open Font License — see `include/fonts/OFL.txt`). No system font install is
+  needed; the build references the files by path, so it works the same on any
+  machine and on CI.
+- Math is set in **STIX Two Math** and chapter-blank-page handling needs
+  **emptypage**. These are TeX packages, not bundled. On a fresh TinyTeX install
+  them once:
+
+  ```powershell
+  tlmgr install stix2-otf emptypage
+  ```
+
+  (If you build on CI, add that `tlmgr install` step after installing TinyTeX.)
+
 ## 4) Render the book
 
 Render everything:
