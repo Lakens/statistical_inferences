@@ -1,0 +1,57 @@
+% ===========================================================================
+%  Front cover for the PDF edition of
+%  "Improving Your Statistical Inferences"
+%
+%  A typographic, LaTeX-generated cover (no external cover-art file required).
+%  Built around the existing brand logo (images/logos/logo.png), which already
+%  carries the full title, on a brand-red field. Author and descriptor are set
+%  in Literata beneath it.
+%
+%  Injected as the first page via include-before-body in _quarto.yml; Quarto's
+%  own \maketitle title page is suppressed in the preamble so this is page 1.
+%
+%  Structured so a designed cover image can replace it later by swapping this
+%  file for a single full-bleed \includegraphics page.
+% ===========================================================================
+
+\begingroup
+\thispagestyle{empty}%
+
+% Full-bleed brand-red background, drawn with a tikz overlay so it reaches the
+% paper edges regardless of the page geometry set in the preamble.
+\begin{tikzpicture}[remember picture, overlay]
+  \fill[brandred] (current page.south west) rectangle (current page.north east);
+
+  % Thin inner keyline, a few mm in from the trim, in a soft tint.
+  \draw[white!75, line width=0.6pt]
+    ([shift={( 9mm, 9mm)}]current page.south west) rectangle
+    ([shift={(-9mm,-9mm)}]current page.north east);
+\end{tikzpicture}%
+
+% Cover content, vertically composed over the red field. The logo already
+% contains the title, so it is the hero; we do not repeat the title in type.
+\begin{tikzpicture}[remember picture, overlay]
+  % Logo mark / title, upper-middle.
+  \node[anchor=north] at ([yshift=-46mm]current page.north)
+    {\includegraphics[width=98mm]{images/logos/logo.png}};
+
+  % Hairline rule beneath the logo.
+  \draw[white!85, line width=1pt]
+    ([xshift=-36mm, yshift=2mm]current page.center) --
+    ([xshift= 36mm, yshift=2mm]current page.center);
+
+  % Subtitle / descriptor.
+  \node[anchor=north, text=white!95, align=center, text width=118mm]
+    at ([yshift=-6mm]current page.center)
+    {\itshape\fontsize{14}{19}\selectfont
+     A guide to designing better experiments, drawing sound conclusions,
+     and reporting research transparently.};
+
+  % Author, set in the serif body font just beneath the descriptor.
+  \node[anchor=north, text=white, align=center]
+    at ([yshift=-34mm]current page.center)
+    {\rmfamily\fontsize{20}{24}\selectfont Dani\"el Lakens};
+\end{tikzpicture}%
+
+\clearpage
+\endgroup

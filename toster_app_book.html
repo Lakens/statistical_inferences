@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TOSTER: Equivalence Tests &amp; Power Analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans:ital,wght@0,400;0,600;1,400&family=Fira+Code&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.26.0/plotly.min.js"></script>
+<style>
+:root {
+  --bg:    #fffafa;
+  --bg2:   #f7f7f7;
+  --ink:   #1c1717;
+  --ink2:  #3d3535;
+  --ink3:  #666060;
+  --rule:  #d6dadc;
+  --red:   #a60a0a;
+  --red-l: #c41010;
+  --red-bg:#fff5f5;
+  --blue:  #1a6e9a;
+  --green: #2e7d32;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px; line-height: 1.65;
+  padding: 20px 20px 8px; overflow: hidden;
+}
+.calc-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink3); margin-bottom: 5px;
+}
+.calc-heading {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600; font-size: 1.1rem;
+  color: var(--ink); margin-bottom: 14px;
+  padding-bottom: 9px; border-bottom: 2px solid var(--red);
+}
+
+/* ---- tab bars ---- */
+.mode-bar { display: flex; gap: 0; margin-bottom: 12px; }
+.mode-btn {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: .04em;
+  background: var(--bg2); color: var(--ink3);
+  border: 1px solid var(--rule); border-bottom: none;
+  padding: 9px 18px; cursor: pointer;
+  transition: all .15s;
+}
+.mode-btn.active { background: var(--red); color: #fff; border-color: var(--red); }
+.mode-btn:not(.active):hover { color: var(--ink); }
+
+.test-bar {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-bottom: 16px; padding-bottom: 14px;
+  border-bottom: 1px solid var(--rule);
+}
+.test-btn {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: .03em;
+  background: var(--bg); color: var(--ink3);
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--rule);
+  padding: 7px 13px; cursor: pointer;
+  transition: all .15s; white-space: nowrap;
+}
+.test-btn.active {
+  background: var(--blue); color: #fff;
+  border-color: var(--blue); border-bottom-color: var(--blue);
+}
+.test-btn:not(.active):hover { border-bottom-color: var(--blue); color: var(--ink); }
+
+/* ---- input panels ---- */
+.input-panel {
+  background: var(--bg2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--red);
+  padding: 14px 18px; margin-bottom: 14px;
+}
+.panel-title {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink3); margin-bottom: 12px;
+}
+.input-row { display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap; }
+.input-row + .input-row { margin-top: 14px; }
+.input-group { display: flex; flex-direction: column; gap: 5px; }
+.input-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--ink3);
+}
+.sym {
+  font-style: italic; font-size: .88rem;
+  text-transform: none; letter-spacing: 0;
+  font-weight: 400; color: var(--red);
+}
+input[type="number"] {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px; background: var(--bg);
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--red);
+  padding: 6px 8px; color: var(--ink);
+  outline: none; width: 96px;
+  transition: border-color .2s;
+  -moz-appearance: textfield;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+input[type="number"]:focus { border-bottom-color: var(--red-l); }
+select {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px; background: var(--bg);
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--red);
+  padding: 6px 8px; color: var(--ink);
+  outline: none; cursor: pointer;
+}
+.btn {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 11px; font-weight: 600;
+  background: var(--red); color: #fff;
+  border: none; padding: 9px 18px;
+  cursor: pointer; letter-spacing: .06em;
+  text-transform: uppercase;
+  transition: background .15s; white-space: nowrap;
+}
+.btn:hover { background: var(--red-l); }
+.hint { font-size: .8rem; color: var(--ink3); margin-top: 8px; line-height: 1.5; }
+
+/* ---- output ---- */
+.plot-wrap { border: 1px solid var(--rule); background: var(--bg); margin-bottom: 12px; }
+.plot-box { width: 100%; height: 320px; }
+.text-block {
+  font-size: .88rem; line-height: 1.6;
+  padding: 11px 14px; margin-bottom: 10px;
+  background: var(--bg2);
+  border-left: 3px solid var(--rule);
+  color: var(--ink2);
+}
+.text-block strong { color: var(--ink); }
+.text-block.verdict { border-left-color: var(--red); background: var(--red-bg); }
+.text-block.result  { border-left-color: var(--red); background: var(--red-bg); }
+.result-highlight { font-weight: 600; color: var(--red); }
+.results-table {
+  width: 100%; border-collapse: collapse;
+  font-size: .85rem; margin-bottom: 12px; background: var(--bg);
+}
+.results-table caption {
+  text-align: left; font-size: 10px; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink3); padding: 8px 0 6px;
+}
+.results-table th, .results-table td {
+  border: 1px solid var(--rule);
+  padding: 6px 10px; text-align: right;
+  font-family: 'Fira Code', monospace; font-size: 12px;
+}
+.results-table th {
+  background: var(--bg2); color: var(--ink2);
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600; font-size: 11px; text-align: right;
+}
+.results-table td.lbl, .results-table th.lbl {
+  text-align: left; font-family: 'Open Sans', sans-serif; color: var(--ink2);
+}
+.sig-yes { color: var(--green); font-weight: 600; }
+.sig-no  { color: var(--red);   font-weight: 600; }
+.hidden { display: none; }
+</style>
+</head>
+<body>
+
+<p class="calc-label">Interactive calculator</p>
+<h2 class="calc-heading" id="heading">TOSTER: Equivalence Test</h2>
+
+<div class="mode-bar">
+  <button class="mode-btn active" data-mode="test">Equivalence test</button>
+  <button class="mode-btn" data-mode="power">Power analysis</button>
+</div>
+
+<div class="test-bar" id="testBar"></div>
+
+<!-- Shared input area, rebuilt per test -->
+<div id="inputs"></div>
+
+<div class="input-panel" id="boundsPanel">
+  <div class="input-row" id="boundsRow"></div>
+  <div class="hint" id="boundsHint"></div>
+</div>
+
+<div class="plot-wrap"><div id="plot" class="plot-box"></div></div>
+
+<div id="verdict" class="text-block verdict"></div>
+<div id="tables"></div>
+<div id="explain" class="text-block"></div>
+
+<script>
+/* ============================================================
+   Shared helpers
+   ============================================================ */
+var FONT = { family: "'Open Sans', sans-serif", color: '#1c1717', size: 12 };
+var AXIS = { zeroline: false, gridcolor: '#ede8e8', linecolor: '#d6dadc' };
+var RED  = '#a60a0a', BLUE = '#1a6e9a', GREEN = '#2e7d32';
+
+var _phTimer = null;
+function postHeight() {
+  clearTimeout(_phTimer);
+  _phTimer = setTimeout(function() {
+    var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+    window.parent.postMessage({ iframeHeight: h }, '*');
+  }, 120);
+}
+var Phi   = function(z) { return jStat.normal.cdf(z, 0, 1); };
+var qnorm = function(p) { return jStat.normal.inv(p, 0, 1); };
+function fmt(x, dp) { return isFinite(x) ? x.toFixed(dp === undefined ? 3 : dp) : '—'; }
+function fmtP(p) { return p < 0.001 ? '< 0.001' : p.toFixed(3); }
+
+// Two-sided Student-t p.
+function tTwoSided(t, df) { return 2 * (1 - jStat.studentt.cdf(Math.abs(t), df)); }
+
+// Non-central-t CI on the ncp (for SMD confidence intervals, smd_ci="nct").
+function ncpConfInt(tObs, df, conf) {
+  var lowerTail = (1 - conf) / 2, upperTail = 1 - lowerTail;
+  function solve(targetP) {
+    var lo = tObs - 40, hi = tObs + 40;
+    for (var i = 0; i < 200; i++) {
+      var mid = (lo + hi) / 2;
+      if (jStat.noncentralt.cdf(tObs, df, mid) > targetP) lo = mid; else hi = mid;
+    }
+    return (lo + hi) / 2;
+  }
+  return [solve(upperTail), solve(lowerTail)];
+}
+
+function num(id, dflt) {
+  var el = document.getElementById(id);
+  if (!el) return dflt;
+  var v = parseFloat(el.value);
+  return isNaN(v) ? dflt : v;
+}
+
+/* ============================================================
+   State
+   ============================================================ */
+var MODE = 'test';   // 'test' | 'power'
+var TEST = 'two';    // current test key
+
+var TESTS = [
+  { key: 'one',   label: 'One-sample t',  power: true  },
+  { key: 'two',   label: 'Two-sample t',  power: true  },
+  { key: 'paired',label: 'Paired t',      power: true  },
+  { key: 'cor',   label: 'Correlation',   power: true  },
+  { key: 'prop',  label: 'Two proportions', power: true },
+  { key: 'meta',  label: 'Meta-analysis', power: false }
+];
+
+/* ============================================================
+   Input field definitions per test (the "data" inputs; the
+   bounds + alpha row is shared and added separately).
+   ============================================================ */
+function inputField(id, label, value, step, min) {
+  var minAttr = (min !== undefined) ? ' min="' + min + '"' : '';
+  return '<div class="input-group">' +
+    '<label class="input-label" for="' + id + '">' + label + '</label>' +
+    '<input type="number" id="' + id + '" step="' + step + '"' + minAttr +
+    ' value="' + value + '"></div>';
+}
+
+// Returns HTML for the data-input panels of the current test+mode.
+function dataInputsHTML() {
+  if (MODE === 'power') return powerInputsHTML();
+  switch (TEST) {
+    case 'one':
+      return panel(null, [
+        inputField('m1', 'Mean', '0.55', '0.1'),
+        inputField('sd1', 'SD', '1', '0.1', '0.0001'),
+        inputField('n1', 'Sample size', '50', '1', '2'),
+        inputField('mu', 'Test value', '0', '0.1')
+      ]);
+    case 'two':
+      return panel(null, [
+        inputField('m1', 'Mean group 1', '0.1', '0.1'),
+        inputField('sd1', 'SD group 1', '1', '0.1', '0.0001'),
+        inputField('n1', 'n group 1', '50', '1', '2'),
+        inputField('m2', 'Mean group 2', '0', '0.1'),
+        inputField('sd2', 'SD group 2', '1', '0.1', '0.0001'),
+        inputField('n2', 'n group 2', '50', '1', '2')
+      ]);
+    case 'paired':
+      return panel(null, [
+        inputField('m1', 'Mean 1', '5.2', '0.1'),
+        inputField('sd1', 'SD 1', '1.1', '0.1', '0.0001'),
+        inputField('m2', 'Mean 2', '5', '0.1'),
+        inputField('sd2', 'SD 2', '1.2', '0.1', '0.0001'),
+        inputField('n1', 'Pairs', '30', '1', '2'),
+        inputField('r12', 'Correlation', '0.6', '0.01')
+      ]);
+    case 'cor':
+      return panel(null, [
+        inputField('r', 'Correlation', '0.05', '0.01'),
+        inputField('n', 'Sample size', '200', '1', '4')
+      ]);
+    case 'prop':
+      return panel(null, [
+        inputField('p1', 'Proportion 1', '0.5', '0.01', '0'),
+        inputField('np1', 'n group 1', '200', '1', '2'),
+        inputField('p2', 'Proportion 2', '0.55', '0.01', '0'),
+        inputField('np2', 'n group 2', '200', '1', '2')
+      ]);
+    case 'meta':
+      return panel(null, [
+        inputField('es', 'Effect size', '0.06', '0.01'),
+        inputField('seMeta', 'Standard error', '0.05', '0.01', '0.0001')
+      ]);
+  }
+}
+
+function powerInputsHTML() {
+  var rows = [
+    inputField('power', 'Desired power', '0.9', '0.01', '0.01')
+  ];
+  switch (TEST) {
+    case 'one':
+    case 'two':
+    case 'paired':
+      var sdLabel = (TEST === 'paired') ? 'SD of differences' : 'Standard deviation';
+      rows.push(inputField('sd', sdLabel, '1', '0.1', '0.0001'));
+      rows.push(inputField('delta', 'True difference', '0', '0.1'));
+      return panel(null, rows);
+    case 'cor':
+      rows.push(inputField('rho', 'True correlation', '0', '0.01'));
+      return panel(null, rows);
+    case 'prop':
+      rows.push(inputField('p1', 'Proportion 1', '0.5', '0.01', '0'));
+      rows.push(inputField('p2', 'Proportion 2', '0.5', '0.01', '0'));
+      return panel(null, rows);
+  }
+  return '';
+}
+
+function panel(title, fields) {
+  var head = title ? '<div class="panel-title">' + title + '</div>' : '';
+  return '<div class="input-panel">' + head +
+    '<div class="input-row">' + fields.join('') + '</div></div>';
+}
+
+/* ============================================================
+   Bounds + alpha row (shared). Some tests use a single
+   symmetric bound (correlation / proportions); the t-tests and
+   meta use separate lower/upper bounds.
+   ============================================================ */
+function boundsHTML() {
+  var alpha = inputField('alpha', 'Alpha', '0.05', '0.01', '0.0001');
+  var btn = '<div class="input-group"><label class="input-label">&nbsp;</label>' +
+    '<button class="btn" id="runBtn">' +
+    (MODE === 'power' ? 'Perform power analysis' : 'Perform test') + '</button></div>';
+
+  if (TEST === 'cor' || TEST === 'prop') {
+    // single symmetric bound
+    var dfltBound = TEST === 'cor' ? '0.2' : '0.1';
+    return inputField('bound', 'Equivalence bound', dfltBound, '0.01', '0.0001') +
+           alpha + btn;
+  }
+  // separate lower/upper bounds
+  var typeSel = '';
+  if (TEST === 'one' || TEST === 'two' || TEST === 'paired') {
+    typeSel = '<div class="input-group"><label class="input-label" for="boundtype">Bound type</label>' +
+      '<select id="boundtype"><option value="raw" selected>raw</option>' +
+      '<option value="SMD">SMD</option></select></div>';
+  }
+  var loDflt = '-0.5', hiDflt = '0.5';
+  if (TEST === 'meta') { loDflt = '-0.2'; hiDflt = '0.2'; }
+  return typeSel +
+    inputField('low', 'Lower bound', loDflt, '0.1') +
+    inputField('high', 'Upper bound', hiDflt, '0.1') +
+    alpha + btn;
+}
+
+function boundsHint() {
+  if (TEST === 'one' || TEST === 'two' || TEST === 'paired') {
+    if (MODE === 'power')
+      return 'Enter the bounds and the true difference (&#948;) in the same units as the SD. ' +
+             'To work in Cohen&#39;s <em>d</em>, set SD = 1 and express the bounds and &#948; as standardized differences.';
+    return 'Bounds can be given as raw differences (<strong>raw</strong>, recommended) or as ' +
+           'standardized mean differences (<strong>SMD</strong>, Cohen&#39;s <em>d</em>). SMD bounds give slightly biased results.';
+  }
+  if (TEST === 'cor')
+    return 'The equivalence bound is a correlation; the test asks whether the true correlation lies within &#177;&#916;. ' +
+           'Computation uses the Fisher <em>z</em> transformation.';
+  if (TEST === 'prop')
+    return 'The equivalence bound is a raw difference in proportions (p&#8321; &#8722; p&#8322;); the test asks whether it lies within &#177;&#916;.';
+  if (TEST === 'meta')
+    return 'The effect size and bounds are in standardized units (Cohen&#39;s <em>d</em>); the test is a <em>Z</em>-test using the supplied standard error.';
+  return '';
+}
+
+/* ============================================================
+   COMPUTATIONS — equivalence tests
+   Each returns a normalized object the renderer can use.
+   ============================================================ */
+
+// Shared TOST from a point estimate, its SE, and df (t-based) or Inf (z-based).
+function tostFromEstimate(est, se, df, lowRaw, highRaw, alpha, zBased) {
+  var inv = zBased ? function(p){return qnorm(p);} : function(p){return jStat.studentt.inv(p, df);};
+  var cdf = zBased ? function(x){return Phi(x);}   : function(x){return jStat.studentt.cdf(x, df);};
+
+  var stat0 = est / se;
+  var p0 = zBased ? 2 * (1 - Phi(Math.abs(stat0))) : tTwoSided(stat0, df);
+
+  var statLow  = (est - lowRaw)  / se;
+  var statHigh = (est - highRaw) / se;
+  var pLow  = 1 - cdf(statLow);
+  var pHigh = cdf(statHigh);
+  var pTOST = Math.max(pLow, pHigh);
+
+  var crit90 = inv(1 - alpha);
+  var ci90Lo = est - crit90 * se, ci90Hi = est + crit90 * se;
+  var crit95 = inv(1 - alpha / 2);
+  var ci95Lo = est - crit95 * se, ci95Hi = est + crit95 * se;
+
+  return {
+    est: est, se: se, df: df, alpha: alpha, zBased: !!zBased,
+    lowRaw: lowRaw, highRaw: highRaw,
+    stat0: stat0, p0: p0,
+    statLow: statLow, pLow: pLow, statHigh: statHigh, pHigh: pHigh, pTOST: pTOST,
+    ci90Lo: ci90Lo, ci90Hi: ci90Hi, ci95Lo: ci95Lo, ci95Hi: ci95Hi,
+    equiv: pTOST < alpha, nhstSig: p0 < alpha
+  };
+}
+
+function computeTest() {
+  var alpha = Math.min(0.4999, Math.max(1e-6, num('alpha', 0.05)));
+
+  if (TEST === 'one') {
+    var m = num('m1', 0), sd = Math.max(1e-9, num('sd1', 1)), n = Math.max(2, Math.round(num('n1', 50)));
+    var mu = num('mu', 0);
+    var est = m - mu, se = sd / Math.sqrt(n), df = n - 1;
+    var bounds = rawBounds(sd, 1);   // pooled sd = sd for one-sample d
+    var r = tostFromEstimate(est, se, df, bounds[0], bounds[1], alpha, false);
+    addSMD(r, est, sd, df, 1 / n, n - 1, alpha, 'Hedges’ g');
+    r.estLabel = 'Mean difference (M &#8722; μ&#8320;)';
+    r.testName = 'one-sample t-test';
+    return r;
+  }
+  if (TEST === 'two') {
+    var m1 = num('m1', 0), sd1 = Math.max(1e-9, num('sd1', 1)), n1 = Math.max(2, Math.round(num('n1', 50)));
+    var m2 = num('m2', 0), sd2 = Math.max(1e-9, num('sd2', 1)), n2 = Math.max(2, Math.round(num('n2', 50)));
+    var est = m1 - m2;
+    var se = Math.sqrt(sd1 * sd1 / n1 + sd2 * sd2 / n2);
+    var df = Math.pow(sd1 * sd1 / n1 + sd2 * sd2 / n2, 2) /
+             (Math.pow(sd1 * sd1 / n1, 2) / (n1 - 1) + Math.pow(sd2 * sd2 / n2, 2) / (n2 - 1));
+    var sdP = Math.sqrt(((n1 - 1) * sd1 * sd1 + (n2 - 1) * sd2 * sd2) / (n1 + n2 - 2));
+    var bounds = rawBounds(sdP, 1);
+    var r = tostFromEstimate(est, se, df, bounds[0], bounds[1], alpha, false);
+    addSMD(r, est, sdP, n1 + n2 - 2, 1 / n1 + 1 / n2, n1 + n2 - 2, alpha, 'Hedges’ g');
+    r.estLabel = 'Mean difference (M₁ − M₂)';
+    r.testName = 'Welch two-sample t-test';
+    return r;
+  }
+  if (TEST === 'paired') {
+    var m1 = num('m1', 0), sd1 = Math.max(1e-9, num('sd1', 1));
+    var m2 = num('m2', 0), sd2 = Math.max(1e-9, num('sd2', 1));
+    var n = Math.max(2, Math.round(num('n1', 30))), r12 = num('r12', 0.5);
+    var est = m1 - m2;
+    var sdDiff = Math.sqrt(sd1 * sd1 + sd2 * sd2 - 2 * r12 * sd1 * sd2);
+    var se = sdDiff / Math.sqrt(n), df = n - 1;
+    var bounds = rawBounds(sdDiff, 1);
+    var r = tostFromEstimate(est, se, df, bounds[0], bounds[1], alpha, false);
+    addSMD(r, est, sdDiff, n - 1, 1 / n, n - 1, alpha, 'Hedges’ g(z)');
+    r.estLabel = 'Mean difference (M₁ − M₂)';
+    r.testName = 'paired t-test';
+    return r;
+  }
+  if (TEST === 'cor') {
+    var rr = num('r', 0.05), n = Math.max(4, Math.round(num('n', 200)));
+    var bound = Math.abs(num('bound', 0.2));
+    var zr = Math.atanh(rr), se = 1 / Math.sqrt(n - 3);
+    var zLow = (zr - Math.atanh(-bound)) / se, zHigh = (zr - Math.atanh(bound)) / se;
+    var pLow = 1 - Phi(zLow), pHigh = Phi(zHigh), pTOST = Math.max(pLow, pHigh);
+    var stat0 = zr / se, p0 = 2 * (1 - Phi(Math.abs(stat0)));
+    var zc90 = qnorm(1 - alpha), zc95 = qnorm(1 - alpha / 2);
+    return {
+      kind: 'cor', est: rr, alpha: alpha, lowRaw: -bound, highRaw: bound,
+      stat0: stat0, p0: p0, statLow: zLow, pLow: pLow, statHigh: zHigh, pHigh: pHigh, pTOST: pTOST,
+      ci90Lo: Math.tanh(zr - zc90 * se), ci90Hi: Math.tanh(zr + zc90 * se),
+      ci95Lo: Math.tanh(zr - zc95 * se), ci95Hi: Math.tanh(zr + zc95 * se),
+      zBased: true, equiv: pTOST < alpha, nhstSig: p0 < alpha,
+      estLabel: 'Correlation (r)', testName: 'correlation z-test (Fisher transform)'
+    };
+  }
+  if (TEST === 'prop') {
+    var p1 = num('p1', 0.5), p2 = num('p2', 0.55);
+    var n1 = Math.max(2, Math.round(num('np1', 200))), n2 = Math.max(2, Math.round(num('np2', 200)));
+    var bound = Math.abs(num('bound', 0.1));
+    var est = p1 - p2;
+    var se = Math.sqrt(p1 * (1 - p1) / n1 + p2 * (1 - p2) / n2);
+    var r = tostFromEstimate(est, se, Infinity, -bound, bound, alpha, true);
+    r.kind = 'prop';
+    r.estLabel = 'Difference in proportions (p₁ − p₂)';
+    r.testName = 'two-proportion z-test';
+    return r;
+  }
+  if (TEST === 'meta') {
+    var es = num('es', 0.06), se = Math.max(1e-9, num('seMeta', 0.05));
+    var low = num('low', -0.2), high = num('high', 0.2);
+    if (low > high) { var t = low; low = high; high = t; }
+    var r = tostFromEstimate(es, se, Infinity, low, high, alpha, true);
+    r.kind = 'meta';
+    r.estLabel = 'Meta-analytic effect size (d)';
+    r.testName = 'meta-analytic Z-test';
+    return r;
+  }
+}
+
+// Raw equivalence bounds, converting from SMD if the bound-type selector says so.
+function rawBounds(sdForSMD, dummy) {
+  var lowIn = num('low', -0.5), highIn = num('high', 0.5);
+  var typeEl = document.getElementById('boundtype');
+  var low, high;
+  if (typeEl && typeEl.value === 'SMD') { low = lowIn * sdForSMD; high = highIn * sdForSMD; }
+  else { low = lowIn; high = highIn; }
+  if (low > high) { var t = low; low = high; high = t; }
+  return [low, high];
+}
+
+// Attach a standardized effect size (Hedges' g) with non-central-t CI.
+function addSMD(r, rawEst, sdStd, dfPooled, seFactorSq, dfForJ, alpha, label) {
+  var d = rawEst / sdStd;
+  var J = 1 - 3 / (4 * dfForJ - 1);
+  var g = d * J;
+  var seSMD = Math.sqrt(seFactorSq);
+  var tObs = d / seSMD;
+  var ci = ncpConfInt(tObs, dfPooled, 1 - 2 * alpha);
+  r.smd = { label: label, g: g, lo: ci[0] * seSMD * J, hi: ci[1] * seSMD * J };
+}
+
+/* ============================================================
+   COMPUTATIONS — power (solve for n)
+   ============================================================ */
+function tostPowerT(n, delta, sd, low, high, alpha, twoSample) {
+  if (n < 2) return 0;
+  var df, se;
+  if (twoSample) { df = 2 * n - 2; se = sd * Math.sqrt(2 / n); }
+  else           { df = n - 1;     se = sd / Math.sqrt(n); }
+  var ncpLow = (delta - low) / se, ncpHigh = (delta - high) / se;
+  var tc = jStat.studentt.inv(1 - alpha, df);
+  var pL = 1 - jStat.noncentralt.cdf(tc, df, ncpLow);
+  var pH = jStat.noncentralt.cdf(-tc, df, ncpHigh);
+  return Math.max(0, Math.min(1, pL + pH - 1));
+}
+function tostPowerCor(n, rho, bound, alpha) {
+  if (n < 4) return 0;
+  var se = 1 / Math.sqrt(n - 3), zc = qnorm(1 - alpha);
+  var zr = Math.atanh(rho), zbH = Math.atanh(bound), zbL = Math.atanh(-bound);
+  var pH = Phi((zbH - zr) / se - zc);
+  var pL = Phi((zr - zbL) / se - zc);
+  return Math.max(0, Math.min(1, pL + pH - 1));
+}
+function tostPowerProp(n, p1, p2, bound, alpha) {
+  if (n < 2) return 0;
+  var diff = p1 - p2;
+  var se = Math.sqrt(p1 * (1 - p1) / n + p2 * (1 - p2) / n), zc = qnorm(1 - alpha);
+  var pH = Phi((bound - diff) / se - zc);
+  var pL = Phi((diff + bound) / se - zc);
+  return Math.max(0, Math.min(1, pL + pH - 1));
+}
+
+function solveN(powerFn, targetPower, feasible) {
+  if (!feasible) return { n: Infinity, power: 0, feasible: false };
+  var lo = 2, hi = 4, maxN = 5e6;
+  while (powerFn(hi) < targetPower && hi < maxN) hi *= 2;
+  if (powerFn(hi) < targetPower) return { n: Infinity, power: powerFn(hi), feasible: false };
+  while (hi - lo > 1) {
+    var mid = Math.floor((lo + hi) / 2);
+    if (powerFn(mid) >= targetPower) hi = mid; else lo = mid;
+  }
+  return { n: hi, power: powerFn(hi), feasible: true };
+}
+
+function computePower() {
+  var power = Math.min(0.999, Math.max(0.01, num('power', 0.9)));
+  var alpha = Math.min(0.4999, Math.max(1e-6, num('alpha', 0.05)));
+  var p = { power: power, alpha: alpha };
+
+  if (TEST === 'one' || TEST === 'two' || TEST === 'paired') {
+    var sd = Math.max(1e-9, num('sd', 1)), delta = num('delta', 0);
+    var low = num('low', -0.5), high = num('high', 0.5);
+    var typeEl = document.getElementById('boundtype');
+    if (typeEl && typeEl.value === 'SMD') { low *= sd; high *= sd; }
+    if (low > high) { var t = low; low = high; high = t; }
+    var twoSample = (TEST === 'two');
+    var fn = function(n) { return tostPowerT(n, delta, sd, low, high, alpha, twoSample); };
+    var res = solveN(fn, power, delta > low && delta < high);
+    p.unit = twoSample ? 'per group' : (TEST === 'paired' ? 'pairs' : '');
+    p.low = low; p.high = high; p.delta = delta; p.sd = sd; p.powerFn = fn;
+    return { p: p, res: res };
+  }
+  if (TEST === 'cor') {
+    var rho = num('rho', 0), bound = Math.abs(num('bound', 0.2));
+    var fn = function(n) { return tostPowerCor(n, rho, bound, alpha); };
+    var res = solveN(fn, power, Math.abs(rho) < bound);
+    p.unit = ''; p.low = -bound; p.high = bound; p.delta = rho; p.powerFn = fn;
+    p.deltaLabel = 'ρ'; p.xLabel = 'true correlation';
+    return { p: p, res: res };
+  }
+  if (TEST === 'prop') {
+    var p1 = num('p1', 0.5), p2 = num('p2', 0.5), bound = Math.abs(num('bound', 0.1));
+    var diff = p1 - p2;
+    var fn = function(n) { return tostPowerProp(n, p1, p2, bound, alpha); };
+    var res = solveN(fn, power, Math.abs(diff) < bound);
+    p.unit = 'per group'; p.low = -bound; p.high = bound; p.delta = diff; p.powerFn = fn;
+    return { p: p, res: res };
+  }
+}
+
+/* ============================================================
+   RENDER — equivalence test
+   ============================================================ */
+function statName(zBased) { return zBased ? 'z' : 't'; }
+
+// Report the TOST, NHST, and effect-size results as sentences.
+function renderTestSummary(r) {
+  var sn = statName(r.zBased);                       // 't' or 'z'
+  var dfTxt = r.zBased ? '' : '(' + fmt(r.df, 1) + ')';
+
+  // The TOST is reported using the binding (larger-p) one-sided test.
+  var binding = r.pHigh >= r.pLow
+    ? { stat: r.statHigh, p: r.pHigh }
+    : { stat: r.statLow, p: r.pLow };
+
+  var equivSentence = (r.equiv
+    ? 'The equivalence test was <strong>significant</strong>, '
+    : 'The equivalence test was <strong>non-significant</strong>, ') +
+    '<em>' + sn + '</em>' + dfTxt + ' = ' + fmt(binding.stat, 2) +
+    ', <em>p</em> = ' + fmtP(binding.p) + '.';
+
+  var nhstSentence = (r.nhstSig
+    ? 'The null-hypothesis test was <strong>significant</strong>, '
+    : 'The null-hypothesis test was <strong>non-significant</strong>, ') +
+    '<em>' + sn + '</em>' + dfTxt + ' = ' + fmt(r.stat0, 2) +
+    ', <em>p</em> = ' + fmtP(r.p0) + '.';
+
+  var ciPct = Math.round((1 - 2 * r.alpha) * 100);
+  var effectSentence = 'The ' + r.estLabel.toLowerCase() + ' is ' + fmt(r.est) +
+    ', ' + ciPct + '% CI [' + fmt(r.ci90Lo) + ', ' + fmt(r.ci90Hi) + ']';
+  if (r.smd)
+    effectSentence += ' (' + r.smd.label + ' = ' + fmt(r.smd.g) +
+      ', ' + ciPct + '% CI [' + fmt(r.smd.lo) + ', ' + fmt(r.smd.hi) + '])';
+  effectSentence += '.';
+
+  document.getElementById('tables').innerHTML =
+    '<div class="text-block">' + equivSentence + ' ' + nhstSentence + ' ' + effectSentence + '</div>';
+}
+
+function renderTestVerdict(r) {
+  var msg;
+  if (r.equiv && !r.nhstSig)
+    msg = '<strong>Statistically equivalent.</strong> The interval falls within the equivalence bounds, ' +
+          'and the effect is not significantly different from the null.';
+  else if (r.equiv && r.nhstSig)
+    msg = '<strong>Equivalent and statistically different.</strong> The effect differs from the null but ' +
+          'is small enough to also be declared equivalent.';
+  else if (!r.equiv && r.nhstSig)
+    msg = '<strong>Statistically different, not equivalent.</strong> The effect differs from the null and the ' +
+          'interval is not contained within the bounds.';
+  else
+    msg = '<strong>Undetermined.</strong> The effect is not significantly different from the null, but the ' +
+          'interval is too wide to fall within the equivalence bounds — inconclusive.';
+  document.getElementById('verdict').innerHTML = msg +
+    ' &nbsp;|&nbsp; <em>p</em><sub>TOST</sub> = ' + fmtP(r.pTOST) +
+    ', <em>p</em><sub>NHST</sub> = ' + fmtP(r.p0) + '.';
+}
+
+function renderTestExplain(r) {
+  var dfTxt = r.zBased ? '' : ' with df = ' + fmt(r.df, 2);
+  document.getElementById('explain').innerHTML =
+    'Test: ' + r.testName + dfTxt + '. Equivalence bounds [' + fmt(r.lowRaw) + ', ' + fmt(r.highRaw) + ']. ' +
+    'The TOST procedure runs two one-sided tests; equivalence is concluded when both are significant, i.e. ' +
+    'when <em>p</em><sub>TOST</sub> = ' + fmtP(r.pTOST) + ' is below &#945; = ' + r.alpha.toFixed(3) + '.';
+}
+
+function renderTestPlot(r) {
+  var lo = Math.min(r.ci95Lo, r.lowRaw, r.ci90Lo);
+  var hi = Math.max(r.ci95Hi, r.highRaw, r.ci90Hi);
+  var pad = (hi - lo) * 0.15 || 1, xLo = lo - pad, xHi = hi + pad;
+
+  var traces = [
+    { x: [r.ci95Lo, r.ci95Hi], y: [0, 0], type: 'scatter', mode: 'lines',
+      line: { color: BLUE, width: 2 }, hoverinfo: 'skip', showlegend: false },
+    { x: [r.ci90Lo, r.ci90Hi], y: [0, 0], type: 'scatter', mode: 'lines',
+      line: { color: '#1c1717', width: 6 }, hoverinfo: 'skip', showlegend: false },
+    { x: [r.est], y: [0], type: 'scatter', mode: 'markers',
+      marker: { color: RED, size: 13, line: { color: '#fff', width: 1.5 } },
+      hovertemplate: 'Estimate: %{x:.3f}<extra></extra>', showlegend: false }
+  ];
+  var shapes = [
+    { type: 'line', x0: 0, x1: 0, y0: -1, y1: 1, line: { color: '#c0c0c0', width: 1, dash: 'dot' } },
+    { type: 'line', x0: r.lowRaw, x1: r.lowRaw, y0: -0.7, y1: 0.7, line: { color: RED, width: 2, dash: 'dash' } },
+    { type: 'line', x0: r.highRaw, x1: r.highRaw, y0: -0.7, y1: 0.7, line: { color: RED, width: 2, dash: 'dash' } },
+    { type: 'rect', x0: r.lowRaw, x1: r.highRaw, y0: -1, y1: 1, fillcolor: 'rgba(46,125,50,0.07)', line: { width: 0 } }
+  ];
+  var annotations = [
+    { x: r.lowRaw, y: 0.85, text: '&#916;<sub>L</sub>', showarrow: false, font: { color: RED, size: 12 }, yanchor: 'bottom' },
+    { x: r.highRaw, y: 0.85, text: '&#916;<sub>U</sub>', showarrow: false, font: { color: RED, size: 12 }, yanchor: 'bottom' }
+  ];
+  Plotly.react('plot', traces, {
+    xaxis: Object.assign({ title: { text: r.estLabel, font: { size: 13 } }, range: [xLo, xHi] }, AXIS),
+    yaxis: { range: [-1, 1], showticklabels: false, zeroline: false,
+      gridcolor: 'rgba(0,0,0,0)', linecolor: 'rgba(0,0,0,0)' },
+    shapes: shapes, annotations: annotations,
+    plot_bgcolor: '#fffafa', paper_bgcolor: '#fffafa',
+    font: FONT, margin: { l: 24, r: 24, t: 16, b: 48 },
+    showlegend: false, hovermode: 'closest'
+  }, { responsive: true, displayModeBar: false }).then(postHeight);
+}
+
+/* ============================================================
+   RENDER — power
+   ============================================================ */
+function renderPowerResult(p, res) {
+  var el = document.getElementById('result');
+  if (!res.feasible) {
+    el.innerHTML = '<strong>No achievable sample size.</strong> The true effect (' +
+      (p.deltaLabel || 'δ') + ' = ' + fmt(p.delta) + ') is not strictly inside the bounds [' +
+      fmt(p.low) + ', ' + fmt(p.high) + ']. Equivalence can never be demonstrated — widen the bounds or reduce the expected effect.';
+    return;
+  }
+  var unit = p.unit ? ' ' + p.unit : '';
+  var totalTxt = (p.unit === 'per group') ? ' (total N = ' + (2 * res.n) + ')' : '';
+  el.innerHTML = 'To achieve <strong>' + (p.power * 100).toFixed(0) + '% power</strong> at &#945; = ' +
+    fmt(p.alpha, 3) + ', you need <span class="result-highlight">n = ' + res.n + unit + '</span>' + totalTxt +
+    '. Actual power at this n: <strong>' + (res.power * 100).toFixed(1) + '%</strong>.';
+}
+
+function renderPowerExplain(p) {
+  document.getElementById('explain').innerHTML =
+    'Equivalence bounds [' + fmt(p.low) + ', ' + fmt(p.high) + ']. Power is the probability that both ' +
+    'one-sided tests are simultaneously significant at &#945; = ' + fmt(p.alpha, 3) +
+    '. The curve shows how power grows with sample size; the dashed line marks the target power.';
+}
+
+function renderPowerPlot(p, res) {
+  var nMax = res.feasible ? Math.max(10, Math.ceil(res.n * 1.8)) : 800;
+  nMax = Math.min(nMax, 5000);
+  var nStart = (TEST === 'cor') ? 5 : 2;
+  var xs = [], ys = [], step = Math.max(1, Math.round(nMax / 200));
+  for (var n = nStart; n <= nMax; n += step) { xs.push(n); ys.push(p.powerFn(n) * 100); }
+
+  var traces = [{ x: xs, y: ys, type: 'scatter', mode: 'lines',
+    line: { color: '#1c1717', width: 2.5 },
+    hovertemplate: 'n: %{x}<br>Power: %{y:.1f}%<extra></extra>' }];
+  var shapes = [{ type: 'line', x0: nStart, x1: nMax, y0: p.power * 100, y1: p.power * 100,
+    line: { color: BLUE, width: 1.5, dash: 'dash' } }];
+  var annotations = [{ x: nMax, y: p.power * 100, text: 'target ' + (p.power * 100).toFixed(0) + '%',
+    showarrow: false, xanchor: 'right', yanchor: 'bottom', font: { color: BLUE, size: 11 } }];
+  if (res.feasible) {
+    shapes.push({ type: 'line', x0: res.n, x1: res.n, y0: 0, y1: res.power * 100, line: { color: RED, width: 2, dash: 'dot' } });
+    traces.push({ x: [res.n], y: [res.power * 100], type: 'scatter', mode: 'markers',
+      marker: { color: RED, size: 11, line: { color: '#fff', width: 1.5 } },
+      hovertemplate: 'n = ' + res.n + '<br>Power: %{y:.1f}%<extra></extra>', showlegend: false });
+    annotations.push({ x: res.n, y: 4, text: 'n = ' + res.n, showarrow: false,
+      xanchor: 'left', yanchor: 'bottom', font: { color: RED, size: 11 } });
+  }
+  var xTitle = 'Sample size' + (p.unit === 'per group' ? ' per group (n)' : (p.unit === 'pairs' ? ' (pairs)' : ' (n)'));
+  Plotly.react('plot', traces, {
+    xaxis: Object.assign({ title: { text: xTitle, font: { size: 13 } }, range: [nStart, nMax] }, AXIS),
+    yaxis: Object.assign({ title: { text: 'Power (%)', font: { size: 13 } }, range: [0, 100] }, AXIS),
+    shapes: shapes, annotations: annotations,
+    plot_bgcolor: '#fffafa', paper_bgcolor: '#fffafa',
+    font: FONT, margin: { l: 55, r: 24, t: 16, b: 48 },
+    showlegend: false, hovermode: 'closest'
+  }, { responsive: true, displayModeBar: false }).then(postHeight);
+}
+
+/* ============================================================
+   Run + wiring
+   ============================================================ */
+function run() {
+  if (MODE === 'test') {
+    var r = computeTest();
+    show('verdict', true); show('tables', true);
+    document.getElementById('result') && (document.getElementById('result').innerHTML = '');
+    renderTestPlot(r);
+    renderTestVerdict(r);
+    renderTestSummary(r);
+    renderTestExplain(r);
+  } else {
+    var out = computePower();
+    show('verdict', false); show('tables', false);
+    renderPowerPlot(out.p, out.res);
+    renderPowerResult(out.p, out.res);
+    renderPowerExplain(out.p);
+  }
+  postHeight();
+}
+
+function show(id, on) {
+  var el = document.getElementById(id);
+  if (el) el.classList.toggle('hidden', !on);
+}
+
+function rebuild() {
+  document.getElementById('inputs').innerHTML = dataInputsHTML();
+  document.getElementById('boundsRow').innerHTML = boundsHTML();
+  document.getElementById('boundsHint').innerHTML = boundsHint();
+
+  var label = TESTS.filter(function(t){return t.key===TEST;})[0].label;
+  document.getElementById('heading').innerHTML =
+    'TOSTER: ' + (MODE === 'power' ? 'Power for ' : '') +
+    (MODE === 'power' ? label + ' equivalence test' : label + ' equivalence test');
+
+  // ensure a result block exists for power mode
+  if (!document.getElementById('result')) {
+    var div = document.createElement('div');
+    div.id = 'result'; div.className = 'text-block result';
+    document.getElementById('verdict').insertAdjacentElement('afterend', div);
+  }
+
+  document.getElementById('runBtn').addEventListener('click', run);
+  Array.prototype.forEach.call(document.querySelectorAll('input, select'), function(el) {
+    el.addEventListener('keydown', function(e) { if (e.key === 'Enter') run(); });
+  });
+  run();
+}
+
+function buildTestBar() {
+  var bar = document.getElementById('testBar');
+  bar.innerHTML = '';
+  TESTS.forEach(function(t) {
+    if (MODE === 'power' && !t.power) return;  // hide meta in power mode
+    var b = document.createElement('button');
+    b.className = 'test-btn' + (t.key === TEST ? ' active' : '');
+    b.textContent = t.label;
+    b.addEventListener('click', function() {
+      TEST = t.key;
+      Array.prototype.forEach.call(bar.children, function(c){ c.classList.remove('active'); });
+      b.classList.add('active');
+      rebuild();
+    });
+    bar.appendChild(b);
+  });
+}
+
+Array.prototype.forEach.call(document.querySelectorAll('.mode-btn'), function(b) {
+  b.addEventListener('click', function() {
+    MODE = b.getAttribute('data-mode');
+    Array.prototype.forEach.call(document.querySelectorAll('.mode-btn'), function(x){ x.classList.remove('active'); });
+    b.classList.add('active');
+    // meta has no power analysis; fall back to two-sample
+    if (MODE === 'power' && TEST === 'meta') TEST = 'two';
+    buildTestBar();
+    rebuild();
+  });
+});
+
+window.addEventListener('resize', postHeight);
+window.addEventListener('load', function() { buildTestBar(); rebuild(); setTimeout(postHeight, 350); });
+if (typeof ResizeObserver !== 'undefined') new ResizeObserver(postHeight).observe(document.body);
+
+buildTestBar();
+rebuild();
+</script>
+</body>
+</html>

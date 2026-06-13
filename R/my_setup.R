@@ -11,8 +11,13 @@ knitr::opts_chunk$set(error = FALSE,
                       fig.height = 5,
                       fig.align  = 'center')
 
-if (knitr:::is_latex_output()) {
-  backgroundcolor <- "#ffffff"
-} else {
-  backgroundcolor <- "#fffafa"
-}
+backgroundcolor <- "#fffafa"
+
+knitr::opts_hooks$set(label = function(options) {
+  if (identical(knitr::opts_current$get("dev"), "pdf")) {
+    assign("backgroundcolor", "#ffffff", envir = .GlobalEnv)
+  } else {
+    assign("backgroundcolor", "#fffafa", envir = .GlobalEnv)
+  }
+  options
+})

@@ -15,26 +15,18 @@
 \usepackage{fontspec}
 \usepackage{unicode-math}
 
-% Body: Literata (variable font). We select upright/bold from the weight (wght)
-% axis of the single variable file, and the italic faces from the companion
-% italic file. Standard + contextual ligatures are enabled for a polished,
-% readable result without ornate discretionary ligatures.
-\setmainfont{Literata}[
-  Path           = ./include/fonts/ ,
-  Extension      = .ttf ,
-  UprightFont    = Literata-Variable ,
-  ItalicFont     = Literata-Italic-Variable ,
-  BoldFont       = Literata-Variable ,
-  BoldItalicFont = Literata-Italic-Variable ,
-  UprightFeatures    = { RawFeature={+axis={wght=400}} } ,
-  ItalicFeatures     = { RawFeature={+axis={wght=400}} } ,
-  BoldFeatures       = { RawFeature={+axis={wght=700}} } ,
-  BoldItalicFeatures = { RawFeature={+axis={wght=700}} } ,
-  Ligatures      = { Common, Contextual }
+% Body: EB Garamond. An elegant Garamond revival (installed as a TeX package,
+% so no bundled files needed). Old-style figures sit well in running prose.
+% A slight upscale lifts Garamond's small x-height to a comfortable reading
+% size next to the code and math.
+\setmainfont{EB Garamond}[
+  Numbers   = OldStyle ,
+  Scale     = 1.05 ,
+  Ligatures = { Common, Contextual }
 ]
 
-% Math is set in STIX Two Math, designed to pair with text serifs of
-% Literata's proportions.
+% Math is set in STIX Two Math (EB Garamond has no bundled math companion;
+% STIX Two pairs acceptably and covers the symbols used in the book).
 \setmathfont{STIX Two Math}
 
 % Monospace for code: Latin Modern Mono ships with every TeX install, so no
@@ -42,6 +34,14 @@
 \setmonofont{Latin Modern Mono}[Scale=0.86]
 
 \usepackage{microtype}               % subtle protrusion polish (LuaLaTeX)
+\usepackage{graphicx}                % \includegraphics (logo on the cover)
+\usepackage{tikz}                    % full-bleed cover background / layout
+\usepackage{float}                   % enables the [H] "here, exactly" float spec
+
+% Figure backgrounds: plots set par(bg = backgroundcolor), and my_setup.R sets
+% that to white (#ffffff) for LaTeX output (snow #fffafa is only for HTML). A
+% full render (freeze removed) regenerates every figure on clean white, so no
+% PDF-side backing trick is needed here.
 
 % ---- Colours ---------------------------------------------------------------
 \usepackage{xcolor}
@@ -54,8 +54,8 @@
 \usepackage{geometry}
 \geometry{
   paper=a4paper,
-  inner=2.6cm, outer=2.6cm,
-  top=2.6cm, bottom=2.8cm,
+  inner=3.0cm, outer=3.0cm,
+  top=3.0cm, bottom=3.2cm,
   headsep=0.7\baselineskip
 }
 \usepackage{setspace}
@@ -80,17 +80,19 @@
 % ---- Chapter & section styling --------------------------------------------
 \usepackage{titlesec}
 
-% Headings are set in Literata itself at heavier weights, so the whole book
-% is one type family. \headingfont = Literata Black (800); section headings
-% use Literata Bold (700, the main \bfseries).
-\newfontfamily\headingfont{Literata}[
+% Headings are set in Open Sans (the brand's HTML heading font), bundled in
+% include/fonts/ so the build stays reproducible on CI without a system-font
+% install. The sans gives strong contrast against the EB Garamond body and a
+% modern-textbook feel; ExtraBold weight makes chapter/section titles command
+% the page. (Open Sans is under the SIL OFL, like Literata — see
+% include/fonts/OpenSans-LICENSE.txt.)
+\newfontfamily\headingfont{Open Sans}[
   Path        = ./include/fonts/ ,
   Extension   = .ttf ,
-  UprightFont = Literata-Variable ,
-  ItalicFont  = Literata-Italic-Variable ,
-  UprightFeatures = { RawFeature={+axis={wght=800}} } ,
-  ItalicFeatures  = { RawFeature={+axis={wght=800}} } ,
-  Ligatures   = { Common, Contextual }
+  UprightFont = OpenSans-ExtraBold ,
+  ItalicFont  = OpenSans-ExtraBoldItalic ,
+  BoldFont    = OpenSans-ExtraBold ,
+  BoldItalicFont = OpenSans-ExtraBoldItalic
 ]
 
 % Chapter opener: large brand-red number on its own line, a thin rule,
@@ -109,16 +111,26 @@
   {\headingfont\large\color{inkdark}}{\thesubsection}{0.6em}{}
 \titleformat{\subsubsection}
   {\headingfont\normalsize\color{inkdark}}{\thesubsubsection}{0.5em}{}
+% Once titlesec manages headings, every level used in the document needs a
+% format or it errors ("No format for this command"). The changelog uses
+% \paragraph, so define run-in formats for \paragraph and \subparagraph too.
+\titleformat{\paragraph}[runin]
+  {\headingfont\normalsize\color{inkdark}}{\theparagraph}{0.5em}{}
+\titleformat{\subparagraph}[runin]
+  {\headingfont\normalsize\color{inkdark}}{\thesubparagraph}{0.5em}{}
 \titlespacing*{\section}{0pt}{1.5\baselineskip}{0.5\baselineskip}
 
 % ---- Links -----------------------------------------------------------------
 % Tame Quarto's default bright blue. (colorlinks is set in _quarto.yml.)
-\hypersetup{
+% Quarto loads hyperref later in the template, but include-in-header content is
+% injected before that, so \hypersetup is not yet defined here. Defer our link
+% colour settings until hyperref has been loaded.
+\AtBeginDocument{\hypersetup{
   linkcolor=linkcol,
   citecolor=linkcol,
   urlcolor=linkcol,
   filecolor=linkcol
-}
+}}
 
 % ---- Callout boxes (kept from the original, restyled to match) -------------
 \usepackage{tcolorbox}
@@ -141,10 +153,73 @@
 \newtcolorbox{info}{calloutstyle,      colback=infocol!8,  colframe=infocol}
 \newtcolorbox{try}{calloutstyle,       colback=trycol!8,   colframe=trycol}
 
+% ---- Code blocks -----------------------------------------------------------
+% Quarto highlights code in an fvextra Verbatim ("Highlighting") environment.
+% By default long lines run off the right margin in the PDF. Turn on line
+% breaking so code wraps within the text block, with a small arrow marking
+% continued lines and breaks allowed at most non-word characters.
+\usepackage{fvextra}
+\fvset{
+  breaklines=true,
+  breakanywhere=true,
+  breaksymbolleft=\raisebox{0.8ex}{\small\color{rulecol}$\hookrightarrow$\space},
+  fontsize=\small
+}
+
+% Printed R *output* (results, console text) is emitted by Quarto in a plain
+% {verbatim} environment, which does NOT wrap and so runs past the right
+% margin (e.g. long "alternative hypothesis:" lines from t.test). Re-implement
+% verbatim on top of fvextra's Verbatim so it inherits the breaklines settings
+% above and wraps within the text block like the code does.
+\AtBeginDocument{%
+  \RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines=true,breakanywhere=true,fontsize=\small}%
+}
+
+% ---- Block quotes ----------------------------------------------------------
+% The HTML edition gives quotes a distinct, set-apart treatment; the book
+% should be at least as explicit. Pandoc renders markdown ">" quotes as the
+% {quote} environment, so we redefine it as a tinted tcolorbox with a thick
+% brand-red bar down the left edge and slightly larger, italic text. This makes
+% the many epigraph-style quotations in the book read clearly as quoted voice.
+\definecolor{quotebg}{HTML}{FBF3F2}    % very pale warm tint behind quotes
+\newtcolorbox{quotebox}{%
+  enhanced, breakable, frame hidden, boxrule=0pt, arc=0pt, outer arc=0pt,
+  colback=quotebg,
+  borderline west={3pt}{0pt}{brandred},
+  left=14pt, right=12pt, top=8pt, bottom=8pt,
+  before skip=10pt, after skip=10pt
+}
+\renewenvironment{quote}
+  {\begin{quotebox}\itshape\large\color{inkdark}\setstretch{1.12}}
+  {\end{quotebox}}
+
 % ---- Tables ----------------------------------------------------------------
 \usepackage{booktabs}
+\usepackage{colortbl}                  % \rowcolor / \arrayrulecolor
 \renewcommand{\arraystretch}{1.12}     % a little more row breathing room
+
+% Brand the kable/booktabs tables: a pale-red shaded header row, white bold
+% header text on a stronger red is too heavy for data tables, so we use a soft
+% tint with dark ink and recolour booktabs' rules in the brand red. Quarto's
+% kable tables use \toprule/\midrule/\bottomrule, so colouring those rules
+% restyles every table consistently.
+\definecolor{tableheadbg}{HTML}{F2D9D7} % soft red tint for the header row
+\arrayrulecolor{rulecol}
+\setlength{\arrayrulewidth}{0.7pt}
+% Shade the first row of every longtable/tabular header. Quarto emits the
+% header cells right after \toprule; we hook \toprule to start the row colour
+% and \midrule to end it, so the head band appears without editing each table.
+\let\oldtoprule\toprule
+\let\oldmidrule\midrule
+\renewcommand{\toprule}{\oldtoprule\rowcolor{tableheadbg}}
+\renewcommand{\midrule}{\rowcolor{white}\oldmidrule}
 
 % ---- Table of contents tweak ----------------------------------------------
 % Colour the chapter entries (KOMA-friendly; avoids tocloft which clashes).
 \addtokomafont{chapterentry}{\color{inkdark}}
+
+% ---- Title page -----------------------------------------------------------
+% The cover (include/cover.tex, injected via include-before-body) is the front
+% page. Quarto would otherwise emit its own plain \maketitle title page after
+% it; suppress that so the cover is page 1 and is not duplicated.
+\renewcommand{\maketitle}{}
