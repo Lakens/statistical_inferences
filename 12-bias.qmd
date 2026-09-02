@@ -178,7 +178,7 @@ points(x = result$b[1], y = 0, cex = 1.5, pch = 17)
 Let’s start by looking at what unbiased research looks like, by running the code, keeping `pub.bias` at 0.05, such that only 5% Type 1 errors enter the scientific literature.
 
 ```{r metasim1, echo = FALSE}
-set.seed(52)
+set.seed(58)
 nsims    <- 100
 pub.bias <- 0.05
 
@@ -200,9 +200,9 @@ sim_sig <- function(n_sig) {
   for (i in seq_len(n_sig)) {
     n <- round(rtruncnorm(1, a = 20, b = 1000, mean = 100, sd = 100))
     p <- 1
-    while (p > 0.025) {
+    while (p > 0.05) {
       x <- rnorm(n, mean = m1, sd = sd1); y <- rnorm(n, mean = m2, sd = sd2)
-      p <- t.test(x, y, alternative = "greater", var.equal = TRUE)$p.value
+      p <- t.test(x, y, var.equal = TRUE)$p.value
     }
     res <- t.test(x, y, var.equal = TRUE)
     out[i, ] <- list(mean(x), mean(y), sd(x), sd(y), n, n, res$p.value,
