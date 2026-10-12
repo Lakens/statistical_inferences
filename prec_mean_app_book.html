@@ -225,8 +225,15 @@ function update() {
     sampY.push(normPDF(x, mu, se));
   }
 
-  // y-axis maximum
-  var yMax = Math.max(normPDF(mu, mu, se) * 1.25, normPDF(mu, mu, sd) * 1.25);
+  // Fixed y-axis maximum. The point of this figure is to show the sampling
+  // distribution getting taller/narrower as n grows (more precision) — if the
+  // axis auto-fit to each curve's peak instead, that narrowing would be
+  // invisible (every curve would just fill the same height). The constant
+  // below keeps curves visible up to roughly n = 1000 at the default sd = 15;
+  // beyond that the curve is intentionally clipped at the top, which still
+  // reads correctly as "very precise, off the chart".
+  var Y_MAX = 1.1;
+  var yMax = Y_MAX;
 
   // CI bar height (near top)
   var ciY = yMax * 0.88;

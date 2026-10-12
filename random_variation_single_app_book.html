@@ -146,17 +146,6 @@ function normalPDF(x, mu, sigma) {
   return Math.exp(-0.5 * Math.pow((x - mu) / sigma, 2)) / (sigma * Math.sqrt(2 * Math.PI));
 }
 
-function maxBinCount(data) {
-  var counts = {};
-  for (var i = 0; i < data.length; i++) {
-    var b = Math.floor((data[i] - 50) / BW);
-    if (b >= 0 && b < 50) counts[b] = (counts[b] || 0) + 1;
-  }
-  var m = 0;
-  for (var k in counts) if (counts[k] > m) m = counts[k];
-  return m;
-}
-
 function sampleStats(data) {
   var n = data.length, sm = 0, sv = 0;
   for (var i = 0; i < n; i++) sm += data[i];
@@ -178,14 +167,13 @@ function update() {
     datasets.push(d);
   }
 
-  // Shared y-axis max across all panels
-  var globalHistMax = 0;
-  for (var p = 0; p < 4; p++) {
-    var m = maxBinCount(datasets[p]);
-    if (m > globalHistMax) globalHistMax = m;
-  }
+  // Shared y-axis max, fixed to (mu, sigma, n) rather than to the actual
+  // histogram bars drawn. The peak bin count is a Poisson-ish random
+  // variable with expectation `curveMax`; using mean + 4 SD as the ceiling
+  // keeps the axis stable across repeated "New samples" clicks (so panels
+  // stay comparable) while still adapting correctly if n/mu/sigma change.
   var curveMax = normalPDF(mu, mu, sigma) * n * BW;
-  var yMax = Math.max(globalHistMax * 1.3, curveMax * 1.5, 2);
+  var yMax = curveMax + 4 * Math.sqrt(curveMax) + 3;
 
   // Normal curve (same for all panels — population curve)
   var curveX = [], curveY = [];
