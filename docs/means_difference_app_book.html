@@ -188,11 +188,16 @@ var _currentCiX = null, _currentCiY = null, _currentDiff = null;
 // ── Raw data ──────────────────────────────────────────────────────────────
 var rawX = [], rawY = [];
 
+// Last-used inputs, kept so the axis window (below) can be derived from the
+// settings rather than from whichever random sample happened to be drawn.
+var _lastN = 50, _lastMx = 3, _lastMy = 5, _lastSd = 5;
+
 function generateData() {
   var n  = Math.max(2, parseInt(document.getElementById('nInput').value, 10) || 50);
   var mx = parseFloat(document.getElementById('mxInput').value) || 3;
   var my = parseFloat(document.getElementById('myInput').value) || 5;
   var sd = Math.max(0.1, parseFloat(document.getElementById('sdInput').value) || 5);
+  _lastN = n; _lastMx = mx; _lastMy = my; _lastSd = sd;
   rawX = []; rawY = [];
   for (var i = 0; i < n; i++) {
     rawX.push(rnorm(mx, sd));
@@ -221,9 +226,17 @@ function draw(ciX, ciY, diff) {
   var diffAbsHi = anchor + diff.upper;   // Difference upper in left-axis coords
   var diffAbsPt = anchor + diff.diff;    // Difference point = ciY.mean
 
-  // Y-axis: [0, max(X upper, Y upper) + 1] — matches R ylim
+  // Y-axis: fixed to the settings (n, means, SD), not to the realized sample's
+  // CI — otherwise the axis jumps on every "New sample" click purely from
+  // sampling noise, making it impossible to visually compare samples. The
+  // margin is 3x the theoretical 95% CI half-width at these settings, which
+  // keeps the window stable across resamples while still adapting if the
+  // user changes n, the means, or the SD.
+  var seTheory = _lastSd / Math.sqrt(_lastN);
+  var tTheory  = jStat.studentt.inv(0.975, Math.max(1, _lastN - 1));
+  var margin   = 3 * tTheory * seTheory + 1;
   var yMin = 0;
-  var yMax = Math.max(ciX.upper, ciY.upper) + 1;
+  var yMax = Math.max(_lastMx, _lastMy) + margin;
 
   // Right (difference) axis: same physical height, offset by -anchor
   var y2Min = yMin - anchor;
