@@ -100,14 +100,6 @@ input[type="number"]:focus { border-bottom-color: var(--red-l); }
       <input type="number" id="nIn" min="2" max="10000" step="1" value="10">
     </div>
     <div class="input-group">
-      <label class="input-label" for="muIn">Population mean <span class="sym">&#956;</span></label>
-      <input type="number" id="muIn" step="1" value="100">
-    </div>
-    <div class="input-group">
-      <label class="input-label" for="sigmaIn">Population SD <span class="sym">&#963;</span></label>
-      <input type="number" id="sigmaIn" min="0.1" step="1" value="15">
-    </div>
-    <div class="input-group">
       <div class="input-label">&nbsp;</div>
       <button class="btn" id="resampleBtn">New samples</button>
     </div>
@@ -156,8 +148,12 @@ function sampleStats(data) {
 
 function update() {
   var n     = Math.max(2, parseInt(document.getElementById('nIn').value, 10) || 10);
-  var mu    = parseFloat(document.getElementById('muIn').value) || 100;
-  var sigma = Math.max(0.1, parseFloat(document.getElementById('sigmaIn').value) || 15);
+  // mu/sigma are fixed (not user inputs): the x-axis is a fixed [50, 150]
+  // IQ-like scale, and letting mu/sigma vary freely would let the data move
+  // off that fixed window, which isn't needed to make the point of this
+  // figure (sampling variability at a given n).
+  var mu    = 100;
+  var sigma = 15;
 
   // Generate 4 independent datasets
   var datasets = [];
@@ -171,7 +167,7 @@ function update() {
   // histogram bars drawn. The peak bin count is a Poisson-ish random
   // variable with expectation `curveMax`; using mean + 4 SD as the ceiling
   // keeps the axis stable across repeated "New samples" clicks (so panels
-  // stay comparable) while still adapting correctly if n/mu/sigma change.
+  // stay comparable) while still adapting correctly if n changes.
   var curveMax = normalPDF(mu, mu, sigma) * n * BW;
   var yMax = curveMax + 4 * Math.sqrt(curveMax) + 3;
 
@@ -242,9 +238,7 @@ function update() {
 }
 
 document.getElementById('resampleBtn').addEventListener('click', update);
-['nIn', 'muIn', 'sigmaIn'].forEach(function(id) {
-  document.getElementById(id).addEventListener('change', update);
-});
+document.getElementById('nIn').addEventListener('change', update);
 window.addEventListener('resize', function() { update(); postHeight(); });
 window.addEventListener('load', function() { setTimeout(postHeight, 400); });
 if (typeof ResizeObserver !== 'undefined') {
