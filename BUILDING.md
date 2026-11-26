@@ -20,7 +20,7 @@ Notes:
 From the repository root, run:
 
 ```powershell
-& "C:\Program Files\R\R-4.5.2\bin\Rscript.exe" scripts/install_book_requirements.R
+& "C:\Program Files\R\R-4.5.3\bin\Rscript.exe" scripts/install_book_requirements.R
 ```
 
 This installs packages listed in [requirements-r.txt](requirements-r.txt).
@@ -96,13 +96,13 @@ Run integrity checks for:
 From the repository root:
 
 ```powershell
-& "C:\Program Files\R\R-4.5.2\bin\Rscript.exe" scripts/check_book_tests.R
+& "C:\Program Files\R\R-4.5.3\bin\Rscript.exe" scripts/check_book_tests.R
 ```
 
 To allow rendered warnings as non-blocking notes, run:
 
 ```powershell
-& "C:\Program Files\R\R-4.5.2\bin\Rscript.exe" scripts/check_book_tests.R --no-strict-warnings
+& "C:\Program Files\R\R-4.5.3\bin\Rscript.exe" scripts/check_book_tests.R --no-strict-warnings
 ```
 
 If checks fail, the script exits with a non-zero status and prints file/line hints.

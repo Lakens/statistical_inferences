@@ -336,6 +336,35 @@ $$N = \left(\frac{z \cdot sd}{error}\right)^2$$
 
 where *N* is the number of observations, *z* is the critical value related to the desired confidence interval, *sd* is the standard deviation of IQ scores in the population, and *error* is the width of the confidence interval within which the mean should fall, with the desired error rate. In this example, (1.96 × 15 / 2)^2 = 216.1 observations. If a researcher desires 95% of the means to fall within a 2 IQ point range around the true population mean, 217 observations should be collected. If a desired accuracy for a non-zero mean difference is computed, accuracy is based on a non-central *t*-distribution. For these calculations, an expected effect size estimate needs to be provided, but it has relatively little influence on the required sample size [@maxwell_sample_2008]. It is also possible to incorporate uncertainty about the observed effect size in the sample size calculation, known as *assurance* [@kelley_sample_2006]. The MBESS package in R provides functions to compute sample sizes for a wide range of tests [@kelley_confidence_2007].
 
+In the interactive visualization below, you can compute the accuracy of a mean for a given sample size, or the sample size required for a desired accuracy. Set the mode to Accuracy -> N to reproduce the IQ example (a desired half-width of 2, a standard deviation of 15, and a 95% confidence level). The app uses the *t*-distribution instead of the *z*-distribution, because in practice the standard deviation is estimated from the data, and therefore it returns 219 instead of 217 observations.
+
+::: {.content-visible when-format="html"}
+
+```{=html}
+<iframe id="prec-mean-iframe"
+        src="prec_mean_app_book.html"
+        width="100%"
+        height="600"
+        scrolling="no"
+        style="border:none;display:block;margin:1.5rem 0;overflow:hidden;"
+        title="Planning for Accuracy – Mean">
+</iframe>
+<script>
+window.addEventListener('message', function(e) {
+  if (e.data && typeof e.data.iframeHeight === 'number') {
+    var f = document.getElementById('prec-mean-iframe');
+    if (f && e.source === f.contentWindow) f.style.height = e.data.iframeHeight + 'px';
+  }
+});
+</script>
+```
+
+:::
+
+::: {.content-visible unless-format="html"}
+An interactive version of this simulation is available in the online edition of this textbook.
+:::
+
 What is less straightforward is to justify how a desired level of accuracy is related to inferential goals. There is no literature that helps researchers to choose a desired width of the confidence interval. Morey [-@morey_power_2020] convincingly argues that most practical use-cases of planning for precision involve an inferential goal of distinguishing an observed effect from other effect sizes (for a Bayesian perspective, see @kruschke_rejecting_2018). For example, a researcher might expect an effect size of *r* = 0.4 and would treat observed correlations that differ more than 0.2 (i.e., 0.2 < *r* < 0.6) differently, in that effects of *r* = 0.6 or larger are considered too large to be caused by the assumed underlying mechanism [@hilgard_maximal_2021], while effects smaller than *r* = 0.2 are considered too small to support the theoretical prediction. If the goal is indeed to get an effect size estimate that is precise enough so that two effects can be differentiated with high probability, the inferential goal is actually a hypothesis test, which requires designing a study with sufficient power to reject effects (e.g., testing a range prediction of correlations between 0.2 and 0.6). 
 
 If researchers do not want to test a hypothesis, for example because they prefer an estimation approach over a testing approach, then in the absence of clear guidelines that help researchers to justify a desired level of precision, one solution might be to rely on a generally accepted norm of precision. This norm could be based on ideas about a certain resolution below which measurements in a research area no longer lead to noticeably different inferences. Just as researchers normatively use an alpha level of 0.05, they could plan studies to achieve a desired confidence interval width around the observed effect that is determined by a norm. Future work is needed to help researchers choose a confidence interval width when planning for accuracy (see also the section on which confidence interval to use in Bayesian tests of [range predictions](#sec-whichinterval)).
