@@ -222,6 +222,32 @@ div.hanging-indent { margin-left: -1.5em !important; }
 	color: var(--nav-title);
 }
 
+/* On phone-width screens, let the site title wrap and shrink the logo,
+   instead of cutting the title off at the right edge. */
+@media (max-width: 575.98px) {
+	.navbar .navbar-brand-container,
+	.navbar .navbar-brand {
+		min-width: 0;
+		flex-shrink: 1;
+	}
+
+	.navbar .navbar-brand {
+		white-space: normal;
+	}
+
+	.navbar .navbar-brand::before {
+		width: 3.2rem;
+		height: 3.2rem;
+		flex: 0 0 3.2rem;
+	}
+
+	.navbar .navbar-title {
+		font-size: 1.05rem;
+		line-height: 1.2;
+		white-space: normal;
+	}
+}
+
 .navbar .nav-link,
 .navbar .quarto-navigation-tool,
 .navbar .navbar-toggler {
@@ -449,6 +475,94 @@ body.high-contrast .sourceCode {
 	.navbar .nav-item.compact .nav-link:hover .bi-bug,
 	.navbar .nav-item.compact .nav-link:focus-visible .bi-bug {
 		animation: none;
+		transition: none;
+	}
+}
+
+/* Lecture video boxes ({{< lecture >}}, see _extensions/lecture) */
+.callout:has(.lecture-title) .callout-header {
+	cursor: pointer;
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+}
+
+.lecture-title {
+	display: flex;
+	align-items: center;
+	gap: 0.9rem;
+}
+
+.lecture-thumb {
+	position: relative;
+	flex: 0 0 auto;
+	width: 144px;
+	line-height: 0;
+}
+
+.lecture-thumb img {
+	width: 100%;
+	height: auto;
+	aspect-ratio: 16 / 9;
+	object-fit: cover;
+	border-radius: 4px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.lecture-thumb .bi {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-size: 2rem;
+	color: #ffffff;
+	opacity: 0.9;
+	text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+	transition: opacity 150ms ease-in-out, transform 150ms ease-in-out;
+}
+
+.callout-header:hover .lecture-thumb .bi {
+	opacity: 1;
+	transform: translate(-50%, -50%) scale(1.1);
+}
+
+.lecture-text {
+	display: flex;
+	flex-direction: column;
+	line-height: 1.3;
+}
+
+.lecture-label {
+	font-size: 0.8em;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	opacity: 0.8;
+}
+
+.lecture-label .bi {
+	margin-right: 0.35em;
+}
+
+.lecture-name {
+	font-weight: 600;
+}
+
+.lecture-duration {
+	font-size: 0.85em;
+	opacity: 0.75;
+}
+
+@media (max-width: 576px) {
+	.lecture-thumb {
+		width: 96px;
+	}
+
+	.lecture-thumb .bi {
+		font-size: 1.5rem;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.lecture-thumb .bi {
 		transition: none;
 	}
 }
